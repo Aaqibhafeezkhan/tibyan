@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/settings/settings_controller.dart';
-import '../../core/theme/app_theme.dart';
+import '../../core/theme/interface_style.dart';
+import '../../core/theme/ornaments.dart';
+import '../../core/ui/look_kit.dart';
 import '../../l10n/app_localizations.dart';
 
 /// The «what's new» notes: shown once after an update that brings them,
@@ -57,37 +59,80 @@ Future<void> showWhatsNew(BuildContext context) => showModalBottomSheet<void>(
   isScrollControlled: true,
   builder: (context) {
     final l = AppLocalizations.of(context);
-    final t = context.tokens.colors;
+    final look = context.look;
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.75,
       builder: (context, controller) => ListView(
         controller: controller,
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
         children: [
-          Semantics(
-            header: true,
-            child: Text(
-              l.whatsNewTitle,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-            ),
-          ),
-          const SizedBox(height: 8),
+          LookSheetHeader(title: l.whatsNewTitle, icon: Icons.auto_awesome),
+          const SizedBox(height: 16),
           for (final item in whatsNewItems(l))
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Icon(item.icon, color: t.goldText),
-              title: Text(
-                item.title,
-                style: const TextStyle(fontWeight: FontWeight.w600),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Color.alphaBlend(
+                    look.control.withValues(alpha: .05),
+                    look.surface,
+                  ),
+                  borderRadius: BorderRadius.circular(look.isMakhtuta ? 4 : 14),
+                  border: Border.all(color: look.line),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox.square(
+                        dimension: 40,
+                        child: CustomPaint(
+                          painter: StarPainter(
+                            look.control.withValues(alpha: .10),
+                            look.isHandasi ? look.control : look.gold,
+                          ),
+                          child: Icon(
+                            item.icon,
+                            size: 20,
+                            color: look.isLayli ? look.goldText : look.accent,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.title,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
+                                color: look.ink,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              item.body,
+                              style: TextStyle(color: look.sub, height: 1.5),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              subtitle: Text(item.body, style: TextStyle(color: t.muted)),
             ),
           const SizedBox(height: 12),
           FilledButton(
             onPressed: () => Navigator.pop(context),
             style: FilledButton.styleFrom(
-              minimumSize: const Size.fromHeight(48),
+              backgroundColor: look.control,
+              foregroundColor: look.onControl,
+              minimumSize: Size.fromHeight(look.target),
             ),
             child: Text(l.whatsNewDone),
           ),
