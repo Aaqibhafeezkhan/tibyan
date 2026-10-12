@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/settings/app_settings.dart';
@@ -21,117 +24,132 @@ class AppearanceScreen extends ConsumerWidget {
     final t = context.tokens.colors;
     final lang = Localizations.localeOf(context).languageCode;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l.appearanceTitle)),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-        children: [
-          _Title(l.themeLabel),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return LookScaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(title: l.appearanceTitle),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
                 children: [
-                  const ThemePicker(),
-                  const SizedBox(height: 10),
-                  Text(
-                    context.tokens.style.localizedDescription(lang),
-                    style: TextStyle(color: t.muted, height: 1.5),
-                  ),
-                  // Whose ornaments these are, for the themes drawn from
-                  // quran-assets.
-                  if (context.tokens.style.art != null) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      l.themeArtCredit,
-                      style: TextStyle(
-                        color: t.muted,
-                        fontSize: 12,
-                        height: 1.5,
+                  _Title(l.themeLabel),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const ThemePicker(),
+                          const SizedBox(height: 10),
+                          Text(
+                            context.tokens.style.localizedDescription(lang),
+                            style: TextStyle(color: t.muted, height: 1.5),
+                          ),
+                          // Whose ornaments these are, for the themes drawn from
+                          // quran-assets.
+                          if (context.tokens.style.art != null) ...[
+                            const SizedBox(height: 8),
+                            Text(
+                              l.themeArtCredit,
+                              style: TextStyle(
+                                color: t.muted,
+                                fontSize: 12,
+                                height: 1.5,
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                     ),
-                  ],
+                  ),
+                  const SizedBox(height: 20),
+                  _Title(l.markerStyleLabel),
+                  const Card(child: _MarkerSettings()),
+                  const SizedBox(height: 20),
+                  _Title(l.modeLabel),
+                  Card(
+                    child: RadioGroup<ModeSetting>(
+                      groupValue: settings.mode,
+                      onChanged: (v) =>
+                          v == null ? null : controller.setMode(v),
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            value: ModeSetting.system,
+                            title: Text(l.modeSystem),
+                            subtitle: Text(
+                              l.modeSystemHint,
+                              style: TextStyle(color: t.muted),
+                            ),
+                          ),
+                          RadioListTile(
+                            value: ModeSetting.light,
+                            title: Text(l.modeLight),
+                          ),
+                          RadioListTile(
+                            value: ModeSetting.white,
+                            title: Text(l.modeWhite),
+                          ),
+                          RadioListTile(
+                            value: ModeSetting.night,
+                            title: Text(l.modeNight),
+                          ),
+                          RadioListTile(
+                            value: ModeSetting.black,
+                            title: Text(l.modeBlack),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _Title(l.tajweedColors),
+                  const TajweedSettings(),
+                  const SizedBox(height: 20),
+                  _Title(l.uiFontLabel),
+                  Card(
+                    child: RadioGroup<UiFont>(
+                      groupValue: settings.uiFont,
+                      onChanged: (v) =>
+                          v == null ? null : controller.setUiFont(v),
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            value: UiFont.plex,
+                            title: Text(
+                              l.uiFontPlex,
+                              style: TextStyle(fontFamily: UiFont.plex.family),
+                            ),
+                          ),
+                          RadioListTile(
+                            value: UiFont.kfgqpcAn,
+                            title: Text(
+                              l.uiFontKfgqpcAn,
+                              style: TextStyle(
+                                fontFamily: UiFont.kfgqpcAn.family,
+                              ),
+                            ),
+                          ),
+                          RadioListTile(
+                            value: UiFont.changa,
+                            title: Text(
+                              l.uiFontChanga,
+                              style: TextStyle(
+                                fontFamily: UiFont.changa.family,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          _Title(l.markerStyleLabel),
-          const Card(child: _MarkerSettings()),
-          const SizedBox(height: 20),
-          _Title(l.modeLabel),
-          Card(
-            child: RadioGroup<ModeSetting>(
-              groupValue: settings.mode,
-              onChanged: (v) => v == null ? null : controller.setMode(v),
-              child: Column(
-                children: [
-                  RadioListTile(
-                    value: ModeSetting.system,
-                    title: Text(l.modeSystem),
-                    subtitle: Text(
-                      l.modeSystemHint,
-                      style: TextStyle(color: t.muted),
-                    ),
-                  ),
-                  RadioListTile(
-                    value: ModeSetting.light,
-                    title: Text(l.modeLight),
-                  ),
-                  RadioListTile(
-                    value: ModeSetting.white,
-                    title: Text(l.modeWhite),
-                  ),
-                  RadioListTile(
-                    value: ModeSetting.night,
-                    title: Text(l.modeNight),
-                  ),
-                  RadioListTile(
-                    value: ModeSetting.black,
-                    title: Text(l.modeBlack),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          _Title(l.tajweedColors),
-          const TajweedSettings(),
-          const SizedBox(height: 20),
-          _Title(l.uiFontLabel),
-          Card(
-            child: RadioGroup<UiFont>(
-              groupValue: settings.uiFont,
-              onChanged: (v) => v == null ? null : controller.setUiFont(v),
-              child: Column(
-                children: [
-                  RadioListTile(
-                    value: UiFont.plex,
-                    title: Text(
-                      l.uiFontPlex,
-                      style: TextStyle(fontFamily: UiFont.plex.family),
-                    ),
-                  ),
-                  RadioListTile(
-                    value: UiFont.kfgqpcAn,
-                    title: Text(
-                      l.uiFontKfgqpcAn,
-                      style: TextStyle(fontFamily: UiFont.kfgqpcAn.family),
-                    ),
-                  ),
-                  RadioListTile(
-                    value: UiFont.changa,
-                    title: Text(
-                      l.uiFontChanga,
-                      style: TextStyle(fontFamily: UiFont.changa.family),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

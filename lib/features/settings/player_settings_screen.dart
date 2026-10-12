@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/ui/look_kit.dart';
+
 import '../../l10n/app_localizations.dart';
 import '../audio/player_bar.dart';
 
@@ -9,11 +11,22 @@ class PlayerSettingsScreen extends StatelessWidget {
   const PlayerSettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text(AppLocalizations.of(context).playerSettings)),
-    body: const Padding(
-      padding: EdgeInsets.only(top: 8),
-      child: PlayerOptions(inSheet: false),
+  Widget build(BuildContext context) => LookScaffold(
+    body: SafeArea(
+      bottom: false,
+      child: Column(
+        children: [
+          LookTopBar(
+            titleWidget: Text(AppLocalizations.of(context).playerSettings),
+          ),
+          Expanded(
+            child: const Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: PlayerOptions(inSheet: false),
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

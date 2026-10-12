@@ -52,37 +52,46 @@ class _KhatmaScreenState extends ConsumerState<KhatmaScreen> {
     if (event != null && event.completed.isNotEmpty) {
       _scheduleCompletion(event.completed.last);
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l.khatmaTitle),
-        actions: [
-          IconButton(
-            tooltip: l.reportsTitle,
-            icon: const Icon(Icons.insights_outlined),
-            onPressed: () => context.push('/khatma/reports'),
-          ),
-          IconButton(
-            tooltip: l.journalTitle,
-            icon: const Icon(Icons.edit_note_outlined),
-            onPressed: () => context.push('/khatma/journal'),
-          ),
-        ],
-      ),
-      // A wide window (a tablet, the Mac) keeps a readable column.
-      body: _Column(
-        child: switch (statuses) {
-          AsyncData(value: final plans) when widget.selectedPlanId != null =>
-            _selectedPlanBody(plans, past, completed),
-          AsyncData(value: final plans) when plans.isEmpty => _Empty(
-            past: past,
-          ),
-          AsyncData(value: final plans) => _Overview(
-            statuses: plans,
-            past: past,
-          ),
-          AsyncError(:final error) => Center(child: Text('$error')),
-          _ => const Center(child: CircularProgressIndicator()),
-        },
+    return LookScaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(
+              title: l.khatmaTitle,
+              actions: [
+                IconButton(
+                  tooltip: l.reportsTitle,
+                  icon: const Icon(Icons.insights_outlined),
+                  onPressed: () => context.push('/khatma/reports'),
+                ),
+                IconButton(
+                  tooltip: l.journalTitle,
+                  icon: const Icon(Icons.edit_note_outlined),
+                  onPressed: () => context.push('/khatma/journal'),
+                ),
+              ],
+            ),
+            Expanded(
+              child: _Column(
+                child: switch (statuses) {
+                  AsyncData(value: final plans)
+                      when widget.selectedPlanId != null =>
+                    _selectedPlanBody(plans, past, completed),
+                  AsyncData(value: final plans) when plans.isEmpty => _Empty(
+                    past: past,
+                  ),
+                  AsyncData(value: final plans) => _Overview(
+                    statuses: plans,
+                    past: past,
+                  ),
+                  AsyncError(:final error) => Center(child: Text('$error')),
+                  _ => const Center(child: CircularProgressIndicator()),
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

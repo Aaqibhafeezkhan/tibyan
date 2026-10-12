@@ -221,110 +221,132 @@ class _SharePreviewState extends ConsumerState<SharePreviewScreen> {
     final digits = NumberFormatter(Localizations.localeOf(context));
     final edition = ref.watch(editionProvider);
     final doc = _doc;
-    return Scaffold(
-      appBar: AppBar(title: Text(l.shareImageTitle)),
-      backgroundColor: context.look.bg,
+    return LookScaffold(
       body: SafeArea(
-        child: _unavailable
-            ? Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Text(
-                    l.shareImageRiwayaUnavailable,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              )
-            : Column(
-                children: [
-                  Expanded(
-                    child: doc == null
-                        ? const Center(child: CircularProgressIndicator())
-                        : ShareCarousel(
-                            count: doc.pageCount,
-                            onPageChanged: (i) => setState(() => _page = i),
-                            itemBuilder: (context, i) => Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Center(
-                                child: AspectRatio(
-                                  aspectRatio:
-                                      doc.sizeOf(i).width /
-                                      doc.sizeOf(i).height,
-                                  child: DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: context.look.line,
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: context.look.frame.withValues(
-                                            alpha: .22,
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(title: l.shareImageTitle),
+            Expanded(
+              child: SafeArea(
+                child: _unavailable
+                    ? Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Text(
+                            l.shareImageRiwayaUnavailable,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          Expanded(
+                            child: doc == null
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : ShareCarousel(
+                                    count: doc.pageCount,
+                                    onPageChanged: (i) =>
+                                        setState(() => _page = i),
+                                    itemBuilder: (context, i) => Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Center(
+                                        child: AspectRatio(
+                                          aspectRatio:
+                                              doc.sizeOf(i).width /
+                                              doc.sizeOf(i).height,
+                                          child: DecoratedBox(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: context.look.line,
+                                              ),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: context.look.frame
+                                                      .withValues(alpha: .22),
+                                                  blurRadius: 10,
+                                                ),
+                                              ],
+                                            ),
+                                            child: FittedBox(
+                                              child: SizedBox.fromSize(
+                                                size: doc.sizeOf(i),
+                                                child: CustomPaint(
+                                                  painter: _PagePainter(doc, i),
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                          blurRadius: 10,
-                                        ),
-                                      ],
-                                    ),
-                                    child: FittedBox(
-                                      child: SizedBox.fromSize(
-                                        size: doc.sizeOf(i),
-                                        child: CustomPaint(
-                                          painter: _PagePainter(doc, i),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
+                          ),
+                          if (_busy) const LinearProgressIndicator(),
+                          if (doc != null && doc.pageCount > 1)
+                            Text(
+                              l.shareImageOf(
+                                digits(_page + 1),
+                                digits(doc.pageCount),
                               ),
                             ),
+                          if (editionHasTajweed(edition))
+                            SwitchListTile(
+                              title: Text(l.tajweedColors),
+                              value: _options.tajweed,
+                              onChanged: (v) =>
+                                  _set(_options.copyWith(tajweed: v)),
+                            ),
+                          SwitchListTile(
+                            title: Text(l.highlightDivineNames),
+                            value: _options.divineNames,
+                            onChanged: (v) =>
+                                _set(_options.copyWith(divineNames: v)),
                           ),
-                  ),
-                  if (_busy) const LinearProgressIndicator(),
-                  if (doc != null && doc.pageCount > 1)
-                    Text(
-                      l.shareImageOf(digits(_page + 1), digits(doc.pageCount)),
-                    ),
-                  if (editionHasTajweed(edition))
-                    SwitchListTile(
-                      title: Text(l.tajweedColors),
-                      value: _options.tajweed,
-                      onChanged: (v) => _set(_options.copyWith(tajweed: v)),
-                    ),
-                  SwitchListTile(
-                    title: Text(l.highlightDivineNames),
-                    value: _options.divineNames,
-                    onChanged: (v) => _set(_options.copyWith(divineNames: v)),
-                  ),
-                  SwitchListTile(
-                    key: const ValueKey('share-brand-colours'),
-                    title: Text(l.shareBrandColours),
-                    subtitle: Text(l.shareBrandColoursHint),
-                    value: _options.brandColours,
-                    onChanged: (v) => _set(_options.copyWith(brandColours: v)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: FilledButton.icon(
-                            onPressed: doc == null || _busy ? null : _share,
-                            icon: const Icon(Icons.ios_share),
-                            label: Text(l.shareButton),
+                          SwitchListTile(
+                            key: const ValueKey('share-brand-colours'),
+                            title: Text(l.shareBrandColours),
+                            subtitle: Text(l.shareBrandColoursHint),
+                            value: _options.brandColours,
+                            onChanged: (v) =>
+                                _set(_options.copyWith(brandColours: v)),
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: doc == null || _busy ? null : _save,
-                            icon: const Icon(Icons.photo_library_outlined),
-                            label: Text(l.saveToPhotos),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: FilledButton.icon(
+                                    onPressed: doc == null || _busy
+                                        ? null
+                                        : _share,
+                                    icon: const Icon(Icons.ios_share),
+                                    label: Text(l.shareButton),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: OutlinedButton.icon(
+                                    onPressed: doc == null || _busy
+                                        ? null
+                                        : _save,
+                                    icon: const Icon(
+                                      Icons.photo_library_outlined,
+                                    ),
+                                    label: Text(l.saveToPhotos),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                        ],
+                      ),
               ),
+            ),
+          ],
+        ),
       ),
     );
   }

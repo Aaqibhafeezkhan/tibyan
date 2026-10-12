@@ -110,48 +110,7 @@ class _TafsirScreenState extends ConsumerState<TafsirScreen> {
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) _stopTafsirAudio();
       },
-      child: Scaffold(
-        backgroundColor: t.paper,
-        appBar: AppBar(
-          title: surah == null
-              ? Text(l.tafsirTitle)
-              : MushafDigitsText(
-                  '${l.surahWord(surahName(context, surah))} | ${digits(_ayah)}',
-                ),
-          actions: [
-            IconButton(
-              tooltip: l.tafsirSettings,
-              icon: const Icon(Icons.text_fields),
-              onPressed: () => showModalBottomSheet<void>(
-                context: context,
-                showDragHandle: true,
-                builder: (_) => LookTheme(
-                  child: Builder(builder: (_) => const _TafsirSettingsSheet()),
-                ),
-              ),
-            ),
-          ],
-        ),
-        body: ayahs == null
-            ? const Center(child: CircularProgressIndicator())
-            : Column(
-                children: [
-                  if (widget.riwaya != null && widget.riwayaAyah != null)
-                    _RiwayaNote(
-                      riwaya: widget.riwaya!,
-                      surah: widget.surah,
-                      ayah: widget.riwayaAyah!,
-                    ),
-                  Expanded(
-                    child: PageView.builder(
-                      controller: _pages,
-                      itemCount: ayahs.length,
-                      onPageChanged: (i) => setState(() => _ayah = i + 1),
-                      itemBuilder: (context, i) => _VersePage(ayah: ayahs[i]),
-                    ),
-                  ),
-                ],
-              ),
+      child: LookScaffold(
         bottomNavigationBar: SafeArea(
           child: Row(
             children: [
@@ -175,6 +134,60 @@ class _TafsirScreenState extends ConsumerState<TafsirScreen> {
                 tooltip: l.nextVerse,
                 onPressed: _ayah < count ? () => _go(1, count) : null,
                 icon: const Icon(Icons.chevron_right),
+              ),
+            ],
+          ),
+        ),
+        body: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              LookTopBar(
+                titleWidget: surah == null
+                    ? Text(l.tafsirTitle)
+                    : MushafDigitsText(
+                        '${l.surahWord(surahName(context, surah))} | ${digits(_ayah)}',
+                      ),
+                actions: [
+                  IconButton(
+                    tooltip: l.tafsirSettings,
+                    icon: const Icon(Icons.text_fields),
+                    onPressed: () => showModalBottomSheet<void>(
+                      context: context,
+                      showDragHandle: true,
+                      builder: (_) => LookTheme(
+                        child: Builder(
+                          builder: (_) => const _TafsirSettingsSheet(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: ayahs == null
+                    ? const Center(child: CircularProgressIndicator())
+                    : Column(
+                        children: [
+                          if (widget.riwaya != null &&
+                              widget.riwayaAyah != null)
+                            _RiwayaNote(
+                              riwaya: widget.riwaya!,
+                              surah: widget.surah,
+                              ayah: widget.riwayaAyah!,
+                            ),
+                          Expanded(
+                            child: PageView.builder(
+                              controller: _pages,
+                              itemCount: ayahs.length,
+                              onPageChanged: (i) =>
+                                  setState(() => _ayah = i + 1),
+                              itemBuilder: (context, i) =>
+                                  _VersePage(ayah: ayahs[i]),
+                            ),
+                          ),
+                        ],
+                      ),
               ),
             ],
           ),

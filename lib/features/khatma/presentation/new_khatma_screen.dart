@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -97,142 +100,165 @@ class _NewKhatmaScreenState extends ConsumerState<NewKhatmaScreen> {
             editionPagesState.hasValue,
     };
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l.khatmaNew),
-        leading: _step == 0
-            ? null
-            : IconButton(
-                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-                onPressed: () => setState(() => _step--),
-                icon: const Icon(Icons.arrow_back),
-              ),
-      ),
+    return LookScaffold(
       body: SafeArea(
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 640),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        steps[_step],
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: 8),
-                      LinearProgressIndicator(
-                        value: (_step + 1) / steps.length,
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          for (var i = 0; i < steps.length; i++) ...[
-                            if (i > 0)
-                              Icon(
-                                // Mirrors itself: points left in Arabic.
-                                Icons.chevron_right,
-                                size: 16,
-                                color: colors.muted,
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(
+              title: l.khatmaNew,
+              leading: _step == 0
+                  ? null
+                  : IconButton(
+                      tooltip: MaterialLocalizations.of(context)
+                          .backButtonTooltip,
+                      onPressed: () => setState(() => _step--),
+                      icon: const Icon(Icons.arrow_back),
+                    ),
+            ),
+            Expanded(
+              child: SafeArea(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 640),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                steps[_step],
+                                style: Theme.of(context).textTheme.titleMedium,
                               ),
-                            Text(
-                              steps[i],
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: i == _step
-                                    ? FontWeight.w600
-                                    : FontWeight.normal,
-                                color: i == _step
-                                    ? colors.control
-                                    : colors.muted,
+                              const SizedBox(height: 8),
+                              LinearProgressIndicator(
+                                value: (_step + 1) / steps.length,
                               ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
-                    children: [
-                      if (_step == 0) planStep,
-                      if (_step == 1)
-                        _buildScheduleStep(context, l, digits, today),
-                      if (_step == 2)
-                        indexState.when(
-                          data: (index) => surahsState.when(
-                            data: (surahs) => editionPagesState.when(
-                              data: (pages) => _buildReviewStep(
-                                context,
-                                l,
-                                digits,
-                                index,
-                                surahs,
-                                edition,
-                                today,
-                                pages?.textPages.length ??
-                                    index.madina1441.textPages.length,
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  for (var i = 0; i < steps.length; i++) ...[
+                                    if (i > 0)
+                                      Icon(
+                                        // Mirrors itself: points left in Arabic.
+                                        Icons.chevron_right,
+                                        size: 16,
+                                        color: colors.muted,
+                                      ),
+                                    Text(
+                                      steps[i],
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: i == _step
+                                            ? FontWeight.w600
+                                            : FontWeight.normal,
+                                        color: i == _step
+                                            ? colors.control
+                                            : colors.muted,
+                                      ),
+                                    ),
+                                  ],
+                                ],
                               ),
-                              loading: () => _loading(l),
-                              error: (error, _) => _loadError(l, error, () {
-                                ref.invalidate(editionPagesProvider(edition));
-                              }),
-                            ),
-                            loading: () => _loading(l),
-                            error: (error, _) => _loadError(l, error, () {
-                              ref.invalidate(surahsProvider);
-                            }),
+                            ],
                           ),
-                          loading: () => _loading(l),
-                          error: (error, _) => _loadError(l, error, () {
-                            ref.invalidate(quranIndexProvider);
-                          }),
                         ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: FilledButton(
-                      onPressed: _saving || !canContinue
-                          ? null
-                          : _step < steps.length - 1
-                          ? () => setState(() => _step++)
-                          : () => _save(
-                              l,
-                              edition,
-                              today,
-                              indexState.value,
-                              editionPagesState.value?.textPages.length ??
-                                  indexState.value?.madina1441.textPages.length,
+                        Expanded(
+                          child: ListView(
+                            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+                            children: [
+                              if (_step == 0) planStep,
+                              if (_step == 1)
+                                _buildScheduleStep(context, l, digits, today),
+                              if (_step == 2)
+                                indexState.when(
+                                  data: (index) => surahsState.when(
+                                    data: (surahs) => editionPagesState.when(
+                                      data: (pages) => _buildReviewStep(
+                                        context,
+                                        l,
+                                        digits,
+                                        index,
+                                        surahs,
+                                        edition,
+                                        today,
+                                        pages?.textPages.length ??
+                                            index.madina1441.textPages.length,
+                                      ),
+                                      loading: () => _loading(l),
+                                      error: (error, _) =>
+                                          _loadError(l, error, () {
+                                            ref.invalidate(
+                                              editionPagesProvider(edition),
+                                            );
+                                          }),
+                                    ),
+                                    loading: () => _loading(l),
+                                    error: (error, _) =>
+                                        _loadError(l, error, () {
+                                          ref.invalidate(surahsProvider);
+                                        }),
+                                  ),
+                                  loading: () => _loading(l),
+                                  error: (error, _) => _loadError(l, error, () {
+                                    ref.invalidate(quranIndexProvider);
+                                  }),
+                                ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: FilledButton(
+                              onPressed: _saving || !canContinue
+                                  ? null
+                                  : _step < steps.length - 1
+                                  ? () => setState(() => _step++)
+                                  : () => _save(
+                                      l,
+                                      edition,
+                                      today,
+                                      indexState.value,
+                                      editionPagesState
+                                              .value
+                                              ?.textPages
+                                              .length ??
+                                          indexState
+                                              .value
+                                              ?.madina1441
+                                              .textPages
+                                              .length,
+                                    ),
+                              style: FilledButton.styleFrom(
+                                minimumSize: const Size.fromHeight(50),
+                              ),
+                              child: _saving
+                                  ? const SizedBox.square(
+                                      dimension: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : Text(
+                                      _step == steps.length - 1
+                                          ? l.khatmaStart
+                                          : l.continueLabel,
+                                    ),
                             ),
-                      style: FilledButton.styleFrom(
-                        minimumSize: const Size.fromHeight(50),
-                      ),
-                      child: _saving
-                          ? const SizedBox.square(
-                              dimension: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : Text(
-                              _step == steps.length - 1
-                                  ? l.khatmaStart
-                                  : l.continueLabel,
-                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

@@ -55,41 +55,53 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
     final l = AppLocalizations.of(context);
     final t = context.tokens.colors;
     final notes = ref.watch(_journalProvider(_query)).value;
-    return Scaffold(
-      appBar: AppBar(title: Text(l.journalTitle)),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-            child: TextField(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                hintText: l.journalSearch,
-                border: const OutlineInputBorder(),
-                isDense: true,
-              ),
-              onChanged: (v) => setState(() => _query = v),
-            ),
-          ),
-          Expanded(
-            child: notes == null
-                ? const Center(child: CircularProgressIndicator())
-                : notes.isEmpty
-                ? Padding(
-                    padding: const EdgeInsets.all(32),
-                    child: Text(
-                      _query.trim().isEmpty ? l.journalEmpty : l.journalNoMatch,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: t.muted, height: 1.7),
+    return LookScaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(title: l.journalTitle),
+            Expanded(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.search),
+                        hintText: l.journalSearch,
+                        border: const OutlineInputBorder(),
+                        isDense: true,
+                      ),
+                      onChanged: (v) => setState(() => _query = v),
                     ),
-                  )
-                : ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: notes.length,
-                    itemBuilder: (context, i) => _NoteCard(note: notes[i]),
                   ),
-          ),
-        ],
+                  Expanded(
+                    child: notes == null
+                        ? const Center(child: CircularProgressIndicator())
+                        : notes.isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.all(32),
+                            child: Text(
+                              _query.trim().isEmpty
+                                  ? l.journalEmpty
+                                  : l.journalNoMatch,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: t.muted, height: 1.7),
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: const EdgeInsets.all(16),
+                            itemCount: notes.length,
+                            itemBuilder: (context, i) =>
+                                _NoteCard(note: notes[i]),
+                          ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -172,11 +172,17 @@ class LookScaffold extends StatelessWidget {
     this.selected,
     this.hero = false,
     this.rail = true,
+    this.floatingActionButton,
+    this.bottomNavigationBar,
+    this.resizeToAvoidBottomInset,
   });
 
   final Widget body;
   final RailItem? selected;
   final bool hero;
+  final Widget? floatingActionButton;
+  final Widget? bottomNavigationBar;
+  final bool? resizeToAvoidBottomInset;
 
   /// Show the side rail on wide windows.
   final bool rail;
@@ -194,6 +200,9 @@ class LookScaffold extends StatelessWidget {
       data: look.screens(Theme.of(context)),
       child: Scaffold(
         backgroundColor: look.bg,
+        floatingActionButton: floatingActionButton,
+        bottomNavigationBar: bottomNavigationBar,
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         body: rail && isWide(context)
             ? Row(
                 children: [
@@ -326,12 +335,20 @@ TextStyle lookTitleStyle(BuildContext context, {double? size}) {
 class LookTopBar extends StatelessWidget {
   const LookTopBar({
     super.key,
-    required this.title,
+    this.title = '',
+    this.titleWidget,
+    this.leading,
     this.actions = const [],
     this.back = true,
   });
 
   final String title;
+
+  /// In place of [title], for a title that is more than words.
+  final Widget? titleWidget;
+
+  /// In place of the back button (a wizard's previous step).
+  final Widget? leading;
   final List<Widget> actions;
   final bool back;
 
@@ -345,7 +362,9 @@ class LookTopBar extends StatelessWidget {
         height: 56,
         child: Row(
           children: [
-            if (canPop)
+            if (leading != null)
+              leading!
+            else if (canPop)
               // Icons.arrow_back mirrors itself: it points right in Arabic.
               IconButton(
                 icon: const Icon(Icons.arrow_back),
@@ -358,12 +377,12 @@ class LookTopBar extends StatelessWidget {
             Expanded(
               child: Semantics(
                 header: true,
-                child: Text(
-                  title,
+                child: DefaultTextStyle.merge(
+                  style: lookTitleStyle(context),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: lookTitleStyle(context),
+                  child: Center(child: titleWidget ?? Text(title)),
                 ),
               ),
             ),

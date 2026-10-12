@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/settings/app_settings.dart';
@@ -43,8 +46,6 @@ class _HifzMapScreenState extends ConsumerState<HifzMapScreen> {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
-    final tokens = context.tokens;
-    final t = tokens.colors;
     final edition = ref.watch(editionProvider);
     final strengths = ref.watch(verseStrengthsProvider).value ?? const {};
     final cells = ref.watch(verseCellsProvider).value;
@@ -87,114 +88,123 @@ class _HifzMapScreenState extends ConsumerState<HifzMapScreen> {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l.hifzMap),
-        actions: [
-          IconButton(
-            tooltip: l.mapZoomOut,
-            onPressed: _cell > _min ? () => _zoom(_cell - 12) : null,
-            icon: const Icon(Icons.zoom_out),
-          ),
-          IconButton(
-            tooltip: l.mapZoomIn,
-            onPressed: _cell < _max ? () => _zoom(_cell + 12) : null,
-            icon: const Icon(Icons.zoom_in),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          if (!edition.isRiwaya)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
-              child: SegmentedButton<bool>(
-                segments: [
-                  ButtonSegment(value: false, label: Text(l.mapPages)),
-                  ButtonSegment(value: true, label: Text(l.mapSurahs)),
-                ],
-                selected: {_surahs},
-                onSelectionChanged: (s) => setState(() => _surahs = s.first),
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Wrap(
-              spacing: 10,
-              runSpacing: 6,
-              children: [
-                for (final s in Strength.values)
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _Swatch(strength: s, size: 20),
-                      const SizedBox(width: 4),
-                      Text(
-                        strengthLabel(l, s),
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ],
-                  ),
+    return LookScaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(
+              title: l.hifzMap,
+              actions: [
+                IconButton(
+                  tooltip: l.mapZoomOut,
+                  onPressed: _cell > _min ? () => _zoom(_cell - 12) : null,
+                  icon: const Icon(Icons.zoom_out),
+                ),
+                IconButton(
+                  tooltip: l.mapZoomIn,
+                  onPressed: _cell < _max ? () => _zoom(_cell + 12) : null,
+                  icon: const Icon(Icons.zoom_in),
+                ),
               ],
             ),
-          ),
-          const SizedBox(height: 8),
-          Expanded(
-            // Pinch: a raw listener, so the grid still scrolls with one
-            // finger.
-            child: Listener(
-              onPointerDown: (e) {
-                _pointers[e.pointer] = e.position;
-                if (_pointers.length == 2) {
-                  _pinchStart = _cell;
-                  _spread = _distance();
-                }
-              },
-              onPointerMove: (e) {
-                _pointers[e.pointer] = e.position;
-                if (_pointers.length == 2 && _spread > 0) {
-                  _zoom(_pinchStart * _distance() / _spread);
-                }
-              },
-              onPointerUp: (e) => _pointers.remove(e.pointer),
-              onPointerCancel: (e) => _pointers.remove(e.pointer),
-              child: GridView.builder(
-                padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: width,
-                  mainAxisExtent: _cell,
-                  mainAxisSpacing: 4,
-                  crossAxisSpacing: 4,
-                ),
-                itemCount: last - first + 1,
-                itemBuilder: (context, i) {
-                  final n = first + i;
-                  final s = levels[n] ?? Strength.none;
-                  final label = bySurah
-                      ? (surahs == null
-                            ? digits(n)
-                            : (arabic
-                                  ? surahs[n - 1].nameAr
-                                  : surahs[n - 1].nameEn))
-                      : digits(n);
-                  final spoken = bySurah
-                      ? l.surahWord(label)
-                      : l.pageOf(digits(n));
-                  return _Cell(
-                    label: label,
-                    number: bySurah ? digits(n) : null,
-                    strength: s,
-                    size: _cell,
-                    semantics: l.mapCell(spoken, strengthLabel(l, s)),
-                    onTap: () => open(n),
-                  );
-                },
+            Expanded(
+              child: Column(
+                children: [
+                  if (!edition.isRiwaya)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                      child: SegmentedButton<bool>(
+                        segments: [
+                          ButtonSegment(value: false, label: Text(l.mapPages)),
+                          ButtonSegment(value: true, label: Text(l.mapSurahs)),
+                        ],
+                        selected: {_surahs},
+                        onSelectionChanged: (s) =>
+                            setState(() => _surahs = s.first),
+                      ),
+                    ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Wrap(
+                      spacing: 10,
+                      runSpacing: 6,
+                      children: [
+                        for (final s in Strength.values)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              _Swatch(strength: s, size: 20),
+                              const SizedBox(width: 4),
+                              Text(
+                                strengthLabel(l, s),
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    // Pinch: a raw listener, so the grid still scrolls with one
+                    // finger.
+                    child: Listener(
+                      onPointerDown: (e) {
+                        _pointers[e.pointer] = e.position;
+                        if (_pointers.length == 2) {
+                          _pinchStart = _cell;
+                          _spread = _distance();
+                        }
+                      },
+                      onPointerMove: (e) {
+                        _pointers[e.pointer] = e.position;
+                        if (_pointers.length == 2 && _spread > 0) {
+                          _zoom(_pinchStart * _distance() / _spread);
+                        }
+                      },
+                      onPointerUp: (e) => _pointers.remove(e.pointer),
+                      onPointerCancel: (e) => _pointers.remove(e.pointer),
+                      child: GridView.builder(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: width,
+                          mainAxisExtent: _cell,
+                          mainAxisSpacing: 4,
+                          crossAxisSpacing: 4,
+                        ),
+                        itemCount: last - first + 1,
+                        itemBuilder: (context, i) {
+                          final n = first + i;
+                          final s = levels[n] ?? Strength.none;
+                          final label = bySurah
+                              ? (surahs == null
+                                    ? digits(n)
+                                    : (arabic
+                                          ? surahs[n - 1].nameAr
+                                          : surahs[n - 1].nameEn))
+                              : digits(n);
+                          final spoken = bySurah
+                              ? l.surahWord(label)
+                              : l.pageOf(digits(n));
+                          return _Cell(
+                            label: label,
+                            number: bySurah ? digits(n) : null,
+                            strength: s,
+                            size: _cell,
+                            semantics: l.mapCell(spoken, strengthLabel(l, s)),
+                            onTap: () => open(n),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-      backgroundColor: t.bg,
     );
   }
 }
