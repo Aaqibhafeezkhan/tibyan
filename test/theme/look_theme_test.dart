@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tibyan/core/theme/app_theme.dart';
@@ -78,5 +79,15 @@ void main() {
       if (twice.hasMatch(f.readAsStringSync())) found.add(f.path);
     }
     expect(found, isEmpty);
+  });
+
+  test('the hifz test\'s «next verse» arrow follows the language', () {
+    // keyboard_double_arrow_left does not mirror itself: the code picks
+    // left for Arabic and right for English.
+    final src = File('lib/features/mushaf/presentation/mushaf_screen_hifz.dart')
+        .readAsStringSync();
+    expect(Icons.keyboard_double_arrow_left.matchTextDirection, isFalse);
+    expect(src, contains('Icons.keyboard_double_arrow_right'));
+    expect(src, contains('TextDirection.ltr'));
   });
 }
