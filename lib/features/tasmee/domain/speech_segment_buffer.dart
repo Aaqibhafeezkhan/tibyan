@@ -16,7 +16,8 @@ import 'dart:typed_data';
 ///
 /// The next segment starts [overlapSeconds] before the cut, so a word that
 /// begins right at the cut keeps its onset. A word heard twice there is read
-/// by the engine as a restart, which is not an error.
+/// by the engine as a restart, which is not an error; a word the cut split
+/// in two is joined again before alignment (`SegmentJoiner`).
 class SpeechSegmentBuffer {
   SpeechSegmentBuffer({
     this.sampleRate = 16000,
