@@ -182,6 +182,7 @@ void _startKhatma(ProviderContainer container) {
       'khatmah',
       'khatmat',
       'reader',
+      'hifz',
     }.contains(uri.host);
     if (!khatmaLink && action == null && verse == null) return;
     final route =

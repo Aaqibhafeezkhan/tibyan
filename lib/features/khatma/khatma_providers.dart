@@ -22,6 +22,8 @@ import '../mushaf/presentation/widgets/illuminated_frame.dart'
 import 'data/activity_repository.dart';
 import 'data/khatma_repository.dart';
 import 'data/khatmah_book.dart';
+import '../hifz/data/goal_reminders.dart';
+import '../hifz/hifz_providers.dart' show goalOf;
 import 'data/khatmah_store.dart';
 import 'data/quran_index_loader.dart';
 import 'domain/day.dart';
@@ -998,6 +1000,53 @@ class KhatmaService {
       }
     }
 
+    // Hifz goals' portions, on the same engine and notice budget.
+    var goalSlots = 0;
+    try {
+      final goals = await goalReminderPortions(
+        _ref.read(userDatabaseProvider),
+        book.index,
+        today,
+        khatmaReminderDaysAhead,
+        goalOf,
+      );
+      for (final g in goals) {
+        final i = reminderPlans.length + goalSlots;
+        if (i >= maxKhatmaReminderPlans) break;
+        goalSlots++;
+        for (final r in portionReminders(
+          now: reminderNow,
+          today: today,
+          minutes: g.minutes,
+          portions: g.portions,
+          last: g.goal.targetDate,
+          days: khatmaReminderDaysAhead,
+          idBase: khatmaReminderId(i, 0, KhatmaReminderType.portion),
+          idStep: khatmaReminderTypesPerDay,
+          dayStartHour: settings.dayStartHour,
+          planIndex: i,
+          planKey: g.goal.uuid,
+        )) {
+          candidates.add(r);
+          noticesById[r.id] = (
+            plan: r,
+            title: l.goalReminderTitle,
+            body: l.goalReminderBody(
+              digits(r.range!.from),
+              digits(r.range!.to),
+            ),
+            payload: Uri(
+              scheme: 'tibyan',
+              host: 'hifz',
+              path: '/goals',
+            ).toString(),
+          );
+        }
+      }
+    } catch (error) {
+      debugPrint('Hifz goal reminders failed: $error');
+    }
+
     final completionPlans = completed.isNotEmpty && _inBackground()
         ? completed
               .where((plan) => plan.reminderTime != null)
@@ -1010,7 +1059,7 @@ class KhatmaService {
         id: khatmaCompletionIdBase + i,
         at: reminderNow.add(const Duration(seconds: 2)),
         day: today,
-        planIndex: reminderPlans.length + i,
+        planIndex: reminderPlans.length + goalSlots + i,
         planKey: plan.uuid,
         type: KhatmaReminderType.completion,
       );
@@ -1020,7 +1069,10 @@ class KhatmaService {
 
     final selected = limitKhatmaReminders(
       candidates,
-      planCount: max(1, reminderPlans.length + completionPlans.length),
+      planCount: max(
+        1,
+        reminderPlans.length + goalSlots + completionPlans.length,
+      ),
     );
     final notices = [
       for (final reminder in selected) noticesById[reminder.id]!,
@@ -1076,6 +1128,7 @@ class KhatmaService {
   Future<String> routeFor(Uri uri, {EntryPoint? entry}) async {
     final source = entry ?? khatmaEntryOfLink(uri);
     if (uri.host == 'khatmat') return '/khatma';
+    if (uri.host == 'hifz') return '/hifz?tab=goals';
     if (uri.host == 'khatmah') {
       final segments = uri.pathSegments;
       if (segments.isEmpty) return '/khatma';
