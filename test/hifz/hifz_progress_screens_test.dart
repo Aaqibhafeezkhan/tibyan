@@ -121,7 +121,7 @@ void main() {
         .map((t) => t.data ?? '')
         .where((s) => s.startsWith('ٱلص'));
     expect(words, isNotEmpty);
-    expect(find.textContaining('٢ مرات'), findsOneWidget);
+    expect(find.textContaining('مرتان'), findsOneWidget);
 
     await tester.tap(find.text('الأهداف'));
     await settle(tester);
