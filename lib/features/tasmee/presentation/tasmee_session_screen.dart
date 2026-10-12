@@ -126,6 +126,9 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
         isDismissible: dismissible,
         enableDrag: dismissible,
         backgroundColor: Colors.transparent,
+        // The sheet draws its own frame and handle.
+        showDragHandle: false,
+        shape: const RoundedRectangleBorder(),
         builder: (context) => LookTheme(child: Builder(builder: builder)),
       );
     } finally {
@@ -346,7 +349,7 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
         body: wide
             ? Column(
                 children: [
-                  SafeArea(bottom: false, child: top),
+                  top,
                   Expanded(
                     child: Row(
                       children: [
@@ -375,7 +378,7 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
               )
             : Column(
                 children: [
-                  SafeArea(bottom: false, child: top),
+                  top,
                   Expanded(
                     child: KeyedSubtree(
                       key: const ValueKey('tasmee-page'),
@@ -414,75 +417,78 @@ class _TopBar extends StatelessWidget {
     final look = context.look;
     return Material(
       color: look.bg,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: 54,
-            child: Row(
-              children: [
-                const SizedBox(width: 4),
-                IconButton(
-                  onPressed: onClose,
-                  icon: Icon(Icons.close, color: t.ink),
-                  tooltip: l.tasmeeClose,
-                ),
-                Expanded(
-                  child: Semantics(
-                    header: true,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: lookTitleStyle(
-                            context,
-                            size: look.isHandasi ? 17 : 21,
-                          ).copyWith(height: 1.2),
-                        ),
-                        Text(
-                          line,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: t.muted,
-                            fontSize: 12.5,
-                            height: 1.3,
+      child: SafeArea(
+        bottom: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 54,
+              child: Row(
+                children: [
+                  const SizedBox(width: 4),
+                  IconButton(
+                    onPressed: onClose,
+                    icon: Icon(Icons.close, color: t.ink),
+                    tooltip: l.tasmeeClose,
+                  ),
+                  Expanded(
+                    child: Semantics(
+                      header: true,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: lookTitleStyle(
+                              context,
+                              size: look.isHandasi ? 17 : 21,
+                            ).copyWith(height: 1.2),
                           ),
-                        ),
-                      ],
+                          Text(
+                            line,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: t.muted,
+                              fontSize: 12.5,
+                              height: 1.3,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  onPressed: onHelp,
-                  icon: Icon(Icons.help_outline, color: t.ink),
-                  tooltip: l.tasmeeHelp,
-                ),
-                const SizedBox(width: 4),
-              ],
+                  IconButton(
+                    onPressed: onHelp,
+                    icon: Icon(Icons.help_outline, color: t.ink),
+                    tooltip: l.tasmeeHelp,
+                  ),
+                  const SizedBox(width: 4),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Semantics(
-              label: l.tasmeeProgress,
-              value: context.percent((progress * 100).round()),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(2),
-                child: LinearProgressIndicator(
-                  value: progress,
-                  minHeight: 3,
-                  color: look.isHandasi ? look.control : look.gold,
-                  backgroundColor: t.border,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Semantics(
+                label: l.tasmeeProgress,
+                value: context.percent((progress * 100).round()),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(2),
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    minHeight: 3,
+                    color: look.isHandasi ? look.control : look.gold,
+                    backgroundColor: t.border,
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 2),
-        ],
+            const SizedBox(height: 2),
+          ],
+        ),
       ),
     );
   }

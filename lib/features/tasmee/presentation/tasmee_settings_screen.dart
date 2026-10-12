@@ -34,6 +34,9 @@ Future<void> openModelUpdate(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
+    // The sheet draws its own frame and handle.
+    showDragHandle: false,
+    shape: const RoundedRectangleBorder(),
     builder: (sheet) => ModelSheet(
       backend: ref.read(tasmeeBackendProvider),
       update: update,
@@ -300,6 +303,9 @@ class TasmeeSettingsScreen extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      // The sheet draws its own frame and handle.
+      showDragHandle: false,
+      shape: const RoundedRectangleBorder(),
       builder: (sheet) => ModelSheet(
         backend: backend,
         onInstalled: (_) => Navigator.pop(sheet),
