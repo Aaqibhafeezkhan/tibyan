@@ -390,11 +390,16 @@ class SummarySheet extends StatelessWidget {
     required this.onVerse,
     required this.onDone,
     required this.onAgain,
+    this.saved,
   });
 
   final String title;
   final Duration duration;
   final TasmeeReport report;
+
+  /// «حُفظت النتيجة» and the change in mastery, once the session is in
+  /// the recitation record.
+  final String? saved;
 
   /// The session's words (the excerpts are their text, as stored).
   final List<ExpectedWord> words;
@@ -536,6 +541,21 @@ class SummarySheet extends StatelessWidget {
           Text(
             l.tasmeeSessionDoubtful(context.digits(report.doubtful)),
             style: TextStyle(color: t.muted, fontSize: 12),
+          ),
+        ],
+        if (saved case final saved?) ...[
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(Icons.check_circle_outline, size: 18, color: t.goldText),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  saved,
+                  style: TextStyle(color: t.ink, fontSize: 13),
+                ),
+              ),
+            ],
           ),
         ],
         const SizedBox(height: 14),

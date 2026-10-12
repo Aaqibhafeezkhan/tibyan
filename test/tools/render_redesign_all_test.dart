@@ -177,6 +177,7 @@ void main() {
                 ),
                 khatmaStatusProvider.overrideWith((ref) async => null),
                 srsItemsProvider.overrideWith((ref) => Stream.value(const [])),
+                journeyProvider.overrideWithValue((memorized: 0, mastered: 0)),
                 bookmarkSetsProvider.overrideWith(
                   (ref) => Stream.value(const []),
                 ),

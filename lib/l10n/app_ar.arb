@@ -2222,5 +2222,241 @@
   "newLook": "شكل جديد للواجهة",
   "newLookBody": "ثلاثة أشكال تختار منها في الإعدادات: هندسي ومخطوطة وليلي ذهبي، بأسماء السور بخط مجمع الملك فهد، وعلامات المكية والمدنية.",
   "newModelUpdate": "تحديث نموذج التسميع تلقائيًا",
-  "newModelUpdateBody": "حين يتحسّن نموذج التسميع ينزل وحده على الواي فاي، ويظل القديم يعمل حتى يكتمل الجديد."
+  "newModelUpdateBody": "حين يتحسّن نموذج التسميع ينزل وحده على الواي فاي، ويظل القديم يعمل حتى يكتمل الجديد.",
+  "progressSaved": "حُفظت النتيجة",
+  "progressNewlyMastered": "أُتقنت آيات جديدة: {count}",
+  "@progressNewlyMastered": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "progressStillMastered": "متقن: {count}",
+  "@progressStillMastered": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "progressToReview": "تحتاج مراجعة: {count}",
+  "@progressToReview": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "hifzTabToday": "اليوم",
+  "hifzTabProgress": "التقدّم",
+  "hifzTabHistory": "السجل",
+  "hifzTabHardWords": "الكلمات الصعبة",
+  "hifzTabGoals": "الأهداف",
+  "hifzJourney": "مسيرة الحفظ",
+  "hifzJourneyLine": "محفوظ {memorized} آية، منها {mastered} متقنة",
+  "@hifzJourneyLine": {
+    "placeholders": {
+      "memorized": {
+        "type": "String"
+      },
+      "mastered": {
+        "type": "String"
+      }
+    }
+  },
+  "hifzJourneyEmpty": "سمّع ما تحفظ فيُحفظ هنا تقدّمك.",
+  "progressOverall": "في المجمل",
+  "progressJuzCount": "أجزاء",
+  "progressPagesCount": "صفحات",
+  "progressVersesCount": "آيات",
+  "progressMemorized": "محفوظ",
+  "progressMastered": "متقن",
+  "progressNeedsReview": "يحتاج مراجعة",
+  "progressAccuracy30": "متوسط الدقة في آخر ٣٠ يوما",
+  "progressBySurah": "حسب السورة",
+  "progressByJuz": "حسب الجزء",
+  "progressLastRecited": "آخر تسميع {date}",
+  "@progressLastRecited": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "progressNotRecited": "لم يُسمَّع بعد",
+  "progressShares": "محفوظ {memorized} · متقن {mastered}",
+  "@progressShares": {
+    "placeholders": {
+      "memorized": {
+        "type": "String"
+      },
+      "mastered": {
+        "type": "String"
+      }
+    }
+  },
+  "progressAccuracy": "الدقة {value}",
+  "@progressAccuracy": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "progressSuggestRecite": "آيات محفوظة لم تُسمَّع بعد: {count}. سمّعها لتصير متقنة.",
+  "@progressSuggestRecite": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "progressMasteryRule": "الآية تصير «متقنة» إذا سمّعتها بدقة ٩٠٪ أو أكثر.",
+  "progressEmpty": "لم تعلّم حفظ شيء بعد. علّم ما تحفظ في الخريطة، أو سمّع.",
+  "progressOpenMap": "افتح الخريطة",
+  "historyEmpty": "لا تسميع محفوظ بعد. كل جلسة تسميع تُحفظ هنا وحدها، نتيجتها فقط دون صوت.",
+  "recitationVoice": "بالصوت",
+  "recitationTouch": "باللمس",
+  "recitationTest": "اختبار الحفظ",
+  "historyVerses": "{count} آية",
+  "@historyVerses": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "sessionSummary": "ملخّص الجلسة",
+  "sessionDelete": "احذف من السجل",
+  "sessionSensitivity": "حساسية المطابقة: {level}",
+  "@sessionSensitivity": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "sessionSlips": "مواضع الخطأ",
+  "hardWordsEmpty": "لا كلمات صعبة بعد. الكلمة التي تخطئ فيها أو تتخطاها أكثر من مرة تظهر هنا.",
+  "hardWordsCount": "{count} مرات · آخرها {date}",
+  "@hardWordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "hardWordsHint": "آيات هذه الكلمات تأتي أولا في المراجعة.",
+  "goalsEmpty": "لا أهداف بعد. اختر هدفا جاهزا أو اصنع هدفك.",
+  "goalNew": "هدف جديد",
+  "goalTemplateAmma": "جزء عمّ في شهرين",
+  "goalTemplatePageDaily": "صفحة يوميا",
+  "goalTemplateHizbWeekly": "مراجعة حزب كل أسبوع",
+  "goalTemplateFixSurah": "تثبيت سورة",
+  "goalOpen": "هدف مفتوح",
+  "goalOpenHint": "تختار النطاق والمدة والوحدة",
+  "goalFromSurah": "من سورة",
+  "goalToSurah": "إلى سورة",
+  "goalSurah": "السورة",
+  "goalHizb": "الحزب",
+  "goalDays": "المدة: {days} يوما",
+  "@goalDays": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "goalUnit": "الوحدة",
+  "goalCreate": "أنشئ الهدف",
+  "goalTodayWird": "ورد اليوم",
+  "goalMemorize": "احفظ",
+  "goalReview": "راجع",
+  "goalReviewDue": "وحدات مستحقة للمراجعة: {count}",
+  "@goalReviewDue": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "goalReviewHard": "آيات فيها كلمات صعبة: {count}",
+  "@goalReviewHard": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "goalNothingToday": "لا ورد اليوم.",
+  "goalMasteredShare": "متقن {value}",
+  "@goalMasteredShare": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "goalLeft": "تبقّى {pages} صفحة",
+  "@goalLeft": {
+    "placeholders": {
+      "pages": {
+        "type": "String"
+      }
+    }
+  },
+  "goalUntil": "حتى {date}",
+  "@goalUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalBehind": "تبقّى من الأيام الماضية {pages} صفحة",
+  "@goalBehind": {
+    "placeholders": {
+      "pages": {
+        "type": "String"
+      }
+    }
+  },
+  "goalCatchUp": "عوّض على أيام",
+  "goalExtend": "مد الموعد",
+  "goalPause": "أوقف مؤقتا",
+  "goalResume": "استأنف",
+  "goalDelete": "احذف الهدف",
+  "goalReminder": "تذكير يومي",
+  "goalReminderAt": "تذكير {time}",
+  "@goalReminderAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "goalReminderOff": "أوقف التذكير",
+  "goalPaused": "متوقف",
+  "goalComplete": "اكتمل الهدف، بارك الله فيك.",
+  "goalCountedByMastery": "يُحسب التقدّم بالتسميع المتقن، لا بالتعليم باليد.",
+  "goalReminderTitle": "ورد الحفظ",
+  "goalReminderBody": "احفظ: الصفحات {from}–{to}",
+  "@goalReminderBody": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "goalRecite": "سمّع",
+  "hifzMapShowMastery": "الإتقان",
+  "hifzMapShowStrength": "القوة",
+  "whatsNewHifzProgress": "مسيرة الحفظ"
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/theme_tokens.dart';
 import '../../../l10n/app_localizations.dart';
+import '../domain/recitation_record.dart';
 import '../domain/strength.dart';
 
 /// The four strength colours step in lightness as well as hue (light mode:
@@ -75,3 +76,33 @@ class StrengthBars extends StatelessWidget {
     ),
   );
 }
+
+/// The three shades of the mastery map: memorized, mastered and needs
+/// review. Each also has its own mark ([stateIcon]) to read without colour.
+Color stateFill(VerseState s, ThemeModeId mode) => switch (s) {
+  VerseState.none => Colors.transparent,
+  VerseState.memorized => strengthFill(Strength.fair, mode),
+  VerseState.mastered => strengthFill(Strength.strong, mode),
+  VerseState.needsReview => strengthFill(Strength.weak, mode),
+};
+
+Color stateInk(VerseState s, ThemeModeId mode, Color ink) => switch (s) {
+  VerseState.none => ink,
+  VerseState.memorized => strengthInk(Strength.fair, mode, ink),
+  VerseState.mastered => strengthInk(Strength.strong, mode, ink),
+  VerseState.needsReview => strengthInk(Strength.weak, mode, ink),
+};
+
+IconData stateIcon(VerseState s) => switch (s) {
+  VerseState.none => Icons.remove,
+  VerseState.memorized => Icons.circle_outlined,
+  VerseState.mastered => Icons.check,
+  VerseState.needsReview => Icons.refresh,
+};
+
+String stateLabel(AppLocalizations l, VerseState s) => switch (s) {
+  VerseState.none => l.strengthNone,
+  VerseState.memorized => l.progressMemorized,
+  VerseState.mastered => l.progressMastered,
+  VerseState.needsReview => l.progressNeedsReview,
+};

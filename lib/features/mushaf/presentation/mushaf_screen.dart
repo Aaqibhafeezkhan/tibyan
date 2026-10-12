@@ -30,6 +30,9 @@ import '../../audio/floating_player.dart';
 import '../../audio/player_bar.dart';
 import '../../audio/recitation.dart';
 import '../../hifz/data/hifz_repository.dart';
+import '../../hifz/data/recitation_service.dart';
+import '../../hifz/domain/recitation_record.dart';
+import '../../hifz/presentation/mastery_line.dart';
 import '../../hifz/domain/recitation_test.dart';
 import '../../hifz/domain/strength.dart';
 import '../../hifz/hifz_providers.dart';
@@ -2101,6 +2104,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
   /// the verse's strength on the hifz map.
   Future<void> _judge(VerseKey v, VerseResult r) async {
     HapticFeedback.selectionClick();
+    _testStartedAt ??= DateTime.now();
     setState(() => _test.grade(v, r, _pageKeys(_page), _units));
     await saveVerseResults(ref.read(userDatabaseProvider), {v: r});
   }
@@ -2157,16 +2161,55 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       grade: grade,
       results: inUnit,
     );
+    final change = await _saveTestRecord();
     if (!mounted) return;
+    final saved = change.saved ? masteryLine(context, change) : null;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          content: Text(l.gradeSaved(reviewDate(context, review.due))),
+          content: Text(
+            [l.gradeSaved(reviewDate(context, review.due)), ?saved].join('\n'),
+          ),
         ),
       );
     _closeTest();
+  }
+
+  /// When the reader first judged a verse in this test.
+  DateTime? _testStartedAt;
+
+  /// Puts the test's verse results in the recitation record (once): a
+  /// verse remembered counts as recited in full, one missed as not. The
+  /// strengths and the review schedule were set by the test itself.
+  Future<MasteryChange> _saveTestRecord() async {
+    final results = Map.of(_test.results);
+    final started = _testStartedAt;
+    _testStartedAt = null;
+    if (results.isEmpty || started == null) return MasteryChange.none;
+    try {
+      final index = await ref.read(quranIndexProvider.future);
+      return await recordRecitation(
+        ref.read(userDatabaseProvider),
+        index,
+        RecitationRecord(
+          kind: _hifzKind != null ? RecitationKind.test : RecitationKind.touch,
+          startedAt: started,
+          endedAt: DateTime.now(),
+          verses: [
+            for (final MapEntry(key: v, value: r) in results.entries)
+              VerseResultRecord(
+                verse: index.idOf(v.surah, v.ayah),
+                accuracy: r == VerseResult.remembered ? 1 : 0,
+              ),
+          ],
+        ),
+        applyMemory: false,
+      );
+    } catch (_) {
+      return MasteryChange.none;
+    }
   }
 
   static bool _inRange(VerseKey v, HifzUnit u) {
@@ -2178,6 +2221,8 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
 
   /// Ends the hifz test and returns to where it was opened from.
   void _closeTest() {
+    unawaited(_saveTestRecord());
+    _test.results.clear();
     setState(() {
       _testing = false;
       _test.newPage();

@@ -11,9 +11,11 @@ import '../../mushaf/mushaf_providers.dart';
 import '../../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
 import '../data/hifz_repository.dart';
+import '../domain/recitation_record.dart';
 import '../domain/strength.dart';
 import '../hifz_providers.dart';
 import 'hifz_screen.dart';
+import 'progress_tabs.dart' show StateChip;
 import 'strength_style.dart';
 
 /// Pages of the edition being read, or the 114 surahs, coloured by the
@@ -28,6 +30,10 @@ class HifzMapScreen extends ConsumerStatefulWidget {
 
 class _HifzMapScreenState extends ConsumerState<HifzMapScreen> {
   bool _surahs = false;
+
+  /// Three shades of mastery (memorized, mastered, needs review) in place
+  /// of the four strengths.
+  bool _mastery = false;
   double _cell = 46;
   double _pinchStart = 46;
   double _spread = 0;
@@ -69,6 +75,27 @@ class _HifzMapScreenState extends ConsumerState<HifzMapScreen> {
             };
     }
     final levels = cellStrengths(strengths, (r) => byVerse[r] ?? const []);
+    // Mastery: a cell shows its most pressing state (needs review, then
+    // memorized only, then mastered). Verse ids follow the cells' order.
+    final states = <int, VerseState>{};
+    if (_mastery) {
+      final verseStates =
+          ref.watch(hifzProgressProvider).value?.states ?? const {};
+      const rank = {
+        VerseState.needsReview: 3,
+        VerseState.memorized: 2,
+        VerseState.mastered: 1,
+      };
+      final all = cells ?? const <(String, int, int, int, int, int)>[];
+      for (var i = 0; i < all.length; i++) {
+        final st = verseStates[i + 1];
+        if (st == null) continue;
+        for (final c in byVerse[all[i].$1] ?? const <int>[]) {
+          final old = states[c];
+          if (old == null || rank[st]! > rank[old]!) states[c] = st;
+        }
+      }
+    }
     final first = bySurah || edition != MushafEdition.shamarly ? 1 : 2;
     final last = bySurah ? 114 : edition.pageCount;
     final width = bySurah ? _cell * 2.2 : _cell;
@@ -125,23 +152,50 @@ class _HifzMapScreenState extends ConsumerState<HifzMapScreen> {
                       ),
                     ),
                   Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                    child: SegmentedButton<bool>(
+                      segments: [
+                        ButtonSegment(
+                          value: false,
+                          label: Text(l.hifzMapShowStrength),
+                        ),
+                        ButtonSegment(
+                          value: true,
+                          label: Text(l.hifzMapShowMastery),
+                        ),
+                      ],
+                      selected: {_mastery},
+                      showSelectedIcon: false,
+                      onSelectionChanged: (s) =>
+                          setState(() => _mastery = s.first),
+                    ),
+                  ),
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Wrap(
                       spacing: 10,
                       runSpacing: 6,
                       children: [
-                        for (final s in Strength.values)
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _Swatch(strength: s, size: 20),
-                              const SizedBox(width: 4),
-                              Text(
-                                strengthLabel(l, s),
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
+                        if (_mastery)
+                          for (final s in [
+                            VerseState.memorized,
+                            VerseState.mastered,
+                            VerseState.needsReview,
+                          ])
+                            StateChip(state: s, label: stateLabel(l, s))
+                        else
+                          for (final s in Strength.values)
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _Swatch(strength: s, size: 20),
+                                const SizedBox(width: 4),
+                                Text(
+                                  strengthLabel(l, s),
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
                       ],
                     ),
                   ),
@@ -177,6 +231,7 @@ class _HifzMapScreenState extends ConsumerState<HifzMapScreen> {
                         itemBuilder: (context, i) {
                           final n = first + i;
                           final s = levels[n] ?? Strength.none;
+                          final st = _mastery ? states[n] : null;
                           final label = bySurah
                               ? (surahs == null
                                     ? digits(n)
@@ -190,9 +245,15 @@ class _HifzMapScreenState extends ConsumerState<HifzMapScreen> {
                           return _Cell(
                             label: label,
                             number: bySurah ? digits(n) : null,
-                            strength: s,
+                            strength: _mastery ? Strength.none : s,
+                            state: st,
                             size: _cell,
-                            semantics: l.mapCell(spoken, strengthLabel(l, s)),
+                            semantics: l.mapCell(
+                              spoken,
+                              _mastery
+                                  ? stateLabel(l, st ?? VerseState.none)
+                                  : strengthLabel(l, s),
+                            ),
                             onTap: () => open(n),
                           );
                         },
@@ -244,8 +305,11 @@ class _Cell extends StatelessWidget {
     required this.size,
     required this.semantics,
     required this.onTap,
+    this.state,
   });
 
+  /// The mastery shade, in place of the strength.
+  final VerseState? state;
   final String label;
   final String? number;
   final Strength strength;
@@ -256,13 +320,18 @@ class _Cell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = context.tokens;
-    final ink = strengthInk(strength, tokens.mode, tokens.colors.ink);
+    final st = state;
+    final ink = st != null
+        ? stateInk(st, tokens.mode, tokens.colors.ink)
+        : strengthInk(strength, tokens.mode, tokens.colors.ink);
     return Semantics(
       button: true,
       label: semantics,
       excludeSemantics: true,
       child: Material(
-        color: strengthFill(strength, tokens.mode),
+        color: st != null
+            ? stateFill(st, tokens.mode)
+            : strengthFill(strength, tokens.mode),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6),
           side: BorderSide(color: tokens.colors.border, width: 0.8),
@@ -289,7 +358,13 @@ class _Cell extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (strength != Strength.none && size >= 34)
+                if (st != null && size >= 34)
+                  Icon(
+                    stateIcon(st),
+                    size: (size * 0.26).clamp(8, 16),
+                    color: ink,
+                  )
+                else if (strength != Strength.none && size >= 34)
                   StrengthBars(
                     strength: strength,
                     color: ink,

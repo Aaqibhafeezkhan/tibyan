@@ -125,7 +125,15 @@ void main() {
     expect(find.textContaining('البقرة ١–٥'), findsOneWidget);
     expect(find.textContaining('مستحقة اليوم · متوسط'), findsOneWidget);
     // Later units are listed under all units.
-    await tester.scrollUntilVisible(find.text('سورة الملك'), 200);
+    await tester.scrollUntilVisible(
+      find.text('سورة الملك'),
+      200,
+      scrollable: find
+          .byWidgetPredicate(
+            (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
+          )
+          .first,
+    );
     expect(find.text('كل وحدات المراجعة'), findsOneWidget);
     expect(find.textContaining('جيد'), findsWidgets);
     await finish(tester);

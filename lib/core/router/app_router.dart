@@ -9,6 +9,8 @@ import '../../features/assistant/tajweed_marks_screen.dart';
 import '../../features/hifz/presentation/hifz_map_screen.dart';
 import '../../features/khatma/domain/khatmah.dart' show EntryPoint, enumNamed;
 import '../../features/hifz/presentation/hifz_screen.dart';
+import '../../features/hifz/presentation/progress_tabs.dart'
+    show RecitationSessionScreen;
 import '../../features/audio/audio_downloads_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/search/search_screen.dart';
@@ -149,12 +151,26 @@ final appRouterProvider = Provider<GoRouter>(
       ),
       GoRoute(
         path: '/hifz',
-        builder: (context, state) => const LookTheme(child: HifzScreen()),
+        builder: (context, state) => LookTheme(
+          child: HifzScreen(
+            tab:
+                HifzTab.values.asNameMap()[state.uri.queryParameters['tab']] ??
+                HifzTab.today,
+          ),
+        ),
         routes: [
           GoRoute(
             path: 'map',
             builder: (context, state) =>
                 const LookTheme(child: HifzMapScreen()),
+          ),
+          GoRoute(
+            path: 'session/:uuid',
+            builder: (context, state) => LookTheme(
+              child: RecitationSessionScreen(
+                uuid: state.pathParameters['uuid']!,
+              ),
+            ),
           ),
         ],
       ),

@@ -8300,6 +8300,2600 @@ class DailyStatsCompanion extends UpdateCompanion<DailyStatRow> {
   }
 }
 
+class $RecitationSessionsTable extends RecitationSessions
+    with TableInfo<$RecitationSessionsTable, RecitationSessionRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RecitationSessionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+    'uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+    clientDefault: newUuid,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _kindMeta = const VerificationMeta('kind');
+  @override
+  late final GeneratedColumn<String> kind = GeneratedColumn<String>(
+    'kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fromVerseMeta = const VerificationMeta(
+    'fromVerse',
+  );
+  @override
+  late final GeneratedColumn<int> fromVerse = GeneratedColumn<int>(
+    'from_verse',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _toVerseMeta = const VerificationMeta(
+    'toVerse',
+  );
+  @override
+  late final GeneratedColumn<int> toVerse = GeneratedColumn<int>(
+    'to_verse',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startedAtMeta = const VerificationMeta(
+    'startedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startedAt = GeneratedColumn<DateTime>(
+    'started_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _endedAtMeta = const VerificationMeta(
+    'endedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> endedAt = GeneratedColumn<DateTime>(
+    'ended_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _accuracyMeta = const VerificationMeta(
+    'accuracy',
+  );
+  @override
+  late final GeneratedColumn<double> accuracy = GeneratedColumn<double>(
+    'accuracy',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sensitivityMeta = const VerificationMeta(
+    'sensitivity',
+  );
+  @override
+  late final GeneratedColumn<String> sensitivity = GeneratedColumn<String>(
+    'sensitivity',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    kind,
+    fromVerse,
+    toVerse,
+    startedAt,
+    endedAt,
+    accuracy,
+    sensitivity,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'recitation_session';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RecitationSessionRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+        _uuidMeta,
+        uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('kind')) {
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_kindMeta);
+    }
+    if (data.containsKey('from_verse')) {
+      context.handle(
+        _fromVerseMeta,
+        fromVerse.isAcceptableOrUnknown(data['from_verse']!, _fromVerseMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fromVerseMeta);
+    }
+    if (data.containsKey('to_verse')) {
+      context.handle(
+        _toVerseMeta,
+        toVerse.isAcceptableOrUnknown(data['to_verse']!, _toVerseMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_toVerseMeta);
+    }
+    if (data.containsKey('started_at')) {
+      context.handle(
+        _startedAtMeta,
+        startedAt.isAcceptableOrUnknown(data['started_at']!, _startedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startedAtMeta);
+    }
+    if (data.containsKey('ended_at')) {
+      context.handle(
+        _endedAtMeta,
+        endedAt.isAcceptableOrUnknown(data['ended_at']!, _endedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_endedAtMeta);
+    }
+    if (data.containsKey('accuracy')) {
+      context.handle(
+        _accuracyMeta,
+        accuracy.isAcceptableOrUnknown(data['accuracy']!, _accuracyMeta),
+      );
+    }
+    if (data.containsKey('sensitivity')) {
+      context.handle(
+        _sensitivityMeta,
+        sensitivity.isAcceptableOrUnknown(
+          data['sensitivity']!,
+          _sensitivityMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  RecitationSessionRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RecitationSessionRow(
+      uuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}uuid'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
+      fromVerse: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}from_verse'],
+      )!,
+      toVerse: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}to_verse'],
+      )!,
+      startedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}started_at'],
+      )!,
+      endedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}ended_at'],
+      )!,
+      accuracy: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}accuracy'],
+      ),
+      sensitivity: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sensitivity'],
+      ),
+    );
+  }
+
+  @override
+  $RecitationSessionsTable createAlias(String alias) {
+    return $RecitationSessionsTable(attachedDatabase, alias);
+  }
+}
+
+class RecitationSessionRow extends DataClass
+    implements Insertable<RecitationSessionRow> {
+  final String uuid;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final int id;
+
+  /// `voice`, `touch` or `test` ([RecitationKind]).
+  final String kind;
+
+  /// First and last verse of the range recited, `ayah.id`.
+  final int fromVerse;
+  final int toVerse;
+  final DateTime startedAt;
+  final DateTime endedAt;
+
+  /// Correct words over the words judged, 0..1; null when none was judged.
+  final double? accuracy;
+
+  /// The matching strictness of a voice session (`MatchStrictness.name`).
+  final String? sensitivity;
+  const RecitationSessionRow({
+    required this.uuid,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.id,
+    required this.kind,
+    required this.fromVerse,
+    required this.toVerse,
+    required this.startedAt,
+    required this.endedAt,
+    this.accuracy,
+    this.sensitivity,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['id'] = Variable<int>(id);
+    map['kind'] = Variable<String>(kind);
+    map['from_verse'] = Variable<int>(fromVerse);
+    map['to_verse'] = Variable<int>(toVerse);
+    map['started_at'] = Variable<DateTime>(startedAt);
+    map['ended_at'] = Variable<DateTime>(endedAt);
+    if (!nullToAbsent || accuracy != null) {
+      map['accuracy'] = Variable<double>(accuracy);
+    }
+    if (!nullToAbsent || sensitivity != null) {
+      map['sensitivity'] = Variable<String>(sensitivity);
+    }
+    return map;
+  }
+
+  RecitationSessionsCompanion toCompanion(bool nullToAbsent) {
+    return RecitationSessionsCompanion(
+      uuid: Value(uuid),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      id: Value(id),
+      kind: Value(kind),
+      fromVerse: Value(fromVerse),
+      toVerse: Value(toVerse),
+      startedAt: Value(startedAt),
+      endedAt: Value(endedAt),
+      accuracy: accuracy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accuracy),
+      sensitivity: sensitivity == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sensitivity),
+    );
+  }
+
+  factory RecitationSessionRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RecitationSessionRow(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      id: serializer.fromJson<int>(json['id']),
+      kind: serializer.fromJson<String>(json['kind']),
+      fromVerse: serializer.fromJson<int>(json['fromVerse']),
+      toVerse: serializer.fromJson<int>(json['toVerse']),
+      startedAt: serializer.fromJson<DateTime>(json['startedAt']),
+      endedAt: serializer.fromJson<DateTime>(json['endedAt']),
+      accuracy: serializer.fromJson<double?>(json['accuracy']),
+      sensitivity: serializer.fromJson<String?>(json['sensitivity']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'id': serializer.toJson<int>(id),
+      'kind': serializer.toJson<String>(kind),
+      'fromVerse': serializer.toJson<int>(fromVerse),
+      'toVerse': serializer.toJson<int>(toVerse),
+      'startedAt': serializer.toJson<DateTime>(startedAt),
+      'endedAt': serializer.toJson<DateTime>(endedAt),
+      'accuracy': serializer.toJson<double?>(accuracy),
+      'sensitivity': serializer.toJson<String?>(sensitivity),
+    };
+  }
+
+  RecitationSessionRow copyWith({
+    String? uuid,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    int? id,
+    String? kind,
+    int? fromVerse,
+    int? toVerse,
+    DateTime? startedAt,
+    DateTime? endedAt,
+    Value<double?> accuracy = const Value.absent(),
+    Value<String?> sensitivity = const Value.absent(),
+  }) => RecitationSessionRow(
+    uuid: uuid ?? this.uuid,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    id: id ?? this.id,
+    kind: kind ?? this.kind,
+    fromVerse: fromVerse ?? this.fromVerse,
+    toVerse: toVerse ?? this.toVerse,
+    startedAt: startedAt ?? this.startedAt,
+    endedAt: endedAt ?? this.endedAt,
+    accuracy: accuracy.present ? accuracy.value : this.accuracy,
+    sensitivity: sensitivity.present ? sensitivity.value : this.sensitivity,
+  );
+  RecitationSessionRow copyWithCompanion(RecitationSessionsCompanion data) {
+    return RecitationSessionRow(
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      id: data.id.present ? data.id.value : this.id,
+      kind: data.kind.present ? data.kind.value : this.kind,
+      fromVerse: data.fromVerse.present ? data.fromVerse.value : this.fromVerse,
+      toVerse: data.toVerse.present ? data.toVerse.value : this.toVerse,
+      startedAt: data.startedAt.present ? data.startedAt.value : this.startedAt,
+      endedAt: data.endedAt.present ? data.endedAt.value : this.endedAt,
+      accuracy: data.accuracy.present ? data.accuracy.value : this.accuracy,
+      sensitivity: data.sensitivity.present
+          ? data.sensitivity.value
+          : this.sensitivity,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationSessionRow(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('kind: $kind, ')
+          ..write('fromVerse: $fromVerse, ')
+          ..write('toVerse: $toVerse, ')
+          ..write('startedAt: $startedAt, ')
+          ..write('endedAt: $endedAt, ')
+          ..write('accuracy: $accuracy, ')
+          ..write('sensitivity: $sensitivity')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    kind,
+    fromVerse,
+    toVerse,
+    startedAt,
+    endedAt,
+    accuracy,
+    sensitivity,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RecitationSessionRow &&
+          other.uuid == this.uuid &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.id == this.id &&
+          other.kind == this.kind &&
+          other.fromVerse == this.fromVerse &&
+          other.toVerse == this.toVerse &&
+          other.startedAt == this.startedAt &&
+          other.endedAt == this.endedAt &&
+          other.accuracy == this.accuracy &&
+          other.sensitivity == this.sensitivity);
+}
+
+class RecitationSessionsCompanion
+    extends UpdateCompanion<RecitationSessionRow> {
+  final Value<String> uuid;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<int> id;
+  final Value<String> kind;
+  final Value<int> fromVerse;
+  final Value<int> toVerse;
+  final Value<DateTime> startedAt;
+  final Value<DateTime> endedAt;
+  final Value<double?> accuracy;
+  final Value<String?> sensitivity;
+  const RecitationSessionsCompanion({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.fromVerse = const Value.absent(),
+    this.toVerse = const Value.absent(),
+    this.startedAt = const Value.absent(),
+    this.endedAt = const Value.absent(),
+    this.accuracy = const Value.absent(),
+    this.sensitivity = const Value.absent(),
+  });
+  RecitationSessionsCompanion.insert({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    required String kind,
+    required int fromVerse,
+    required int toVerse,
+    required DateTime startedAt,
+    required DateTime endedAt,
+    this.accuracy = const Value.absent(),
+    this.sensitivity = const Value.absent(),
+  }) : kind = Value(kind),
+       fromVerse = Value(fromVerse),
+       toVerse = Value(toVerse),
+       startedAt = Value(startedAt),
+       endedAt = Value(endedAt);
+  static Insertable<RecitationSessionRow> custom({
+    Expression<String>? uuid,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? id,
+    Expression<String>? kind,
+    Expression<int>? fromVerse,
+    Expression<int>? toVerse,
+    Expression<DateTime>? startedAt,
+    Expression<DateTime>? endedAt,
+    Expression<double>? accuracy,
+    Expression<String>? sensitivity,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (id != null) 'id': id,
+      if (kind != null) 'kind': kind,
+      if (fromVerse != null) 'from_verse': fromVerse,
+      if (toVerse != null) 'to_verse': toVerse,
+      if (startedAt != null) 'started_at': startedAt,
+      if (endedAt != null) 'ended_at': endedAt,
+      if (accuracy != null) 'accuracy': accuracy,
+      if (sensitivity != null) 'sensitivity': sensitivity,
+    });
+  }
+
+  RecitationSessionsCompanion copyWith({
+    Value<String>? uuid,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<int>? id,
+    Value<String>? kind,
+    Value<int>? fromVerse,
+    Value<int>? toVerse,
+    Value<DateTime>? startedAt,
+    Value<DateTime>? endedAt,
+    Value<double?>? accuracy,
+    Value<String?>? sensitivity,
+  }) {
+    return RecitationSessionsCompanion(
+      uuid: uuid ?? this.uuid,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      id: id ?? this.id,
+      kind: kind ?? this.kind,
+      fromVerse: fromVerse ?? this.fromVerse,
+      toVerse: toVerse ?? this.toVerse,
+      startedAt: startedAt ?? this.startedAt,
+      endedAt: endedAt ?? this.endedAt,
+      accuracy: accuracy ?? this.accuracy,
+      sensitivity: sensitivity ?? this.sensitivity,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (kind.present) {
+      map['kind'] = Variable<String>(kind.value);
+    }
+    if (fromVerse.present) {
+      map['from_verse'] = Variable<int>(fromVerse.value);
+    }
+    if (toVerse.present) {
+      map['to_verse'] = Variable<int>(toVerse.value);
+    }
+    if (startedAt.present) {
+      map['started_at'] = Variable<DateTime>(startedAt.value);
+    }
+    if (endedAt.present) {
+      map['ended_at'] = Variable<DateTime>(endedAt.value);
+    }
+    if (accuracy.present) {
+      map['accuracy'] = Variable<double>(accuracy.value);
+    }
+    if (sensitivity.present) {
+      map['sensitivity'] = Variable<String>(sensitivity.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationSessionsCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('kind: $kind, ')
+          ..write('fromVerse: $fromVerse, ')
+          ..write('toVerse: $toVerse, ')
+          ..write('startedAt: $startedAt, ')
+          ..write('endedAt: $endedAt, ')
+          ..write('accuracy: $accuracy, ')
+          ..write('sensitivity: $sensitivity')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RecitationVersesTable extends RecitationVerses
+    with TableInfo<$RecitationVersesTable, RecitationVerseRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RecitationVersesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _sessionMeta = const VerificationMeta(
+    'session',
+  );
+  @override
+  late final GeneratedColumn<String> session = GeneratedColumn<String>(
+    'session',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _verseMeta = const VerificationMeta('verse');
+  @override
+  late final GeneratedColumn<int> verse = GeneratedColumn<int>(
+    'verse',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _accuracyMeta = const VerificationMeta(
+    'accuracy',
+  );
+  @override
+  late final GeneratedColumn<double> accuracy = GeneratedColumn<double>(
+    'accuracy',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _wordsMeta = const VerificationMeta('words');
+  @override
+  late final GeneratedColumn<int> words = GeneratedColumn<int>(
+    'words',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _wrongMeta = const VerificationMeta('wrong');
+  @override
+  late final GeneratedColumn<int> wrong = GeneratedColumn<int>(
+    'wrong',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _skippedMeta = const VerificationMeta(
+    'skipped',
+  );
+  @override
+  late final GeneratedColumn<int> skipped = GeneratedColumn<int>(
+    'skipped',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _correctedMeta = const VerificationMeta(
+    'corrected',
+  );
+  @override
+  late final GeneratedColumn<int> corrected = GeneratedColumn<int>(
+    'corrected',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _doubtfulMeta = const VerificationMeta(
+    'doubtful',
+  );
+  @override
+  late final GeneratedColumn<int> doubtful = GeneratedColumn<int>(
+    'doubtful',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _atMeta = const VerificationMeta('at');
+  @override
+  late final GeneratedColumn<DateTime> at = GeneratedColumn<DateTime>(
+    'at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    session,
+    verse,
+    accuracy,
+    words,
+    wrong,
+    skipped,
+    corrected,
+    doubtful,
+    at,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'recitation_verse';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RecitationVerseRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('session')) {
+      context.handle(
+        _sessionMeta,
+        session.isAcceptableOrUnknown(data['session']!, _sessionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sessionMeta);
+    }
+    if (data.containsKey('verse')) {
+      context.handle(
+        _verseMeta,
+        verse.isAcceptableOrUnknown(data['verse']!, _verseMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_verseMeta);
+    }
+    if (data.containsKey('accuracy')) {
+      context.handle(
+        _accuracyMeta,
+        accuracy.isAcceptableOrUnknown(data['accuracy']!, _accuracyMeta),
+      );
+    }
+    if (data.containsKey('words')) {
+      context.handle(
+        _wordsMeta,
+        words.isAcceptableOrUnknown(data['words']!, _wordsMeta),
+      );
+    }
+    if (data.containsKey('wrong')) {
+      context.handle(
+        _wrongMeta,
+        wrong.isAcceptableOrUnknown(data['wrong']!, _wrongMeta),
+      );
+    }
+    if (data.containsKey('skipped')) {
+      context.handle(
+        _skippedMeta,
+        skipped.isAcceptableOrUnknown(data['skipped']!, _skippedMeta),
+      );
+    }
+    if (data.containsKey('corrected')) {
+      context.handle(
+        _correctedMeta,
+        corrected.isAcceptableOrUnknown(data['corrected']!, _correctedMeta),
+      );
+    }
+    if (data.containsKey('doubtful')) {
+      context.handle(
+        _doubtfulMeta,
+        doubtful.isAcceptableOrUnknown(data['doubtful']!, _doubtfulMeta),
+      );
+    }
+    if (data.containsKey('at')) {
+      context.handle(_atMeta, at.isAcceptableOrUnknown(data['at']!, _atMeta));
+    } else if (isInserting) {
+      context.missing(_atMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {session, verse},
+  ];
+  @override
+  RecitationVerseRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RecitationVerseRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      session: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}session'],
+      )!,
+      verse: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}verse'],
+      )!,
+      accuracy: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}accuracy'],
+      ),
+      words: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}words'],
+      )!,
+      wrong: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}wrong'],
+      )!,
+      skipped: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}skipped'],
+      )!,
+      corrected: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}corrected'],
+      )!,
+      doubtful: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}doubtful'],
+      )!,
+      at: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}at'],
+      )!,
+    );
+  }
+
+  @override
+  $RecitationVersesTable createAlias(String alias) {
+    return $RecitationVersesTable(attachedDatabase, alias);
+  }
+}
+
+class RecitationVerseRow extends DataClass
+    implements Insertable<RecitationVerseRow> {
+  final int id;
+
+  /// The session's uuid.
+  final String session;
+
+  /// `ayah.id`.
+  final int verse;
+  final double? accuracy;
+  final int words;
+  final int wrong;
+  final int skipped;
+  final int corrected;
+  final int doubtful;
+
+  /// When it was recited (the session's end), for the latest result.
+  final DateTime at;
+  const RecitationVerseRow({
+    required this.id,
+    required this.session,
+    required this.verse,
+    this.accuracy,
+    required this.words,
+    required this.wrong,
+    required this.skipped,
+    required this.corrected,
+    required this.doubtful,
+    required this.at,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['session'] = Variable<String>(session);
+    map['verse'] = Variable<int>(verse);
+    if (!nullToAbsent || accuracy != null) {
+      map['accuracy'] = Variable<double>(accuracy);
+    }
+    map['words'] = Variable<int>(words);
+    map['wrong'] = Variable<int>(wrong);
+    map['skipped'] = Variable<int>(skipped);
+    map['corrected'] = Variable<int>(corrected);
+    map['doubtful'] = Variable<int>(doubtful);
+    map['at'] = Variable<DateTime>(at);
+    return map;
+  }
+
+  RecitationVersesCompanion toCompanion(bool nullToAbsent) {
+    return RecitationVersesCompanion(
+      id: Value(id),
+      session: Value(session),
+      verse: Value(verse),
+      accuracy: accuracy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accuracy),
+      words: Value(words),
+      wrong: Value(wrong),
+      skipped: Value(skipped),
+      corrected: Value(corrected),
+      doubtful: Value(doubtful),
+      at: Value(at),
+    );
+  }
+
+  factory RecitationVerseRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RecitationVerseRow(
+      id: serializer.fromJson<int>(json['id']),
+      session: serializer.fromJson<String>(json['session']),
+      verse: serializer.fromJson<int>(json['verse']),
+      accuracy: serializer.fromJson<double?>(json['accuracy']),
+      words: serializer.fromJson<int>(json['words']),
+      wrong: serializer.fromJson<int>(json['wrong']),
+      skipped: serializer.fromJson<int>(json['skipped']),
+      corrected: serializer.fromJson<int>(json['corrected']),
+      doubtful: serializer.fromJson<int>(json['doubtful']),
+      at: serializer.fromJson<DateTime>(json['at']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'session': serializer.toJson<String>(session),
+      'verse': serializer.toJson<int>(verse),
+      'accuracy': serializer.toJson<double?>(accuracy),
+      'words': serializer.toJson<int>(words),
+      'wrong': serializer.toJson<int>(wrong),
+      'skipped': serializer.toJson<int>(skipped),
+      'corrected': serializer.toJson<int>(corrected),
+      'doubtful': serializer.toJson<int>(doubtful),
+      'at': serializer.toJson<DateTime>(at),
+    };
+  }
+
+  RecitationVerseRow copyWith({
+    int? id,
+    String? session,
+    int? verse,
+    Value<double?> accuracy = const Value.absent(),
+    int? words,
+    int? wrong,
+    int? skipped,
+    int? corrected,
+    int? doubtful,
+    DateTime? at,
+  }) => RecitationVerseRow(
+    id: id ?? this.id,
+    session: session ?? this.session,
+    verse: verse ?? this.verse,
+    accuracy: accuracy.present ? accuracy.value : this.accuracy,
+    words: words ?? this.words,
+    wrong: wrong ?? this.wrong,
+    skipped: skipped ?? this.skipped,
+    corrected: corrected ?? this.corrected,
+    doubtful: doubtful ?? this.doubtful,
+    at: at ?? this.at,
+  );
+  RecitationVerseRow copyWithCompanion(RecitationVersesCompanion data) {
+    return RecitationVerseRow(
+      id: data.id.present ? data.id.value : this.id,
+      session: data.session.present ? data.session.value : this.session,
+      verse: data.verse.present ? data.verse.value : this.verse,
+      accuracy: data.accuracy.present ? data.accuracy.value : this.accuracy,
+      words: data.words.present ? data.words.value : this.words,
+      wrong: data.wrong.present ? data.wrong.value : this.wrong,
+      skipped: data.skipped.present ? data.skipped.value : this.skipped,
+      corrected: data.corrected.present ? data.corrected.value : this.corrected,
+      doubtful: data.doubtful.present ? data.doubtful.value : this.doubtful,
+      at: data.at.present ? data.at.value : this.at,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationVerseRow(')
+          ..write('id: $id, ')
+          ..write('session: $session, ')
+          ..write('verse: $verse, ')
+          ..write('accuracy: $accuracy, ')
+          ..write('words: $words, ')
+          ..write('wrong: $wrong, ')
+          ..write('skipped: $skipped, ')
+          ..write('corrected: $corrected, ')
+          ..write('doubtful: $doubtful, ')
+          ..write('at: $at')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    session,
+    verse,
+    accuracy,
+    words,
+    wrong,
+    skipped,
+    corrected,
+    doubtful,
+    at,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RecitationVerseRow &&
+          other.id == this.id &&
+          other.session == this.session &&
+          other.verse == this.verse &&
+          other.accuracy == this.accuracy &&
+          other.words == this.words &&
+          other.wrong == this.wrong &&
+          other.skipped == this.skipped &&
+          other.corrected == this.corrected &&
+          other.doubtful == this.doubtful &&
+          other.at == this.at);
+}
+
+class RecitationVersesCompanion extends UpdateCompanion<RecitationVerseRow> {
+  final Value<int> id;
+  final Value<String> session;
+  final Value<int> verse;
+  final Value<double?> accuracy;
+  final Value<int> words;
+  final Value<int> wrong;
+  final Value<int> skipped;
+  final Value<int> corrected;
+  final Value<int> doubtful;
+  final Value<DateTime> at;
+  const RecitationVersesCompanion({
+    this.id = const Value.absent(),
+    this.session = const Value.absent(),
+    this.verse = const Value.absent(),
+    this.accuracy = const Value.absent(),
+    this.words = const Value.absent(),
+    this.wrong = const Value.absent(),
+    this.skipped = const Value.absent(),
+    this.corrected = const Value.absent(),
+    this.doubtful = const Value.absent(),
+    this.at = const Value.absent(),
+  });
+  RecitationVersesCompanion.insert({
+    this.id = const Value.absent(),
+    required String session,
+    required int verse,
+    this.accuracy = const Value.absent(),
+    this.words = const Value.absent(),
+    this.wrong = const Value.absent(),
+    this.skipped = const Value.absent(),
+    this.corrected = const Value.absent(),
+    this.doubtful = const Value.absent(),
+    required DateTime at,
+  }) : session = Value(session),
+       verse = Value(verse),
+       at = Value(at);
+  static Insertable<RecitationVerseRow> custom({
+    Expression<int>? id,
+    Expression<String>? session,
+    Expression<int>? verse,
+    Expression<double>? accuracy,
+    Expression<int>? words,
+    Expression<int>? wrong,
+    Expression<int>? skipped,
+    Expression<int>? corrected,
+    Expression<int>? doubtful,
+    Expression<DateTime>? at,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (session != null) 'session': session,
+      if (verse != null) 'verse': verse,
+      if (accuracy != null) 'accuracy': accuracy,
+      if (words != null) 'words': words,
+      if (wrong != null) 'wrong': wrong,
+      if (skipped != null) 'skipped': skipped,
+      if (corrected != null) 'corrected': corrected,
+      if (doubtful != null) 'doubtful': doubtful,
+      if (at != null) 'at': at,
+    });
+  }
+
+  RecitationVersesCompanion copyWith({
+    Value<int>? id,
+    Value<String>? session,
+    Value<int>? verse,
+    Value<double?>? accuracy,
+    Value<int>? words,
+    Value<int>? wrong,
+    Value<int>? skipped,
+    Value<int>? corrected,
+    Value<int>? doubtful,
+    Value<DateTime>? at,
+  }) {
+    return RecitationVersesCompanion(
+      id: id ?? this.id,
+      session: session ?? this.session,
+      verse: verse ?? this.verse,
+      accuracy: accuracy ?? this.accuracy,
+      words: words ?? this.words,
+      wrong: wrong ?? this.wrong,
+      skipped: skipped ?? this.skipped,
+      corrected: corrected ?? this.corrected,
+      doubtful: doubtful ?? this.doubtful,
+      at: at ?? this.at,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (session.present) {
+      map['session'] = Variable<String>(session.value);
+    }
+    if (verse.present) {
+      map['verse'] = Variable<int>(verse.value);
+    }
+    if (accuracy.present) {
+      map['accuracy'] = Variable<double>(accuracy.value);
+    }
+    if (words.present) {
+      map['words'] = Variable<int>(words.value);
+    }
+    if (wrong.present) {
+      map['wrong'] = Variable<int>(wrong.value);
+    }
+    if (skipped.present) {
+      map['skipped'] = Variable<int>(skipped.value);
+    }
+    if (corrected.present) {
+      map['corrected'] = Variable<int>(corrected.value);
+    }
+    if (doubtful.present) {
+      map['doubtful'] = Variable<int>(doubtful.value);
+    }
+    if (at.present) {
+      map['at'] = Variable<DateTime>(at.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationVersesCompanion(')
+          ..write('id: $id, ')
+          ..write('session: $session, ')
+          ..write('verse: $verse, ')
+          ..write('accuracy: $accuracy, ')
+          ..write('words: $words, ')
+          ..write('wrong: $wrong, ')
+          ..write('skipped: $skipped, ')
+          ..write('corrected: $corrected, ')
+          ..write('doubtful: $doubtful, ')
+          ..write('at: $at')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RecitationWordsTable extends RecitationWords
+    with TableInfo<$RecitationWordsTable, RecitationWordRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RecitationWordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _sessionMeta = const VerificationMeta(
+    'session',
+  );
+  @override
+  late final GeneratedColumn<String> session = GeneratedColumn<String>(
+    'session',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _verseMeta = const VerificationMeta('verse');
+  @override
+  late final GeneratedColumn<int> verse = GeneratedColumn<int>(
+    'verse',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _wordMeta = const VerificationMeta('word');
+  @override
+  late final GeneratedColumn<int> word = GeneratedColumn<int>(
+    'word',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _kindMeta = const VerificationMeta('kind');
+  @override
+  late final GeneratedColumn<String> kind = GeneratedColumn<String>(
+    'kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _atMeta = const VerificationMeta('at');
+  @override
+  late final GeneratedColumn<DateTime> at = GeneratedColumn<DateTime>(
+    'at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, session, verse, word, kind, at];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'recitation_word';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RecitationWordRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('session')) {
+      context.handle(
+        _sessionMeta,
+        session.isAcceptableOrUnknown(data['session']!, _sessionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sessionMeta);
+    }
+    if (data.containsKey('verse')) {
+      context.handle(
+        _verseMeta,
+        verse.isAcceptableOrUnknown(data['verse']!, _verseMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_verseMeta);
+    }
+    if (data.containsKey('word')) {
+      context.handle(
+        _wordMeta,
+        word.isAcceptableOrUnknown(data['word']!, _wordMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_wordMeta);
+    }
+    if (data.containsKey('kind')) {
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_kindMeta);
+    }
+    if (data.containsKey('at')) {
+      context.handle(_atMeta, at.isAcceptableOrUnknown(data['at']!, _atMeta));
+    } else if (isInserting) {
+      context.missing(_atMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {session, verse, word},
+  ];
+  @override
+  RecitationWordRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RecitationWordRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      session: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}session'],
+      )!,
+      verse: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}verse'],
+      )!,
+      word: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}word'],
+      )!,
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
+      at: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}at'],
+      )!,
+    );
+  }
+
+  @override
+  $RecitationWordsTable createAlias(String alias) {
+    return $RecitationWordsTable(attachedDatabase, alias);
+  }
+}
+
+class RecitationWordRow extends DataClass
+    implements Insertable<RecitationWordRow> {
+  final int id;
+  final String session;
+  final int verse;
+  final int word;
+
+  /// `wrong` or `skipped`.
+  final String kind;
+  final DateTime at;
+  const RecitationWordRow({
+    required this.id,
+    required this.session,
+    required this.verse,
+    required this.word,
+    required this.kind,
+    required this.at,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['session'] = Variable<String>(session);
+    map['verse'] = Variable<int>(verse);
+    map['word'] = Variable<int>(word);
+    map['kind'] = Variable<String>(kind);
+    map['at'] = Variable<DateTime>(at);
+    return map;
+  }
+
+  RecitationWordsCompanion toCompanion(bool nullToAbsent) {
+    return RecitationWordsCompanion(
+      id: Value(id),
+      session: Value(session),
+      verse: Value(verse),
+      word: Value(word),
+      kind: Value(kind),
+      at: Value(at),
+    );
+  }
+
+  factory RecitationWordRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RecitationWordRow(
+      id: serializer.fromJson<int>(json['id']),
+      session: serializer.fromJson<String>(json['session']),
+      verse: serializer.fromJson<int>(json['verse']),
+      word: serializer.fromJson<int>(json['word']),
+      kind: serializer.fromJson<String>(json['kind']),
+      at: serializer.fromJson<DateTime>(json['at']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'session': serializer.toJson<String>(session),
+      'verse': serializer.toJson<int>(verse),
+      'word': serializer.toJson<int>(word),
+      'kind': serializer.toJson<String>(kind),
+      'at': serializer.toJson<DateTime>(at),
+    };
+  }
+
+  RecitationWordRow copyWith({
+    int? id,
+    String? session,
+    int? verse,
+    int? word,
+    String? kind,
+    DateTime? at,
+  }) => RecitationWordRow(
+    id: id ?? this.id,
+    session: session ?? this.session,
+    verse: verse ?? this.verse,
+    word: word ?? this.word,
+    kind: kind ?? this.kind,
+    at: at ?? this.at,
+  );
+  RecitationWordRow copyWithCompanion(RecitationWordsCompanion data) {
+    return RecitationWordRow(
+      id: data.id.present ? data.id.value : this.id,
+      session: data.session.present ? data.session.value : this.session,
+      verse: data.verse.present ? data.verse.value : this.verse,
+      word: data.word.present ? data.word.value : this.word,
+      kind: data.kind.present ? data.kind.value : this.kind,
+      at: data.at.present ? data.at.value : this.at,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationWordRow(')
+          ..write('id: $id, ')
+          ..write('session: $session, ')
+          ..write('verse: $verse, ')
+          ..write('word: $word, ')
+          ..write('kind: $kind, ')
+          ..write('at: $at')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, session, verse, word, kind, at);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RecitationWordRow &&
+          other.id == this.id &&
+          other.session == this.session &&
+          other.verse == this.verse &&
+          other.word == this.word &&
+          other.kind == this.kind &&
+          other.at == this.at);
+}
+
+class RecitationWordsCompanion extends UpdateCompanion<RecitationWordRow> {
+  final Value<int> id;
+  final Value<String> session;
+  final Value<int> verse;
+  final Value<int> word;
+  final Value<String> kind;
+  final Value<DateTime> at;
+  const RecitationWordsCompanion({
+    this.id = const Value.absent(),
+    this.session = const Value.absent(),
+    this.verse = const Value.absent(),
+    this.word = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.at = const Value.absent(),
+  });
+  RecitationWordsCompanion.insert({
+    this.id = const Value.absent(),
+    required String session,
+    required int verse,
+    required int word,
+    required String kind,
+    required DateTime at,
+  }) : session = Value(session),
+       verse = Value(verse),
+       word = Value(word),
+       kind = Value(kind),
+       at = Value(at);
+  static Insertable<RecitationWordRow> custom({
+    Expression<int>? id,
+    Expression<String>? session,
+    Expression<int>? verse,
+    Expression<int>? word,
+    Expression<String>? kind,
+    Expression<DateTime>? at,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (session != null) 'session': session,
+      if (verse != null) 'verse': verse,
+      if (word != null) 'word': word,
+      if (kind != null) 'kind': kind,
+      if (at != null) 'at': at,
+    });
+  }
+
+  RecitationWordsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? session,
+    Value<int>? verse,
+    Value<int>? word,
+    Value<String>? kind,
+    Value<DateTime>? at,
+  }) {
+    return RecitationWordsCompanion(
+      id: id ?? this.id,
+      session: session ?? this.session,
+      verse: verse ?? this.verse,
+      word: word ?? this.word,
+      kind: kind ?? this.kind,
+      at: at ?? this.at,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (session.present) {
+      map['session'] = Variable<String>(session.value);
+    }
+    if (verse.present) {
+      map['verse'] = Variable<int>(verse.value);
+    }
+    if (word.present) {
+      map['word'] = Variable<int>(word.value);
+    }
+    if (kind.present) {
+      map['kind'] = Variable<String>(kind.value);
+    }
+    if (at.present) {
+      map['at'] = Variable<DateTime>(at.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationWordsCompanion(')
+          ..write('id: $id, ')
+          ..write('session: $session, ')
+          ..write('verse: $verse, ')
+          ..write('word: $word, ')
+          ..write('kind: $kind, ')
+          ..write('at: $at')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $HifzGoalsTable extends HifzGoals
+    with TableInfo<$HifzGoalsTable, HifzGoalRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HifzGoalsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+    'uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+    clientDefault: newUuid,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _templateMeta = const VerificationMeta(
+    'template',
+  );
+  @override
+  late final GeneratedColumn<String> template = GeneratedColumn<String>(
+    'template',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _rangeStartMeta = const VerificationMeta(
+    'rangeStart',
+  );
+  @override
+  late final GeneratedColumn<int> rangeStart = GeneratedColumn<int>(
+    'range_start',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _rangeEndMeta = const VerificationMeta(
+    'rangeEnd',
+  );
+  @override
+  late final GeneratedColumn<int> rangeEnd = GeneratedColumn<int>(
+    'range_end',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startDateMeta = const VerificationMeta(
+    'startDate',
+  );
+  @override
+  late final GeneratedColumn<String> startDate = GeneratedColumn<String>(
+    'start_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetDateMeta = const VerificationMeta(
+    'targetDate',
+  );
+  @override
+  late final GeneratedColumn<String> targetDate = GeneratedColumn<String>(
+    'target_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _planFromMeta = const VerificationMeta(
+    'planFrom',
+  );
+  @override
+  late final GeneratedColumn<String> planFrom = GeneratedColumn<String>(
+    'plan_from',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dailyWeightMeta = const VerificationMeta(
+    'dailyWeight',
+  );
+  @override
+  late final GeneratedColumn<double> dailyWeight = GeneratedColumn<double>(
+    'daily_weight',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _unitMeta = const VerificationMeta('unit');
+  @override
+  late final GeneratedColumn<String> unit = GeneratedColumn<String>(
+    'unit',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('page'),
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('active'),
+  );
+  static const VerificationMeta _pausesMeta = const VerificationMeta('pauses');
+  @override
+  late final GeneratedColumn<String> pauses = GeneratedColumn<String>(
+    'pauses',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
+  static const VerificationMeta _recoveryMeta = const VerificationMeta(
+    'recovery',
+  );
+  @override
+  late final GeneratedColumn<String> recovery = GeneratedColumn<String>(
+    'recovery',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reminderTimeMeta = const VerificationMeta(
+    'reminderTime',
+  );
+  @override
+  late final GeneratedColumn<int> reminderTime = GeneratedColumn<int>(
+    'reminder_time',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reviewMeta = const VerificationMeta('review');
+  @override
+  late final GeneratedColumn<bool> review = GeneratedColumn<bool>(
+    'review',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("review" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    template,
+    rangeStart,
+    rangeEnd,
+    startDate,
+    targetDate,
+    planFrom,
+    dailyWeight,
+    unit,
+    status,
+    pauses,
+    recovery,
+    reminderTime,
+    review,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'hifz_goal';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<HifzGoalRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+        _uuidMeta,
+        uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('template')) {
+      context.handle(
+        _templateMeta,
+        template.isAcceptableOrUnknown(data['template']!, _templateMeta),
+      );
+    }
+    if (data.containsKey('range_start')) {
+      context.handle(
+        _rangeStartMeta,
+        rangeStart.isAcceptableOrUnknown(data['range_start']!, _rangeStartMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_rangeStartMeta);
+    }
+    if (data.containsKey('range_end')) {
+      context.handle(
+        _rangeEndMeta,
+        rangeEnd.isAcceptableOrUnknown(data['range_end']!, _rangeEndMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_rangeEndMeta);
+    }
+    if (data.containsKey('start_date')) {
+      context.handle(
+        _startDateMeta,
+        startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startDateMeta);
+    }
+    if (data.containsKey('target_date')) {
+      context.handle(
+        _targetDateMeta,
+        targetDate.isAcceptableOrUnknown(data['target_date']!, _targetDateMeta),
+      );
+    }
+    if (data.containsKey('plan_from')) {
+      context.handle(
+        _planFromMeta,
+        planFrom.isAcceptableOrUnknown(data['plan_from']!, _planFromMeta),
+      );
+    }
+    if (data.containsKey('daily_weight')) {
+      context.handle(
+        _dailyWeightMeta,
+        dailyWeight.isAcceptableOrUnknown(
+          data['daily_weight']!,
+          _dailyWeightMeta,
+        ),
+      );
+    }
+    if (data.containsKey('unit')) {
+      context.handle(
+        _unitMeta,
+        unit.isAcceptableOrUnknown(data['unit']!, _unitMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('pauses')) {
+      context.handle(
+        _pausesMeta,
+        pauses.isAcceptableOrUnknown(data['pauses']!, _pausesMeta),
+      );
+    }
+    if (data.containsKey('recovery')) {
+      context.handle(
+        _recoveryMeta,
+        recovery.isAcceptableOrUnknown(data['recovery']!, _recoveryMeta),
+      );
+    }
+    if (data.containsKey('reminder_time')) {
+      context.handle(
+        _reminderTimeMeta,
+        reminderTime.isAcceptableOrUnknown(
+          data['reminder_time']!,
+          _reminderTimeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('review')) {
+      context.handle(
+        _reviewMeta,
+        review.isAcceptableOrUnknown(data['review']!, _reviewMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HifzGoalRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HifzGoalRow(
+      uuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}uuid'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      template: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}template'],
+      ),
+      rangeStart: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}range_start'],
+      )!,
+      rangeEnd: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}range_end'],
+      )!,
+      startDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}start_date'],
+      )!,
+      targetDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}target_date'],
+      ),
+      planFrom: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}plan_from'],
+      ),
+      dailyWeight: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}daily_weight'],
+      ),
+      unit: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}unit'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      pauses: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pauses'],
+      )!,
+      recovery: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}recovery'],
+      ),
+      reminderTime: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}reminder_time'],
+      ),
+      review: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}review'],
+      )!,
+    );
+  }
+
+  @override
+  $HifzGoalsTable createAlias(String alias) {
+    return $HifzGoalsTable(attachedDatabase, alias);
+  }
+}
+
+class HifzGoalRow extends DataClass implements Insertable<HifzGoalRow> {
+  final String uuid;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final int id;
+
+  /// A template's id ([GoalTemplate.name]), or null for an open goal.
+  final String? template;
+
+  /// Verses, `ayah.id`, both ends included.
+  final int rangeStart;
+  final int rangeEnd;
+
+  /// `yyyy-MM-dd`; [targetDate] null for an open-ended goal.
+  final String startDate;
+  final String? targetDate;
+
+  /// The day the pace is counted from after a catch-up; null: [startDate].
+  final String? planFrom;
+
+  /// Madina pages a day, when set by amount.
+  final double? dailyWeight;
+
+  /// `WirdUnit.name`: where a day's portion ends.
+  final String unit;
+
+  /// `active`, `paused`, `completed` or `cancelled`.
+  final String status;
+
+  /// Pauses as JSON `[["2026-10-01","2026-10-04"], ["2026-10-09", null]]`.
+  final String pauses;
+
+  /// A chosen catch-up ([RecoveryChoice.toJson]).
+  final String? recovery;
+
+  /// Daily reminder, minutes after midnight; null for none.
+  final int? reminderTime;
+
+  /// A review goal (a hizb a week, fixing a surah): only recitations made
+  /// since it began count. A memorizing goal counts every mastered verse.
+  final bool review;
+  const HifzGoalRow({
+    required this.uuid,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.id,
+    this.template,
+    required this.rangeStart,
+    required this.rangeEnd,
+    required this.startDate,
+    this.targetDate,
+    this.planFrom,
+    this.dailyWeight,
+    required this.unit,
+    required this.status,
+    required this.pauses,
+    this.recovery,
+    this.reminderTime,
+    required this.review,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || template != null) {
+      map['template'] = Variable<String>(template);
+    }
+    map['range_start'] = Variable<int>(rangeStart);
+    map['range_end'] = Variable<int>(rangeEnd);
+    map['start_date'] = Variable<String>(startDate);
+    if (!nullToAbsent || targetDate != null) {
+      map['target_date'] = Variable<String>(targetDate);
+    }
+    if (!nullToAbsent || planFrom != null) {
+      map['plan_from'] = Variable<String>(planFrom);
+    }
+    if (!nullToAbsent || dailyWeight != null) {
+      map['daily_weight'] = Variable<double>(dailyWeight);
+    }
+    map['unit'] = Variable<String>(unit);
+    map['status'] = Variable<String>(status);
+    map['pauses'] = Variable<String>(pauses);
+    if (!nullToAbsent || recovery != null) {
+      map['recovery'] = Variable<String>(recovery);
+    }
+    if (!nullToAbsent || reminderTime != null) {
+      map['reminder_time'] = Variable<int>(reminderTime);
+    }
+    map['review'] = Variable<bool>(review);
+    return map;
+  }
+
+  HifzGoalsCompanion toCompanion(bool nullToAbsent) {
+    return HifzGoalsCompanion(
+      uuid: Value(uuid),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      id: Value(id),
+      template: template == null && nullToAbsent
+          ? const Value.absent()
+          : Value(template),
+      rangeStart: Value(rangeStart),
+      rangeEnd: Value(rangeEnd),
+      startDate: Value(startDate),
+      targetDate: targetDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(targetDate),
+      planFrom: planFrom == null && nullToAbsent
+          ? const Value.absent()
+          : Value(planFrom),
+      dailyWeight: dailyWeight == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dailyWeight),
+      unit: Value(unit),
+      status: Value(status),
+      pauses: Value(pauses),
+      recovery: recovery == null && nullToAbsent
+          ? const Value.absent()
+          : Value(recovery),
+      reminderTime: reminderTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reminderTime),
+      review: Value(review),
+    );
+  }
+
+  factory HifzGoalRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HifzGoalRow(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      id: serializer.fromJson<int>(json['id']),
+      template: serializer.fromJson<String?>(json['template']),
+      rangeStart: serializer.fromJson<int>(json['rangeStart']),
+      rangeEnd: serializer.fromJson<int>(json['rangeEnd']),
+      startDate: serializer.fromJson<String>(json['startDate']),
+      targetDate: serializer.fromJson<String?>(json['targetDate']),
+      planFrom: serializer.fromJson<String?>(json['planFrom']),
+      dailyWeight: serializer.fromJson<double?>(json['dailyWeight']),
+      unit: serializer.fromJson<String>(json['unit']),
+      status: serializer.fromJson<String>(json['status']),
+      pauses: serializer.fromJson<String>(json['pauses']),
+      recovery: serializer.fromJson<String?>(json['recovery']),
+      reminderTime: serializer.fromJson<int?>(json['reminderTime']),
+      review: serializer.fromJson<bool>(json['review']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'id': serializer.toJson<int>(id),
+      'template': serializer.toJson<String?>(template),
+      'rangeStart': serializer.toJson<int>(rangeStart),
+      'rangeEnd': serializer.toJson<int>(rangeEnd),
+      'startDate': serializer.toJson<String>(startDate),
+      'targetDate': serializer.toJson<String?>(targetDate),
+      'planFrom': serializer.toJson<String?>(planFrom),
+      'dailyWeight': serializer.toJson<double?>(dailyWeight),
+      'unit': serializer.toJson<String>(unit),
+      'status': serializer.toJson<String>(status),
+      'pauses': serializer.toJson<String>(pauses),
+      'recovery': serializer.toJson<String?>(recovery),
+      'reminderTime': serializer.toJson<int?>(reminderTime),
+      'review': serializer.toJson<bool>(review),
+    };
+  }
+
+  HifzGoalRow copyWith({
+    String? uuid,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    int? id,
+    Value<String?> template = const Value.absent(),
+    int? rangeStart,
+    int? rangeEnd,
+    String? startDate,
+    Value<String?> targetDate = const Value.absent(),
+    Value<String?> planFrom = const Value.absent(),
+    Value<double?> dailyWeight = const Value.absent(),
+    String? unit,
+    String? status,
+    String? pauses,
+    Value<String?> recovery = const Value.absent(),
+    Value<int?> reminderTime = const Value.absent(),
+    bool? review,
+  }) => HifzGoalRow(
+    uuid: uuid ?? this.uuid,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    id: id ?? this.id,
+    template: template.present ? template.value : this.template,
+    rangeStart: rangeStart ?? this.rangeStart,
+    rangeEnd: rangeEnd ?? this.rangeEnd,
+    startDate: startDate ?? this.startDate,
+    targetDate: targetDate.present ? targetDate.value : this.targetDate,
+    planFrom: planFrom.present ? planFrom.value : this.planFrom,
+    dailyWeight: dailyWeight.present ? dailyWeight.value : this.dailyWeight,
+    unit: unit ?? this.unit,
+    status: status ?? this.status,
+    pauses: pauses ?? this.pauses,
+    recovery: recovery.present ? recovery.value : this.recovery,
+    reminderTime: reminderTime.present ? reminderTime.value : this.reminderTime,
+    review: review ?? this.review,
+  );
+  HifzGoalRow copyWithCompanion(HifzGoalsCompanion data) {
+    return HifzGoalRow(
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      id: data.id.present ? data.id.value : this.id,
+      template: data.template.present ? data.template.value : this.template,
+      rangeStart: data.rangeStart.present
+          ? data.rangeStart.value
+          : this.rangeStart,
+      rangeEnd: data.rangeEnd.present ? data.rangeEnd.value : this.rangeEnd,
+      startDate: data.startDate.present ? data.startDate.value : this.startDate,
+      targetDate: data.targetDate.present
+          ? data.targetDate.value
+          : this.targetDate,
+      planFrom: data.planFrom.present ? data.planFrom.value : this.planFrom,
+      dailyWeight: data.dailyWeight.present
+          ? data.dailyWeight.value
+          : this.dailyWeight,
+      unit: data.unit.present ? data.unit.value : this.unit,
+      status: data.status.present ? data.status.value : this.status,
+      pauses: data.pauses.present ? data.pauses.value : this.pauses,
+      recovery: data.recovery.present ? data.recovery.value : this.recovery,
+      reminderTime: data.reminderTime.present
+          ? data.reminderTime.value
+          : this.reminderTime,
+      review: data.review.present ? data.review.value : this.review,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HifzGoalRow(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('template: $template, ')
+          ..write('rangeStart: $rangeStart, ')
+          ..write('rangeEnd: $rangeEnd, ')
+          ..write('startDate: $startDate, ')
+          ..write('targetDate: $targetDate, ')
+          ..write('planFrom: $planFrom, ')
+          ..write('dailyWeight: $dailyWeight, ')
+          ..write('unit: $unit, ')
+          ..write('status: $status, ')
+          ..write('pauses: $pauses, ')
+          ..write('recovery: $recovery, ')
+          ..write('reminderTime: $reminderTime, ')
+          ..write('review: $review')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    template,
+    rangeStart,
+    rangeEnd,
+    startDate,
+    targetDate,
+    planFrom,
+    dailyWeight,
+    unit,
+    status,
+    pauses,
+    recovery,
+    reminderTime,
+    review,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HifzGoalRow &&
+          other.uuid == this.uuid &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.id == this.id &&
+          other.template == this.template &&
+          other.rangeStart == this.rangeStart &&
+          other.rangeEnd == this.rangeEnd &&
+          other.startDate == this.startDate &&
+          other.targetDate == this.targetDate &&
+          other.planFrom == this.planFrom &&
+          other.dailyWeight == this.dailyWeight &&
+          other.unit == this.unit &&
+          other.status == this.status &&
+          other.pauses == this.pauses &&
+          other.recovery == this.recovery &&
+          other.reminderTime == this.reminderTime &&
+          other.review == this.review);
+}
+
+class HifzGoalsCompanion extends UpdateCompanion<HifzGoalRow> {
+  final Value<String> uuid;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<int> id;
+  final Value<String?> template;
+  final Value<int> rangeStart;
+  final Value<int> rangeEnd;
+  final Value<String> startDate;
+  final Value<String?> targetDate;
+  final Value<String?> planFrom;
+  final Value<double?> dailyWeight;
+  final Value<String> unit;
+  final Value<String> status;
+  final Value<String> pauses;
+  final Value<String?> recovery;
+  final Value<int?> reminderTime;
+  final Value<bool> review;
+  const HifzGoalsCompanion({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    this.template = const Value.absent(),
+    this.rangeStart = const Value.absent(),
+    this.rangeEnd = const Value.absent(),
+    this.startDate = const Value.absent(),
+    this.targetDate = const Value.absent(),
+    this.planFrom = const Value.absent(),
+    this.dailyWeight = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.status = const Value.absent(),
+    this.pauses = const Value.absent(),
+    this.recovery = const Value.absent(),
+    this.reminderTime = const Value.absent(),
+    this.review = const Value.absent(),
+  });
+  HifzGoalsCompanion.insert({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    this.template = const Value.absent(),
+    required int rangeStart,
+    required int rangeEnd,
+    required String startDate,
+    this.targetDate = const Value.absent(),
+    this.planFrom = const Value.absent(),
+    this.dailyWeight = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.status = const Value.absent(),
+    this.pauses = const Value.absent(),
+    this.recovery = const Value.absent(),
+    this.reminderTime = const Value.absent(),
+    this.review = const Value.absent(),
+  }) : rangeStart = Value(rangeStart),
+       rangeEnd = Value(rangeEnd),
+       startDate = Value(startDate);
+  static Insertable<HifzGoalRow> custom({
+    Expression<String>? uuid,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? id,
+    Expression<String>? template,
+    Expression<int>? rangeStart,
+    Expression<int>? rangeEnd,
+    Expression<String>? startDate,
+    Expression<String>? targetDate,
+    Expression<String>? planFrom,
+    Expression<double>? dailyWeight,
+    Expression<String>? unit,
+    Expression<String>? status,
+    Expression<String>? pauses,
+    Expression<String>? recovery,
+    Expression<int>? reminderTime,
+    Expression<bool>? review,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (id != null) 'id': id,
+      if (template != null) 'template': template,
+      if (rangeStart != null) 'range_start': rangeStart,
+      if (rangeEnd != null) 'range_end': rangeEnd,
+      if (startDate != null) 'start_date': startDate,
+      if (targetDate != null) 'target_date': targetDate,
+      if (planFrom != null) 'plan_from': planFrom,
+      if (dailyWeight != null) 'daily_weight': dailyWeight,
+      if (unit != null) 'unit': unit,
+      if (status != null) 'status': status,
+      if (pauses != null) 'pauses': pauses,
+      if (recovery != null) 'recovery': recovery,
+      if (reminderTime != null) 'reminder_time': reminderTime,
+      if (review != null) 'review': review,
+    });
+  }
+
+  HifzGoalsCompanion copyWith({
+    Value<String>? uuid,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<int>? id,
+    Value<String?>? template,
+    Value<int>? rangeStart,
+    Value<int>? rangeEnd,
+    Value<String>? startDate,
+    Value<String?>? targetDate,
+    Value<String?>? planFrom,
+    Value<double?>? dailyWeight,
+    Value<String>? unit,
+    Value<String>? status,
+    Value<String>? pauses,
+    Value<String?>? recovery,
+    Value<int?>? reminderTime,
+    Value<bool>? review,
+  }) {
+    return HifzGoalsCompanion(
+      uuid: uuid ?? this.uuid,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      id: id ?? this.id,
+      template: template ?? this.template,
+      rangeStart: rangeStart ?? this.rangeStart,
+      rangeEnd: rangeEnd ?? this.rangeEnd,
+      startDate: startDate ?? this.startDate,
+      targetDate: targetDate ?? this.targetDate,
+      planFrom: planFrom ?? this.planFrom,
+      dailyWeight: dailyWeight ?? this.dailyWeight,
+      unit: unit ?? this.unit,
+      status: status ?? this.status,
+      pauses: pauses ?? this.pauses,
+      recovery: recovery ?? this.recovery,
+      reminderTime: reminderTime ?? this.reminderTime,
+      review: review ?? this.review,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (template.present) {
+      map['template'] = Variable<String>(template.value);
+    }
+    if (rangeStart.present) {
+      map['range_start'] = Variable<int>(rangeStart.value);
+    }
+    if (rangeEnd.present) {
+      map['range_end'] = Variable<int>(rangeEnd.value);
+    }
+    if (startDate.present) {
+      map['start_date'] = Variable<String>(startDate.value);
+    }
+    if (targetDate.present) {
+      map['target_date'] = Variable<String>(targetDate.value);
+    }
+    if (planFrom.present) {
+      map['plan_from'] = Variable<String>(planFrom.value);
+    }
+    if (dailyWeight.present) {
+      map['daily_weight'] = Variable<double>(dailyWeight.value);
+    }
+    if (unit.present) {
+      map['unit'] = Variable<String>(unit.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (pauses.present) {
+      map['pauses'] = Variable<String>(pauses.value);
+    }
+    if (recovery.present) {
+      map['recovery'] = Variable<String>(recovery.value);
+    }
+    if (reminderTime.present) {
+      map['reminder_time'] = Variable<int>(reminderTime.value);
+    }
+    if (review.present) {
+      map['review'] = Variable<bool>(review.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HifzGoalsCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('template: $template, ')
+          ..write('rangeStart: $rangeStart, ')
+          ..write('rangeEnd: $rangeEnd, ')
+          ..write('startDate: $startDate, ')
+          ..write('targetDate: $targetDate, ')
+          ..write('planFrom: $planFrom, ')
+          ..write('dailyWeight: $dailyWeight, ')
+          ..write('unit: $unit, ')
+          ..write('status: $status, ')
+          ..write('pauses: $pauses, ')
+          ..write('recovery: $recovery, ')
+          ..write('reminderTime: $reminderTime, ')
+          ..write('review: $review')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$UserDatabase extends GeneratedDatabase {
   _$UserDatabase(QueryExecutor e) : super(e);
   $UserDatabaseManager get managers => $UserDatabaseManager(this);
@@ -8325,6 +10919,15 @@ abstract class _$UserDatabase extends GeneratedDatabase {
     this,
   );
   late final $DailyStatsTable dailyStats = $DailyStatsTable(this);
+  late final $RecitationSessionsTable recitationSessions =
+      $RecitationSessionsTable(this);
+  late final $RecitationVersesTable recitationVerses = $RecitationVersesTable(
+    this,
+  );
+  late final $RecitationWordsTable recitationWords = $RecitationWordsTable(
+    this,
+  );
+  late final $HifzGoalsTable hifzGoals = $HifzGoalsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -8344,6 +10947,10 @@ abstract class _$UserDatabase extends GeneratedDatabase {
     sessionAttributions,
     khatmaCoverages,
     dailyStats,
+    recitationSessions,
+    recitationVerses,
+    recitationWords,
+    hifzGoals,
   ];
 }
 
@@ -12587,6 +15194,1319 @@ typedef $$DailyStatsTableProcessedTableManager =
       DailyStatRow,
       PrefetchHooks Function()
     >;
+typedef $$RecitationSessionsTableCreateCompanionBuilder =
+    RecitationSessionsCompanion Function({
+      Value<String> uuid,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<int> id,
+      required String kind,
+      required int fromVerse,
+      required int toVerse,
+      required DateTime startedAt,
+      required DateTime endedAt,
+      Value<double?> accuracy,
+      Value<String?> sensitivity,
+    });
+typedef $$RecitationSessionsTableUpdateCompanionBuilder =
+    RecitationSessionsCompanion Function({
+      Value<String> uuid,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<int> id,
+      Value<String> kind,
+      Value<int> fromVerse,
+      Value<int> toVerse,
+      Value<DateTime> startedAt,
+      Value<DateTime> endedAt,
+      Value<double?> accuracy,
+      Value<String?> sensitivity,
+    });
+
+class $$RecitationSessionsTableFilterComposer
+    extends Composer<_$UserDatabase, $RecitationSessionsTable> {
+  $$RecitationSessionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get fromVerse => $composableBuilder(
+    column: $table.fromVerse,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get toVerse => $composableBuilder(
+    column: $table.toVerse,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startedAt => $composableBuilder(
+    column: $table.startedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get endedAt => $composableBuilder(
+    column: $table.endedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get accuracy => $composableBuilder(
+    column: $table.accuracy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sensitivity => $composableBuilder(
+    column: $table.sensitivity,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RecitationSessionsTableOrderingComposer
+    extends Composer<_$UserDatabase, $RecitationSessionsTable> {
+  $$RecitationSessionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get fromVerse => $composableBuilder(
+    column: $table.fromVerse,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get toVerse => $composableBuilder(
+    column: $table.toVerse,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startedAt => $composableBuilder(
+    column: $table.startedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get endedAt => $composableBuilder(
+    column: $table.endedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get accuracy => $composableBuilder(
+    column: $table.accuracy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sensitivity => $composableBuilder(
+    column: $table.sensitivity,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RecitationSessionsTableAnnotationComposer
+    extends Composer<_$UserDatabase, $RecitationSessionsTable> {
+  $$RecitationSessionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get uuid =>
+      $composableBuilder(column: $table.uuid, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
+
+  GeneratedColumn<int> get fromVerse =>
+      $composableBuilder(column: $table.fromVerse, builder: (column) => column);
+
+  GeneratedColumn<int> get toVerse =>
+      $composableBuilder(column: $table.toVerse, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startedAt =>
+      $composableBuilder(column: $table.startedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get endedAt =>
+      $composableBuilder(column: $table.endedAt, builder: (column) => column);
+
+  GeneratedColumn<double> get accuracy =>
+      $composableBuilder(column: $table.accuracy, builder: (column) => column);
+
+  GeneratedColumn<String> get sensitivity => $composableBuilder(
+    column: $table.sensitivity,
+    builder: (column) => column,
+  );
+}
+
+class $$RecitationSessionsTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $RecitationSessionsTable,
+          RecitationSessionRow,
+          $$RecitationSessionsTableFilterComposer,
+          $$RecitationSessionsTableOrderingComposer,
+          $$RecitationSessionsTableAnnotationComposer,
+          $$RecitationSessionsTableCreateCompanionBuilder,
+          $$RecitationSessionsTableUpdateCompanionBuilder,
+          (
+            RecitationSessionRow,
+            BaseReferences<
+              _$UserDatabase,
+              $RecitationSessionsTable,
+              RecitationSessionRow
+            >,
+          ),
+          RecitationSessionRow,
+          PrefetchHooks Function()
+        > {
+  $$RecitationSessionsTableTableManager(
+    _$UserDatabase db,
+    $RecitationSessionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RecitationSessionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RecitationSessionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RecitationSessionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                Value<String> kind = const Value.absent(),
+                Value<int> fromVerse = const Value.absent(),
+                Value<int> toVerse = const Value.absent(),
+                Value<DateTime> startedAt = const Value.absent(),
+                Value<DateTime> endedAt = const Value.absent(),
+                Value<double?> accuracy = const Value.absent(),
+                Value<String?> sensitivity = const Value.absent(),
+              }) => RecitationSessionsCompanion(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                kind: kind,
+                fromVerse: fromVerse,
+                toVerse: toVerse,
+                startedAt: startedAt,
+                endedAt: endedAt,
+                accuracy: accuracy,
+                sensitivity: sensitivity,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                required String kind,
+                required int fromVerse,
+                required int toVerse,
+                required DateTime startedAt,
+                required DateTime endedAt,
+                Value<double?> accuracy = const Value.absent(),
+                Value<String?> sensitivity = const Value.absent(),
+              }) => RecitationSessionsCompanion.insert(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                kind: kind,
+                fromVerse: fromVerse,
+                toVerse: toVerse,
+                startedAt: startedAt,
+                endedAt: endedAt,
+                accuracy: accuracy,
+                sensitivity: sensitivity,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$RecitationSessionsTable, RecitationSessionRow>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $RecitationSessionsTable,
+                    RecitationSessionRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RecitationSessionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $RecitationSessionsTable,
+      RecitationSessionRow,
+      $$RecitationSessionsTableFilterComposer,
+      $$RecitationSessionsTableOrderingComposer,
+      $$RecitationSessionsTableAnnotationComposer,
+      $$RecitationSessionsTableCreateCompanionBuilder,
+      $$RecitationSessionsTableUpdateCompanionBuilder,
+      (
+        RecitationSessionRow,
+        BaseReferences<
+          _$UserDatabase,
+          $RecitationSessionsTable,
+          RecitationSessionRow
+        >,
+      ),
+      RecitationSessionRow,
+      PrefetchHooks Function()
+    >;
+typedef $$RecitationVersesTableCreateCompanionBuilder =
+    RecitationVersesCompanion Function({
+      Value<int> id,
+      required String session,
+      required int verse,
+      Value<double?> accuracy,
+      Value<int> words,
+      Value<int> wrong,
+      Value<int> skipped,
+      Value<int> corrected,
+      Value<int> doubtful,
+      required DateTime at,
+    });
+typedef $$RecitationVersesTableUpdateCompanionBuilder =
+    RecitationVersesCompanion Function({
+      Value<int> id,
+      Value<String> session,
+      Value<int> verse,
+      Value<double?> accuracy,
+      Value<int> words,
+      Value<int> wrong,
+      Value<int> skipped,
+      Value<int> corrected,
+      Value<int> doubtful,
+      Value<DateTime> at,
+    });
+
+class $$RecitationVersesTableFilterComposer
+    extends Composer<_$UserDatabase, $RecitationVersesTable> {
+  $$RecitationVersesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get session => $composableBuilder(
+    column: $table.session,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get verse => $composableBuilder(
+    column: $table.verse,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get accuracy => $composableBuilder(
+    column: $table.accuracy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get words => $composableBuilder(
+    column: $table.words,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get wrong => $composableBuilder(
+    column: $table.wrong,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get skipped => $composableBuilder(
+    column: $table.skipped,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get corrected => $composableBuilder(
+    column: $table.corrected,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get doubtful => $composableBuilder(
+    column: $table.doubtful,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get at => $composableBuilder(
+    column: $table.at,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RecitationVersesTableOrderingComposer
+    extends Composer<_$UserDatabase, $RecitationVersesTable> {
+  $$RecitationVersesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get session => $composableBuilder(
+    column: $table.session,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get verse => $composableBuilder(
+    column: $table.verse,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get accuracy => $composableBuilder(
+    column: $table.accuracy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get words => $composableBuilder(
+    column: $table.words,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get wrong => $composableBuilder(
+    column: $table.wrong,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get skipped => $composableBuilder(
+    column: $table.skipped,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get corrected => $composableBuilder(
+    column: $table.corrected,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get doubtful => $composableBuilder(
+    column: $table.doubtful,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get at => $composableBuilder(
+    column: $table.at,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RecitationVersesTableAnnotationComposer
+    extends Composer<_$UserDatabase, $RecitationVersesTable> {
+  $$RecitationVersesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get session =>
+      $composableBuilder(column: $table.session, builder: (column) => column);
+
+  GeneratedColumn<int> get verse =>
+      $composableBuilder(column: $table.verse, builder: (column) => column);
+
+  GeneratedColumn<double> get accuracy =>
+      $composableBuilder(column: $table.accuracy, builder: (column) => column);
+
+  GeneratedColumn<int> get words =>
+      $composableBuilder(column: $table.words, builder: (column) => column);
+
+  GeneratedColumn<int> get wrong =>
+      $composableBuilder(column: $table.wrong, builder: (column) => column);
+
+  GeneratedColumn<int> get skipped =>
+      $composableBuilder(column: $table.skipped, builder: (column) => column);
+
+  GeneratedColumn<int> get corrected =>
+      $composableBuilder(column: $table.corrected, builder: (column) => column);
+
+  GeneratedColumn<int> get doubtful =>
+      $composableBuilder(column: $table.doubtful, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get at =>
+      $composableBuilder(column: $table.at, builder: (column) => column);
+}
+
+class $$RecitationVersesTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $RecitationVersesTable,
+          RecitationVerseRow,
+          $$RecitationVersesTableFilterComposer,
+          $$RecitationVersesTableOrderingComposer,
+          $$RecitationVersesTableAnnotationComposer,
+          $$RecitationVersesTableCreateCompanionBuilder,
+          $$RecitationVersesTableUpdateCompanionBuilder,
+          (
+            RecitationVerseRow,
+            BaseReferences<
+              _$UserDatabase,
+              $RecitationVersesTable,
+              RecitationVerseRow
+            >,
+          ),
+          RecitationVerseRow,
+          PrefetchHooks Function()
+        > {
+  $$RecitationVersesTableTableManager(
+    _$UserDatabase db,
+    $RecitationVersesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RecitationVersesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RecitationVersesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RecitationVersesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> session = const Value.absent(),
+                Value<int> verse = const Value.absent(),
+                Value<double?> accuracy = const Value.absent(),
+                Value<int> words = const Value.absent(),
+                Value<int> wrong = const Value.absent(),
+                Value<int> skipped = const Value.absent(),
+                Value<int> corrected = const Value.absent(),
+                Value<int> doubtful = const Value.absent(),
+                Value<DateTime> at = const Value.absent(),
+              }) => RecitationVersesCompanion(
+                id: id,
+                session: session,
+                verse: verse,
+                accuracy: accuracy,
+                words: words,
+                wrong: wrong,
+                skipped: skipped,
+                corrected: corrected,
+                doubtful: doubtful,
+                at: at,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String session,
+                required int verse,
+                Value<double?> accuracy = const Value.absent(),
+                Value<int> words = const Value.absent(),
+                Value<int> wrong = const Value.absent(),
+                Value<int> skipped = const Value.absent(),
+                Value<int> corrected = const Value.absent(),
+                Value<int> doubtful = const Value.absent(),
+                required DateTime at,
+              }) => RecitationVersesCompanion.insert(
+                id: id,
+                session: session,
+                verse: verse,
+                accuracy: accuracy,
+                words: words,
+                wrong: wrong,
+                skipped: skipped,
+                corrected: corrected,
+                doubtful: doubtful,
+                at: at,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$RecitationVersesTable, RecitationVerseRow>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $RecitationVersesTable,
+                    RecitationVerseRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RecitationVersesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $RecitationVersesTable,
+      RecitationVerseRow,
+      $$RecitationVersesTableFilterComposer,
+      $$RecitationVersesTableOrderingComposer,
+      $$RecitationVersesTableAnnotationComposer,
+      $$RecitationVersesTableCreateCompanionBuilder,
+      $$RecitationVersesTableUpdateCompanionBuilder,
+      (
+        RecitationVerseRow,
+        BaseReferences<
+          _$UserDatabase,
+          $RecitationVersesTable,
+          RecitationVerseRow
+        >,
+      ),
+      RecitationVerseRow,
+      PrefetchHooks Function()
+    >;
+typedef $$RecitationWordsTableCreateCompanionBuilder =
+    RecitationWordsCompanion Function({
+      Value<int> id,
+      required String session,
+      required int verse,
+      required int word,
+      required String kind,
+      required DateTime at,
+    });
+typedef $$RecitationWordsTableUpdateCompanionBuilder =
+    RecitationWordsCompanion Function({
+      Value<int> id,
+      Value<String> session,
+      Value<int> verse,
+      Value<int> word,
+      Value<String> kind,
+      Value<DateTime> at,
+    });
+
+class $$RecitationWordsTableFilterComposer
+    extends Composer<_$UserDatabase, $RecitationWordsTable> {
+  $$RecitationWordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get session => $composableBuilder(
+    column: $table.session,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get verse => $composableBuilder(
+    column: $table.verse,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get word => $composableBuilder(
+    column: $table.word,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get at => $composableBuilder(
+    column: $table.at,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RecitationWordsTableOrderingComposer
+    extends Composer<_$UserDatabase, $RecitationWordsTable> {
+  $$RecitationWordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get session => $composableBuilder(
+    column: $table.session,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get verse => $composableBuilder(
+    column: $table.verse,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get word => $composableBuilder(
+    column: $table.word,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get at => $composableBuilder(
+    column: $table.at,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RecitationWordsTableAnnotationComposer
+    extends Composer<_$UserDatabase, $RecitationWordsTable> {
+  $$RecitationWordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get session =>
+      $composableBuilder(column: $table.session, builder: (column) => column);
+
+  GeneratedColumn<int> get verse =>
+      $composableBuilder(column: $table.verse, builder: (column) => column);
+
+  GeneratedColumn<int> get word =>
+      $composableBuilder(column: $table.word, builder: (column) => column);
+
+  GeneratedColumn<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get at =>
+      $composableBuilder(column: $table.at, builder: (column) => column);
+}
+
+class $$RecitationWordsTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $RecitationWordsTable,
+          RecitationWordRow,
+          $$RecitationWordsTableFilterComposer,
+          $$RecitationWordsTableOrderingComposer,
+          $$RecitationWordsTableAnnotationComposer,
+          $$RecitationWordsTableCreateCompanionBuilder,
+          $$RecitationWordsTableUpdateCompanionBuilder,
+          (
+            RecitationWordRow,
+            BaseReferences<
+              _$UserDatabase,
+              $RecitationWordsTable,
+              RecitationWordRow
+            >,
+          ),
+          RecitationWordRow,
+          PrefetchHooks Function()
+        > {
+  $$RecitationWordsTableTableManager(
+    _$UserDatabase db,
+    $RecitationWordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RecitationWordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RecitationWordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RecitationWordsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> session = const Value.absent(),
+                Value<int> verse = const Value.absent(),
+                Value<int> word = const Value.absent(),
+                Value<String> kind = const Value.absent(),
+                Value<DateTime> at = const Value.absent(),
+              }) => RecitationWordsCompanion(
+                id: id,
+                session: session,
+                verse: verse,
+                word: word,
+                kind: kind,
+                at: at,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String session,
+                required int verse,
+                required int word,
+                required String kind,
+                required DateTime at,
+              }) => RecitationWordsCompanion.insert(
+                id: id,
+                session: session,
+                verse: verse,
+                word: word,
+                kind: kind,
+                at: at,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$RecitationWordsTable, RecitationWordRow>(table),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $RecitationWordsTable,
+                    RecitationWordRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RecitationWordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $RecitationWordsTable,
+      RecitationWordRow,
+      $$RecitationWordsTableFilterComposer,
+      $$RecitationWordsTableOrderingComposer,
+      $$RecitationWordsTableAnnotationComposer,
+      $$RecitationWordsTableCreateCompanionBuilder,
+      $$RecitationWordsTableUpdateCompanionBuilder,
+      (
+        RecitationWordRow,
+        BaseReferences<
+          _$UserDatabase,
+          $RecitationWordsTable,
+          RecitationWordRow
+        >,
+      ),
+      RecitationWordRow,
+      PrefetchHooks Function()
+    >;
+typedef $$HifzGoalsTableCreateCompanionBuilder = HifzGoalsCompanion Function({
+  Value<String> uuid,
+  Value<DateTime> updatedAt,
+  Value<DateTime?> deletedAt,
+  Value<int> id,
+  Value<String?> template,
+  required int rangeStart,
+  required int rangeEnd,
+  required String startDate,
+  Value<String?> targetDate,
+  Value<String?> planFrom,
+  Value<double?> dailyWeight,
+  Value<String> unit,
+  Value<String> status,
+  Value<String> pauses,
+  Value<String?> recovery,
+  Value<int?> reminderTime,
+  Value<bool> review,
+});
+typedef $$HifzGoalsTableUpdateCompanionBuilder = HifzGoalsCompanion Function({
+  Value<String> uuid,
+  Value<DateTime> updatedAt,
+  Value<DateTime?> deletedAt,
+  Value<int> id,
+  Value<String?> template,
+  Value<int> rangeStart,
+  Value<int> rangeEnd,
+  Value<String> startDate,
+  Value<String?> targetDate,
+  Value<String?> planFrom,
+  Value<double?> dailyWeight,
+  Value<String> unit,
+  Value<String> status,
+  Value<String> pauses,
+  Value<String?> recovery,
+  Value<int?> reminderTime,
+  Value<bool> review,
+});
+
+class $$HifzGoalsTableFilterComposer
+    extends Composer<_$UserDatabase, $HifzGoalsTable> {
+  $$HifzGoalsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get template => $composableBuilder(
+    column: $table.template,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get rangeStart => $composableBuilder(
+    column: $table.rangeStart,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get rangeEnd => $composableBuilder(
+    column: $table.rangeEnd,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get targetDate => $composableBuilder(
+    column: $table.targetDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get planFrom => $composableBuilder(
+    column: $table.planFrom,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get dailyWeight => $composableBuilder(
+    column: $table.dailyWeight,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get unit => $composableBuilder(
+    column: $table.unit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pauses => $composableBuilder(
+    column: $table.pauses,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get recovery => $composableBuilder(
+    column: $table.recovery,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get reminderTime => $composableBuilder(
+    column: $table.reminderTime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get review => $composableBuilder(
+    column: $table.review,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$HifzGoalsTableOrderingComposer
+    extends Composer<_$UserDatabase, $HifzGoalsTable> {
+  $$HifzGoalsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get template => $composableBuilder(
+    column: $table.template,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get rangeStart => $composableBuilder(
+    column: $table.rangeStart,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get rangeEnd => $composableBuilder(
+    column: $table.rangeEnd,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get targetDate => $composableBuilder(
+    column: $table.targetDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get planFrom => $composableBuilder(
+    column: $table.planFrom,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get dailyWeight => $composableBuilder(
+    column: $table.dailyWeight,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get unit => $composableBuilder(
+    column: $table.unit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pauses => $composableBuilder(
+    column: $table.pauses,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get recovery => $composableBuilder(
+    column: $table.recovery,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get reminderTime => $composableBuilder(
+    column: $table.reminderTime,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get review => $composableBuilder(
+    column: $table.review,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$HifzGoalsTableAnnotationComposer
+    extends Composer<_$UserDatabase, $HifzGoalsTable> {
+  $$HifzGoalsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get uuid =>
+      $composableBuilder(column: $table.uuid, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get template =>
+      $composableBuilder(column: $table.template, builder: (column) => column);
+
+  GeneratedColumn<int> get rangeStart => $composableBuilder(
+    column: $table.rangeStart,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get rangeEnd =>
+      $composableBuilder(column: $table.rangeEnd, builder: (column) => column);
+
+  GeneratedColumn<String> get startDate =>
+      $composableBuilder(column: $table.startDate, builder: (column) => column);
+
+  GeneratedColumn<String> get targetDate => $composableBuilder(
+    column: $table.targetDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get planFrom =>
+      $composableBuilder(column: $table.planFrom, builder: (column) => column);
+
+  GeneratedColumn<double> get dailyWeight => $composableBuilder(
+    column: $table.dailyWeight,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get unit =>
+      $composableBuilder(column: $table.unit, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get pauses =>
+      $composableBuilder(column: $table.pauses, builder: (column) => column);
+
+  GeneratedColumn<String> get recovery =>
+      $composableBuilder(column: $table.recovery, builder: (column) => column);
+
+  GeneratedColumn<int> get reminderTime => $composableBuilder(
+    column: $table.reminderTime,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get review =>
+      $composableBuilder(column: $table.review, builder: (column) => column);
+}
+
+class $$HifzGoalsTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $HifzGoalsTable,
+          HifzGoalRow,
+          $$HifzGoalsTableFilterComposer,
+          $$HifzGoalsTableOrderingComposer,
+          $$HifzGoalsTableAnnotationComposer,
+          $$HifzGoalsTableCreateCompanionBuilder,
+          $$HifzGoalsTableUpdateCompanionBuilder,
+          (
+            HifzGoalRow,
+            BaseReferences<_$UserDatabase, $HifzGoalsTable, HifzGoalRow>,
+          ),
+          HifzGoalRow,
+          PrefetchHooks Function()
+        > {
+  $$HifzGoalsTableTableManager(_$UserDatabase db, $HifzGoalsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HifzGoalsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HifzGoalsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HifzGoalsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                Value<String?> template = const Value.absent(),
+                Value<int> rangeStart = const Value.absent(),
+                Value<int> rangeEnd = const Value.absent(),
+                Value<String> startDate = const Value.absent(),
+                Value<String?> targetDate = const Value.absent(),
+                Value<String?> planFrom = const Value.absent(),
+                Value<double?> dailyWeight = const Value.absent(),
+                Value<String> unit = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> pauses = const Value.absent(),
+                Value<String?> recovery = const Value.absent(),
+                Value<int?> reminderTime = const Value.absent(),
+                Value<bool> review = const Value.absent(),
+              }) => HifzGoalsCompanion(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                template: template,
+                rangeStart: rangeStart,
+                rangeEnd: rangeEnd,
+                startDate: startDate,
+                targetDate: targetDate,
+                planFrom: planFrom,
+                dailyWeight: dailyWeight,
+                unit: unit,
+                status: status,
+                pauses: pauses,
+                recovery: recovery,
+                reminderTime: reminderTime,
+                review: review,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                Value<String?> template = const Value.absent(),
+                required int rangeStart,
+                required int rangeEnd,
+                required String startDate,
+                Value<String?> targetDate = const Value.absent(),
+                Value<String?> planFrom = const Value.absent(),
+                Value<double?> dailyWeight = const Value.absent(),
+                Value<String> unit = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> pauses = const Value.absent(),
+                Value<String?> recovery = const Value.absent(),
+                Value<int?> reminderTime = const Value.absent(),
+                Value<bool> review = const Value.absent(),
+              }) => HifzGoalsCompanion.insert(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                template: template,
+                rangeStart: rangeStart,
+                rangeEnd: rangeEnd,
+                startDate: startDate,
+                targetDate: targetDate,
+                planFrom: planFrom,
+                dailyWeight: dailyWeight,
+                unit: unit,
+                status: status,
+                pauses: pauses,
+                recovery: recovery,
+                reminderTime: reminderTime,
+                review: review,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$HifzGoalsTable, HifzGoalRow>(table),
+                  BaseReferences<_$UserDatabase, $HifzGoalsTable, HifzGoalRow>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$HifzGoalsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $HifzGoalsTable,
+      HifzGoalRow,
+      $$HifzGoalsTableFilterComposer,
+      $$HifzGoalsTableOrderingComposer,
+      $$HifzGoalsTableAnnotationComposer,
+      $$HifzGoalsTableCreateCompanionBuilder,
+      $$HifzGoalsTableUpdateCompanionBuilder,
+      (
+        HifzGoalRow,
+        BaseReferences<_$UserDatabase, $HifzGoalsTable, HifzGoalRow>,
+      ),
+      HifzGoalRow,
+      PrefetchHooks Function()
+    >;
 
 class $UserDatabaseManager {
   final _$UserDatabase _db;
@@ -12619,4 +16539,12 @@ class $UserDatabaseManager {
       $$KhatmaCoveragesTableTableManager(_db, _db.khatmaCoverages);
   $$DailyStatsTableTableManager get dailyStats =>
       $$DailyStatsTableTableManager(_db, _db.dailyStats);
+  $$RecitationSessionsTableTableManager get recitationSessions =>
+      $$RecitationSessionsTableTableManager(_db, _db.recitationSessions);
+  $$RecitationVersesTableTableManager get recitationVerses =>
+      $$RecitationVersesTableTableManager(_db, _db.recitationVerses);
+  $$RecitationWordsTableTableManager get recitationWords =>
+      $$RecitationWordsTableTableManager(_db, _db.recitationWords);
+  $$HifzGoalsTableTableManager get hifzGoals =>
+      $$HifzGoalsTableTableManager(_db, _db.hifzGoals);
 }

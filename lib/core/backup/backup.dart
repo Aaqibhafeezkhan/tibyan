@@ -8,7 +8,8 @@ import '../sync/outbox_writer.dart';
 
 /// A backup of what the reader made in the app, as one JSON file they keep:
 /// fawasil and marks, the reading position, khatmas and their logs, reading
-/// and listening reports, tadabbur notes and hifz progress. It needs no
+/// and listening reports, tadabbur notes, hifz progress, the recitation
+/// record (results only) and hifz goals. It needs no
 /// account and goes through the system's share sheet; restoring it merges.
 ///
 /// Rows are copied by SQL column name, so the file does not depend on the
@@ -45,6 +46,10 @@ class Backup {
     'reflection',
     'srs_item',
     'memorization',
+    'recitation_session',
+    'recitation_verse',
+    'recitation_word',
+    'hifz_goal',
   ];
 
   /// The backup as JSON text.
@@ -226,6 +231,24 @@ class Backup {
           Variable.withString(v['name']! as String),
           Variable.withInt((v['surah']! as num).toInt()),
           Variable.withInt((v['ayah']! as num).toInt()),
+        ]);
+      // A session's verses and slips are theirs by the session's uuid.
+      case 'recitation_verse':
+        if (v['session'] is! String || v['verse'] is! num) return null;
+        return _Where('session = ? AND verse = ?', [
+          Variable.withString(v['session']! as String),
+          Variable.withInt((v['verse']! as num).toInt()),
+        ]);
+      case 'recitation_word':
+        if (v['session'] is! String ||
+            v['verse'] is! num ||
+            v['word'] is! num) {
+          return null;
+        }
+        return _Where('session = ? AND verse = ? AND word = ?', [
+          Variable.withString(v['session']! as String),
+          Variable.withInt((v['verse']! as num).toInt()),
+          Variable.withInt((v['word']! as num).toInt()),
         ]);
       default:
         final uuid = v['uuid'];

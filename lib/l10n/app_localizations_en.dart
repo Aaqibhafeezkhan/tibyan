@@ -3147,4 +3147,302 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get newModelUpdateBody =>
       'When the recitation model improves, it downloads by itself on Wi‑Fi, and the old one keeps working until the new one is complete.';
+
+  @override
+  String get progressSaved => 'Result saved';
+
+  @override
+  String progressNewlyMastered(String count) {
+    return 'Newly mastered verses: $count';
+  }
+
+  @override
+  String progressStillMastered(String count) {
+    return 'Mastered: $count';
+  }
+
+  @override
+  String progressToReview(String count) {
+    return 'To review: $count';
+  }
+
+  @override
+  String get hifzTabToday => 'Today';
+
+  @override
+  String get hifzTabProgress => 'Progress';
+
+  @override
+  String get hifzTabHistory => 'History';
+
+  @override
+  String get hifzTabHardWords => 'Hard words';
+
+  @override
+  String get hifzTabGoals => 'Goals';
+
+  @override
+  String get hifzJourney => 'Hifz journey';
+
+  @override
+  String hifzJourneyLine(String memorized, String mastered) {
+    return '$memorized verses memorized, $mastered mastered';
+  }
+
+  @override
+  String get hifzJourneyEmpty =>
+      'Recite what you know and your progress is kept here.';
+
+  @override
+  String get progressOverall => 'Overall';
+
+  @override
+  String get progressJuzCount => 'Juz';
+
+  @override
+  String get progressPagesCount => 'Pages';
+
+  @override
+  String get progressVersesCount => 'Verses';
+
+  @override
+  String get progressMemorized => 'Memorized';
+
+  @override
+  String get progressMastered => 'Mastered';
+
+  @override
+  String get progressNeedsReview => 'Needs review';
+
+  @override
+  String get progressAccuracy30 => 'Average accuracy, last 30 days';
+
+  @override
+  String get progressBySurah => 'By surah';
+
+  @override
+  String get progressByJuz => 'By juz';
+
+  @override
+  String progressLastRecited(String date) {
+    return 'Last recited $date';
+  }
+
+  @override
+  String get progressNotRecited => 'Not recited yet';
+
+  @override
+  String progressShares(String memorized, String mastered) {
+    return 'Memorized $memorized · mastered $mastered';
+  }
+
+  @override
+  String progressAccuracy(String value) {
+    return 'Accuracy $value';
+  }
+
+  @override
+  String progressSuggestRecite(String count) {
+    return 'Memorized verses not recited yet: $count. Recite them to master them.';
+  }
+
+  @override
+  String get progressMasteryRule =>
+      'A verse becomes “mastered” when you recite it at 90% accuracy or more.';
+
+  @override
+  String get progressEmpty =>
+      'Nothing memorized yet. Mark what you know on the map, or recite.';
+
+  @override
+  String get progressOpenMap => 'Open the map';
+
+  @override
+  String get historyEmpty =>
+      'No recitation saved yet. Every session is saved here on its own: its result only, never audio.';
+
+  @override
+  String get recitationVoice => 'By voice';
+
+  @override
+  String get recitationTouch => 'By touch';
+
+  @override
+  String get recitationTest => 'Hifz test';
+
+  @override
+  String historyVerses(String count) {
+    return '$count verses';
+  }
+
+  @override
+  String get sessionSummary => 'Session summary';
+
+  @override
+  String get sessionDelete => 'Remove from history';
+
+  @override
+  String sessionSensitivity(String level) {
+    return 'Matching: $level';
+  }
+
+  @override
+  String get sessionSlips => 'Slips';
+
+  @override
+  String get hardWordsEmpty =>
+      'No hard words yet. A word you miss or skip more than once shows here.';
+
+  @override
+  String hardWordsCount(String count, String date) {
+    return '$count times · last $date';
+  }
+
+  @override
+  String get hardWordsHint => 'These words\' verses come first in review.';
+
+  @override
+  String get goalsEmpty => 'No goals yet. Pick a ready goal or make your own.';
+
+  @override
+  String get goalNew => 'New goal';
+
+  @override
+  String get goalTemplateAmma => 'Juz Amma in two months';
+
+  @override
+  String get goalTemplatePageDaily => 'A page a day';
+
+  @override
+  String get goalTemplateHizbWeekly => 'Review a hizb a week';
+
+  @override
+  String get goalTemplateFixSurah => 'Fix a surah';
+
+  @override
+  String get goalOpen => 'Open goal';
+
+  @override
+  String get goalOpenHint => 'Choose the range, length and unit';
+
+  @override
+  String get goalFromSurah => 'From surah';
+
+  @override
+  String get goalToSurah => 'To surah';
+
+  @override
+  String get goalSurah => 'Surah';
+
+  @override
+  String get goalHizb => 'Hizb';
+
+  @override
+  String goalDays(String days) {
+    return 'Length: $days days';
+  }
+
+  @override
+  String get goalUnit => 'Unit';
+
+  @override
+  String get goalCreate => 'Create the goal';
+
+  @override
+  String get goalTodayWird => 'Today’s portion';
+
+  @override
+  String get goalMemorize => 'Memorize';
+
+  @override
+  String get goalReview => 'Review';
+
+  @override
+  String goalReviewDue(String count) {
+    return 'Units due for review: $count';
+  }
+
+  @override
+  String goalReviewHard(String count) {
+    return 'Verses with hard words: $count';
+  }
+
+  @override
+  String get goalNothingToday => 'No portion today.';
+
+  @override
+  String goalMasteredShare(String value) {
+    return 'Mastered $value';
+  }
+
+  @override
+  String goalLeft(String pages) {
+    return 'Pages left: $pages';
+  }
+
+  @override
+  String goalUntil(String date) {
+    return 'Until $date';
+  }
+
+  @override
+  String goalBehind(String pages) {
+    return 'Pages left from past days: $pages';
+  }
+
+  @override
+  String get goalCatchUp => 'Catch up over days';
+
+  @override
+  String get goalExtend => 'Move the end date';
+
+  @override
+  String get goalPause => 'Pause';
+
+  @override
+  String get goalResume => 'Resume';
+
+  @override
+  String get goalDelete => 'Delete the goal';
+
+  @override
+  String get goalReminder => 'Daily reminder';
+
+  @override
+  String goalReminderAt(String time) {
+    return 'Reminder $time';
+  }
+
+  @override
+  String get goalReminderOff => 'Turn the reminder off';
+
+  @override
+  String get goalPaused => 'Paused';
+
+  @override
+  String get goalComplete => 'Goal complete, may Allah bless you.';
+
+  @override
+  String get goalCountedByMastery =>
+      'Progress counts mastered recitation, not marking by hand.';
+
+  @override
+  String get goalReminderTitle => 'Hifz portion';
+
+  @override
+  String goalReminderBody(String from, String to) {
+    return 'Memorize: pages $from–$to';
+  }
+
+  @override
+  String get goalRecite => 'Recite';
+
+  @override
+  String get hifzMapShowMastery => 'Mastery';
+
+  @override
+  String get hifzMapShowStrength => 'Strength';
+
+  @override
+  String get whatsNewHifzProgress => 'Hifz journey';
 }

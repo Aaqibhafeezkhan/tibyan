@@ -76,7 +76,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      TibyanLogo(color: mark, height: 112),
+                      TibyanWordmark(color: mark, height: 112),
                       const SizedBox(height: 24),
                       const SizedBox(
                         width: 160,

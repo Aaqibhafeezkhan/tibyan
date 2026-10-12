@@ -3120,4 +3120,301 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get newModelUpdateBody =>
       'حين يتحسّن نموذج التسميع ينزل وحده على الواي فاي، ويظل القديم يعمل حتى يكتمل الجديد.';
+
+  @override
+  String get progressSaved => 'حُفظت النتيجة';
+
+  @override
+  String progressNewlyMastered(String count) {
+    return 'أُتقنت آيات جديدة: $count';
+  }
+
+  @override
+  String progressStillMastered(String count) {
+    return 'متقن: $count';
+  }
+
+  @override
+  String progressToReview(String count) {
+    return 'تحتاج مراجعة: $count';
+  }
+
+  @override
+  String get hifzTabToday => 'اليوم';
+
+  @override
+  String get hifzTabProgress => 'التقدّم';
+
+  @override
+  String get hifzTabHistory => 'السجل';
+
+  @override
+  String get hifzTabHardWords => 'الكلمات الصعبة';
+
+  @override
+  String get hifzTabGoals => 'الأهداف';
+
+  @override
+  String get hifzJourney => 'مسيرة الحفظ';
+
+  @override
+  String hifzJourneyLine(String memorized, String mastered) {
+    return 'محفوظ $memorized آية، منها $mastered متقنة';
+  }
+
+  @override
+  String get hifzJourneyEmpty => 'سمّع ما تحفظ فيُحفظ هنا تقدّمك.';
+
+  @override
+  String get progressOverall => 'في المجمل';
+
+  @override
+  String get progressJuzCount => 'أجزاء';
+
+  @override
+  String get progressPagesCount => 'صفحات';
+
+  @override
+  String get progressVersesCount => 'آيات';
+
+  @override
+  String get progressMemorized => 'محفوظ';
+
+  @override
+  String get progressMastered => 'متقن';
+
+  @override
+  String get progressNeedsReview => 'يحتاج مراجعة';
+
+  @override
+  String get progressAccuracy30 => 'متوسط الدقة في آخر ٣٠ يوما';
+
+  @override
+  String get progressBySurah => 'حسب السورة';
+
+  @override
+  String get progressByJuz => 'حسب الجزء';
+
+  @override
+  String progressLastRecited(String date) {
+    return 'آخر تسميع $date';
+  }
+
+  @override
+  String get progressNotRecited => 'لم يُسمَّع بعد';
+
+  @override
+  String progressShares(String memorized, String mastered) {
+    return 'محفوظ $memorized · متقن $mastered';
+  }
+
+  @override
+  String progressAccuracy(String value) {
+    return 'الدقة $value';
+  }
+
+  @override
+  String progressSuggestRecite(String count) {
+    return 'آيات محفوظة لم تُسمَّع بعد: $count. سمّعها لتصير متقنة.';
+  }
+
+  @override
+  String get progressMasteryRule =>
+      'الآية تصير «متقنة» إذا سمّعتها بدقة ٩٠٪ أو أكثر.';
+
+  @override
+  String get progressEmpty =>
+      'لم تعلّم حفظ شيء بعد. علّم ما تحفظ في الخريطة، أو سمّع.';
+
+  @override
+  String get progressOpenMap => 'افتح الخريطة';
+
+  @override
+  String get historyEmpty =>
+      'لا تسميع محفوظ بعد. كل جلسة تسميع تُحفظ هنا وحدها، نتيجتها فقط دون صوت.';
+
+  @override
+  String get recitationVoice => 'بالصوت';
+
+  @override
+  String get recitationTouch => 'باللمس';
+
+  @override
+  String get recitationTest => 'اختبار الحفظ';
+
+  @override
+  String historyVerses(String count) {
+    return '$count آية';
+  }
+
+  @override
+  String get sessionSummary => 'ملخّص الجلسة';
+
+  @override
+  String get sessionDelete => 'احذف من السجل';
+
+  @override
+  String sessionSensitivity(String level) {
+    return 'حساسية المطابقة: $level';
+  }
+
+  @override
+  String get sessionSlips => 'مواضع الخطأ';
+
+  @override
+  String get hardWordsEmpty =>
+      'لا كلمات صعبة بعد. الكلمة التي تخطئ فيها أو تتخطاها أكثر من مرة تظهر هنا.';
+
+  @override
+  String hardWordsCount(String count, String date) {
+    return '$count مرات · آخرها $date';
+  }
+
+  @override
+  String get hardWordsHint => 'آيات هذه الكلمات تأتي أولا في المراجعة.';
+
+  @override
+  String get goalsEmpty => 'لا أهداف بعد. اختر هدفا جاهزا أو اصنع هدفك.';
+
+  @override
+  String get goalNew => 'هدف جديد';
+
+  @override
+  String get goalTemplateAmma => 'جزء عمّ في شهرين';
+
+  @override
+  String get goalTemplatePageDaily => 'صفحة يوميا';
+
+  @override
+  String get goalTemplateHizbWeekly => 'مراجعة حزب كل أسبوع';
+
+  @override
+  String get goalTemplateFixSurah => 'تثبيت سورة';
+
+  @override
+  String get goalOpen => 'هدف مفتوح';
+
+  @override
+  String get goalOpenHint => 'تختار النطاق والمدة والوحدة';
+
+  @override
+  String get goalFromSurah => 'من سورة';
+
+  @override
+  String get goalToSurah => 'إلى سورة';
+
+  @override
+  String get goalSurah => 'السورة';
+
+  @override
+  String get goalHizb => 'الحزب';
+
+  @override
+  String goalDays(String days) {
+    return 'المدة: $days يوما';
+  }
+
+  @override
+  String get goalUnit => 'الوحدة';
+
+  @override
+  String get goalCreate => 'أنشئ الهدف';
+
+  @override
+  String get goalTodayWird => 'ورد اليوم';
+
+  @override
+  String get goalMemorize => 'احفظ';
+
+  @override
+  String get goalReview => 'راجع';
+
+  @override
+  String goalReviewDue(String count) {
+    return 'وحدات مستحقة للمراجعة: $count';
+  }
+
+  @override
+  String goalReviewHard(String count) {
+    return 'آيات فيها كلمات صعبة: $count';
+  }
+
+  @override
+  String get goalNothingToday => 'لا ورد اليوم.';
+
+  @override
+  String goalMasteredShare(String value) {
+    return 'متقن $value';
+  }
+
+  @override
+  String goalLeft(String pages) {
+    return 'تبقّى $pages صفحة';
+  }
+
+  @override
+  String goalUntil(String date) {
+    return 'حتى $date';
+  }
+
+  @override
+  String goalBehind(String pages) {
+    return 'تبقّى من الأيام الماضية $pages صفحة';
+  }
+
+  @override
+  String get goalCatchUp => 'عوّض على أيام';
+
+  @override
+  String get goalExtend => 'مد الموعد';
+
+  @override
+  String get goalPause => 'أوقف مؤقتا';
+
+  @override
+  String get goalResume => 'استأنف';
+
+  @override
+  String get goalDelete => 'احذف الهدف';
+
+  @override
+  String get goalReminder => 'تذكير يومي';
+
+  @override
+  String goalReminderAt(String time) {
+    return 'تذكير $time';
+  }
+
+  @override
+  String get goalReminderOff => 'أوقف التذكير';
+
+  @override
+  String get goalPaused => 'متوقف';
+
+  @override
+  String get goalComplete => 'اكتمل الهدف، بارك الله فيك.';
+
+  @override
+  String get goalCountedByMastery =>
+      'يُحسب التقدّم بالتسميع المتقن، لا بالتعليم باليد.';
+
+  @override
+  String get goalReminderTitle => 'ورد الحفظ';
+
+  @override
+  String goalReminderBody(String from, String to) {
+    return 'احفظ: الصفحات $from–$to';
+  }
+
+  @override
+  String get goalRecite => 'سمّع';
+
+  @override
+  String get hifzMapShowMastery => 'الإتقان';
+
+  @override
+  String get hifzMapShowStrength => 'القوة';
+
+  @override
+  String get whatsNewHifzProgress => 'مسيرة الحفظ';
 }

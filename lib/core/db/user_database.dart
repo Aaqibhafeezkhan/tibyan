@@ -73,6 +73,10 @@ class ReadingPositions extends Table {
     SessionAttributions,
     KhatmaCoverages,
     DailyStats,
+    RecitationSessions,
+    RecitationVerses,
+    RecitationWords,
+    HifzGoals,
   ],
 )
 class UserDatabase extends _$UserDatabase {
@@ -81,7 +85,7 @@ class UserDatabase extends _$UserDatabase {
   UserDatabase.open() : super(driftDatabase(name: 'user'));
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -102,6 +106,14 @@ class UserDatabase extends _$UserDatabase {
         await m.createTable(memorizations);
       }
       if (from < 5) await _toKhatmahV5(m);
+      if (from < 6) {
+        // Hifz progress: the recitation record and hifz goals. New tables
+        // only; nothing existing is touched.
+        await m.createTable(recitationSessions);
+        await m.createTable(recitationVerses);
+        await m.createTable(recitationWords);
+        await m.createTable(hifzGoals);
+      }
     },
   );
 

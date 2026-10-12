@@ -9,6 +9,7 @@ import '../../core/theme/app_theme.dart';
 import '../mushaf/mushaf_providers.dart';
 import '../mushaf/presentation/widgets/download_all_button.dart';
 import '../mushaf/presentation/widgets/edition_badge.dart';
+import '../../core/ui/look_kit.dart';
 import '../../l10n/app_localizations.dart';
 import '../mushaf/data/page_pack.dart';
 
@@ -39,16 +40,7 @@ class OnboardingEditionScreen extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
           children: [
-            Text(
-              l.appTitle,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'ArefRuqaa',
-                fontSize: 36,
-                color: t.goldText,
-                height: 1.2,
-              ),
-            ),
+            Center(child: TibyanWordmark(color: t.goldText, height: 48)),
             Text(
               l.onbEditionTitle,
               textAlign: TextAlign.center,
