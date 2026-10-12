@@ -11,6 +11,9 @@ import '../../../core/theme/interface_style.dart';
 import '../../../core/ui/look_kit.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../hifz/data/hifz_repository.dart';
+import '../../hifz/data/recitation_service.dart';
+import '../../hifz/presentation/mastery_line.dart';
+import '../../khatma/khatma_providers.dart' show quranIndexProvider;
 import '../../hifz/presentation/hifz_screen.dart' show openHifzTest;
 import '../../mushaf/mushaf_providers.dart';
 import '../data/model_auto_updater.dart';
@@ -19,6 +22,7 @@ import '../data/tasmee_settings.dart';
 import '../domain/alignment_engine.dart';
 import '../domain/expected_words.dart';
 import '../domain/recitation_range.dart';
+import '../domain/tasmee_record.dart';
 import '../domain/tasmee_report.dart';
 import '../domain/tasmee_session_request.dart';
 import 'recording_panel.dart';
@@ -51,6 +55,9 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
   int? _viewPage;
   bool _summaryShown = false;
   bool _sheetOpen = false;
+
+  /// The session saved in the recitation record, and what it changed.
+  Future<MasteryChange>? _saving;
 
   @override
   void initState() {
@@ -93,7 +100,34 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
     if (_session.phase == TasmeePhase.finished && !_summaryShown) {
       _summaryShown = true;
       unawaited(_saveLast());
+      _saving = _record();
       WidgetsBinding.instance.addPostFrameCallback((_) => _showSummary());
+    }
+  }
+
+  /// Saves the session in the recitation record (every session, on its
+  /// own): results only, never audio.
+  Future<MasteryChange> _record() async {
+    try {
+      final report = _session.report;
+      if (report.verses.isEmpty) return MasteryChange.none;
+      final now = DateTime.now();
+      final index = await ref.read(quranIndexProvider.future);
+      return await recordRecitation(
+        ref.read(userDatabaseProvider),
+        index,
+        tasmeeRecord(
+          report: report,
+          engine: _session.engine,
+          words: widget.request.words,
+          hinted: _session.hinted,
+          startedAt: now.subtract(_session.elapsed),
+          endedAt: now,
+          sensitivity: ref.read(tasmeeSettingsProvider).strictness.name,
+        ),
+      );
+    } catch (_) {
+      return MasteryChange.none;
     }
   }
 
@@ -166,8 +200,13 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
     final report = _session.report;
     final review = report.toReview;
     final title = _title(context).$2;
+    final change = await _saving;
+    if (!mounted || _sheetOpen) return;
     final verse = await _sheet<VerseReport>(
       (context) => SummarySheet(
+        saved: change == null || !change.saved
+            ? null
+            : masteryLine(context, change),
         title: title,
         duration: _session.elapsed,
         report: report,

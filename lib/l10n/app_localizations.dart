@@ -5490,6 +5490,510 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'حين يتحسّن نموذج التسميع ينزل وحده على الواي فاي، ويظل القديم يعمل حتى يكتمل الجديد.'**
   String get newModelUpdateBody;
+
+  /// No description provided for @progressSaved.
+  ///
+  /// In ar, this message translates to:
+  /// **'حُفظت النتيجة'**
+  String get progressSaved;
+
+  /// No description provided for @progressNewlyMastered.
+  ///
+  /// In ar, this message translates to:
+  /// **'أُتقنت آيات جديدة: {count}'**
+  String progressNewlyMastered(String count);
+
+  /// No description provided for @progressStillMastered.
+  ///
+  /// In ar, this message translates to:
+  /// **'متقن: {count}'**
+  String progressStillMastered(String count);
+
+  /// No description provided for @progressToReview.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحتاج مراجعة: {count}'**
+  String progressToReview(String count);
+
+  /// No description provided for @hifzTabToday.
+  ///
+  /// In ar, this message translates to:
+  /// **'اليوم'**
+  String get hifzTabToday;
+
+  /// No description provided for @hifzTabProgress.
+  ///
+  /// In ar, this message translates to:
+  /// **'التقدّم'**
+  String get hifzTabProgress;
+
+  /// No description provided for @hifzTabHistory.
+  ///
+  /// In ar, this message translates to:
+  /// **'السجل'**
+  String get hifzTabHistory;
+
+  /// No description provided for @hifzTabHardWords.
+  ///
+  /// In ar, this message translates to:
+  /// **'الكلمات الصعبة'**
+  String get hifzTabHardWords;
+
+  /// No description provided for @hifzTabGoals.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأهداف'**
+  String get hifzTabGoals;
+
+  /// No description provided for @hifzJourney.
+  ///
+  /// In ar, this message translates to:
+  /// **'مسيرة الحفظ'**
+  String get hifzJourney;
+
+  /// No description provided for @hifzJourneyLine.
+  ///
+  /// In ar, this message translates to:
+  /// **'محفوظ {memorized} آية، منها {mastered} متقنة'**
+  String hifzJourneyLine(String memorized, String mastered);
+
+  /// No description provided for @hifzJourneyEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'سمّع ما تحفظ فيُحفظ هنا تقدّمك.'**
+  String get hifzJourneyEmpty;
+
+  /// No description provided for @progressOverall.
+  ///
+  /// In ar, this message translates to:
+  /// **'في المجمل'**
+  String get progressOverall;
+
+  /// No description provided for @progressJuzCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'أجزاء'**
+  String get progressJuzCount;
+
+  /// No description provided for @progressPagesCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'صفحات'**
+  String get progressPagesCount;
+
+  /// No description provided for @progressVersesCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'آيات'**
+  String get progressVersesCount;
+
+  /// No description provided for @progressMemorized.
+  ///
+  /// In ar, this message translates to:
+  /// **'محفوظ'**
+  String get progressMemorized;
+
+  /// No description provided for @progressMastered.
+  ///
+  /// In ar, this message translates to:
+  /// **'متقن'**
+  String get progressMastered;
+
+  /// No description provided for @progressNeedsReview.
+  ///
+  /// In ar, this message translates to:
+  /// **'يحتاج مراجعة'**
+  String get progressNeedsReview;
+
+  /// No description provided for @progressAccuracy30.
+  ///
+  /// In ar, this message translates to:
+  /// **'متوسط الدقة في آخر ٣٠ يوما'**
+  String get progressAccuracy30;
+
+  /// No description provided for @progressBySurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسب السورة'**
+  String get progressBySurah;
+
+  /// No description provided for @progressByJuz.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسب الجزء'**
+  String get progressByJuz;
+
+  /// No description provided for @progressLastRecited.
+  ///
+  /// In ar, this message translates to:
+  /// **'آخر تسميع {date}'**
+  String progressLastRecited(String date);
+
+  /// No description provided for @progressNotRecited.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يُسمَّع بعد'**
+  String get progressNotRecited;
+
+  /// No description provided for @progressShares.
+  ///
+  /// In ar, this message translates to:
+  /// **'محفوظ {memorized} · متقن {mastered}'**
+  String progressShares(String memorized, String mastered);
+
+  /// No description provided for @progressAccuracy.
+  ///
+  /// In ar, this message translates to:
+  /// **'الدقة {value}'**
+  String progressAccuracy(String value);
+
+  /// No description provided for @progressSuggestRecite.
+  ///
+  /// In ar, this message translates to:
+  /// **'آيات محفوظة لم تُسمَّع بعد: {count}. سمّعها لتصير متقنة.'**
+  String progressSuggestRecite(String count);
+
+  /// No description provided for @progressMasteryRule.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآية تصير «متقنة» إذا سمّعتها بدقة ٩٠٪ أو أكثر.'**
+  String get progressMasteryRule;
+
+  /// No description provided for @progressEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم تعلّم حفظ شيء بعد. علّم ما تحفظ في الخريطة، أو سمّع.'**
+  String get progressEmpty;
+
+  /// No description provided for @progressOpenMap.
+  ///
+  /// In ar, this message translates to:
+  /// **'افتح الخريطة'**
+  String get progressOpenMap;
+
+  /// No description provided for @historyEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا تسميع محفوظ بعد. كل جلسة تسميع تُحفظ هنا وحدها، نتيجتها فقط دون صوت.'**
+  String get historyEmpty;
+
+  /// No description provided for @recitationVoice.
+  ///
+  /// In ar, this message translates to:
+  /// **'بالصوت'**
+  String get recitationVoice;
+
+  /// No description provided for @recitationTouch.
+  ///
+  /// In ar, this message translates to:
+  /// **'باللمس'**
+  String get recitationTouch;
+
+  /// No description provided for @recitationTest.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختبار الحفظ'**
+  String get recitationTest;
+
+  /// No description provided for @historyVerses.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count} آية'**
+  String historyVerses(String count);
+
+  /// No description provided for @sessionSummary.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملخّص الجلسة'**
+  String get sessionSummary;
+
+  /// No description provided for @sessionDelete.
+  ///
+  /// In ar, this message translates to:
+  /// **'احذف من السجل'**
+  String get sessionDelete;
+
+  /// No description provided for @sessionSensitivity.
+  ///
+  /// In ar, this message translates to:
+  /// **'حساسية المطابقة: {level}'**
+  String sessionSensitivity(String level);
+
+  /// No description provided for @sessionSlips.
+  ///
+  /// In ar, this message translates to:
+  /// **'مواضع الخطأ'**
+  String get sessionSlips;
+
+  /// No description provided for @hardWordsEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا كلمات صعبة بعد. الكلمة التي تخطئ فيها أو تتخطاها أكثر من مرة تظهر هنا.'**
+  String get hardWordsEmpty;
+
+  /// No description provided for @hardWordsCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count} مرات · آخرها {date}'**
+  String hardWordsCount(String count, String date);
+
+  /// No description provided for @hardWordsHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'آيات هذه الكلمات تأتي أولا في المراجعة.'**
+  String get hardWordsHint;
+
+  /// No description provided for @goalsEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا أهداف بعد. اختر هدفا جاهزا أو اصنع هدفك.'**
+  String get goalsEmpty;
+
+  /// No description provided for @goalNew.
+  ///
+  /// In ar, this message translates to:
+  /// **'هدف جديد'**
+  String get goalNew;
+
+  /// No description provided for @goalTemplateAmma.
+  ///
+  /// In ar, this message translates to:
+  /// **'جزء عمّ في شهرين'**
+  String get goalTemplateAmma;
+
+  /// No description provided for @goalTemplatePageDaily.
+  ///
+  /// In ar, this message translates to:
+  /// **'صفحة يوميا'**
+  String get goalTemplatePageDaily;
+
+  /// No description provided for @goalTemplateHizbWeekly.
+  ///
+  /// In ar, this message translates to:
+  /// **'مراجعة حزب كل أسبوع'**
+  String get goalTemplateHizbWeekly;
+
+  /// No description provided for @goalTemplateFixSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'تثبيت سورة'**
+  String get goalTemplateFixSurah;
+
+  /// No description provided for @goalOpen.
+  ///
+  /// In ar, this message translates to:
+  /// **'هدف مفتوح'**
+  String get goalOpen;
+
+  /// No description provided for @goalOpenHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تختار النطاق والمدة والوحدة'**
+  String get goalOpenHint;
+
+  /// No description provided for @goalFromSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'من سورة'**
+  String get goalFromSurah;
+
+  /// No description provided for @goalToSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلى سورة'**
+  String get goalToSurah;
+
+  /// No description provided for @goalSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'السورة'**
+  String get goalSurah;
+
+  /// No description provided for @goalHizb.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحزب'**
+  String get goalHizb;
+
+  /// No description provided for @goalDays.
+  ///
+  /// In ar, this message translates to:
+  /// **'المدة: {days} يوما'**
+  String goalDays(String days);
+
+  /// No description provided for @goalUnit.
+  ///
+  /// In ar, this message translates to:
+  /// **'الوحدة'**
+  String get goalUnit;
+
+  /// No description provided for @goalCreate.
+  ///
+  /// In ar, this message translates to:
+  /// **'أنشئ الهدف'**
+  String get goalCreate;
+
+  /// No description provided for @goalTodayWird.
+  ///
+  /// In ar, this message translates to:
+  /// **'ورد اليوم'**
+  String get goalTodayWird;
+
+  /// No description provided for @goalMemorize.
+  ///
+  /// In ar, this message translates to:
+  /// **'احفظ'**
+  String get goalMemorize;
+
+  /// No description provided for @goalReview.
+  ///
+  /// In ar, this message translates to:
+  /// **'راجع'**
+  String get goalReview;
+
+  /// No description provided for @goalReviewDue.
+  ///
+  /// In ar, this message translates to:
+  /// **'وحدات مستحقة للمراجعة: {count}'**
+  String goalReviewDue(String count);
+
+  /// No description provided for @goalReviewHard.
+  ///
+  /// In ar, this message translates to:
+  /// **'آيات فيها كلمات صعبة: {count}'**
+  String goalReviewHard(String count);
+
+  /// No description provided for @goalNothingToday.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا ورد اليوم.'**
+  String get goalNothingToday;
+
+  /// No description provided for @goalMasteredShare.
+  ///
+  /// In ar, this message translates to:
+  /// **'متقن {value}'**
+  String goalMasteredShare(String value);
+
+  /// No description provided for @goalLeft.
+  ///
+  /// In ar, this message translates to:
+  /// **'تبقّى {pages} صفحة'**
+  String goalLeft(String pages);
+
+  /// No description provided for @goalUntil.
+  ///
+  /// In ar, this message translates to:
+  /// **'حتى {date}'**
+  String goalUntil(String date);
+
+  /// No description provided for @goalBehind.
+  ///
+  /// In ar, this message translates to:
+  /// **'تبقّى من الأيام الماضية {pages} صفحة'**
+  String goalBehind(String pages);
+
+  /// No description provided for @goalCatchUp.
+  ///
+  /// In ar, this message translates to:
+  /// **'عوّض على أيام'**
+  String get goalCatchUp;
+
+  /// No description provided for @goalExtend.
+  ///
+  /// In ar, this message translates to:
+  /// **'مد الموعد'**
+  String get goalExtend;
+
+  /// No description provided for @goalPause.
+  ///
+  /// In ar, this message translates to:
+  /// **'أوقف مؤقتا'**
+  String get goalPause;
+
+  /// No description provided for @goalResume.
+  ///
+  /// In ar, this message translates to:
+  /// **'استأنف'**
+  String get goalResume;
+
+  /// No description provided for @goalDelete.
+  ///
+  /// In ar, this message translates to:
+  /// **'احذف الهدف'**
+  String get goalDelete;
+
+  /// No description provided for @goalReminder.
+  ///
+  /// In ar, this message translates to:
+  /// **'تذكير يومي'**
+  String get goalReminder;
+
+  /// No description provided for @goalReminderAt.
+  ///
+  /// In ar, this message translates to:
+  /// **'تذكير {time}'**
+  String goalReminderAt(String time);
+
+  /// No description provided for @goalReminderOff.
+  ///
+  /// In ar, this message translates to:
+  /// **'أوقف التذكير'**
+  String get goalReminderOff;
+
+  /// No description provided for @goalPaused.
+  ///
+  /// In ar, this message translates to:
+  /// **'متوقف'**
+  String get goalPaused;
+
+  /// No description provided for @goalComplete.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتمل الهدف، بارك الله فيك.'**
+  String get goalComplete;
+
+  /// No description provided for @goalCountedByMastery.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُحسب التقدّم بالتسميع المتقن، لا بالتعليم باليد.'**
+  String get goalCountedByMastery;
+
+  /// No description provided for @goalReminderTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'ورد الحفظ'**
+  String get goalReminderTitle;
+
+  /// No description provided for @goalReminderBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'احفظ: الصفحات {from}–{to}'**
+  String goalReminderBody(String from, String to);
+
+  /// No description provided for @goalRecite.
+  ///
+  /// In ar, this message translates to:
+  /// **'سمّع'**
+  String get goalRecite;
+
+  /// No description provided for @hifzMapShowMastery.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإتقان'**
+  String get hifzMapShowMastery;
+
+  /// No description provided for @hifzMapShowStrength.
+  ///
+  /// In ar, this message translates to:
+  /// **'القوة'**
+  String get hifzMapShowStrength;
+
+  /// No description provided for @whatsNewHifzProgress.
+  ///
+  /// In ar, this message translates to:
+  /// **'مسيرة الحفظ'**
+  String get whatsNewHifzProgress;
 }
 
 class _AppLocalizationsDelegate
