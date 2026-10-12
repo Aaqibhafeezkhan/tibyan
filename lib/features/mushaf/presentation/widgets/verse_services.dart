@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/interface_style.dart';
+
 import '../../../../core/db/content_database.dart';
 import '../../../../core/db/user_database.dart';
 import '../../../../core/theme/app_theme.dart';
@@ -359,7 +361,7 @@ class VerseServicesPanel extends StatelessWidget {
     return Material(
       color: t.paper,
       elevation: 12,
-      shadowColor: Colors.black54,
+      shadowColor: context.look.frame.withValues(alpha: .5),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
