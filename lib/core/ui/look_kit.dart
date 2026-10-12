@@ -627,7 +627,36 @@ class LookTheme extends StatelessWidget {
         );
     final tokens = theme.extension<TibyanTokens>();
     final dressed = look.screens(theme);
+    final (accent, onAccent) = strongPair(
+      look.isLayli && !look.night ? look.accent2 : look.accent,
+      look.night ? look.bg : look.surface,
+      4.5,
+    );
     return dressed.copyWith(
+      // The roles [UiLook.screens] leaves to the page style: segmented
+      // buttons, containers and accents.
+      colorScheme: dressed.colorScheme.copyWith(
+        tertiary: accent,
+        onTertiary: onAccent,
+        secondaryContainer: Color.alphaBlend(
+          look.control.withValues(alpha: look.night ? .30 : .16),
+          look.surface,
+        ),
+        onSecondaryContainer: look.ink,
+        primaryContainer: Color.alphaBlend(
+          look.control.withValues(alpha: look.night ? .30 : .16),
+          look.surface,
+        ),
+        onPrimaryContainer: look.ink,
+        surfaceContainerLowest: look.surface,
+        surfaceContainerLow: look.surface,
+        surfaceContainer: look.row,
+        surfaceContainerHigh: look.row,
+        surfaceContainerHighest: Color.alphaBlend(
+          look.ink.withValues(alpha: .06),
+          look.surface,
+        ),
+      ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: look.control,
         linearTrackColor: look.line,

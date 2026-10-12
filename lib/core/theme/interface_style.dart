@@ -424,6 +424,9 @@ class UiLook extends ThemeExtension<UiLook> {
   /// Controls and cards of the app's own screens in this look, merged
   /// into [base] (the mushaf theme stays on the reading screens).
   ThemeData screens(ThemeData base) {
+    // Keep the interface face (as [overlays] does).
+    TextStyle f(TextStyle t) =>
+        (base.textTheme.bodyMedium ?? const TextStyle()).merge(t);
     final scheme = base.colorScheme.copyWith(
       primary: control,
       onPrimary: onControl,
@@ -494,8 +497,9 @@ class UiLook extends ThemeExtension<UiLook> {
         checkmarkColor: onControl,
         backgroundColor: surface,
         side: BorderSide(color: line),
-        labelStyle: TextStyle(color: ink),
-        secondaryLabelStyle: TextStyle(color: onControl),
+        // Merged into the interface face: a bare TextStyle lost it.
+        labelStyle: f(TextStyle(color: ink)),
+        secondaryLabelStyle: f(TextStyle(color: onControl)),
       ),
       tabBarTheme: TabBarThemeData(
         labelColor: isMakhtuta
