@@ -191,6 +191,17 @@ class TasmeeSettingsScreen extends ConsumerWidget {
                     _ => '',
                   }, style: TextStyle(color: t.muted)),
                 ),
+                SwitchListTile(
+                  key: const ValueKey('tasmee-model-auto-update'),
+                  secondary: const Icon(Icons.wifi),
+                  title: Text(l.tasmeeAutoUpdateModel),
+                  subtitle: Text(
+                    l.tasmeeAutoUpdateModelHint,
+                    style: TextStyle(color: t.muted),
+                  ),
+                  value: s.autoUpdateModel,
+                  onChanged: c.setAutoUpdateModel,
+                ),
                 if (update != null)
                   ListTile(
                     key: const ValueKey('tasmee-model-update'),

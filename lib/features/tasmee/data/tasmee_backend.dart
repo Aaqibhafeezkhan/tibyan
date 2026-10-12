@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/recitation_recognizer.dart';
+import 'model_auto_updater.dart';
 import 'model_downloader.dart';
 import 'model_manifest.dart';
 import 'model_store.dart';
@@ -52,7 +53,13 @@ class _Capture implements TasmeeMicrophone {
 class TasmeeBackend {
   const TasmeeBackend();
 
-  Future<ModelStore> _store() => ModelStore.inAppSupport();
+  Future<ModelStore> _store() => modelStore();
+
+  /// Where the models live.
+  Future<ModelStore> modelStore() => ModelStore.inAppSupport();
+
+  /// Fetches a newer model's files on Wi‑Fi only, in the background.
+  WifiFileFetcher wifiFetcher() => BackgroundWifiFetcher();
 
   /// The installed recognition model, or null.
   Future<InstalledModel?> installedModel() async =>
@@ -127,3 +134,14 @@ class TasmeeBackend {
 final tasmeeBackendProvider = Provider<TasmeeBackend>(
   (ref) => const TasmeeBackend(),
 );
+
+/// The recognition model on the device (for About › Sources), or null.
+final installedRecitationModelProvider =
+    FutureProvider.autoDispose<ModelManifest?>((ref) async {
+      try {
+        return (await ref.watch(tasmeeBackendProvider).installedModel())
+            ?.manifest;
+      } catch (_) {
+        return null;
+      }
+    });

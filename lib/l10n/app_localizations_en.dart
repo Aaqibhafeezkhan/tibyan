@@ -3070,4 +3070,26 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get newFocusBody =>
       'The page alone, frameless and filling the screen, tools when you need them, and a small player you can drag anywhere.';
+
+  @override
+  String get tasmeeAutoUpdateModel => 'Update the model automatically on Wi‑Fi';
+
+  @override
+  String get tasmeeAutoUpdateModelHint =>
+      'The newer version downloads in the background; the current one keeps working until it is complete';
+
+  @override
+  String tasmeeModelUpdated(String version) {
+    return 'The tasmee model was updated to version $version';
+  }
+
+  @override
+  String sourceInstalledVersion(String version) {
+    return 'Installed version: $version';
+  }
+
+  @override
+  String sourceAlsoCredited(String names) {
+    return 'Also credited: $names';
+  }
 }

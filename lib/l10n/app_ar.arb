@@ -2179,5 +2179,31 @@
   "newAssistant": "المساعد وعلامات التجويد",
   "newAssistantBody": "شاشة جديدة فيها أحكام التجويد بألوانها، ولكل حكم مواضعه في المصحف.",
   "newFocus": "وضع التركيز",
-  "newFocusBody": "الصفحة وحدها بلا إطار وتملأ الشاشة، والأدوات عند الحاجة، ومشغّل صغير تسحبه أينما شئت."
+  "newFocusBody": "الصفحة وحدها بلا إطار وتملأ الشاشة، والأدوات عند الحاجة، ومشغّل صغير تسحبه أينما شئت.",
+  "tasmeeAutoUpdateModel": "تحديث النموذج تلقائيًا على الواي فاي",
+  "tasmeeAutoUpdateModelHint": "يُنزَّل الإصدار الأحدث في الخلفية ويبقى الحالي يعمل حتى يكتمل",
+  "tasmeeModelUpdated": "تم تحديث نموذج التسميع إلى الإصدار {version}",
+  "@tasmeeModelUpdated": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "sourceInstalledVersion": "الإصدار المثبّت: {version}",
+  "@sourceInstalledVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "sourceAlsoCredited": "ويُنسب أيضًا إلى: {names}",
+  "@sourceAlsoCredited": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  }
 }

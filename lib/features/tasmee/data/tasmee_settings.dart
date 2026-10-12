@@ -76,6 +76,7 @@ class TasmeeSettings {
     this.vibration = true,
     this.strictness = MatchStrictness.medium,
     this.firstUseSeen = false,
+    this.autoUpdateModel = true,
     this.last,
   });
 
@@ -89,6 +90,9 @@ class TasmeeSettings {
 
   /// The notice «it checks your memorisation, not your tajweed» was read.
   final bool firstUseSeen;
+
+  /// A newer recognition model is downloaded on Wi‑Fi without asking.
+  final bool autoUpdateModel;
   final LastTasmee? last;
 
   static const minToast = 1;
@@ -108,6 +112,7 @@ class TasmeeSettingsController extends Notifier<TasmeeSettings> {
   static const _kStrictness = 'tasmee.strictness';
   static const _kFirstUse = 'tasmee.firstUseSeen';
   static const _kLast = 'tasmee.last';
+  static const kAutoUpdateModel = 'tasmee.autoUpdateModel';
 
   SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
 
@@ -141,6 +146,7 @@ class TasmeeSettingsController extends Notifier<TasmeeSettings> {
         MatchStrictness.medium,
       ),
       firstUseSeen: p.getBool(_kFirstUse) ?? false,
+      autoUpdateModel: p.getBool(kAutoUpdateModel) ?? true,
       last: last,
     );
   }
@@ -152,6 +158,7 @@ class TasmeeSettingsController extends Notifier<TasmeeSettings> {
     bool? vibration,
     MatchStrictness? strictness,
     bool? firstUseSeen,
+    bool? autoUpdateModel,
     LastTasmee? Function()? last,
   }) => TasmeeSettings(
     mode: mode ?? state.mode,
@@ -160,6 +167,7 @@ class TasmeeSettingsController extends Notifier<TasmeeSettings> {
     vibration: vibration ?? state.vibration,
     strictness: strictness ?? state.strictness,
     firstUseSeen: firstUseSeen ?? state.firstUseSeen,
+    autoUpdateModel: autoUpdateModel ?? state.autoUpdateModel,
     last: last == null ? state.last : last(),
   );
 
@@ -187,6 +195,11 @@ class TasmeeSettingsController extends Notifier<TasmeeSettings> {
   Future<void> setStrictness(MatchStrictness v) async {
     state = _copy(strictness: v);
     await _prefs.setString(_kStrictness, v.name);
+  }
+
+  Future<void> setAutoUpdateModel(bool v) async {
+    state = _copy(autoUpdateModel: v);
+    await _prefs.setBool(kAutoUpdateModel, v);
   }
 
   Future<void> setFirstUseSeen() async {
