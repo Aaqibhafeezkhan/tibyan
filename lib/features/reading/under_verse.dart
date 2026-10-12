@@ -59,7 +59,7 @@ class UnderVerseTexts extends ConsumerWidget {
                     ? 'IBMPlexSans'
                     : settings.tafsirFont == TafsirFont.naskh
                     ? 'UthmanTahaNaskh'
-                    : settings.uiFont.family;
+                    : settings.uiFont.textFamily;
                 return Padding(
                   padding: const EdgeInsets.only(top: 6),
                   child: Column(

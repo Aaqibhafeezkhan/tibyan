@@ -3671,4 +3671,11 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get newJourneyBody =>
       'كل تسميع يُحفظ ويقيس إتقانك: نسب لكل سورة وجزء، وخريطة إتقان، والكلمات التي تخطئ فيها، وأهداف حفظ بورد يومي.';
+
+  @override
+  String get digitsFontTitle => 'خط الأرقام في الواجهة (Tibyan Digits)';
+
+  @override
+  String get digitsFontNote =>
+      'أرقام الواجهة كلها بخط واحد واضح: مقتطع من IBM Plex Sans Arabic (حقوقه لشركة IBM، 2017) يضم الأرقام وحدها، وسُمّي باسم جديد لأن «Plex» اسم محجوز. الرخصة: رخصة الخطوط المفتوحة SIL OFL 1.1، وهي تبيح الاقتطاع والتعديل بشرط تغيير الاسم وبقاء الرخصة نفسها.';
 }

@@ -107,6 +107,19 @@ flutter:
     - assets/brand/
 
   fonts:
+    # Interface digits (Western, Arabic-Indic, Persian), named ahead of
+    # Changa (its ٢ and ٣ read alike): a digits-only subset of IBM Plex Sans Arabic, renamed
+    # ("Plex" is a Reserved Font Name). SIL OFL 1.1
+    - family: TibyanDigits
+      fonts:
+        - asset: assets/fonts/ofl/tibyandigits/TibyanDigits-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/ofl/tibyandigits/TibyanDigits-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/ofl/tibyandigits/TibyanDigits-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/ofl/tibyandigits/TibyanDigits-Bold.ttf
+          weight: 700
     # Interface (Arabic). SIL OFL 1.1
     - family: IBMPlexSansArabic
       fonts:

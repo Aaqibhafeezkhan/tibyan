@@ -12,7 +12,16 @@ enum UiFont {
 
   const UiFont(this.family);
   final String family;
+
+  /// The family interface text names: Changa's digits (its ٢ and ٣ read
+  /// alike) give way to [digitsFamily], Changa itself then drawing every
+  /// other letter as the theme's first fallback.
+  String get textFamily => this == changa ? digitsFamily : family;
 }
+
+/// Digits only (Western, Arabic-Indic and Persian), cut from IBM Plex Sans
+/// Arabic with Changa's line metrics, so a line keeps its height.
+const digitsFamily = 'TibyanDigits';
 
 /// Theme values that Material's [ColorScheme] has no slot for.
 /// Widgets read these instead of hard-coding colours.
@@ -168,8 +177,12 @@ ThemeData buildTheme({
     colorScheme: scheme,
     brightness: brightness,
     scaffoldBackgroundColor: t.bg,
-    fontFamily: uiFont.family,
-    fontFamilyFallback: const ['IBMPlexSansArabic', 'IBMPlexSans'],
+    fontFamily: uiFont.textFamily,
+    fontFamilyFallback: [
+      if (uiFont.textFamily != uiFont.family) uiFont.family,
+      'IBMPlexSansArabic',
+      'IBMPlexSans',
+    ],
     materialTapTargetSize: MaterialTapTargetSize.padded,
   );
 

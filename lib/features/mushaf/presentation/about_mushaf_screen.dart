@@ -181,6 +181,14 @@ class AboutMushafScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
+                  Card(
+                    child: ExpansionTile(
+                      title: Text(l.digitsFontTitle),
+                      expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                      childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      children: [Text(l.digitsFontNote)],
+                    ),
+                  ),
                 ],
               ),
             ),
