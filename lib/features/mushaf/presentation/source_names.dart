@@ -345,8 +345,7 @@ const _en = <String, SourceText>{
 const bundledSources = [
   (
     key: 'kfgqpc-qcf4-surah-names',
-    url:
-        'https://tibyan.ahmedhelal.dev/mirror/sources/kfgqpc-qcf4-surah-names/',
+    url: 'https://github.com/nuqayah/qpc-fonts/tree/8a4f39d563ea69c994416a1692827e38156c548d/mushaf-v4-hafs',
     version: '8a4f39d563ea69c994416a1692827e38156c548d',
   ),
   (
