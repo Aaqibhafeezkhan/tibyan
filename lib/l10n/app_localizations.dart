@@ -5454,6 +5454,30 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'البيانات والخصوصية'**
   String get settingsGroupData;
+
+  /// No description provided for @newLook.
+  ///
+  /// In ar, this message translates to:
+  /// **'شكل جديد للواجهة'**
+  String get newLook;
+
+  /// No description provided for @newLookBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'ثلاثة أشكال تختار منها في الإعدادات: هندسي ومخطوطة وليلي ذهبي، بأسماء السور بخط مجمع الملك فهد، وعلامات المكية والمدنية.'**
+  String get newLookBody;
+
+  /// No description provided for @newModelUpdate.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث نموذج التسميع تلقائيًا'**
+  String get newModelUpdate;
+
+  /// No description provided for @newModelUpdateBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'حين يتحسّن نموذج التسميع ينزل وحده على الواي فاي، ويظل القديم يعمل حتى يكتمل الجديد.'**
+  String get newModelUpdateBody;
 }
 
 class _AppLocalizationsDelegate

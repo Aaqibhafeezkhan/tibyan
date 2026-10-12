@@ -3100,4 +3100,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get settingsGroupData => 'البيانات والخصوصية';
+
+  @override
+  String get newLook => 'شكل جديد للواجهة';
+
+  @override
+  String get newLookBody =>
+      'ثلاثة أشكال تختار منها في الإعدادات: هندسي ومخطوطة وليلي ذهبي، بأسماء السور بخط مجمع الملك فهد، وعلامات المكية والمدنية.';
+
+  @override
+  String get newModelUpdate => 'تحديث نموذج التسميع تلقائيًا';
+
+  @override
+  String get newModelUpdateBody =>
+      'حين يتحسّن نموذج التسميع ينزل وحده على الواي فاي، ويظل القديم يعمل حتى يكتمل الجديد.';
 }

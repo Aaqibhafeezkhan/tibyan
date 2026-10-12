@@ -1349,5 +1349,9 @@
   "interfaceStyleLayli": "Night gold",
   "settingsGroupAppearance": "Appearance",
   "settingsGroupListening": "Listening and recitation",
-  "settingsGroupData": "Data and privacy"
+  "settingsGroupData": "Data and privacy",
+  "newLook": "A new look",
+  "newLookBody": "Three styles to choose from in Settings: Geometric, Manuscript and Night gold, with surah names in the King Fahd Complex's calligraphy and Meccan/Medinan emblems.",
+  "newModelUpdate": "Automatic tasmee model updates",
+  "newModelUpdateBody": "When the recitation model improves, it downloads by itself on Wi‑Fi, and the old one keeps working until the new one is complete."
 }

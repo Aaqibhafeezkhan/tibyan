@@ -3126,4 +3126,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsGroupData => 'Data and privacy';
+
+  @override
+  String get newLook => 'A new look';
+
+  @override
+  String get newLookBody =>
+      'Three styles to choose from in Settings: Geometric, Manuscript and Night gold, with surah names in the King Fahd Complex\'s calligraphy and Meccan/Medinan emblems.';
+
+  @override
+  String get newModelUpdate => 'Automatic tasmee model updates';
+
+  @override
+  String get newModelUpdateBody =>
+      'When the recitation model improves, it downloads by itself on Wi‑Fi, and the old one keeps working until the new one is complete.';
 }
