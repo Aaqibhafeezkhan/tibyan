@@ -6,8 +6,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../theme/app_theme.dart';
+import '../theme/contrast.dart';
 import '../theme/interface_style.dart';
 import '../theme/ornaments.dart';
+import '../theme/theme_tokens.dart';
 
 /// Wider than this, screens get the side rail and two columns.
 const wideBreakpoint = 900.0;
@@ -573,4 +576,77 @@ class LookSheetHeader extends StatelessWidget {
       ],
     );
   }
+}
+
+/// [base]'s colours re-read from [l], for widgets that still read the
+/// mushaf style's [TibyanTokens]: inside a [LookTheme] they take the
+/// interface style's colours. The highlight and the art tint stay.
+ModeTokens lookModeTokens(UiLook l, ModeTokens base) {
+  final (accent, accentFg) = strongPair(
+    l.isLayli && !l.night ? l.accent2 : l.accent,
+    l.night ? l.bg : l.surface,
+    4.5,
+  );
+  return ModeTokens(
+    bg: l.bg,
+    paper: l.surface,
+    ink: l.ink,
+    muted: l.sub,
+    border: l.line,
+    frame: l.isHandasi ? l.accent : l.gold,
+    marker: l.gold,
+    goldText: l.goldText,
+    headBg: l.frame,
+    headFg: l.onFrame,
+    accent: accent,
+    accentFg: accentFg,
+    player: l.frame,
+    playerFg: l.onFrame,
+    highlight: base.highlight,
+    control: l.control,
+    onControl: l.onControl,
+    artTint: base.artTint,
+  );
+}
+
+/// Dresses [child] in the interface style: its controls, cards, overlays
+/// and the colours read through [TibyanTokens]. For the app's own screens
+/// and the chrome over the mushaf (bars, panels, sheets), never the page.
+class LookTheme extends StatelessWidget {
+  const LookTheme({super.key, required this.child});
+
+  final Widget child;
+
+  /// [theme] dressed in its interface style.
+  static ThemeData of(ThemeData theme) {
+    final look =
+        theme.extension<UiLook>() ??
+        UiLook.of(
+          defaultInterfaceStyle,
+          night: theme.brightness == Brightness.dark,
+        );
+    final tokens = theme.extension<TibyanTokens>();
+    final dressed = look.screens(theme);
+    return dressed.copyWith(
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: look.control,
+        linearTrackColor: look.line,
+        circularTrackColor: look.line,
+      ),
+      sliderTheme: dressed.sliderTheme.copyWith(
+        activeTrackColor: look.control,
+        thumbColor: look.control,
+        inactiveTrackColor: look.line,
+      ),
+      extensions: [
+        look,
+        if (tokens != null)
+          tokens.copyWith(colors: lookModeTokens(look, tokens.colors)),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      Theme(data: LookTheme.of(Theme.of(context)), child: child);
 }
