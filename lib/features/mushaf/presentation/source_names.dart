@@ -1,3 +1,5 @@
+import '../../tasmee/data/model_manifest.dart';
+
 /// How each source in content.db is named in the interface, in Arabic and
 /// English: title, publisher, licence and credit line. Keyed by the
 /// source's `key`. A source's published notice (for example Tanzil's) is
@@ -413,3 +415,59 @@ const reciterPhotoCredits = [
 /// then shown as stored).
 SourceText? sourceText(String key, String languageCode) =>
     (languageCode == 'ar' ? _ar : _en)[key];
+
+/// The key of the tasmee's recognition model in [bundledSources].
+const recitationModelSourceKey = 'nvidia-stt-ar-fastconformer';
+
+/// The recognition model as About › Sources shows it: what the INSTALLED
+/// model's manifest says (its version, licence, published attribution and
+/// any `credits`), or the static entry when no model is installed.
+/// [published] is the manifest's attribution exactly as published (shown
+/// untranslated); [credits] are the extra names in the interface language.
+({
+  SourceText text,
+  String version,
+  bool installed,
+  String? published,
+  List<String> credits,
+})
+recitationModelSource(ModelManifest? installed, String languageCode) {
+  final named = sourceText(recitationModelSourceKey, languageCode)!;
+  final fallbackVersion = bundledSources
+      .firstWhere((s) => s.key == recitationModelSourceKey)
+      .version
+      .substring(0, 7);
+  if (installed == null) {
+    return (
+      text: named,
+      version: fallbackVersion,
+      installed: false,
+      published: null,
+      credits: const [],
+    );
+  }
+  var credits = installed.credits;
+  final attribution = installed.attribution;
+  // A version trained on the volunteers' recitations names them in its
+  // attribution even before its manifest carries `credits`.
+  if (credits.isEmpty &&
+      attribution != null &&
+      attribution.contains('Tibyan volunteers')) {
+    credits = const [ModelCredit(ar: 'متطوعو تبيان', en: 'Tibyan volunteers')];
+  }
+  final license = installed.license == 'CC-BY-4.0'
+      ? named.license
+      : installed.license;
+  return (
+    text: (
+      title: named.title,
+      publisher: named.publisher,
+      license: license,
+      credit: named.credit,
+    ),
+    version: installed.version,
+    installed: true,
+    published: attribution,
+    credits: [for (final c in credits) c.name(languageCode)],
+  );
+}

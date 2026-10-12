@@ -9,6 +9,7 @@ import '../../../core/db/content_database.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../mushaf/mushaf_providers.dart';
+import '../data/model_auto_updater.dart';
 import '../data/model_update_checker.dart';
 import '../data/tasmee_settings.dart';
 import '../data/tasmee_words_repository.dart';
@@ -125,6 +126,28 @@ class _TasmeeSetupSheetState extends ConsumerState<TasmeeSetupSheet> {
     final s = ref.read(tasmeeSettingsProvider);
     _mode = s.mode;
     _onError = s.onError;
+    WidgetsBinding.instance.addPostFrameCallback((_) => _modelUpdate());
+  }
+
+  /// Opening the tasmee: a model switched since is announced once, and a
+  /// newer one is fetched quietly on Wi‑Fi (at most one check a day).
+  Future<void> _modelUpdate() async {
+    final updater = ref.read(tasmeeModelAutoUpdaterProvider);
+    void announce(String? version) {
+      if (version == null || !mounted) return;
+      final n = int.tryParse(version);
+      ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)
+                .tasmeeModelUpdated(n == null ? version : context.digits(n)),
+          ),
+        ),
+      );
+    }
+
+    announce(updater.takeNotice());
+    if (await updater.run() != null) announce(updater.takeNotice());
   }
 
   RecitationRange _range() => switch (_kind) {

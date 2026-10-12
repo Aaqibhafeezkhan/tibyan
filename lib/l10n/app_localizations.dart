@@ -5358,6 +5358,36 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'الصفحة وحدها بلا إطار وتملأ الشاشة، والأدوات عند الحاجة، ومشغّل صغير تسحبه أينما شئت.'**
   String get newFocusBody;
+
+  /// No description provided for @tasmeeAutoUpdateModel.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث النموذج تلقائيًا على الواي فاي'**
+  String get tasmeeAutoUpdateModel;
+
+  /// No description provided for @tasmeeAutoUpdateModelHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُنزَّل الإصدار الأحدث في الخلفية ويبقى الحالي يعمل حتى يكتمل'**
+  String get tasmeeAutoUpdateModelHint;
+
+  /// No description provided for @tasmeeModelUpdated.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم تحديث نموذج التسميع إلى الإصدار {version}'**
+  String tasmeeModelUpdated(String version);
+
+  /// No description provided for @sourceInstalledVersion.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإصدار المثبّت: {version}'**
+  String sourceInstalledVersion(String version);
+
+  /// No description provided for @sourceAlsoCredited.
+  ///
+  /// In ar, this message translates to:
+  /// **'ويُنسب أيضًا إلى: {names}'**
+  String sourceAlsoCredited(String names);
 }
 
 class _AppLocalizationsDelegate

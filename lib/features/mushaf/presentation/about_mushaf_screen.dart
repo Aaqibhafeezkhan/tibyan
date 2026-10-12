@@ -5,6 +5,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../audio/recitation.dart';
 import '../../../l10n/app_localizations.dart';
 import '../mushaf_providers.dart';
+import '../../tasmee/data/tasmee_backend.dart';
 import 'source_names.dart';
 
 /// Where the text and pages come from, their licences, and open review notes.
@@ -84,35 +85,38 @@ class AboutMushafScreen extends ConsumerWidget {
               ),
             ),
           for (final s in bundledSources)
-            Card(
-              child: Builder(
-                builder: (context) {
-                  final named = sourceText(
-                    s.key,
-                    Localizations.localeOf(context).languageCode,
-                  )!;
-                  return ExpansionTile(
-                    title: Text(named.title),
-                    subtitle: Text(
-                      named.publisher,
-                      style: TextStyle(color: t.muted),
-                    ),
-                    expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                    childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                    children: [
-                      Text(l.versionShort(s.version.substring(0, 7))),
-                      Text(l.licenseLabel(named.license)),
-                      SelectableText(
-                        s.url,
-                        style: TextStyle(color: t.goldText),
+            if (s.key == recitationModelSourceKey)
+              _RecitationModelSource(url: s.url)
+            else
+              Card(
+                child: Builder(
+                  builder: (context) {
+                    final named = sourceText(
+                      s.key,
+                      Localizations.localeOf(context).languageCode,
+                    )!;
+                    return ExpansionTile(
+                      title: Text(named.title),
+                      subtitle: Text(
+                        named.publisher,
+                        style: TextStyle(color: t.muted),
                       ),
-                      const SizedBox(height: 6),
-                      Text(named.credit, style: TextStyle(color: t.muted)),
-                    ],
-                  );
-                },
+                      expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                      childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      children: [
+                        Text(l.versionShort(s.version.substring(0, 7))),
+                        Text(l.licenseLabel(named.license)),
+                        SelectableText(
+                          s.url,
+                          style: TextStyle(color: t.goldText),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(named.credit, style: TextStyle(color: t.muted)),
+                      ],
+                    );
+                  },
+                ),
               ),
-            ),
           Card(
             child: ExpansionTile(
               title: Text(l.reciterPhotosTitle),
@@ -141,6 +145,60 @@ class AboutMushafScreen extends ConsumerWidget {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The tasmee's model as installed: its manifest's version, licence and
+/// credits (the static entry when none is installed).
+class _RecitationModelSource extends ConsumerWidget {
+  const _RecitationModelSource({required this.url});
+
+  final String url;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
+    final t = context.tokens.colors;
+    final src = recitationModelSource(
+      ref.watch(installedRecitationModelProvider).value,
+      Localizations.localeOf(context).languageCode,
+    );
+    return Card(
+      child: ExpansionTile(
+        key: const ValueKey('source-recitation-model'),
+        title: Text(src.text.title),
+        subtitle: Text(src.text.publisher, style: TextStyle(color: t.muted)),
+        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        children: [
+          Text(
+            src.installed
+                ? l.sourceInstalledVersion(src.version)
+                : l.versionShort(src.version),
+          ),
+          Text(l.licenseLabel(src.text.license)),
+          SelectableText(url, style: TextStyle(color: t.goldText)),
+          const SizedBox(height: 6),
+          Text(src.text.credit, style: TextStyle(color: t.muted)),
+          if (src.credits.isNotEmpty)
+            Text(
+              l.sourceAlsoCredited(src.credits.join('، ')),
+              style: TextStyle(color: t.muted),
+            ),
+          if (src.published != null) ...[
+            const SizedBox(height: 8),
+            // The credit as published with the model, untranslated.
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: SelectableText(
+                src.published!,
+                style: const TextStyle(fontSize: 12, height: 1.5),
+              ),
+            ),
+          ],
         ],
       ),
     );

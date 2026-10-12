@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:tibyan/features/tasmee/data/model_auto_updater.dart';
 import 'package:tibyan/features/tasmee/data/model_downloader.dart';
 import 'package:tibyan/features/tasmee/data/model_manifest.dart';
 import 'package:tibyan/features/tasmee/data/model_store.dart';
@@ -137,6 +138,17 @@ class FakeBackend extends TasmeeBackend {
     return fakeModel(version: manifest.version);
   }
 
+  /// Wi‑Fi fetches the automatic update asked for (none succeeds here).
+  final wifiFetches = <String>[];
+
+  late final _models = Directory.systemTemp.createTempSync('tasmee_models');
+
+  @override
+  Future<ModelStore> modelStore() async => ModelStore(_models);
+
+  @override
+  WifiFileFetcher wifiFetcher() => FakeWifiFetcher(onFetch: wifiFetches.add);
+
   @override
   Future<int> usedBytes() async => installed ? 131665482 : 0;
 
@@ -155,6 +167,30 @@ class FakeBackend extends TasmeeBackend {
   @override
   Future<bool> openDeviceSettings() async {
     settingsOpened++;
+    return true;
+  }
+}
+
+/// A Wi‑Fi fetcher that writes [bodies] (by URL) or fails (no Wi‑Fi).
+class FakeWifiFetcher implements WifiFileFetcher {
+  FakeWifiFetcher({this.bodies = const {}, this.onFetch});
+
+  final Map<String, List<int>> bodies;
+  final void Function(String taskId)? onFetch;
+  bool wifi = true;
+  int fetches = 0;
+
+  @override
+  Future<bool> fetch({
+    required String taskId,
+    required Uri url,
+    required File dest,
+  }) async {
+    fetches++;
+    onFetch?.call(taskId);
+    final body = bodies[url.toString()];
+    if (!wifi || body == null) return false;
+    await dest.writeAsBytes(body, flush: true);
     return true;
   }
 }

@@ -112,6 +112,7 @@ class ModelManifest {
     required this.files,
     this.engine = ModelEngine.sherpaWhisper,
     this.attribution,
+    this.credits = const [],
   });
 
   /// e.g. `whisper-base-ar-quran`.
@@ -130,6 +131,11 @@ class ModelManifest {
 
   /// The credit the licence asks for (CC-BY), as published with the model.
   final String? attribution;
+
+  /// Who else is credited for this version (optional `credits`), for
+  /// example the volunteers whose recitations trained it. An entry that
+  /// cannot be read is skipped: credits never keep a model from installing.
+  final List<ModelCredit> credits;
 
   int get totalBytes => files.fold(0, (sum, f) => sum + f.bytes);
 
@@ -177,6 +183,7 @@ class ModelManifest {
       files: List.unmodifiable(specs),
       engine: engine,
       attribution: (attribution as String?)?.trim(),
+      credits: ModelCredit.listFromJson(json['credits']),
     );
   }
 
@@ -186,6 +193,56 @@ class ModelManifest {
     'license': license,
     'engine': engine,
     if (attribution != null) 'attribution': attribution,
+    if (credits.isNotEmpty) 'credits': [for (final c in credits) c.toJson()],
     'files': [for (final f in files) f.toJson()],
+  };
+}
+
+/// One entry of a manifest's optional `credits`:
+/// `{"ar": "متطوعو تبيان", "en": "Tibyan volunteers", "role": "recitations",
+/// "url": "https://train.altibyan.app"}`. `ar` or `en` is required (one is
+/// used for the other when missing); `role` and `url` are optional.
+class ModelCredit {
+  const ModelCredit({required this.ar, required this.en, this.role, this.url});
+
+  final String ar;
+  final String en;
+
+  /// What was contributed, e.g. `recitations`, `fine-tuning`.
+  final String? role;
+  final String? url;
+
+  /// The name in the interface language (Arabic, else English).
+  String name(String languageCode) => languageCode == 'ar' ? ar : en;
+
+  static String? _text(Object? v, int max) {
+    if (v is! String) return null;
+    final t = v.trim();
+    return t.isEmpty || t.length > max ? null : t;
+  }
+
+  static ModelCredit? fromJson(Object? json) {
+    if (json is! Map) return null;
+    final ar = _text(json['ar'], 200), en = _text(json['en'], 200);
+    if (ar == null && en == null) return null;
+    final url = _text(json['url'], 300);
+    final uri = url == null ? null : Uri.tryParse(url);
+    return ModelCredit(
+      ar: ar ?? en!,
+      en: en ?? ar!,
+      role: _text(json['role'], 64),
+      url: uri != null && uri.scheme == 'https' ? url : null,
+    );
+  }
+
+  static List<ModelCredit> listFromJson(Object? json) => json is List
+      ? List.unmodifiable([for (final e in json.take(20)) ?fromJson(e)])
+      : const [];
+
+  Map<String, dynamic> toJson() => {
+    'ar': ar,
+    'en': en,
+    if (role != null) 'role': role,
+    if (url != null) 'url': url,
   };
 }

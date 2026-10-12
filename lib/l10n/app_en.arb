@@ -1333,5 +1333,10 @@
   "newAssistant": "The Assistant and tajweed marks",
   "newAssistantBody": "A new screen with the tajweed rules and their colours, each with its places in the mushaf.",
   "newFocus": "Focus mode",
-  "newFocusBody": "The page alone, frameless and filling the screen, tools when you need them, and a small player you can drag anywhere."
+  "newFocusBody": "The page alone, frameless and filling the screen, tools when you need them, and a small player you can drag anywhere.",
+  "tasmeeAutoUpdateModel": "Update the model automatically on Wi‑Fi",
+  "tasmeeAutoUpdateModelHint": "The newer version downloads in the background; the current one keeps working until it is complete",
+  "tasmeeModelUpdated": "The tasmee model was updated to version {version}",
+  "sourceInstalledVersion": "Installed version: {version}",
+  "sourceAlsoCredited": "Also credited: {names}"
 }

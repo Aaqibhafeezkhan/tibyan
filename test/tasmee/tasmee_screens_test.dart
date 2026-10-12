@@ -3,11 +3,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tibyan/core/settings/settings_controller.dart';
 import 'package:tibyan/core/theme/app_theme.dart';
 import 'package:tibyan/core/theme/theme_tokens.dart';
 import 'package:tibyan/features/mushaf/presentation/about_mushaf_screen.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/page_interaction.dart';
+import 'package:tibyan/features/tasmee/data/model_auto_updater.dart';
 import 'package:tibyan/features/tasmee/data/model_update_checker.dart';
 import 'package:tibyan/features/tasmee/data/tasmee_backend.dart';
 import 'package:tibyan/features/tasmee/data/tasmee_settings.dart';
@@ -283,6 +285,55 @@ void main() {
       expect(find.byKey(const ValueKey('tasmee-model-update')), findsNothing);
     });
 
+    testWidgets('a newer model is fetched on Wi‑Fi without asking', (
+      tester,
+    ) async {
+      final b = FakeBackend(mirrorVersion: '2');
+      await pumpScreen(tester, setup, backend: b);
+      // Let the real file work of the update run.
+      for (var i = 0; i < 20 && b.wifiFetches.isEmpty; i++) {
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 20)),
+        );
+        await tester.pump();
+      }
+      // The Wi‑Fi-only fetch was tried (it fails here: the calm offer with
+      // its size stays, for mobile data).
+      expect(b.wifiFetches, isNotEmpty);
+      expect(find.byKey(const ValueKey('tasmee-model-update')), findsOneWidget);
+    });
+
+    testWidgets('the setting off: no automatic fetch, the offer stays', (
+      tester,
+    ) async {
+      final b = FakeBackend(mirrorVersion: '2');
+      await pumpScreen(
+        tester,
+        setup,
+        backend: b,
+        prefs: {...seen, TasmeeSettingsController.kAutoUpdateModel: false},
+      );
+      expect(b.wifiFetches, isEmpty);
+      expect(find.byKey(const ValueKey('tasmee-model-update')), findsOneWidget);
+    });
+
+    testWidgets('after a switch, the new version is announced once', (
+      tester,
+    ) async {
+      final (container, _, _) = await pumpScreen(
+        tester,
+        setup,
+        prefs: {...seen, ModelAutoUpdater.kUpdatedNotice: '2'},
+      );
+      expect(find.text('تم تحديث نموذج التسميع إلى الإصدار ٢'), findsOneWidget);
+      expect(
+        container
+            .read(sharedPreferencesProvider)
+            .getString(ModelAutoUpdater.kUpdatedNotice),
+        isNull,
+      );
+    });
+
     testWidgets('offline: quietly no offer', (tester) async {
       final b = FakeBackend(mirrorVersion: null);
       await pumpScreen(tester, setup, backend: b);
@@ -507,6 +558,9 @@ void main() {
     await tester.tap(title);
     await settle(tester);
     expect(find.textContaining('CC BY 4.0'), findsWidgets);
+    // The installed model's own version and published credit.
+    expect(find.text('الإصدار المثبّت: 1'), findsOneWidget);
+    expect(find.textContaining('quantised to int8 by Tibyan.'), findsOneWidget);
     expect(
       find.text(
         'https://huggingface.co/nvidia/stt_ar_fastconformer_hybrid_large_pcd_v1.0',
@@ -542,6 +596,15 @@ void main() {
       200,
     );
     expect(find.textContaining('المساحة المستخدمة: ١٢٦ م.ب'), findsOneWidget);
+    final auto = find.byKey(const ValueKey('tasmee-model-auto-update'));
+    await tester.scrollUntilVisible(auto, 200);
+    expect(find.text('تحديث النموذج تلقائيًا على الواي فاي'), findsOneWidget);
+    expect(container.read(tasmeeSettingsProvider).autoUpdateModel, isTrue);
+    await tester.ensureVisible(auto);
+    await tester.pump();
+    await tester.tap(auto);
+    await tester.pump();
+    expect(container.read(tasmeeSettingsProvider).autoUpdateModel, isFalse);
 
     await tester.scrollUntilVisible(find.text('حذف النموذج'), 200);
     await tester.ensureVisible(find.text('حذف النموذج'));

@@ -11,6 +11,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../hifz/data/hifz_repository.dart';
 import '../../hifz/presentation/hifz_screen.dart' show openHifzTest;
 import '../../mushaf/mushaf_providers.dart';
+import '../data/model_auto_updater.dart';
 import '../data/tasmee_backend.dart';
 import '../data/tasmee_settings.dart';
 import '../domain/alignment_engine.dart';
@@ -42,6 +43,9 @@ class TasmeeSessionScreen extends ConsumerStatefulWidget {
 
 class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
   late final TasmeeSessionController _session;
+
+  /// Holds a model update's switch until this session ends.
+  late final ModelAutoUpdater _updater;
   int? _viewPage;
   bool _summaryShown = false;
   bool _sheetOpen = false;
@@ -50,6 +54,7 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
   void initState() {
     super.initState();
     final settings = ref.read(tasmeeSettingsProvider);
+    _updater = ref.read(tasmeeModelAutoUpdaterProvider)..sessionStarted();
     _session = TasmeeSessionController(
       request: widget.request,
       backend: ref.read(tasmeeBackendProvider),
@@ -66,6 +71,7 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
     _session
       ..removeListener(_changed)
       ..dispose();
+    unawaited(_updater.sessionEnded());
     super.dispose();
   }
 

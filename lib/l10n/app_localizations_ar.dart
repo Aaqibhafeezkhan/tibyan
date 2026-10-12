@@ -3044,4 +3044,26 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get newFocusBody =>
       'الصفحة وحدها بلا إطار وتملأ الشاشة، والأدوات عند الحاجة، ومشغّل صغير تسحبه أينما شئت.';
+
+  @override
+  String get tasmeeAutoUpdateModel => 'تحديث النموذج تلقائيًا على الواي فاي';
+
+  @override
+  String get tasmeeAutoUpdateModelHint =>
+      'يُنزَّل الإصدار الأحدث في الخلفية ويبقى الحالي يعمل حتى يكتمل';
+
+  @override
+  String tasmeeModelUpdated(String version) {
+    return 'تم تحديث نموذج التسميع إلى الإصدار $version';
+  }
+
+  @override
+  String sourceInstalledVersion(String version) {
+    return 'الإصدار المثبّت: $version';
+  }
+
+  @override
+  String sourceAlsoCredited(String names) {
+    return 'ويُنسب أيضًا إلى: $names';
+  }
 }
