@@ -94,7 +94,10 @@ class SettingsController extends Notifier<AppSettings> {
           // Arabic unless the reader chooses otherwise, whatever the device.
           LanguageSetting.ar,
       crashReportsOptIn: _prefs.getBool(_kCrash) ?? false,
-      onboardingDone: _prefs.getBool(_kOnboarding) ?? false,
+      // A reader from before the flag was kept has seen a «what's new»:
+      // never walk them through the first run again.
+      onboardingDone:
+          _prefs.getBool(_kOnboarding) ?? _prefs.containsKey(whatsNewSeenKey),
       edition:
           _enumByName(MushafEdition.values, _prefs.getString(_kEdition)) ??
           MushafEdition.madina1441,

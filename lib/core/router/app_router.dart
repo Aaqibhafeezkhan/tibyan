@@ -26,11 +26,15 @@ import '../../features/mushaf/presentation/index_screen.dart';
 import '../../features/mushaf/data/tajweed.dart';
 import '../../features/mushaf/presentation/mushaf_screen.dart';
 import '../../features/onboarding/onboarding_edition_screen.dart';
+import '../../features/onboarding/onboarding_frame.dart';
 import '../../features/onboarding/onboarding_language_screen.dart';
+import '../../features/onboarding/onboarding_page_screen.dart';
+import '../../features/onboarding/onboarding_reciter_screen.dart';
 import '../../features/onboarding/onboarding_style_screen.dart';
-import '../../features/settings/player_settings_screen.dart';
+import '../../features/onboarding/onboarding_tasmee_screen.dart';
 import '../../features/settings/settings_catalog.dart';
 import '../../features/settings/settings_section_screen.dart';
+import '../../features/settings/player_settings_screen.dart';
 import '../../features/splash/splash_screen.dart';
 import '../../features/tafsir/tafsir_screen.dart';
 import '../../features/reading/continuous_screen.dart';
@@ -63,14 +67,20 @@ final appRouterProvider = Provider<GoRouter>(
     initialLocation: '/splash',
     // A screen left or returned to never keeps the keyboard up.
     observers: [KeyboardDismissObserver(), coverObserver],
-    // First launch: language, then style and colours, then the edition.
+    // First launch: six short steps, from the language to the recitation
+    // model. A reader who has been through them never sees them again.
     redirect: (context, state) {
       final done = ref.read(settingsProvider).onboardingDone;
-      if (state.matchedLocation == '/splash') return null;
-      final inOnboarding = state.matchedLocation.startsWith('/onboarding');
-      // «Download all» is offered on the edition step too.
-      final downloads = state.matchedLocation == '/downloads';
-      if (!done && !inOnboarding && !downloads) return '/onboarding/language';
+      final at = state.matchedLocation;
+      if (at == '/splash') return null;
+      final inOnboarding = at.startsWith('/onboarding');
+      if (done) return inOnboarding ? '/' : null;
+      // «Download all» is offered on the edition step, and the model's
+      // source is credited in About › Sources.
+      final allowed = at == '/downloads' || at == '/mushaf/about';
+      if (!inOnboarding && !allowed) {
+        return OnboardingStep.values.first.location;
+      }
       return null;
     },
     routes: [
@@ -99,21 +109,18 @@ final appRouterProvider = Provider<GoRouter>(
           ),
         ],
       ),
-      GoRoute(
-        path: '/onboarding/language',
-        builder: (context, state) =>
-            const LookTheme(child: OnboardingLanguageScreen()),
-      ),
-      GoRoute(
-        path: '/onboarding/style',
-        builder: (context, state) =>
-            const LookTheme(child: OnboardingStyleScreen()),
-      ),
-      GoRoute(
-        path: '/onboarding/edition',
-        builder: (context, state) =>
-            const LookTheme(child: OnboardingEditionScreen()),
-      ),
+      for (final (step, screen) in const [
+        (OnboardingStep.language, OnboardingLanguageScreen()),
+        (OnboardingStep.style, OnboardingStyleScreen()),
+        (OnboardingStep.page, OnboardingPageScreen()),
+        (OnboardingStep.edition, OnboardingEditionScreen()),
+        (OnboardingStep.reciter, OnboardingReciterScreen()),
+        (OnboardingStep.tasmee, OnboardingTasmeeScreen()),
+      ])
+        GoRoute(
+          path: step.location,
+          builder: (context, state) => LookTheme(child: screen),
+        ),
       GoRoute(
         path: '/',
         builder: (context, state) => const HomeScreen(),
