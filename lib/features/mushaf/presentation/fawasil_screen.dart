@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_theme.dart';
@@ -96,18 +99,22 @@ class FawasilScreen extends ConsumerWidget {
                   onPressed: () async {
                     final ok = await showDialog<bool>(
                       context: context,
-                      builder: (d) => AlertDialog(
-                        title: Text(s.name),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(d).pop(false),
-                            child: Text(l.cancel),
+                      builder: (_) => LookTheme(
+                        child: Builder(
+                          builder: (d) => AlertDialog(
+                            title: Text(s.name),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(d).pop(false),
+                                child: Text(l.cancel),
+                              ),
+                              FilledButton(
+                                onPressed: () => Navigator.of(d).pop(true),
+                                child: Text(l.delete),
+                              ),
+                            ],
                           ),
-                          FilledButton(
-                            onPressed: () => Navigator.of(d).pop(true),
-                            child: Text(l.delete),
-                          ),
-                        ],
+                        ),
                       ),
                     );
                     if (ok == true) {

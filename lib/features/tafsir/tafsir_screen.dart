@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -122,7 +125,9 @@ class _TafsirScreenState extends ConsumerState<TafsirScreen> {
               onPressed: () => showModalBottomSheet<void>(
                 context: context,
                 showDragHandle: true,
-                builder: (_) => const _TafsirSettingsSheet(),
+                builder: (_) => LookTheme(
+                  child: Builder(builder: (_) => const _TafsirSettingsSheet()),
+                ),
               ),
             ),
           ],

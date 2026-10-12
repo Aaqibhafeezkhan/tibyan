@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -126,44 +129,48 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
-      builder: (context) => DraggableScrollableSheet(
-        expand: false,
-        initialChildSize: 0.7,
-        builder: (context, controller) => ListView(
-          controller: controller,
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-          children: [
-            ListTile(
-              title: Text(l.searchScopeAll),
-              selected: _scope is WholeMushaf,
-              onTap: () => Navigator.pop(context, const WholeMushaf()),
-            ),
-            const Divider(),
-            Text(l.searchScopeJuz),
-            const SizedBox(height: 6),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
+      builder: (_) => LookTheme(
+        child: Builder(
+          builder: (context) => DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.7,
+            builder: (context, controller) => ListView(
+              controller: controller,
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               children: [
-                for (var j = 1; j <= 30; j++)
-                  ChoiceChip(
-                    label: Text(digits(j)),
-                    selected: _scope == InJuz(j),
-                    onSelected: (_) => Navigator.pop(context, InJuz(j)),
+                ListTile(
+                  title: Text(l.searchScopeAll),
+                  selected: _scope is WholeMushaf,
+                  onTap: () => Navigator.pop(context, const WholeMushaf()),
+                ),
+                const Divider(),
+                Text(l.searchScopeJuz),
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: [
+                    for (var j = 1; j <= 30; j++)
+                      ChoiceChip(
+                        label: Text(digits(j)),
+                        selected: _scope == InJuz(j),
+                        onSelected: (_) => Navigator.pop(context, InJuz(j)),
+                      ),
+                  ],
+                ),
+                const Divider(),
+                Text(l.searchScopeSurah),
+                for (final s in surahs ?? const <SurahRow>[])
+                  ListTile(
+                    dense: true,
+                    leading: Text(digits(s.id)),
+                    title: Text(surahName(context, s)),
+                    selected: _scope == InSurah(s.id),
+                    onTap: () => Navigator.pop(context, InSurah(s.id)),
                   ),
               ],
             ),
-            const Divider(),
-            Text(l.searchScopeSurah),
-            for (final s in surahs ?? const <SurahRow>[])
-              ListTile(
-                dense: true,
-                leading: Text(digits(s.id)),
-                title: Text(surahName(context, s)),
-                selected: _scope == InSurah(s.id),
-                onTap: () => Navigator.pop(context, InSurah(s.id)),
-              ),
-          ],
+          ),
         ),
       ),
     );

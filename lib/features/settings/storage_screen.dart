@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_theme.dart';
@@ -91,18 +94,22 @@ class StorageScreen extends ConsumerWidget {
       final messenger = ScaffoldMessenger.of(context);
       final ok = await showDialog<bool>(
         context: context,
-        builder: (context) => AlertDialog(
-          content: Text(l.storageDeleteAsk(name(e), size(e.bytes))),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: Text(l.cancel),
+        builder: (_) => LookTheme(
+          child: Builder(
+            builder: (context) => AlertDialog(
+              content: Text(l.storageDeleteAsk(name(e), size(e.bytes))),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: Text(l.cancel),
+                ),
+                FilledButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: Text(l.delete),
+                ),
+              ],
             ),
-            FilledButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: Text(l.delete),
-            ),
-          ],
+          ),
         ),
       );
       if (ok != true) return;

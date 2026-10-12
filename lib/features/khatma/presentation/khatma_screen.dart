@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -118,20 +121,24 @@ class _KhatmaScreenState extends ConsumerState<KhatmaScreen> {
     final l = AppLocalizations.of(context);
     final reuse = await showDialog<bool>(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        icon: const Icon(Icons.auto_awesome_outlined),
-        title: Text(l.khatmaComplete),
-        content: Text(l.khatmaCompletionBody, textAlign: TextAlign.justify),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: Text(l.cancel),
+      builder: (_) => LookTheme(
+        child: Builder(
+          builder: (dialogContext) => AlertDialog(
+            icon: const Icon(Icons.auto_awesome_outlined),
+            title: Text(l.khatmaComplete),
+            content: Text(l.khatmaCompletionBody, textAlign: TextAlign.justify),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+                child: Text(l.cancel),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+                child: Text(l.khatmaReusePlan),
+              ),
+            ],
           ),
-          FilledButton(
-            onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: Text(l.khatmaReusePlan),
-          ),
-        ],
+        ),
       ),
     );
     if (reuse == true && mounted) await _reusePlan(completed);
@@ -608,19 +615,23 @@ class _Active extends ConsumerWidget {
                       onPressed: () async {
                         final ok = await showDialog<bool>(
                           context: context,
-                          builder: (d) => AlertDialog(
-                            title: Text(l.khatmaDelete),
-                            content: Text(l.khatmaDeleteBody),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(d).pop(false),
-                                child: Text(l.cancel),
+                          builder: (_) => LookTheme(
+                            child: Builder(
+                              builder: (d) => AlertDialog(
+                                title: Text(l.khatmaDelete),
+                                content: Text(l.khatmaDeleteBody),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.of(d).pop(false),
+                                    child: Text(l.cancel),
+                                  ),
+                                  FilledButton(
+                                    onPressed: () => Navigator.of(d).pop(true),
+                                    child: Text(l.delete),
+                                  ),
+                                ],
                               ),
-                              FilledButton(
-                                onPressed: () => Navigator.of(d).pop(true),
-                                child: Text(l.delete),
-                              ),
-                            ],
+                            ),
                           ),
                         );
                         if (ok == true) await service.delete(s.row.uuid);
@@ -1094,36 +1105,46 @@ Future<void> _chooseRecovery(
   final action = await showModalBottomSheet<_RecoveryAction>(
     context: context,
     showDragHandle: true,
-    builder: (sheetContext) => SafeArea(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            title: Text(l.khatmaReplan),
-            subtitle: Text(l.khatmaBehindBody, textAlign: TextAlign.justify),
+    builder: (_) => LookTheme(
+      child: Builder(
+        builder: (sheetContext) => SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text(l.khatmaReplan),
+                subtitle: Text(
+                  l.khatmaBehindBody,
+                  textAlign: TextAlign.justify,
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.today_outlined),
+                title: Text(l.khatmaCatchUpToday),
+                onTap: () =>
+                    Navigator.of(sheetContext).pop(_RecoveryAction.today),
+              ),
+              ListTile(
+                leading: const Icon(Icons.trending_up),
+                title: Text(l.khatmaCatchUpGradually),
+                onTap: () =>
+                    Navigator.of(sheetContext).pop(_RecoveryAction.gradually),
+              ),
+              ListTile(
+                leading: const Icon(Icons.balance_outlined),
+                title: Text(l.khatmaSpread),
+                onTap: () =>
+                    Navigator.of(sheetContext).pop(_RecoveryAction.spread),
+              ),
+              ListTile(
+                leading: const Icon(Icons.event_repeat_outlined),
+                title: Text(l.khatmaExtend),
+                onTap: () =>
+                    Navigator.of(sheetContext).pop(_RecoveryAction.extend),
+              ),
+            ],
           ),
-          ListTile(
-            leading: const Icon(Icons.today_outlined),
-            title: Text(l.khatmaCatchUpToday),
-            onTap: () => Navigator.of(sheetContext).pop(_RecoveryAction.today),
-          ),
-          ListTile(
-            leading: const Icon(Icons.trending_up),
-            title: Text(l.khatmaCatchUpGradually),
-            onTap: () =>
-                Navigator.of(sheetContext).pop(_RecoveryAction.gradually),
-          ),
-          ListTile(
-            leading: const Icon(Icons.balance_outlined),
-            title: Text(l.khatmaSpread),
-            onTap: () => Navigator.of(sheetContext).pop(_RecoveryAction.spread),
-          ),
-          ListTile(
-            leading: const Icon(Icons.event_repeat_outlined),
-            title: Text(l.khatmaExtend),
-            onTap: () => Navigator.of(sheetContext).pop(_RecoveryAction.extend),
-          ),
-        ],
+        ),
       ),
     ),
   );
@@ -1157,7 +1178,9 @@ Future<void> _editSettings(
     context: context,
     isScrollControlled: true,
     showDragHandle: true,
-    builder: (_) => _KhatmaSettingsSheet(plan: plan),
+    builder: (_) => LookTheme(
+      child: Builder(builder: (_) => _KhatmaSettingsSheet(plan: plan)),
+    ),
   );
   if (updated == null) return;
   try {
