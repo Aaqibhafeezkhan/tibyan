@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../mushaf/presentation/widgets/illuminated_frame.dart'
+    show NumberFormatter;
+
 import '../../../core/theme/interface_style.dart';
 import '../../../core/ui/look_kit.dart';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -784,13 +786,25 @@ class _NumberField extends StatefulWidget {
 }
 
 class _NumberFieldState extends State<_NumberField> {
-  late final _controller = TextEditingController(text: '${widget.value}');
+  final _controller = TextEditingController();
+
+  /// [v] in the interface's digits.
+  String _text(int v) => context.digits(v);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (NumberFormatter.parse(_controller.text) != widget.value ||
+        _controller.text != _text(widget.value)) {
+      _controller.text = _text(widget.value);
+    }
+  }
 
   @override
   void didUpdateWidget(_NumberField old) {
     super.didUpdateWidget(old);
-    if (int.tryParse(_controller.text) != widget.value) {
-      _controller.text = '${widget.value}';
+    if (NumberFormatter.parse(_controller.text) != widget.value) {
+      _controller.text = _text(widget.value);
     }
   }
 
@@ -802,7 +816,7 @@ class _NumberFieldState extends State<_NumberField> {
 
   void _step(int by) {
     final v = (widget.value + by).clamp(1, widget.max);
-    _controller.text = '$v';
+    _controller.text = _text(v);
     widget.onChanged(v);
   }
 
@@ -812,15 +826,15 @@ class _NumberFieldState extends State<_NumberField> {
     final t = context.tokens.colors;
     return Semantics(
       label: widget.label,
-      value: '${widget.value}',
-      increasedValue: '${(widget.value + 1).clamp(1, widget.max)}',
-      decreasedValue: '${(widget.value - 1).clamp(1, widget.max)}',
+      value: _text(widget.value),
+      increasedValue: _text((widget.value + 1).clamp(1, widget.max)),
+      decreasedValue: _text((widget.value - 1).clamp(1, widget.max)),
       onIncrease: () => _step(1),
       onDecrease: () => _step(-1),
       child: TextField(
         controller: _controller,
         keyboardType: TextInputType.number,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        inputFormatters: [NumberFormatter.digitsInput],
         decoration: _fieldDecoration(context, widget.label).copyWith(
           helperText: l.tasmeeOneTo(context.digits(widget.max)),
           suffixIcon: Row(
@@ -842,7 +856,7 @@ class _NumberFieldState extends State<_NumberField> {
           ),
         ),
         onChanged: (text) {
-          final v = int.tryParse(text);
+          final v = NumberFormatter.parse(text);
           if (v != null && v >= 1 && v <= widget.max) widget.onChanged(v);
         },
       ),

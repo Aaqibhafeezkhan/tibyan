@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -28,48 +31,65 @@ class DownloadAllScreen extends ConsumerWidget {
         )
         .length;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l.downloadAllTitle)),
+    return LookScaffold(
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(20),
+        bottom: false,
+        child: Column(
           children: [
-            Semantics(
-              liveRegion: true,
-              child: Text(
-                l.downloadAllCount(digits(done), digits(editions.length)),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: t.goldText,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 17,
+            LookTopBar(title: l.downloadAllTitle),
+            Expanded(
+              child: SafeArea(
+                child: ListView(
+                  padding: const EdgeInsets.all(20),
+                  children: [
+                    Semantics(
+                      liveRegion: true,
+                      child: Text(
+                        l.downloadAllCount(
+                          digits(done),
+                          digits(editions.length),
+                        ),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: t.goldText,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    LinearProgressIndicator(
+                      value: done / editions.length,
+                      minHeight: 6,
+                      semanticsLabel: l.downloadAllTitle,
+                    ),
+                    const SizedBox(height: 16),
+                    for (final e in editions) ...[
+                      _EditionRow(edition: e),
+                      const SizedBox(height: 10),
+                    ],
+                    if (done < editions.length) ...[
+                      const SizedBox(height: 6),
+                      Text(
+                        l.downloadInBackgroundNote,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: t.muted,
+                          fontSize: 13,
+                          height: 1.6,
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 16),
+                    FilledButton(
+                      onPressed: () => context.canPop()
+                          ? context.pop()
+                          : context.go('/mushaf'),
+                      child: Text(l.doneLabel),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(height: 8),
-            LinearProgressIndicator(
-              value: done / editions.length,
-              minHeight: 6,
-              semanticsLabel: l.downloadAllTitle,
-            ),
-            const SizedBox(height: 16),
-            for (final e in editions) ...[
-              _EditionRow(edition: e),
-              const SizedBox(height: 10),
-            ],
-            if (done < editions.length) ...[
-              const SizedBox(height: 6),
-              Text(
-                l.downloadInBackgroundNote,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: t.muted, fontSize: 13, height: 1.6),
-              ),
-            ],
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () =>
-                  context.canPop() ? context.pop() : context.go('/mushaf'),
-              child: Text(l.doneLabel),
             ),
           ],
         ),
@@ -90,7 +110,9 @@ class _EditionRow extends ConsumerWidget {
     final p = ref.watch(editionDownloadProvider(edition));
     final ctrl = ref.read(editionDownloadProvider(edition).notifier);
     final spec = PagePackSpec.of(edition);
-    String mb(int bytes) => (bytes / 1e6).toStringAsFixed(1);
+    String mb(int bytes) =>
+        NumberFormatter(Localizations.localeOf(context))
+            .decimal((bytes / 1e6).toStringAsFixed(1));
     final total = p.total > 0 ? p.total : spec.bytes;
     final fraction = switch (p.phase) {
       PackPhase.downloading || PackPhase.idle => p.received / total,

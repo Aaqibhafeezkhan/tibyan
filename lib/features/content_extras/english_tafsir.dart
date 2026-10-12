@@ -334,7 +334,9 @@ class _EnglishTafsirOffer extends ConsumerWidget {
       PackPhase.failed => l.semanticPackFailed,
       _ => l.storageSize(
         digits.decimal(
-          (spec.bytes / 1e6).toStringAsFixed(spec.bytes < 1e7 ? 1 : 0),
+          NumberFormatter(Localizations.localeOf(context)).decimal(
+            (spec.bytes / 1e6).toStringAsFixed(spec.bytes < 1e7 ? 1 : 0),
+          ),
         ),
       ),
     };

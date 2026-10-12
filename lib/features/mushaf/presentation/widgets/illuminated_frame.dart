@@ -408,6 +408,19 @@ class IlluminatedFrame extends ConsumerWidget {
 class NumberFormatter {
   NumberFormatter(Locale locale) : _arabic = locale.languageCode == 'ar';
 
+  /// [text]'s whole number, in Latin, Arabic-Indic or Persian digits.
+  static int? parse(String text) => int.tryParse(
+    text.trim().replaceAllMapped(
+      RegExp('[\u0660-\u0669\u06F0-\u06F9]'),
+      (m) => '${m[0]!.codeUnitAt(0) & 0xF}',
+    ),
+  );
+
+  /// Lets a number field take digits in any of those scripts.
+  static final digitsInput = FilteringTextInputFormatter.allow(
+    RegExp('[0-9\u0660-\u0669\u06F0-\u06F9]'),
+  );
+
   final bool _arabic;
 
   /// A decimal number's text ("2.5") with Arabic-Indic digits in Arabic.

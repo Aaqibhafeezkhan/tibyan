@@ -123,8 +123,15 @@ class _StartTestFormState extends ConsumerState<StartTestForm> {
     super.initState();
     final pos = ref.read(readingPositionProvider).value;
     if (pos != null) {
-      _number.text = '${pos.page}';
       _surah = pos.surah;
+      // In the interface's digits, once the locale is known.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _number.text.isEmpty) {
+          _number.text = NumberFormatter(Localizations.localeOf(context))(
+            pos.page,
+          );
+        }
+      });
     }
   }
 
