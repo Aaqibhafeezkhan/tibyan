@@ -36,14 +36,20 @@ class ModelStore {
   Directory directoryFor(ModelManifest m) =>
       Directory(p.join(root.path, m.id, m.version));
 
-  /// The usable installed version of [id], or null.
+  /// The usable installed version of [id] (the newest, if several are
+  /// complete), or null. A version still downloading has no marker yet, so
+  /// the one before it stays in use until it is complete.
   Future<InstalledModel?> installed(String id) async {
     final idDir = Directory(p.join(root.path, id));
     if (!await idDir.exists()) return null;
-    final versions = [
-      await for (final e in idDir.list())
-        if (e is Directory) e,
-    ]..sort((a, b) => p.basename(b.path).compareTo(p.basename(a.path)));
+    final versions =
+        [
+          await for (final e in idDir.list())
+            if (e is Directory) e,
+        ]..sort(
+          (a, b) =>
+              compareModelVersions(p.basename(b.path), p.basename(a.path)),
+        );
     for (final dir in versions) {
       final model = await _readValid(dir);
       if (model != null && model.manifest.id == id) return model;

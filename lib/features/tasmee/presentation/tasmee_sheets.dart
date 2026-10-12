@@ -124,16 +124,25 @@ class FirstUseSheet extends StatelessWidget {
 
 /// The model download: its size and what it means, then its progress.
 /// The model's credit and licence are in About this mushaf › Sources.
+///
+/// With [update], a newer version of the installed model: the same size
+/// and Wi‑Fi note first, and the reader's choice to download it. The model
+/// in use keeps working until the new one is complete and checked.
 class ModelSheet extends StatefulWidget {
   const ModelSheet({
     super.key,
     required this.backend,
     required this.onInstalled,
     this.onAbout,
+    this.update,
   });
 
   final TasmeeBackend backend;
   final ValueChanged<InstalledModel> onInstalled;
+
+  /// The newer manifest to install (no fetch), or null for a first
+  /// download.
+  final ModelManifest? update;
 
   /// Opens About this mushaf (the model's credit and licence).
   final VoidCallback? onAbout;
@@ -151,7 +160,8 @@ class _ModelSheetState extends State<ModelSheet> {
   @override
   void initState() {
     super.initState();
-    unawaited(_fetch());
+    _manifest = widget.update;
+    if (_manifest == null) unawaited(_fetch());
   }
 
   @override
@@ -253,7 +263,9 @@ class _ModelSheetState extends State<ModelSheet> {
                   Semantics(
                     header: true,
                     child: Text(
-                      l.tasmeeModelTitle,
+                      widget.update == null
+                          ? l.tasmeeModelTitle
+                          : l.tasmeeModelUpdateTitle,
                       style: TextStyle(
                         color: t.ink,
                         fontSize: 18,
@@ -273,6 +285,8 @@ class _ModelSheetState extends State<ModelSheet> {
           ],
         ),
         const SizedBox(height: 16),
+        if (widget.update != null)
+          fact(Icons.published_with_changes, l.tasmeeModelUpdateKeeps),
         fact(Icons.wifi_off, l.tasmeeModelOffline),
         fact(Icons.mic_none, l.tasmeeModelVoiceStays),
         fact(Icons.delete_outline, l.tasmeeModelRemove),

@@ -2751,6 +2751,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tasmeeModelTitle => 'نموذج التسميع';
 
   @override
+  String get tasmeeModelUpdate => 'تحديث النموذج';
+
+  @override
+  String tasmeeModelUpdateAvailable(String size) {
+    return 'تحديث لنموذج التسميع متاح ($size م.ب)';
+  }
+
+  @override
+  String get tasmeeModelUpdateKeeps =>
+      'يبقى النموذج الحالي يعمل حتى يكتمل تنزيل الجديد، ثم يُحذف';
+
+  @override
+  String get tasmeeModelUpdateTitle => 'تحديث نموذج التسميع';
+
+  @override
   String get tasmeeModelVoiceStays => 'صوتك يبقى على جهازك، لا يُرسل ولا يُحفظ';
 
   @override

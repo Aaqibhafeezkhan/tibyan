@@ -1982,6 +1982,17 @@
     }
   },
   "tasmeeModelTitle": "نموذج التسميع",
+  "tasmeeModelUpdate": "تحديث النموذج",
+  "tasmeeModelUpdateAvailable": "تحديث لنموذج التسميع متاح ({size} م.ب)",
+  "@tasmeeModelUpdateAvailable": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "tasmeeModelUpdateKeeps": "يبقى النموذج الحالي يعمل حتى يكتمل تنزيل الجديد، ثم يُحذف",
+  "tasmeeModelUpdateTitle": "تحديث نموذج التسميع",
   "tasmeeModelVoiceStays": "صوتك يبقى على جهازك، لا يُرسل ولا يُحفظ",
   "tasmeeModelWifiNote": "يُفضَّل التنزيل عبر Wi‑Fi؛ قد تُحسب بيانات الهاتف",
   "tasmeeMore": "أكثر",
