@@ -19,18 +19,35 @@ class ShareOptions {
     this.tajweed = false,
     this.divineNames = false,
     this.tajweedHues = const {},
+    this.brandColours = false,
+    this.darkPaper = false,
   });
 
   final bool tajweed;
   final bool divineNames;
 
+  /// Tibyan's original colours instead of the reader's
+  /// ([SharePalette.brand]).
+  final bool brandColours;
+
+  /// The pictures' paper is dark: the tajweed colours take their night
+  /// shades.
+  final bool darkPaper;
+
   /// The reader's tajweed colours (rule key to hue name).
   final Map<String, String> tajweedHues;
 
-  ShareOptions copyWith({bool? tajweed, bool? divineNames}) => ShareOptions(
+  ShareOptions copyWith({
+    bool? tajweed,
+    bool? divineNames,
+    bool? brandColours,
+    bool? darkPaper,
+  }) => ShareOptions(
     tajweed: tajweed ?? this.tajweed,
     divineNames: divineNames ?? this.divineNames,
     tajweedHues: tajweedHues,
+    brandColours: brandColours ?? this.brandColours,
+    darkPaper: darkPaper ?? this.darkPaper,
   );
 }
 
@@ -121,7 +138,7 @@ Future<SharePassage> hafsPassage({
             word: word,
             letter: letter,
             marksOnly: marks,
-            color: hue.on(darkPaper: false),
+            color: hue.on(darkPaper: options.darkPaper),
           ),
         );
       }

@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,7 +43,6 @@ class ContinuousScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context);
-    final t = context.tokens.colors;
     final surahs = ref.watch(surahsProvider).value;
     final row = surahs == null || surah < 1 || surah > surahs.length
         ? null
@@ -48,36 +50,49 @@ class ContinuousScreen extends ConsumerWidget {
     final ayahs = ref.watch(surahAyahsProvider(surah)).value;
     final riwaya = ref.watch(editionProvider).isRiwaya;
 
-    return Scaffold(
-      backgroundColor: t.paper,
-      appBar: AppBar(
-        title: Text(row == null ? '' : l.surahWord(surahName(context, row))),
-        actions: [
-          IconButton(
-            tooltip: l.underVerseTitle,
-            icon: const Icon(Icons.translate),
-            onPressed: () => showUnderVerseChooser(context),
-          ),
-          IconButton(
-            tooltip: l.sectionMushaf,
-            icon: const Icon(Icons.auto_stories_outlined),
-            onPressed: () => openVerse(context, ref, surah: surah, ayah: ayah),
-          ),
-        ],
-      ),
-      body: ayahs == null
-          ? Center(
-              child: CircularProgressIndicator(semanticsLabel: l.loadingLabel),
-            )
-          : _VerseList(
-              key: ValueKey('$surah:$ayah'),
-              surah: surah,
-              ayah: ayah,
-              ayahs: ayahs,
-              riwaya: riwaya,
-              surahCount: surahs?.length ?? 114,
-              entry: entry,
+    return LookScaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(
+              titleWidget: Text(
+                row == null ? '' : l.surahWord(surahName(context, row)),
+              ),
+              actions: [
+                IconButton(
+                  tooltip: l.underVerseTitle,
+                  icon: const Icon(Icons.translate),
+                  onPressed: () => showUnderVerseChooser(context),
+                ),
+                IconButton(
+                  tooltip: l.sectionMushaf,
+                  icon: const Icon(Icons.auto_stories_outlined),
+                  onPressed: () =>
+                      openVerse(context, ref, surah: surah, ayah: ayah),
+                ),
+              ],
             ),
+            Expanded(
+              child: ayahs == null
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        semanticsLabel: l.loadingLabel,
+                      ),
+                    )
+                  : _VerseList(
+                      key: ValueKey('$surah:$ayah'),
+                      surah: surah,
+                      ayah: ayah,
+                      ayahs: ayahs,
+                      riwaya: riwaya,
+                      surahCount: surahs?.length ?? 114,
+                      entry: entry,
+                    ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

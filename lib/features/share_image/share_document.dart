@@ -6,8 +6,8 @@ import 'dart:ui' show Canvas, Color, Offset, Paint, Rect, Size;
 import 'share_layout.dart';
 import 'share_text_runs.dart';
 
-/// The fixed look of the shared pictures (Tibyan's own, not the reader's
-/// theme).
+/// Tibyan's original colours for the shared pictures («ألوان تبيان
+/// الأصلية»), offered beside the reader's own.
 abstract final class ShareBrand {
   static const paper = Color(0xFFF7EDDE);
   static const ink = Color(0xFF1E1915);
@@ -17,6 +17,49 @@ abstract final class ShareBrand {
 
   /// The divine name, as the pages colour it on light paper.
   static const divine = Color(0xFFC62828);
+}
+
+/// The colours a shared picture is drawn in.
+class SharePalette {
+  const SharePalette({
+    required this.paper,
+    required this.ink,
+    required this.label,
+    required this.gold,
+    required this.goldPale,
+    required this.divine,
+  });
+
+  /// Tibyan's original colours.
+  static const brand = SharePalette(
+    paper: ShareBrand.paper,
+    ink: ShareBrand.ink,
+    label: ShareBrand.brown,
+    gold: ShareBrand.gold,
+    goldPale: ShareBrand.goldPale,
+    divine: ShareBrand.divine,
+  );
+
+  /// The ground of the picture.
+  final Color paper;
+
+  /// The Quran text, the surah's title and the logo.
+  final Color ink;
+
+  /// The basmala, the verse numbers, the info line and the footer.
+  final Color label;
+
+  /// Rules, frames and ornaments.
+  final Color gold;
+
+  /// The cartouche's pale panels.
+  final Color goldPale;
+
+  /// The divine name, when it is coloured.
+  final Color divine;
+
+  /// A dark paper (the night palettes).
+  bool get dark => paper.computeLuminance() < .18;
 }
 
 /// A surah's header: its title («سورة البقرة») and the line under it
@@ -90,6 +133,7 @@ class ShareDocument {
     this.pages,
     this._logo, {
     required this.byMushaf,
+    this.palette = SharePalette.brand,
     double? linePitch,
   }) : _linePitch = linePitch ?? fontSize * _pitch;
 
@@ -142,6 +186,9 @@ class ShareDocument {
   final List<SharePageLayout> pages;
   final ui.Image? _logo;
 
+  /// The picture's colours.
+  final SharePalette palette;
+
   /// Laid out as the printed mushaf: each picture one page of it, each
   /// line one of its lines ([paginateByMushaf]).
   final bool byMushaf;
@@ -177,7 +224,11 @@ class ShareDocument {
   /// ([SharePassage.mushaf]): one picture for each page, one line for each
   /// line, all at one size, the largest at which the longest line fits the
   /// text's width. Otherwise its lines are flowed at the smallest size.
-  factory ShareDocument.build(SharePassage passage, {ui.Image? logo}) {
+  factory ShareDocument.build(
+    SharePassage passage, {
+    ui.Image? logo,
+    SharePalette palette = SharePalette.brand,
+  }) {
     final tokens = tokenize(passage.verses);
     final firstWords = tokenFirstWords(tokens);
 
@@ -192,12 +243,12 @@ class ShareDocument {
               final v = passage.verses[tokens[i].verse];
               return passage.tajweed[(v.surah, v.ayah)] ?? const [];
             }(),
-            divine: passage.divineNames ? ShareBrand.divine : null,
-            number: ShareBrand.brown,
+            divine: passage.divineNames ? palette.divine : null,
+            number: palette.label,
           ),
           passage.fontFamily,
           size,
-          ShareBrand.ink,
+          palette.ink,
         ),
     ];
 
@@ -241,12 +292,13 @@ class ShareDocument {
           flowed,
           logo,
           byMushaf: false,
+          palette: palette,
         );
       }
       for (final p in words) {
         p.dispose();
       }
-      return _byMushaf(passage, tokens, mushaf, paragraphs, logo);
+      return _byMushaf(passage, tokens, mushaf, paragraphs, logo, palette);
     }
     words = paragraphs(chosen);
     widths = [for (final p in words) _widthOf(p)];
@@ -260,6 +312,7 @@ class ShareDocument {
       pages,
       logo,
       byMushaf: false,
+      palette: palette,
     );
   }
 
@@ -272,6 +325,7 @@ class ShareDocument {
     List<SharePageLayout> pages,
     List<ui.Paragraph> Function(double size) paragraphs,
     ui.Image? logo,
+    SharePalette palette,
   ) {
     double room(SharePageLayout p) =>
         _textBottom -
@@ -324,6 +378,7 @@ class ShareDocument {
       pages,
       logo,
       byMushaf: true,
+      palette: palette,
       linePitch: math.min(size * _pitch, perLine),
     );
   }
@@ -476,10 +531,7 @@ class ShareDocument {
     final pictureSize = sizeOf(page);
     // The footer keeps its place from the bottom edge.
     final footerTop = pictureSize.height - _footerHeight;
-    canvas.drawRect(
-      Offset.zero & pictureSize,
-      Paint()..color = ShareBrand.paper,
-    );
+    canvas.drawRect(Offset.zero & pictureSize, Paint()..color = palette.paper);
     final header = passage.headers[layout.surah];
     _paintHeader(canvas, header);
 
@@ -489,7 +541,7 @@ class ShareDocument {
         passage.basmala!,
         family: passage.fontFamily,
         size: fontSize * 0.78,
-        color: ShareBrand.brown,
+        color: palette.label,
       );
       canvas.drawParagraph(
         b,
@@ -528,13 +580,13 @@ class ShareDocument {
 
   void _paintHeader(Canvas canvas, ShareSurahHeader? header) {
     const r = Rect.fromLTWH(96, _headerTop, width - 192, _headerHeight);
-    paintCartouche(canvas, r);
+    paintCartouche(canvas, r, palette);
     if (header == null) return;
     final title = _label(
       header.title,
       family: 'UthmanTahaNaskh',
       size: 70,
-      color: ShareBrand.ink,
+      color: palette.ink,
       weight: ui.FontWeight.w700,
       width: 760,
     );
@@ -542,7 +594,11 @@ class ShareDocument {
       title,
       Offset(r.center.dx - 380, r.top + 54 - title.height / 2 + 30),
     );
-    final info = infoLine(header.info, digits: passage.fontFamily);
+    final info = infoLine(
+      header.info,
+      digits: passage.fontFamily,
+      color: palette.label,
+    );
     canvas.drawParagraph(
       info,
       Offset(r.center.dx - infoWidth / 2, r.bottom - 76 - info.height / 2),
@@ -556,12 +612,16 @@ class ShareDocument {
   /// [infoWidth] at, down to a least size; on two lines at that size if it
   /// is still too long, never past the medallion. Its digits are in the
   /// passage's mushaf font [digits].
-  static ui.Paragraph infoLine(String text, {required String digits}) {
+  static ui.Paragraph infoLine(
+    String text, {
+    required String digits,
+    Color color = ShareBrand.brown,
+  }) {
     ui.Paragraph at(double size, {int lines = 1}) => _label(
       text,
       family: _uiFont,
       size: size,
-      color: ShareBrand.brown,
+      color: color,
       digits: digits,
       digitScale: _digitScale,
       width: infoWidth,
@@ -582,19 +642,19 @@ class ShareDocument {
 
   void _paintFooter(Canvas canvas, int page, double y) {
     final rule = Paint()
-      ..color = ShareBrand.gold
+      ..color = palette.gold
       ..strokeWidth = 2;
     canvas
       ..drawLine(Offset(margin, y), Offset(width / 2 - 26, y), rule)
       ..drawLine(Offset(width / 2 + 26, y), Offset(width - margin, y), rule);
-    _diamond(canvas, Offset(width / 2, y), 11, ShareBrand.gold);
+    _diamond(canvas, Offset(width / 2, y), 11, palette.gold);
 
     final mid = y + 96;
     final ref = _label(
       passage.reference,
       family: _uiFont,
       size: 44,
-      color: ShareBrand.brown,
+      color: palette.label,
       digits: passage.fontFamily,
       digitScale: _digitScale,
       width: 620,
@@ -609,7 +669,7 @@ class ShareDocument {
         passage.pageLabel(page, pages.length),
         family: _uiFont,
         size: 38,
-        color: ShareBrand.brown,
+        color: palette.label,
         digits: passage.fontFamily,
         digitScale: _digitScale,
         width: 300,
@@ -626,10 +686,7 @@ class ShareDocument {
         Rect.fromLTWH(margin, mid - h / 2, w, h),
         Paint()
           ..filterQuality = ui.FilterQuality.high
-          ..colorFilter = const ui.ColorFilter.mode(
-            ShareBrand.ink,
-            ui.BlendMode.srcIn,
-          ),
+          ..colorFilter = ui.ColorFilter.mode(palette.ink, ui.BlendMode.srcIn),
       );
     }
   }
@@ -678,17 +735,21 @@ void _diamond(Canvas canvas, Offset c, double r, Color color) {
 /// The header cartouche, drawn with lines and arcs (Tibyan's own design): a
 /// double frame, a rosette panel at each end, and a pointed central
 /// medallion for the surah's name.
-void paintCartouche(Canvas canvas, Rect r) {
+void paintCartouche(
+  Canvas canvas,
+  Rect r, [
+  SharePalette palette = SharePalette.brand,
+]) {
   final gold = Paint()
-    ..color = ShareBrand.gold
+    ..color = palette.gold
     ..style = ui.PaintingStyle.stroke
     ..strokeWidth = 3;
   final thin = Paint()
-    ..color = ShareBrand.gold
+    ..color = palette.gold
     ..style = ui.PaintingStyle.stroke
     ..strokeWidth = 1.6;
-  final pale = Paint()..color = ShareBrand.goldPale;
-  final paper = Paint()..color = ShareBrand.paper;
+  final pale = Paint()..color = palette.goldPale;
+  final paper = Paint()..color = palette.paper;
 
   final outer = ui.RRect.fromRectAndRadius(r, const ui.Radius.circular(14));
   canvas
@@ -709,7 +770,7 @@ void paintCartouche(Canvas canvas, Rect r) {
   for (final p in panels) {
     canvas.drawRect(p, pale);
     canvas.drawRect(p, thin);
-    _rosette(canvas, p.center, side * 0.40, gold, thin);
+    _rosette(canvas, p.center, side * 0.40, gold, thin, palette.paper);
   }
 
   // Between the panels: the medallion, pointed at both ends.
@@ -757,11 +818,18 @@ void paintCartouche(Canvas canvas, Rect r) {
     ..drawPath(medallion(0), gold)
     ..drawPath(medallion(9), thin);
   // Small diamonds where the medallion points.
-  _diamond(canvas, Offset(left - 12, cy), 7, ShareBrand.gold);
-  _diamond(canvas, Offset(right + 12, cy), 7, ShareBrand.gold);
+  _diamond(canvas, Offset(left - 12, cy), 7, palette.gold);
+  _diamond(canvas, Offset(right + 12, cy), 7, palette.gold);
 }
 
-void _rosette(Canvas canvas, Offset c, double r, Paint stroke, Paint thin) {
+void _rosette(
+  Canvas canvas,
+  Offset c,
+  double r,
+  Paint stroke,
+  Paint thin,
+  Color paper,
+) {
   canvas
     ..drawCircle(c, r, stroke)
     ..drawCircle(c, r * 0.82, thin);
@@ -784,5 +852,5 @@ void _rosette(Canvas canvas, Offset c, double r, Paint stroke, Paint thin) {
   }
   canvas
     ..drawCircle(c, r * 0.16, Paint()..color = stroke.color)
-    ..drawCircle(c, r * 0.07, Paint()..color = ShareBrand.paper);
+    ..drawCircle(c, r * 0.07, Paint()..color = paper);
 }

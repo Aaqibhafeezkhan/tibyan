@@ -7,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import '../../../core/flags/feature_flags.dart';
 import '../../../core/settings/app_settings.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/interface_style.dart';
+import '../../../core/ui/look_kit.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../hifz/data/hifz_repository.dart';
 import '../../hifz/presentation/hifz_screen.dart' show openHifzTest;
@@ -124,8 +126,10 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
         isDismissible: dismissible,
         enableDrag: dismissible,
         backgroundColor: Colors.transparent,
-        barrierColor: Colors.black.withValues(alpha: 0.38),
-        builder: builder,
+        // The sheet draws its own frame and handle.
+        showDragHandle: false,
+        shape: const RoundedRectangleBorder(),
+        builder: (context) => LookTheme(child: Builder(builder: builder)),
       );
     } finally {
       _sheetOpen = false;
@@ -330,12 +334,14 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
     ref.watch(surahsProvider);
     final (title, line) = _title(context);
     final wide = MediaQuery.sizeOf(context).width >= _sideLayoutWidth;
-    final top = _TopBar(
-      title: title,
-      line: line,
-      progress: s.progress,
-      onClose: () => context.pop(),
-      onHelp: () => _showNotice(firstTime: false),
+    final top = LookTheme(
+      child: _TopBar(
+        title: title,
+        line: line,
+        progress: s.progress,
+        onClose: () => context.pop(),
+        onHelp: () => _showNotice(firstTime: false),
+      ),
     );
     return PopScope(
       child: Scaffold(
@@ -343,7 +349,7 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
         body: wide
             ? Column(
                 children: [
-                  SafeArea(bottom: false, child: top),
+                  top,
                   Expanded(
                     child: Row(
                       children: [
@@ -359,7 +365,9 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
                           width: 340,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 18),
-                            child: _SidePanel(session: s, actions: actions),
+                            child: LookTheme(
+                              child: _SidePanel(session: s, actions: actions),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 24),
@@ -370,14 +378,16 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
               )
             : Column(
                 children: [
-                  SafeArea(bottom: false, child: top),
+                  top,
                   Expanded(
                     child: KeyedSubtree(
                       key: const ValueKey('tasmee-page'),
                       child: pageView,
                     ),
                   ),
-                  RecordingPanel(session: s, actions: actions),
+                  LookTheme(
+                    child: RecordingPanel(session: s, actions: actions),
+                  ),
                 ],
               ),
       ),
@@ -404,79 +414,81 @@ class _TopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final t = context.tokens.colors;
+    final look = context.look;
     return Material(
-      color: t.bg,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: 54,
-            child: Row(
-              children: [
-                const SizedBox(width: 4),
-                IconButton(
-                  onPressed: onClose,
-                  icon: Icon(Icons.close, color: t.ink),
-                  tooltip: l.tasmeeClose,
-                ),
-                Expanded(
-                  child: Semantics(
-                    header: true,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: t.ink,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            height: 1.2,
+      color: look.bg,
+      child: SafeArea(
+        bottom: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 54,
+              child: Row(
+                children: [
+                  const SizedBox(width: 4),
+                  IconButton(
+                    onPressed: onClose,
+                    icon: Icon(Icons.close, color: t.ink),
+                    tooltip: l.tasmeeClose,
+                  ),
+                  Expanded(
+                    child: Semantics(
+                      header: true,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: lookTitleStyle(
+                              context,
+                              size: look.isHandasi ? 17 : 21,
+                            ).copyWith(height: 1.2),
                           ),
-                        ),
-                        Text(
-                          line,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: t.muted,
-                            fontSize: 12.5,
-                            height: 1.3,
+                          Text(
+                            line,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: t.muted,
+                              fontSize: 12.5,
+                              height: 1.3,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  onPressed: onHelp,
-                  icon: Icon(Icons.help_outline, color: t.ink),
-                  tooltip: l.tasmeeHelp,
-                ),
-                const SizedBox(width: 4),
-              ],
+                  IconButton(
+                    onPressed: onHelp,
+                    icon: Icon(Icons.help_outline, color: t.ink),
+                    tooltip: l.tasmeeHelp,
+                  ),
+                  const SizedBox(width: 4),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Semantics(
-              label: l.tasmeeProgress,
-              value: context.percent((progress * 100).round()),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(2),
-                child: LinearProgressIndicator(
-                  value: progress,
-                  minHeight: 3,
-                  color: t.goldText,
-                  backgroundColor: t.border,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Semantics(
+                label: l.tasmeeProgress,
+                value: context.percent((progress * 100).round()),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(2),
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    minHeight: 3,
+                    color: look.isHandasi ? look.control : look.gold,
+                    backgroundColor: t.border,
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 2),
-        ],
+            const SizedBox(height: 2),
+          ],
+        ),
       ),
     );
   }
@@ -505,8 +517,11 @@ class _SidePanel extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: t.paper,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: t.border),
+        borderRadius: BorderRadius.circular(context.look.radius),
+        border: Border.all(
+          color: context.look.isMakhtuta ? context.look.gold : t.border,
+          width: context.look.isMakhtuta ? 1.4 : 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

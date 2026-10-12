@@ -353,7 +353,7 @@ abstract class AppLocalizations {
   /// No description provided for @editionNewDesc.
   ///
   /// In ar, this message translates to:
-  /// **'طبعة 1441هـ من مجمع الملك فهد، مع تظليل الآية أثناء التلاوة.'**
+  /// **'طبعة ١٤٤١هـ من مجمع الملك فهد، مع تظليل الآية أثناء التلاوة.'**
   String get editionNewDesc;
 
   /// No description provided for @editionOld.
@@ -365,7 +365,7 @@ abstract class AppLocalizations {
   /// No description provided for @editionOldDesc.
   ///
   /// In ar, this message translates to:
-  /// **'طبعة 1405هـ المشهورة في التطبيقات القديمة، مع تظليل الكلمة.'**
+  /// **'طبعة ١٤٠٥هـ المشهورة في التطبيقات القديمة، مع تظليل الكلمة.'**
   String get editionOldDesc;
 
   /// No description provided for @editionShamarly.
@@ -377,7 +377,7 @@ abstract class AppLocalizations {
   /// No description provided for @editionShamarlyDesc.
   ///
   /// In ar, this message translates to:
-  /// **'طبعة الشمرلي المصرية المعروفة، 522 صفحة، مع تظليل الآية وتظليل الكلمة في كثير من الآيات.'**
+  /// **'طبعة الشمرلي المصرية المعروفة، ٥٢٢ صفحة، مع تظليل الآية وتظليل الكلمة في كثير من الآيات.'**
   String get editionShamarlyDesc;
 
   /// No description provided for @defaultTag.
@@ -1051,6 +1051,18 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لا توجد فواصل بعد. اضغط على فاصل أي آية لتعليمها.'**
   String get noMarks;
+
+  /// No description provided for @shareBrandColours.
+  ///
+  /// In ar, this message translates to:
+  /// **'ألوان تبيان الأصلية'**
+  String get shareBrandColours;
+
+  /// No description provided for @shareBrandColoursHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'بدلًا من ألوان الواجهة والمصحف الحالية'**
+  String get shareBrandColoursHint;
 
   /// No description provided for @highlightDivineNames.
   ///
@@ -3233,25 +3245,25 @@ abstract class AppLocalizations {
   /// No description provided for @tajweedMadd246.
   ///
   /// In ar, this message translates to:
-  /// **'المد العارض واللين (2 أو 4 أو 6 حركات)'**
+  /// **'المد العارض واللين (٢ أو ٤ أو ٦ حركات)'**
   String get tajweedMadd246;
 
   /// No description provided for @tajweedMaddMuttasil.
   ///
   /// In ar, this message translates to:
-  /// **'المد المتصل (4 أو 5 حركات)'**
+  /// **'المد المتصل (٤ أو ٥ حركات)'**
   String get tajweedMaddMuttasil;
 
   /// No description provided for @tajweedMaddMunfasil.
   ///
   /// In ar, this message translates to:
-  /// **'المد المنفصل (4 أو 5 حركات)'**
+  /// **'المد المنفصل (٤ أو ٥ حركات)'**
   String get tajweedMaddMunfasil;
 
   /// No description provided for @tajweedMadd6.
   ///
   /// In ar, this message translates to:
-  /// **'المد اللازم (6 حركات)'**
+  /// **'المد اللازم (٦ حركات)'**
   String get tajweedMadd6;
 
   /// No description provided for @tajweedGhunnah.

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_theme.dart';
@@ -28,31 +31,40 @@ class AssistantScreen extends StatelessWidget {
         tajweedMarksLocation,
       ),
     ];
-    return Scaffold(
-      appBar: AppBar(title: Text(l.assistantTitle)),
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 560),
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4, 4, 4, 12),
-                child: Text(
-                  l.assistantIntro,
-                  style: TextStyle(color: t.muted, height: 1.6),
+    return LookScaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(title: l.assistantTitle),
+            Expanded(
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 560),
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(4, 4, 4, 12),
+                        child: Text(
+                          l.assistantIntro,
+                          style: TextStyle(color: t.muted, height: 1.6),
+                        ),
+                      ),
+                      for (final (icon, title, note, location) in helpers)
+                        _HelperCard(
+                          icon: icon,
+                          title: title,
+                          note: note,
+                          onTap: () => context.push(location),
+                        ),
+                    ],
+                  ),
                 ),
               ),
-              for (final (icon, title, note, location) in helpers)
-                _HelperCard(
-                  icon: icon,
-                  title: title,
-                  note: note,
-                  onTap: () => context.push(location),
-                ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

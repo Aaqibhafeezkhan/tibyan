@@ -39,6 +39,7 @@ import '../../features/tasmee/presentation/tasmee_setup_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/settings/storage_screen.dart';
 import '../settings/app_settings.dart';
+import '../ui/look_kit.dart';
 import '../settings/settings_controller.dart';
 import 'cover_observer.dart';
 import 'keyboard_dismiss.dart';
@@ -72,15 +73,17 @@ final appRouterProvider = Provider<GoRouter>(
     routes: [
       GoRoute(
         path: '/downloads',
-        builder: (context, state) => const DownloadAllScreen(),
+        builder: (context, state) =>
+            const LookTheme(child: DownloadAllScreen()),
       ),
       GoRoute(
         path: '/splash',
-        builder: (context, state) => const SplashScreen(),
+        builder: (context, state) => const LookTheme(child: SplashScreen()),
       ),
       GoRoute(
         path: '/tasmee',
-        builder: (context, state) => const TasmeeSetupScreen(),
+        builder: (context, state) =>
+            const LookTheme(child: TasmeeSetupScreen()),
         routes: [
           GoRoute(
             path: 'session',
@@ -95,15 +98,18 @@ final appRouterProvider = Provider<GoRouter>(
       ),
       GoRoute(
         path: '/onboarding/language',
-        builder: (context, state) => const OnboardingLanguageScreen(),
+        builder: (context, state) =>
+            const LookTheme(child: OnboardingLanguageScreen()),
       ),
       GoRoute(
         path: '/onboarding/style',
-        builder: (context, state) => const OnboardingStyleScreen(),
+        builder: (context, state) =>
+            const LookTheme(child: OnboardingStyleScreen()),
       ),
       GoRoute(
         path: '/onboarding/edition',
-        builder: (context, state) => const OnboardingEditionScreen(),
+        builder: (context, state) =>
+            const LookTheme(child: OnboardingEditionScreen()),
       ),
       GoRoute(
         path: '/',
@@ -111,7 +117,7 @@ final appRouterProvider = Provider<GoRouter>(
         routes: [
           GoRoute(
             path: 'search',
-            builder: (context, state) => const SearchScreen(),
+            builder: (context, state) => const LookTheme(child: SearchScreen()),
           ),
           GoRoute(
             path: 'settings',
@@ -119,19 +125,23 @@ final appRouterProvider = Provider<GoRouter>(
             routes: [
               GoRoute(
                 path: 'appearance',
-                builder: (context, state) => const AppearanceScreen(),
+                builder: (context, state) =>
+                    const LookTheme(child: AppearanceScreen()),
               ),
               GoRoute(
                 path: 'storage',
-                builder: (context, state) => const StorageScreen(),
+                builder: (context, state) =>
+                    const LookTheme(child: StorageScreen()),
               ),
               GoRoute(
                 path: 'player',
-                builder: (context, state) => const PlayerSettingsScreen(),
+                builder: (context, state) =>
+                    const LookTheme(child: PlayerSettingsScreen()),
               ),
               GoRoute(
                 path: 'tasmee',
-                builder: (context, state) => const TasmeeSettingsScreen(),
+                builder: (context, state) =>
+                    const LookTheme(child: TasmeeSettingsScreen()),
               ),
             ],
           ),
@@ -139,30 +149,37 @@ final appRouterProvider = Provider<GoRouter>(
       ),
       GoRoute(
         path: '/hifz',
-        builder: (context, state) => const HifzScreen(),
+        builder: (context, state) => const LookTheme(child: HifzScreen()),
         routes: [
           GoRoute(
             path: 'map',
-            builder: (context, state) => const HifzMapScreen(),
+            builder: (context, state) =>
+                const LookTheme(child: HifzMapScreen()),
           ),
         ],
       ),
       GoRoute(
         path: '/khatma',
-        builder: (context, state) =>
-            KhatmaScreen(selectedPlanId: state.uri.queryParameters['plan']),
+        builder: (context, state) => LookTheme(
+          child: KhatmaScreen(
+            selectedPlanId: state.uri.queryParameters['plan'],
+          ),
+        ),
         routes: [
           GoRoute(
             path: 'new',
-            builder: (context, state) => const NewKhatmaScreen(),
+            builder: (context, state) =>
+                const LookTheme(child: NewKhatmaScreen()),
           ),
           GoRoute(
             path: 'reports',
-            builder: (context, state) => const ReportsScreen(),
+            builder: (context, state) =>
+                const LookTheme(child: ReportsScreen()),
           ),
           GoRoute(
             path: 'journal',
-            builder: (context, state) => const JournalScreen(),
+            builder: (context, state) =>
+                const LookTheme(child: JournalScreen()),
           ),
         ],
       ),
@@ -170,20 +187,23 @@ final appRouterProvider = Provider<GoRouter>(
       // marks (the rules, their colours and places).
       GoRoute(
         path: assistantLocation,
-        builder: (context, state) => const AssistantScreen(),
+        builder: (context, state) => const LookTheme(child: AssistantScreen()),
         routes: [
           GoRoute(
             path: 'tajweed',
-            builder: (context, state) => const TajweedMarksScreen(),
+            builder: (context, state) =>
+                const LookTheme(child: TajweedMarksScreen()),
             routes: [
               GoRoute(
                 path: 'rule',
-                builder: (context, state) => TajweedRuleScreen(
-                  rule:
-                      TajweedRule.byKey(
-                        state.uri.queryParameters['rule'] ?? '',
-                      ) ??
-                      TajweedRule.madd6,
+                builder: (context, state) => LookTheme(
+                  child: TajweedRuleScreen(
+                    rule:
+                        TajweedRule.byKey(
+                          state.uri.queryParameters['rule'] ?? '',
+                        ) ??
+                        TajweedRule.madd6,
+                  ),
                 ),
               ),
             ],
@@ -192,29 +212,33 @@ final appRouterProvider = Provider<GoRouter>(
       ),
       GoRoute(
         path: '/verse',
-        builder: (context, state) => OneVerseScreen(
-          surah: _int(state, 's') ?? 1,
-          ayah: _int(state, 'a') ?? 1,
-          entry:
-              enumNamed(
-                EntryPoint.values,
-                state.uri.queryParameters['entry'],
-              ) ??
-              EntryPoint.other,
+        builder: (context, state) => LookTheme(
+          child: OneVerseScreen(
+            surah: _int(state, 's') ?? 1,
+            ayah: _int(state, 'a') ?? 1,
+            entry:
+                enumNamed(
+                  EntryPoint.values,
+                  state.uri.queryParameters['entry'],
+                ) ??
+                EntryPoint.other,
+          ),
         ),
       ),
       GoRoute(
         path: '/read',
-        builder: (context, state) => ContinuousScreen(
-          key: ValueKey(state.uri.toString()),
-          surah: _int(state, 's') ?? 1,
-          ayah: _int(state, 'a') ?? 1,
-          entry:
-              enumNamed(
-                EntryPoint.values,
-                state.uri.queryParameters['entry'],
-              ) ??
-              EntryPoint.other,
+        builder: (context, state) => LookTheme(
+          child: ContinuousScreen(
+            key: ValueKey(state.uri.toString()),
+            surah: _int(state, 's') ?? 1,
+            ayah: _int(state, 'a') ?? 1,
+            entry:
+                enumNamed(
+                  EntryPoint.values,
+                  state.uri.queryParameters['entry'],
+                ) ??
+                EntryPoint.other,
+          ),
         ),
       ),
       GoRoute(
@@ -240,7 +264,8 @@ final appRouterProvider = Provider<GoRouter>(
         routes: [
           GoRoute(
             path: 'download',
-            builder: (context, state) => const DownloadScreen(),
+            builder: (context, state) =>
+                const LookTheme(child: DownloadScreen()),
           ),
           GoRoute(
             path: 'index',
@@ -257,24 +282,30 @@ final appRouterProvider = Provider<GoRouter>(
           ),
           GoRoute(
             path: 'fawasil',
-            builder: (context, state) => const FawasilScreen(),
+            builder: (context, state) =>
+                const LookTheme(child: FawasilScreen()),
           ),
           GoRoute(
             path: 'tafsir',
-            builder: (context, state) => TafsirScreen(
-              surah: _int(state, 's') ?? 1,
-              ayah: _int(state, 'a') ?? 1,
-              riwaya: Riwaya.values.asNameMap()[state.uri.queryParameters['r']],
-              riwayaAyah: _int(state, 'ra'),
+            builder: (context, state) => LookTheme(
+              child: TafsirScreen(
+                surah: _int(state, 's') ?? 1,
+                ayah: _int(state, 'a') ?? 1,
+                riwaya: Riwaya.values
+                    .asNameMap()[state.uri.queryParameters['r']],
+                riwayaAyah: _int(state, 'ra'),
+              ),
             ),
           ),
           GoRoute(
             path: 'audio',
-            builder: (context, state) => const AudioDownloadsScreen(),
+            builder: (context, state) =>
+                const LookTheme(child: AudioDownloadsScreen()),
           ),
           GoRoute(
             path: 'about',
-            builder: (context, state) => const AboutMushafScreen(),
+            builder: (context, state) =>
+                const LookTheme(child: AboutMushafScreen()),
           ),
         ],
       ),

@@ -191,7 +191,10 @@ class _TopControls extends StatelessWidget {
   final List<(IconData, String, VoidCallback)> items;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      LookTheme(child: Builder(builder: _dressed));
+
+  Widget _dressed(BuildContext context) {
     final t = context.tokens.colors;
     return Material(
       color: t.paper,
@@ -274,7 +277,10 @@ class _BottomControls extends StatelessWidget {
   final VoidCallback onOneVerse;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      LookTheme(child: Builder(builder: _dressed));
+
+  Widget _dressed(BuildContext context) {
     final t = context.tokens.colors;
     final l = AppLocalizations.of(context);
     return Material(
@@ -447,7 +453,10 @@ class _MultiSelectBar extends StatelessWidget {
   final VoidCallback onDone;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      LookTheme(child: Builder(builder: _dressed));
+
+  Widget _dressed(BuildContext context) {
     final l = AppLocalizations.of(context);
     final t = context.tokens.colors;
     final digits = NumberFormatter(Localizations.localeOf(context));
@@ -483,7 +492,10 @@ class _WordPickBar extends StatelessWidget {
   final VoidCallback onCancel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      LookTheme(child: Builder(builder: _dressed));
+
+  Widget _dressed(BuildContext context) {
     final l = AppLocalizations.of(context);
     final t = context.tokens.colors;
     return Material(
@@ -532,7 +544,10 @@ class _AutoScrollBar extends StatelessWidget {
   final VoidCallback onClose;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      LookTheme(child: Builder(builder: _dressed));
+
+  Widget _dressed(BuildContext context) {
     final l = AppLocalizations.of(context);
     final t = context.tokens.colors;
     final digits = NumberFormatter(Localizations.localeOf(context));

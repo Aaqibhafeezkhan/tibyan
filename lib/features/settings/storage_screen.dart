@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_theme.dart';
@@ -91,18 +94,22 @@ class StorageScreen extends ConsumerWidget {
       final messenger = ScaffoldMessenger.of(context);
       final ok = await showDialog<bool>(
         context: context,
-        builder: (context) => AlertDialog(
-          content: Text(l.storageDeleteAsk(name(e), size(e.bytes))),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: Text(l.cancel),
+        builder: (_) => LookTheme(
+          child: Builder(
+            builder: (context) => AlertDialog(
+              content: Text(l.storageDeleteAsk(name(e), size(e.bytes))),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: Text(l.cancel),
+                ),
+                FilledButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: Text(l.delete),
+                ),
+              ],
             ),
-            FilledButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: Text(l.delete),
-            ),
-          ],
+          ),
         ),
       );
       if (ok != true) return;
@@ -115,86 +122,97 @@ class StorageScreen extends ConsumerWidget {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l.storageTitle)),
-      body: entries.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, _) => const SizedBox.shrink(),
-        data: (list) {
-          final total = list.fold<int>(0, (s, e) => s + e.bytes);
-          final sorted = [...list]
-            ..sort((a, b) {
-              final k = a.kind.index.compareTo(b.kind.index);
-              return k != 0 ? k : b.bytes.compareTo(a.bytes);
-            });
-          return ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-            children: [
-              Text(l.storageIntro, style: TextStyle(color: t.muted)),
-              const SizedBox(height: 12),
-              Semantics(
-                liveRegion: true,
-                child: Text(
-                  l.storageTotal(size(total)),
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              if (sorted.isEmpty) Text(l.storageEmpty),
-              for (final e in sorted)
-                Card(
-                  child: ListTile(
-                    title: Text(name(e)),
-                    subtitle: Text(
-                      e.kind == StorageKind.partial
-                          ? '${size(e.bytes)} · ${l.storagePartialHint}'
-                          : bundled(e)
-                          ? '${size(e.bytes)} · ${l.storageBundled}'
-                          : [size(e.bytes), ?bookKind(e)].join(' · '),
-                      style: TextStyle(color: t.muted),
-                    ),
-                    trailing: bundled(e)
-                        ? null
-                        : e.kind == StorageKind.partial
-                        ? TextButton(
-                            onPressed: () => remove(e),
-                            child: Text(l.storageClean),
-                          )
-                        : IconButton(
-                            tooltip: '${l.delete} ${name(e)}',
-                            icon: const Icon(Icons.delete_outline),
-                            onPressed: () => remove(e),
+    return LookScaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(title: l.storageTitle),
+            Expanded(
+              child: entries.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (_, _) => const SizedBox.shrink(),
+                data: (list) {
+                  final total = list.fold<int>(0, (s, e) => s + e.bytes);
+                  final sorted = [...list]
+                    ..sort((a, b) {
+                      final k = a.kind.index.compareTo(b.kind.index);
+                      return k != 0 ? k : b.bytes.compareTo(a.bytes);
+                    });
+                  return ListView(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+                    children: [
+                      Text(l.storageIntro, style: TextStyle(color: t.muted)),
+                      const SizedBox(height: 12),
+                      Semantics(
+                        liveRegion: true,
+                        child: Text(
+                          l.storageTotal(size(total)),
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
                           ),
-                  ),
-                ),
-              if (notInstalled.isNotEmpty) ...[
-                const SizedBox(height: 16),
-                Semantics(
-                  header: true,
-                  child: Text(
-                    l.storageBooksAvailable,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                for (final b in notInstalled)
-                  _BookOffer(
-                    title: l.storageBook(b.title),
-                    size: '${size(b.bytes)} · ${bookKindTitle(l, b.kind)}',
-                    progress: downloads[b.id],
-                    onDownload: () =>
-                        ref.read(bookDownloadsProvider.notifier).start(b),
-                  ),
-              ],
-            ],
-          );
-        },
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      if (sorted.isEmpty) Text(l.storageEmpty),
+                      for (final e in sorted)
+                        Card(
+                          child: ListTile(
+                            title: Text(name(e)),
+                            subtitle: Text(
+                              e.kind == StorageKind.partial
+                                  ? '${size(e.bytes)} · ${l.storagePartialHint}'
+                                  : bundled(e)
+                                  ? '${size(e.bytes)} · ${l.storageBundled}'
+                                  : [size(e.bytes), ?bookKind(e)].join(' · '),
+                              style: TextStyle(color: t.muted),
+                            ),
+                            trailing: bundled(e)
+                                ? null
+                                : e.kind == StorageKind.partial
+                                ? TextButton(
+                                    onPressed: () => remove(e),
+                                    child: Text(l.storageClean),
+                                  )
+                                : IconButton(
+                                    tooltip: '${l.delete} ${name(e)}',
+                                    icon: const Icon(Icons.delete_outline),
+                                    onPressed: () => remove(e),
+                                  ),
+                          ),
+                        ),
+                      if (notInstalled.isNotEmpty) ...[
+                        const SizedBox(height: 16),
+                        Semantics(
+                          header: true,
+                          child: Text(
+                            l.storageBooksAvailable,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        for (final b in notInstalled)
+                          _BookOffer(
+                            title: l.storageBook(b.title),
+                            size:
+                                '${size(b.bytes)} · ${bookKindTitle(l, b.kind)}',
+                            progress: downloads[b.id],
+                            onDownload: () => ref
+                                .read(bookDownloadsProvider.notifier)
+                                .start(b),
+                          ),
+                      ],
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

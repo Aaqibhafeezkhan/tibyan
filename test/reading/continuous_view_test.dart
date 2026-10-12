@@ -114,7 +114,13 @@ void main() {
     await settle(tester, verses);
     // Ayat al-Kursi is the first verse on screen: the view opened there.
     final first = tester
-        .widgetList<RichText>(find.byType(RichText))
+        .widgetList<RichText>(
+          // The verses' list, not the title in the top bar.
+          find.descendant(
+            of: find.byType(Scrollable).first,
+            matching: find.byType(RichText),
+          ),
+        )
         .first
         .text
         .toPlainText();

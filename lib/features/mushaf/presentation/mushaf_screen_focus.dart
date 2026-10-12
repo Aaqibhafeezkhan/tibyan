@@ -42,7 +42,10 @@ class _FocusTopBar extends StatelessWidget {
   final VoidCallback onGoTo;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      LookTheme(child: Builder(builder: _dressed));
+
+  Widget _dressed(BuildContext context) {
     final t = context.tokens.colors;
     final l = AppLocalizations.of(context);
     final digits = NumberFormatter(Localizations.localeOf(context));
@@ -253,7 +256,10 @@ class _FocusToolsPanel extends StatelessWidget {
   final Widget? labelledTools;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      LookTheme(child: Builder(builder: _dressed));
+
+  Widget _dressed(BuildContext context) {
     final t = context.tokens.colors;
     return Material(
       color: t.paper,
@@ -321,7 +327,10 @@ class _FocusMenu extends StatelessWidget {
   final VoidCallback onPage;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      LookTheme(child: Builder(builder: _dressed));
+
+  Widget _dressed(BuildContext context) {
     final t = context.tokens.colors;
     final l = AppLocalizations.of(context);
     final digits = NumberFormatter(Localizations.localeOf(context));

@@ -125,7 +125,13 @@ class _TestBar extends StatelessWidget {
                 IconButton(
                   tooltip: l.revealNextVerse,
                   onPressed: onNextVerse,
-                  icon: const Icon(Icons.keyboard_double_arrow_left),
+                  // This icon does not mirror itself: forward is to the
+                  // left in Arabic, to the right in English.
+                  icon: Icon(
+                    Directionality.of(context) == TextDirection.ltr
+                        ? Icons.keyboard_double_arrow_right
+                        : Icons.keyboard_double_arrow_left,
+                  ),
                 ),
                 IconButton(
                   tooltip: l.revealAll,

@@ -1,6 +1,9 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/settings/app_settings.dart';
@@ -417,7 +420,8 @@ Future<void> showFullPlayer(BuildContext context) => showModalBottomSheet<void>(
   context: context,
   backgroundColor: Colors.transparent,
   elevation: 0,
-  builder: (_) => const _FullPlayerSheet(),
+  builder: (_) =>
+      LookTheme(child: Builder(builder: (_) => const _FullPlayerSheet())),
 );
 
 class _FullPlayerSheet extends ConsumerWidget {

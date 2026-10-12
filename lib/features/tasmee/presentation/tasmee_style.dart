@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/contrast.dart';
+import '../../../core/theme/interface_style.dart';
+import '../../../core/ui/look_kit.dart';
 import '../../../core/theme/theme_tokens.dart';
 import '../../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
@@ -26,21 +29,30 @@ class TasmeeStateColors {
   /// Shown by the hint button.
   final Color hint;
 
-  static TasmeeStateColors of(ThemeModeId mode, ModeTokens t) => mode.isLight
-      ? TasmeeStateColors(
-          wrong: const Color(0xFFB3261E),
-          skipped: const Color(0xFF9A5B00),
-          corrected: const Color(0xFF2E6B57),
-          doubtful: t.muted,
-          hint: const Color(0xFF3B6A93),
-        )
-      : TasmeeStateColors(
-          wrong: const Color(0xFFFF8A80),
-          skipped: const Color(0xFFF0B45A),
-          corrected: const Color(0xFF8FCBB5),
-          doubtful: t.muted,
-          hint: const Color(0xFF9CC3E6),
-        );
+  /// The colours on [t]'s paper. A light paper takes the deep set, a
+  /// dark one the pale set; each is moved toward the ink until it reads
+  /// at 4.5:1 on the paper and the ground, so the meaning survives every
+  /// page theme and interface style.
+  static TasmeeStateColors of(ThemeModeId mode, ModeTokens t) {
+    final light = relativeLuminance(t.paper) > .18;
+    final grounds = [t.paper, t.bg];
+    Color fit(Color c) => towardContrast(c, t.ink, grounds, 4.5);
+    return light
+        ? TasmeeStateColors(
+            wrong: fit(const Color(0xFFB3261E)),
+            skipped: fit(const Color(0xFF9A5B00)),
+            corrected: fit(const Color(0xFF2E6B57)),
+            doubtful: t.muted,
+            hint: fit(const Color(0xFF3B6A93)),
+          )
+        : TasmeeStateColors(
+            wrong: fit(const Color(0xFFFF8A80)),
+            skipped: fit(const Color(0xFFF0B45A)),
+            corrected: fit(const Color(0xFF8FCBB5)),
+            doubtful: t.muted,
+            hint: fit(const Color(0xFF9CC3E6)),
+          );
+  }
 }
 
 extension TasmeeContext on BuildContext {
@@ -225,7 +237,8 @@ class TasmeeSectionLabel extends StatelessWidget {
   );
 }
 
-/// A bottom sheet's frame: paper, rounded top, a grab handle.
+/// A bottom sheet's frame in the interface style: its surface, rounded
+/// top (square-ish in «مخطوطة»), a grab handle in the style's colour.
 class TasmeeSheetFrame extends StatelessWidget {
   const TasmeeSheetFrame({
     super.key,
@@ -237,42 +250,60 @@ class TasmeeSheetFrame extends StatelessWidget {
   final double maxWidth;
 
   @override
-  Widget build(BuildContext context) {
-    final t = context.tokens.colors;
-    return Center(
-      heightFactor: 1,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: maxWidth),
-        child: Material(
-          color: t.paper,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(26)),
-          clipBehavior: Clip.antiAlias,
-          child: SafeArea(
-            top: false,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 14),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 38,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: t.border,
-                        borderRadius: BorderRadius.circular(2),
+  Widget build(BuildContext context) => LookTheme(
+    child: Builder(
+      builder: (context) {
+        final l = context.look;
+        final side = l.isHandasi
+            ? BorderSide.none
+            : BorderSide(color: l.line, width: 1.2);
+        return Center(
+          heightFactor: 1,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: maxWidth),
+            child: Material(
+              color: l.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(l.isMakhtuta ? 8 : l.radius + 10),
+                ),
+                side: side,
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: SafeArea(
+                top: false,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 14),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 40,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: l.isHandasi
+                                ? l.accent.withValues(alpha: .45)
+                                : l.gold,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
                       ),
-                    ),
+                      if (l.isMakhtuta) ...[
+                        const SizedBox(height: 10),
+                        const ExcludeSemantics(child: TazhibBand(height: 8)),
+                      ],
+                      const SizedBox(height: 14),
+                      ...children,
+                    ],
                   ),
-                  const SizedBox(height: 14),
-                  ...children,
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
+        );
+      },
+    ),
+  );
 }

@@ -7,6 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/settings/settings_controller.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/theme/interface_style.dart';
+import '../../core/ui/look_kit.dart';
 import '../../core/theme/reveal.dart';
 import '../../l10n/app_localizations.dart';
 import '../mushaf/presentation/widgets/illuminated_frame.dart'
@@ -121,10 +123,12 @@ class SajdahCardLayer extends ConsumerWidget {
           duration: fade,
           child: card == null
               ? null
-              : SajdahCardView(
-                  key: ValueKey(card.id),
-                  seconds: card.seconds,
-                  onTap: ref.read(sajdahCardProvider.notifier).close,
+              : LookTheme(
+                  child: SajdahCardView(
+                    key: ValueKey(card.id),
+                    seconds: card.seconds,
+                    onTap: ref.read(sajdahCardProvider.notifier).close,
+                  ),
                 ),
         ),
       ),
@@ -163,6 +167,8 @@ class _SajdahCardViewState extends State<SajdahCardView>
     final l = AppLocalizations.of(context);
     final tokens = context.tokens;
     final t = tokens.colors;
+    final look = context.look;
+    final mark = look.isHandasi ? t.control : look.goldText;
     final elderly = tokens.elderly;
     final size = MediaQuery.sizeOf(context);
     final digits = NumberFormatter(Localizations.localeOf(context));
@@ -223,7 +229,7 @@ class _SajdahCardViewState extends State<SajdahCardView>
                 child: CircularProgressIndicator(
                   value: 1 - _count.value,
                   strokeWidth: 3,
-                  color: t.control,
+                  color: mark,
                   backgroundColor: t.border,
                 ),
               ),
@@ -253,10 +259,15 @@ class _SajdahCardViewState extends State<SajdahCardView>
           // The paper, slightly see-through: the page shows faintly behind.
           color: t.paper.withValues(alpha: 0.97),
           elevation: 6,
-          shadowColor: Colors.black38,
+          shadowColor: look.frame.withValues(alpha: .45),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(color: t.border),
+            borderRadius: BorderRadius.circular(
+              look.isMakhtuta ? 6 : look.radius + 2,
+            ),
+            side: BorderSide(
+              color: look.isHandasi ? t.border : look.gold,
+              width: look.isHandasi ? 1 : 1.4,
+            ),
           ),
           clipBehavior: Clip.antiAlias,
           child: Semantics(
@@ -274,10 +285,7 @@ class _SajdahCardViewState extends State<SajdahCardView>
                       child: SvgPicture.asset(
                         'assets/ornaments/sajdah.svg',
                         height: icon,
-                        colorFilter: ColorFilter.mode(
-                          t.control,
-                          BlendMode.srcIn,
-                        ),
+                        colorFilter: ColorFilter.mode(mark, BlendMode.srcIn),
                       ),
                     ),
                     SizedBox(height: gap),

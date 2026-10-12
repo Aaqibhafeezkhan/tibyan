@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/interface_style.dart';
 import '../../../l10n/app_localizations.dart';
 import '../domain/tasmee_report.dart';
 import '../domain/tasmee_session_request.dart';
@@ -67,17 +68,23 @@ class RecordingPanel extends StatelessWidget {
             ],
           );
     if (side) return body;
+    final look = context.look;
     return DecoratedBox(
       key: const ValueKey('tasmee-panel'),
       decoration: BoxDecoration(
         color: t.paper,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
-        border: Border(top: BorderSide(color: t.border)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(look.isMakhtuta ? 6 : look.radius + 4),
+        ),
+        border: Border(
+          top: BorderSide(
+            color: look.isHandasi ? t.border : look.gold,
+            width: look.isHandasi ? 1 : 1.4,
+          ),
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(
-              alpha: context.tokens.mode.isLight ? 0.06 : 0.3,
-            ),
+            color: look.frame.withValues(alpha: look.night ? 0.4 : 0.10),
             blurRadius: 16,
             offset: const Offset(0, -4),
           ),
@@ -364,7 +371,7 @@ class VerseRing extends StatelessWidget {
                     value: (acc ?? 0) / 100,
                     strokeWidth: 3.5,
                     color: (acc ?? 100) >= 90
-                        ? t.goldText
+                        ? (context.look.isHandasi ? t.control : t.goldText)
                         : context.tasmeeColors.skipped,
                     backgroundColor: t.border,
                     strokeCap: StrokeCap.round,
@@ -471,7 +478,9 @@ class _MicDenied extends StatelessWidget {
           onPressed: actions.onOpenSettings,
           icon: const Icon(Icons.settings_outlined),
           label: Text(l.tasmeeOpenDeviceSettings),
-          style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(46)),
+          style: FilledButton.styleFrom(
+            minimumSize: Size.fromHeight(context.look.target),
+          ),
         ),
         const SizedBox(height: 6),
         TextButton(

@@ -6,8 +6,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../theme/app_theme.dart';
+import '../theme/contrast.dart';
 import '../theme/interface_style.dart';
 import '../theme/ornaments.dart';
+import '../theme/theme_tokens.dart';
 
 /// Wider than this, screens get the side rail and two columns.
 const wideBreakpoint = 900.0;
@@ -169,11 +172,17 @@ class LookScaffold extends StatelessWidget {
     this.selected,
     this.hero = false,
     this.rail = true,
+    this.floatingActionButton,
+    this.bottomNavigationBar,
+    this.resizeToAvoidBottomInset,
   });
 
   final Widget body;
   final RailItem? selected;
   final bool hero;
+  final Widget? floatingActionButton;
+  final Widget? bottomNavigationBar;
+  final bool? resizeToAvoidBottomInset;
 
   /// Show the side rail on wide windows.
   final bool rail;
@@ -191,6 +200,9 @@ class LookScaffold extends StatelessWidget {
       data: look.screens(Theme.of(context)),
       child: Scaffold(
         backgroundColor: look.bg,
+        floatingActionButton: floatingActionButton,
+        bottomNavigationBar: bottomNavigationBar,
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         body: rail && isWide(context)
             ? Row(
                 children: [
@@ -323,12 +335,20 @@ TextStyle lookTitleStyle(BuildContext context, {double? size}) {
 class LookTopBar extends StatelessWidget {
   const LookTopBar({
     super.key,
-    required this.title,
+    this.title = '',
+    this.titleWidget,
+    this.leading,
     this.actions = const [],
     this.back = true,
   });
 
   final String title;
+
+  /// In place of [title], for a title that is more than words.
+  final Widget? titleWidget;
+
+  /// In place of the back button (a wizard's previous step).
+  final Widget? leading;
   final List<Widget> actions;
   final bool back;
 
@@ -342,7 +362,9 @@ class LookTopBar extends StatelessWidget {
         height: 56,
         child: Row(
           children: [
-            if (canPop)
+            if (leading != null)
+              leading!
+            else if (canPop)
               // Icons.arrow_back mirrors itself: it points right in Arabic.
               IconButton(
                 icon: const Icon(Icons.arrow_back),
@@ -355,12 +377,12 @@ class LookTopBar extends StatelessWidget {
             Expanded(
               child: Semantics(
                 header: true,
-                child: Text(
-                  title,
+                child: DefaultTextStyle.merge(
+                  style: lookTitleStyle(context),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: lookTitleStyle(context),
+                  child: Center(child: titleWidget ?? Text(title)),
                 ),
               ),
             ),
@@ -573,4 +595,106 @@ class LookSheetHeader extends StatelessWidget {
       ],
     );
   }
+}
+
+/// [base]'s colours re-read from [l], for widgets that still read the
+/// mushaf style's [TibyanTokens]: inside a [LookTheme] they take the
+/// interface style's colours. The highlight and the art tint stay.
+ModeTokens lookModeTokens(UiLook l, ModeTokens base) {
+  final (accent, accentFg) = strongPair(
+    l.isLayli && !l.night ? l.accent2 : l.accent,
+    l.night ? l.bg : l.surface,
+    4.5,
+  );
+  return ModeTokens(
+    bg: l.bg,
+    paper: l.surface,
+    ink: l.ink,
+    muted: l.sub,
+    border: l.line,
+    frame: l.isHandasi ? l.accent : l.gold,
+    marker: l.gold,
+    goldText: l.goldText,
+    headBg: l.frame,
+    headFg: l.onFrame,
+    accent: accent,
+    accentFg: accentFg,
+    player: l.frame,
+    playerFg: l.onFrame,
+    highlight: base.highlight,
+    control: l.control,
+    onControl: l.onControl,
+    artTint: base.artTint,
+  );
+}
+
+/// Dresses [child] in the interface style: its controls, cards, overlays
+/// and the colours read through [TibyanTokens]. For the app's own screens
+/// and the chrome over the mushaf (bars, panels, sheets), never the page.
+class LookTheme extends StatelessWidget {
+  const LookTheme({super.key, required this.child});
+
+  final Widget child;
+
+  /// [theme] dressed in its interface style.
+  static ThemeData of(ThemeData theme) {
+    final look =
+        theme.extension<UiLook>() ??
+        UiLook.of(
+          defaultInterfaceStyle,
+          night: theme.brightness == Brightness.dark,
+        );
+    final tokens = theme.extension<TibyanTokens>();
+    final dressed = look.screens(theme);
+    final (accent, onAccent) = strongPair(
+      look.isLayli && !look.night ? look.accent2 : look.accent,
+      look.night ? look.bg : look.surface,
+      4.5,
+    );
+    return dressed.copyWith(
+      // The roles [UiLook.screens] leaves to the page style: segmented
+      // buttons, containers and accents.
+      colorScheme: dressed.colorScheme.copyWith(
+        tertiary: accent,
+        onTertiary: onAccent,
+        secondaryContainer: Color.alphaBlend(
+          look.control.withValues(alpha: look.night ? .30 : .16),
+          look.surface,
+        ),
+        onSecondaryContainer: look.ink,
+        primaryContainer: Color.alphaBlend(
+          look.control.withValues(alpha: look.night ? .30 : .16),
+          look.surface,
+        ),
+        onPrimaryContainer: look.ink,
+        surfaceContainerLowest: look.surface,
+        surfaceContainerLow: look.surface,
+        surfaceContainer: look.row,
+        surfaceContainerHigh: look.row,
+        surfaceContainerHighest: Color.alphaBlend(
+          look.ink.withValues(alpha: .06),
+          look.surface,
+        ),
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: look.control,
+        linearTrackColor: look.line,
+        circularTrackColor: look.line,
+      ),
+      sliderTheme: dressed.sliderTheme.copyWith(
+        activeTrackColor: look.control,
+        thumbColor: look.control,
+        inactiveTrackColor: look.line,
+      ),
+      extensions: [
+        look,
+        if (tokens != null)
+          tokens.copyWith(colors: lookModeTokens(look, tokens.colors)),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      Theme(data: LookTheme.of(Theme.of(context)), child: child);
 }

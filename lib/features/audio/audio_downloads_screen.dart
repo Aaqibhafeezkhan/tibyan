@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/db/content_database.dart';
@@ -82,81 +85,100 @@ class _AudioDownloadsScreenState extends ConsumerState<AudioDownloadsScreen> {
     final t = context.tokens.colors;
     final digits = NumberFormatter(Localizations.localeOf(context));
     final files = ref.read(audioFilesProvider);
-    return Scaffold(
-      appBar: AppBar(title: Text(l.audioDownloads)),
-      body: Column(
-        children: [
-          ListTile(
-            leading: ReciterAvatar(
-              id: reciter.id,
-              name: reciterLabel(context, reciter),
-              size: 38,
-            ),
-            title: Text(reciterLabel(context, reciter)),
-            subtitle: Text(
-              '${l.audioDownloaded}: ${digits(have.length)} / ${digits(114)}',
-            ),
-            trailing: _all
-                ? TextButton(
-                    onPressed: () => setState(() => _all = false),
-                    child: Text(l.pause),
-                  )
-                : FilledButton.tonal(
-                    onPressed: have.length == 114
-                        ? null
-                        : () => _downloadAll(reciter),
-                    child: Text(l.downloadAll),
+    return LookScaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(title: l.audioDownloads),
+            Expanded(
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: ReciterAvatar(
+                      id: reciter.id,
+                      name: reciterLabel(context, reciter),
+                      size: 38,
+                    ),
+                    title: Text(reciterLabel(context, reciter)),
+                    subtitle: Text(
+                      '${l.audioDownloaded}: ${digits(have.length)} / ${digits(114)}',
+                    ),
+                    trailing: _all
+                        ? TextButton(
+                            onPressed: () => setState(() => _all = false),
+                            child: Text(l.pause),
+                          )
+                        : FilledButton.tonal(
+                            onPressed: have.length == 114
+                                ? null
+                                : () => _downloadAll(reciter),
+                            child: Text(l.downloadAll),
+                          ),
                   ),
-          ),
-          const Divider(height: 1),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 114,
-              itemBuilder: (context, i) {
-                final n = i + 1;
-                final done = have.contains(n);
-                return ListTile(
-                  dense: true,
-                  leading: Text(digits(n), style: TextStyle(color: t.muted)),
-                  title: Text(surahName(context, surahs[i])),
-                  trailing:
-                      _busy.contains(n) || files.downloading(reciter.id, n)
-                      ? SizedBox.square(
-                          dimension: 22,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            semanticsLabel: l.downloadingSurah(
-                              surahName(context, surahs[i]),
-                            ),
+                  const Divider(height: 1),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: 114,
+                      itemBuilder: (context, i) {
+                        final n = i + 1;
+                        final done = have.contains(n);
+                        return ListTile(
+                          dense: true,
+                          leading: Text(
+                            digits(n),
+                            style: TextStyle(color: t.muted),
                           ),
-                        )
-                      : done
-                      ? IconButton(
-                          tooltip: l.deleteSurahDownload(
-                            surahName(context, surahs[i]),
-                          ),
-                          icon: Icon(Icons.check_circle, color: t.control),
-                          onPressed: () =>
-                              setState(() => files.delete(reciter.id, n)),
-                        )
-                      : IconButton(
-                          tooltip: _failed.contains(n)
-                              ? l.retryDownloadSurah(
-                                  surahName(context, surahs[i]),
+                          title: Text(surahName(context, surahs[i])),
+                          trailing:
+                              _busy.contains(n) ||
+                                  files.downloading(reciter.id, n)
+                              ? SizedBox.square(
+                                  dimension: 22,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    semanticsLabel: l.downloadingSurah(
+                                      surahName(context, surahs[i]),
+                                    ),
+                                  ),
                                 )
-                              : l.downloadSurah(surahName(context, surahs[i])),
-                          icon: Icon(
-                            _failed.contains(n)
-                                ? Icons.error_outline
-                                : Icons.download_outlined,
-                          ),
-                          onPressed: () => _download(reciter, n),
-                        ),
-                );
-              },
+                              : done
+                              ? IconButton(
+                                  tooltip: l.deleteSurahDownload(
+                                    surahName(context, surahs[i]),
+                                  ),
+                                  icon: Icon(
+                                    Icons.check_circle,
+                                    color: t.control,
+                                  ),
+                                  onPressed: () => setState(
+                                    () => files.delete(reciter.id, n),
+                                  ),
+                                )
+                              : IconButton(
+                                  tooltip: _failed.contains(n)
+                                      ? l.retryDownloadSurah(
+                                          surahName(context, surahs[i]),
+                                        )
+                                      : l.downloadSurah(
+                                          surahName(context, surahs[i]),
+                                        ),
+                                  icon: Icon(
+                                    _failed.contains(n)
+                                        ? Icons.error_outline
+                                        : Icons.download_outlined,
+                                  ),
+                                  onPressed: () => _download(reciter, n),
+                                ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

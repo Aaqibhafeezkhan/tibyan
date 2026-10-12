@@ -352,11 +352,11 @@ void main() {
       expect(find.text(tajweedRuleName(l, rule)), findsOneWidget);
     }
     // The madd lazim: 121 verses, the first al-Fatiha 7 on page 1.
-    expect(find.text('الآيات: 121 · الحروف الملونة: 141'), findsOneWidget);
+    expect(find.text('الآيات: ١٢١ · الحروف الملونة: ١٤١'), findsOneWidget);
     await tester.tap(find.text(l.tajweedMadd6));
     await settle(tester);
     expect(find.byType(TajweedRuleScreen), findsOneWidget);
-    expect(find.text('الفاتحة 7 · الصفحة 1'), findsOneWidget);
+    expect(find.text('الفاتحة ٧ · الصفحة ١'), findsOneWidget);
     addTearDown(() => tester.binding.setSurfaceSize(null));
   });
 

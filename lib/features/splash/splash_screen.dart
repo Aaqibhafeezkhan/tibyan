@@ -6,12 +6,12 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/router/app_router.dart';
 import '../../core/settings/settings_controller.dart';
-import '../../core/theme/app_theme.dart';
+import '../../core/theme/interface_style.dart';
+import '../../core/ui/look_kit.dart';
 import '../../l10n/app_localizations.dart';
-import '../mushaf/presentation/widgets/illuminated_frame.dart';
 
-/// Shown briefly at launch: the ornate page in the light modes, the golden
-/// arch in night and black modes.
+/// Shown briefly at launch: the brand on the interface style's ground (its
+/// dark frame at night) with the style's pattern.
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({
     super.key,
@@ -52,64 +52,60 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
-    final tokens = context.tokens;
-    final t = tokens.colors;
-    // The golden arch in the dark modes.
-    final gold = !tokens.mode.isLight;
-    final title = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          l.appTitle,
-          style: TextStyle(
-            fontFamily: 'ArefRuqaa',
-            fontWeight: FontWeight.w700,
-            fontSize: 64,
-            height: 1.3,
-            color: gold ? const Color(0xFFF2D48A) : t.ink,
-          ),
-        ),
-        Text(
-          l.coverTitle,
-          style: TextStyle(
-            fontFamily: 'KFGQPCAN',
-            fontSize: 17,
-            color: gold ? const Color(0xFFE9E1CF) : t.ink,
-          ),
-        ),
-      ],
-    );
+    final look = context.look;
+    // Night: the style's dark frame; day: its ground.
+    final ground = look.night ? look.frame : look.bg;
+    final mark = look.night
+        ? look.onFrame
+        : (look.isHandasi
+              ? look.accent
+              : (look.isLayli ? look.ink : look.frame));
+    final line = look.night ? look.onFrame : look.sub;
     return Scaffold(
-      backgroundColor: gold ? Colors.black : t.bg,
+      backgroundColor: ground,
       body: Semantics(
         label: l.appTitle,
-        child: gold
-            ? Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(
-                    'assets/ornaments/splash_gold.jpg',
-                    fit: BoxFit.cover,
-                  ),
-                  Center(child: title),
-                ],
-              )
-            : SafeArea(
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            const LookBackground(hero: true),
+            SafeArea(
+              child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: OrnateFrame(
-                    top: Text(
-                      l.coverSubtitle,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    bottom: Text(
-                      l.appTagline,
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                    child: Center(child: title),
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TibyanLogo(color: mark, height: 112),
+                      const SizedBox(height: 24),
+                      const SizedBox(
+                        width: 160,
+                        child: ExcludeSemantics(child: TazhibBand(height: 10)),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        l.coverTitle,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'KFGQPCAN',
+                          fontSize: 18,
+                          height: 1.5,
+                          color: line,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        l.appTagline,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14, color: line),
+                      ),
+                    ],
                   ),
                 ),
               ),
+            ),
+          ],
+        ),
       ),
     );
   }

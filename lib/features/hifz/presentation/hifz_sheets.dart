@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -34,47 +37,54 @@ Future<Grade?> showGradeSheet(
 }) => showModalBottomSheet<Grade>(
   context: context,
   showDragHandle: true,
-  builder: (context) {
-    final l = AppLocalizations.of(context);
-    final t = context.tokens.colors;
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(l.gradeTitle, style: Theme.of(context).textTheme.titleLarge),
-            Text(title, style: TextStyle(color: t.muted)),
-            if (counts != null)
-              Text(counts, style: TextStyle(color: t.muted, fontSize: 12)),
-            const SizedBox(height: 12),
-            for (final g in Grade.values)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: g == suggested
-                    ? FilledButton(
-                        onPressed: () => Navigator.pop(context, g),
-                        style: FilledButton.styleFrom(
-                          minimumSize: const Size.fromHeight(48),
-                        ),
-                        child: Text(
-                          '${gradeLabel(l, g)} · ${l.gradeSuggested}',
-                        ),
-                      )
-                    : OutlinedButton(
-                        onPressed: () => Navigator.pop(context, g),
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(48),
-                        ),
-                        child: Text(gradeLabel(l, g)),
-                      ),
-              ),
-          ],
-        ),
-      ),
-    );
-  },
+  builder: (_) => LookTheme(
+    child: Builder(
+      builder: (context) {
+        final l = AppLocalizations.of(context);
+        final t = context.tokens.colors;
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  l.gradeTitle,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                Text(title, style: TextStyle(color: t.muted)),
+                if (counts != null)
+                  Text(counts, style: TextStyle(color: t.muted, fontSize: 12)),
+                const SizedBox(height: 12),
+                for (final g in Grade.values)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: g == suggested
+                        ? FilledButton(
+                            onPressed: () => Navigator.pop(context, g),
+                            style: FilledButton.styleFrom(
+                              minimumSize: const Size.fromHeight(48),
+                            ),
+                            child: Text(
+                              '${gradeLabel(l, g)} · ${l.gradeSuggested}',
+                            ),
+                          )
+                        : OutlinedButton(
+                            onPressed: () => Navigator.pop(context, g),
+                            style: OutlinedButton.styleFrom(
+                              minimumSize: const Size.fromHeight(48),
+                            ),
+                            child: Text(gradeLabel(l, g)),
+                          ),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+  ),
 );
 
 /// Chooses a unit to recite: a page of the edition being read, a hizb
@@ -84,11 +94,15 @@ Future<HifzUnit?> showStartTestSheet(BuildContext context) =>
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      builder: (context) => Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.viewInsetsOf(context).bottom,
+      builder: (_) => LookTheme(
+        child: Builder(
+          builder: (context) => Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.viewInsetsOf(context).bottom,
+            ),
+            child: const SafeArea(child: StartTestForm()),
+          ),
         ),
-        child: const SafeArea(child: StartTestForm()),
       ),
     );
 
@@ -109,8 +123,15 @@ class _StartTestFormState extends ConsumerState<StartTestForm> {
     super.initState();
     final pos = ref.read(readingPositionProvider).value;
     if (pos != null) {
-      _number.text = '${pos.page}';
       _surah = pos.surah;
+      // In the interface's digits, once the locale is known.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _number.text.isEmpty) {
+          _number.text = NumberFormatter(Localizations.localeOf(context))(
+            pos.page,
+          );
+        }
+      });
     }
   }
 

@@ -1,7 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+import '../../mushaf/presentation/widgets/illuminated_frame.dart'
+    show NumberFormatter;
+
+import '../../../core/theme/interface_style.dart';
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -44,10 +50,14 @@ Future<void> showTasmeeSetup(BuildContext context) async {
     isScrollControlled: true,
     useSafeArea: true,
     backgroundColor: Colors.transparent,
-    barrierColor: Colors.black.withValues(alpha: 0.38),
-    builder: (context) => TasmeeSetupSheet(
-      onStart: (request) => Navigator.pop(context, request),
-      onClose: () => Navigator.pop(context),
+    // The sheet draws its own frame and handle.
+    showDragHandle: false,
+    shape: const RoundedRectangleBorder(),
+    builder: (context) => LookTheme(
+      child: TasmeeSetupSheet(
+        onStart: (request) => Navigator.pop(context, request),
+        onClose: () => Navigator.pop(context),
+      ),
     ),
   );
   if (request != null && context.mounted) {
@@ -62,7 +72,7 @@ class TasmeeSetupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: context.tokens.colors.bg,
+    backgroundColor: context.look.bg,
     body: Align(
       alignment: Alignment.bottomCenter,
       child: TasmeeSetupSheet(
@@ -515,7 +525,6 @@ class _ResumeRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.tokens.colors;
-    final rtl = Directionality.of(context) == TextDirection.rtl;
     return Semantics(
       button: true,
       label: '$label · $action',
@@ -551,11 +560,7 @@ class _ResumeRow extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                Icon(
-                  rtl ? Icons.chevron_left : Icons.chevron_right,
-                  size: 18,
-                  color: t.goldText,
-                ),
+                Icon(Icons.chevron_right, size: 18, color: t.goldText),
               ],
             ),
           ),
@@ -594,7 +599,7 @@ class _Choice extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Container(
-            constraints: const BoxConstraints(minHeight: 40),
+            constraints: const BoxConstraints(minHeight: 48),
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
             child: Text(
@@ -650,7 +655,7 @@ class _Segmented<T> extends StatelessWidget {
                   behavior: HitTestBehavior.opaque,
                   onTap: () => onChanged(v),
                   child: Container(
-                    constraints: const BoxConstraints(minHeight: 38),
+                    constraints: BoxConstraints(minHeight: context.look.target),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: v == value ? t.paper : null,
@@ -659,7 +664,9 @@ class _Segmented<T> extends StatelessWidget {
                       boxShadow: v == value
                           ? [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.08),
+                                color: context.look.frame.withValues(
+                                  alpha: 0.10,
+                                ),
                                 blurRadius: 4,
                                 offset: const Offset(0, 1),
                               ),
@@ -779,13 +786,25 @@ class _NumberField extends StatefulWidget {
 }
 
 class _NumberFieldState extends State<_NumberField> {
-  late final _controller = TextEditingController(text: '${widget.value}');
+  final _controller = TextEditingController();
+
+  /// [v] in the interface's digits.
+  String _text(int v) => context.digits(v);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (NumberFormatter.parse(_controller.text) != widget.value ||
+        _controller.text != _text(widget.value)) {
+      _controller.text = _text(widget.value);
+    }
+  }
 
   @override
   void didUpdateWidget(_NumberField old) {
     super.didUpdateWidget(old);
-    if (int.tryParse(_controller.text) != widget.value) {
-      _controller.text = '${widget.value}';
+    if (NumberFormatter.parse(_controller.text) != widget.value) {
+      _controller.text = _text(widget.value);
     }
   }
 
@@ -797,7 +816,7 @@ class _NumberFieldState extends State<_NumberField> {
 
   void _step(int by) {
     final v = (widget.value + by).clamp(1, widget.max);
-    _controller.text = '$v';
+    _controller.text = _text(v);
     widget.onChanged(v);
   }
 
@@ -807,15 +826,15 @@ class _NumberFieldState extends State<_NumberField> {
     final t = context.tokens.colors;
     return Semantics(
       label: widget.label,
-      value: '${widget.value}',
-      increasedValue: '${(widget.value + 1).clamp(1, widget.max)}',
-      decreasedValue: '${(widget.value - 1).clamp(1, widget.max)}',
+      value: _text(widget.value),
+      increasedValue: _text((widget.value + 1).clamp(1, widget.max)),
+      decreasedValue: _text((widget.value - 1).clamp(1, widget.max)),
       onIncrease: () => _step(1),
       onDecrease: () => _step(-1),
       child: TextField(
         controller: _controller,
         keyboardType: TextInputType.number,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        inputFormatters: [NumberFormatter.digitsInput],
         decoration: _fieldDecoration(context, widget.label).copyWith(
           helperText: l.tasmeeOneTo(context.digits(widget.max)),
           suffixIcon: Row(
@@ -837,7 +856,7 @@ class _NumberFieldState extends State<_NumberField> {
           ),
         ),
         onChanged: (text) {
-          final v = int.tryParse(text);
+          final v = NumberFormatter.parse(text);
           if (v != null && v >= 1 && v <= widget.max) widget.onChanged(v);
         },
       ),

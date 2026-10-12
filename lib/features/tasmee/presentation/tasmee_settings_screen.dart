@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_theme.dart';
@@ -34,6 +37,9 @@ Future<void> openModelUpdate(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
+    // The sheet draws its own frame and handle.
+    showDragHandle: false,
+    shape: const RoundedRectangleBorder(),
     builder: (sheet) => ModelSheet(
       backend: ref.read(tasmeeBackendProvider),
       update: update,
@@ -69,191 +75,206 @@ class TasmeeSettingsScreen extends ConsumerWidget {
       ),
     );
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l.tasmeeTitle)),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
-        children: [
-          title(l.tasmeeMode),
-          Card(
-            child: RadioGroup<TasmeeMode>(
-              groupValue: s.mode,
-              onChanged: (v) => v == null ? null : c.setMode(v),
-              child: Column(
+    return LookScaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(title: l.tasmeeTitle),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
                 children: [
-                  RadioListTile(
-                    value: TasmeeMode.continuous,
-                    title: Text(l.tasmeeContinuous),
-                    subtitle: Text(l.tasmeeContinuousHint),
-                  ),
-                  RadioListTile(
-                    value: TasmeeMode.verseByVerse,
-                    title: Text(l.tasmeeVerseByVerse),
-                    subtitle: Text(l.tasmeeVerseByVerseHint),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          title(l.tasmeeOnError),
-          Card(
-            child: RadioGroup<ErrorBehavior>(
-              groupValue: s.onError,
-              onChanged: (v) => v == null ? null : c.setOnError(v),
-              child: Column(
-                children: [
-                  RadioListTile(
-                    value: ErrorBehavior.continueReading,
-                    title: Text(l.tasmeeMarkAndGoOn),
-                  ),
-                  RadioListTile(
-                    value: ErrorBehavior.stopToCorrect,
-                    title: Text(l.tasmeeStopToCorrect),
-                    subtitle: Text(l.tasmeeStopToCorrectHint),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          title(l.tasmeeFeedback),
-          Card(
-            child: Column(
-              children: [
-                ListTile(
-                  title: Text(l.tasmeeToastDuration),
-                  subtitle: Slider(
-                    value: s.toastSeconds.toDouble(),
-                    min: TasmeeSettings.minToast.toDouble(),
-                    max: TasmeeSettings.maxToast.toDouble(),
-                    divisions:
-                        TasmeeSettings.maxToast - TasmeeSettings.minToast,
-                    label: l.tasmeeSeconds(context.digits(s.toastSeconds)),
-                    semanticFormatterCallback: (v) =>
-                        l.tasmeeSeconds(context.digits(v.round())),
-                    onChanged: (v) => c.setToastSeconds(v.round()),
-                  ),
-                  trailing: Text(
-                    l.tasmeeSeconds(context.digits(s.toastSeconds)),
-                  ),
-                ),
-                SwitchListTile(
-                  title: Text(l.tasmeeVibration),
-                  subtitle: Text(l.tasmeeVibrationHint),
-                  value: s.vibration,
-                  onChanged: c.setVibration,
-                ),
-              ],
-            ),
-          ),
-          title(l.tasmeeStrictness),
-          Card(
-            child: RadioGroup<MatchStrictness>(
-              groupValue: s.strictness,
-              onChanged: (v) => v == null ? null : c.setStrictness(v),
-              child: Column(
-                children: [
-                  RadioListTile(
-                    value: MatchStrictness.strict,
-                    title: Text(l.tasmeeStrict),
-                    subtitle: Text(l.tasmeeStrictHint),
-                  ),
-                  RadioListTile(
-                    value: MatchStrictness.medium,
-                    title: Text(l.tasmeeMedium),
-                    subtitle: Text(l.tasmeeMediumHint),
-                  ),
-                  RadioListTile(
-                    value: MatchStrictness.lenient,
-                    title: Text(l.tasmeeLenient),
-                    subtitle: Text(l.tasmeeLenientHint),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          title(l.tasmeeModelTitle),
-          Card(
-            child: Column(
-              children: [
-                ListTile(
-                  leading: Icon(Icons.memory, color: t.goldText),
-                  title: Text(switch (model) {
-                    AsyncData(value: (final m?, _)) => l.tasmeeModelInstalled(
-                      m.manifest.version,
+                  title(l.tasmeeMode),
+                  Card(
+                    child: RadioGroup<TasmeeMode>(
+                      groupValue: s.mode,
+                      onChanged: (v) => v == null ? null : c.setMode(v),
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            value: TasmeeMode.continuous,
+                            title: Text(l.tasmeeContinuous),
+                            subtitle: Text(l.tasmeeContinuousHint),
+                          ),
+                          RadioListTile(
+                            value: TasmeeMode.verseByVerse,
+                            title: Text(l.tasmeeVerseByVerse),
+                            subtitle: Text(l.tasmeeVerseByVerseHint),
+                          ),
+                        ],
+                      ),
                     ),
-                    AsyncData() => l.tasmeeModelMissing,
-                    _ => '…',
-                  }),
-                  subtitle: Text(switch (model) {
-                    AsyncData(value: (_, final bytes)) => l.tasmeeModelSpace(
-                      context.digits((bytes / (1024 * 1024)).round()),
-                    ),
-                    _ => '',
-                  }, style: TextStyle(color: t.muted)),
-                ),
-                SwitchListTile(
-                  key: const ValueKey('tasmee-model-auto-update'),
-                  secondary: const Icon(Icons.wifi),
-                  title: Text(l.tasmeeAutoUpdateModel),
-                  subtitle: Text(
-                    l.tasmeeAutoUpdateModelHint,
-                    style: TextStyle(color: t.muted),
                   ),
-                  value: s.autoUpdateModel,
-                  onChanged: c.setAutoUpdateModel,
-                ),
-                if (update != null)
-                  ListTile(
-                    key: const ValueKey('tasmee-model-update'),
-                    leading: Icon(Icons.system_update_alt, color: t.goldText),
-                    title: Text(
-                      l.tasmeeModelUpdateAvailable(
-                        context.digits(
-                          (update.totalBytes / (1024 * 1024)).round(),
+                  title(l.tasmeeOnError),
+                  Card(
+                    child: RadioGroup<ErrorBehavior>(
+                      groupValue: s.onError,
+                      onChanged: (v) => v == null ? null : c.setOnError(v),
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            value: ErrorBehavior.continueReading,
+                            title: Text(l.tasmeeMarkAndGoOn),
+                          ),
+                          RadioListTile(
+                            value: ErrorBehavior.stopToCorrect,
+                            title: Text(l.tasmeeStopToCorrect),
+                            subtitle: Text(l.tasmeeStopToCorrectHint),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  title(l.tasmeeFeedback),
+                  Card(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Text(l.tasmeeToastDuration),
+                          subtitle: Slider(
+                            value: s.toastSeconds.toDouble(),
+                            min: TasmeeSettings.minToast.toDouble(),
+                            max: TasmeeSettings.maxToast.toDouble(),
+                            divisions:
+                                TasmeeSettings.maxToast -
+                                TasmeeSettings.minToast,
+                            label: l.tasmeeSeconds(
+                              context.digits(s.toastSeconds),
+                            ),
+                            semanticFormatterCallback: (v) =>
+                                l.tasmeeSeconds(context.digits(v.round())),
+                            onChanged: (v) => c.setToastSeconds(v.round()),
+                          ),
+                          trailing: Text(
+                            l.tasmeeSeconds(context.digits(s.toastSeconds)),
+                          ),
                         ),
+                        SwitchListTile(
+                          title: Text(l.tasmeeVibration),
+                          subtitle: Text(l.tasmeeVibrationHint),
+                          value: s.vibration,
+                          onChanged: c.setVibration,
+                        ),
+                      ],
+                    ),
+                  ),
+                  title(l.tasmeeStrictness),
+                  Card(
+                    child: RadioGroup<MatchStrictness>(
+                      groupValue: s.strictness,
+                      onChanged: (v) => v == null ? null : c.setStrictness(v),
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            value: MatchStrictness.strict,
+                            title: Text(l.tasmeeStrict),
+                            subtitle: Text(l.tasmeeStrictHint),
+                          ),
+                          RadioListTile(
+                            value: MatchStrictness.medium,
+                            title: Text(l.tasmeeMedium),
+                            subtitle: Text(l.tasmeeMediumHint),
+                          ),
+                          RadioListTile(
+                            value: MatchStrictness.lenient,
+                            title: Text(l.tasmeeLenient),
+                            subtitle: Text(l.tasmeeLenientHint),
+                          ),
+                        ],
                       ),
                     ),
-                    trailing: Text(
-                      l.tasmeeModelUpdate,
-                      style: TextStyle(
-                        color: t.goldText,
-                        fontWeight: FontWeight.w700,
-                      ),
+                  ),
+                  title(l.tasmeeModelTitle),
+                  Card(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: Icon(Icons.memory, color: t.goldText),
+                          title: Text(switch (model) {
+                            AsyncData(value: (final m?, _)) =>
+                              l.tasmeeModelInstalled(m.manifest.version),
+                            AsyncData() => l.tasmeeModelMissing,
+                            _ => '…',
+                          }),
+                          subtitle: Text(switch (model) {
+                            AsyncData(value: (_, final bytes)) =>
+                              l.tasmeeModelSpace(
+                                context.digits((bytes / (1024 * 1024)).round()),
+                              ),
+                            _ => '',
+                          }, style: TextStyle(color: t.muted)),
+                        ),
+                        SwitchListTile(
+                          key: const ValueKey('tasmee-model-auto-update'),
+                          secondary: const Icon(Icons.wifi),
+                          title: Text(l.tasmeeAutoUpdateModel),
+                          subtitle: Text(
+                            l.tasmeeAutoUpdateModelHint,
+                            style: TextStyle(color: t.muted),
+                          ),
+                          value: s.autoUpdateModel,
+                          onChanged: c.setAutoUpdateModel,
+                        ),
+                        if (update != null)
+                          ListTile(
+                            key: const ValueKey('tasmee-model-update'),
+                            leading: Icon(
+                              Icons.system_update_alt,
+                              color: t.goldText,
+                            ),
+                            title: Text(
+                              l.tasmeeModelUpdateAvailable(
+                                context.digits(
+                                  (update.totalBytes / (1024 * 1024)).round(),
+                                ),
+                              ),
+                            ),
+                            trailing: Text(
+                              l.tasmeeModelUpdate,
+                              style: TextStyle(
+                                color: t.goldText,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            onTap: () => openModelUpdate(context, ref, update),
+                          ),
+                        ListTile(
+                          leading: const Icon(Icons.download),
+                          title: Text(
+                            model.value?.$1 == null
+                                ? l.tasmeeDownloadModel
+                                : l.tasmeeRedownload,
+                          ),
+                          onTap: () => _download(context, ref),
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.delete_outline),
+                          title: Text(l.tasmeeDeleteModel),
+                          enabled: (model.value?.$2 ?? 0) > 0,
+                          onTap: () => _delete(context, ref),
+                        ),
+                      ],
                     ),
-                    onTap: () => openModelUpdate(context, ref, update),
                   ),
-                ListTile(
-                  leading: const Icon(Icons.download),
-                  title: Text(
-                    model.value?.$1 == null
-                        ? l.tasmeeDownloadModel
-                        : l.tasmeeRedownload,
+                  title(l.tasmeeHistory),
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.history),
+                      title: Text(l.tasmeeClearHistory),
+                      subtitle: Text(
+                        l.tasmeeClearHistoryHint,
+                        style: TextStyle(color: t.muted),
+                      ),
+                      enabled: s.last != null,
+                      onTap: () => _clearHistory(context, ref),
+                    ),
                   ),
-                  onTap: () => _download(context, ref),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.delete_outline),
-                  title: Text(l.tasmeeDeleteModel),
-                  enabled: (model.value?.$2 ?? 0) > 0,
-                  onTap: () => _delete(context, ref),
-                ),
-              ],
-            ),
-          ),
-          title(l.tasmeeHistory),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.history),
-              title: Text(l.tasmeeClearHistory),
-              subtitle: Text(
-                l.tasmeeClearHistoryHint,
-                style: TextStyle(color: t.muted),
+                ],
               ),
-              enabled: s.last != null,
-              onTap: () => _clearHistory(context, ref),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -300,6 +321,9 @@ class TasmeeSettingsScreen extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      // The sheet draws its own frame and handle.
+      showDragHandle: false,
+      shape: const RoundedRectangleBorder(),
       builder: (sheet) => ModelSheet(
         backend: backend,
         onInstalled: (_) => Navigator.pop(sheet),

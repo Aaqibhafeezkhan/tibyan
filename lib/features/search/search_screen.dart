@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -126,44 +129,48 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
-      builder: (context) => DraggableScrollableSheet(
-        expand: false,
-        initialChildSize: 0.7,
-        builder: (context, controller) => ListView(
-          controller: controller,
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-          children: [
-            ListTile(
-              title: Text(l.searchScopeAll),
-              selected: _scope is WholeMushaf,
-              onTap: () => Navigator.pop(context, const WholeMushaf()),
-            ),
-            const Divider(),
-            Text(l.searchScopeJuz),
-            const SizedBox(height: 6),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
+      builder: (_) => LookTheme(
+        child: Builder(
+          builder: (context) => DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.7,
+            builder: (context, controller) => ListView(
+              controller: controller,
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               children: [
-                for (var j = 1; j <= 30; j++)
-                  ChoiceChip(
-                    label: Text(digits(j)),
-                    selected: _scope == InJuz(j),
-                    onSelected: (_) => Navigator.pop(context, InJuz(j)),
+                ListTile(
+                  title: Text(l.searchScopeAll),
+                  selected: _scope is WholeMushaf,
+                  onTap: () => Navigator.pop(context, const WholeMushaf()),
+                ),
+                const Divider(),
+                Text(l.searchScopeJuz),
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: [
+                    for (var j = 1; j <= 30; j++)
+                      ChoiceChip(
+                        label: Text(digits(j)),
+                        selected: _scope == InJuz(j),
+                        onSelected: (_) => Navigator.pop(context, InJuz(j)),
+                      ),
+                  ],
+                ),
+                const Divider(),
+                Text(l.searchScopeSurah),
+                for (final s in surahs ?? const <SurahRow>[])
+                  ListTile(
+                    dense: true,
+                    leading: Text(digits(s.id)),
+                    title: Text(surahName(context, s)),
+                    selected: _scope == InSurah(s.id),
+                    onTap: () => Navigator.pop(context, InSurah(s.id)),
                   ),
               ],
             ),
-            const Divider(),
-            Text(l.searchScopeSurah),
-            for (final s in surahs ?? const <SurahRow>[])
-              ListTile(
-                dense: true,
-                leading: Text(digits(s.id)),
-                title: Text(surahName(context, s)),
-                selected: _scope == InSurah(s.id),
-                onTap: () => Navigator.pop(context, InSurah(s.id)),
-              ),
-          ],
+          ),
         ),
       ),
     );
@@ -189,149 +196,173 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         : searchIn(verses, _query, _scope);
     final total = hits.fold<int>(0, (n, h) => n + h.count);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          controller: _field,
-          autofocus: true,
-          textInputAction: TextInputAction.search,
-          decoration: InputDecoration(
-            hintText: meaning ? l.searchMeaningHint : l.searchHint,
-            border: InputBorder.none,
-          ),
-          onChanged: _changed,
-          onSubmitted: (q) {
-            setState(() => _query = q);
-            _remember(q);
-          },
-        ),
-        actions: [
-          if (_field.text.isNotEmpty)
-            IconButton(
-              tooltip: l.clearSearch,
-              icon: const Icon(Icons.close),
-              onPressed: () => setState(() {
-                _field.clear();
-                _query = '';
-              }),
-            ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(
-            (context.tokens.elderly ? 72 : 56) + (meaning ? 0 : 48),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: SegmentedButton<SearchMode>(
-                    showSelectedIcon: false,
-                    segments: [
-                      ButtonSegment(
-                        value: SearchMode.words,
-                        icon: const Icon(Icons.text_fields),
-                        label: Text(l.searchModeWords),
-                      ),
-                      ButtonSegment(
-                        value: SearchMode.meaning,
-                        icon: const Icon(Icons.lightbulb_outline),
-                        label: Text(l.searchModeMeaning),
-                      ),
-                    ],
-                    selected: {_mode},
-                    onSelectionChanged: (s) => _setMode(s.single),
-                  ),
+    return LookScaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(
+              titleWidget: TextField(
+                controller: _field,
+                autofocus: true,
+                textInputAction: TextInputAction.search,
+                decoration: InputDecoration(
+                  hintText: meaning ? l.searchMeaningHint : l.searchHint,
+                  border: InputBorder.none,
                 ),
-                // Words only: the meaning search ranks the whole mushaf.
-                if (!meaning)
-                  Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 6),
-                      child: InputChip(
-                        avatar: const Icon(Icons.filter_list, size: 18),
-                        label: Text(_scopeLabel(l, surahs, digits)),
-                        onPressed: () => _pickScope(surahs),
-                        onDeleted: _scope is WholeMushaf
-                            ? null
-                            : () =>
-                                  setState(() => _scope = const WholeMushaf()),
-                        deleteButtonTooltipMessage: l.searchScopeAll,
-                      ),
-                    ),
+                onChanged: _changed,
+                onSubmitted: (q) {
+                  setState(() => _query = q);
+                  _remember(q);
+                },
+              ),
+              actions: [
+                if (_field.text.isNotEmpty)
+                  IconButton(
+                    tooltip: l.clearSearch,
+                    icon: const Icon(Icons.close),
+                    onPressed: () => setState(() {
+                      _field.clear();
+                      _query = '';
+                    }),
                   ),
               ],
             ),
-          ),
+            PreferredSize(
+              preferredSize: Size.fromHeight(
+                (context.tokens.elderly ? 72 : 56) + (meaning ? 0 : 48),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: SegmentedButton<SearchMode>(
+                        showSelectedIcon: false,
+                        segments: [
+                          ButtonSegment(
+                            value: SearchMode.words,
+                            icon: const Icon(Icons.text_fields),
+                            label: Text(l.searchModeWords),
+                          ),
+                          ButtonSegment(
+                            value: SearchMode.meaning,
+                            icon: const Icon(Icons.lightbulb_outline),
+                            label: Text(l.searchModeMeaning),
+                          ),
+                        ],
+                        selected: {_mode},
+                        onSelectionChanged: (s) => _setMode(s.single),
+                      ),
+                    ),
+                    // Words only: the meaning search ranks the whole mushaf.
+                    if (!meaning)
+                      Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: InputChip(
+                            avatar: const Icon(Icons.filter_list, size: 18),
+                            label: Text(_scopeLabel(l, surahs, digits)),
+                            onPressed: () => _pickScope(surahs),
+                            onDeleted: _scope is WholeMushaf
+                                ? null
+                                : () => setState(
+                                    () => _scope = const WholeMushaf(),
+                                  ),
+                            deleteButtonTooltipMessage: l.searchScopeAll,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: meaning
+                  ? MeaningResults(query: _query, onOpen: (s, a) => _open(s, a))
+                  : _query.isEmpty
+                  ? _History(
+                      items: _history,
+                      onPick: (q) {
+                        _field.text = q;
+                        setState(() => _query = q);
+                      },
+                      onClear: () async {
+                        await ref
+                            .read(sharedPreferencesProvider)
+                            .remove(_historyKey);
+                        setState(() {});
+                      },
+                    )
+                  : ListView(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                      children: [
+                        if (ref0 != null && surahs != null)
+                          Card(
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.bookmark_outline,
+                                color: t.goldText,
+                              ),
+                              title: Text(
+                                ref0.ayah == null
+                                    ? l.surahWord(
+                                        surahName(
+                                          context,
+                                          surahs[ref0.surah - 1],
+                                        ),
+                                      )
+                                    : '${l.surahWord(surahName(context, surahs[ref0.surah - 1]))} | ${digits(ref0.ayah!)}',
+                              ),
+                              subtitle: Text(l.searchGoTo),
+                              onTap: () {
+                                final max = surahs[ref0.surah - 1].ayahCount;
+                                _open(
+                                  ref0.surah,
+                                  (ref0.ayah ?? 1).clamp(1, max),
+                                );
+                              },
+                            ),
+                          ),
+                        Semantics(
+                          liveRegion: true,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Text(
+                              hits.isEmpty
+                                  ? (ref0 == null ? l.searchNothing : '')
+                                  : l.searchCount(
+                                      digits(total),
+                                      digits(hits.length),
+                                    ),
+                              style: TextStyle(color: t.muted),
+                            ),
+                          ),
+                        ),
+                        for (final h in hits.take(300))
+                          _Result(
+                            hit: h,
+                            surahs: surahs,
+                            onTap: () => _open(h.surah, h.ayah),
+                          ),
+                        if (hits.length > 300)
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Text(
+                              l.searchMore(digits(hits.length - 300)),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: t.muted),
+                            ),
+                          ),
+                      ],
+                    ),
+            ),
+          ],
         ),
       ),
-      body: meaning
-          ? MeaningResults(query: _query, onOpen: (s, a) => _open(s, a))
-          : _query.isEmpty
-          ? _History(
-              items: _history,
-              onPick: (q) {
-                _field.text = q;
-                setState(() => _query = q);
-              },
-              onClear: () async {
-                await ref.read(sharedPreferencesProvider).remove(_historyKey);
-                setState(() {});
-              },
-            )
-          : ListView(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-              children: [
-                if (ref0 != null && surahs != null)
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.bookmark_outline, color: t.goldText),
-                      title: Text(
-                        ref0.ayah == null
-                            ? l.surahWord(
-                                surahName(context, surahs[ref0.surah - 1]),
-                              )
-                            : '${l.surahWord(surahName(context, surahs[ref0.surah - 1]))} | ${digits(ref0.ayah!)}',
-                      ),
-                      subtitle: Text(l.searchGoTo),
-                      onTap: () {
-                        final max = surahs[ref0.surah - 1].ayahCount;
-                        _open(ref0.surah, (ref0.ayah ?? 1).clamp(1, max));
-                      },
-                    ),
-                  ),
-                Semantics(
-                  liveRegion: true,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Text(
-                      hits.isEmpty
-                          ? (ref0 == null ? l.searchNothing : '')
-                          : l.searchCount(digits(total), digits(hits.length)),
-                      style: TextStyle(color: t.muted),
-                    ),
-                  ),
-                ),
-                for (final h in hits.take(300))
-                  _Result(
-                    hit: h,
-                    surahs: surahs,
-                    onTap: () => _open(h.surah, h.ayah),
-                  ),
-                if (hits.length > 300)
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text(
-                      l.searchMore(digits(hits.length - 300)),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: t.muted),
-                    ),
-                  ),
-              ],
-            ),
     );
   }
 }

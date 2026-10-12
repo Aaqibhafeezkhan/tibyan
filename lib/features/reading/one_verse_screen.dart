@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -340,6 +343,7 @@ class _OneVerseScreenState extends ConsumerState<OneVerseScreen> {
           backgroundColor: t.paper,
           body: Stack(
             children: [
+              const Positioned.fill(child: LookBackground()),
               Positioned.fill(
                 child: c == null
                     ? Center(
@@ -473,13 +477,18 @@ class _VersePage extends ConsumerWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      Text(
-                        '${l.surahWord(name)} | ${digits(row.number)}',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                          color: t.goldText,
+                      // One line, made smaller rather than broken.
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          '${l.surahWord(name)} | ${digits(row.number)}',
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            color: t.goldText,
+                          ),
                         ),
                       ),
                       if (riwaya)
@@ -501,6 +510,15 @@ class _VersePage extends ConsumerWidget {
                     height: 72,
                     child: FilledButton.tonalIcon(
                       onPressed: onAuto,
+                      // Tonal, not the style's solid control colour.
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .secondaryContainer,
+                        foregroundColor: Theme.of(context)
+                            .colorScheme
+                            .onSecondaryContainer,
+                      ),
                       icon: Icon(
                         auto == 0 ? Icons.timer_off_outlined : Icons.timer,
                         size: 32,

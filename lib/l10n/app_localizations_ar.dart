@@ -142,21 +142,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get editionNewDesc =>
-      'طبعة 1441هـ من مجمع الملك فهد، مع تظليل الآية أثناء التلاوة.';
+      'طبعة ١٤٤١هـ من مجمع الملك فهد، مع تظليل الآية أثناء التلاوة.';
 
   @override
   String get editionOld => 'مصحف المدينة: الطبعة القديمة';
 
   @override
   String get editionOldDesc =>
-      'طبعة 1405هـ المشهورة في التطبيقات القديمة، مع تظليل الكلمة.';
+      'طبعة ١٤٠٥هـ المشهورة في التطبيقات القديمة، مع تظليل الكلمة.';
 
   @override
   String get editionShamarly => 'مصحف الشمرلي (الطبعة المصرية)';
 
   @override
   String get editionShamarlyDesc =>
-      'طبعة الشمرلي المصرية المعروفة، 522 صفحة، مع تظليل الآية وتظليل الكلمة في كثير من الآيات.';
+      'طبعة الشمرلي المصرية المعروفة، ٥٢٢ صفحة، مع تظليل الآية وتظليل الكلمة في كثير من الآيات.';
 
   @override
   String get defaultTag => 'الافتراضية';
@@ -566,6 +566,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noMarks => 'لا توجد فواصل بعد. اضغط على فاصل أي آية لتعليمها.';
+
+  @override
+  String get shareBrandColours => 'ألوان تبيان الأصلية';
+
+  @override
+  String get shareBrandColoursHint => 'بدلًا من ألوان الواجهة والمصحف الحالية';
 
   @override
   String get highlightDivineNames => 'تمييز لفظ الجلالة';
@@ -1819,16 +1825,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tajweedMadd2 => 'المد الطبيعي (حركتان)';
 
   @override
-  String get tajweedMadd246 => 'المد العارض واللين (2 أو 4 أو 6 حركات)';
+  String get tajweedMadd246 => 'المد العارض واللين (٢ أو ٤ أو ٦ حركات)';
 
   @override
-  String get tajweedMaddMuttasil => 'المد المتصل (4 أو 5 حركات)';
+  String get tajweedMaddMuttasil => 'المد المتصل (٤ أو ٥ حركات)';
 
   @override
-  String get tajweedMaddMunfasil => 'المد المنفصل (4 أو 5 حركات)';
+  String get tajweedMaddMunfasil => 'المد المنفصل (٤ أو ٥ حركات)';
 
   @override
-  String get tajweedMadd6 => 'المد اللازم (6 حركات)';
+  String get tajweedMadd6 => 'المد اللازم (٦ حركات)';
 
   @override
   String get tajweedGhunnah => 'الغنة';
