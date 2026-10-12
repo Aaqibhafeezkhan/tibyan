@@ -14,6 +14,7 @@ import 'package:tibyan/core/db/user_database.dart';
 import 'package:tibyan/core/flags/feature_flags.dart';
 import 'package:tibyan/core/settings/settings_controller.dart';
 import 'package:tibyan/core/theme/app_theme.dart';
+import 'package:tibyan/core/theme/interface_style.dart';
 import 'package:tibyan/core/theme/theme_registry.dart';
 import 'package:tibyan/core/theme/theme_tokens.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
@@ -95,11 +96,13 @@ ThemeData tasmeeTheme(
   ThemeModeId mode = ThemeModeId.light,
   bool elderly = false,
   String style = 'zakhrafa',
+  InterfaceStyle interfaceStyle = defaultInterfaceStyle,
 }) => buildTheme(
   style: container.read(themeRegistryProvider).byId(style),
   mode: mode,
   uiFont: UiFont.plex,
   elderly: elderly,
+  interfaceStyle: interfaceStyle,
 );
 
 /// [home] in a MaterialApp with the app's localisations and [theme].

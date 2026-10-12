@@ -13,6 +13,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tibyan/core/theme/app_theme.dart';
+import 'package:tibyan/core/theme/interface_style.dart';
+import 'package:tibyan/core/ui/look_kit.dart';
 import 'package:tibyan/core/theme/theme_tokens.dart';
 import 'package:tibyan/features/mushaf/presentation/about_mushaf_screen.dart';
 import 'package:tibyan/features/mushaf/presentation/mushaf_screen.dart';
@@ -70,6 +72,17 @@ void main() {
   const phone = Size(393, 852);
   const laptop = Size(1440, 900);
   bool wanted(String name) => only == null || only.any((w) => name.contains(w));
+  // TASMEE_UI_STYLES: the interface styles to draw (all by default); each
+  // picture's name starts with its style.
+  final styles = [
+    for (final s in InterfaceStyle.values)
+      if (Platform.environment['TASMEE_UI_STYLES']
+              ?.split(',')
+              .contains(s.name) ??
+          true)
+        s,
+  ];
+  var iface = defaultInterfaceStyle;
 
   late TasmeeTestData data;
   setUpAll(() => data = TasmeeTestData.open(pages: [1, 2, 3, 4]));
@@ -148,8 +161,8 @@ void main() {
           image.dispose();
           return d!.buffer.asUint8List();
         });
-        File('${out.path}/$name.png').writeAsBytesSync(bytes!);
-        debugPrint('wrote $name');
+        File('${out.path}/${iface.name}_$name.png').writeAsBytesSync(bytes!);
+        debugPrint('wrote ${iface.name}_$name');
       }
 
       /// The screens under a router like the app's, in [size], [mode],
@@ -187,7 +200,7 @@ void main() {
                       backgroundColor: context.tokens.colors.bg,
                       body: const SizedBox.expand(),
                     )
-                  : Builder(builder: home),
+                  : LookTheme(child: Builder(builder: home)),
             ),
             GoRoute(
               path: '/tasmee/session',
@@ -214,7 +227,12 @@ void main() {
                   GlobalWidgetsLocalizations.delegate,
                   GlobalCupertinoLocalizations.delegate,
                 ],
-                theme: tasmeeTheme(container, mode: mode, elderly: elderly),
+                theme: tasmeeTheme(
+                  container,
+                  mode: mode,
+                  elderly: elderly,
+                  interfaceStyle: iface,
+                ),
                 builder: elderly
                     ? (context, child) => MediaQuery(
                         data: MediaQuery.of(context).copyWith(
@@ -290,220 +308,243 @@ void main() {
         return (key, b);
       }
 
-      // ---- the session --------------------------------------------------
-      for (final (mode, tag) in [
-        (ThemeModeId.light, 'light'),
-        (ThemeModeId.night, 'night'),
-      ]) {
-        final name = 'session_$tag';
-        if (wanted(name)) {
-          final (key, _) = await listening(size: phone, mode: mode);
-          await save(name, key);
+      for (final style in styles) {
+        iface = style;
+        // ---- the session --------------------------------------------------
+        for (final (mode, tag) in [
+          (ThemeModeId.light, 'light'),
+          (ThemeModeId.night, 'night'),
+        ]) {
+          final name = 'session_$tag';
+          if (wanted(name)) {
+            final (key, _) = await listening(size: phone, mode: mode);
+            await save(name, key);
+          }
         }
-      }
-      if (wanted('stop_to_correct')) {
-        final (key, router, b, _) = await app(size: phone);
-        router.push(
-          '/tasmee/session',
-          extra: TasmeeSessionRequest(
-            range: range,
-            words: words,
-            mode: TasmeeMode.continuous,
-            onError: ErrorBehavior.stopToCorrect,
-          ),
-        );
-        await settleLong(8);
-        await tap(main);
-        final v6 = ayah(6), v7 = ayah(7);
-        // A wrong word, waited on, then read right: corrected (green).
-        await say(b, '${heard(v6.take(4))} قالوا ${v6[5].matching}');
-        await say(b, heard(v6.skip(4)));
-        await say(b, '${heard(v7.take(3))} كتاب ${heard(v7.skip(4).take(1))}');
-        sound(b, seed: 3, f0: 128);
-        await save('stop_to_correct_light', key);
-      }
-      if (wanted('verse_by_verse')) {
-        final (key, router, b, _) = await app(
-          size: phone,
-          mode: ThemeModeId.night,
-        );
-        router.push(
-          '/tasmee/session',
-          extra: TasmeeSessionRequest(
-            range: range,
-            words: words,
-            mode: TasmeeMode.verseByVerse,
-          ),
-        );
-        await settleLong(8);
-        for (final a in [6, 7]) {
+        if (wanted('stop_to_correct') && style == defaultInterfaceStyle) {
+          final (key, router, b, _) = await app(size: phone);
+          router.push(
+            '/tasmee/session',
+            extra: TasmeeSessionRequest(
+              range: range,
+              words: words,
+              mode: TasmeeMode.continuous,
+              onError: ErrorBehavior.stopToCorrect,
+            ),
+          );
+          await settleLong(8);
           await tap(main);
-          final v = ayah(a);
+          final v6 = ayah(6), v7 = ayah(7);
+          // A wrong word, waited on, then read right: corrected (green).
+          await say(b, '${heard(v6.take(4))} قالوا ${v6[5].matching}');
+          await say(b, heard(v6.skip(4)));
           await say(
             b,
-            a == 7 ? '${heard(v.take(3))} كتاب ${heard(v.skip(4))}' : heard(v),
+            '${heard(v7.take(3))} كتاب ${heard(v7.skip(4).take(1))}',
           );
+          sound(b, seed: 3, f0: 128);
+          await save('stop_to_correct_light', key);
+        }
+        if (wanted('verse_by_verse')) {
+          final (key, router, b, _) = await app(
+            size: phone,
+            mode: ThemeModeId.night,
+          );
+          router.push(
+            '/tasmee/session',
+            extra: TasmeeSessionRequest(
+              range: range,
+              words: words,
+              mode: TasmeeMode.verseByVerse,
+            ),
+          );
+          await settleLong(8);
+          for (final a in [6, 7]) {
+            await tap(main);
+            final v = ayah(a);
+            await say(
+              b,
+              a == 7
+                  ? '${heard(v.take(3))} كتاب ${heard(v.skip(4))}'
+                  : heard(v),
+            );
+            for (var i = 0; i < 12; i++) {
+              await tester.pump(const Duration(milliseconds: 500));
+            }
+          }
+          await save('verse_by_verse_night', key);
+        }
+        if (wanted('hint') && style == defaultInterfaceStyle) {
+          final (key, b) = await listening(size: phone);
+          await tap(find.byKey(const ValueKey('tasmee-hint')));
+          await tap(main); // pause
+          await save('hint_paused_light', key);
+          b.microphone0.onFrame = null;
+        }
+
+        // ---- the end ------------------------------------------------------
+        for (final (mode, tag) in [
+          (ThemeModeId.light, 'light'),
+          (ThemeModeId.night, 'night'),
+        ]) {
+          final name = 'summary_$tag';
+          if (!wanted(name)) continue;
+          final (key, _) = await listening(size: phone, mode: mode);
+          await tap(find.byKey(const ValueKey('tasmee-end')));
           for (var i = 0; i < 12; i++) {
             await tester.pump(const Duration(milliseconds: 500));
           }
+          await save(name, key);
         }
-        await save('verse_by_verse_night', key);
-      }
-      if (wanted('hint')) {
-        final (key, b) = await listening(size: phone);
-        await tap(find.byKey(const ValueKey('tasmee-hint')));
-        await tap(main); // pause
-        await save('hint_paused_light', key);
-        b.microphone0.onFrame = null;
-      }
 
-      // ---- the end ------------------------------------------------------
-      for (final (mode, tag) in [
-        (ThemeModeId.light, 'light'),
-        (ThemeModeId.night, 'night'),
-      ]) {
-        final name = 'summary_$tag';
-        if (!wanted(name)) continue;
-        final (key, _) = await listening(size: phone, mode: mode);
-        await tap(find.byKey(const ValueKey('tasmee-end')));
-        for (var i = 0; i < 12; i++) {
-          await tester.pump(const Duration(milliseconds: 500));
+        // ---- before the session -------------------------------------------
+        Future<void> before(
+          String name, {
+          FakeBackend? backend,
+          Map<String, Object> prefs = const {'tasmee.firstUseSeen': true},
+          ThemeModeId mode = ThemeModeId.light,
+          Future<void> Function()? then,
+        }) async {
+          if (!wanted(name)) return;
+          final (key, router, _, _) = await app(
+            size: phone,
+            backend: backend,
+            prefs: prefs,
+            mode: mode,
+          );
+          router.push(
+            '/tasmee/session',
+            extra: TasmeeSessionRequest(
+              range: range,
+              words: words,
+              mode: TasmeeMode.continuous,
+            ),
+          );
+          await settleLong(10);
+          await then?.call();
+          await save(name, key);
         }
-        await save(name, key);
-      }
 
-      // ---- before the session -------------------------------------------
-      Future<void> before(
-        String name, {
-        FakeBackend? backend,
-        Map<String, Object> prefs = const {'tasmee.firstUseSeen': true},
-        ThemeModeId mode = ThemeModeId.light,
-        Future<void> Function()? then,
-      }) async {
-        if (!wanted(name)) return;
-        final (key, router, _, _) = await app(
-          size: phone,
-          backend: backend,
-          prefs: prefs,
-          mode: mode,
-        );
-        router.push(
-          '/tasmee/session',
-          extra: TasmeeSessionRequest(
-            range: range,
-            words: words,
-            mode: TasmeeMode.continuous,
-          ),
-        );
-        await settleLong(10);
-        await then?.call();
-        await save(name, key);
-      }
+        for (final (mode, tag) in [
+          (ThemeModeId.light, 'light'),
+          (ThemeModeId.night, 'night'),
+        ]) {
+          await before('first_use_$tag', prefs: const {}, mode: mode);
+          await before(
+            'mic_denied_$tag',
+            mode: mode,
+            backend: FakeBackend(micDenied: true),
+            then: () => tap(main),
+          );
+          await before(
+            'model_consent_$tag',
+            mode: mode,
+            backend: FakeBackend(installed: false),
+          );
+          final gate = Completer<void>();
+          await before(
+            'model_downloading_$tag',
+            mode: mode,
+            backend: FakeBackend(installed: false)..downloadGate = gate,
+            then: () =>
+                tap(find.byKey(const ValueKey('tasmee-model-download'))),
+          );
+          gate.complete();
+        }
 
-      await before('first_use_light', prefs: const {});
-      await before('ready_light');
-      await before(
-        'mic_denied_light',
-        backend: FakeBackend(micDenied: true),
-        then: () => tap(main),
-      );
-      await before(
-        'model_consent_light',
-        backend: FakeBackend(installed: false),
-      );
-      final gate = Completer<void>();
-      await before(
-        'model_downloading_night',
-        mode: ThemeModeId.night,
-        backend: FakeBackend(installed: false)..downloadGate = gate,
-        then: () => tap(find.byKey(const ValueKey('tasmee-model-download'))),
-      );
-      gate.complete();
-
-      // ---- the setup sheet ----------------------------------------------
-      for (final (mode, tag, kind) in [
-        (ThemeModeId.light, 'light', 'آيات'),
-        (ThemeModeId.night, 'night', 'ربع حزب'),
-      ]) {
-        final name = 'setup_$tag';
-        if (!wanted(name)) continue;
-        final (key, _, _, _) = await app(
-          size: phone,
-          mode: mode,
-          prefs: const {
-            'tasmee.firstUseSeen': true,
-            'tasmee.last':
-                '{"from":[2,1],"to":[2,5],"reached":[2,5],"accuracy":96}',
-          },
-          home: (context) => Scaffold(
-            backgroundColor: context.tokens.colors.bg,
-            body: Center(
-              child: FilledButton(
-                onPressed: () => showTasmeeSetup(context),
-                child: const Text('open'),
+        // ---- the setup sheet ----------------------------------------------
+        for (final (mode, tag, kind) in [
+          (ThemeModeId.light, 'light', 'آيات'),
+          (ThemeModeId.night, 'night', 'ربع حزب'),
+        ]) {
+          final name = 'setup_$tag';
+          if (!wanted(name)) continue;
+          final (key, _, _, _) = await app(
+            size: phone,
+            mode: mode,
+            prefs: const {
+              'tasmee.firstUseSeen': true,
+              'tasmee.last':
+                  '{"from":[2,1],"to":[2,5],"reached":[2,5],"accuracy":96}',
+            },
+            home: (context) => Scaffold(
+              backgroundColor: context.tokens.colors.bg,
+              body: Center(
+                child: FilledButton(
+                  onPressed: () => showTasmeeSetup(context),
+                  child: const Text('open'),
+                ),
               ),
             ),
-          ),
-        );
-        await tap(find.text('open'));
-        await tap(find.text(kind));
-        await save(name, key);
-      }
+          );
+          await tap(find.text('open'));
+          await tap(find.text(kind));
+          await save(name, key);
+        }
 
-      // ---- elderly, English, laptop -------------------------------------
-      if (wanted('elderly')) {
-        final (key, _) = await listening(size: phone, elderly: true);
-        await save('elderly_light', key);
-      }
-      if (wanted('english')) {
-        final (key, _) = await listening(size: phone, lang: 'en');
-        await save('english_light', key);
-      }
-      if (wanted('laptop')) {
-        final (key, _) = await listening(size: laptop);
-        await save('laptop_light', key);
-      }
+        // ---- settings -----------------------------------------------------
+        for (final (mode, tag) in [
+          (ThemeModeId.light, 'light'),
+          (ThemeModeId.night, 'night'),
+        ]) {
+          if (!wanted('settings_$tag')) continue;
+          final (key, _, _, _) = await app(
+            size: phone,
+            mode: mode,
+            home: (_) => const TasmeeSettingsScreen(),
+          );
+          await save('settings_$tag', key);
+        }
+        if (style != defaultInterfaceStyle) continue;
 
-      // ---- settings and sources -----------------------------------------
-      if (wanted('settings')) {
-        final (key, _, _, _) = await app(
-          size: phone,
-          home: (_) => const TasmeeSettingsScreen(),
-        );
-        await save('settings_light', key);
-      }
-      if (wanted('about_sources')) {
-        final (key, _, _, _) = await app(
-          size: phone,
-          home: (_) => const AboutMushafScreen(),
-        );
-        final title = find.text(
-          'نموذج التعرف على الكلام للتسميع (FastConformer العربي)',
-        );
-        await tester.scrollUntilVisible(title, 300);
-        await tap(title);
-        await tester.drag(find.byType(ListView), const Offset(0, -260));
-        await save('about_sources_light', key);
-      }
+        // ---- elderly, English, laptop -------------------------------------
+        if (wanted('elderly')) {
+          final (key, _) = await listening(size: phone, elderly: true);
+          await save('elderly_light', key);
+        }
+        if (wanted('english')) {
+          final (key, _) = await listening(size: phone, lang: 'en');
+          await save('english_light', key);
+        }
+        if (wanted('laptop')) {
+          final (key, _) = await listening(size: laptop);
+          await save('laptop_light', key);
+        }
 
-      // ---- the hifz test in elderly mode (the cover fix) ----------------
-      if (wanted('hifz_elderly')) {
-        final (key, _, _, _) = await app(
-          size: phone,
-          elderly: true,
-          prefs: const {
-            'settings.elderlyMode': true,
-            'tasmee.firstUseSeen': true,
-          },
-          home: (_) => const MushafScreen(
-            initialPage: 3,
-            hifzUnit: 'page',
-            hifzFrom: '2:6',
-            hifzTo: '2:16',
-          ),
-        );
-        await settleLong(16);
-        await save('hifz_test_elderly_light', key);
+        // ---- settings and sources -----------------------------------------
+        if (wanted('about_sources')) {
+          final (key, _, _, _) = await app(
+            size: phone,
+            home: (_) => const AboutMushafScreen(),
+          );
+          final title = find.text(
+            'نموذج التعرف على الكلام للتسميع (FastConformer العربي)',
+          );
+          await tester.scrollUntilVisible(title, 300);
+          await tap(title);
+          await tester.drag(find.byType(ListView), const Offset(0, -260));
+          await save('about_sources_light', key);
+        }
+
+        // ---- the hifz test in elderly mode (the cover fix) ----------------
+        if (wanted('hifz_elderly')) {
+          final (key, _, _, _) = await app(
+            size: phone,
+            elderly: true,
+            prefs: const {
+              'settings.elderlyMode': true,
+              'tasmee.firstUseSeen': true,
+            },
+            home: (_) => const MushafScreen(
+              initialPage: 3,
+              hifzUnit: 'page',
+              hifzFrom: '2:6',
+              hifzTo: '2:16',
+            ),
+          );
+          await settleLong(16);
+          await save('hifz_test_elderly_light', key);
+        }
       }
 
       await tester.pumpWidget(const SizedBox());
