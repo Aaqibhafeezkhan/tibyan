@@ -1,6 +1,7 @@
 // Design prototype only: three visual directions for Home, Index and
 // Settings. Not wired into lib/. Rendered by render_redesign_test.dart.
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
@@ -671,18 +672,20 @@ const _sections = [
   _Sec('المساعد', 'Assistant', Icons.forum_outlined),
 ];
 
+/// The app's logo calligraphy (assets/ornaments/share_logo.png), set by the
+/// render tool. Tinted per look; never re-typeset in a font.
+ui.Image? logoImage;
+
 Widget logo(Ctx c, Color color, {double size = 34}) => Semantics(
   header: true,
   label: c.s('تبيان', 'Tibyan'),
   child: ExcludeSemantics(
-    child: Text(
-      'تبيان',
-      style: TextStyle(
-        fontFamily: 'ArefRuqaa',
-        fontSize: size,
-        color: color,
-        height: 1.1,
-      ),
+    child: RawImage(
+      image: logoImage,
+      height: size * 1.25,
+      color: color,
+      colorBlendMode: BlendMode.srcIn,
+      filterQuality: FilterQuality.high,
     ),
   ),
 );
@@ -1240,7 +1243,7 @@ class HomeProto extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 12, right: 4, left: 4),
           child: Text(
-            c.s('أقسام تبيان', 'Sections'),
+            c.s('الأقسام', 'Sections'),
             style: ts(c, 20, l.ink, font: c.english ? null : l.headFont),
           ),
         ),

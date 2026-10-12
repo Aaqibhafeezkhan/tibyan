@@ -78,6 +78,12 @@ void main() {
         )..addFont(Future.value(ByteData.sublistView(bytes)))).load();
       }
     });
+    logoImage = await tester.runAsync(() async {
+      final codec = await ui.instantiateImageCodec(
+        File('assets/ornaments/share_logo.png').readAsBytesSync(),
+      );
+      return (await codec.getNextFrame()).image;
+    });
     addTearDown(tester.view.reset);
     final data = load();
     final out = Directory('build/redesign')..createSync(recursive: true);
