@@ -45,8 +45,8 @@ void main() {
     await tester.pumpAndSettle();
 
     // The brand mark: the logo calligraphy, read out as «تبيان».
-    expect(find.byType(TibyanLogo), findsOneWidget);
-    final dir = Directionality.of(tester.element(find.byType(TibyanLogo)));
+    expect(find.byType(TibyanWordmark), findsOneWidget);
+    final dir = Directionality.of(tester.element(find.byType(TibyanWordmark)));
     expect(dir, TextDirection.rtl);
 
     await tester.tap(find.byTooltip('فتح الإعدادات'));

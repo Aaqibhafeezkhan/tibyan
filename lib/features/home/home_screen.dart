@@ -241,7 +241,7 @@ class _TopBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(28),
           border: Border.all(color: look.gold, width: 1.2),
         ),
-        child: TibyanLogo(color: look.onFrame, height: 40),
+        child: TibyanWordmark(color: look.onFrame, height: 40),
       ),
       InterfaceStyle.handasi => Row(
         mainAxisSize: MainAxisSize.min,
@@ -255,10 +255,10 @@ class _TopBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          TibyanLogo(color: look.ink, height: 42),
+          TibyanWordmark(color: look.ink, height: 42),
         ],
       ),
-      InterfaceStyle.layli => TibyanLogo(color: look.goldText, height: 46),
+      InterfaceStyle.layli => TibyanWordmark(color: look.goldText, height: 46),
     };
     return SizedBox(
       height: 60,
@@ -754,7 +754,7 @@ class _ElderlyHome extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    TibyanLogo(
+                    TibyanWordmark(
                       color: look.isLayli ? look.goldText : look.ink,
                       height: 52,
                     ),

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/settings/app_settings.dart';
 import '../../core/settings/settings_controller.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/ui/look_kit.dart';
 import '../../l10n/app_localizations.dart';
 import '../settings/theme_picker.dart';
 import 'page_preview.dart';
@@ -41,16 +42,7 @@ class OnboardingStyleScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                l.appTitle,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'ArefRuqaa',
-                  fontSize: 36,
-                  color: t.goldText,
-                  height: 1.2,
-                ),
-              ),
+              Center(child: TibyanWordmark(color: t.goldText, height: 48)),
               Text(
                 l.onbStyleTitle,
                 textAlign: TextAlign.center,

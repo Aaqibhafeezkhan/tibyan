@@ -19,11 +19,13 @@ bool isWide(BuildContext context) =>
     MediaQuery.sizeOf(context).width > wideBreakpoint;
 
 /// The «تبيان» calligraphy (assets/brand/tibyan_logo.svg, traced from the
-/// logo artwork), tinted in [color]. Never re-typeset in a font.
-class TibyanLogo extends StatelessWidget {
-  const TibyanLogo({super.key, required this.color, this.height = 40});
+/// logo artwork), tinted in [color] (the style's gold text by default).
+/// The app's name is never re-typeset in a font: wherever «تبيان» stands
+/// as the brand, this widget draws it.
+class TibyanWordmark extends StatelessWidget {
+  const TibyanWordmark({super.key, this.color, this.height = 40});
 
-  final Color color;
+  final Color? color;
   final double height;
 
   @override
@@ -34,7 +36,10 @@ class TibyanLogo extends StatelessWidget {
       child: SvgPicture.asset(
         'assets/brand/tibyan_logo.svg',
         height: height,
-        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+        colorFilter: ColorFilter.mode(
+          color ?? context.look.goldText,
+          BlendMode.srcIn,
+        ),
       ),
     ),
   );
@@ -252,7 +257,7 @@ class _Rail extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Center(child: TibyanLogo(color: l.onFrame, height: 64)),
+                  Center(child: TibyanWordmark(color: l.onFrame, height: 64)),
                   const SizedBox(height: 28),
                   for (final (item, label, icon, route) in items)
                     Padding(
