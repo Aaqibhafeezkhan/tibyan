@@ -284,7 +284,13 @@ class _PlanCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
               ),
               const SizedBox(height: 8),
-              Text(l.khatmaProgress(digits(status.done), digits(status.total))),
+              Text(
+                l.khatmaProgress(
+                  digits(status.done),
+                  status.total,
+                  digits(status.total),
+                ),
+              ),
               if (status.todayPortion case final portion?)
                 Text(
                   '${l.khatmaToday}: ${l.khatmaPagesRange(digits(portion.range.from), digits(portion.range.to))}',
@@ -549,7 +555,11 @@ class _Active extends ConsumerWidget {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              l.khatmaProgress(digits(s.done), digits(s.total)),
+                              l.khatmaProgress(
+                                digits(s.done),
+                                s.total,
+                                digits(s.total),
+                              ),
                             ),
                             Text(
                               '${l.khatmaEnds(formatDay(context, s.target))} · '

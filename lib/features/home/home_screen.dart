@@ -511,7 +511,11 @@ String journeyLine(BuildContext context, Journey p) {
   final l = AppLocalizations.of(context);
   final digits = NumberFormatter(Localizations.localeOf(context));
   if (p.memorized == 0) return l.hifzJourneyEmpty;
-  return l.hifzJourneyLine(digits(p.memorized), digits(p.mastered));
+  return l.hifzJourneyLine(
+    p.memorized,
+    digits(p.memorized),
+    digits(p.mastered),
+  );
 }
 
 /// «مسيرة الحفظ»: memorized and mastered verses, beside the khatma's card.

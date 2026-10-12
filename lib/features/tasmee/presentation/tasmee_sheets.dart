@@ -516,6 +516,7 @@ class SummarySheet extends StatelessWidget {
                     l.tasmeeDurationWords(
                       context.digits(minutes),
                       context.digits(seconds),
+                      words.length,
                       context.digits(words.length),
                     ),
                     style: TextStyle(color: t.muted, fontSize: 13),
@@ -539,7 +540,10 @@ class SummarySheet extends StatelessWidget {
         if (report.doubtful > 0) ...[
           const SizedBox(height: 6),
           Text(
-            l.tasmeeSessionDoubtful(context.digits(report.doubtful)),
+            l.tasmeeSessionDoubtful(
+              report.doubtful,
+              context.digits(report.doubtful),
+            ),
             style: TextStyle(color: t.muted, fontSize: 12),
           ),
         ],

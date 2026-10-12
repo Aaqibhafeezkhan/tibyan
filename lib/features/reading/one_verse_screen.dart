@@ -504,7 +504,7 @@ class _VersePage extends ConsumerWidget {
                   button: true,
                   label: auto == 0
                       ? l.oneVerseAutoOff
-                      : l.oneVerseAutoOn(digits(auto)),
+                      : l.oneVerseAutoOn(auto, digits(auto)),
                   excludeSemantics: true,
                   child: SizedBox(
                     height: 72,

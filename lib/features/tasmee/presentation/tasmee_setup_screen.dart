@@ -890,7 +890,9 @@ class _Summary extends StatelessWidget {
         return l.tasmeeRangeSummary(
           '${surahName(first.surah)} ${context.digits(first.ayah)}',
           '${surahName(last.surah)} ${context.digits(last.ayah)}',
+          verses,
           context.digits(verses),
+          ws.length,
           context.digits(ws.length),
           p0 == p1
               ? context.digits(p0)

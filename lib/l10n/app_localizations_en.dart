@@ -276,8 +276,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get medinan => 'Medinan';
 
   @override
-  String ayahCount(String count) {
-    return '$count verses';
+  String ayahCount(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count verses',
+      one: '$count verse',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -358,8 +364,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewNotesTitle => 'Questions under review';
 
   @override
-  String reviewNotesBody(String count) {
-    return '$count places where the two text sources differ (two juz boundaries and four spellings) are with a qualified reviewer. The app follows the Tanzil text until a decision is made.';
+  String reviewNotesBody(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count places',
+      one: '$count place',
+    );
+    return '$_temp0 where the two text sources differ (two juz boundaries and four spellings) are with a qualified reviewer. The app follows the Tanzil text until a decision is made.';
   }
 
   @override
@@ -437,8 +449,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String versesCount(String count) {
-    return '$count verses';
+  String versesCount(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count verses',
+      one: '$count verse',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -717,8 +735,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sajdahContinue => 'Continue';
 
   @override
-  String sajdahSecondsLeft(String n) {
-    return '$n seconds left';
+  String sajdahSecondsLeft(int seconds, String n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other: '$n seconds left',
+      one: '$n second left',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -878,13 +902,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchNothing => 'No results';
 
   @override
-  String searchCount(String count, String verses) {
-    return '$count matches in $verses verses';
+  String searchCount(int total, String count, int verseTotal, String verses) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$count matches',
+      one: '$count match',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      verseTotal,
+      locale: localeName,
+      other: '$verses verses',
+      one: '$verses verse',
+    );
+    return '$_temp0 in $_temp1';
   }
 
   @override
-  String searchMore(String count) {
-    return 'and $count more verses; narrow the search to see them';
+  String searchMore(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'and $count more verses',
+      one: 'and $count more verse',
+    );
+    return '$_temp0; narrow the search to see them';
   }
 
   @override
@@ -1142,8 +1184,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get khatmaPresetMonth => 'One month';
 
   @override
-  String khatmaPresetRamadan30(String days) {
-    return 'Ramadan: $days days';
+  String khatmaPresetRamadan30(int n, String days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$days days',
+      one: '$days day',
+    );
+    return 'Ramadan: $_temp0';
   }
 
   @override
@@ -1250,13 +1298,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get khatmaUnitHizb => 'Hizb';
 
   @override
-  String khatmaAboutPerDay(String count) {
-    return 'About $count pages a day';
+  String khatmaAboutPerDay(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count pages',
+      one: '$count page',
+    );
+    return 'About $_temp0 a day';
   }
 
   @override
-  String khatmaDuration(String count, String date) {
-    return '$count days, finishing on $date';
+  String khatmaDuration(int n, String count, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count days',
+      one: '$count day',
+    );
+    return '$_temp0, finishing on $date';
   }
 
   @override
@@ -1306,8 +1366,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get khatmaContinue => 'Keep reading';
 
   @override
-  String khatmaProgress(String done, String total) {
-    return '$done of $total pages';
+  String khatmaProgress(String done, int n, String total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$total pages',
+      one: '$total page',
+    );
+    return '$done of $_temp0';
   }
 
   @override
@@ -1412,8 +1478,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get streakWelcome => 'Welcome back. Pick up where you left off.';
 
   @override
-  String readDaysOfLast(String read, String days) {
-    return 'You read on $read of the last $days days';
+  String readDaysOfLast(String read, int n, String days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$days days',
+      one: 'day',
+    );
+    return 'You read on $read of the last $_temp0';
   }
 
   @override
@@ -1485,8 +1557,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String searchMeaningCount(String count) {
-    return '$count verses';
+  String searchMeaningCount(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count verses',
+      one: '$count verse',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2245,8 +2323,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get oneVerseAutoOff => 'Auto-turn is off. Tap to turn it on';
 
   @override
-  String oneVerseAutoOn(String seconds) {
-    return 'Turns to the next verse every $seconds seconds. Tap to change';
+  String oneVerseAutoOn(int n, String seconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$seconds seconds',
+      one: 'second',
+    );
+    return 'Turns to the next verse every $_temp0. Tap to change';
   }
 
   @override
@@ -2564,8 +2648,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tasmeeSessionComplete => 'Recitation complete';
 
   @override
-  String tasmeeSessionDoubtful(String count) {
-    return '$count unsure words, not counted in the accuracy';
+  String tasmeeSessionDoubtful(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count unsure words, not counted in the accuracy',
+      one: '$count unsure word, not counted in the accuracy',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2636,8 +2726,19 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String tasmeeDurationWords(String minutes, String seconds, String words) {
-    return '$minutes min $seconds s · $words words';
+  String tasmeeDurationWords(
+    String minutes,
+    String seconds,
+    int n,
+    String words,
+  ) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$words words',
+      one: '$words word',
+    );
+    return '$minutes min $seconds s · $_temp0';
   }
 
   @override
@@ -2893,11 +2994,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String tasmeeRangeSummary(
     String from,
     String to,
+    int verseTotal,
     String verses,
+    int wordTotal,
     String words,
     String pages,
   ) {
-    return 'From $from to $to · $verses verses · $words words · p. $pages';
+    String _temp0 = intl.Intl.pluralLogic(
+      verseTotal,
+      locale: localeName,
+      other: '$verses verses',
+      one: '$verses verse',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      wordTotal,
+      locale: localeName,
+      other: '$words words',
+      one: '$words word',
+    );
+    return 'From $from to $to · $_temp0 · $_temp1 · p. $pages';
   }
 
   @override
@@ -3185,8 +3300,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hifzJourney => 'Hifz journey';
 
   @override
-  String hifzJourneyLine(String memorized, String mastered) {
-    return '$memorized verses memorized, $mastered mastered';
+  String hifzJourneyLine(int n, String memorized, String mastered) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$memorized verses memorized',
+      one: '$memorized verse memorized',
+    );
+    return '$_temp0, $mastered mastered';
   }
 
   @override
@@ -3271,8 +3392,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recitationTest => 'Hifz test';
 
   @override
-  String historyVerses(String count) {
-    return '$count verses';
+  String historyVerses(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count verses',
+      one: '$count verse',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3294,8 +3421,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'No hard words yet. A word you miss or skip more than once shows here.';
 
   @override
-  String hardWordsCount(String count, String date) {
-    return '$count times · last $date';
+  String hardWordsCount(int n, String count, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count times',
+      one: '$count time',
+    );
+    return '$_temp0 · last $date';
   }
 
   @override
@@ -3338,8 +3471,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goalHizb => 'Hizb';
 
   @override
-  String goalDays(String days) {
-    return 'Length: $days days';
+  String goalDays(int n, String days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$days days',
+      one: '$days day',
+    );
+    return 'Length: $_temp0';
   }
 
   @override
@@ -3376,7 +3515,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String goalLeft(String pages) {
+  String goalLeft(int n, String pages) {
     return 'Pages left: $pages';
   }
 
@@ -3386,7 +3525,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String goalBehind(String pages) {
+  String goalBehind(int n, String pages) {
     return 'Pages left from past days: $pages';
   }
 

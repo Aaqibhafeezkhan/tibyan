@@ -49,7 +49,7 @@ class AboutMushafScreen extends ConsumerWidget {
                         ),
                         title: Text(l.reviewNotesTitle),
                         subtitle: Text(
-                          l.reviewNotesBody('$reviewCount'),
+                          l.reviewNotesBody(reviewCount, '$reviewCount'),
                           style: const TextStyle(height: 1.6),
                         ),
                       ),

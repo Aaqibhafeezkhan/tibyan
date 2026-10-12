@@ -107,7 +107,7 @@ class VerseServicesPanel extends StatelessWidget {
         : surahName(context, surahs![first.surah - 1]);
     final count = verses.length == 2
         ? l.twoVerses
-        : l.versesCount(digits(verses.length));
+        : l.versesCount(verses.length, digits(verses.length));
     final title = verses.length == 1
         ? '${l.surahWord(name)} | ${l.verseSelected(digits(first.ayah))}'
         : first.surah == last.surah

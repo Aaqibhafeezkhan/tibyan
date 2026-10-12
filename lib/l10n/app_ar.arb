@@ -142,9 +142,12 @@
   "tabPages": "الصفحات",
   "meccan": "مكية",
   "medinan": "مدنية",
-  "ayahCount": "{count} آية",
+  "ayahCount": "{n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{count} آيات} many{{count} آية} other{{count} آية}}",
   "@ayahCount": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "count": {
         "type": "String"
       }
@@ -222,9 +225,12 @@
     }
   },
   "reviewNotesTitle": "مسائل معروضة على المراجعة",
-  "reviewNotesBody": "{count} مواضع يختلف فيها مصدرا النص (حدود جزأين، وأربعة مواضع في الرسم) معروضة على مراجع متخصص، ويتبع التطبيق نص تنزيل حتى يصدر القرار.",
+  "reviewNotesBody": "{n, plural, =0{لا مواضع} =1{موضع واحد} =2{موضعان} few{{count} مواضع} many{{count} موضعًا} other{{count} موضع}} يختلف فيها مصدرا النص (حدود جزأين، وأربعة مواضع في الرسم) معروضة على مراجع متخصص، ويتبع التطبيق نص تنزيل حتى يصدر القرار.",
   "@reviewNotesBody": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "count": {
         "type": "String"
       }
@@ -317,9 +323,12 @@
       }
     }
   },
-  "versesCount": "{count} آيات",
+  "versesCount": "{n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{count} آيات} many{{count} آية} other{{count} آية}}",
   "@versesCount": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "count": {
         "type": "String"
       }
@@ -530,9 +539,12 @@
   "sajdahCardLabel": "سجدة تلاوة",
   "sajdahTapToContinue": "اضغط للاستكمال",
   "sajdahContinue": "استكمال",
-  "sajdahSecondsLeft": "{n} ثانية متبقية",
+  "sajdahSecondsLeft": "{seconds, plural, =0{لم تبقَ ثوانٍ} =1{ثانية واحدة متبقية} =2{ثانيتان متبقيتان} few{{n} ثوانٍ متبقية} many{{n} ثانية متبقية} other{{n} ثانية متبقية}}",
   "@sajdahSecondsLeft": {
     "placeholders": {
+      "seconds": {
+        "type": "int"
+      },
       "n": {
         "type": "String"
       }
@@ -631,20 +643,29 @@
   "searchIntro": "اكتب كلمة أو أكثر من القرآن، بتشكيل أو دونه، أو اكتب موضعا مثل «٢:٢٥٥» أو «البقرة ٢٥٥».",
   "searchGoTo": "اذهب إلى الموضع",
   "searchNothing": "لا نتائج",
-  "searchCount": "{count} موضعا في {verses} آية",
+  "searchCount": "{total, plural, =0{لا مواضع} =1{موضع واحد} =2{موضعان} few{{count} مواضع} many{{count} موضعًا} other{{count} موضع}} {verseTotal, plural, =0{في لا آيات} =1{في آية واحدة} =2{في آيتين} few{في {verses} آيات} many{في {verses} آية} other{في {verses} آية}}",
   "@searchCount": {
     "placeholders": {
+      "total": {
+        "type": "int"
+      },
       "count": {
         "type": "String"
+      },
+      "verseTotal": {
+        "type": "int"
       },
       "verses": {
         "type": "String"
       }
     }
   },
-  "searchMore": "و{count} آية أخرى، ضيّق البحث لرؤيتها",
+  "searchMore": "{n, plural, =0{} =1{وآية أخرى} =2{وآيتان أخريان} few{و{count} آيات أخرى} many{و{count} آية أخرى} other{و{count} آية أخرى}}، ضيّق البحث لرؤيتها",
   "@searchMore": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "count": {
         "type": "String"
       }
@@ -841,9 +862,12 @@
   "khatmaPresetLabel": "قالب جاهز",
   "khatmaPresetCustom": "خطة مخصصة",
   "khatmaPresetMonth": "ختمة في شهر",
-  "khatmaPresetRamadan30": "رمضان: {days} يوما",
+  "khatmaPresetRamadan30": "رمضان: {n, plural, =0{لا أيام} =1{يوم واحد} =2{يومان} few{{days} أيام} many{{days} يومًا} other{{days} يوم}}",
   "@khatmaPresetRamadan30": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "days": {
         "type": "String"
       }
@@ -892,17 +916,23 @@
   "khatmaUnitPage": "صفحة",
   "khatmaUnitJuz": "جزء",
   "khatmaUnitHizb": "حزب",
-  "khatmaAboutPerDay": "نحو {count} صفحة في اليوم",
+  "khatmaAboutPerDay": "نحو {n, plural, =0{لا صفحات} =1{صفحة واحدة} =2{صفحتين} few{{count} صفحات} many{{count} صفحة} other{{count} صفحة}} في اليوم",
   "@khatmaAboutPerDay": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "count": {
         "type": "String"
       }
     }
   },
-  "khatmaDuration": "المدة: {count} يوم، والختم يوم {date}",
+  "khatmaDuration": "المدة: {n, plural, =0{لا أيام} =1{يوم واحد} =2{يومان} few{{count} أيام} many{{count} يومًا} other{{count} يوم}}، والختم يوم {date}",
   "@khatmaDuration": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "count": {
         "type": "String"
       },
@@ -948,11 +978,14 @@
   "khatmaMarkRead": "قرأته في مصحف آخر",
   "khatmaTodayDone": "ورد اليوم مقروء",
   "khatmaContinue": "تابع القراءة",
-  "khatmaProgress": "{done} من {total} صفحة",
+  "khatmaProgress": "{done} من {n, plural, =0{لا صفحات} =1{صفحة واحدة} =2{صفحتين} few{{total} صفحات} many{{total} صفحة} other{{total} صفحة}}",
   "@khatmaProgress": {
     "placeholders": {
       "done": {
         "type": "String"
+      },
+      "n": {
+        "type": "int"
       },
       "total": {
         "type": "String"
@@ -1033,11 +1066,14 @@
   "reportsDayRead": "يوم فيه قراءة أو استماع",
   "streakReadToday": "قرأت اليوم.",
   "streakWelcome": "مرحبا بعودتك. تابع من حيث وقفت.",
-  "readDaysOfLast": "قرأت {read} من آخر {days} يوما",
+  "readDaysOfLast": "قرأت {read} من {n, plural, =0{لا أيام} =1{آخر يوم} =2{آخر يومين} few{آخر {days} أيام} many{آخر {days} يومًا} other{آخر {days} يوم}}",
   "@readDaysOfLast": {
     "placeholders": {
       "read": {
         "type": "String"
+      },
+      "n": {
+        "type": "int"
       },
       "days": {
         "type": "String"
@@ -1081,9 +1117,12 @@
       }
     }
   },
-  "searchMeaningCount": "{count} آية",
+  "searchMeaningCount": "{n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{count} آيات} many{{count} آية} other{{count} آية}}",
   "@searchMeaningCount": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "count": {
         "type": "String"
       }
@@ -1648,9 +1687,12 @@
   "oneVerse": "آية آية",
   "oneVerseHint": "آية واحدة في كل شاشة بخط كبير، والجهاز بالعرض",
   "oneVerseAutoOff": "الانتقال التلقائي متوقف. اضغط لتشغيله",
-  "oneVerseAutoOn": "ينتقل للآية التالية كل {seconds} ثانية. اضغط للتغيير",
+  "oneVerseAutoOn": "ينتقل للآية التالية {n, plural, =0{فورًا} =1{كل ثانية} =2{كل ثانيتين} few{كل {seconds} ثوانٍ} many{كل {seconds} ثانية} other{كل {seconds} ثانية}}. اضغط للتغيير",
   "@oneVerseAutoOn": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "seconds": {
         "type": "String"
       }
@@ -1823,9 +1865,12 @@
   "tasmeeWordWrong": "خطأ",
   "tasmeeWordSkipped": "متجاوزة",
   "tasmeeSessionComplete": "انتهى التسميع",
-  "tasmeeSessionDoubtful": "{count} كلمة مشكوك فيها، لم تُحسب في الدقة",
+  "tasmeeSessionDoubtful": "{n, plural, =0{لا كلمات مشكوك فيها} =1{كلمة واحدة مشكوك فيها، لم تُحسب في الدقة} =2{كلمتان مشكوك فيهما، لم تُحسبا في الدقة} few{{count} كلمات مشكوك فيها، لم تُحسب في الدقة} many{{count} كلمة مشكوك فيها، لم تُحسب في الدقة} other{{count} كلمة مشكوك فيها، لم تُحسب في الدقة}}",
   "@tasmeeSessionDoubtful": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "count": {
         "type": "String"
       }
@@ -1875,7 +1920,7 @@
       }
     }
   },
-  "tasmeeDurationWords": "المدة {minutes} د {seconds} ث · {words} كلمة",
+  "tasmeeDurationWords": "المدة {minutes} د {seconds} ث · {n, plural, =0{لا كلمات} =1{كلمة واحدة} =2{كلمتان} few{{words} كلمات} many{{words} كلمة} other{{words} كلمة}}",
   "@tasmeeDurationWords": {
     "placeholders": {
       "minutes": {
@@ -1883,6 +1928,9 @@
       },
       "seconds": {
         "type": "String"
+      },
+      "n": {
+        "type": "int"
       },
       "words": {
         "type": "String"
@@ -2031,7 +2079,7 @@
   "tasmeeProgress": "ما سُمّع من النطاق",
   "tasmeeQuarterOfHizb": "الربع",
   "tasmeeRange": "النطاق",
-  "tasmeeRangeSummary": "من {from} إلى {to} · {verses} آية · {words} كلمة · ص {pages}",
+  "tasmeeRangeSummary": "من {from} إلى {to} · {verseTotal, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{verses} آيات} many{{verses} آية} other{{verses} آية}} · {wordTotal, plural, =0{لا كلمات} =1{كلمة واحدة} =2{كلمتان} few{{words} كلمات} many{{words} كلمة} other{{words} كلمة}} · ص {pages}",
   "@tasmeeRangeSummary": {
     "placeholders": {
       "from": {
@@ -2040,8 +2088,14 @@
       "to": {
         "type": "String"
       },
+      "verseTotal": {
+        "type": "int"
+      },
       "verses": {
         "type": "String"
+      },
+      "wordTotal": {
+        "type": "int"
       },
       "words": {
         "type": "String"
@@ -2254,9 +2308,12 @@
   "hifzTabHardWords": "الكلمات الصعبة",
   "hifzTabGoals": "الأهداف",
   "hifzJourney": "مسيرة الحفظ",
-  "hifzJourneyLine": "محفوظ {memorized} آية، منها {mastered} متقنة",
+  "hifzJourneyLine": "محفوظ {n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{memorized} آيات} many{{memorized} آية} other{{memorized} آية}}، منها {mastered} متقنة",
   "@hifzJourneyLine": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "memorized": {
         "type": "String"
       },
@@ -2319,9 +2376,12 @@
   "recitationVoice": "بالصوت",
   "recitationTouch": "باللمس",
   "recitationTest": "اختبار الحفظ",
-  "historyVerses": "{count} آية",
+  "historyVerses": "{n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{count} آيات} many{{count} آية} other{{count} آية}}",
   "@historyVerses": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "count": {
         "type": "String"
       }
@@ -2339,9 +2399,12 @@
   },
   "sessionSlips": "مواضع الخطأ",
   "hardWordsEmpty": "لا كلمات صعبة بعد. الكلمة التي تخطئ فيها أو تتخطاها أكثر من مرة تظهر هنا.",
-  "hardWordsCount": "{count} مرات · آخرها {date}",
+  "hardWordsCount": "{n, plural, =0{لا مرات} =1{مرة واحدة} =2{مرتان} few{{count} مرات} many{{count} مرة} other{{count} مرة}} · آخرها {date}",
   "@hardWordsCount": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "count": {
         "type": "String"
       },
@@ -2363,9 +2426,12 @@
   "goalToSurah": "إلى سورة",
   "goalSurah": "السورة",
   "goalHizb": "الحزب",
-  "goalDays": "المدة: {days} يوما",
+  "goalDays": "المدة: {n, plural, =0{لا أيام} =1{يوم واحد} =2{يومان} few{{days} أيام} many{{days} يومًا} other{{days} يوم}}",
   "@goalDays": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "days": {
         "type": "String"
       }
@@ -2401,9 +2467,12 @@
       }
     }
   },
-  "goalLeft": "تبقّى {pages} صفحة",
+  "goalLeft": "{n, plural, =0{لم تبقَ صفحات} =1{تبقّت صفحة واحدة} =2{تبقّت صفحتان} few{تبقّت {pages} صفحات} many{تبقّى {pages} صفحة} other{تبقّى {pages} صفحة}}",
   "@goalLeft": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "pages": {
         "type": "String"
       }
@@ -2417,9 +2486,12 @@
       }
     }
   },
-  "goalBehind": "تبقّى من الأيام الماضية {pages} صفحة",
+  "goalBehind": "تبقّى من الأيام الماضية {n, plural, =0{لا شيء} =1{صفحة واحدة} =2{صفحتان} few{{pages} صفحات} many{{pages} صفحة} other{{pages} صفحة}}",
   "@goalBehind": {
     "placeholders": {
+      "n": {
+        "type": "int"
+      },
       "pages": {
         "type": "String"
       }

@@ -250,11 +250,11 @@ class _IndexScreenState extends ConsumerState<IndexScreen> {
         return _SurahRowTile(
           surah: s,
           current: isCurrent,
-          ayahs: l.ayahCount(
-            digits(
-              ref.watch(surahAyahCountProvider(s.id)).value ?? s.ayahCount,
-            ),
-          ),
+          ayahs: () {
+            final n =
+                ref.watch(surahAyahCountProvider(s.id)).value ?? s.ayahCount;
+            return l.ayahCount(n, digits(n));
+          }(),
           // The edition's own count and page (a riwaya differs).
           page: digits(
             ref.watch(surahStartPageProvider(s.id)).value ??

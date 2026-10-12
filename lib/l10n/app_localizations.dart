@@ -581,8 +581,8 @@ abstract class AppLocalizations {
   /// No description provided for @ayahCount.
   ///
   /// In ar, this message translates to:
-  /// **'{count} آية'**
-  String ayahCount(String count);
+  /// **'{n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{count} آيات} many{{count} آية} other{{count} آية}}'**
+  String ayahCount(int n, String count);
 
   /// No description provided for @juzLabel.
   ///
@@ -713,8 +713,8 @@ abstract class AppLocalizations {
   /// No description provided for @reviewNotesBody.
   ///
   /// In ar, this message translates to:
-  /// **'{count} مواضع يختلف فيها مصدرا النص (حدود جزأين، وأربعة مواضع في الرسم) معروضة على مراجع متخصص، ويتبع التطبيق نص تنزيل حتى يصدر القرار.'**
-  String reviewNotesBody(String count);
+  /// **'{n, plural, =0{لا مواضع} =1{موضع واحد} =2{موضعان} few{{count} مواضع} many{{count} موضعًا} other{{count} موضع}} يختلف فيها مصدرا النص (حدود جزأين، وأربعة مواضع في الرسم) معروضة على مراجع متخصص، ويتبع التطبيق نص تنزيل حتى يصدر القرار.'**
+  String reviewNotesBody(int n, String count);
 
   /// No description provided for @mushafOpen.
   ///
@@ -839,8 +839,8 @@ abstract class AppLocalizations {
   /// No description provided for @versesCount.
   ///
   /// In ar, this message translates to:
-  /// **'{count} آيات'**
-  String versesCount(String count);
+  /// **'{n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{count} آيات} many{{count} آية} other{{count} آية}}'**
+  String versesCount(int n, String count);
 
   /// No description provided for @twoVerses.
   ///
@@ -1319,8 +1319,8 @@ abstract class AppLocalizations {
   /// No description provided for @sajdahSecondsLeft.
   ///
   /// In ar, this message translates to:
-  /// **'{n} ثانية متبقية'**
-  String sajdahSecondsLeft(String n);
+  /// **'{seconds, plural, =0{لم تبقَ ثوانٍ} =1{ثانية واحدة متبقية} =2{ثانيتان متبقيتان} few{{n} ثوانٍ متبقية} many{{n} ثانية متبقية} other{{n} ثانية متبقية}}'**
+  String sajdahSecondsLeft(int seconds, String n);
 
   /// No description provided for @tapJumpLabel.
   ///
@@ -1595,14 +1595,14 @@ abstract class AppLocalizations {
   /// No description provided for @searchCount.
   ///
   /// In ar, this message translates to:
-  /// **'{count} موضعا في {verses} آية'**
-  String searchCount(String count, String verses);
+  /// **'{total, plural, =0{لا مواضع} =1{موضع واحد} =2{موضعان} few{{count} مواضع} many{{count} موضعًا} other{{count} موضع}} {verseTotal, plural, =0{في لا آيات} =1{في آية واحدة} =2{في آيتين} few{في {verses} آيات} many{في {verses} آية} other{في {verses} آية}}'**
+  String searchCount(int total, String count, int verseTotal, String verses);
 
   /// No description provided for @searchMore.
   ///
   /// In ar, this message translates to:
-  /// **'و{count} آية أخرى، ضيّق البحث لرؤيتها'**
-  String searchMore(String count);
+  /// **'{n, plural, =0{} =1{وآية أخرى} =2{وآيتان أخريان} few{و{count} آيات أخرى} many{و{count} آية أخرى} other{و{count} آية أخرى}}، ضيّق البحث لرؤيتها'**
+  String searchMore(int n, String count);
 
   /// No description provided for @searchHistory.
   ///
@@ -2039,8 +2039,8 @@ abstract class AppLocalizations {
   /// No description provided for @khatmaPresetRamadan30.
   ///
   /// In ar, this message translates to:
-  /// **'رمضان: {days} يوما'**
-  String khatmaPresetRamadan30(String days);
+  /// **'رمضان: {n, plural, =0{لا أيام} =1{يوم واحد} =2{يومان} few{{days} أيام} many{{days} يومًا} other{{days} يوم}}'**
+  String khatmaPresetRamadan30(int n, String days);
 
   /// No description provided for @khatmaPresetRamadanTwice.
   ///
@@ -2243,14 +2243,14 @@ abstract class AppLocalizations {
   /// No description provided for @khatmaAboutPerDay.
   ///
   /// In ar, this message translates to:
-  /// **'نحو {count} صفحة في اليوم'**
-  String khatmaAboutPerDay(String count);
+  /// **'نحو {n, plural, =0{لا صفحات} =1{صفحة واحدة} =2{صفحتين} few{{count} صفحات} many{{count} صفحة} other{{count} صفحة}} في اليوم'**
+  String khatmaAboutPerDay(int n, String count);
 
   /// No description provided for @khatmaDuration.
   ///
   /// In ar, this message translates to:
-  /// **'المدة: {count} يوم، والختم يوم {date}'**
-  String khatmaDuration(String count, String date);
+  /// **'المدة: {n, plural, =0{لا أيام} =1{يوم واحد} =2{يومان} few{{count} أيام} many{{count} يومًا} other{{count} يوم}}، والختم يوم {date}'**
+  String khatmaDuration(int n, String count, String date);
 
   /// No description provided for @khatmaEditionNote.
   ///
@@ -2333,8 +2333,8 @@ abstract class AppLocalizations {
   /// No description provided for @khatmaProgress.
   ///
   /// In ar, this message translates to:
-  /// **'{done} من {total} صفحة'**
-  String khatmaProgress(String done, String total);
+  /// **'{done} من {n, plural, =0{لا صفحات} =1{صفحة واحدة} =2{صفحتين} few{{total} صفحات} many{{total} صفحة} other{{total} صفحة}}'**
+  String khatmaProgress(String done, int n, String total);
 
   /// No description provided for @khatmaDaysLeft.
   ///
@@ -2513,8 +2513,8 @@ abstract class AppLocalizations {
   /// No description provided for @readDaysOfLast.
   ///
   /// In ar, this message translates to:
-  /// **'قرأت {read} من آخر {days} يوما'**
-  String readDaysOfLast(String read, String days);
+  /// **'قرأت {read} من {n, plural, =0{لا أيام} =1{آخر يوم} =2{آخر يومين} few{آخر {days} أيام} many{آخر {days} يومًا} other{آخر {days} يوم}}'**
+  String readDaysOfLast(String read, int n, String days);
 
   /// No description provided for @streakNotesToggle.
   ///
@@ -2639,8 +2639,8 @@ abstract class AppLocalizations {
   /// No description provided for @searchMeaningCount.
   ///
   /// In ar, this message translates to:
-  /// **'{count} آية'**
-  String searchMeaningCount(String count);
+  /// **'{n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{count} آيات} many{{count} آية} other{{count} آية}}'**
+  String searchMeaningCount(int n, String count);
 
   /// No description provided for @semanticPackName.
   ///
@@ -3928,8 +3928,8 @@ abstract class AppLocalizations {
   /// No description provided for @oneVerseAutoOn.
   ///
   /// In ar, this message translates to:
-  /// **'ينتقل للآية التالية كل {seconds} ثانية. اضغط للتغيير'**
-  String oneVerseAutoOn(String seconds);
+  /// **'ينتقل للآية التالية {n, plural, =0{فورًا} =1{كل ثانية} =2{كل ثانيتين} few{كل {seconds} ثوانٍ} many{كل {seconds} ثانية} other{كل {seconds} ثانية}}. اضغط للتغيير'**
+  String oneVerseAutoOn(int n, String seconds);
 
   /// No description provided for @oneVerseAutoShort.
   ///
@@ -4492,8 +4492,8 @@ abstract class AppLocalizations {
   /// No description provided for @tasmeeSessionDoubtful.
   ///
   /// In ar, this message translates to:
-  /// **'{count} كلمة مشكوك فيها، لم تُحسب في الدقة'**
-  String tasmeeSessionDoubtful(String count);
+  /// **'{n, plural, =0{لا كلمات مشكوك فيها} =1{كلمة واحدة مشكوك فيها، لم تُحسب في الدقة} =2{كلمتان مشكوك فيهما، لم تُحسبا في الدقة} few{{count} كلمات مشكوك فيها، لم تُحسب في الدقة} many{{count} كلمة مشكوك فيها، لم تُحسب في الدقة} other{{count} كلمة مشكوك فيها، لم تُحسب في الدقة}}'**
+  String tasmeeSessionDoubtful(int n, String count);
 
   /// No description provided for @tasmeeAccuracy.
   ///
@@ -4612,8 +4612,13 @@ abstract class AppLocalizations {
   /// No description provided for @tasmeeDurationWords.
   ///
   /// In ar, this message translates to:
-  /// **'المدة {minutes} د {seconds} ث · {words} كلمة'**
-  String tasmeeDurationWords(String minutes, String seconds, String words);
+  /// **'المدة {minutes} د {seconds} ث · {n, plural, =0{لا كلمات} =1{كلمة واحدة} =2{كلمتان} few{{words} كلمات} many{{words} كلمة} other{{words} كلمة}}'**
+  String tasmeeDurationWords(
+    String minutes,
+    String seconds,
+    int n,
+    String words,
+  );
 
   /// No description provided for @tasmeeElapsed.
   ///
@@ -5056,11 +5061,13 @@ abstract class AppLocalizations {
   /// No description provided for @tasmeeRangeSummary.
   ///
   /// In ar, this message translates to:
-  /// **'من {from} إلى {to} · {verses} آية · {words} كلمة · ص {pages}'**
+  /// **'من {from} إلى {to} · {verseTotal, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{verses} آيات} many{{verses} آية} other{{verses} آية}} · {wordTotal, plural, =0{لا كلمات} =1{كلمة واحدة} =2{كلمتان} few{{words} كلمات} many{{words} كلمة} other{{words} كلمة}} · ص {pages}'**
   String tasmeeRangeSummary(
     String from,
     String to,
+    int verseTotal,
     String verses,
+    int wordTotal,
     String words,
     String pages,
   );
@@ -5554,8 +5561,8 @@ abstract class AppLocalizations {
   /// No description provided for @hifzJourneyLine.
   ///
   /// In ar, this message translates to:
-  /// **'محفوظ {memorized} آية، منها {mastered} متقنة'**
-  String hifzJourneyLine(String memorized, String mastered);
+  /// **'محفوظ {n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{memorized} آيات} many{{memorized} آية} other{{memorized} آية}}، منها {mastered} متقنة'**
+  String hifzJourneyLine(int n, String memorized, String mastered);
 
   /// No description provided for @hifzJourneyEmpty.
   ///
@@ -5698,8 +5705,8 @@ abstract class AppLocalizations {
   /// No description provided for @historyVerses.
   ///
   /// In ar, this message translates to:
-  /// **'{count} آية'**
-  String historyVerses(String count);
+  /// **'{n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{count} آيات} many{{count} آية} other{{count} آية}}'**
+  String historyVerses(int n, String count);
 
   /// No description provided for @sessionSummary.
   ///
@@ -5734,8 +5741,8 @@ abstract class AppLocalizations {
   /// No description provided for @hardWordsCount.
   ///
   /// In ar, this message translates to:
-  /// **'{count} مرات · آخرها {date}'**
-  String hardWordsCount(String count, String date);
+  /// **'{n, plural, =0{لا مرات} =1{مرة واحدة} =2{مرتان} few{{count} مرات} many{{count} مرة} other{{count} مرة}} · آخرها {date}'**
+  String hardWordsCount(int n, String count, String date);
 
   /// No description provided for @hardWordsHint.
   ///
@@ -5818,8 +5825,8 @@ abstract class AppLocalizations {
   /// No description provided for @goalDays.
   ///
   /// In ar, this message translates to:
-  /// **'المدة: {days} يوما'**
-  String goalDays(String days);
+  /// **'المدة: {n, plural, =0{لا أيام} =1{يوم واحد} =2{يومان} few{{days} أيام} many{{days} يومًا} other{{days} يوم}}'**
+  String goalDays(int n, String days);
 
   /// No description provided for @goalUnit.
   ///
@@ -5878,8 +5885,8 @@ abstract class AppLocalizations {
   /// No description provided for @goalLeft.
   ///
   /// In ar, this message translates to:
-  /// **'تبقّى {pages} صفحة'**
-  String goalLeft(String pages);
+  /// **'{n, plural, =0{لم تبقَ صفحات} =1{تبقّت صفحة واحدة} =2{تبقّت صفحتان} few{تبقّت {pages} صفحات} many{تبقّى {pages} صفحة} other{تبقّى {pages} صفحة}}'**
+  String goalLeft(int n, String pages);
 
   /// No description provided for @goalUntil.
   ///
@@ -5890,8 +5897,8 @@ abstract class AppLocalizations {
   /// No description provided for @goalBehind.
   ///
   /// In ar, this message translates to:
-  /// **'تبقّى من الأيام الماضية {pages} صفحة'**
-  String goalBehind(String pages);
+  /// **'تبقّى من الأيام الماضية {n, plural, =0{لا شيء} =1{صفحة واحدة} =2{صفحتان} few{{pages} صفحات} many{{pages} صفحة} other{{pages} صفحة}}'**
+  String goalBehind(int n, String pages);
 
   /// No description provided for @goalCatchUp.
   ///
