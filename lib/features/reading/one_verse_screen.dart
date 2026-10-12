@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -340,6 +343,7 @@ class _OneVerseScreenState extends ConsumerState<OneVerseScreen> {
           backgroundColor: t.paper,
           body: Stack(
             children: [
+              const Positioned.fill(child: LookBackground()),
               Positioned.fill(
                 child: c == null
                     ? Center(

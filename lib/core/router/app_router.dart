@@ -212,29 +212,33 @@ final appRouterProvider = Provider<GoRouter>(
       ),
       GoRoute(
         path: '/verse',
-        builder: (context, state) => OneVerseScreen(
-          surah: _int(state, 's') ?? 1,
-          ayah: _int(state, 'a') ?? 1,
-          entry:
-              enumNamed(
-                EntryPoint.values,
-                state.uri.queryParameters['entry'],
-              ) ??
-              EntryPoint.other,
+        builder: (context, state) => LookTheme(
+          child: OneVerseScreen(
+            surah: _int(state, 's') ?? 1,
+            ayah: _int(state, 'a') ?? 1,
+            entry:
+                enumNamed(
+                  EntryPoint.values,
+                  state.uri.queryParameters['entry'],
+                ) ??
+                EntryPoint.other,
+          ),
         ),
       ),
       GoRoute(
         path: '/read',
-        builder: (context, state) => ContinuousScreen(
-          key: ValueKey(state.uri.toString()),
-          surah: _int(state, 's') ?? 1,
-          ayah: _int(state, 'a') ?? 1,
-          entry:
-              enumNamed(
-                EntryPoint.values,
-                state.uri.queryParameters['entry'],
-              ) ??
-              EntryPoint.other,
+        builder: (context, state) => LookTheme(
+          child: ContinuousScreen(
+            key: ValueKey(state.uri.toString()),
+            surah: _int(state, 's') ?? 1,
+            ayah: _int(state, 'a') ?? 1,
+            entry:
+                enumNamed(
+                  EntryPoint.values,
+                  state.uri.queryParameters['entry'],
+                ) ??
+                EntryPoint.other,
+          ),
         ),
       ),
       GoRoute(
