@@ -2179,5 +2179,16 @@
   "newAssistant": "المساعد وعلامات التجويد",
   "newAssistantBody": "شاشة جديدة فيها أحكام التجويد بألوانها، ولكل حكم مواضعه في المصحف.",
   "newFocus": "وضع التركيز",
-  "newFocusBody": "الصفحة وحدها بلا إطار وتملأ الشاشة، والأدوات عند الحاجة، ومشغّل صغير تسحبه أينما شئت."
+  "newFocusBody": "الصفحة وحدها بلا إطار وتملأ الشاشة، والأدوات عند الحاجة، ومشغّل صغير تسحبه أينما شئت.",
+  "navHome": "الرئيسية",
+  "homeSections": "الأقسام",
+  "homeContinueHint": "تابع من حيث توقفت",
+  "interfaceStyleTitle": "شكل الواجهة",
+  "interfaceStyleHint": "شكل الرئيسية والفهرس والإعدادات والنوافذ، ولا يغيّر شكل صفحة المصحف",
+  "interfaceStyleMakhtuta": "مخطوطة",
+  "interfaceStyleHandasi": "هندسي",
+  "interfaceStyleLayli": "ليلي ذهبي",
+  "settingsGroupAppearance": "المظهر",
+  "settingsGroupListening": "الاستماع والتسميع",
+  "settingsGroupData": "البيانات والخصوصية"
 }

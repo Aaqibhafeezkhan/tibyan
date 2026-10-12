@@ -1333,5 +1333,16 @@
   "newAssistant": "The Assistant and tajweed marks",
   "newAssistantBody": "A new screen with the tajweed rules and their colours, each with its places in the mushaf.",
   "newFocus": "Focus mode",
-  "newFocusBody": "The page alone, frameless and filling the screen, tools when you need them, and a small player you can drag anywhere."
+  "newFocusBody": "The page alone, frameless and filling the screen, tools when you need them, and a small player you can drag anywhere.",
+  "navHome": "Home",
+  "homeSections": "Sections",
+  "homeContinueHint": "Continue where you stopped",
+  "interfaceStyleTitle": "Interface style",
+  "interfaceStyleHint": "The look of home, the index, settings and dialogs; the mushaf page keeps its own style",
+  "interfaceStyleMakhtuta": "Manuscript",
+  "interfaceStyleHandasi": "Geometric",
+  "interfaceStyleLayli": "Night gold",
+  "settingsGroupAppearance": "Appearance",
+  "settingsGroupListening": "Listening and recitation",
+  "settingsGroupData": "Data and privacy"
 }

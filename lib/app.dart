@@ -38,6 +38,7 @@ class TibyanApp extends ConsumerWidget {
         mode: mode,
         uiFont: settings.uiFont,
         elderly: settings.elderlyMode,
+        interfaceStyle: settings.interfaceStyle,
       ),
       // Elderly mode: text at least a quarter larger, whatever the device
       // asks for (a larger system size is kept).

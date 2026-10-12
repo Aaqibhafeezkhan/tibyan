@@ -3070,4 +3070,38 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get newFocusBody =>
       'The page alone, frameless and filling the screen, tools when you need them, and a small player you can drag anywhere.';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get homeSections => 'Sections';
+
+  @override
+  String get homeContinueHint => 'Continue where you stopped';
+
+  @override
+  String get interfaceStyleTitle => 'Interface style';
+
+  @override
+  String get interfaceStyleHint =>
+      'The look of home, the index, settings and dialogs; the mushaf page keeps its own style';
+
+  @override
+  String get interfaceStyleMakhtuta => 'Manuscript';
+
+  @override
+  String get interfaceStyleHandasi => 'Geometric';
+
+  @override
+  String get interfaceStyleLayli => 'Night gold';
+
+  @override
+  String get settingsGroupAppearance => 'Appearance';
+
+  @override
+  String get settingsGroupListening => 'Listening and recitation';
+
+  @override
+  String get settingsGroupData => 'Data and privacy';
 }

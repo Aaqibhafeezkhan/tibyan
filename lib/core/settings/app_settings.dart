@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../theme/app_theme.dart';
+import '../theme/interface_style.dart';
 import '../theme/theme_tokens.dart';
 
 /// How the colour mode is chosen: by the device, or fixed by the user.
@@ -170,6 +171,7 @@ class AppSettings {
     this.readingSpeed = ReadingSpeed.medium,
     this.countListening = true,
     this.showWirdIndicator = true,
+    this.interfaceStyle = defaultInterfaceStyle,
   });
 
   final String styleId;
@@ -332,6 +334,10 @@ class AppSettings {
   /// Khatmas: today's portion shown in the reader («ورد اليوم · 18 / 20»).
   final bool showWirdIndicator;
 
+  /// «شكل الواجهة»: the look of home, index, settings and the app's
+  /// dialogs and sheets («هندسي» by default).
+  final InterfaceStyle interfaceStyle;
+
   /// The player style in effect: [PlayerStyle.auto] is the normal bar, or
   /// the pill while focus mode is on.
   PlayerStyle get effectivePlayerStyle => playerStyle != PlayerStyle.auto
@@ -388,6 +394,7 @@ class AppSettings {
     ReadingSpeed? readingSpeed,
     bool? countListening,
     bool? showWirdIndicator,
+    InterfaceStyle? interfaceStyle,
   }) => AppSettings(
     styleId: styleId ?? this.styleId,
     mode: mode ?? this.mode,
@@ -439,6 +446,7 @@ class AppSettings {
     readingSpeed: readingSpeed ?? this.readingSpeed,
     countListening: countListening ?? this.countListening,
     showWirdIndicator: showWirdIndicator ?? this.showWirdIndicator,
+    interfaceStyle: interfaceStyle ?? this.interfaceStyle,
   );
 
   /// Resolves the colour mode. A dark device maps to Night (never pure

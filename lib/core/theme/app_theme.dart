@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'contrast.dart';
+import 'interface_style.dart';
 import 'theme_tokens.dart';
 
 /// Interface font families the user can choose in settings.
@@ -130,7 +131,13 @@ ThemeData buildTheme({
   required ThemeModeId mode,
   required UiFont uiFont,
   bool elderly = false,
+  InterfaceStyle interfaceStyle = defaultInterfaceStyle,
 }) {
+  final look = UiLook.of(
+    interfaceStyle,
+    night: !mode.isLight,
+    elderly: elderly,
+  );
   final base0 = style.modes[mode]!;
   final t = elderly ? elderlyTokens(base0) : base0;
   final brightness = mode.isLight ? Brightness.light : Brightness.dark;
@@ -171,6 +178,7 @@ ThemeData buildTheme({
   final themed = base.copyWith(
     extensions: [
       TibyanTokens(style: style, mode: mode, colors: t, elderly: elderly),
+      look,
     ],
     appBarTheme: AppBarTheme(
       backgroundColor: t.bg,
@@ -232,57 +240,69 @@ ThemeData buildTheme({
       ),
     ),
   );
-  if (!elderly) return themed;
+  if (!elderly) return look.overlays(themed);
   const transitions = ElderlyPageTransitionsBuilder();
-  return themed.copyWith(
-    visualDensity: VisualDensity.standard,
-    iconTheme: themed.iconTheme.copyWith(size: 28),
-    iconButtonTheme: IconButtonThemeData(
-      style: IconButton.styleFrom(minimumSize: target, iconSize: 28),
-    ),
-    filledButtonTheme: FilledButtonThemeData(
-      style: FilledButton.styleFrom(
-        backgroundColor: t.control,
-        foregroundColor: t.onControl,
-        minimumSize: wide,
-        textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-      ),
-    ),
-    textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        foregroundColor: t.control,
-        minimumSize: wide,
-        textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-      ),
-    ),
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        foregroundColor: t.control,
-        minimumSize: wide,
-        side: BorderSide(color: t.control, width: 1.5),
-      ),
-    ),
-    segmentedButtonTheme: SegmentedButtonThemeData(
-      style: SegmentedButton.styleFrom(minimumSize: target),
-    ),
-    listTileTheme: themed.listTileTheme.copyWith(
-      minTileHeight: 64,
-      minLeadingWidth: 32,
-    ),
-    sliderTheme: themed.sliderTheme.copyWith(
-      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 14),
-      trackHeight: 6,
-    ),
-    dividerTheme: DividerThemeData(color: t.border, space: 1, thickness: 1.5),
-    pageTransitionsTheme: const PageTransitionsTheme(
-      builders: {
-        TargetPlatform.android: transitions,
-        TargetPlatform.iOS: transitions,
-        TargetPlatform.macOS: transitions,
-        TargetPlatform.linux: transitions,
-        TargetPlatform.windows: transitions,
-        TargetPlatform.fuchsia: transitions,
-      },
-    ),
-  );
+  return look
+      .overlays(themed)
+      .copyWith(
+        visualDensity: VisualDensity.standard,
+        iconTheme: themed.iconTheme.copyWith(size: 28),
+        iconButtonTheme: IconButtonThemeData(
+          style: IconButton.styleFrom(minimumSize: target, iconSize: 28),
+        ),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            backgroundColor: t.control,
+            foregroundColor: t.onControl,
+            minimumSize: wide,
+            textStyle: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: t.control,
+            minimumSize: wide,
+            textStyle: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: t.control,
+            minimumSize: wide,
+            side: BorderSide(color: t.control, width: 1.5),
+          ),
+        ),
+        segmentedButtonTheme: SegmentedButtonThemeData(
+          style: SegmentedButton.styleFrom(minimumSize: target),
+        ),
+        listTileTheme: themed.listTileTheme.copyWith(
+          minTileHeight: 64,
+          minLeadingWidth: 32,
+        ),
+        sliderTheme: themed.sliderTheme.copyWith(
+          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 14),
+          trackHeight: 6,
+        ),
+        dividerTheme: DividerThemeData(
+          color: t.border,
+          space: 1,
+          thickness: 1.5,
+        ),
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: transitions,
+            TargetPlatform.iOS: transitions,
+            TargetPlatform.macOS: transitions,
+            TargetPlatform.linux: transitions,
+            TargetPlatform.windows: transitions,
+            TargetPlatform.fuchsia: transitions,
+          },
+        ),
+      );
 }
