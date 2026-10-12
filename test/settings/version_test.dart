@@ -14,7 +14,7 @@ import 'package:tibyan/core/theme/theme_registry.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 
 void main() {
-  testWidgets('settings show the version the app was built with', (
+  testWidgets('settings › about shows the version the app was built with', (
     tester,
   ) async {
     SharedPreferences.setMockInitialValues({'settings.onboardingDone': true});
@@ -43,7 +43,7 @@ void main() {
       UncontrolledProviderScope(container: container, child: const TibyanApp()),
     );
     await tester.pump(const Duration(seconds: 2));
-    container.read(appRouterProvider).go('/settings');
+    container.read(appRouterProvider).go('/settings/section/about');
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
     await tester.scrollUntilVisible(

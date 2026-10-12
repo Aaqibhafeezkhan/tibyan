@@ -3452,4 +3452,138 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get newJourneyBody =>
       'Every recitation is saved and measures your mastery: progress per surah and juz, a mastery map, the words you miss, and memorisation goals with a daily portion.';
+
+  @override
+  String onbStepOf(String step, String total) {
+    return 'Step $step of $total';
+  }
+
+  @override
+  String get onbSkipAll => 'Skip all';
+
+  @override
+  String get onbSkip => 'Skip';
+
+  @override
+  String get onbInterfaceTitle => 'Choose the interface style and its light';
+
+  @override
+  String get onbPageTitle => 'Choose how the mushaf page looks';
+
+  @override
+  String get onbReciterTitle => 'Listen to the mushaf in a voice you love';
+
+  @override
+  String onbReciterSuggest(String name) {
+    return 'Download the whole mushaf recited by $name';
+  }
+
+  @override
+  String onbReciterSize(String size) {
+    return 'About $size MB · carries on in the background';
+  }
+
+  @override
+  String get onbReciterOther => 'Choose another reciter';
+
+  @override
+  String get onbReciterOnline =>
+      'You can listen to any reciter online without downloading';
+
+  @override
+  String onbDownloadingBg(String done, String total) {
+    return 'Downloading in the background: $done of $total';
+  }
+
+  @override
+  String get onbTasmeeTitle => 'Recite and be checked';
+
+  @override
+  String get onbTasmeeBody =>
+      'Tibyan listens as you recite and marks slips, on your device and offline. It needs a speech model, downloaded once.';
+
+  @override
+  String get onbTasmeeDownload => 'Download the model';
+
+  @override
+  String onbTasmeeDownloading(String percent) {
+    return 'Downloading the model in the background: $percent%';
+  }
+
+  @override
+  String get onbTasmeeReady => 'The recitation model is ready';
+
+  @override
+  String get onbTasmeeFailed =>
+      'The download failed. You can get it later in Settings › Memorization.';
+
+  @override
+  String get onbStart => 'Start reading';
+
+  @override
+  String get settingsSectionAppearance => 'Appearance';
+
+  @override
+  String get settingsSectionAppearanceHint => 'Style, light, language, font';
+
+  @override
+  String get settingsSectionMushaf => 'Mushaf';
+
+  @override
+  String get settingsSectionMushafHint => 'Edition, page look, tajweed, focus';
+
+  @override
+  String get settingsSectionListening => 'Listening';
+
+  @override
+  String get settingsSectionListeningHint => 'Reciters, player, sajdah timer';
+
+  @override
+  String get settingsSectionHifz => 'Memorization';
+
+  @override
+  String get settingsSectionHifzHint => 'Hifz, recitation check, model';
+
+  @override
+  String get settingsSectionKhatma => 'Khatma & reminders';
+
+  @override
+  String get settingsSectionKhatmaHint => 'Plans, reminders, daily portion';
+
+  @override
+  String get settingsSectionStorage => 'Storage & backup';
+
+  @override
+  String get settingsSectionStorageHint => 'Space, backup, restore';
+
+  @override
+  String get settingsSectionAssistant => 'Assistant';
+
+  @override
+  String get settingsSectionAssistantHint => 'Reading tools and tajweed marks';
+
+  @override
+  String get settingsSectionAbout => 'About Tibyan';
+
+  @override
+  String get settingsSectionAboutHint => 'What’s new, sources, version';
+
+  @override
+  String get settingsSearchHint => 'Search settings';
+
+  @override
+  String get settingsSearchEmpty => 'No setting matches. Try another word.';
+
+  @override
+  String get settingsKhatmaPlans => 'Khatma plans and reminders';
+
+  @override
+  String get settingsWirdIndicator => 'Daily portion indicator on the mushaf';
+
+  @override
+  String get settingsCountListening =>
+      'Count listening toward the daily portion';
+
+  @override
+  String get settingsHifzGoals => 'Memorization goals and reminders';
 }

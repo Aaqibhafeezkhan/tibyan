@@ -2460,5 +2460,86 @@
   "hifzMapShowStrength": "القوة",
   "whatsNewHifzProgress": "مسيرة الحفظ",
   "newJourney": "مسيرة الحفظ",
-  "newJourneyBody": "كل تسميع يُحفظ ويقيس إتقانك: نسب لكل سورة وجزء، وخريطة إتقان، والكلمات التي تخطئ فيها، وأهداف حفظ بورد يومي."
+  "newJourneyBody": "كل تسميع يُحفظ ويقيس إتقانك: نسب لكل سورة وجزء، وخريطة إتقان، والكلمات التي تخطئ فيها، وأهداف حفظ بورد يومي.",
+  "onbStepOf": "الخطوة {step} من {total}",
+  "@onbStepOf": {
+    "placeholders": {
+      "step": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "onbSkipAll": "تخطَّ الكل",
+  "onbSkip": "تخطَّ",
+  "onbInterfaceTitle": "اختر شكل الواجهة وإضاءتها",
+  "onbPageTitle": "اختر شكل صفحة المصحف",
+  "onbReciterTitle": "اسمع المصحف بصوت من تحب",
+  "onbReciterSuggest": "نزّل المصحف كاملًا بصوت الشيخ {name}",
+  "@onbReciterSuggest": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "onbReciterSize": "نحو {size} ميجا · يكمل في الخلفية وأنت تتابع",
+  "@onbReciterSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "onbReciterOther": "اختر شيخًا آخر",
+  "onbReciterOnline": "تقدر تسمع أي شيخ أونلاين من غير تحميل",
+  "onbDownloadingBg": "يُنزَّل في الخلفية: {done} من {total}",
+  "@onbDownloadingBg": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "onbTasmeeTitle": "التسميع بصوتك",
+  "onbTasmeeBody": "يستمع تبيان لتلاوتك وينبّهك عند الخطأ، على جهازك ومن غير إنترنت. يحتاج نموذج تعرّف على الصوت يُنزَّل مرة واحدة.",
+  "onbTasmeeDownload": "نزّل النموذج",
+  "onbTasmeeDownloading": "يُنزَّل النموذج في الخلفية: {percent}٪",
+  "@onbTasmeeDownloading": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "onbTasmeeReady": "نموذج التسميع جاهز",
+  "onbTasmeeFailed": "تعذّر التنزيل. تقدر تنزّله لاحقًا من الإعدادات › الحفظ والتسميع.",
+  "onbStart": "ابدأ القراءة",
+  "settingsSectionAppearance": "المظهر",
+  "settingsSectionAppearanceHint": "الواجهة، الإضاءة، اللغة، الخط",
+  "settingsSectionMushaf": "المصحف",
+  "settingsSectionMushafHint": "الطبعة، شكل الصفحة، التجويد، التركيز",
+  "settingsSectionListening": "الاستماع",
+  "settingsSectionListeningHint": "القرّاء، المشغّل، مؤقت السجدة",
+  "settingsSectionHifz": "الحفظ والتسميع",
+  "settingsSectionHifzHint": "الحفظ، التسميع، نموذج الصوت",
+  "settingsSectionKhatma": "الختمة والتذكيرات",
+  "settingsSectionKhatmaHint": "الخطط، التذكيرات، الورد",
+  "settingsSectionStorage": "التخزين والنسخ الاحتياطي",
+  "settingsSectionStorageHint": "المساحة، النسخ، الاستعادة",
+  "settingsSectionAssistant": "المساعد",
+  "settingsSectionAssistantHint": "أدوات القراءة وعلامات التجويد",
+  "settingsSectionAbout": "عن تبيان",
+  "settingsSectionAboutHint": "الجديد، المصادر، الإصدار",
+  "settingsSearchHint": "ابحث في الإعدادات",
+  "settingsSearchEmpty": "لا إعداد بهذا الاسم. جرّب كلمة أخرى.",
+  "settingsKhatmaPlans": "خطط الختمة وتذكيراتها",
+  "settingsWirdIndicator": "مؤشر الورد فوق المصحف",
+  "settingsCountListening": "احتساب الاستماع من الورد",
+  "settingsHifzGoals": "أهداف الحفظ وتذكيراتها"
 }

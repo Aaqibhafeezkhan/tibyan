@@ -20,7 +20,9 @@ import 'package:tibyan/features/home/home_screen.dart';
 import 'package:tibyan/features/khatma/khatma_providers.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 import 'package:tibyan/features/mushaf/presentation/index_screen.dart';
+import 'package:tibyan/features/settings/settings_catalog.dart';
 import 'package:tibyan/features/settings/settings_screen.dart';
+import 'package:tibyan/features/settings/settings_section_screen.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
 /// «شكل الواجهة»: the three interface styles, their contrast, the live
@@ -184,9 +186,12 @@ void main() {
   testWidgets('settings: picking a style applies it at once and keeps it', (
     tester,
   ) async {
-    final sp = await pump(tester, const SettingsScreen());
+    final sp = await pump(
+      tester,
+      const SettingsSectionScreen(section: SettingsSection.appearance),
+    );
     expect(
-      lookOf(tester, find.byType(SettingsScreen)).style,
+      lookOf(tester, find.byType(SettingsSectionScreen)).style,
       InterfaceStyle.handasi,
     );
     final layli = find.byKey(const ValueKey('interfaceStyle.layli'));
@@ -205,7 +210,7 @@ void main() {
     // The theme animates to the new look.
     await tester.pump(const Duration(milliseconds: 400));
     expect(
-      lookOf(tester, find.byType(SettingsScreen)).style,
+      lookOf(tester, find.byType(SettingsSectionScreen)).style,
       InterfaceStyle.layli,
     );
     expect(sp.getString('settings.interfaceStyle'), 'layli');
@@ -231,7 +236,14 @@ void main() {
       });
       testWidgets('settings in $tag', (tester) async {
         await pump(tester, const SettingsScreen(), style: style, night: night);
-        expect(find.text('شكل الواجهة'), findsOneWidget);
+        expect(find.text('المظهر'), findsOneWidget);
+        await pump(
+          tester,
+          const SettingsSectionScreen(section: SettingsSection.appearance),
+          style: style,
+          night: night,
+        );
+        expect(find.text('شكل الواجهة'), findsWidgets);
         expect(tester.takeException(), isNull);
       });
     }
@@ -244,7 +256,10 @@ void main() {
   for (final english in [false, true]) {
     testWidgets('arrows follow the reading direction '
         '(${english ? 'English' : 'Arabic'})', (tester) async {
-      for (final screen in const [SettingsScreen(), IndexScreen()]) {
+      for (final screen in const [
+        SettingsSectionScreen(section: SettingsSection.about),
+        IndexScreen(),
+      ]) {
         await pump(tester, screen, english: english);
         final icons = tester.widgetList<Icon>(find.byType(Icon)).toList();
         final arrows = [
@@ -257,7 +272,7 @@ void main() {
         ];
         // Settings: disclosure chevrons; index: the back arrow is shown
         // only with a route to go back to.
-        if (screen is SettingsScreen) expect(arrows, isNotEmpty);
+        if (screen is SettingsSectionScreen) expect(arrows, isNotEmpty);
         for (final i in arrows) {
           expect(i.icon, isNot(Icons.chevron_left));
           expect(i.icon!.matchTextDirection, isTrue);

@@ -28,8 +28,9 @@ import '../../features/mushaf/presentation/mushaf_screen.dart';
 import '../../features/onboarding/onboarding_edition_screen.dart';
 import '../../features/onboarding/onboarding_language_screen.dart';
 import '../../features/onboarding/onboarding_style_screen.dart';
-import '../../features/settings/appearance_screen.dart';
 import '../../features/settings/player_settings_screen.dart';
+import '../../features/settings/settings_catalog.dart';
+import '../../features/settings/settings_section_screen.dart';
 import '../../features/splash/splash_screen.dart';
 import '../../features/tafsir/tafsir_screen.dart';
 import '../../features/reading/continuous_screen.dart';
@@ -125,10 +126,24 @@ final appRouterProvider = Provider<GoRouter>(
             path: 'settings',
             builder: (context, state) => const SettingsScreen(),
             routes: [
+              // Each tile of the settings grid; `focus=` scrolls to one
+              // setting and lights it (from the settings search).
+              GoRoute(
+                path: 'section/:id',
+                builder: (context, state) => LookTheme(
+                  child: SettingsSectionScreen(
+                    section:
+                        SettingsSection.values
+                            .asNameMap()[state.pathParameters['id']] ??
+                        SettingsSection.appearance,
+                    focus: state.uri.queryParameters['focus'],
+                  ),
+                ),
+              ),
+              // The old «شكل المصحف» screen now lives in the mushaf tile.
               GoRoute(
                 path: 'appearance',
-                builder: (context, state) =>
-                    const LookTheme(child: AppearanceScreen()),
+                redirect: (context, state) => '/settings/section/mushaf',
               ),
               GoRoute(
                 path: 'storage',

@@ -3424,4 +3424,137 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get newJourneyBody =>
       'كل تسميع يُحفظ ويقيس إتقانك: نسب لكل سورة وجزء، وخريطة إتقان، والكلمات التي تخطئ فيها، وأهداف حفظ بورد يومي.';
+
+  @override
+  String onbStepOf(String step, String total) {
+    return 'الخطوة $step من $total';
+  }
+
+  @override
+  String get onbSkipAll => 'تخطَّ الكل';
+
+  @override
+  String get onbSkip => 'تخطَّ';
+
+  @override
+  String get onbInterfaceTitle => 'اختر شكل الواجهة وإضاءتها';
+
+  @override
+  String get onbPageTitle => 'اختر شكل صفحة المصحف';
+
+  @override
+  String get onbReciterTitle => 'اسمع المصحف بصوت من تحب';
+
+  @override
+  String onbReciterSuggest(String name) {
+    return 'نزّل المصحف كاملًا بصوت الشيخ $name';
+  }
+
+  @override
+  String onbReciterSize(String size) {
+    return 'نحو $size ميجا · يكمل في الخلفية وأنت تتابع';
+  }
+
+  @override
+  String get onbReciterOther => 'اختر شيخًا آخر';
+
+  @override
+  String get onbReciterOnline => 'تقدر تسمع أي شيخ أونلاين من غير تحميل';
+
+  @override
+  String onbDownloadingBg(String done, String total) {
+    return 'يُنزَّل في الخلفية: $done من $total';
+  }
+
+  @override
+  String get onbTasmeeTitle => 'التسميع بصوتك';
+
+  @override
+  String get onbTasmeeBody =>
+      'يستمع تبيان لتلاوتك وينبّهك عند الخطأ، على جهازك ومن غير إنترنت. يحتاج نموذج تعرّف على الصوت يُنزَّل مرة واحدة.';
+
+  @override
+  String get onbTasmeeDownload => 'نزّل النموذج';
+
+  @override
+  String onbTasmeeDownloading(String percent) {
+    return 'يُنزَّل النموذج في الخلفية: $percent٪';
+  }
+
+  @override
+  String get onbTasmeeReady => 'نموذج التسميع جاهز';
+
+  @override
+  String get onbTasmeeFailed =>
+      'تعذّر التنزيل. تقدر تنزّله لاحقًا من الإعدادات › الحفظ والتسميع.';
+
+  @override
+  String get onbStart => 'ابدأ القراءة';
+
+  @override
+  String get settingsSectionAppearance => 'المظهر';
+
+  @override
+  String get settingsSectionAppearanceHint => 'الواجهة، الإضاءة، اللغة، الخط';
+
+  @override
+  String get settingsSectionMushaf => 'المصحف';
+
+  @override
+  String get settingsSectionMushafHint =>
+      'الطبعة، شكل الصفحة، التجويد، التركيز';
+
+  @override
+  String get settingsSectionListening => 'الاستماع';
+
+  @override
+  String get settingsSectionListeningHint => 'القرّاء، المشغّل، مؤقت السجدة';
+
+  @override
+  String get settingsSectionHifz => 'الحفظ والتسميع';
+
+  @override
+  String get settingsSectionHifzHint => 'الحفظ، التسميع، نموذج الصوت';
+
+  @override
+  String get settingsSectionKhatma => 'الختمة والتذكيرات';
+
+  @override
+  String get settingsSectionKhatmaHint => 'الخطط، التذكيرات، الورد';
+
+  @override
+  String get settingsSectionStorage => 'التخزين والنسخ الاحتياطي';
+
+  @override
+  String get settingsSectionStorageHint => 'المساحة، النسخ، الاستعادة';
+
+  @override
+  String get settingsSectionAssistant => 'المساعد';
+
+  @override
+  String get settingsSectionAssistantHint => 'أدوات القراءة وعلامات التجويد';
+
+  @override
+  String get settingsSectionAbout => 'عن تبيان';
+
+  @override
+  String get settingsSectionAboutHint => 'الجديد، المصادر، الإصدار';
+
+  @override
+  String get settingsSearchHint => 'ابحث في الإعدادات';
+
+  @override
+  String get settingsSearchEmpty => 'لا إعداد بهذا الاسم. جرّب كلمة أخرى.';
+
+  @override
+  String get settingsKhatmaPlans => 'خطط الختمة وتذكيراتها';
+
+  @override
+  String get settingsWirdIndicator => 'مؤشر الورد فوق المصحف';
+
+  @override
+  String get settingsCountListening => 'احتساب الاستماع من الورد';
+
+  @override
+  String get settingsHifzGoals => 'أهداف الحفظ وتذكيراتها';
 }

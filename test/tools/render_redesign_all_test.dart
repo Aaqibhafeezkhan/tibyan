@@ -29,7 +29,8 @@ import 'package:tibyan/features/hifz/presentation/hifz_map_screen.dart';
 import 'package:tibyan/features/hifz/presentation/hifz_screen.dart';
 import 'package:tibyan/features/reading/continuous_screen.dart';
 import 'package:tibyan/features/reading/one_verse_screen.dart';
-import 'package:tibyan/features/settings/appearance_screen.dart';
+import 'package:tibyan/features/settings/settings_catalog.dart';
+import 'package:tibyan/features/settings/settings_section_screen.dart';
 import 'package:tibyan/features/settings/player_settings_screen.dart';
 import 'package:tibyan/features/tafsir/tafsir_screen.dart';
 import 'package:tibyan/features/khatma/presentation/journal_screen.dart';
@@ -228,7 +229,10 @@ void main() {
         ('about', const AboutMushafScreen()),
         ('hifz', const HifzScreen()),
         ('hifz_map', const HifzMapScreen()),
-        ('appearance', const AppearanceScreen()),
+        (
+          'appearance',
+          const SettingsSectionScreen(section: SettingsSection.mushaf),
+        ),
         ('player_settings', const PlayerSettingsScreen()),
         ('continuous', const ContinuousScreen(surah: 2, ayah: 1)),
         ('one_verse', const OneVerseScreen(surah: 2, ayah: 255)),

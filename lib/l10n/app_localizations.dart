@@ -6006,6 +6006,246 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'كل تسميع يُحفظ ويقيس إتقانك: نسب لكل سورة وجزء، وخريطة إتقان، والكلمات التي تخطئ فيها، وأهداف حفظ بورد يومي.'**
   String get newJourneyBody;
+
+  /// No description provided for @onbStepOf.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخطوة {step} من {total}'**
+  String onbStepOf(String step, String total);
+
+  /// No description provided for @onbSkipAll.
+  ///
+  /// In ar, this message translates to:
+  /// **'تخطَّ الكل'**
+  String get onbSkipAll;
+
+  /// No description provided for @onbSkip.
+  ///
+  /// In ar, this message translates to:
+  /// **'تخطَّ'**
+  String get onbSkip;
+
+  /// No description provided for @onbInterfaceTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر شكل الواجهة وإضاءتها'**
+  String get onbInterfaceTitle;
+
+  /// No description provided for @onbPageTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر شكل صفحة المصحف'**
+  String get onbPageTitle;
+
+  /// No description provided for @onbReciterTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسمع المصحف بصوت من تحب'**
+  String get onbReciterTitle;
+
+  /// No description provided for @onbReciterSuggest.
+  ///
+  /// In ar, this message translates to:
+  /// **'نزّل المصحف كاملًا بصوت الشيخ {name}'**
+  String onbReciterSuggest(String name);
+
+  /// No description provided for @onbReciterSize.
+  ///
+  /// In ar, this message translates to:
+  /// **'نحو {size} ميجا · يكمل في الخلفية وأنت تتابع'**
+  String onbReciterSize(String size);
+
+  /// No description provided for @onbReciterOther.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر شيخًا آخر'**
+  String get onbReciterOther;
+
+  /// No description provided for @onbReciterOnline.
+  ///
+  /// In ar, this message translates to:
+  /// **'تقدر تسمع أي شيخ أونلاين من غير تحميل'**
+  String get onbReciterOnline;
+
+  /// No description provided for @onbDownloadingBg.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُنزَّل في الخلفية: {done} من {total}'**
+  String onbDownloadingBg(String done, String total);
+
+  /// No description provided for @onbTasmeeTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'التسميع بصوتك'**
+  String get onbTasmeeTitle;
+
+  /// No description provided for @onbTasmeeBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'يستمع تبيان لتلاوتك وينبّهك عند الخطأ، على جهازك ومن غير إنترنت. يحتاج نموذج تعرّف على الصوت يُنزَّل مرة واحدة.'**
+  String get onbTasmeeBody;
+
+  /// No description provided for @onbTasmeeDownload.
+  ///
+  /// In ar, this message translates to:
+  /// **'نزّل النموذج'**
+  String get onbTasmeeDownload;
+
+  /// No description provided for @onbTasmeeDownloading.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُنزَّل النموذج في الخلفية: {percent}٪'**
+  String onbTasmeeDownloading(String percent);
+
+  /// No description provided for @onbTasmeeReady.
+  ///
+  /// In ar, this message translates to:
+  /// **'نموذج التسميع جاهز'**
+  String get onbTasmeeReady;
+
+  /// No description provided for @onbTasmeeFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر التنزيل. تقدر تنزّله لاحقًا من الإعدادات › الحفظ والتسميع.'**
+  String get onbTasmeeFailed;
+
+  /// No description provided for @onbStart.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابدأ القراءة'**
+  String get onbStart;
+
+  /// No description provided for @settingsSectionAppearance.
+  ///
+  /// In ar, this message translates to:
+  /// **'المظهر'**
+  String get settingsSectionAppearance;
+
+  /// No description provided for @settingsSectionAppearanceHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الواجهة، الإضاءة، اللغة، الخط'**
+  String get settingsSectionAppearanceHint;
+
+  /// No description provided for @settingsSectionMushaf.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصحف'**
+  String get settingsSectionMushaf;
+
+  /// No description provided for @settingsSectionMushafHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الطبعة، شكل الصفحة، التجويد، التركيز'**
+  String get settingsSectionMushafHint;
+
+  /// No description provided for @settingsSectionListening.
+  ///
+  /// In ar, this message translates to:
+  /// **'الاستماع'**
+  String get settingsSectionListening;
+
+  /// No description provided for @settingsSectionListeningHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'القرّاء، المشغّل، مؤقت السجدة'**
+  String get settingsSectionListeningHint;
+
+  /// No description provided for @settingsSectionHifz.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحفظ والتسميع'**
+  String get settingsSectionHifz;
+
+  /// No description provided for @settingsSectionHifzHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحفظ، التسميع، نموذج الصوت'**
+  String get settingsSectionHifzHint;
+
+  /// No description provided for @settingsSectionKhatma.
+  ///
+  /// In ar, this message translates to:
+  /// **'الختمة والتذكيرات'**
+  String get settingsSectionKhatma;
+
+  /// No description provided for @settingsSectionKhatmaHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخطط، التذكيرات، الورد'**
+  String get settingsSectionKhatmaHint;
+
+  /// No description provided for @settingsSectionStorage.
+  ///
+  /// In ar, this message translates to:
+  /// **'التخزين والنسخ الاحتياطي'**
+  String get settingsSectionStorage;
+
+  /// No description provided for @settingsSectionStorageHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'المساحة، النسخ، الاستعادة'**
+  String get settingsSectionStorageHint;
+
+  /// No description provided for @settingsSectionAssistant.
+  ///
+  /// In ar, this message translates to:
+  /// **'المساعد'**
+  String get settingsSectionAssistant;
+
+  /// No description provided for @settingsSectionAssistantHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'أدوات القراءة وعلامات التجويد'**
+  String get settingsSectionAssistantHint;
+
+  /// No description provided for @settingsSectionAbout.
+  ///
+  /// In ar, this message translates to:
+  /// **'عن تبيان'**
+  String get settingsSectionAbout;
+
+  /// No description provided for @settingsSectionAboutHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الجديد، المصادر، الإصدار'**
+  String get settingsSectionAboutHint;
+
+  /// No description provided for @settingsSearchHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابحث في الإعدادات'**
+  String get settingsSearchHint;
+
+  /// No description provided for @settingsSearchEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا إعداد بهذا الاسم. جرّب كلمة أخرى.'**
+  String get settingsSearchEmpty;
+
+  /// No description provided for @settingsKhatmaPlans.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطط الختمة وتذكيراتها'**
+  String get settingsKhatmaPlans;
+
+  /// No description provided for @settingsWirdIndicator.
+  ///
+  /// In ar, this message translates to:
+  /// **'مؤشر الورد فوق المصحف'**
+  String get settingsWirdIndicator;
+
+  /// No description provided for @settingsCountListening.
+  ///
+  /// In ar, this message translates to:
+  /// **'احتساب الاستماع من الورد'**
+  String get settingsCountListening;
+
+  /// No description provided for @settingsHifzGoals.
+  ///
+  /// In ar, this message translates to:
+  /// **'أهداف الحفظ وتذكيراتها'**
+  String get settingsHifzGoals;
 }
 
 class _AppLocalizationsDelegate
