@@ -68,43 +68,6 @@ class AppearanceScreen extends ConsumerWidget {
                   _Title(l.markerStyleLabel),
                   const Card(child: _MarkerSettings()),
                   const SizedBox(height: 20),
-                  _Title(l.modeLabel),
-                  Card(
-                    child: RadioGroup<ModeSetting>(
-                      groupValue: settings.mode,
-                      onChanged: (v) =>
-                          v == null ? null : controller.setMode(v),
-                      child: Column(
-                        children: [
-                          RadioListTile(
-                            value: ModeSetting.system,
-                            title: Text(l.modeSystem),
-                            subtitle: Text(
-                              l.modeSystemHint,
-                              style: TextStyle(color: t.muted),
-                            ),
-                          ),
-                          RadioListTile(
-                            value: ModeSetting.light,
-                            title: Text(l.modeLight),
-                          ),
-                          RadioListTile(
-                            value: ModeSetting.white,
-                            title: Text(l.modeWhite),
-                          ),
-                          RadioListTile(
-                            value: ModeSetting.night,
-                            title: Text(l.modeNight),
-                          ),
-                          RadioListTile(
-                            value: ModeSetting.black,
-                            title: Text(l.modeBlack),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
                   _Title(l.tajweedColors),
                   const TajweedSettings(),
                   const SizedBox(height: 20),

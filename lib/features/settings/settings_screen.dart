@@ -79,6 +79,7 @@ class SettingsScreen extends ConsumerWidget {
                         title: l.settingsGroupAppearance,
                         children: [
                           const InterfaceStylePicker(),
+                          const LightModePicker(),
                           nav(
                             Icons.auto_stories_outlined,
                             l.appearanceTitle,
@@ -707,6 +708,64 @@ class _PlayerStyleCard extends ConsumerWidget {
               title: Text(name),
               subtitle: hint == null ? null : Text(hint, style: muted),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+/// «وضع الإضاءة», right under the interface style: it lights the whole app,
+/// the mushaf pages included.
+class LightModePicker extends ConsumerWidget {
+  const LightModePicker({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
+    final look = context.look;
+    final mode = ref.watch(settingsProvider.select((s) => s.mode));
+    final controller = ref.read(settingsProvider.notifier);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l.modeLabel,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: look.ink,
+            ),
+          ),
+          RadioGroup<ModeSetting>(
+            groupValue: mode,
+            onChanged: (v) => v == null ? null : controller.setMode(v),
+            child: Column(
+              children: [
+                RadioListTile(
+                  contentPadding: EdgeInsets.zero,
+                  value: ModeSetting.system,
+                  title: Text(l.modeSystem),
+                  subtitle: Text(
+                    l.modeSystemHint,
+                    style: TextStyle(color: look.sub),
+                  ),
+                ),
+                for (final (v, name) in [
+                  (ModeSetting.light, l.modeLight),
+                  (ModeSetting.white, l.modeWhite),
+                  (ModeSetting.night, l.modeNight),
+                  (ModeSetting.black, l.modeBlack),
+                ])
+                  RadioListTile(
+                    contentPadding: EdgeInsets.zero,
+                    value: v,
+                    title: Text(name),
+                  ),
+              ],
+            ),
+          ),
         ],
       ),
     );
