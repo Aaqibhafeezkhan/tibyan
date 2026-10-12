@@ -2458,5 +2458,7 @@
   "goalRecite": "سمّع",
   "hifzMapShowMastery": "الإتقان",
   "hifzMapShowStrength": "القوة",
-  "whatsNewHifzProgress": "مسيرة الحفظ"
+  "whatsNewHifzProgress": "مسيرة الحفظ",
+  "newJourney": "مسيرة الحفظ",
+  "newJourneyBody": "كل تسميع يُحفظ ويقيس إتقانك: نسب لكل سورة وجزء، وخريطة إتقان، والكلمات التي تخطئ فيها، وأهداف حفظ بورد يومي."
 }

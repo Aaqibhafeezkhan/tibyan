@@ -3445,4 +3445,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get whatsNewHifzProgress => 'Hifz journey';
+
+  @override
+  String get newJourney => 'Your memorisation journey';
+
+  @override
+  String get newJourneyBody =>
+      'Every recitation is saved and measures your mastery: progress per surah and juz, a mastery map, the words you miss, and memorisation goals with a daily portion.';
 }

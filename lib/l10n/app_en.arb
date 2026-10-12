@@ -1439,5 +1439,7 @@
   "goalRecite": "Recite",
   "hifzMapShowMastery": "Mastery",
   "hifzMapShowStrength": "Strength",
-  "whatsNewHifzProgress": "Hifz journey"
+  "whatsNewHifzProgress": "Hifz journey",
+  "newJourney": "Your memorisation journey",
+  "newJourneyBody": "Every recitation is saved and measures your mastery: progress per surah and juz, a mastery map, the words you miss, and memorisation goals with a daily portion."
 }

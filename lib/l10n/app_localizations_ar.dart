@@ -3417,4 +3417,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get whatsNewHifzProgress => 'مسيرة الحفظ';
+
+  @override
+  String get newJourney => 'مسيرة الحفظ';
+
+  @override
+  String get newJourneyBody =>
+      'كل تسميع يُحفظ ويقيس إتقانك: نسب لكل سورة وجزء، وخريطة إتقان، والكلمات التي تخطئ فيها، وأهداف حفظ بورد يومي.';
 }

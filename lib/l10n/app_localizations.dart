@@ -5994,6 +5994,18 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'مسيرة الحفظ'**
   String get whatsNewHifzProgress;
+
+  /// No description provided for @newJourney.
+  ///
+  /// In ar, this message translates to:
+  /// **'مسيرة الحفظ'**
+  String get newJourney;
+
+  /// No description provided for @newJourneyBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'كل تسميع يُحفظ ويقيس إتقانك: نسب لكل سورة وجزء، وخريطة إتقان، والكلمات التي تخطئ فيها، وأهداف حفظ بورد يومي.'**
+  String get newJourneyBody;
 }
 
 class _AppLocalizationsDelegate
