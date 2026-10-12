@@ -12,6 +12,12 @@ typedef SourceText = ({
 });
 
 const _ar = <String, SourceText>{
+  'kfgqpc-qcf4-surah-names': (
+    title: 'خط أسماء السور (QCF4_QBSML)',
+    publisher: 'مجمع الملك فهد لطباعة المصحف الشريف',
+    license: 'وفق شروط خطوط المجمع: الاستخدام والتوزيع مجانا دون بيع أو تعديل',
+    credit: 'خط أسماء السور: مجمع الملك فهد لطباعة المصحف الشريف',
+  ),
   'tanzil-uthmani': (
     title: 'نص القرآن الكريم بالرسم العثماني (تنزيل)',
     publisher: 'مشروع تنزيل',
@@ -174,6 +180,12 @@ const _ar = <String, SourceText>{
 };
 
 const _en = <String, SourceText>{
+  'kfgqpc-qcf4-surah-names': (
+    title: 'Surah name font (QCF4_QBSML)',
+    publisher: 'King Fahd Glorious Quran Printing Complex',
+    license: "Per the Complex's font terms: free to use and distribute, no sale or modification",
+    credit: 'Surah name font: King Fahd Glorious Quran Printing Complex',
+  ),
   'tanzil-uthmani': (
     title: 'Quran text, Uthmani script (Tanzil)',
     publisher: 'Tanzil Project',
@@ -331,6 +343,12 @@ const _en = <String, SourceText>{
 /// Sources that are not in content.db (bundled with the app), listed after
 /// the database's own: key, link and version.
 const bundledSources = [
+  (
+    key: 'kfgqpc-qcf4-surah-names',
+    url:
+        'https://tibyan.ahmedhelal.dev/mirror/sources/kfgqpc-qcf4-surah-names/',
+    version: '8a4f39d563ea69c994416a1692827e38156c548d',
+  ),
   (
     key: 'quran-assets',
     url: 'https://github.com/quran-ws/quran-assets',

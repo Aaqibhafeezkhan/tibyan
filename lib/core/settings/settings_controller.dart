@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../theme/app_theme.dart';
+import '../theme/interface_style.dart';
 import '../theme/theme_registry.dart';
 import '../../features/home/whats_new.dart' show whatsNewId, whatsNewSeenKey;
 import 'app_settings.dart';
@@ -68,6 +69,7 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kReadingSpeed = 'settings.khatma.readingSpeed';
   static const _kCountListening = 'settings.khatma.countListening';
   static const _kWirdIndicator = 'settings.khatma.showWirdIndicator';
+  static const _kInterfaceStyle = 'settings.interfaceStyle';
 
   SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
 
@@ -173,6 +175,12 @@ class SettingsController extends Notifier<AppSettings> {
           ReadingSpeed.medium,
       countListening: _prefs.getBool(_kCountListening) ?? true,
       showWirdIndicator: _prefs.getBool(_kWirdIndicator) ?? true,
+      interfaceStyle:
+          _enumByName(
+            InterfaceStyle.values,
+            _prefs.getString(_kInterfaceStyle),
+          ) ??
+          defaultInterfaceStyle,
     );
   }
 
@@ -479,6 +487,12 @@ class SettingsController extends Notifier<AppSettings> {
   Future<void> setShowWirdIndicator(bool on) async {
     state = state.copyWith(showWirdIndicator: on);
     await _prefs.setBool(_kWirdIndicator, on);
+  }
+
+  /// «شكل الواجهة»: applied at once, kept across launches.
+  Future<void> setInterfaceStyle(InterfaceStyle value) async {
+    state = state.copyWith(interfaceStyle: value);
+    await _prefs.setString(_kInterfaceStyle, value.name);
   }
 
   static T? _enumByName<T extends Enum>(List<T> values, String? name) {

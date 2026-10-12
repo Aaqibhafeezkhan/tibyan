@@ -132,18 +132,18 @@ void main() {
     expect(find.text('أحكام التجويد: ألوانها ومواضعها'), findsNothing);
   });
 
-  testWidgets('home: the seventh section, as wide as the grid, opens it', (
+  testWidgets('home: the Assistant is a section of the grid and opens it', (
     tester,
   ) async {
     await start(tester, '/');
     await settle(tester, find.text('المساعد'));
-    // The six tiles keep their 3×2 grid; the Assistant spans its width.
-    final grid = tester.getRect(find.byType(GridView));
-    final tile = tester.getRect(
-      find.ancestor(of: find.text('المساعد'), matching: find.byType(Card)),
+    expect(
+      find.descendant(
+        of: find.byType(GridView),
+        matching: find.text('المساعد'),
+      ),
+      findsOneWidget,
     );
-    expect(tile.width, closeTo(grid.width, 12));
-    expect(tile.top, greaterThan(grid.bottom));
     await tester.tap(find.text('المساعد'));
     await settle(tester, hub);
     expect(hub, findsOneWidget);

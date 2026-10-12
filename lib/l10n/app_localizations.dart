@@ -5388,6 +5388,72 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'ويُنسب أيضًا إلى: {names}'**
   String sourceAlsoCredited(String names);
+
+  /// No description provided for @navHome.
+  ///
+  /// In ar, this message translates to:
+  /// **'الرئيسية'**
+  String get navHome;
+
+  /// No description provided for @homeSections.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأقسام'**
+  String get homeSections;
+
+  /// No description provided for @homeContinueHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تابع من حيث توقفت'**
+  String get homeContinueHint;
+
+  /// No description provided for @interfaceStyleTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'شكل الواجهة'**
+  String get interfaceStyleTitle;
+
+  /// No description provided for @interfaceStyleHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'شكل الرئيسية والفهرس والإعدادات والنوافذ، ولا يغيّر شكل صفحة المصحف'**
+  String get interfaceStyleHint;
+
+  /// No description provided for @interfaceStyleMakhtuta.
+  ///
+  /// In ar, this message translates to:
+  /// **'مخطوطة'**
+  String get interfaceStyleMakhtuta;
+
+  /// No description provided for @interfaceStyleHandasi.
+  ///
+  /// In ar, this message translates to:
+  /// **'هندسي'**
+  String get interfaceStyleHandasi;
+
+  /// No description provided for @interfaceStyleLayli.
+  ///
+  /// In ar, this message translates to:
+  /// **'ليلي ذهبي'**
+  String get interfaceStyleLayli;
+
+  /// No description provided for @settingsGroupAppearance.
+  ///
+  /// In ar, this message translates to:
+  /// **'المظهر'**
+  String get settingsGroupAppearance;
+
+  /// No description provided for @settingsGroupListening.
+  ///
+  /// In ar, this message translates to:
+  /// **'الاستماع والتسميع'**
+  String get settingsGroupListening;
+
+  /// No description provided for @settingsGroupData.
+  ///
+  /// In ar, this message translates to:
+  /// **'البيانات والخصوصية'**
+  String get settingsGroupData;
 }
 
 class _AppLocalizationsDelegate

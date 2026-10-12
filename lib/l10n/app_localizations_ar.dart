@@ -3066,4 +3066,38 @@ class AppLocalizationsAr extends AppLocalizations {
   String sourceAlsoCredited(String names) {
     return 'ويُنسب أيضًا إلى: $names';
   }
+
+  @override
+  String get navHome => 'الرئيسية';
+
+  @override
+  String get homeSections => 'الأقسام';
+
+  @override
+  String get homeContinueHint => 'تابع من حيث توقفت';
+
+  @override
+  String get interfaceStyleTitle => 'شكل الواجهة';
+
+  @override
+  String get interfaceStyleHint =>
+      'شكل الرئيسية والفهرس والإعدادات والنوافذ، ولا يغيّر شكل صفحة المصحف';
+
+  @override
+  String get interfaceStyleMakhtuta => 'مخطوطة';
+
+  @override
+  String get interfaceStyleHandasi => 'هندسي';
+
+  @override
+  String get interfaceStyleLayli => 'ليلي ذهبي';
+
+  @override
+  String get settingsGroupAppearance => 'المظهر';
+
+  @override
+  String get settingsGroupListening => 'الاستماع والتسميع';
+
+  @override
+  String get settingsGroupData => 'البيانات والخصوصية';
 }

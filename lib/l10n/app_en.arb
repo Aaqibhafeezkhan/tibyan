@@ -1338,5 +1338,16 @@
   "tasmeeAutoUpdateModelHint": "The newer version downloads in the background; the current one keeps working until it is complete",
   "tasmeeModelUpdated": "The tasmee model was updated to version {version}",
   "sourceInstalledVersion": "Installed version: {version}",
-  "sourceAlsoCredited": "Also credited: {names}"
+  "sourceAlsoCredited": "Also credited: {names}",
+  "navHome": "Home",
+  "homeSections": "Sections",
+  "homeContinueHint": "Continue where you stopped",
+  "interfaceStyleTitle": "Interface style",
+  "interfaceStyleHint": "The look of home, the index, settings and dialogs; the mushaf page keeps its own style",
+  "interfaceStyleMakhtuta": "Manuscript",
+  "interfaceStyleHandasi": "Geometric",
+  "interfaceStyleLayli": "Night gold",
+  "settingsGroupAppearance": "Appearance",
+  "settingsGroupListening": "Listening and recitation",
+  "settingsGroupData": "Data and privacy"
 }

@@ -2205,5 +2205,16 @@
         "type": "String"
       }
     }
-  }
+  },
+  "navHome": "الرئيسية",
+  "homeSections": "الأقسام",
+  "homeContinueHint": "تابع من حيث توقفت",
+  "interfaceStyleTitle": "شكل الواجهة",
+  "interfaceStyleHint": "شكل الرئيسية والفهرس والإعدادات والنوافذ، ولا يغيّر شكل صفحة المصحف",
+  "interfaceStyleMakhtuta": "مخطوطة",
+  "interfaceStyleHandasi": "هندسي",
+  "interfaceStyleLayli": "ليلي ذهبي",
+  "settingsGroupAppearance": "المظهر",
+  "settingsGroupListening": "الاستماع والتسميع",
+  "settingsGroupData": "البيانات والخصوصية"
 }

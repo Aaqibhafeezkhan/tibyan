@@ -3092,4 +3092,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String sourceAlsoCredited(String names) {
     return 'Also credited: $names';
   }
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get homeSections => 'Sections';
+
+  @override
+  String get homeContinueHint => 'Continue where you stopped';
+
+  @override
+  String get interfaceStyleTitle => 'Interface style';
+
+  @override
+  String get interfaceStyleHint =>
+      'The look of home, the index, settings and dialogs; the mushaf page keeps its own style';
+
+  @override
+  String get interfaceStyleMakhtuta => 'Manuscript';
+
+  @override
+  String get interfaceStyleHandasi => 'Geometric';
+
+  @override
+  String get interfaceStyleLayli => 'Night gold';
+
+  @override
+  String get settingsGroupAppearance => 'Appearance';
+
+  @override
+  String get settingsGroupListening => 'Listening and recitation';
+
+  @override
+  String get settingsGroupData => 'Data and privacy';
 }
