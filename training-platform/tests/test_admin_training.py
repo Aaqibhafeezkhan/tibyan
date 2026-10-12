@@ -501,6 +501,9 @@ class AdminTrainingTests(PlatformCase):
         self.assertEqual(manifest["files"][0]["sha256"], sha(new_model))
         self.assertTrue(manifest["files"][0]["url"].endswith("/2/model.int8.onnx"))
         self.assertIn("Tibyan volunteers", manifest["attribution"])
+        self.assertIn("NVIDIA", manifest["attribution"])
+        self.assertEqual(manifest["credits"], [
+            {"ar": "متطوعو تبيان", "en": "Tibyan volunteers", "role": "recitations"}])
         v2 = self.model_dir / "2"
         for line in (v2 / "SHA256SUMS").read_text().splitlines():
             digest, name = line.split("  ")
@@ -519,13 +522,40 @@ class AdminTrainingTests(PlatformCase):
 
         adm.post(f"/admin/training/{job_id}/action",
                  data={"csrf": token, "action": "rollback", "confirm": "yes"})
-        self.assertEqual(training.read_manifest()["version"], "1")
+        manifest = training.read_manifest()
+        old = json.loads((self.model_dir / "manifest.v1.json").read_text())
+        self.assertEqual(manifest["version"], "3")  # never a lower number
+        self.assertNotIn("credits", manifest)  # v1 had none
+        self.assertEqual(manifest["attribution"], old["attribution"])
+        self.assertEqual([(f["name"], f["sha256"], f["bytes"]) for f in manifest["files"]],
+                         [(f["name"], f["sha256"], f["bytes"]) for f in old["files"]])
+        self.assertTrue(manifest["files"][0]["url"].endswith("/3/model.int8.onnx"))
+        v3 = self.model_dir / "3"
+        for line in (v3 / "SHA256SUMS").read_text().splitlines():
+            digest, name = line.split("  ")
+            self.assertEqual(sha((v3 / name).read_bytes()), digest)
         self.assertTrue(v2.is_dir())
+        self.assertTrue((self.model_dir / "manifest.v2.json").is_file())
         top = (self.model_dir / "SHA256SUMS").read_text()
         self.assertIn("1/model.int8.onnx", top)
+        self.assertIn("2/model.int8.onnx", top)
+        self.assertIn("3/model.int8.onnx", top)
         self.assertIn(f"{sha((self.model_dir / 'manifest.json').read_bytes())}  manifest.json", top)
         with self.Session() as db:
             self.assertEqual(db.get(TrainingJob, job_id).status, "rolled_back")
+
+    def test_publish_does_not_inherit_old_credits(self):
+        job_id, _ = self._run_to_review()
+        mf = self.model_dir / "manifest.json"
+        m = json.loads(mf.read_text())
+        m["credits"] = [{"en": "Someone old", "role": "x"}]
+        mf.write_text(json.dumps(m))
+        adm = self.client("a@example.test")
+        token = self.csrf(adm, f"/admin/training/{job_id}")
+        adm.post(f"/admin/training/{job_id}/action",
+                 data={"csrf": token, "action": "publish", "confirm": "yes"})
+        self.assertEqual(training.read_manifest()["credits"], [
+            {"ar": "متطوعو تبيان", "en": "Tibyan volunteers", "role": "recitations"}])
 
     def test_fake_runner_result_can_never_be_published(self):
         job_id, _ = self._run_to_review()

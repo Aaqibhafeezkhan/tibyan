@@ -416,6 +416,27 @@ def _update_top_sums(root: Path, version: str | None = None, version_sums=()) ->
     _write_atomic(sums_path, "\n".join(lines) + "\n")
 
 
+PUBLISH_CREDITS = (
+    {"ar": "متطوعو تبيان", "en": "Tibyan volunteers", "role": "recitations"},
+)
+
+
+def _next_version(root: Path, current: str) -> str:
+    """The app never installs a lower version, so every change (publish or
+    rollback) gets a number above any version directory or manifest seen."""
+    numeric = [int(p.name) for p in root.iterdir() if p.is_dir() and p.name.isdigit()]
+    if current.isdigit():
+        numeric.append(int(current))
+    return str(max(numeric + [0]) + 1)
+
+
+def _link_or_copy(src: Path, dst: Path) -> None:
+    try:
+        os.link(src, dst)
+    except OSError:
+        shutil.copyfile(src, dst)
+
+
 def publish_job(job: TrainingJob) -> str:
     """Copy an approved job's model into a new mirror version and point
     manifest.json at it. The previous manifest is kept as
@@ -440,10 +461,7 @@ def publish_job(job: TrainingJob) -> str:
             raise RuntimeError(f"{name} does not match its checksum")
 
     old_version = str(manifest.get("version"))
-    numeric = [int(p.name) for p in root.iterdir() if p.is_dir() and p.name.isdigit()]
-    if old_version.isdigit():
-        numeric.append(int(old_version))
-    version = str(max(numeric + [0]) + 1)
+    version = _next_version(root, old_version)
 
     stage = root / f".{version}.staging"
     if stage.exists():
@@ -479,6 +497,8 @@ def publish_job(job: TrainingJob) -> str:
         f"CC BY 4.0; CTC branch fine-tuned on recitations by {VOLUNTEER_CREDIT} "
         "(CC BY 4.0), exported to ONNX and quantised to int8 by Tibyan."
     )
+    # Fresh credits for this version; never inherit the previous version's.
+    new_manifest["credits"] = [dict(c) for c in PUBLISH_CREDITS]
     new_manifest["files"] = [
         {
             "name": name,
@@ -504,36 +524,68 @@ def publish_job(job: TrainingJob) -> str:
 
 
 def rollback_job(job: TrainingJob) -> str:
-    """Point manifest.json back at the version this job replaced."""
+    """Re-publish the files of the version this job replaced under a NEW,
+    higher version number (the app never downgrades). History is kept: the
+    rolled-back version's directory and manifest stay on the mirror."""
     if job.status != "published":
         raise InvalidTransition(f"{job.status} cannot be rolled back")
     root = model_root()
     manifest = read_manifest() or {}
-    if str(manifest.get("version")) != str(job.published_version):
+    current = str(manifest.get("version"))
+    if current != str(job.published_version):
         raise RuntimeError("this job's version is not the one being served")
     backup = root / f"manifest.v{job.previous_version}.json"
     if not backup.is_file():
         raise RuntimeError(f"{backup.name} is missing")
     previous = json.loads(backup.read_text(encoding="utf-8"))
+    prev_dir = root / str(previous.get("version"))
     for f in previous.get("files", []):
-        local = root / str(previous.get("version")) / f["name"]
+        local = prev_dir / f["name"]
         if not local.is_file() or sha256_file(local) != f["sha256"]:
             raise RuntimeError(f"version {previous.get('version')} files are not intact")
+
+    version = _next_version(root, current)
+    stage = root / f".{version}.staging"
+    if stage.exists():
+        shutil.rmtree(stage)
+    stage.mkdir()
+    sums = []
+    for f in previous.get("files", []):
+        _link_or_copy(prev_dir / f["name"], stage / f["name"])
+        sums.append((f["sha256"], f["name"]))
+    if (prev_dir / "LICENSE.txt").is_file():
+        _link_or_copy(prev_dir / "LICENSE.txt", stage / "LICENSE.txt")
+        sums.append((sha256_file(stage / "LICENSE.txt"), "LICENSE.txt"))
+    (stage / "SHA256SUMS").write_text(
+        "".join(f"{d}  {n}\n" for d, n in sums), encoding="utf-8"
+    )
+    for digest, name in sums:
+        if sha256_file(stage / name) != digest:
+            shutil.rmtree(stage)
+            raise RuntimeError(f"staged {name} failed SHA256SUMS")
+    final = root / version
+    os.rename(stage, final)
+
     # Keep the replaced manifest too, so it can be inspected later.
-    current_copy = root / f"manifest.v{job.published_version}.json"
+    current_copy = root / f"manifest.v{current}.json"
     if not current_copy.exists():
         shutil.copyfile(root / "manifest.json", current_copy)
-        _chown_like(current_copy, root)
+    base_url = f"{settings.mirror_base_url.rstrip('/')}/{settings.model_name}/{version}"
+    new_manifest = dict(previous)
+    new_manifest["version"] = version
+    new_manifest["files"] = [
+        {**f, "url": f"{base_url}/{f['name']}"} for f in previous.get("files", [])
+    ]
     _write_atomic(
         root / "manifest.json",
-        json.dumps(previous, ensure_ascii=False, indent=2) + "\n",
+        json.dumps(new_manifest, ensure_ascii=False, indent=2) + "\n",
     )
-    _update_top_sums(root)
-    _chown_like(root / "manifest.json", root)
-    _chown_like(root / "SHA256SUMS", root)
+    _update_top_sums(root, version, sums)
+    for path in (final, current_copy, root / "manifest.json", root / "SHA256SUMS"):
+        _chown_like(path, root)
     transition(job, "rolled_back")
     job.decided_at = utcnow()
-    return str(previous.get("version"))
+    return version
 
 
 def discard_uploads(job: TrainingJob) -> None:
