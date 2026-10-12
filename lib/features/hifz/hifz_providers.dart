@@ -10,6 +10,12 @@ import '../mushaf/presentation/widgets/mushaf_page.dart'
     show VerseKey, outlineRects;
 import 'data/hifz_repository.dart';
 import 'data/hifz_store.dart';
+import 'data/recitation_store.dart';
+import '../khatma/domain/day.dart';
+import '../khatma/domain/khatmah.dart';
+import '../khatma/khatma_providers.dart' show quranIndexProvider;
+import 'domain/hifz_goal.dart';
+import 'domain/hifz_progress.dart';
 import 'domain/fsrs.dart';
 import 'domain/recitation_test.dart';
 import 'domain/strength.dart';
@@ -207,3 +213,75 @@ Future<Review> gradeUnit({
   });
   return review;
 }
+
+// -- hifz progress: the recitation record, progress and goals --------------
+
+/// Recitation sessions, newest first.
+final recitationsProvider = StreamProvider<List<RecitationSessionRow>>(
+  (ref) => ref.watch(userDatabaseProvider).watchRecitations(),
+);
+
+/// Each recited verse's latest result, by `ayah.id`.
+final verseLatestProvider = StreamProvider<Map<int, VerseLatest>>(
+  (ref) => ref.watch(userDatabaseProvider).watchVerseLatest(),
+);
+
+/// Every recitation of a verse to mastery, oldest first.
+final masteredEventsProvider = StreamProvider<List<(int, DateTime)>>(
+  (ref) => ref.watch(userDatabaseProvider).watchMasteredEvents(),
+);
+
+/// Words slipped on more than once.
+final hardWordsProvider = StreamProvider<List<HardWord>>(
+  (ref) => ref.watch(userDatabaseProvider).watchHardWords(),
+);
+
+/// Progress on three levels, from the memorization table and the record.
+final hifzProgressProvider = FutureProvider<HifzProgress>((ref) async {
+  final index = await ref.watch(quranIndexProvider.future);
+  final strengths = await ref.watch(verseStrengthsProvider.future);
+  final latest = await ref.watch(verseLatestProvider.future);
+  final sessions = await ref.watch(recitationsProvider.future);
+  final since = DateTime.now().subtract(const Duration(days: 30));
+  return HifzProgress.of(index, strengths, latest, [
+    for (final s in sessions)
+      if (s.endedAt.isAfter(since) && s.accuracy != null) s.accuracy!,
+  ]);
+});
+
+/// Goals not deleted, newest first.
+final hifzGoalRowsProvider = StreamProvider<List<HifzGoalRow>>(
+  (ref) => ref.watch(userDatabaseProvider).watchHifzGoals(),
+);
+
+HifzGoal goalOf(HifzGoalRow r) => HifzGoal(
+  uuid: r.uuid,
+  template: GoalTemplate.values.asNameMap()[r.template],
+  rangeStart: r.rangeStart,
+  rangeEnd: r.rangeEnd,
+  startDate: Day.parse(r.startDate),
+  targetDate: r.targetDate == null ? null : Day.parse(r.targetDate!),
+  planFrom: r.planFrom == null ? null : Day.parse(r.planFrom!),
+  dailyWeight: r.dailyWeight,
+  unit: WirdUnit.values.asNameMap()[r.unit] ?? WirdUnit.page,
+  status: KhatmahStatus.values.asNameMap()[r.status] ?? KhatmahStatus.active,
+  pauses: HifzGoal.pausesFromJson(r.pauses),
+  recovery: RecoveryChoice.fromJson(r.recovery),
+  reminderTime: r.reminderTime,
+  review: r.review,
+);
+
+/// Each goal with where it stands today, by its row.
+final goalStatusesProvider = FutureProvider<List<(HifzGoalRow, GoalStatus)>>((
+  ref,
+) async {
+  final index = await ref.watch(quranIndexProvider.future);
+  final rows = await ref.watch(hifzGoalRowsProvider.future);
+  final mastered = await ref.watch(masteredEventsProvider.future);
+  final today = Day.today();
+  return [
+    for (final r in rows)
+      if (r.status != KhatmahStatus.cancelled.name)
+        (r, GoalStatus.of(goalOf(r), mastered, index, today)),
+  ];
+});
