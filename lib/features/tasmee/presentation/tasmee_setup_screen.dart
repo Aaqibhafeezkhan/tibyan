@@ -48,6 +48,9 @@ Future<void> showTasmeeSetup(BuildContext context) async {
     isScrollControlled: true,
     useSafeArea: true,
     backgroundColor: Colors.transparent,
+    // The sheet draws its own frame and handle.
+    showDragHandle: false,
+    shape: const RoundedRectangleBorder(),
     builder: (context) => LookTheme(
       child: TasmeeSetupSheet(
         onStart: (request) => Navigator.pop(context, request),
@@ -520,7 +523,6 @@ class _ResumeRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.tokens.colors;
-    final rtl = Directionality.of(context) == TextDirection.rtl;
     return Semantics(
       button: true,
       label: '$label · $action',
@@ -556,11 +558,7 @@ class _ResumeRow extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                Icon(
-                  rtl ? Icons.chevron_left : Icons.chevron_right,
-                  size: 18,
-                  color: t.goldText,
-                ),
+                Icon(Icons.chevron_right, size: 18, color: t.goldText),
               ],
             ),
           ),

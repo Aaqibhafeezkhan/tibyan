@@ -625,7 +625,6 @@ class _ReviewRow extends StatelessWidget {
     final r = report;
     final acc = r.accuracy;
     final pct = acc == null ? '–' : context.percent((acc * 100).round());
-    final rtl = Directionality.of(context) == TextDirection.rtl;
     return Semantics(
       button: true,
       label: l.tasmeeReviewRow(context.digits(r.ayah), pct),
@@ -703,11 +702,7 @@ class _ReviewRow extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              Icon(
-                rtl ? Icons.chevron_left : Icons.chevron_right,
-                color: t.muted,
-                size: 20,
-              ),
+              Icon(Icons.chevron_right, color: t.muted, size: 20),
             ],
           ),
         ),

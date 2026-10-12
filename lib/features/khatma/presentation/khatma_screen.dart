@@ -735,7 +735,6 @@ class _KhatmaStatsTabState extends State<_KhatmaStatsTab> {
       _KhatmaStatsPeriod.year => digits(_anchor.year),
     };
     final weekdays = localization.narrowWeekdays;
-    final rtl = Directionality.of(context) == TextDirection.rtl;
     final visibleDays = _period == _KhatmaStatsPeriod.week
         ? 7
         : _period == _KhatmaStatsPeriod.month
@@ -793,9 +792,7 @@ class _KhatmaStatsTabState extends State<_KhatmaStatsTab> {
                           _KhatmaStatsPeriod.year => DateTime(_anchor.year - 1),
                         };
                       }),
-                      icon: Icon(
-                        rtl ? Icons.chevron_right : Icons.chevron_left,
-                      ),
+                      icon: Icon(Icons.chevron_left),
                     ),
                     Expanded(
                       child: Text(
@@ -826,9 +823,7 @@ class _KhatmaStatsTabState extends State<_KhatmaStatsTab> {
                               };
                             })
                           : null,
-                      icon: Icon(
-                        rtl ? Icons.chevron_left : Icons.chevron_right,
-                      ),
+                      icon: Icon(Icons.chevron_right),
                     ),
                   ],
                 ),

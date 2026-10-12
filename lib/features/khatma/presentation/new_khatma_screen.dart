@@ -134,9 +134,8 @@ class _NewKhatmaScreenState extends ConsumerState<NewKhatmaScreen> {
                           for (var i = 0; i < steps.length; i++) ...[
                             if (i > 0)
                               Icon(
-                                Directionality.of(context) == TextDirection.rtl
-                                    ? Icons.chevron_left
-                                    : Icons.chevron_right,
+                                // Mirrors itself: points left in Arabic.
+                                Icons.chevron_right,
                                 size: 16,
                                 color: colors.muted,
                               ),
