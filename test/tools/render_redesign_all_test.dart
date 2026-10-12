@@ -199,7 +199,7 @@ void main() {
         });
         File('${out.path}/$name.png').writeAsBytesSync(bytes!);
         await tester.pumpWidget(const SizedBox());
-        await tester.runAsync(user.close);
+        // Not closed: a screen's open query would hold the close forever.
       }
 
       final screens = <(String, Widget)>[

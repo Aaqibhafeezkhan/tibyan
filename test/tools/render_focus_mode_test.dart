@@ -239,6 +239,68 @@ void main() {
       }
 
       const focus = {'settings.focusMode': true};
+      // FOCUS_LOOK=1: only the menus, bars and panels over the page in
+      // each interface style and colour mode («look_<style>_<mode>_…»).
+      if (Platform.environment['FOCUS_LOOK'] == '1') {
+        const looks = ['handasi', 'makhtuta', 'layli'];
+        for (final look in looks) {
+          for (final mode in ['light', 'night']) {
+            for (final size in ['iphone61', if (look == 'handasi') 'laptop']) {
+              final (logical, _, _) = sizes[size]!;
+              final tag = 'look_${look}_${mode}_$size';
+              final base = {
+                'settings.interfaceStyle': look,
+                'settings.mode': mode,
+              };
+              await shot(
+                '${tag}_menus',
+                '/mushaf?page=50',
+                size,
+                prefs: base,
+                act: () async {
+                  await tester.tapAt(
+                    Offset(logical.width / 2, logical.height * 0.45),
+                  );
+                },
+              );
+              await shot(
+                '${tag}_verse',
+                '/mushaf?page=50',
+                size,
+                prefs: base,
+                act: () async {
+                  await tester.longPressAt(
+                    Offset(logical.width * 0.75, logical.height * 0.55),
+                  );
+                },
+              );
+              await shot(
+                '${tag}_focus_tools',
+                '/mushaf?page=50',
+                size,
+                prefs: {...base, ...focus},
+                act: () async {
+                  await tester.tap(find.byTooltip('إظهار الأدوات'));
+                },
+              );
+              await shot(
+                '${tag}_focus_menu',
+                '/mushaf?page=50',
+                size,
+                prefs: {...base, ...focus, 'settings.focusTools': 'menu'},
+                act: () async {
+                  await tester.longPressAt(
+                    Offset(logical.width * 0.75, logical.height * 0.55),
+                  );
+                },
+              );
+            }
+          }
+        }
+        await tester.pump(const Duration(seconds: 10));
+        await tester.runAsync(db.close);
+        return;
+      }
       for (final size in sizes.keys) {
         await shot('page_before_$size', '/mushaf?page=50', size);
         for (final edition in editions) {
