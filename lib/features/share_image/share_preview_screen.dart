@@ -3,6 +3,9 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +29,7 @@ import 'share_source.dart';
 Future<void> showSharePreview(BuildContext context, ShareRange range) =>
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => SharePreviewScreen(range: range),
+        builder: (_) => LookTheme(child: SharePreviewScreen(range: range)),
         fullscreenDialog: true,
       ),
     );

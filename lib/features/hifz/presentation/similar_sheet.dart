@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/db/content_database.dart';
@@ -26,12 +29,16 @@ Future<void> showSimilarSheet(
   isScrollControlled: true,
   useSafeArea: true,
   showDragHandle: true,
-  builder: (context) => DraggableScrollableSheet(
-    expand: false,
-    initialChildSize: 0.7,
-    maxChildSize: 0.95,
-    builder: (context, scroll) =>
-        SimilarVersesView(surah: surah, ayah: ayah, controller: scroll),
+  builder: (_) => LookTheme(
+    child: Builder(
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.7,
+        maxChildSize: 0.95,
+        builder: (context, scroll) =>
+            SimilarVersesView(surah: surah, ayah: ayah, controller: scroll),
+      ),
+    ),
   ),
 );
 

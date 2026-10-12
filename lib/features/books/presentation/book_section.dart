@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -32,15 +35,19 @@ Future<void> showBookSheet(
   isScrollControlled: true,
   useSafeArea: true,
   showDragHandle: true,
-  builder: (context) => DraggableScrollableSheet(
-    expand: false,
-    initialChildSize: 0.7,
-    maxChildSize: 0.95,
-    builder: (context, scroll) => SelectionArea(
-      child: ListView(
-        controller: scroll,
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-        children: [BookSection(spec: spec, surah: surah, ayah: ayah)],
+  builder: (_) => LookTheme(
+    child: Builder(
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.7,
+        maxChildSize: 0.95,
+        builder: (context, scroll) => SelectionArea(
+          child: ListView(
+            controller: scroll,
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+            children: [BookSection(spec: spec, surah: surah, ayah: ayah)],
+          ),
+        ),
       ),
     ),
   ),

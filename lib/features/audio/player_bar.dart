@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -179,7 +182,11 @@ Future<void> showPlayerSheet(BuildContext context) {
     context: context,
     isScrollControlled: true,
     backgroundColor: t.player,
-    builder: (_) => Theme(data: panel, child: const _PlayerSheet()),
+    builder: (_) => LookTheme(
+      child: Builder(
+        builder: (_) => Theme(data: panel, child: const _PlayerSheet()),
+      ),
+    ),
   );
 }
 

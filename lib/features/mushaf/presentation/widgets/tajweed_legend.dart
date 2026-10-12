@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -102,11 +105,15 @@ Future<void> showTajweedLegend(BuildContext context) => showModalBottomSheet(
   context: context,
   isScrollControlled: true,
   showDragHandle: true,
-  builder: (context) => DraggableScrollableSheet(
-    expand: false,
-    initialChildSize: 0.7,
-    maxChildSize: 0.95,
-    builder: (context, scroll) => _Legend(scroll: scroll),
+  builder: (_) => LookTheme(
+    child: Builder(
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.7,
+        maxChildSize: 0.95,
+        builder: (context, scroll) => _Legend(scroll: scroll),
+      ),
+    ),
   ),
 );
 
@@ -265,70 +272,76 @@ class TajweedSettings extends ConsumerWidget {
       showModalBottomSheet(
         context: context,
         showDragHandle: true,
-        builder: (context) {
-          final l = AppLocalizations.of(context);
-          final t = context.tokens.colors;
-          final dark = !context.tokens.mode.isLight;
-          final hues = ref.read(settingsProvider).tajweedHues;
-          final current = tajweedHueOf(rule, hues);
-          final controller = ref.read(settingsProvider.notifier);
-          Widget choice(TajweedHue? hue, String label) {
-            final selected = hue == current;
-            return Semantics(
-              selected: selected,
-              button: true,
-              label: label,
-              excludeSemantics: true,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(14),
-                onTap: () {
-                  // Picking the default colour forgets the choice.
-                  final isDefault = hue == defaultTajweedHues[rule];
-                  controller.setTajweedHue(
-                    rule.key,
-                    isDefault ? null : (hue?.name ?? ''),
-                  );
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  width: 52,
-                  height: 52,
-                  decoration: BoxDecoration(
+        builder: (_) => LookTheme(
+          child: Builder(
+            builder: (context) {
+              final l = AppLocalizations.of(context);
+              final t = context.tokens.colors;
+              final dark = !context.tokens.mode.isLight;
+              final hues = ref.read(settingsProvider).tajweedHues;
+              final current = tajweedHueOf(rule, hues);
+              final controller = ref.read(settingsProvider.notifier);
+              Widget choice(TajweedHue? hue, String label) {
+                final selected = hue == current;
+                return Semantics(
+                  selected: selected,
+                  button: true,
+                  label: label,
+                  excludeSemantics: true,
+                  child: InkWell(
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: selected ? t.control : t.border,
-                      width: selected ? 2.5 : 1,
+                    onTap: () {
+                      // Picking the default colour forgets the choice.
+                      final isDefault = hue == defaultTajweedHues[rule];
+                      controller.setTajweedHue(
+                        rule.key,
+                        isDefault ? null : (hue?.name ?? ''),
+                      );
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      width: 52,
+                      height: 52,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: selected ? t.control : t.border,
+                          width: selected ? 2.5 : 1,
+                        ),
+                      ),
+                      child: Center(
+                        child: TajweedSwatch(hue?.on(darkPaper: dark)),
+                      ),
                     ),
                   ),
-                  child: Center(child: TajweedSwatch(hue?.on(darkPaper: dark))),
-                ),
-              ),
-            );
-          }
+                );
+              }
 
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l.tajweedPickColor(tajweedRuleName(l, rule)),
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    choice(null, l.tajweedNoColor),
-                    for (final h in TajweedHue.values)
-                      choice(h, tajweedHueName(l, h)),
+                    Text(
+                      l.tajweedPickColor(tajweedRuleName(l, rule)),
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: [
+                        choice(null, l.tajweedNoColor),
+                        for (final h in TajweedHue.values)
+                          choice(h, tajweedHueName(l, h)),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-          );
-        },
+              );
+            },
+          ),
+        ),
       );
 }

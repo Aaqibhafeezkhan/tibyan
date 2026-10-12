@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/db/content_database.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/ui/look_kit.dart';
 import '../../l10n/app_localizations.dart';
 import '../books/books_providers.dart';
 import '../books/presentation/book_section.dart';
@@ -30,13 +31,15 @@ Future<void> showWordStudy(
   isScrollControlled: true,
   useSafeArea: true,
   showDragHandle: true,
-  builder: (context) => DraggableScrollableSheet(
-    expand: false,
-    initialChildSize: 0.72,
-    minChildSize: 0.4,
-    maxChildSize: 0.95,
-    builder: (context, scroll) =>
-        WordStudySheet(surah: surah, ayah: ayah, word: word, scroll: scroll),
+  builder: (_) => LookTheme(
+    child: DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 0.72,
+      minChildSize: 0.4,
+      maxChildSize: 0.95,
+      builder: (context, scroll) =>
+          WordStudySheet(surah: surah, ayah: ayah, word: word, scroll: scroll),
+    ),
   ),
 );
 
@@ -49,21 +52,28 @@ Future<void> showVerseMeanings(
   isScrollControlled: true,
   useSafeArea: true,
   showDragHandle: true,
-  builder: (context) => DraggableScrollableSheet(
-    expand: false,
-    initialChildSize: 0.6,
-    minChildSize: 0.3,
-    maxChildSize: 0.95,
-    builder: (sheet, scroll) => VerseMeaningsSheet(
-      verses: verses,
-      scroll: scroll,
-      // The sheet closes first; the word study opens from the caller's
-      // context, which stays mounted.
-      onStudy: (g) {
-        Navigator.of(sheet).pop();
-        if (!context.mounted) return;
-        showWordStudy(context, surah: g.surah, ayah: g.ayah, word: g.wordFrom);
-      },
+  builder: (context) => LookTheme(
+    child: DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 0.6,
+      minChildSize: 0.3,
+      maxChildSize: 0.95,
+      builder: (sheet, scroll) => VerseMeaningsSheet(
+        verses: verses,
+        scroll: scroll,
+        // The sheet closes first; the word study opens from the caller's
+        // context, which stays mounted.
+        onStudy: (g) {
+          Navigator.of(sheet).pop();
+          if (!context.mounted) return;
+          showWordStudy(
+            context,
+            surah: g.surah,
+            ayah: g.ayah,
+            word: g.wordFrom,
+          );
+        },
+      ),
     ),
   ),
 );

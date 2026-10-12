@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../../core/ui/look_kit.dart';
+
 import 'package:flutter/services.dart';
 
 import '../../../../core/theme/app_theme.dart';
@@ -14,7 +17,11 @@ Future<int?> showGoToPage(
 }) {
   return showDialog<int>(
     context: context,
-    builder: (context) => _GoToPageDialog(current: current, max: max),
+    builder: (_) => LookTheme(
+      child: Builder(
+        builder: (context) => _GoToPageDialog(current: current, max: max),
+      ),
+    ),
   );
 }
 

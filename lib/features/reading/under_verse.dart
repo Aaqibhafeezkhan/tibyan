@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/db/content_database.dart';
@@ -99,7 +102,11 @@ Future<void> showUnderVerseChooser(BuildContext context) =>
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
-      builder: (context) => const SafeArea(child: _UnderVerseChooser()),
+      builder: (_) => LookTheme(
+        child: Builder(
+          builder: (context) => const SafeArea(child: _UnderVerseChooser()),
+        ),
+      ),
     );
 
 class _UnderVerseChooser extends ConsumerWidget {
