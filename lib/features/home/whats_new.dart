@@ -12,7 +12,7 @@ import '../../l10n/app_localizations.dart';
 /// The «what's new» notes: shown once after an update that brings them,
 /// never on a first install (the reader is new to all of it), and from
 /// the settings at any time. Bump [whatsNewId] when the list changes.
-const whatsNewId = '2026-10-d';
+const whatsNewId = '2026-10-e';
 
 /// Where the last notes seen are remembered.
 const whatsNewSeenKey = 'app.whatsNewSeen';
@@ -20,6 +20,7 @@ const whatsNewSeenKey = 'app.whatsNewSeen';
 typedef WhatsNewItem = ({IconData icon, String title, String body});
 
 List<WhatsNewItem> whatsNewItems(AppLocalizations l) => [
+  (icon: Icons.tune, title: l.newSettings, body: l.newSettingsBody),
   (icon: Icons.insights_outlined, title: l.newJourney, body: l.newJourneyBody),
   (icon: Icons.auto_awesome_outlined, title: l.newLook, body: l.newLookBody),
   (

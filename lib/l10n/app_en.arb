@@ -1483,5 +1483,7 @@
   "settingsCountListening": "Count listening toward the daily portion",
   "settingsHifzGoals": "Memorization goals and reminders",
   "digitsFontNote": "Every interface digit uses one clear font: a digits-only subset of IBM Plex Sans Arabic (© 2017 IBM Corp.), renamed because \"Plex\" is a Reserved Font Name. Licence: SIL Open Font License 1.1, which permits subsetting and modification under a new name and the same licence.",
-  "digitsFontTitle": "Interface digits font (Tibyan Digits)"
+  "digitsFontTitle": "Interface digits font (Tibyan Digits)",
+  "newSettings": "Easier settings",
+  "newSettingsBody": "Settings are now eight sections with a search that takes you to any setting, plus clearer numbers across the app."
 }

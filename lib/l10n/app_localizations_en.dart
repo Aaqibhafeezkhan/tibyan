@@ -3732,4 +3732,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get digitsFontNote =>
       'Every interface digit uses one clear font: a digits-only subset of IBM Plex Sans Arabic (© 2017 IBM Corp.), renamed because \"Plex\" is a Reserved Font Name. Licence: SIL Open Font License 1.1, which permits subsetting and modification under a new name and the same licence.';
+
+  @override
+  String get newSettings => 'Easier settings';
+
+  @override
+  String get newSettingsBody =>
+      'Settings are now eight sections with a search that takes you to any setting, plus clearer numbers across the app.';
 }

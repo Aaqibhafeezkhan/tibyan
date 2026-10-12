@@ -3811,4 +3811,11 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get digitsFontNote =>
       'أرقام الواجهة كلها بخط واحد واضح: مقتطع من IBM Plex Sans Arabic (حقوقه لشركة IBM، 2017) يضم الأرقام وحدها، وسُمّي باسم جديد لأن «Plex» اسم محجوز. الرخصة: رخصة الخطوط المفتوحة SIL OFL 1.1، وهي تبيح الاقتطاع والتعديل بشرط تغيير الاسم وبقاء الرخصة نفسها.';
+
+  @override
+  String get newSettings => 'إعدادات أسهل';
+
+  @override
+  String get newSettingsBody =>
+      'الإعدادات صارت ثمانية أقسام مع بحث يوصلك لأي إعداد، وصيغ الأعداد صحيحة («٧ آيات»)، وأرقام أوضح في الواجهة.';
 }

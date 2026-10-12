@@ -6265,6 +6265,18 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'أرقام الواجهة كلها بخط واحد واضح: مقتطع من IBM Plex Sans Arabic (حقوقه لشركة IBM، 2017) يضم الأرقام وحدها، وسُمّي باسم جديد لأن «Plex» اسم محجوز. الرخصة: رخصة الخطوط المفتوحة SIL OFL 1.1، وهي تبيح الاقتطاع والتعديل بشرط تغيير الاسم وبقاء الرخصة نفسها.'**
   String get digitsFontNote;
+
+  /// No description provided for @newSettings.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعدادات أسهل'**
+  String get newSettings;
+
+  /// No description provided for @newSettingsBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإعدادات صارت ثمانية أقسام مع بحث يوصلك لأي إعداد، وصيغ الأعداد صحيحة («٧ آيات»)، وأرقام أوضح في الواجهة.'**
+  String get newSettingsBody;
 }
 
 class _AppLocalizationsDelegate
