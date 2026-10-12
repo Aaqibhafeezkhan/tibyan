@@ -7,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import '../../../core/flags/feature_flags.dart';
 import '../../../core/settings/app_settings.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/interface_style.dart';
+import '../../../core/ui/look_kit.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../hifz/data/hifz_repository.dart';
 import '../../hifz/presentation/hifz_screen.dart' show openHifzTest;
@@ -124,8 +126,7 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
         isDismissible: dismissible,
         enableDrag: dismissible,
         backgroundColor: Colors.transparent,
-        barrierColor: Colors.black.withValues(alpha: 0.38),
-        builder: builder,
+        builder: (context) => LookTheme(child: Builder(builder: builder)),
       );
     } finally {
       _sheetOpen = false;
@@ -330,12 +331,14 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
     ref.watch(surahsProvider);
     final (title, line) = _title(context);
     final wide = MediaQuery.sizeOf(context).width >= _sideLayoutWidth;
-    final top = _TopBar(
-      title: title,
-      line: line,
-      progress: s.progress,
-      onClose: () => context.pop(),
-      onHelp: () => _showNotice(firstTime: false),
+    final top = LookTheme(
+      child: _TopBar(
+        title: title,
+        line: line,
+        progress: s.progress,
+        onClose: () => context.pop(),
+        onHelp: () => _showNotice(firstTime: false),
+      ),
     );
     return PopScope(
       child: Scaffold(
@@ -359,7 +362,9 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
                           width: 340,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 18),
-                            child: _SidePanel(session: s, actions: actions),
+                            child: LookTheme(
+                              child: _SidePanel(session: s, actions: actions),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 24),
@@ -377,7 +382,9 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
                       child: pageView,
                     ),
                   ),
-                  RecordingPanel(session: s, actions: actions),
+                  LookTheme(
+                    child: RecordingPanel(session: s, actions: actions),
+                  ),
                 ],
               ),
       ),
@@ -404,8 +411,9 @@ class _TopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final t = context.tokens.colors;
+    final look = context.look;
     return Material(
-      color: t.bg,
+      color: look.bg,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -429,12 +437,10 @@ class _TopBar extends StatelessWidget {
                           title,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: t.ink,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            height: 1.2,
-                          ),
+                          style: lookTitleStyle(
+                            context,
+                            size: look.isHandasi ? 17 : 21,
+                          ).copyWith(height: 1.2),
                         ),
                         Text(
                           line,
@@ -469,7 +475,7 @@ class _TopBar extends StatelessWidget {
                 child: LinearProgressIndicator(
                   value: progress,
                   minHeight: 3,
-                  color: t.goldText,
+                  color: look.isHandasi ? look.control : look.gold,
                   backgroundColor: t.border,
                 ),
               ),
@@ -505,8 +511,11 @@ class _SidePanel extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: t.paper,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: t.border),
+        borderRadius: BorderRadius.circular(context.look.radius),
+        border: Border.all(
+          color: context.look.isMakhtuta ? context.look.gold : t.border,
+          width: context.look.isMakhtuta ? 1.4 : 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

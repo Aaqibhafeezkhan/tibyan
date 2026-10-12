@@ -1,6 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
+import '../../../core/theme/interface_style.dart';
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -44,10 +48,11 @@ Future<void> showTasmeeSetup(BuildContext context) async {
     isScrollControlled: true,
     useSafeArea: true,
     backgroundColor: Colors.transparent,
-    barrierColor: Colors.black.withValues(alpha: 0.38),
-    builder: (context) => TasmeeSetupSheet(
-      onStart: (request) => Navigator.pop(context, request),
-      onClose: () => Navigator.pop(context),
+    builder: (context) => LookTheme(
+      child: TasmeeSetupSheet(
+        onStart: (request) => Navigator.pop(context, request),
+        onClose: () => Navigator.pop(context),
+      ),
     ),
   );
   if (request != null && context.mounted) {
@@ -62,7 +67,7 @@ class TasmeeSetupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: context.tokens.colors.bg,
+    backgroundColor: context.look.bg,
     body: Align(
       alignment: Alignment.bottomCenter,
       child: TasmeeSetupSheet(
@@ -594,7 +599,7 @@ class _Choice extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Container(
-            constraints: const BoxConstraints(minHeight: 40),
+            constraints: const BoxConstraints(minHeight: 48),
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
             child: Text(
@@ -650,7 +655,7 @@ class _Segmented<T> extends StatelessWidget {
                   behavior: HitTestBehavior.opaque,
                   onTap: () => onChanged(v),
                   child: Container(
-                    constraints: const BoxConstraints(minHeight: 38),
+                    constraints: BoxConstraints(minHeight: context.look.target),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: v == value ? t.paper : null,
@@ -659,7 +664,9 @@ class _Segmented<T> extends StatelessWidget {
                       boxShadow: v == value
                           ? [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.08),
+                                color: context.look.frame.withValues(
+                                  alpha: 0.10,
+                                ),
                                 blurRadius: 4,
                                 offset: const Offset(0, 1),
                               ),
