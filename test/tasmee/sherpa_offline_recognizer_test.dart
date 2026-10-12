@@ -151,8 +151,8 @@ void main() {
       for (final n in lengths.take(2)) {
         expect(n, inInclusiveRange(10 * 16000, 11 * 16000));
       }
-      // Nothing lost; each cut repeats 0.2 s in the next segment.
-      expect(lengths.reduce((a, b) => a + b), 30 * 16000 + 2 * 3200);
+      // Nothing lost; each cut repeats 0.3 s in the next segment.
+      expect(lengths.reduce((a, b) => a + b), 30 * 16000 + 2 * 4800);
       await sub.cancel();
       await recognizer.dispose();
     });
