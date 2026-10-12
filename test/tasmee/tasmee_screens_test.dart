@@ -201,7 +201,7 @@ void main() {
         expect(find.text(kind), findsOneWidget, reason: kind);
       }
       // Al-Fatiha by default: 7 verses, 29 words, page 1.
-      expect(find.textContaining('٧ آية · ٢٩ كلمة'), findsOneWidget);
+      expect(find.textContaining('٧ آيات · ٢٩ كلمة'), findsOneWidget);
 
       await tester.tap(find.text('جزء'));
       await settle(tester);

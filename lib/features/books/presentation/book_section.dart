@@ -197,7 +197,7 @@ class BookEntryCard extends ConsumerWidget {
     final digits = NumberFormatter(Localizations.localeOf(context));
     final family = settings.tafsirFont == TafsirFont.naskh
         ? 'UthmanTahaNaskh'
-        : settings.uiFont.family;
+        : settings.uiFont.textFamily;
     final size = 19.0 * settings.tafsirFontScale * (asContext ? 0.9 : 1);
     final body = TextStyle(
       fontFamily: family,

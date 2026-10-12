@@ -66,7 +66,7 @@ class MeaningResults extends ConsumerWidget {
                   child: Text(
                     hits.isEmpty
                         ? l.searchNothing
-                        : '${l.searchMeaningCount(digits(hits.length))}'
+                        : '${l.searchMeaningCount(hits.length, digits(hits.length))}'
                               '${searcher.value?.semantic ?? false ? ' · ${l.semanticResultsNote}' : ''}',
                     style: TextStyle(color: t.muted),
                   ),

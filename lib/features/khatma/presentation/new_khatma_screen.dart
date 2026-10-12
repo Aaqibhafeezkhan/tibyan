@@ -783,6 +783,7 @@ class _NewKhatmaScreenState extends ConsumerState<NewKhatmaScreen> {
         '${_amountLabel(digits, _amount)} ${_unitLabel(l, _unit)}',
       if (end != null)
         l.khatmaDuration(
+          end.difference(today) + 1,
           digits(end.difference(today) + 1),
           formatDay(context, end),
         ),
@@ -914,7 +915,7 @@ class _NewKhatmaScreenState extends ConsumerState<NewKhatmaScreen> {
     NumberFormatter digits,
   ) => switch (preset) {
     KhatmahPreset.month => l.khatmaPresetMonth,
-    KhatmahPreset.ramadan30 => l.khatmaPresetRamadan30(digits(30)),
+    KhatmahPreset.ramadan30 => l.khatmaPresetRamadan30(30, digits(30)),
     KhatmahPreset.ramadanTwice => l.khatmaPresetRamadanTwice,
     KhatmahPreset.beforeLastTen => l.khatmaPresetBeforeLastTen,
     KhatmahPreset.weekly => l.khatmaPresetWeekly,

@@ -80,7 +80,7 @@
   "tabPages": "Pages",
   "meccan": "Meccan",
   "medinan": "Medinan",
-  "ayahCount": "{count} verses",
+  "ayahCount": "{n, plural, =1{{count} verse} other{{count} verses}}",
   "juzLabel": "Juz {number}",
   "juzStartsAt": "Starts at {surah} {ayah}",
   "pageShort": "p. {page}",
@@ -102,7 +102,7 @@
   "licenseLabel": "License: {license}",
   "versionShort": "Version: {version}",
   "reviewNotesTitle": "Questions under review",
-  "reviewNotesBody": "{count} places where the two text sources differ (two juz boundaries and four spellings) are with a qualified reviewer. The app follows the Tanzil text until a decision is made.",
+  "reviewNotesBody": "{n, plural, =1{{count} place} other{{count} places}} where the two text sources differ (two juz boundaries and four spellings) are with a qualified reviewer. The app follows the Tanzil text until a decision is made.",
   "mushafOpen": "Open the mushaf",
   "loadingLabel": "Loading…",
   "hizbLabel": "Hizb {number}",
@@ -183,7 +183,7 @@
       }
     }
   },
-  "versesCount": "{count} verses",
+  "versesCount": "{n, plural, =1{{count} verse} other{{count} verses}}",
   "@versesCount": {
     "placeholders": {
       "count": {
@@ -396,7 +396,7 @@
   "sajdahCardLabel": "Prostration of recitation",
   "sajdahTapToContinue": "Tap to continue",
   "sajdahContinue": "Continue",
-  "sajdahSecondsLeft": "{n} seconds left",
+  "sajdahSecondsLeft": "{seconds, plural, =1{{n} second left} other{{n} seconds left}}",
   "@sajdahSecondsLeft": {
     "placeholders": {
       "n": {
@@ -483,7 +483,7 @@
   "searchIntro": "Type one or more words of the Quran, with or without diacritics, or a place such as “2:255” or “al-Baqara 255”.",
   "searchGoTo": "Go to this place",
   "searchNothing": "No results",
-  "searchCount": "{count} matches in {verses} verses",
+  "searchCount": "{total, plural, =1{{count} match} other{{count} matches}} in {verseTotal, plural, =1{{verses} verse} other{{verses} verses}}",
   "@searchCount": {
     "placeholders": {
       "count": {
@@ -494,7 +494,7 @@
       }
     }
   },
-  "searchMore": "and {count} more verses; narrow the search to see them",
+  "searchMore": "{n, plural, =1{and {count} more verse} other{and {count} more verses}}; narrow the search to see them",
   "@searchMore": {
     "placeholders": {
       "count": {
@@ -673,7 +673,7 @@
   "khatmaPresetLabel": "Template",
   "khatmaPresetCustom": "Custom plan",
   "khatmaPresetMonth": "One month",
-  "khatmaPresetRamadan30": "Ramadan: {days} days",
+  "khatmaPresetRamadan30": "Ramadan: {n, plural, =1{{days} day} other{{days} days}}",
   "@khatmaPresetRamadan30": {
     "placeholders": {
       "days": {
@@ -724,8 +724,8 @@
   "khatmaUnitPage": "Pages",
   "khatmaUnitJuz": "Juz",
   "khatmaUnitHizb": "Hizb",
-  "khatmaAboutPerDay": "About {count} pages a day",
-  "khatmaDuration": "{count} days, finishing on {date}",
+  "khatmaAboutPerDay": "About {n, plural, =1{{count} page} other{{count} pages}} a day",
+  "khatmaDuration": "{n, plural, =1{{count} day} other{{count} days}}, finishing on {date}",
   "khatmaEditionNote": "In the pages of {edition}",
   "khatmaReminder": "Daily reminder",
   "khatmaReminderOff": "No reminder",
@@ -739,7 +739,7 @@
   "khatmaMarkRead": "I read it elsewhere",
   "khatmaTodayDone": "Today's portion is read",
   "khatmaContinue": "Keep reading",
-  "khatmaProgress": "{done} of {total} pages",
+  "khatmaProgress": "{done} of {n, plural, =1{{total} page} other{{total} pages}}",
   "khatmaDaysLeft": "Days left: {count}",
   "khatmaEnds": "Ends on {date}",
   "khatmaBehindTitle": "Pages from earlier days: {count}",
@@ -769,7 +769,7 @@
   "reportsDayRead": "A day with reading or listening",
   "streakReadToday": "You read today.",
   "streakWelcome": "Welcome back. Pick up where you left off.",
-  "readDaysOfLast": "You read on {read} of the last {days} days",
+  "readDaysOfLast": "You read on {read} of the last {n, plural, =1{day} other{{days} days}}",
   "streakNotesToggle": "Gentle notes",
   "streakNotesHint": "Calm notes on your reading; they never count days in a row or show missed days.",
   "journalTitle": "Tadabbur journal",
@@ -790,7 +790,7 @@
   "searchMeaningHint": "Describe an idea in your own words",
   "searchMeaningIntro": "Describe an idea in your own words, in Arabic or English, such as “patience in hardship” or “kindness to parents”, and the verses whose meaning in al-Tafsir al-Muyassar and the translations is closest appear. Each verse is shown with its text, and the text that matched exactly as its source has it.",
   "searchMatchedIn": "Matched in: {source}",
-  "searchMeaningCount": "{count} verses",
+  "searchMeaningCount": "{n, plural, =1{{count} verse} other{{count} verses}}",
   "semanticPackName": "Search-by-meaning pack",
   "semanticPackOffer": "This searches the words of the meaning texts for now. Download the search-by-meaning pack (about {size} MB) to find verses by their meaning even in other words, offline.",
   "semanticPackDownload": "Download the pack",
@@ -1076,7 +1076,7 @@
   "oneVerse": "Verse by verse",
   "oneVerseHint": "One verse a screen in large print, the phone sideways",
   "oneVerseAutoOff": "Auto-turn is off. Tap to turn it on",
-  "oneVerseAutoOn": "Turns to the next verse every {seconds} seconds. Tap to change",
+  "oneVerseAutoOn": "Turns to the next verse every {n, plural, =1{second} other{{seconds} seconds}}. Tap to change",
   "@oneVerseAutoOn": {
     "placeholders": {
       "seconds": {
@@ -1184,7 +1184,7 @@
   "tasmeeWordWrong": "Mistake",
   "tasmeeWordSkipped": "Skipped",
   "tasmeeSessionComplete": "Recitation complete",
-  "tasmeeSessionDoubtful": "{count} unsure words, not counted in the accuracy",
+  "tasmeeSessionDoubtful": "{n, plural, =1{{count} unsure word, not counted in the accuracy} other{{count} unsure words, not counted in the accuracy}}",
   "@tasmeeSessionDoubtful": {
     "placeholders": {
       "count": {
@@ -1210,7 +1210,7 @@
   "tasmeeDone": "Done",
   "tasmeeDownloadShort": "Get model",
   "tasmeeDownloadSize": "Download ({size} MB)",
-  "tasmeeDurationWords": "{minutes} min {seconds} s · {words} words",
+  "tasmeeDurationWords": "{minutes} min {seconds} s · {n, plural, =1{{words} word} other{{words} words}}",
   "tasmeeElapsed": "Time",
   "tasmeeEnd": "Finish",
   "tasmeeFeedback": "While reciting",
@@ -1284,7 +1284,7 @@
   "tasmeeProgress": "Range recited",
   "tasmeeQuarterOfHizb": "Quarter",
   "tasmeeRange": "Range",
-  "tasmeeRangeSummary": "From {from} to {to} · {verses} verses · {words} words · p. {pages}",
+  "tasmeeRangeSummary": "From {from} to {to} · {verseTotal, plural, =1{{verses} verse} other{{verses} verses}} · {wordTotal, plural, =1{{words} word} other{{words} words}} · p. {pages}",
   "tasmeeReReadWord": "Re-read the word marked in red",
   "tasmeeReciteAgain": "Recite these again",
   "tasmeeReciteVerse": "Recite verse",
@@ -1366,7 +1366,7 @@
   "hifzTabHardWords": "Hard words",
   "hifzTabGoals": "Goals",
   "hifzJourney": "Hifz journey",
-  "hifzJourneyLine": "{memorized} verses memorized, {mastered} mastered",
+  "hifzJourneyLine": "{n, plural, =1{{memorized} verse memorized} other{{memorized} verses memorized}}, {mastered} mastered",
   "hifzJourneyEmpty": "Recite what you know and your progress is kept here.",
   "progressOverall": "Overall",
   "progressJuzCount": "Juz",
@@ -1390,13 +1390,13 @@
   "recitationVoice": "By voice",
   "recitationTouch": "By touch",
   "recitationTest": "Hifz test",
-  "historyVerses": "{count} verses",
+  "historyVerses": "{n, plural, =1{{count} verse} other{{count} verses}}",
   "sessionSummary": "Session summary",
   "sessionDelete": "Remove from history",
   "sessionSensitivity": "Matching: {level}",
   "sessionSlips": "Slips",
   "hardWordsEmpty": "No hard words yet. A word you miss or skip more than once shows here.",
-  "hardWordsCount": "{count} times · last {date}",
+  "hardWordsCount": "{n, plural, =1{{count} time} other{{count} times}} · last {date}",
   "hardWordsHint": "These words' verses come first in review.",
   "goalsEmpty": "No goals yet. Pick a ready goal or make your own.",
   "goalNew": "New goal",
@@ -1410,7 +1410,7 @@
   "goalToSurah": "To surah",
   "goalSurah": "Surah",
   "goalHizb": "Hizb",
-  "goalDays": "Length: {days} days",
+  "goalDays": "Length: {n, plural, =1{{days} day} other{{days} days}}",
   "goalUnit": "Unit",
   "goalCreate": "Create the goal",
   "goalTodayWird": "Today’s portion",
@@ -1481,5 +1481,7 @@
   "settingsKhatmaPlans": "Khatma plans and reminders",
   "settingsWirdIndicator": "Daily portion indicator on the mushaf",
   "settingsCountListening": "Count listening toward the daily portion",
-  "settingsHifzGoals": "Memorization goals and reminders"
+  "settingsHifzGoals": "Memorization goals and reminders",
+  "digitsFontNote": "Every interface digit uses one clear font: a digits-only subset of IBM Plex Sans Arabic (© 2017 IBM Corp.), renamed because \"Plex\" is a Reserved Font Name. Licence: SIL Open Font License 1.1, which permits subsetting and modification under a new name and the same licence.",
+  "digitsFontTitle": "Interface digits font (Tibyan Digits)"
 }

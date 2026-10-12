@@ -769,7 +769,7 @@ class HardWordsTab extends ConsumerWidget {
                             (surah: a.surah, ayah: a.number),
                           );
                     return Text(
-                      '$place\n${l.hardWordsCount(_n(context, h.count), _day(context, h.last))}',
+                      '$place\n${l.hardWordsCount(h.count, _n(context, h.count), _day(context, h.last))}',
                     );
                   },
                 ),

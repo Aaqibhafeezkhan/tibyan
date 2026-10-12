@@ -143,7 +143,10 @@ class _GoalCard extends ConsumerWidget {
               const SizedBox(height: 6),
               Text(
                 [
-                  l.goalLeft(_n(context, r.remainingWeight.ceil())),
+                  l.goalLeft(
+                    r.remainingWeight.ceil(),
+                    _n(context, r.remainingWeight.ceil()),
+                  ),
                   if (g.targetDate case final d?)
                     l.goalUntil(reviewDay(context, d)),
                   if (paused) l.goalPaused,
@@ -209,7 +212,12 @@ class _GoalCard extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(l.goalBehind(_n(context, r.deficit.ceil()))),
+                  Text(
+                    l.goalBehind(
+                      r.deficit.ceil(),
+                      _n(context, r.deficit.ceil()),
+                    ),
+                  ),
                   const SizedBox(height: 6),
                   Wrap(
                     spacing: 8,
@@ -541,7 +549,7 @@ class _NewGoalSheetState extends State<_NewGoalSheet> {
                 const SizedBox(height: 8),
                 _surahPicker(l.goalToSurah, _toSurah, (v) => _toSurah = v),
                 const SizedBox(height: 12),
-                Text(l.goalDays(_n(context, _days.round()))),
+                Text(l.goalDays(_days.round(), _n(context, _days.round()))),
                 Slider(
                   value: _days,
                   min: 7,

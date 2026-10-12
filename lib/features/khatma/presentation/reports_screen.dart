@@ -109,6 +109,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                           child: Text(
                             l.readDaysOfLast(
                               digits(regular.read),
+                              regular.days,
                               digits(regular.days),
                             ),
                             textAlign: TextAlign.center,

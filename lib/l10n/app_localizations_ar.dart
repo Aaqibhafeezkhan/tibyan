@@ -276,8 +276,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get medinan => 'مدنية';
 
   @override
-  String ayahCount(String count) {
-    return '$count آية';
+  String ayahCount(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count آية',
+      many: '$count آية',
+      few: '$count آيات',
+      two: 'آيتان',
+      one: 'آية واحدة',
+      zero: 'لا آيات',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -357,8 +367,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reviewNotesTitle => 'مسائل معروضة على المراجعة';
 
   @override
-  String reviewNotesBody(String count) {
-    return '$count مواضع يختلف فيها مصدرا النص (حدود جزأين، وأربعة مواضع في الرسم) معروضة على مراجع متخصص، ويتبع التطبيق نص تنزيل حتى يصدر القرار.';
+  String reviewNotesBody(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count موضع',
+      many: '$count موضعًا',
+      few: '$count مواضع',
+      two: 'موضعان',
+      one: 'موضع واحد',
+      zero: 'لا مواضع',
+    );
+    return '$_temp0 يختلف فيها مصدرا النص (حدود جزأين، وأربعة مواضع في الرسم) معروضة على مراجع متخصص، ويتبع التطبيق نص تنزيل حتى يصدر القرار.';
   }
 
   @override
@@ -436,8 +456,18 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String versesCount(String count) {
-    return '$count آيات';
+  String versesCount(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count آية',
+      many: '$count آية',
+      few: '$count آيات',
+      two: 'آيتان',
+      one: 'آية واحدة',
+      zero: 'لا آيات',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -713,8 +743,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sajdahContinue => 'استكمال';
 
   @override
-  String sajdahSecondsLeft(String n) {
-    return '$n ثانية متبقية';
+  String sajdahSecondsLeft(int seconds, String n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other: '$n ثانية متبقية',
+      many: '$n ثانية متبقية',
+      few: '$n ثوانٍ متبقية',
+      two: 'ثانيتان متبقيتان',
+      one: 'ثانية واحدة متبقية',
+      zero: 'لم تبقَ ثوانٍ',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -873,13 +913,43 @@ class AppLocalizationsAr extends AppLocalizations {
   String get searchNothing => 'لا نتائج';
 
   @override
-  String searchCount(String count, String verses) {
-    return '$count موضعا في $verses آية';
+  String searchCount(int total, String count, int verseTotal, String verses) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$count موضع',
+      many: '$count موضعًا',
+      few: '$count مواضع',
+      two: 'موضعان',
+      one: 'موضع واحد',
+      zero: 'لا مواضع',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      verseTotal,
+      locale: localeName,
+      other: 'في $verses آية',
+      many: 'في $verses آية',
+      few: 'في $verses آيات',
+      two: 'في آيتين',
+      one: 'في آية واحدة',
+      zero: 'في لا آيات',
+    );
+    return '$_temp0 $_temp1';
   }
 
   @override
-  String searchMore(String count) {
-    return 'و$count آية أخرى، ضيّق البحث لرؤيتها';
+  String searchMore(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'و$count آية أخرى',
+      many: 'و$count آية أخرى',
+      few: 'و$count آيات أخرى',
+      two: 'وآيتان أخريان',
+      one: 'وآية أخرى',
+      zero: '',
+    );
+    return '$_temp0، ضيّق البحث لرؤيتها';
   }
 
   @override
@@ -1131,8 +1201,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get khatmaPresetMonth => 'ختمة في شهر';
 
   @override
-  String khatmaPresetRamadan30(String days) {
-    return 'رمضان: $days يوما';
+  String khatmaPresetRamadan30(int n, String days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$days يوم',
+      many: '$days يومًا',
+      few: '$days أيام',
+      two: 'يومان',
+      one: 'يوم واحد',
+      zero: 'لا أيام',
+    );
+    return 'رمضان: $_temp0';
   }
 
   @override
@@ -1239,13 +1319,33 @@ class AppLocalizationsAr extends AppLocalizations {
   String get khatmaUnitHizb => 'حزب';
 
   @override
-  String khatmaAboutPerDay(String count) {
-    return 'نحو $count صفحة في اليوم';
+  String khatmaAboutPerDay(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count صفحة',
+      many: '$count صفحة',
+      few: '$count صفحات',
+      two: 'صفحتين',
+      one: 'صفحة واحدة',
+      zero: 'لا صفحات',
+    );
+    return 'نحو $_temp0 في اليوم';
   }
 
   @override
-  String khatmaDuration(String count, String date) {
-    return 'المدة: $count يوم، والختم يوم $date';
+  String khatmaDuration(int n, String count, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count يوم',
+      many: '$count يومًا',
+      few: '$count أيام',
+      two: 'يومان',
+      one: 'يوم واحد',
+      zero: 'لا أيام',
+    );
+    return 'المدة: $_temp0، والختم يوم $date';
   }
 
   @override
@@ -1295,8 +1395,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get khatmaContinue => 'تابع القراءة';
 
   @override
-  String khatmaProgress(String done, String total) {
-    return '$done من $total صفحة';
+  String khatmaProgress(String done, int n, String total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$total صفحة',
+      many: '$total صفحة',
+      few: '$total صفحات',
+      two: 'صفحتين',
+      one: 'صفحة واحدة',
+      zero: 'لا صفحات',
+    );
+    return '$done من $_temp0';
   }
 
   @override
@@ -1400,8 +1510,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get streakWelcome => 'مرحبا بعودتك. تابع من حيث وقفت.';
 
   @override
-  String readDaysOfLast(String read, String days) {
-    return 'قرأت $read من آخر $days يوما';
+  String readDaysOfLast(String read, int n, String days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'آخر $days يوم',
+      many: 'آخر $days يومًا',
+      few: 'آخر $days أيام',
+      two: 'آخر يومين',
+      one: 'آخر يوم',
+      zero: 'لا أيام',
+    );
+    return 'قرأت $read من $_temp0';
   }
 
   @override
@@ -1473,8 +1593,18 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String searchMeaningCount(String count) {
-    return '$count آية';
+  String searchMeaningCount(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count آية',
+      many: '$count آية',
+      few: '$count آيات',
+      two: 'آيتان',
+      one: 'آية واحدة',
+      zero: 'لا آيات',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2230,8 +2360,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get oneVerseAutoOff => 'الانتقال التلقائي متوقف. اضغط لتشغيله';
 
   @override
-  String oneVerseAutoOn(String seconds) {
-    return 'ينتقل للآية التالية كل $seconds ثانية. اضغط للتغيير';
+  String oneVerseAutoOn(int n, String seconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'كل $seconds ثانية',
+      many: 'كل $seconds ثانية',
+      few: 'كل $seconds ثوانٍ',
+      two: 'كل ثانيتين',
+      one: 'كل ثانية',
+      zero: 'فورًا',
+    );
+    return 'ينتقل للآية التالية $_temp0. اضغط للتغيير';
   }
 
   @override
@@ -2545,8 +2685,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tasmeeSessionComplete => 'انتهى التسميع';
 
   @override
-  String tasmeeSessionDoubtful(String count) {
-    return '$count كلمة مشكوك فيها، لم تُحسب في الدقة';
+  String tasmeeSessionDoubtful(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count كلمة مشكوك فيها، لم تُحسب في الدقة',
+      many: '$count كلمة مشكوك فيها، لم تُحسب في الدقة',
+      few: '$count كلمات مشكوك فيها، لم تُحسب في الدقة',
+      two: 'كلمتان مشكوك فيهما، لم تُحسبا في الدقة',
+      one: 'كلمة واحدة مشكوك فيها، لم تُحسب في الدقة',
+      zero: 'لا كلمات مشكوك فيها',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2617,8 +2767,23 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String tasmeeDurationWords(String minutes, String seconds, String words) {
-    return 'المدة $minutes د $seconds ث · $words كلمة';
+  String tasmeeDurationWords(
+    String minutes,
+    String seconds,
+    int n,
+    String words,
+  ) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$words كلمة',
+      many: '$words كلمة',
+      few: '$words كلمات',
+      two: 'كلمتان',
+      one: 'كلمة واحدة',
+      zero: 'لا كلمات',
+    );
+    return 'المدة $minutes د $seconds ث · $_temp0';
   }
 
   @override
@@ -2868,11 +3033,33 @@ class AppLocalizationsAr extends AppLocalizations {
   String tasmeeRangeSummary(
     String from,
     String to,
+    int verseTotal,
     String verses,
+    int wordTotal,
     String words,
     String pages,
   ) {
-    return 'من $from إلى $to · $verses آية · $words كلمة · ص $pages';
+    String _temp0 = intl.Intl.pluralLogic(
+      verseTotal,
+      locale: localeName,
+      other: '$verses آية',
+      many: '$verses آية',
+      few: '$verses آيات',
+      two: 'آيتان',
+      one: 'آية واحدة',
+      zero: 'لا آيات',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      wordTotal,
+      locale: localeName,
+      other: '$words كلمة',
+      many: '$words كلمة',
+      few: '$words كلمات',
+      two: 'كلمتان',
+      one: 'كلمة واحدة',
+      zero: 'لا كلمات',
+    );
+    return 'من $from إلى $to · $_temp0 · $_temp1 · ص $pages';
   }
 
   @override
@@ -3158,8 +3345,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get hifzJourney => 'مسيرة الحفظ';
 
   @override
-  String hifzJourneyLine(String memorized, String mastered) {
-    return 'محفوظ $memorized آية، منها $mastered متقنة';
+  String hifzJourneyLine(int n, String memorized, String mastered) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$memorized آية',
+      many: '$memorized آية',
+      few: '$memorized آيات',
+      two: 'آيتان',
+      one: 'آية واحدة',
+      zero: 'لا آيات',
+    );
+    return 'محفوظ $_temp0، منها $mastered متقنة';
   }
 
   @override
@@ -3243,8 +3440,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recitationTest => 'اختبار الحفظ';
 
   @override
-  String historyVerses(String count) {
-    return '$count آية';
+  String historyVerses(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count آية',
+      many: '$count آية',
+      few: '$count آيات',
+      two: 'آيتان',
+      one: 'آية واحدة',
+      zero: 'لا آيات',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3266,8 +3473,18 @@ class AppLocalizationsAr extends AppLocalizations {
       'لا كلمات صعبة بعد. الكلمة التي تخطئ فيها أو تتخطاها أكثر من مرة تظهر هنا.';
 
   @override
-  String hardWordsCount(String count, String date) {
-    return '$count مرات · آخرها $date';
+  String hardWordsCount(int n, String count, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count مرة',
+      many: '$count مرة',
+      few: '$count مرات',
+      two: 'مرتان',
+      one: 'مرة واحدة',
+      zero: 'لا مرات',
+    );
+    return '$_temp0 · آخرها $date';
   }
 
   @override
@@ -3310,8 +3527,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get goalHizb => 'الحزب';
 
   @override
-  String goalDays(String days) {
-    return 'المدة: $days يوما';
+  String goalDays(int n, String days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$days يوم',
+      many: '$days يومًا',
+      few: '$days أيام',
+      two: 'يومان',
+      one: 'يوم واحد',
+      zero: 'لا أيام',
+    );
+    return 'المدة: $_temp0';
   }
 
   @override
@@ -3348,8 +3575,18 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String goalLeft(String pages) {
-    return 'تبقّى $pages صفحة';
+  String goalLeft(int n, String pages) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'تبقّى $pages صفحة',
+      many: 'تبقّى $pages صفحة',
+      few: 'تبقّت $pages صفحات',
+      two: 'تبقّت صفحتان',
+      one: 'تبقّت صفحة واحدة',
+      zero: 'لم تبقَ صفحات',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3358,8 +3595,18 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String goalBehind(String pages) {
-    return 'تبقّى من الأيام الماضية $pages صفحة';
+  String goalBehind(int n, String pages) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$pages صفحة',
+      many: '$pages صفحة',
+      few: '$pages صفحات',
+      two: 'صفحتان',
+      one: 'صفحة واحدة',
+      zero: 'لا شيء',
+    );
+    return 'تبقّى من الأيام الماضية $_temp0';
   }
 
   @override
@@ -3557,4 +3804,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get settingsHifzGoals => 'أهداف الحفظ وتذكيراتها';
+
+  @override
+  String get digitsFontTitle => 'خط الأرقام في الواجهة (Tibyan Digits)';
+
+  @override
+  String get digitsFontNote =>
+      'أرقام الواجهة كلها بخط واحد واضح: مقتطع من IBM Plex Sans Arabic (حقوقه لشركة IBM، 2017) يضم الأرقام وحدها، وسُمّي باسم جديد لأن «Plex» اسم محجوز. الرخصة: رخصة الخطوط المفتوحة SIL OFL 1.1، وهي تبيح الاقتطاع والتعديل بشرط تغيير الاسم وبقاء الرخصة نفسها.';
 }

@@ -335,7 +335,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                               hits.isEmpty
                                   ? (ref0 == null ? l.searchNothing : '')
                                   : l.searchCount(
+                                      total,
                                       digits(total),
+                                      hits.length,
                                       digits(hits.length),
                                     ),
                               style: TextStyle(color: t.muted),
@@ -352,7 +354,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           Padding(
                             padding: const EdgeInsets.all(12),
                             child: Text(
-                              l.searchMore(digits(hits.length - 300)),
+                              l.searchMore(
+                                hits.length - 300,
+                                digits(hits.length - 300),
+                              ),
                               textAlign: TextAlign.center,
                               style: TextStyle(color: t.muted),
                             ),

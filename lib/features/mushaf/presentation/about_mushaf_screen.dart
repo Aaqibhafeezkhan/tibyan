@@ -49,7 +49,7 @@ class AboutMushafScreen extends ConsumerWidget {
                         ),
                         title: Text(l.reviewNotesTitle),
                         subtitle: Text(
-                          l.reviewNotesBody('$reviewCount'),
+                          l.reviewNotesBody(reviewCount, '$reviewCount'),
                           style: const TextStyle(height: 1.6),
                         ),
                       ),
@@ -179,6 +179,14 @@ class AboutMushafScreen extends ConsumerWidget {
                           ),
                         ],
                       ],
+                    ),
+                  ),
+                  Card(
+                    child: ExpansionTile(
+                      title: Text(l.digitsFontTitle),
+                      expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                      childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      children: [Text(l.digitsFontNote)],
                     ),
                   ),
                 ],

@@ -251,7 +251,7 @@ class _SajdahCardViewState extends State<SajdahCardView>
       container: true,
       liveRegion: true,
       label: l.sajdahCardLabel,
-      value: l.sajdahSecondsLeft(digits(widget.seconds)),
+      value: l.sajdahSecondsLeft(widget.seconds, digits(widget.seconds)),
       child: ConstrainedBox(
         constraints: BoxConstraints.tightFor(width: width)
             .copyWith(maxHeight: maxHeight),
