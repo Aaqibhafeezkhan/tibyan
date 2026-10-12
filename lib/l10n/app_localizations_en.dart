@@ -569,6 +569,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noMarks => 'No marks yet. Tap a verse marker to mark it.';
 
   @override
+  String get shareBrandColours => 'Tibyan\'s original colours';
+
+  @override
+  String get shareBrandColoursHint =>
+      'Instead of the current interface and mushaf colours';
+
+  @override
   String get highlightDivineNames => 'Highlight the divine name';
 
   @override

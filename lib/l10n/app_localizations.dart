@@ -1052,6 +1052,18 @@ abstract class AppLocalizations {
   /// **'لا توجد فواصل بعد. اضغط على فاصل أي آية لتعليمها.'**
   String get noMarks;
 
+  /// No description provided for @shareBrandColours.
+  ///
+  /// In ar, this message translates to:
+  /// **'ألوان تبيان الأصلية'**
+  String get shareBrandColours;
+
+  /// No description provided for @shareBrandColoursHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'بدلًا من ألوان الواجهة والمصحف الحالية'**
+  String get shareBrandColoursHint;
+
   /// No description provided for @highlightDivineNames.
   ///
   /// In ar, this message translates to:

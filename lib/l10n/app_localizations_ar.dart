@@ -568,6 +568,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noMarks => 'لا توجد فواصل بعد. اضغط على فاصل أي آية لتعليمها.';
 
   @override
+  String get shareBrandColours => 'ألوان تبيان الأصلية';
+
+  @override
+  String get shareBrandColoursHint => 'بدلًا من ألوان الواجهة والمصحف الحالية';
+
+  @override
   String get highlightDivineNames => 'تمييز لفظ الجلالة';
 
   @override
