@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../data/model_manifest.dart';
 import '../data/model_store.dart';
+import '../data/model_update_checker.dart';
 import '../data/tasmee_backend.dart';
 import '../data/tasmee_settings.dart';
 import '../domain/alignment_engine.dart';
@@ -21,6 +23,28 @@ final tasmeeModelInfoProvider =
       return (await backend.installedModel(), await backend.usedBytes());
     });
 
+/// Asks the reader to download [update] (its size and the Wi‑Fi note first)
+/// and installs it; the model in use keeps working until then.
+Future<void> openModelUpdate(
+  BuildContext context,
+  WidgetRef ref,
+  ModelManifest update,
+) async {
+  await showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (sheet) => ModelSheet(
+      backend: ref.read(tasmeeBackendProvider),
+      update: update,
+      onInstalled: (_) => Navigator.pop(sheet),
+    ),
+  );
+  ref
+    ..invalidate(tasmeeModelInfoProvider)
+    ..invalidate(tasmeeModelUpdateProvider);
+}
+
 /// Settings › Tasmee: the defaults of a session, the model, the history.
 class TasmeeSettingsScreen extends ConsumerWidget {
   const TasmeeSettingsScreen({super.key});
@@ -32,6 +56,7 @@ class TasmeeSettingsScreen extends ConsumerWidget {
     final s = ref.watch(tasmeeSettingsProvider);
     final c = ref.read(tasmeeSettingsProvider.notifier);
     final model = ref.watch(tasmeeModelInfoProvider);
+    final update = ref.watch(tasmeeModelUpdateProvider).value;
 
     Widget title(String text) => Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(8, 16, 8, 6),
@@ -166,6 +191,26 @@ class TasmeeSettingsScreen extends ConsumerWidget {
                     _ => '',
                   }, style: TextStyle(color: t.muted)),
                 ),
+                if (update != null)
+                  ListTile(
+                    key: const ValueKey('tasmee-model-update'),
+                    leading: Icon(Icons.system_update_alt, color: t.goldText),
+                    title: Text(
+                      l.tasmeeModelUpdateAvailable(
+                        context.digits(
+                          (update.totalBytes / (1024 * 1024)).round(),
+                        ),
+                      ),
+                    ),
+                    trailing: Text(
+                      l.tasmeeModelUpdate,
+                      style: TextStyle(
+                        color: t.goldText,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    onTap: () => openModelUpdate(context, ref, update),
+                  ),
                 ListTile(
                   leading: const Icon(Icons.download),
                   title: Text(

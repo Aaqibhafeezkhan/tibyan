@@ -13,6 +13,7 @@ import '../domain/recitation_recognizer.dart';
 import '../domain/spectrum.dart';
 import '../domain/tasmee_report.dart';
 import '../domain/tasmee_session_request.dart';
+import '../domain/transcript_stabilizer.dart';
 import '../domain/word_match.dart';
 
 enum TasmeePhase {
@@ -54,6 +55,10 @@ class TasmeeSessionController extends ChangeNotifier {
          request.words,
          options: TasmeeEngineOptions(strictness: strictness, onError: onError),
        ) {
+    _joiner = SegmentJoiner(
+      similarity: engine.expectedSimilarity,
+      threshold: strictness.threshold,
+    );
     final seen = <int>{};
     for (final w in request.words) {
       if (seen.add(w.verseId)) _verseOrder.add(w.verseId);
@@ -66,6 +71,10 @@ class TasmeeSessionController extends ChangeNotifier {
   final int toastSeconds;
   final bool vibration;
   final TasmeeEngine engine;
+
+  /// Joins words a cut between two segments split in two, before the
+  /// engine sees them.
+  late final SegmentJoiner _joiner;
 
   TasmeeMode get mode => request.mode;
   List<ExpectedWord> get words => request.words;
@@ -263,8 +272,7 @@ class TasmeeSessionController extends ChangeNotifier {
   void _accept(List<String> heard) {
     if (_disposed || heard.isEmpty) return;
     if (_phase == TasmeePhase.finished) return;
-    final events = engine.addWords(heard);
-    _react(events);
+    _react(engine.addWords(_joiner.add(heard)));
     if (mode == TasmeeMode.verseByVerse) {
       final indices = words.where((w) => w.verseId == currentVerseId);
       if (_phase == TasmeePhase.listening &&
@@ -355,6 +363,7 @@ class TasmeeSessionController extends ChangeNotifier {
       await _stopMic();
       await _flush();
       final verseId = currentVerseId;
+      _react(engine.addWords(_joiner.flush()));
       _react(engine.finishVerse(verseId));
       _showToast(verseId);
       _verse++;
@@ -392,6 +401,7 @@ class TasmeeSessionController extends ChangeNotifier {
     _set(TasmeePhase.finishing);
     await _stopMic();
     if (wasListening) await _flush();
+    engine.addWords(_joiner.flush());
     engine.finish();
     _toastTimer?.cancel();
     _toast = null;

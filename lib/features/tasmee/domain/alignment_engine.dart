@@ -258,6 +258,23 @@ class TasmeeEngine {
   /// Heard words not settled yet.
   int get pending => _buffer.length;
 
+  /// How close [key] (a matching key) is to the words expected around the
+  /// reader: from a few words before the cursor to a little past the heard
+  /// words still unsure. 1 when it is one of them letter for letter. For
+  /// `SegmentJoiner`, to tell a word cut in two from two words.
+  double expectedSimilarity(String key) {
+    final from = math.max(0, _cursor - 3);
+    final to = math.min(
+      words.length,
+      _cursor + _buffer.length + options.lookAhead + 3,
+    );
+    var best = 0.0;
+    for (var i = from; i < to; i++) {
+      best = math.max(best, _similarity(key, i));
+    }
+    return best;
+  }
+
   /// Words the recogniser has settled ([TranscriptStabilizer]), in order;
   /// each may hold several words.
   List<TasmeeEvent> addWords(Iterable<String> heard) {
@@ -406,7 +423,16 @@ class TasmeeEngine {
   double _similarity(String key, int index) {
     var best = 0.0;
     for (final k in words[index].keys) {
-      best = math.max(best, wordSimilarity(key, k));
+      var s = wordSimilarity(key, k);
+      // A leading و، ف، ب or ال dropped or added is a known error of
+      // memorisation (وإنهم read إنهم), not a recogniser's slip: below the
+      // lenient setting it is no match.
+      if (s < 1 &&
+          options.strictness != MatchStrictness.lenient &&
+          differsByLeadingPrefix(key, k)) {
+        s = math.min(s, _threshold - 0.01);
+      }
+      best = math.max(best, s);
     }
     return best;
   }

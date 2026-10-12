@@ -2771,6 +2771,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tasmeeModelTitle => 'Tasmee model';
 
   @override
+  String get tasmeeModelUpdate => 'Update';
+
+  @override
+  String tasmeeModelUpdateAvailable(String size) {
+    return 'Model update available ($size MB)';
+  }
+
+  @override
+  String get tasmeeModelUpdateKeeps =>
+      'The current model keeps working until the new one is fully downloaded, then it is removed';
+
+  @override
+  String get tasmeeModelUpdateTitle => 'Update the tasmee model';
+
+  @override
   String get tasmeeModelVoiceStays =>
       'Your voice stays on this device, never sent or kept';
 

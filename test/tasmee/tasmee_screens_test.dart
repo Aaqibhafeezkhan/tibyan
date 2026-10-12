@@ -8,6 +8,7 @@ import 'package:tibyan/core/theme/theme_tokens.dart';
 import 'package:tibyan/features/mushaf/presentation/about_mushaf_screen.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/page_interaction.dart';
+import 'package:tibyan/features/tasmee/data/model_update_checker.dart';
 import 'package:tibyan/features/tasmee/data/tasmee_backend.dart';
 import 'package:tibyan/features/tasmee/data/tasmee_settings.dart';
 import 'package:tibyan/features/tasmee/data/tasmee_words_repository.dart';
@@ -242,6 +243,77 @@ void main() {
         started!.range,
         const VerseRange(fromSurah: 2, fromAyah: 10, toSurah: 2, toAyah: 16),
       );
+    });
+  });
+
+  group('model update', () {
+    Widget setup(BuildContext _) => Scaffold(
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: TasmeeSetupSheet(onStart: (_) {}, onClose: () {}),
+      ),
+    );
+
+    testWidgets('a newer model is offered calmly on opening the tasmee', (
+      tester,
+    ) async {
+      final b = FakeBackend(mirrorVersion: '2');
+      await pumpScreen(tester, setup, backend: b);
+      expect(b.manifestFetches, 1);
+      final row = find.byKey(const ValueKey('tasmee-model-update'));
+      expect(row, findsOneWidget);
+      expect(find.text('تحديث لنموذج التسميع متاح (١٢٦ م.ب)'), findsOneWidget);
+
+      await tester.tap(row);
+      await settle(tester);
+      // The size and the Wi‑Fi note first; the model in use keeps working.
+      expect(find.text('تحديث نموذج التسميع'), findsOneWidget);
+      expect(find.textContaining('يبقى النموذج الحالي يعمل'), findsOneWidget);
+      expect(find.textContaining('Wi‑Fi'), findsOneWidget);
+      expect(b.downloads, isEmpty);
+      await tester.tap(find.byKey(const ValueKey('tasmee-model-download')));
+      await settle(tester);
+      expect(b.downloads.single.version, '2');
+      expect(b.installedVersion, '2');
+      expect(row, findsNothing);
+    });
+
+    testWidgets('no offer when the model is current', (tester) async {
+      await pumpScreen(tester, setup);
+      expect(find.byKey(const ValueKey('tasmee-model-update')), findsNothing);
+    });
+
+    testWidgets('offline: quietly no offer', (tester) async {
+      final b = FakeBackend(mirrorVersion: null);
+      await pumpScreen(tester, setup, backend: b);
+      expect(b.manifestFetches, 1);
+      expect(find.byKey(const ValueKey('tasmee-model-update')), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('checked at most once a day', (tester) async {
+      final b = FakeBackend(mirrorVersion: '2');
+      final (container, _, _) = await pumpScreen(tester, setup, backend: b);
+      container.invalidate(tasmeeModelUpdateProvider);
+      await settle(tester);
+      expect(b.manifestFetches, 1);
+      expect(find.byKey(const ValueKey('tasmee-model-update')), findsOneWidget);
+    });
+
+    testWidgets('Tasmee settings offer the update too', (tester) async {
+      final b = FakeBackend(mirrorVersion: '2');
+      await pumpScreen(tester, (_) => const TasmeeSettingsScreen(), backend: b);
+      final tile = find.byKey(const ValueKey('tasmee-model-update'));
+      await tester.scrollUntilVisible(tile, 200);
+      await tester.ensureVisible(tile);
+      await tester.pumpAndSettle();
+      expect(find.text('تحديث لنموذج التسميع متاح (١٢٦ م.ب)'), findsOneWidget);
+      await tester.tap(tile);
+      await settle(tester);
+      await tester.tap(find.byKey(const ValueKey('tasmee-model-download')));
+      await settle(tester);
+      expect(b.downloads.single.version, '2');
+      expect(b.deleted, 0);
     });
   });
 

@@ -18,6 +18,19 @@ const whisperComparisonManifestUrl =
 /// once the current model is installed, to give back the space.
 const retiredRecitationModelIds = {'tarteel-whisper-base-ar-quran'};
 
+/// Orders two model versions (the manifest's `version`): dot-separated
+/// numbers compare as numbers (`10` after `9`, `1.10` after `1.9`), any
+/// other part as text. Negative when [a] is older than [b].
+int compareModelVersions(String a, String b) {
+  final x = a.split('.'), y = b.split('.');
+  for (var i = 0; i < x.length && i < y.length; i++) {
+    final m = int.tryParse(x[i]), n = int.tryParse(y[i]);
+    final c = m != null && n != null ? m.compareTo(n) : x[i].compareTo(y[i]);
+    if (c != 0) return c;
+  }
+  return x.length.compareTo(y.length);
+}
+
 /// How a model is run (the manifest's `engine`).
 abstract final class ModelEngine {
   /// A NeMo CTC model in sherpa_onnx (`OfflineNemoEncDecCtcModelConfig`).

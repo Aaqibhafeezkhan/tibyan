@@ -10,15 +10,19 @@ import 'package:tibyan/features/tasmee/data/tasmee_audio_capture.dart';
 import 'package:tibyan/features/tasmee/data/tasmee_backend.dart';
 import 'package:tibyan/features/tasmee/domain/recitation_recognizer.dart';
 
-ModelManifest fakeManifest() => ModelManifest.fromJson(
-  jsonDecode(
+/// The mirror's manifest (version 1), or the same model as [version].
+ModelManifest fakeManifest({String version = '1'}) => ModelManifest.fromJson({
+  ...jsonDecode(
     File('test/tasmee/fixtures/recitation_model_manifest.json')
         .readAsStringSync(),
   ) as Map<String, dynamic>,
-);
+  'version': version,
+});
 
-InstalledModel fakeModel() =>
-    InstalledModel(manifest: fakeManifest(), directory: Directory.systemTemp);
+InstalledModel fakeModel({String version = '1'}) => InstalledModel(
+  manifest: fakeManifest(version: version),
+  directory: Directory.systemTemp,
+);
 
 /// A recogniser that writes down whatever the test says.
 class FakeRecognizer implements RecitationRecognizer {
@@ -79,9 +83,21 @@ class FakeMicrophone implements TasmeeMicrophone {
 
 /// The device side of the tasmee, in memory.
 class FakeBackend extends TasmeeBackend {
-  FakeBackend({this.installed = true, this.micDenied = false});
+  FakeBackend({
+    this.installed = true,
+    this.micDenied = false,
+    this.mirrorVersion = '1',
+  });
 
   bool installed;
+
+  /// The version of the model on the device.
+  String installedVersion = '1';
+
+  /// The version the mirror's manifest offers; null: offline.
+  String? mirrorVersion;
+  int manifestFetches = 0;
+  final downloads = <ModelManifest>[];
   final bool micDenied;
   final recognizer0 = FakeRecognizer();
   late final microphone0 = FakeMicrophone(denied: micDenied);
@@ -91,10 +107,15 @@ class FakeBackend extends TasmeeBackend {
 
   @override
   Future<InstalledModel?> installedModel() async =>
-      installed ? fakeModel() : null;
+      installed ? fakeModel(version: installedVersion) : null;
 
   @override
-  Future<ModelManifest> fetchManifest() async => fakeManifest();
+  Future<ModelManifest> fetchManifest() async {
+    manifestFetches++;
+    final version = mirrorVersion;
+    if (version == null) throw const SocketException('offline');
+    return fakeManifest(version: version);
+  }
 
   @override
   Future<InstalledModel> download(
@@ -109,9 +130,11 @@ class FakeBackend extends TasmeeBackend {
         file: 'model.int8.onnx',
       ),
     );
+    downloads.add(manifest);
     await downloadGate?.future;
     installed = true;
-    return fakeModel();
+    installedVersion = manifest.version;
+    return fakeModel(version: manifest.version);
   }
 
   @override

@@ -9,12 +9,14 @@ import '../../../core/db/content_database.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../mushaf/mushaf_providers.dart';
+import '../data/model_update_checker.dart';
 import '../data/tasmee_settings.dart';
 import '../data/tasmee_words_repository.dart';
 import '../domain/alignment_engine.dart';
 import '../domain/expected_words.dart';
 import '../domain/recitation_range.dart';
 import '../domain/tasmee_session_request.dart';
+import 'tasmee_settings_screen.dart' show openModelUpdate;
 import 'tasmee_style.dart';
 
 final _verseIndexProvider = FutureProvider<List<VerseIndexEntry>>(
@@ -205,6 +207,9 @@ class _TasmeeSetupSheetState extends ConsumerState<TasmeeSetupSheet> {
     final surahs = ref.watch(surahsProvider).value;
     final index = ref.watch(_verseIndexProvider).value;
     final settings = ref.watch(tasmeeSettingsProvider);
+    // Opening the tasmee checks, quietly and at most once a day, for a
+    // newer model.
+    final update = ref.watch(tasmeeModelUpdateProvider).value;
     final range = _range();
     final words = ref.watch(_rangeWordsProvider(range));
     final ar = Localizations.localeOf(context).languageCode == 'ar';
@@ -237,6 +242,18 @@ class _TasmeeSetupSheetState extends ConsumerState<TasmeeSetupSheet> {
             ),
           ],
         ),
+        if (update != null) ...[
+          const SizedBox(height: 4),
+          _ResumeRow(
+            rowKey: const ValueKey('tasmee-model-update'),
+            icon: Icons.system_update_alt,
+            label: l.tasmeeModelUpdateAvailable(
+              context.digits((update.totalBytes / (1024 * 1024)).round()),
+            ),
+            action: l.tasmeeModelUpdate,
+            onTap: () => openModelUpdate(context, ref, update),
+          ),
+        ],
         if (last != null && index != null) ...[
           const SizedBox(height: 4),
           _ResumeRow(
@@ -462,11 +479,15 @@ class _ResumeRow extends StatelessWidget {
     required this.label,
     required this.action,
     required this.onTap,
+    this.icon = Icons.history,
+    this.rowKey = const ValueKey('tasmee-resume'),
   });
 
   final String label;
   final String action;
   final VoidCallback onTap;
+  final IconData icon;
+  final Key rowKey;
 
   @override
   Widget build(BuildContext context) {
@@ -480,14 +501,14 @@ class _ResumeRow extends StatelessWidget {
         color: t.highlight,
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
-          key: const ValueKey('tasmee-resume'),
+          key: rowKey,
           borderRadius: BorderRadius.circular(12),
           onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
             child: Row(
               children: [
-                Icon(Icons.history, size: 18, color: t.goldText),
+                Icon(icon, size: 18, color: t.goldText),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(

@@ -129,11 +129,22 @@ void main() {
     expect(cuts[2], inInclusiveRange(20500, 20600));
   });
 
-  test('defaults: 8 s cap, 3 s search, 0.2 s overlap at 16 kHz', () {
+  test('a shallow dip inside a word is no cut: it waits for a clear gap', () {
+    final b = _buffer();
+    // At 6.6 s the voice only softens (a quarter of its energy); the reader
+    // breathes at 9.0 s.
+    final pcm = _speech(12, quiet: [(6.6, 6.75)], quietAmplitude: 6000)
+      ..setRange(9000, 9150, Int16List(150));
+    final out = _feed(b, pcm);
+    expect(out.single.length, inInclusiveRange(9000, 9150));
+  });
+
+  test('defaults: 8 s cap, 3 s search, 0.3 s overlap, clear dips', () {
     final b = SpeechSegmentBuffer();
     expect(b.maxSeconds, 8);
     expect(b.searchSeconds, 3);
     expect(b.hardMaxSeconds, 11);
-    expect(b.overlapSeconds, 0.2);
+    expect(b.overlapSeconds, 0.3);
+    expect(b.dipRatio, 0.2);
   });
 }

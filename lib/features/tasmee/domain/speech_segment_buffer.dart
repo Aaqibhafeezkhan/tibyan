@@ -9,22 +9,25 @@ import 'dart:typed_data';
 /// anyway once it reaches [maxSeconds]: long segments come back garbled from
 /// the CTC model. The cut is placed at the quietest moment of the last
 /// [searchSeconds] (a gap between words, never the middle of a loud
-/// syllable). If that stretch has no real dip, the buffer waits for one up to
+/// syllable). Only a clear dip counts ([dipRatio]): a voice that merely
+/// softens inside a word is no place to cut. If that stretch has no clear
+/// dip, the buffer waits for one up to
 /// [hardMaxSeconds], then cuts at the quietest moment it has.
 ///
 /// The next segment starts [overlapSeconds] before the cut, so a word that
 /// begins right at the cut keeps its onset. A word heard twice there is read
-/// by the engine as a restart, which is not an error.
+/// by the engine as a restart, which is not an error; a word the cut split
+/// in two is joined again before alignment (`SegmentJoiner`).
 class SpeechSegmentBuffer {
   SpeechSegmentBuffer({
     this.sampleRate = 16000,
     this.maxSeconds = 8,
     this.searchSeconds = 3,
     double? hardMaxSeconds,
-    this.overlapSeconds = 0.2,
+    this.overlapSeconds = 0.3,
     this.minSeconds = 0.3,
     this.frameMilliseconds = 20,
-    this.dipRatio = 0.35,
+    this.dipRatio = 0.2,
   }) : hardMaxSeconds = hardMaxSeconds ?? maxSeconds + searchSeconds,
        assert(maxSeconds > 0),
        assert(searchSeconds > 0 && searchSeconds < maxSeconds),

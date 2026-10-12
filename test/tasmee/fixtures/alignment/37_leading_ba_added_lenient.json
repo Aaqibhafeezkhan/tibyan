@@ -1,0 +1,26 @@
+{
+ "name": "lenient: an added leading ba is only doubtful",
+ "range": {
+  "verses": [
+   6,
+   30,
+   6,
+   30
+  ]
+ },
+ "options": {
+  "strictness": "lenient"
+ },
+ "steps": [
+  {
+   "say": "وَلَوْ تَرَى إِذْ وُقِفُوا عَلَى رَبِّهِمْ قَالَ أَلَيْسَ هَذَا بِالْحَقِّ قَالُوا بَلَى وَرَبِّنَا قَالَ فَذُوقُوا بِالْعَذَابِ بِمَا كُنْتُمْ تَكْفُرُونَ"
+  },
+  {
+   "finish": true
+  }
+ ],
+ "statuses": {
+  "6:30:16": "doubtful",
+  "*": "correct"
+ }
+}

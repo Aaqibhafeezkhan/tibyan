@@ -1,0 +1,29 @@
+{
+ "name": "lenient: a dropped leading waw is only doubtful",
+ "range": {
+  "verses": [
+   6,
+   28,
+   6,
+   28
+  ]
+ },
+ "options": {
+  "strictness": "lenient"
+ },
+ "steps": [
+  {
+   "say": "بَلْ بَدَا لَهُمْ مَا كَانُوا يُخْفُونَ مِن قَبْلُ"
+  },
+  {
+   "say": "وَلَوْ رُدّوا لَعَادُوا لِمَا نُهُوا عَنْهُ إنهُمْ لَكَاذبون"
+  },
+  {
+   "finish": true
+  }
+ ],
+ "statuses": {
+  "6:28:15": "doubtful",
+  "*": "correct"
+ }
+}

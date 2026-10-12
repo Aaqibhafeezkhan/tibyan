@@ -4843,6 +4843,30 @@ abstract class AppLocalizations {
   /// **'نموذج التسميع'**
   String get tasmeeModelTitle;
 
+  /// No description provided for @tasmeeModelUpdate.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث النموذج'**
+  String get tasmeeModelUpdate;
+
+  /// No description provided for @tasmeeModelUpdateAvailable.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث لنموذج التسميع متاح ({size} م.ب)'**
+  String tasmeeModelUpdateAvailable(String size);
+
+  /// No description provided for @tasmeeModelUpdateKeeps.
+  ///
+  /// In ar, this message translates to:
+  /// **'يبقى النموذج الحالي يعمل حتى يكتمل تنزيل الجديد، ثم يُحذف'**
+  String get tasmeeModelUpdateKeeps;
+
+  /// No description provided for @tasmeeModelUpdateTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث نموذج التسميع'**
+  String get tasmeeModelUpdateTitle;
+
   /// No description provided for @tasmeeModelVoiceStays.
   ///
   /// In ar, this message translates to:
