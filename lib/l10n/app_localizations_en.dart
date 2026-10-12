@@ -3308,7 +3308,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goalNew => 'New goal';
 
   @override
-  String get goalTemplateAmma => 'Juz ʿAmma in two months';
+  String get goalTemplateAmma => 'Juz Amma in two months';
 
   @override
   String get goalTemplatePageDaily => 'A page a day';
@@ -3377,7 +3377,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String goalLeft(String pages) {
-    return '$pages pages left';
+    return 'Pages left: $pages';
   }
 
   @override
@@ -3387,7 +3387,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String goalBehind(String pages) {
-    return '$pages pages left from past days';
+    return 'Pages left from past days: $pages';
   }
 
   @override
