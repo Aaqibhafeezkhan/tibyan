@@ -25,7 +25,13 @@ import 'package:tibyan/core/ui/look_kit.dart';
 import 'package:tibyan/features/assistant/assistant_screen.dart';
 import 'package:tibyan/features/assistant/tajweed_marks_screen.dart';
 import 'package:tibyan/features/audio/audio_downloads_screen.dart';
+import 'package:tibyan/features/hifz/presentation/hifz_map_screen.dart';
 import 'package:tibyan/features/hifz/presentation/hifz_screen.dart';
+import 'package:tibyan/features/reading/continuous_screen.dart';
+import 'package:tibyan/features/reading/one_verse_screen.dart';
+import 'package:tibyan/features/settings/appearance_screen.dart';
+import 'package:tibyan/features/settings/player_settings_screen.dart';
+import 'package:tibyan/features/tafsir/tafsir_screen.dart';
 import 'package:tibyan/features/khatma/presentation/journal_screen.dart';
 import 'package:tibyan/features/khatma/presentation/khatma_screen.dart';
 import 'package:tibyan/features/khatma/presentation/new_khatma_screen.dart';
@@ -220,6 +226,12 @@ void main() {
         ('audio_downloads', const AudioDownloadsScreen()),
         ('about', const AboutMushafScreen()),
         ('hifz', const HifzScreen()),
+        ('hifz_map', const HifzMapScreen()),
+        ('appearance', const AppearanceScreen()),
+        ('player_settings', const PlayerSettingsScreen()),
+        ('continuous', const ContinuousScreen(surah: 2, ayah: 1)),
+        ('one_verse', const OneVerseScreen(surah: 2, ayah: 255)),
+        ('tafsir', const TafsirScreen(surah: 2, ayah: 255)),
       ];
       final sajdah = Scaffold(
         body: Stack(
@@ -322,6 +334,8 @@ void main() {
           await draw('share_brand', SharePalette.brand);
         });
       }
+      // Let the reading screens' timers run out.
+      await tester.pump(const Duration(minutes: 5));
       await tester.runAsync(db.close);
     },
     skip: !run,

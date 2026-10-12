@@ -258,8 +258,10 @@ void main() {
                 size,
                 prefs: base,
                 act: () async {
+                  // The room above the page opens the menus (a tap on
+                  // the page selects a verse).
                   await tester.tapAt(
-                    Offset(logical.width / 2, logical.height * 0.45),
+                    Offset(logical.width / 2, logical.height * 0.075),
                   );
                 },
               );
