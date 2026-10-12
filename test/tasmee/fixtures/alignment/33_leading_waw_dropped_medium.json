@@ -1,0 +1,32 @@
+{
+ "name": "medium: a dropped leading waw (وإنهم read إنهم) is wrong",
+ "range": {
+  "verses": [
+   6,
+   28,
+   6,
+   28
+  ]
+ },
+ "options": {
+  "strictness": "medium"
+ },
+ "steps": [
+  {
+   "say": "بَلْ بَدَا لَهُمْ مَا كَانُوا يُخْفُونَ مِن قَبْلُ"
+  },
+  {
+   "say": "وَلَوْ رُدّوا لَعَادُوا لِمَا نُهُوا عَنْهُ إنهُمْ لَكَاذبون"
+  },
+  {
+   "finish": true
+  }
+ ],
+ "statuses": {
+  "6:28:15": "wrong",
+  "*": "correct"
+ },
+ "heard": {
+  "6:28:15": "إنهُمْ"
+ }
+}

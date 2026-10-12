@@ -12,10 +12,12 @@ enum MatchStrictness {
   /// One letter off in a word of five letters or more (a recogniser's slip
   /// on a long word); a short word must be exact. يعلمون / تعلمون (six
   /// letters, one apart) passes here, so a reader who wants such slips
-  /// caught chooses [strict].
+  /// caught chooses [strict]. A leading و، ف، ب or ال dropped or added
+  /// ([differsByLeadingPrefix]) is an error here all the same.
   medium(0.8),
 
-  /// About one letter in three off.
+  /// About one letter in three off; a leading و، ف، ب or ال dropped or
+  /// added is only doubtful.
   lenient(0.65);
 
   const MatchStrictness(this.threshold);
@@ -54,4 +56,25 @@ double wordSimilarity(String a, String b) {
   final longer = math.max(a.length, b.length);
   if (longer == 0) return 1;
   return 1 - editDistance(a, b) / longer;
+}
+
+/// The prefixes whose dropping or adding is a known error of memorisation
+/// (وإنهم / إنهم، فذوقوا / ذوقوا، العذاب / عذاب), as matching keys.
+const leadingPrefixes = ['و', 'ف', 'ب', 'ال'];
+
+/// Whether the matching keys [a] and [b] are the same word but for one
+/// leading [leadingPrefixes] that one of them has and the other has not,
+/// before at least two letters.
+bool differsByLeadingPrefix(String a, String b) {
+  if (a == b) return false;
+  final (longer, shorter) = a.length > b.length ? (a, b) : (b, a);
+  if (shorter.length < 2) return false;
+  for (final p in leadingPrefixes) {
+    if (longer.length == shorter.length + p.length &&
+        longer.startsWith(p) &&
+        longer.endsWith(shorter)) {
+      return true;
+    }
+  }
+  return false;
 }

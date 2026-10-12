@@ -423,7 +423,16 @@ class TasmeeEngine {
   double _similarity(String key, int index) {
     var best = 0.0;
     for (final k in words[index].keys) {
-      best = math.max(best, wordSimilarity(key, k));
+      var s = wordSimilarity(key, k);
+      // A leading و، ف، ب or ال dropped or added is a known error of
+      // memorisation (وإنهم read إنهم), not a recogniser's slip: below the
+      // lenient setting it is no match.
+      if (s < 1 &&
+          options.strictness != MatchStrictness.lenient &&
+          differsByLeadingPrefix(key, k)) {
+        s = math.min(s, _threshold - 0.01);
+      }
+      best = math.max(best, s);
     }
     return best;
   }
