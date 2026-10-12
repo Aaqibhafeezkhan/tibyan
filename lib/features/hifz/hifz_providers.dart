@@ -16,6 +16,7 @@ import '../khatma/domain/khatmah.dart';
 import '../khatma/khatma_providers.dart' show quranIndexProvider;
 import 'domain/hifz_goal.dart';
 import 'domain/hifz_progress.dart';
+import 'domain/recitation_record.dart' show isMastered;
 import 'domain/fsrs.dart';
 import 'domain/recitation_test.dart';
 import 'domain/strength.dart';
@@ -284,4 +285,18 @@ final goalStatusesProvider = FutureProvider<List<(HifzGoalRow, GoalStatus)>>((
       if (r.status != KhatmahStatus.cancelled.name)
         (r, GoalStatus.of(goalOf(r), mastered, index, today)),
   ];
+});
+
+/// The home card's numbers, light enough for the home screen: verses
+/// memorized (with a strength) and verses whose last recitation was
+/// mastered.
+typedef Journey = ({int memorized, int mastered});
+
+final journeyProvider = Provider<Journey>((ref) {
+  final strengths = ref.watch(verseStrengthsProvider).value ?? const {};
+  final latest = ref.watch(verseLatestProvider).value ?? const {};
+  return (
+    memorized: strengths.length,
+    mastered: latest.values.where((v) => isMastered(v.accuracy)).length,
+  );
 });

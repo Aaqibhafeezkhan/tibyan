@@ -152,6 +152,7 @@ class HomeScreen extends ConsumerWidget {
             ),
           )
         : null;
+    final journey = _JourneyCard(progress: ref.watch(journeyProvider));
 
     return LookScaffold(
       selected: RailItem.home,
@@ -188,6 +189,8 @@ class HomeScreen extends ConsumerWidget {
                                   const SizedBox(height: 16),
                                   today,
                                 ],
+                                const SizedBox(height: 16),
+                                journey,
                               ],
                             ),
                           ),
@@ -211,6 +214,8 @@ class HomeScreen extends ConsumerWidget {
                     const SizedBox(height: 12),
                     hero,
                     if (today != null) ...[const SizedBox(height: 16), today],
+                    const SizedBox(height: 16),
+                    journey,
                     const SizedBox(height: 24),
                     grid,
                   ],
@@ -497,6 +502,37 @@ class _ContinueCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// «محفوظ ١٢٠ آية، منها ٨٠ متقنة», or how to begin.
+String journeyLine(BuildContext context, Journey p) {
+  final l = AppLocalizations.of(context);
+  final digits = NumberFormatter(Localizations.localeOf(context));
+  if (p.memorized == 0) return l.hifzJourneyEmpty;
+  return l.hifzJourneyLine(digits(p.memorized), digits(p.mastered));
+}
+
+/// «مسيرة الحفظ»: memorized and mastered verses, beside the khatma's card.
+/// A calm share, no streaks or levels.
+class _JourneyCard extends StatelessWidget {
+  const _JourneyCard({required this.progress});
+
+  final Journey progress;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final p = progress;
+    final digits = NumberFormatter(Localizations.localeOf(context));
+    final share = p.memorized == 0 ? 0.0 : p.mastered / p.memorized;
+    return _TodayCard(
+      title: l.hifzJourney,
+      detail: journeyLine(context, p),
+      done: share,
+      percent: digits((share * 100).round()),
+      onTap: () => context.push('/hifz?tab=progress'),
     );
   }
 }
@@ -809,6 +845,13 @@ class _ElderlyHome extends ConsumerWidget {
                     },
                   ),
                 ],
+                const SizedBox(height: 16),
+                _BigAction(
+                  icon: Icons.task_alt_outlined,
+                  label: l.hifzJourney,
+                  detail: journeyLine(context, ref.watch(journeyProvider)),
+                  onTap: () => context.push('/hifz?tab=progress'),
+                ),
                 const SizedBox(height: 16),
                 _BigAction(
                   icon: Icons.headphones_outlined,
