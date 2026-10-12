@@ -121,3 +121,4 @@ server*.local*
 # ── Apps to analyze ────────────────────────────────────────────────────
 /to-analyze
 to-analyze
+/train/
