@@ -49,8 +49,9 @@ Future<void> main() async {
       for (final t in timings) {
         // ignore: avoid_print
         print(
-          'PROF ui=${t.buildDuration.inMilliseconds} '
-          'raster=${t.rasterDuration.inMilliseconds}',
+          'PROF ui=${t.buildDuration.inMicroseconds} '
+          'raster=${t.rasterDuration.inMicroseconds} '
+          'total=${t.totalSpan.inMicroseconds}',
         );
       }
     });
