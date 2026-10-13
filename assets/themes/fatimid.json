@@ -146,7 +146,7 @@
   "modes": {
     "light": {
       "bg": "#EEF2EE",
-      "paper": "#FEFCF5",
+      "paper": "#F8F2E2",
       "ink": "#15261F",
       "frame": "#0E5847",
       "goldText": "#0E5847",

@@ -35,7 +35,7 @@
   "modes": {
     "light": {
       "bg": "#F7F7F8",
-      "paper": "#FFFFFF",
+      "paper": "#F8F3E8",
       "ink": "#1A1A1A",
       "frame": "#2B2B2B",
       "goldText": "#3F4A5A",
@@ -47,7 +47,7 @@
       "playerFg": "#FFFFFF",
       "accent": "#F3F4F6",
       "accentFg": "#111827",
-      "muted": "#6B7280",
+      "muted": "#636A76",
       "highlight": "#6B728033",
       "control": "#111827",
       "onControl": "#FFFFFF"

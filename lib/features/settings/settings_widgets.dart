@@ -75,7 +75,11 @@ class InterfaceStylePicker extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: _StyleSwatch(
                       key: ValueKey('interfaceStyle.${style.name}'),
-                      preview: UiLook.of(style, night: look.night),
+                      preview: UiLook.of(
+                        style,
+                        night: look.night,
+                        white: look.isWhite,
+                      ),
                       name: names[style]!,
                       selected: style == chosen,
                       onTap: () => ref

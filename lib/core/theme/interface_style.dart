@@ -105,20 +105,25 @@ class UiLook extends ThemeExtension<UiLook> {
   bool get isHandasi => style == InterfaceStyle.handasi;
   bool get isLayli => style == InterfaceStyle.layli;
 
+  /// «أبيض زاهي»: the light look on pure white grounds.
+  bool get isWhite => !night && bg == _white;
+
   /// Smallest touch target.
   double get target => elderly ? 56 : 48;
 
-  /// The look of [style]; [night] for the night and black modes.
+  /// The look of [style]; [night] for the night and black modes, [white]
+  /// for «أبيض زاهي» (pure white grounds instead of the cream paper).
   factory UiLook.of(
     InterfaceStyle style, {
     required bool night,
+    bool white = false,
     bool elderly = false,
   }) {
-    final base = _palette(style, night);
+    final base = _palette(style, night, white && !night);
     return elderly ? base._strong() : base;
   }
 
-  static UiLook _palette(InterfaceStyle style, bool night) {
+  static UiLook _palette(InterfaceStyle style, bool night, bool white) {
     switch (style) {
       case InterfaceStyle.makhtuta:
         return night
@@ -142,6 +147,7 @@ class UiLook extends ThemeExtension<UiLook> {
             : _make(
                 style,
                 night,
+                white: white,
                 bg: const Color(0xFFEFE2CB),
                 surface: const Color(0xFFF7EDDE),
                 row: const Color(0xFFF7EDDE),
@@ -178,6 +184,7 @@ class UiLook extends ThemeExtension<UiLook> {
             : _make(
                 style,
                 night,
+                white: white,
                 bg: const Color(0xFFF6F1E8),
                 surface: const Color(0xFFFFFCF6),
                 row: const Color(0xFFFFFCF6),
@@ -214,6 +221,7 @@ class UiLook extends ThemeExtension<UiLook> {
             : _make(
                 style,
                 night,
+                white: white,
                 bg: const Color(0xFFF8F1E1),
                 surface: const Color(0xFFFFFAEE),
                 row: const Color(0xFFFFFAEE),
@@ -247,7 +255,13 @@ class UiLook extends ThemeExtension<UiLook> {
     required Color control,
     required String? head,
     required double radius,
+    bool white = false,
   }) {
+    if (white) {
+      // «أبيض زاهي»: pure white grounds and neutral hairlines, no cream.
+      bg = surface = row = _white;
+      if (onFrame.computeLuminance() > .8) onFrame = _white;
+    }
     final grounds = [bg, surface, row];
     return UiLook(
       style: style,
@@ -265,13 +279,17 @@ class UiLook extends ThemeExtension<UiLook> {
       onFrame: onFrame,
       control: control,
       onControl: strongPair(control, night ? bg : surface, 4.5).$2,
-      line: style == InterfaceStyle.handasi
+      line: white
+          ? Color.alphaBlend(const Color(0x29000000), _white)
+          : style == InterfaceStyle.handasi
           ? Color.alphaBlend(ink.withValues(alpha: .10), surface)
           : Color.alphaBlend(gold.withValues(alpha: .55), surface),
       headFont: head,
       radius: radius,
     );
   }
+
+  static const _white = Color(0xFFFFFFFF);
 
   /// Elderly mode: text 7:1, hairlines 3:1, controls 4.5:1.
   UiLook _strong() {

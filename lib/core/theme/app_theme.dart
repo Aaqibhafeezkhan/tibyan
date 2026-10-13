@@ -145,6 +145,7 @@ ThemeData buildTheme({
   final look = UiLook.of(
     interfaceStyle,
     night: !mode.isLight,
+    white: mode == ThemeModeId.white,
     elderly: elderly,
   );
   final base0 = style.modes[mode]!;
