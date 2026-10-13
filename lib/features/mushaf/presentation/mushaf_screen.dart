@@ -59,6 +59,7 @@ import '../../sajdah/sajdah_positions.dart';
 import '../mushaf_providers.dart';
 import 'download_screen.dart';
 import 'page_spreads.dart';
+import 'widgets/page_turn_effect.dart';
 import 'widgets/art_frame.dart';
 import 'widgets/fasil_sheet.dart';
 import 'widgets/go_to_page.dart';
@@ -1170,33 +1171,41 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                                                               true,
                                                           onPageChanged:
                                                               _onPageChanged,
-                                                          itemBuilder: (context, i) {
-                                                            final pages =
-                                                                _pagesAt(i);
-                                                            if (pages.length ==
-                                                                1) {
-                                                              return pageOf(
-                                                                pages.single,
+                                                          itemBuilder: (context, i) => PageTurnEffect(
+                                                            controller:
+                                                                _controller,
+                                                            index: i,
+                                                            effect: settings
+                                                                .pageTurn,
+                                                            child: () {
+                                                              final pages =
+                                                                  _pagesAt(i);
+                                                              if (pages
+                                                                      .length ==
+                                                                  1) {
+                                                                return pageOf(
+                                                                  pages.single,
+                                                                );
+                                                              }
+                                                              // Right page first: the mushaf opens
+                                                              // from the right.
+                                                              return Row(
+                                                                textDirection:
+                                                                    TextDirection
+                                                                        .rtl,
+                                                                children: [
+                                                                  for (final pg
+                                                                      in pages)
+                                                                    Expanded(
+                                                                      child:
+                                                                          pageOf(
+                                                                            pg,
+                                                                          ),
+                                                                    ),
+                                                                ],
                                                               );
-                                                            }
-                                                            // Right page first: the mushaf opens
-                                                            // from the right.
-                                                            return Row(
-                                                              textDirection:
-                                                                  TextDirection
-                                                                      .rtl,
-                                                              children: [
-                                                                for (final pg
-                                                                    in pages)
-                                                                  Expanded(
-                                                                    child:
-                                                                        pageOf(
-                                                                          pg,
-                                                                        ),
-                                                                  ),
-                                                              ],
-                                                            );
-                                                          },
+                                                            }(),
+                                                          ),
                                                         ),
                                                       ),
                                                     );

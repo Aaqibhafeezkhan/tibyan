@@ -408,6 +408,46 @@ class SajdahTimerCard extends ConsumerWidget {
 
 /// «شكل المشغل»: how the player over the mushaf looks, with focus mode on
 /// or off.
+/// «تأثير قلب الصفحة»: how the mushaf turns a page.
+class PageTurnCard extends ConsumerWidget {
+  const PageTurnCard({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
+    final muted = TextStyle(color: context.look.sub);
+    return RadioGroup<PageTurn>(
+      groupValue: ref.watch(settingsProvider.select((s) => s.pageTurn)),
+      onChanged: (v) =>
+          v == null ? null : ref.read(settingsProvider.notifier).setPageTurn(v),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+            child: Text(
+              l.pageTurnLabel,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          for (final (v, name, hint) in [
+            (PageTurn.normal, l.pageTurnNormal, l.pageTurnNormalHint),
+            (PageTurn.curl, l.pageTurnCurl, l.pageTurnCurlHint),
+            (PageTurn.bend, l.pageTurnBend, l.pageTurnBendHint),
+            (PageTurn.fold, l.pageTurnFold, l.pageTurnFoldHint),
+            (PageTurn.fade, l.pageTurnFade, l.pageTurnFadeHint),
+          ])
+            RadioListTile(
+              value: v,
+              title: Text(name),
+              subtitle: Text(hint, style: muted),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 class PlayerStyleCard extends ConsumerWidget {
   const PlayerStyleCard({super.key});
 
