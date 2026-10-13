@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/recitation_recognizer.dart';
+import 'background_model_download.dart';
 import 'model_auto_updater.dart';
 import 'model_downloader.dart';
 import 'model_manifest.dart';
@@ -51,7 +53,11 @@ class _Capture implements TasmeeMicrophone {
 /// What the tasmee screens need from the device: the model on disk, its
 /// download, the recogniser and the microphone. Tests replace it.
 class TasmeeBackend {
-  const TasmeeBackend();
+  const TasmeeBackend({this.background});
+
+  /// The system's background download of the model, or null to fetch it
+  /// in the app (tests).
+  final BackgroundModelDownload? background;
 
   Future<ModelStore> _store() => modelStore();
 
@@ -75,12 +81,25 @@ class TasmeeBackend {
     }
   }
 
+  /// The model downloading in the background (running, paused or failed),
+  /// for a sheet opened again to follow it; null when none.
+  ModelManifest? activeDownload() => background?.active;
+
+  /// Bumped when a background download installs a model.
+  ValueListenable<int>? get installs => background?.installs;
+
   /// Downloads [manifest] (resumable) and removes models no longer used.
+  /// With [background], the system runs it: it goes on when the sheet
+  /// closes or the app leaves, and shows in the Downloads screen.
   Future<InstalledModel> download(
     ModelManifest manifest, {
     required void Function(ModelDownloadProgress progress) onProgress,
     required ModelDownloadCancel cancel,
   }) async {
+    final bg = background;
+    if (bg != null) {
+      return bg.download(manifest, onProgress: onProgress, cancel: cancel);
+    }
     final store = await _store();
     final downloader = ModelDownloader(store: store);
     try {
@@ -132,7 +151,8 @@ class TasmeeBackend {
 }
 
 final tasmeeBackendProvider = Provider<TasmeeBackend>(
-  (ref) => const TasmeeBackend(),
+  (ref) =>
+      TasmeeBackend(background: ref.watch(backgroundModelDownloadProvider)),
 );
 
 /// The recognition model on the device (for About › Sources), or null.

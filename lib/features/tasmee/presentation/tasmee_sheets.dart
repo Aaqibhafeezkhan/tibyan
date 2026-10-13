@@ -160,15 +160,19 @@ class _ModelSheetState extends State<ModelSheet> {
   @override
   void initState() {
     super.initState();
-    _manifest = widget.update;
+    // A download already running in the background: follow it.
+    final running = widget.backend.activeDownload();
+    _manifest = widget.update ?? running;
     if (_manifest == null) unawaited(_fetch());
+    if (running != null && running.version == _manifest?.version) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) unawaited(_download());
+      });
+    }
   }
 
-  @override
-  void dispose() {
-    _cancel?.cancel();
-    super.dispose();
-  }
+  // Closing the sheet leaves the download running in the background (it
+  // shows in the Downloads screen); only «cancel» stops it.
 
   Future<void> _fetch() async {
     setState(() => _error = null);

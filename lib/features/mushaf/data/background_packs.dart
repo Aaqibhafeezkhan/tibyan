@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:background_downloader/background_downloader.dart';
 
+import '../../../core/downloads/background_downloads.dart';
 import '../../books/data/book_pack.dart';
 import '../../content_extras/english_tafsir.dart';
 import 'page_pack.dart';
@@ -25,19 +26,22 @@ PagePackSpec? downloadablePackSpec(String id) {
 /// on Android, a background URLSession on iOS), so a download goes on when
 /// the reader leaves the app, with a notification while it runs and when
 /// it ends. The app checks and installs a finished pack when it next runs.
-class BackgroundPacks {
-  BackgroundPacks({required this.root, FileDownloader? downloader})
-    : _dl = downloader ?? FileDownloader();
+class BackgroundPacks implements DownloadHandler {
+  BackgroundPacks({required this.root, required BackgroundDownloads downloads})
+    : _downloads = downloads,
+      _dl = downloads.dl {
+    downloads.register(this);
+  }
 
-  static const group = 'packs';
+  static const kGroup = 'packs';
 
   /// Where packs are installed (same as [PagePackInstaller.root]).
   final Directory root;
+  final BackgroundDownloads _downloads;
   final FileDownloader _dl;
 
   final _progress = StreamController<(String, PackProgress)>.broadcast();
   final _installing = <String>{};
-  StreamSubscription<TaskUpdate>? _sub;
 
   /// Progress of each pack, keyed by pack id.
   Stream<(String, PackProgress)> get progress => _progress.stream;
@@ -51,28 +55,24 @@ class BackgroundPacks {
     paused: 'التحميل متوقف مؤقتا',
   );
 
-  /// Starts tracking: call once at startup. Packs that finished while the
-  /// app was closed are installed now.
-  Future<void> start() async {
-    _dl
-      ..configureNotificationForGroup(
-        group,
-        running: TaskNotification(texts.running, '{displayName}'),
-        complete: TaskNotification(texts.complete, '{displayName}'),
-        error: TaskNotification(texts.error, '{displayName}'),
-        paused: TaskNotification(texts.paused, '{displayName}'),
-        progressBar: true,
-      )
-      // Android before 14: a foreground service lifts the 9-minute limit.
-      ..configure(androidConfig: [(Config.runInForeground, Config.always)]);
-    _sub ??= _dl.updates.listen(_onUpdate);
-    await _dl.start();
-    for (final r in await _dl.database.allRecords(group: group)) {
-      if (r.status == TaskStatus.complete && r.task is DownloadTask) {
-        await _install(r.task as DownloadTask);
-      }
-    }
-  }
+  @override
+  String get group => kGroup;
+
+  @override
+  get notifications => (
+    running: TaskNotification(texts.running, '{displayName}'),
+    complete: TaskNotification(texts.complete, '{displayName}'),
+    error: TaskNotification(texts.error, '{displayName}'),
+    paused: TaskNotification(texts.paused, '{displayName}'),
+    groupNotificationId: '',
+  );
+
+  /// Starts the app's background downloads (see [BackgroundDownloads.start]):
+  /// packs that finished while the app was closed are installed now.
+  Future<void> start() => _downloads.start();
+
+  @override
+  Future<void> onFinishedWhileAway(DownloadTask task) => _install(task);
 
   PagePackSpec? _spec(String id) => downloadablePackSpec(id);
 
@@ -92,13 +92,7 @@ class BackgroundPacks {
       if (existing is DownloadTask) await _dl.resume(existing);
       return;
     }
-    await _dl.enqueue(_task(spec, displayName, 0));
-    // Ask for notifications without holding the download on the answer.
-    unawaited(
-      _dl.permissions
-          .request(PermissionType.notifications)
-          .catchError((_) => PermissionStatus.denied),
-    );
+    await _downloads.enqueue(_task(spec, displayName, 0));
   }
 
   DownloadTask _task(PagePackSpec spec, String displayName, int source) =>
@@ -108,7 +102,7 @@ class BackgroundPacks {
         filename: '${spec.id}.zip',
         directory: 'pack-downloads',
         baseDirectory: BaseDirectory.applicationSupport,
-        group: group,
+        group: kGroup,
         updates: Updates.statusAndProgress,
         allowPause: true,
         retries: 3,
@@ -153,7 +147,8 @@ class BackgroundPacks {
     };
   }
 
-  Future<void> _onUpdate(TaskUpdate update) async {
+  @override
+  Future<void> onUpdate(TaskUpdate update) async {
     final task = update.task;
     if (task.group != group || task is! DownloadTask) return;
     final spec = _spec(task.taskId);
@@ -177,7 +172,7 @@ class BackgroundPacks {
             // Try the next source, if there is one.
             final next = (int.tryParse(task.metaData) ?? 0) + 1;
             if (next <= spec.fallbacks.length) {
-              await _dl.enqueue(_task(spec, task.displayName, next));
+              await _downloads.enqueue(_task(spec, task.displayName, next));
             } else {
               _progress.add((
                 spec.id,
@@ -208,10 +203,10 @@ class BackgroundPacks {
         _progress.add((spec.id, const PackProgress(PackPhase.verifying)));
         await installer.installFrom(file);
       }
-      await _dl.database.deleteRecordWithId(spec.id);
+      await _downloads.forget(spec.id);
       _progress.add((spec.id, const PackProgress(PackPhase.installed)));
     } catch (e) {
-      await _dl.database.deleteRecordWithId(spec.id);
+      await _downloads.forget(spec.id);
       _progress.add((spec.id, PackProgress(PackPhase.failed, error: '$e')));
     } finally {
       _installing.remove(spec.id);

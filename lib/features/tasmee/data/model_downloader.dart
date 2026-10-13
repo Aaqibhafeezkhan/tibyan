@@ -38,8 +38,19 @@ class ModelDownloadProgress {
 /// the next [ModelDownloader.download] resumes where this one stopped.
 class ModelDownloadCancel {
   bool _cancelled = false;
+  final _listeners = <void Function()>[];
   bool get isCancelled => _cancelled;
-  void cancel() => _cancelled = true;
+
+  /// Called once on [cancel] (a background download cancels its tasks).
+  void onCancel(void Function() listener) => _listeners.add(listener);
+
+  void cancel() {
+    if (_cancelled) return;
+    _cancelled = true;
+    for (final l in _listeners) {
+      l();
+    }
+  }
 }
 
 class ModelDownloadException implements Exception {
@@ -156,6 +167,15 @@ class ModelDownloader {
       finished += spec.bytes;
     }
     return store.markInstalled(manifest);
+  }
+
+  /// Whether [file] is exactly [spec]: its size and SHA-256.
+  static Future<bool> matches(File file, ModelFileSpec spec) async {
+    if (!await file.exists() || await file.length() != spec.bytes) {
+      return false;
+    }
+    final digest = await sha256.bind(file.openRead()).first;
+    return digest.toString() == spec.sha256;
   }
 
   Future<void> _fetch(

@@ -11,6 +11,7 @@ import '../../../l10n/app_localizations.dart';
 import '../data/page_pack.dart';
 import '../mushaf_providers.dart';
 import 'widgets/illuminated_frame.dart';
+import 'background_downloads_list.dart';
 
 /// Every edition's download at once, each with its own progress, after
 /// «download all». The downloads go on when the reader leaves.
@@ -68,6 +69,9 @@ class DownloadAllScreen extends ConsumerWidget {
                       _EditionRow(edition: e),
                       const SizedBox(height: 10),
                     ],
+                    // The other downloads the system runs: the recognition
+                    // model and recitations.
+                    const BackgroundDownloadsList(),
                     if (done < editions.length) ...[
                       const SizedBox(height: 6),
                       Text(

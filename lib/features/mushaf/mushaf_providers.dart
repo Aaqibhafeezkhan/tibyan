@@ -11,6 +11,7 @@ import '../../core/db/content_database.dart';
 import '../../core/settings/app_settings.dart';
 import '../../core/settings/settings_controller.dart';
 import '../../core/db/user_database.dart';
+import '../../core/downloads/background_downloads.dart';
 import '../../l10n/app_localizations.dart';
 import '../audio/timing_updates.dart';
 import 'data/background_packs.dart';
@@ -247,7 +248,10 @@ final pagesInstalledProvider = Provider<bool>((ref) {
 
 /// System-managed pack downloads (they go on in the background).
 final backgroundPacksProvider = Provider<BackgroundPacks>(
-  (ref) => BackgroundPacks(root: ref.watch(packsDirProvider)),
+  (ref) => BackgroundPacks(
+    root: ref.watch(packsDirProvider),
+    downloads: ref.watch(backgroundDownloadsProvider),
+  ),
 );
 
 /// An edition's name in the interface language, for notifications.

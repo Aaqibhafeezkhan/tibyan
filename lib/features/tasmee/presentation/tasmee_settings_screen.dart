@@ -23,6 +23,13 @@ import 'tasmee_style.dart';
 final tasmeeModelInfoProvider =
     FutureProvider.autoDispose<(InstalledModel?, int)>((ref) async {
       final backend = ref.watch(tasmeeBackendProvider);
+      // A background download that lands while this is shown.
+      final installs = backend.installs;
+      if (installs != null) {
+        void changed() => ref.invalidateSelf();
+        installs.addListener(changed);
+        ref.onDispose(() => installs.removeListener(changed));
+      }
       return (await backend.installedModel(), await backend.usedBytes());
     });
 

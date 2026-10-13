@@ -24,6 +24,7 @@ import 'core/flags/feature_flags.dart';
 import 'core/router/app_router.dart';
 import 'core/settings/settings_controller.dart';
 import 'core/theme/theme_registry.dart';
+import 'features/audio/background_recitations.dart';
 import 'features/audio/car_browser.dart';
 import 'features/audio/car_channel.dart';
 import 'features/audio/recitation.dart';
@@ -35,6 +36,7 @@ import 'features/mushaf/data/background_packs.dart';
 import 'features/mushaf/data/bundled_pack.dart';
 import 'features/mushaf/mushaf_providers.dart';
 import 'features/mushaf/presentation/navigation.dart';
+import 'features/tasmee/data/background_model_download.dart';
 import 'l10n/app_localizations.dart';
 
 Future<void> main() async {
@@ -119,6 +121,13 @@ Future<void> main() async {
     error: l.notifFailed,
     paused: l.notifPaused,
   );
+  BackgroundModelDownload.displayName = l.tasmeeModelTitle;
+  BackgroundRecitations.title = l.audioDownloads;
+  // Every kind of download registers before the start, so one that ended
+  // while the app was closed reaches its handler.
+  container
+    ..read(backgroundModelDownloadProvider)
+    ..read(backgroundRecitationsProvider);
   unawaited(
     container
         .read(backgroundPacksProvider)

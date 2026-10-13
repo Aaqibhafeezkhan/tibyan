@@ -55,7 +55,9 @@ class _OnboardingReciterScreenState
       onNext: reciter == null || downloading
           ? _next
           : () {
-              ref.read(fullMushafAudioProvider.notifier).start(reciter);
+              ref
+                  .read(fullMushafAudioProvider.notifier)
+                  .start(reciter, displayName: reciterLabel(context, reciter));
               _next();
             },
       secondary: downloading

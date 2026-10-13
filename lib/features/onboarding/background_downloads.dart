@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/db/content_database.dart';
+import '../../core/downloads/background_downloads.dart';
+import '../audio/background_recitations.dart';
 import '../audio/recitation.dart';
 import '../tasmee/data/model_downloader.dart';
 import '../tasmee/data/model_manifest.dart';
@@ -33,39 +35,56 @@ final fullMushafAudioProvider =
       FullMushafAudioDownload.new,
     );
 
+/// Queued on the system's background downloader ([BackgroundRecitations]),
+/// so it goes on when the reader leaves the app and shows in the
+/// Downloads screen; this follows how many surahs are on the device.
 class FullMushafAudioDownload extends Notifier<FullMushafAudio?> {
-  @override
-  FullMushafAudio? build() => null;
+  int? _reciter;
 
-  /// Starts [reciter]'s download unless it is already running.
-  void start(ReciterRow reciter) {
-    if (state?.running == true && state!.reciterId == reciter.id) return;
-    unawaited(_run(reciter));
+  @override
+  FullMushafAudio? build() {
+    final bg = ref.watch(backgroundRecitationsProvider);
+    final downloads = ref.watch(backgroundDownloadsProvider);
+    void changed() => _refresh(bg);
+    bg.files.changes.addListener(changed);
+    downloads.tasks.addListener(changed);
+    ref.onDispose(() {
+      bg.files.changes.removeListener(changed);
+      downloads.tasks.removeListener(changed);
+    });
+    return null;
   }
 
-  Future<void> _run(ReciterRow r) async {
-    final files = ref.read(audioFilesProvider);
-    var done = 0;
-    for (var s = 1; s <= 114; s++) {
-      if (files.has(r.id, s)) {
-        done++;
-        continue;
-      }
-      state = FullMushafAudio(reciterId: r.id, done: done);
-      try {
-        await files.download(
-          r,
-          s,
-          client: ref.read(audioHttpClientProvider),
-          urls: ref.read(audioHostsProvider.notifier).urls(r, s),
-        );
-        done++;
-      } catch (_) {
-        // A surah that fails is fetched again when it is played.
-      }
-      if (!ref.mounted) return;
+  void _refresh(BackgroundRecitations bg) {
+    final id = _reciter;
+    if (id == null || !ref.mounted) return;
+    final done = bg.files.downloaded(id).length;
+    var running = false;
+    for (var s = 1; s <= 114 && !running; s++) {
+      running = bg.queued(id, s);
     }
-    state = FullMushafAudio(reciterId: r.id, done: done, running: false);
+    state = FullMushafAudio(reciterId: id, done: done, running: running);
+  }
+
+  /// Queues [reciter]'s whole mushaf unless it is already queued.
+  void start(ReciterRow reciter, {String? displayName}) {
+    if (state?.running == true && state!.reciterId == reciter.id) return;
+    _reciter = reciter.id;
+    final bg = ref.read(backgroundRecitationsProvider);
+    final hosts = ref.read(audioHostsProvider.notifier);
+    state = FullMushafAudio(
+      reciterId: reciter.id,
+      done: bg.files.downloaded(reciter.id).length,
+    );
+    unawaited(
+      bg
+          .enqueueAll(
+            reciter,
+            urls: (s) => hosts.urls(reciter, s),
+            displayName: displayName ?? reciter.nameAr,
+          )
+          .then((_) => _refresh(bg), onError: (_) => _refresh(bg)),
+    );
   }
 }
 
