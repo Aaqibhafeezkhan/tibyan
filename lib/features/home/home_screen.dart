@@ -99,7 +99,7 @@ class HomeScreen extends ConsumerWidget {
       (
         icon: assistantIcon,
         label: l.assistantTitle,
-        note: l.tajweedMarksTitle,
+        note: l.assistantTileNote,
         onTap: () => context.push(assistantLocation),
       ),
     ];

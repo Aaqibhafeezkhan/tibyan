@@ -217,6 +217,17 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('home: the assistant tile describes the help centre', (
+    tester,
+  ) async {
+    await pump(tester, const HomeScreen());
+    expect(find.text('دليل الاستخدام'), findsOneWidget);
+    expect(find.text('علامات التجويد'), findsNothing);
+    await pump(tester, const HomeScreen(), english: true);
+    expect(find.text('Help and how-to'), findsOneWidget);
+    expect(find.text('Tajweed marks'), findsNothing);
+  });
+
   for (final style in InterfaceStyle.values) {
     for (final night in [false, true]) {
       final tag = '${style.name} ${night ? 'night' : 'light'}';
