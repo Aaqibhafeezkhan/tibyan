@@ -8,7 +8,7 @@
   {% if flash %}<div class="success" role="status">{{ flash }}</div>{% endif %}
 
   <nav class="tabs" aria-label="{{ t('req_title') }}">
-    {% for key in ['contact', 'beta', 'notify', 'deletion'] %}
+    {% for key in ['contact', 'reports', 'beta', 'notify', 'deletion'] %}
       <a href="/admin/requests?tab={{ key }}"{% if tab == key %} aria-current="page"{% endif %}>
         {{ t('req_tab_' ~ key) }}{% if counts[key] %} <b class="count">{{ counts[key] }}</b>{% endif %}
       </a>
@@ -37,6 +37,35 @@
                 <button type="submit" class="btn small{% if s == 'replied' %} primary{% endif %}">{{ t('req_mark_' ~ s) }}</button>
               </form>
             {% endfor %}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+
+  {% elif tab == 'reports' %}
+    {% if not reports %}<p class="muted">{{ t('req_none') }}</p>{% endif %}
+    <ul class="req-cards">
+      {% for r in reports %}
+        {% set st = 'handled' if r.handled_at else 'open' %}
+        <li class="req-card state-{{ 'replied' if r.handled_at else 'unread' }}">
+          <div class="req-head">
+            <strong>{{ t('rep_type_' ~ r.type) }} #{{ r.id }}</strong>
+            <span class="pill pill-{{ 'replied' if r.handled_at else 'unread' }}">{{ t('rep_' ~ st) }}</span>
+          </div>
+          <div class="req-meta">
+            <span>{{ r.created_at.strftime('%Y-%m-%d %H:%M') if r.created_at else '' }}</span>
+            {% if r.app_version or r.platform %} · <span class="ltr">{{ r.app_version or '' }} {{ r.platform or '' }} {{ r.os_version or '' }}</span>{% endif %}
+            {% if r.email %} · <span class="ltr">{{ r.email }}</span>{% endif %}
+            {% if r.phone %} · <span class="ltr">{{ r.phone }}</span>{% endif %}
+          </div>
+          <p class="msg-body">{{ r.description }}</p>
+          <div class="admin-actions wrap">
+            {% if r.email %}<a class="btn small" href="mailto:{{ r.email }}?subject={{ ('Re: Tibyan #' ~ r.id)|urlencode }}">{{ t('req_reply_email') }}</a>{% endif %}
+            <form method="post" action="/admin/requests/reports/{{ r.id }}">
+              <input type="hidden" name="csrf" value="{{ csrf }}">
+              <input type="hidden" name="state" value="{{ 'open' if r.handled_at else 'handled' }}">
+              <button type="submit" class="btn small{% if not r.handled_at %} primary{% endif %}">{{ t('rep_reopen' if r.handled_at else 'rep_mark_handled') }}</button>
+            </form>
           </div>
         </li>
       {% endfor %}

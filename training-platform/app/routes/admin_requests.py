@@ -12,13 +12,13 @@ from sqlalchemy.orm import Session
 from starlette.responses import RedirectResponse
 
 from ..deps import current_user, get_db
-from ..models import ContactMessage, DeletionRequest, NotifySignup, Recording, User
+from ..models import AppReport, ContactMessage, DeletionRequest, NotifySignup, Recording, User
 from ..push import utcnow
 from ..web import check_csrf, msg, render
 from .admin import require_admin
 
 router = APIRouter()
-TABS = ("contact", "beta", "notify", "deletion")
+TABS = ("contact", "reports", "beta", "notify", "deletion")
 LIMIT = 200
 
 
@@ -37,6 +37,7 @@ def requests_page(
         tab = "contact"
     counts = {
         "contact": db.query(ContactMessage).filter(ContactMessage.read_at.is_(None)).count(),
+        "reports": db.query(AppReport).filter(AppReport.handled_at.is_(None)).count(),
         "beta": db.query(NotifySignup)
         .filter(
             NotifySignup.wants_beta.is_(True),
@@ -51,6 +52,10 @@ def requests_page(
     if tab == "contact":
         context["messages"] = (
             db.query(ContactMessage).order_by(ContactMessage.id.desc()).limit(LIMIT).all()
+        )
+    elif tab == "reports":
+        context["reports"] = (
+            db.query(AppReport).order_by(AppReport.id.desc()).limit(LIMIT).all()
         )
     elif tab == "beta":
         context["signups"] = (
@@ -104,6 +109,22 @@ def contact_state(
             row.replied_at = None
         db.commit()
     return _back("contact")
+
+
+@router.post("/admin/requests/reports/{report_id}")
+def report_state(
+    report_id: int, request: Request, db: Session = Depends(get_db),
+    state: str = Form(""), csrf: str = Form(""),
+):
+    blocked = require_admin(request, db)
+    if blocked is not None:
+        return blocked
+    check_csrf(request, csrf)
+    row = db.get(AppReport, report_id)
+    if row is not None and state in ("handled", "open"):
+        row.handled_at = utcnow() if state == "handled" else None
+        db.commit()
+    return _back("reports")
 
 
 @router.post("/admin/requests/beta/{signup_id}")

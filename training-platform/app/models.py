@@ -276,3 +276,24 @@ class TrainingJobLog(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.current_timestamp()
     )
+
+
+class AppReport(Base):
+    """A bug report / problem / suggestion sent from the mobile app."""
+
+    __tablename__ = "app_reports"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    # bug | problem | suggestion | other
+    type: Mapped[str] = mapped_column(String(16))
+    description: Mapped[str] = mapped_column(Text)
+    phone: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)
+    email: Mapped[Optional[str]] = mapped_column(String(254), nullable=True)
+    app_version: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    platform: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    os_version: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    client_id: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    # SHA-256 of the client IP (with the secret key): rate limiting only.
+    ip_hash: Mapped[str] = mapped_column(String(64), index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, index=True)
+    handled_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
