@@ -75,6 +75,7 @@ dependencies:
   audio_service: ^0.18.18
   sherpa_onnx: ^1.13.8
   record: ^7.1.1
+  url_launcher: ^6.3.3
 
 dev_dependencies:
   flutter_test:

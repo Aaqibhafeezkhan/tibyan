@@ -495,6 +495,63 @@ void main() {
           );
           await save('settings_$tag', key);
         }
+
+        // ---- the training card at the end of the settings -----------------
+        Future<GlobalKey> trainCard({
+          required Size size,
+          ThemeModeId mode = ThemeModeId.light,
+          String lang = 'ar',
+          bool elderly = false,
+        }) async {
+          final (key, _, _, _) = await app(
+            size: size,
+            mode: mode,
+            lang: lang,
+            elderly: elderly,
+            home: (_) => const TasmeeSettingsScreen(),
+          );
+          final how = find.byKey(const ValueKey('tasmee-train-how'));
+          await tester.scrollUntilVisible(how, 300);
+          await tester.drag(find.byType(ListView), const Offset(0, -300));
+          await tester.pumpAndSettle();
+          await tester.tap(
+            find.descendant(of: how, matching: find.byType(ListTile)),
+          );
+          await tester.pumpAndSettle();
+          await tester.scrollUntilVisible(
+            find.byKey(const ValueKey('tasmee-train-open')),
+            300,
+          );
+          await tester.drag(find.byType(ListView), const Offset(0, -600));
+          await tester.pumpAndSettle();
+          return key;
+        }
+
+        for (final (mode, tag) in [
+          (ThemeModeId.light, 'light'),
+          (ThemeModeId.white, 'white'),
+          (ThemeModeId.night, 'night'),
+        ]) {
+          if (!wanted('train_$tag')) continue;
+          await save('train_$tag', await trainCard(size: phone, mode: mode));
+        }
+        if (style == defaultInterfaceStyle) {
+          if (wanted('train_elderly')) {
+            await save(
+              'train_elderly_light',
+              await trainCard(size: phone, elderly: true),
+            );
+          }
+          if (wanted('train_english')) {
+            await save(
+              'train_english_light',
+              await trainCard(size: phone, lang: 'en'),
+            );
+          }
+          if (wanted('train_laptop')) {
+            await save('train_laptop_light', await trainCard(size: laptop));
+          }
+        }
         if (style != defaultInterfaceStyle) continue;
 
         // ---- elderly, English, laptop -------------------------------------

@@ -2773,6 +2773,43 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tasmeeClearHistoryHint => 'آخر تسميع ونتيجته';
 
   @override
+  String get tasmeeTrainTitle => 'ساعدنا في تحسين النموذج وتدريبه بتسجيلاتك';
+
+  @override
+  String get tasmeeTrainBody =>
+      'على منصة «تدريب التسميع» تقرأ آيات من حفظك وتتبرّع بتسجيلك، ليتعلّم نموذج التسميع ويصبح أدق. المشاركة اختيارية بالكامل.';
+
+  @override
+  String get tasmeeTrainHowTitle => 'كيف تشارك؟';
+
+  @override
+  String get tasmeeTrainStep1 =>
+      'أنشئ حسابًا ببريدك الإلكتروني ووافق على شروط المشاركة.';
+
+  @override
+  String get tasmeeTrainStep2 =>
+      'اختر سورة ونطاق آيات، واقرأها من حفظك في الميكروفون. التسجيل الواحد حتى دقيقتين.';
+
+  @override
+  String get tasmeeTrainStep3 =>
+      'سجّل في مكان هادئ وقريبًا من الميكروفون، بوضوح وبسرعة مريحة. القراءة الصحيحة والخطأ المتعمّد كلاهما مطلوب للتدريب.';
+
+  @override
+  String get tasmeeTrainStep4 =>
+      'يراجع متطوعون تسجيلك قبل دخوله بيانات التدريب.';
+
+  @override
+  String get tasmeeTrainPrivacy =>
+      'الخصوصية: نطلب بريدك الإلكتروني وسنة ميلادك فقط، ومن هم دون ١٨ يحتاجون موافقة ولي الأمر. التسجيلات المقبولة تُشارك برخصة CC BY 4.0، والملفات الخام لا تُعرض للعامة، وتقدر تمسح تسجيلاتك في أي وقت.';
+
+  @override
+  String get tasmeeTrainOpen => 'افتح منصة التدريب';
+
+  @override
+  String get tasmeeTrainOpenFailed =>
+      'تعذّر فتح المتصفح. افتح train.altibyan.app يدويًا.';
+
+  @override
   String get tasmeeClose => 'إغلاق';
 
   @override

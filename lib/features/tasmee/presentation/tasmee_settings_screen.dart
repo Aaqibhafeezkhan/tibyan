@@ -18,6 +18,7 @@ import '../domain/tasmee_session_request.dart';
 import '../domain/word_match.dart';
 import 'tasmee_sheets.dart';
 import 'tasmee_style.dart';
+import 'tasmee_train_card.dart';
 
 /// The model on the device: installed or not, and the space it takes.
 final tasmeeModelInfoProvider =
@@ -277,6 +278,8 @@ class TasmeeSettingsScreen extends ConsumerWidget {
                       onTap: () => _clearHistory(context, ref),
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  const TasmeeTrainCard(),
                 ],
               ),
             ),

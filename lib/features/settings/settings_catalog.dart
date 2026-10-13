@@ -319,6 +319,16 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         ),
         keywords: 'نموذج التعرف الصوت تنزيل model speech download',
       ),
+      SettingEntry(
+        'tasmeeTrain',
+        (l) => l.tasmeeTrainTitle,
+        (c, r) => SettingsNavTile(
+          icon: Icons.volunteer_activism,
+          title: AppLocalizations.of(c).tasmeeTrainTitle,
+          onTap: () => c.push('/settings/tasmee'),
+        ),
+        keywords: 'تدريب تسجيلات ساهم مساهمة تطوع منصة train training recordings contribute volunteer',
+      ),
     ]),
   ],
   SettingsSection.khatma: [

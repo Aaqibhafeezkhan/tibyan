@@ -148,6 +148,13 @@ void main() {
     );
   });
 
+  test('the training card is found by its words', () {
+    for (final q in ['تدريب', 'تسجيلات', 'ساهم', 'training']) {
+      expect(searchSettings(q).map((h) => h.$2.id), contains('tasmeeTrain'));
+    }
+    expect(searchSettings('تدريب').first.$1, SettingsSection.hifz);
+  });
+
   test('«report a problem» lives in About, with the crash-reports switch', () {
     expect(searchSettings('إبلاغ').first.$2.id, 'reportProblem');
     expect(searchSettings('report problem').first.$2.id, 'reportProblem');

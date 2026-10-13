@@ -2732,6 +2732,44 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tasmeeClearHistoryHint => 'The last tasmee and its result';
 
   @override
+  String get tasmeeTrainTitle =>
+      'Help us improve and train the model with your recordings';
+
+  @override
+  String get tasmeeTrainBody =>
+      'On the «Tasmee training» platform you recite verses from memory and donate your recording, so the tasmee model learns and gets more accurate. Taking part is entirely optional.';
+
+  @override
+  String get tasmeeTrainHowTitle => 'How to take part?';
+
+  @override
+  String get tasmeeTrainStep1 =>
+      'Create an account with your email and accept the participation terms.';
+
+  @override
+  String get tasmeeTrainStep2 =>
+      'Pick a surah and a range of verses, and recite them from memory into the microphone. Each recording can be up to two minutes.';
+
+  @override
+  String get tasmeeTrainStep3 =>
+      'Record in a quiet place, close to the microphone, clearly and at a comfortable pace. Both correct recitations and deliberate mistakes are needed for training.';
+
+  @override
+  String get tasmeeTrainStep4 =>
+      'Volunteers review your recording before it joins the training data.';
+
+  @override
+  String get tasmeeTrainPrivacy =>
+      'Privacy: we ask only for your email and birth year; anyone under 18 needs parental consent. Accepted recordings are shared under CC BY 4.0, raw files are never public, and you can delete your recordings at any time.';
+
+  @override
+  String get tasmeeTrainOpen => 'Open the training platform';
+
+  @override
+  String get tasmeeTrainOpenFailed =>
+      'Couldn\'t open the browser. Open train.altibyan.app manually.';
+
+  @override
   String get tasmeeClose => 'Close';
 
   @override

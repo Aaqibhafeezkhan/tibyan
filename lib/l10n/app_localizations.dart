@@ -4615,6 +4615,66 @@ abstract class AppLocalizations {
   /// **'آخر تسميع ونتيجته'**
   String get tasmeeClearHistoryHint;
 
+  /// No description provided for @tasmeeTrainTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'ساعدنا في تحسين النموذج وتدريبه بتسجيلاتك'**
+  String get tasmeeTrainTitle;
+
+  /// No description provided for @tasmeeTrainBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'على منصة «تدريب التسميع» تقرأ آيات من حفظك وتتبرّع بتسجيلك، ليتعلّم نموذج التسميع ويصبح أدق. المشاركة اختيارية بالكامل.'**
+  String get tasmeeTrainBody;
+
+  /// No description provided for @tasmeeTrainHowTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'كيف تشارك؟'**
+  String get tasmeeTrainHowTitle;
+
+  /// No description provided for @tasmeeTrainStep1.
+  ///
+  /// In ar, this message translates to:
+  /// **'أنشئ حسابًا ببريدك الإلكتروني ووافق على شروط المشاركة.'**
+  String get tasmeeTrainStep1;
+
+  /// No description provided for @tasmeeTrainStep2.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر سورة ونطاق آيات، واقرأها من حفظك في الميكروفون. التسجيل الواحد حتى دقيقتين.'**
+  String get tasmeeTrainStep2;
+
+  /// No description provided for @tasmeeTrainStep3.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجّل في مكان هادئ وقريبًا من الميكروفون، بوضوح وبسرعة مريحة. القراءة الصحيحة والخطأ المتعمّد كلاهما مطلوب للتدريب.'**
+  String get tasmeeTrainStep3;
+
+  /// No description provided for @tasmeeTrainStep4.
+  ///
+  /// In ar, this message translates to:
+  /// **'يراجع متطوعون تسجيلك قبل دخوله بيانات التدريب.'**
+  String get tasmeeTrainStep4;
+
+  /// No description provided for @tasmeeTrainPrivacy.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخصوصية: نطلب بريدك الإلكتروني وسنة ميلادك فقط، ومن هم دون ١٨ يحتاجون موافقة ولي الأمر. التسجيلات المقبولة تُشارك برخصة CC BY 4.0، والملفات الخام لا تُعرض للعامة، وتقدر تمسح تسجيلاتك في أي وقت.'**
+  String get tasmeeTrainPrivacy;
+
+  /// No description provided for @tasmeeTrainOpen.
+  ///
+  /// In ar, this message translates to:
+  /// **'افتح منصة التدريب'**
+  String get tasmeeTrainOpen;
+
+  /// No description provided for @tasmeeTrainOpenFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر فتح المتصفح. افتح train.altibyan.app يدويًا.'**
+  String get tasmeeTrainOpenFailed;
+
   /// No description provided for @tasmeeClose.
   ///
   /// In ar, this message translates to:

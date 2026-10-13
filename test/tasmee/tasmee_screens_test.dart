@@ -21,6 +21,7 @@ import 'package:tibyan/features/tasmee/presentation/tasmee_page.dart';
 import 'package:tibyan/features/tasmee/presentation/tasmee_session_screen.dart';
 import 'package:tibyan/features/tasmee/presentation/tasmee_settings_screen.dart';
 import 'package:tibyan/features/tasmee/presentation/tasmee_setup_screen.dart';
+import 'package:tibyan/features/tasmee/presentation/tasmee_train_card.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
 import 'tasmee_fakes.dart';
@@ -365,6 +366,79 @@ void main() {
       await settle(tester);
       expect(b.downloads.single.version, '2');
       expect(b.deleted, 0);
+    });
+  });
+
+  group('training card', () {
+    testWidgets('closes the tasmee settings and explains the platform', (
+      tester,
+    ) async {
+      await pumpScreen(tester, (_) => const TasmeeSettingsScreen());
+      final card = find.byKey(const ValueKey('tasmee-train-card'));
+      await tester.scrollUntilVisible(card, 300);
+      await tester.pumpAndSettle();
+      expect(
+        find.text('ساعدنا في تحسين النموذج وتدريبه بتسجيلاتك'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('الخصوصية:'), findsOneWidget);
+      // The steps open on demand.
+      expect(find.textContaining('أنشئ حسابًا'), findsNothing);
+      await tester.tap(find.text('كيف تشارك؟'));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('أنشئ حسابًا ببريدك'), findsOneWidget);
+      expect(find.text('٤'), findsOneWidget);
+    });
+
+    for (final (lang, elderly, size, mode) in [
+      ('ar', true, const Size(360, 740), ThemeModeId.night),
+      ('en', false, const Size(1440, 900), ThemeModeId.white),
+    ]) {
+      testWidgets('opens train.altibyan.app ($lang, elderly: $elderly)', (
+        tester,
+      ) async {
+        final opened = <Uri>[];
+        await pumpScreen(
+          tester,
+          (_) => Scaffold(
+            body: ListView(
+              children: [
+                TasmeeTrainCard(
+                  open: (u) async {
+                    opened.add(u);
+                    return true;
+                  },
+                ),
+              ],
+            ),
+          ),
+          lang: lang,
+          elderly: elderly,
+          size: size,
+          mode: mode,
+        );
+        await tester.tap(find.byKey(const ValueKey('tasmee-train-how')));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+        final button = find.byKey(const ValueKey('tasmee-train-open'));
+        await tester.ensureVisible(button);
+        await tester.pumpAndSettle();
+        await tester.tap(button);
+        await tester.pump();
+        expect(opened, [Uri.parse('https://train.altibyan.app')]);
+      });
+    }
+
+    testWidgets('says so when the browser does not open', (tester) async {
+      await pumpScreen(
+        tester,
+        (_) => Scaffold(
+          body: ListView(children: [TasmeeTrainCard(open: (_) async => false)]),
+        ),
+      );
+      await tester.tap(find.byKey(const ValueKey('tasmee-train-open')));
+      await tester.pump();
+      expect(find.textContaining('تعذّر فتح المتصفح'), findsOneWidget);
     });
   });
 
