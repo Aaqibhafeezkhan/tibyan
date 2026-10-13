@@ -2551,7 +2551,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get assistantTitle => 'Assistant';
 
   @override
-  String get assistantIntro => 'Helpers for your reading, one card for each.';
+  String get assistantIntro => 'Help with using the app and the mushaf';
 
   @override
   String get tajweedMarksTitle => 'Tajweed marks';
@@ -3699,7 +3699,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSectionAssistant => 'Assistant';
 
   @override
-  String get settingsSectionAssistantHint => 'Reading tools and tajweed marks';
+  String get settingsSectionAssistantHint =>
+      'Help with using the app and the mushaf';
 
   @override
   String get settingsSectionAbout => 'About Tibyan';
@@ -3739,4 +3740,96 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get newSettingsBody =>
       'Settings are now eight sections with a search that takes you to any setting, plus clearer numbers across the app.';
+
+  @override
+  String get reportProblemTitle => 'Report a problem';
+
+  @override
+  String get reportProblemHint => 'Send us a bug, a problem or a suggestion';
+
+  @override
+  String get reportType => 'Report type';
+
+  @override
+  String get reportTypeBug => 'Bug';
+
+  @override
+  String get reportTypeProblem => 'Problem';
+
+  @override
+  String get reportTypeSuggestion => 'Suggested improvement';
+
+  @override
+  String get reportTypeOther => 'Other';
+
+  @override
+  String get reportDescription => 'Description';
+
+  @override
+  String get reportDescriptionHint =>
+      'What happened, where, and what you expected';
+
+  @override
+  String get reportDescriptionShort => 'Write at least five characters';
+
+  @override
+  String get reportPhone => 'Phone (optional)';
+
+  @override
+  String get reportPhoneInvalid => 'Invalid phone number';
+
+  @override
+  String get reportEmail => 'Email (optional)';
+
+  @override
+  String get reportEmailInvalid => 'Invalid email address';
+
+  @override
+  String get reportContactNote =>
+      'We use your phone and email only to reply to you, if you give them.';
+
+  @override
+  String get reportDeviceTitle => 'Attached to the report';
+
+  @override
+  String reportDeviceVersion(String version) {
+    return 'App version: $version';
+  }
+
+  @override
+  String reportDeviceSystem(String platform, String os) {
+    return 'System: $platform $os';
+  }
+
+  @override
+  String get reportSend => 'Send report';
+
+  @override
+  String get reportSent => 'Your report arrived, thank you.';
+
+  @override
+  String get reportQueued =>
+      'You\'re offline. The report is saved and will be sent when you\'re back online.';
+
+  @override
+  String get reportFailed =>
+      'The report couldn\'t be sent. Check what you wrote and try again.';
+
+  @override
+  String get reportRateLimited =>
+      'You\'ve just sent several reports. Try again shortly.';
+
+  @override
+  String reportPendingCount(int n) {
+    return 'Reports waiting to be sent: $n';
+  }
+
+  @override
+  String get helpGroupUsage => 'Using the app';
+
+  @override
+  String get helpGroupMarks => 'Tajweed and dabt';
+
+  @override
+  String get helpGroupFaq => 'FAQ and troubleshooting';
 }

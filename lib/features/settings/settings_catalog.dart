@@ -7,6 +7,7 @@ import '../../core/settings/settings_controller.dart';
 import '../../core/theme/interface_style.dart';
 import '../../l10n/app_localizations.dart';
 import '../assistant/assistant_screen.dart' show assistantLocation;
+import '../assistant/help_topics.dart';
 import '../audio/player_bar.dart' show reciterLabel;
 import '../audio/recitation.dart';
 import '../home/whats_new.dart';
@@ -14,6 +15,7 @@ import '../mushaf/mushaf_providers.dart';
 import '../mushaf/presentation/widgets/download_all_button.dart';
 import '../mushaf/presentation/widgets/edition_badge.dart';
 import '../mushaf/presentation/widgets/tajweed_legend.dart';
+import 'report/report_screen.dart' show reportLocation;
 import 'settings_widgets.dart';
 
 /// The eight tiles of the settings grid, each opening its own screen.
@@ -63,7 +65,13 @@ typedef SettingBuilder = Widget Function(BuildContext context, WidgetRef ref);
 /// One setting: found by search under its title (in Arabic and English)
 /// and its [keywords], and drawn by [build] in its section.
 class SettingEntry {
-  const SettingEntry(this.id, this.title, this.build, {this.keywords = ''});
+  const SettingEntry(
+    this.id,
+    this.title,
+    this.build, {
+    this.keywords = '',
+    this.link,
+  });
 
   final String id;
   final String Function(AppLocalizations l) title;
@@ -71,7 +79,13 @@ class SettingEntry {
 
   /// Other words a reader may search with, in both languages.
   final String keywords;
+
+  /// When set, the entry is found by search only (it is not drawn in its
+  /// section) and its search hit opens this location.
+  final String? link;
 }
+
+Widget _none(BuildContext c, WidgetRef r) => const SizedBox.shrink();
 
 /// A titled group of settings within a section.
 class SettingsGroup {
@@ -405,19 +419,6 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         ),
         keywords: 'استعادة استيراد restore import',
       ),
-      SettingEntry(
-        'crashReports',
-        (l) => l.crashReportsLabel,
-        (c, r) => _switch(
-          c,
-          r,
-          title: (l) => l.crashReportsLabel,
-          hint: (l) => l.crashReportsHint,
-          value: (s) => s.crashReportsOptIn,
-          set: (ctrl, v) => ctrl.setCrashReportsOptIn(v),
-        ),
-        keywords: 'أعطال تقارير خصوصية crash reports privacy',
-      ),
     ]),
   ],
   SettingsSection.assistant: [
@@ -431,19 +432,19 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
           subtitle: AppLocalizations.of(c).assistantIntro,
           onTap: () => c.push(assistantLocation),
         ),
-        keywords: 'مساعد أدوات assistant tools',
+        keywords: 'مساعد مساعدة دليل أسئلة assistant help guide faq',
       ),
-      SettingEntry(
-        'tajweedMarks',
-        (l) => l.tajweedMarksTitle,
-        (c, r) => SettingsNavTile(
-          icon: Icons.palette_outlined,
-          title: AppLocalizations.of(c).tajweedMarksTitle,
-          subtitle: AppLocalizations.of(c).tajweedMarksSubtitle,
-          onTap: () => c.push('$assistantLocation/tajweed'),
+    ]),
+    // Each help topic, found by the settings search and opened from it.
+    SettingsGroup(Icons.help_outline, (l) => l.assistantTitle, [
+      for (final t in helpTopics)
+        SettingEntry(
+          'help.${t.id}',
+          (l) => t.titleIn(l.localeName),
+          _none,
+          keywords: t.keywords,
+          link: t.route,
         ),
-        keywords: 'علامات التجويد أحكام tajweed marks rules',
-      ),
     ]),
   ],
   SettingsSection.about: [
@@ -487,6 +488,24 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
           ),
         ),
         keywords: 'الإصدار عن التطبيق version about',
+      ),
+      SettingEntry(
+        'reportProblem',
+        (l) => l.reportProblemTitle,
+        (c, r) => SettingsNavTile(
+          icon: Icons.report_outlined,
+          title: AppLocalizations.of(c).reportProblemTitle,
+          subtitle: AppLocalizations.of(c).reportProblemHint,
+          onTap: () => c.push(reportLocation),
+        ),
+        keywords: 'إبلاغ بلاغ مشكلة عطل اقتراح تواصل report problem bug feedback contact',
+      ),
+      SettingEntry(
+        'crashReports',
+        (l) => l.crashReportsLabel,
+        _none,
+        keywords: 'أعطال تقارير خصوصية crash reports privacy',
+        link: reportLocation,
       ),
     ]),
   ],

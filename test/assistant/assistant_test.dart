@@ -114,7 +114,10 @@ void main() {
     await start(tester, assistantLocation);
     await settle(tester, hub);
     expect(find.text('المساعد'), findsOneWidget);
-    await tester.tap(find.text('علامات التجويد'));
+    // One way to the marks, not two.
+    expect(find.text('علامات التجويد'), findsNothing);
+    expect(find.text('علامات التجويد والضبط'), findsOneWidget);
+    await tester.tap(find.text('علامات التجويد والضبط'));
     await settle(tester, marks);
     expect(marks, findsOneWidget);
     expect(find.text('أحكام التجويد: ألوانها ومواضعها'), findsOneWidget);
@@ -122,6 +125,30 @@ void main() {
     await tester.tap(find.text('الإقلاب'));
     await settle(tester, find.byType(TajweedRuleScreen));
     expect(find.byType(TajweedRuleScreen), findsOneWidget);
+  });
+
+  testWidgets('the hub lists the three kinds of help, and a topic opens '
+      'its steps', (tester) async {
+    final container = await start(tester, assistantLocation);
+    await settle(tester, hub);
+    await tester.tap(find.byKey(const ValueKey('help-topic.bookmarks')));
+    await settle(tester, find.byType(HelpTopicScreen));
+    expect(find.text('الفواصل والعلامات'), findsOneWidget);
+    expect(find.textContaining('فاصل جديد'), findsOneWidget);
+    container.read(appRouterProvider).go(assistantLocation);
+    await settle(tester, hub);
+    for (final g in [
+      'استخدام التطبيق',
+      'التجويد والضبط',
+      'أسئلة شائعة وحلول',
+    ]) {
+      await tester.scrollUntilVisible(find.text(g), 200);
+      expect(find.text(g), findsOneWidget);
+    }
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('help-topic.faq-model')),
+      200,
+    );
   });
 
   testWidgets('«About this mushaf» no longer holds the tajweed card', (

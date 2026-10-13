@@ -2588,7 +2588,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get assistantTitle => 'المساعد';
 
   @override
-  String get assistantIntro => 'أدوات تعينك على القراءة، لكل أداة بطاقة.';
+  String get assistantIntro => 'المساعدة في استخدام التطبيق والمصحف';
 
   @override
   String get tajweedMarksTitle => 'علامات التجويد';
@@ -3779,7 +3779,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settingsSectionAssistant => 'المساعد';
 
   @override
-  String get settingsSectionAssistantHint => 'أدوات القراءة وعلامات التجويد';
+  String get settingsSectionAssistantHint =>
+      'المساعدة في استخدام التطبيق والمصحف';
 
   @override
   String get settingsSectionAbout => 'عن تبيان';
@@ -3818,4 +3819,93 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get newSettingsBody =>
       'الإعدادات صارت ثمانية أقسام مع بحث يوصلك لأي إعداد، وصيغ الأعداد صحيحة («٧ آيات»)، وأرقام أوضح في الواجهة.';
+
+  @override
+  String get reportProblemTitle => 'الإبلاغ عن مشكلة';
+
+  @override
+  String get reportProblemHint => 'أرسل لنا عطلا أو مشكلة أو اقتراحا';
+
+  @override
+  String get reportType => 'نوع البلاغ';
+
+  @override
+  String get reportTypeBug => 'عطل';
+
+  @override
+  String get reportTypeProblem => 'مشكلة';
+
+  @override
+  String get reportTypeSuggestion => 'تحسين مقترح';
+
+  @override
+  String get reportTypeOther => 'أخرى';
+
+  @override
+  String get reportDescription => 'الوصف';
+
+  @override
+  String get reportDescriptionHint => 'اكتب ما حدث، وأين، وما توقعت أن يحدث';
+
+  @override
+  String get reportDescriptionShort => 'اكتب خمسة أحرف على الأقل';
+
+  @override
+  String get reportPhone => 'رقم الهاتف (اختياري)';
+
+  @override
+  String get reportPhoneInvalid => 'رقم الهاتف غير صحيح';
+
+  @override
+  String get reportEmail => 'البريد الإلكتروني (اختياري)';
+
+  @override
+  String get reportEmailInvalid => 'البريد الإلكتروني غير صحيح';
+
+  @override
+  String get reportContactNote =>
+      'نستخدم الهاتف والبريد للرد عليك فقط إن كتبتهما.';
+
+  @override
+  String get reportDeviceTitle => 'يُرفق مع البلاغ';
+
+  @override
+  String reportDeviceVersion(String version) {
+    return 'إصدار التطبيق: $version';
+  }
+
+  @override
+  String reportDeviceSystem(String platform, String os) {
+    return 'النظام: $platform $os';
+  }
+
+  @override
+  String get reportSend => 'إرسال البلاغ';
+
+  @override
+  String get reportSent => 'وصل بلاغك، شكرا لك.';
+
+  @override
+  String get reportQueued =>
+      'لا اتصال الآن. حُفظ البلاغ وسيُرسل وحده حين يعود الاتصال.';
+
+  @override
+  String get reportFailed => 'تعذّر إرسال البلاغ. راجع ما كتبت وحاول مرة أخرى.';
+
+  @override
+  String get reportRateLimited => 'أرسلت بلاغات كثيرة للتو. حاول بعد قليل.';
+
+  @override
+  String reportPendingCount(int n) {
+    return 'بلاغات تنتظر الإرسال: $n';
+  }
+
+  @override
+  String get helpGroupUsage => 'استخدام التطبيق';
+
+  @override
+  String get helpGroupMarks => 'التجويد والضبط';
+
+  @override
+  String get helpGroupFaq => 'أسئلة شائعة وحلول';
 }

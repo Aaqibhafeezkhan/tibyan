@@ -80,31 +80,35 @@ class _SettingsSectionScreenState extends ConsumerState<SettingsSectionScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         for (final g in widget.section.groups)
-                          LookGroup(
-                            icon: g.icon,
-                            title: g.title(l),
-                            children: [
-                              for (final e in g.entries)
-                                AnimatedContainer(
-                                  key: _keys.putIfAbsent(
-                                    e.id,
-                                    () => GlobalKey(debugLabel: e.id),
-                                  ),
-                                  duration: const Duration(milliseconds: 400),
-                                  color: _lit == e.id
-                                      ? look.control.withValues(alpha: .14)
-                                      : look.control.withValues(alpha: 0),
-                                  child: Material(
-                                    type: MaterialType.transparency,
-                                    child: Semantics(
-                                      container: true,
-                                      identifier: 'setting.${e.id}',
-                                      child: e.build(context, ref),
+                          if (g.entries.any((e) => e.link == null))
+                            LookGroup(
+                              icon: g.icon,
+                              title: g.title(l),
+                              children: [
+                                for (final e in g.entries)
+                                  if (e.link == null)
+                                    AnimatedContainer(
+                                      key: _keys.putIfAbsent(
+                                        e.id,
+                                        () => GlobalKey(debugLabel: e.id),
+                                      ),
+                                      duration: const Duration(
+                                        milliseconds: 400,
+                                      ),
+                                      color: _lit == e.id
+                                          ? look.control.withValues(alpha: .14)
+                                          : look.control.withValues(alpha: 0),
+                                      child: Material(
+                                        type: MaterialType.transparency,
+                                        child: Semantics(
+                                          container: true,
+                                          identifier: 'setting.${e.id}',
+                                          child: e.build(context, ref),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                            ],
-                          ),
+                              ],
+                            ),
                       ],
                     ),
                   ),

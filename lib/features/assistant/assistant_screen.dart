@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
-import 'tajweed_marks_screen.dart';
+import 'help_topics.dart';
 
 /// Where the Assistant opens.
 const assistantLocation = '/assistant';
@@ -15,7 +15,8 @@ const assistantLocation = '/assistant';
 /// menus).
 const assistantIcon = Icons.lightbulb_outline;
 
-/// «المساعد»: the reader's helpers, one card each.
+/// «المساعد»: the help centre: using the app, the tajweed and dabt marks,
+/// and answers to common problems, one card per topic.
 class AssistantScreen extends StatelessWidget {
   const AssistantScreen({super.key});
 
@@ -23,14 +24,12 @@ class AssistantScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final t = context.tokens.colors;
-    final helpers = [
-      (
-        Icons.palette_outlined,
-        l.tajweedMarksTitle,
-        l.tajweedMarksSubtitle,
-        tajweedMarksLocation,
-      ),
-    ];
+    final lang = l.localeName;
+    String groupName(HelpGroup g) => switch (g) {
+      HelpGroup.usage => l.helpGroupUsage,
+      HelpGroup.marks => l.helpGroupMarks,
+      HelpGroup.faq => l.helpGroupFaq,
+    };
     return LookScaffold(
       body: SafeArea(
         bottom: false,
@@ -52,13 +51,26 @@ class AssistantScreen extends StatelessWidget {
                           style: TextStyle(color: t.muted, height: 1.6),
                         ),
                       ),
-                      for (final (icon, title, note, location) in helpers)
-                        _HelperCard(
-                          icon: icon,
-                          title: title,
-                          note: note,
-                          onTap: () => context.push(location),
+                      for (final g in HelpGroup.values) ...[
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4, 16, 4, 8),
+                          child: Text(
+                            groupName(g),
+                            style: TextStyle(
+                              color: t.goldText,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                         ),
+                        for (final topic in helpTopics)
+                          if (topic.group == g)
+                            _HelperCard(
+                              key: ValueKey('help-topic.${topic.id}'),
+                              icon: topic.icon,
+                              title: topic.titleIn(lang),
+                              onTap: () => context.push(topic.route),
+                            ),
+                      ],
                     ],
                   ),
                 ),
@@ -71,18 +83,17 @@ class AssistantScreen extends StatelessWidget {
   }
 }
 
-/// One helper: its icon on a soft disc, its name and what it shows.
+/// One topic: its icon on a soft disc and its name.
 class _HelperCard extends StatelessWidget {
   const _HelperCard({
+    super.key,
     required this.icon,
     required this.title,
-    required this.note,
     required this.onTap,
   });
 
   final IconData icon;
   final String title;
-  final String note;
   final VoidCallback onTap;
 
   @override
@@ -106,9 +117,70 @@ class _HelperCard extends StatelessWidget {
           title,
           style: TextStyle(color: t.ink, fontWeight: FontWeight.w600),
         ),
-        subtitle: Text(note, style: TextStyle(color: t.muted, height: 1.5)),
         trailing: const Icon(Icons.chevron_right),
         onTap: onTap,
+      ),
+    );
+  }
+}
+
+/// One help topic: its steps, numbered.
+class HelpTopicScreen extends StatelessWidget {
+  const HelpTopicScreen({super.key, required this.topic});
+
+  final HelpTopic topic;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final t = context.tokens.colors;
+    final ar = l.localeName == 'ar';
+    return LookScaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(title: topic.titleIn(l.localeName)),
+            Expanded(
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 560),
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                    children: [
+                      for (final (i, step) in topic.steps.indexed)
+                        Card(
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 14,
+                              backgroundColor: t.goldText.withValues(
+                                alpha: 0.12,
+                              ),
+                              child: Text(
+                                ar
+                                    ? String.fromCharCodes(
+                                        '${i + 1}'.codeUnits.map(
+                                          (c) => c - 0x30 + 0x660,
+                                        ),
+                                      )
+                                    : '${i + 1}',
+                                style: TextStyle(color: t.goldText),
+                              ),
+                            ),
+                            title: Text(
+                              ar ? step.ar : step.en,
+                              style: TextStyle(color: t.ink, height: 1.6),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/assistant/assistant_screen.dart';
+import '../../features/assistant/help_topics.dart';
+import '../../features/settings/report/report_screen.dart';
 import '../../features/assistant/tajweed_marks_screen.dart';
 import '../../features/hifz/presentation/hifz_map_screen.dart';
 import '../../features/khatma/domain/khatmah.dart' show EntryPoint, enumNamed;
@@ -153,6 +155,11 @@ final appRouterProvider = Provider<GoRouter>(
                 redirect: (context, state) => '/settings/section/mushaf',
               ),
               GoRoute(
+                path: 'report',
+                builder: (context, state) =>
+                    const LookTheme(child: ReportScreen()),
+              ),
+              GoRoute(
                 path: 'storage',
                 builder: (context, state) =>
                     const LookTheme(child: StorageScreen()),
@@ -227,6 +234,16 @@ final appRouterProvider = Provider<GoRouter>(
         path: assistantLocation,
         builder: (context, state) => const LookTheme(child: AssistantScreen()),
         routes: [
+          GoRoute(
+            path: 'topic',
+            builder: (context, state) => LookTheme(
+              child: HelpTopicScreen(
+                topic:
+                    helpTopicById(state.uri.queryParameters['id'] ?? '') ??
+                    helpTopics.first,
+              ),
+            ),
+          ),
           GoRoute(
             path: 'tajweed',
             builder: (context, state) =>

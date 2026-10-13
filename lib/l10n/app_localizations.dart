@@ -4312,7 +4312,7 @@ abstract class AppLocalizations {
   /// No description provided for @assistantIntro.
   ///
   /// In ar, this message translates to:
-  /// **'أدوات تعينك على القراءة، لكل أداة بطاقة.'**
+  /// **'المساعدة في استخدام التطبيق والمصحف'**
   String get assistantIntro;
 
   /// No description provided for @tajweedMarksTitle.
@@ -6203,7 +6203,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsSectionAssistantHint.
   ///
   /// In ar, this message translates to:
-  /// **'أدوات القراءة وعلامات التجويد'**
+  /// **'المساعدة في استخدام التطبيق والمصحف'**
   String get settingsSectionAssistantHint;
 
   /// No description provided for @settingsSectionAbout.
@@ -6277,6 +6277,168 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'الإعدادات صارت ثمانية أقسام مع بحث يوصلك لأي إعداد، وصيغ الأعداد صحيحة («٧ آيات»)، وأرقام أوضح في الواجهة.'**
   String get newSettingsBody;
+
+  /// No description provided for @reportProblemTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإبلاغ عن مشكلة'**
+  String get reportProblemTitle;
+
+  /// No description provided for @reportProblemHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرسل لنا عطلا أو مشكلة أو اقتراحا'**
+  String get reportProblemHint;
+
+  /// No description provided for @reportType.
+  ///
+  /// In ar, this message translates to:
+  /// **'نوع البلاغ'**
+  String get reportType;
+
+  /// No description provided for @reportTypeBug.
+  ///
+  /// In ar, this message translates to:
+  /// **'عطل'**
+  String get reportTypeBug;
+
+  /// No description provided for @reportTypeProblem.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشكلة'**
+  String get reportTypeProblem;
+
+  /// No description provided for @reportTypeSuggestion.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحسين مقترح'**
+  String get reportTypeSuggestion;
+
+  /// No description provided for @reportTypeOther.
+  ///
+  /// In ar, this message translates to:
+  /// **'أخرى'**
+  String get reportTypeOther;
+
+  /// No description provided for @reportDescription.
+  ///
+  /// In ar, this message translates to:
+  /// **'الوصف'**
+  String get reportDescription;
+
+  /// No description provided for @reportDescriptionHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتب ما حدث، وأين، وما توقعت أن يحدث'**
+  String get reportDescriptionHint;
+
+  /// No description provided for @reportDescriptionShort.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتب خمسة أحرف على الأقل'**
+  String get reportDescriptionShort;
+
+  /// No description provided for @reportPhone.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم الهاتف (اختياري)'**
+  String get reportPhone;
+
+  /// No description provided for @reportPhoneInvalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم الهاتف غير صحيح'**
+  String get reportPhoneInvalid;
+
+  /// No description provided for @reportEmail.
+  ///
+  /// In ar, this message translates to:
+  /// **'البريد الإلكتروني (اختياري)'**
+  String get reportEmail;
+
+  /// No description provided for @reportEmailInvalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'البريد الإلكتروني غير صحيح'**
+  String get reportEmailInvalid;
+
+  /// No description provided for @reportContactNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'نستخدم الهاتف والبريد للرد عليك فقط إن كتبتهما.'**
+  String get reportContactNote;
+
+  /// No description provided for @reportDeviceTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُرفق مع البلاغ'**
+  String get reportDeviceTitle;
+
+  /// No description provided for @reportDeviceVersion.
+  ///
+  /// In ar, this message translates to:
+  /// **'إصدار التطبيق: {version}'**
+  String reportDeviceVersion(String version);
+
+  /// No description provided for @reportDeviceSystem.
+  ///
+  /// In ar, this message translates to:
+  /// **'النظام: {platform} {os}'**
+  String reportDeviceSystem(String platform, String os);
+
+  /// No description provided for @reportSend.
+  ///
+  /// In ar, this message translates to:
+  /// **'إرسال البلاغ'**
+  String get reportSend;
+
+  /// No description provided for @reportSent.
+  ///
+  /// In ar, this message translates to:
+  /// **'وصل بلاغك، شكرا لك.'**
+  String get reportSent;
+
+  /// No description provided for @reportQueued.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا اتصال الآن. حُفظ البلاغ وسيُرسل وحده حين يعود الاتصال.'**
+  String get reportQueued;
+
+  /// No description provided for @reportFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر إرسال البلاغ. راجع ما كتبت وحاول مرة أخرى.'**
+  String get reportFailed;
+
+  /// No description provided for @reportRateLimited.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرسلت بلاغات كثيرة للتو. حاول بعد قليل.'**
+  String get reportRateLimited;
+
+  /// No description provided for @reportPendingCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'بلاغات تنتظر الإرسال: {n}'**
+  String reportPendingCount(int n);
+
+  /// No description provided for @helpGroupUsage.
+  ///
+  /// In ar, this message translates to:
+  /// **'استخدام التطبيق'**
+  String get helpGroupUsage;
+
+  /// No description provided for @helpGroupMarks.
+  ///
+  /// In ar, this message translates to:
+  /// **'التجويد والضبط'**
+  String get helpGroupMarks;
+
+  /// No description provided for @helpGroupFaq.
+  ///
+  /// In ar, this message translates to:
+  /// **'أسئلة شائعة وحلول'**
+  String get helpGroupFaq;
 }
 
 class _AppLocalizationsDelegate

@@ -16,6 +16,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
+import 'features/settings/report/problem_report.dart';
 import 'core/crash/crash_reporting.dart';
 import 'core/db/content_database.dart';
 import 'core/db/user_database.dart';
@@ -125,6 +126,8 @@ Future<void> main() async {
         .then((_) => container.read(packInstallsProvider.notifier).changed()),
   );
 
+  // Reports queued while offline go out on the next start.
+  unawaited(container.read(reportServiceProvider).flush());
   runApp(
     UncontrolledProviderScope(container: container, child: const TibyanApp()),
   );

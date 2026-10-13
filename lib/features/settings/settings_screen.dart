@@ -150,7 +150,11 @@ class _Results extends StatelessWidget {
                 trailing: Icon(Icons.chevron_right, color: look.sub),
                 onTap: () {
                   FocusScope.of(context).unfocus();
-                  context.go('${section.location}?focus=${e.id}');
+                  if (e.link case final link?) {
+                    context.push(link);
+                  } else {
+                    context.go('${section.location}?focus=${e.id}');
+                  }
                 },
               ),
             ),

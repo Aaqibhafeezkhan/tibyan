@@ -127,6 +127,39 @@ void main() {
     }
   });
 
+  test('the assistant section draws one entry; its topics are found by '
+      'search and open the topic', () {
+    final drawn = [
+      for (final g in SettingsSection.assistant.groups)
+        for (final e in g.entries)
+          if (e.link == null) e.id,
+    ];
+    expect(drawn, ['assistant']);
+    final marks = searchSettings('علامات التجويد');
+    expect(marks.first.$2.id, 'help.marks');
+    expect(marks.first.$2.link, '/assistant/tajweed');
+    expect(
+      searchSettings('microphone').map((h) => h.$2.id),
+      contains('help.faq-mic'),
+    );
+    expect(
+      searchSettings('النسخ الاحتياطي').map((h) => h.$2.id),
+      contains('help.backup'),
+    );
+  });
+
+  test('«report a problem» lives in About, with the crash-reports switch', () {
+    expect(searchSettings('إبلاغ').first.$2.id, 'reportProblem');
+    expect(searchSettings('report problem').first.$2.id, 'reportProblem');
+    final crash = searchSettings('crash').first;
+    expect(crash.$1, SettingsSection.about);
+    expect(crash.$2.link, '/settings/report');
+    expect([
+      for (final g in SettingsSection.storage.groups)
+        for (final e in g.entries) e.id,
+    ], isNot(contains('crashReports')));
+  });
+
   test('search finds every setting by its Arabic and English titles', () {
     final ar = lookupAppLocalizations(const Locale('ar'));
     final en = lookupAppLocalizations(const Locale('en'));
@@ -252,6 +285,8 @@ void main() {
     ) async {
       for (final g in section.groups) {
         for (final e in g.entries) {
+          // Found by search only, and opened elsewhere.
+          if (e.link != null) continue;
           await tester.pumpWidget(const SizedBox());
           await pump(
             tester,
