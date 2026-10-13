@@ -3265,7 +3265,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'عند آية السجدة يتوقف الشيخ وتظهر بطاقة بأذكار السجود وعدّ تنازلي، ثم تُستكمل التلاوة. يُفعَّل من الإعدادات.';
 
   @override
-  String get newAssistant => 'المساعد وعلامات التجويد';
+  String get newAssistant => 'المساعد: المساعدة في استخدام التطبيق';
 
   @override
   String get newAssistantBody =>
@@ -3948,4 +3948,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get helpGroupFaq => 'أسئلة شائعة وحلول';
+
+  @override
+  String get onbTasmeeChecking => 'نتحقق من حجم النموذج…';
+
+  @override
+  String get onbTasmeeManifestFailed =>
+      'تعذّر جلب معلومات النموذج. تأكد من اتصالك بالإنترنت ثم أعد المحاولة.';
+
+  @override
+  String get onbTasmeeUnsupported =>
+      'التسميع بالصوت غير متاح على هذا الجهاز بعد. تقدر تكمل وتستخدم باقي التطبيق.';
+
+  @override
+  String get assistantTileNote => 'دليل الاستخدام';
 }

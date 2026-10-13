@@ -1346,7 +1346,7 @@
   "newTasmeeBody": "Recite from memory and each word appears in its place, with mistakes marked. It runs on your device, offline after the model download, and checks memorisation, not tajweed.",
   "newSajdah": "Sajdah timer",
   "newSajdahBody": "At a verse of prostration the reciter pauses and a card shows the supplications with a countdown, then the recitation resumes. Turn it on in Settings.",
-  "newAssistant": "The Assistant and tajweed marks",
+  "newAssistant": "The Assistant: help with using the app",
   "newAssistantBody": "A new screen with the tajweed rules and their colours, each with its places in the mushaf.",
   "newFocus": "Focus mode",
   "newFocusBody": "The page alone, frameless and filling the screen, tools when you need them, and a small player you can drag anywhere.",
@@ -1526,5 +1526,9 @@
   "reportPendingCount": "Reports waiting to be sent: {n}",
   "helpGroupUsage": "Using the app",
   "helpGroupMarks": "Tajweed and dabt",
-  "helpGroupFaq": "FAQ and troubleshooting"
+  "helpGroupFaq": "FAQ and troubleshooting",
+  "onbTasmeeChecking": "Checking the model's size…",
+  "onbTasmeeManifestFailed": "Couldn't fetch the model's details. Check your connection and try again.",
+  "onbTasmeeUnsupported": "Recitation checking isn't available on this device yet. You can carry on with the rest of the app.",
+  "assistantTileNote": "Help and how-to"
 }

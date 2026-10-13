@@ -3220,7 +3220,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'At a verse of prostration the reciter pauses and a card shows the supplications with a countdown, then the recitation resumes. Turn it on in Settings.';
 
   @override
-  String get newAssistant => 'The Assistant and tajweed marks';
+  String get newAssistant => 'The Assistant: help with using the app';
 
   @override
   String get newAssistantBody =>
@@ -3872,4 +3872,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpGroupFaq => 'FAQ and troubleshooting';
+
+  @override
+  String get onbTasmeeChecking => 'Checking the model\'s size…';
+
+  @override
+  String get onbTasmeeManifestFailed =>
+      'Couldn\'t fetch the model\'s details. Check your connection and try again.';
+
+  @override
+  String get onbTasmeeUnsupported =>
+      'Recitation checking isn\'t available on this device yet. You can carry on with the rest of the app.';
+
+  @override
+  String get assistantTileNote => 'Help and how-to';
 }

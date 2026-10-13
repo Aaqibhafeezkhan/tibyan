@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +12,10 @@ import '../tasmee/presentation/tasmee_settings_screen.dart'
 import 'background_downloads.dart';
 import 'onboarding_frame.dart';
 
+/// Whether this platform can run the recitation check (the speech model
+/// and the background downloader): every app build but the web one.
+final tasmeeSupportedProvider = Provider<bool>((ref) => !kIsWeb);
+
 /// First launch, step 6: the recitation check's speech model: its size,
 /// the Wi‑Fi note and where its source is credited, then a download that
 /// carries on in the background, or a skip.
@@ -22,17 +27,27 @@ class OnboardingTasmeeScreen extends ConsumerWidget {
     final l = AppLocalizations.of(context);
     final look = context.look;
     final digits = NumberFormatter(Localizations.localeOf(context));
-    final manifest = ref.watch(tasmeeManifestProvider).value;
+    final supported = ref.watch(tasmeeSupportedProvider);
+    final manifestState = ref.watch(tasmeeManifestProvider);
+    final manifest = manifestState.value;
+    // The fetch failed (offline, server down): said so, with a retry,
+    // instead of a download button that silently does nothing.
+    final manifestFailed =
+        manifestState.hasError ||
+        (!manifestState.isLoading && manifest == null);
     final installed = ref.watch(tasmeeModelInfoProvider).value?.$1 != null;
     final download = ref.watch(tasmeeModelDownloadProvider);
-    final started = download != null && !download.failed;
+    final failed = download?.failed ?? false;
+    final started = download != null && !failed;
     final ready = installed || (download?.done ?? false);
+    final done = !supported || ready || started;
+
+    void retryManifest() => ref.invalidate(tasmeeManifestProvider);
 
     Future<void> downloadAndStart() async {
-      final m = manifest ?? await ref.read(tasmeeManifestProvider.future);
-      if (m != null) {
-        ref.read(tasmeeModelDownloadProvider.notifier).start(m);
-      }
+      final m = manifest;
+      if (m == null) return;
+      ref.read(tasmeeModelDownloadProvider.notifier).start(m);
       if (context.mounted) await finishOnboarding(context, ref);
     }
 
@@ -50,20 +65,31 @@ class OnboardingTasmeeScreen extends ConsumerWidget {
       ),
     );
 
-    final size = manifest == null
-        ? l.tasmeeModelSizeUnknown
-        : l.tasmeeModelSize(
+    final size = manifest != null
+        ? l.tasmeeModelSize(
             digits((manifest.totalBytes / (1024 * 1024)).round()),
-          );
+          )
+        : manifestState.isLoading && !manifestState.hasError
+        ? l.onbTasmeeChecking
+        : l.tasmeeModelSizeUnknown;
+
+    Widget retry(VoidCallback onPressed) => Align(
+      alignment: AlignmentDirectional.centerStart,
+      child: OutlinedButton.icon(
+        key: const ValueKey('onboarding-tasmee-retry'),
+        onPressed: onPressed,
+        icon: const Icon(Icons.refresh, size: 18),
+        label: Text(l.downloadRetry),
+      ),
+    );
 
     return OnboardingFrame(
       step: OnboardingStep.tasmee,
       title: l.onbTasmeeTitle,
-      nextLabel: ready || started ? l.onbStart : l.onbTasmeeDownload,
-      onNext: ready || started
-          ? () => finishOnboarding(context, ref)
-          : downloadAndStart,
-      secondary: ready || started
+      nextLabel: done ? l.onbStart : l.onbTasmeeDownload,
+      onNext: done ? () => finishOnboarding(context, ref) : downloadAndStart,
+      nextEnabled: done || manifest != null,
+      secondary: done
           ? null
           : TextButton(
               key: const ValueKey('onboarding-skip-step'),
@@ -90,7 +116,9 @@ class OnboardingTasmeeScreen extends ConsumerWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      ready
+                      !supported
+                          ? l.onbTasmeeUnsupported
+                          : ready
                           ? l.onbTasmeeReady
                           : started
                           ? l.onbTasmeeDownloading(
@@ -110,10 +138,31 @@ class OnboardingTasmeeScreen extends ConsumerWidget {
                 l.onbTasmeeBody,
                 style: TextStyle(color: look.ink, height: 1.6),
               ),
-              if (download?.failed ?? false)
+              if (supported &&
+                  !ready &&
+                  !started &&
+                  manifestState.isLoading &&
+                  !manifestFailed)
+                const Padding(
+                  padding: EdgeInsets.only(top: 12),
+                  child: LinearProgressIndicator(),
+                ),
+              if (supported && !ready && !started && manifestFailed) ...[
+                line(Icons.cloud_off_outlined, l.onbTasmeeManifestFailed),
+                retry(retryManifest),
+              ],
+              if (supported && failed && !ready && manifest != null) ...[
                 line(Icons.error_outline, l.onbTasmeeFailed),
-              line(Icons.wifi, l.tasmeeModelWifiNote),
-              line(Icons.lock_outline, l.tasmeeModelVoiceStays),
+                retry(
+                  () => ref
+                      .read(tasmeeModelDownloadProvider.notifier)
+                      .start(manifest),
+                ),
+              ],
+              if (supported) ...[
+                line(Icons.wifi, l.tasmeeModelWifiNote),
+                line(Icons.lock_outline, l.tasmeeModelVoiceStays),
+              ],
               Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: TextButton.icon(

@@ -5423,7 +5423,7 @@ abstract class AppLocalizations {
   /// No description provided for @newAssistant.
   ///
   /// In ar, this message translates to:
-  /// **'المساعد وعلامات التجويد'**
+  /// **'المساعد: المساعدة في استخدام التطبيق'**
   String get newAssistant;
 
   /// No description provided for @newAssistantBody.
@@ -6505,6 +6505,30 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'أسئلة شائعة وحلول'**
   String get helpGroupFaq;
+
+  /// No description provided for @onbTasmeeChecking.
+  ///
+  /// In ar, this message translates to:
+  /// **'نتحقق من حجم النموذج…'**
+  String get onbTasmeeChecking;
+
+  /// No description provided for @onbTasmeeManifestFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر جلب معلومات النموذج. تأكد من اتصالك بالإنترنت ثم أعد المحاولة.'**
+  String get onbTasmeeManifestFailed;
+
+  /// No description provided for @onbTasmeeUnsupported.
+  ///
+  /// In ar, this message translates to:
+  /// **'التسميع بالصوت غير متاح على هذا الجهاز بعد. تقدر تكمل وتستخدم باقي التطبيق.'**
+  String get onbTasmeeUnsupported;
+
+  /// No description provided for @assistantTileNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'دليل الاستخدام'**
+  String get assistantTileNote;
 }
 
 class _AppLocalizationsDelegate

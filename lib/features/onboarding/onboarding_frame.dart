@@ -53,6 +53,7 @@ class OnboardingFrame extends ConsumerWidget {
     this.nextLabel,
     this.onNext,
     this.secondary,
+    this.nextEnabled = true,
   });
 
   final OnboardingStep step;
@@ -65,6 +66,9 @@ class OnboardingFrame extends ConsumerWidget {
 
   /// The main button's action: the next step by default.
   final VoidCallback? onNext;
+
+  /// False greys the main button out (nothing to do yet).
+  final bool nextEnabled;
 
   /// A quieter action under the main button («تخطَّ»).
   final Widget? secondary;
@@ -170,7 +174,7 @@ class OnboardingFrame extends ConsumerWidget {
                         style: FilledButton.styleFrom(
                           minimumSize: const Size.fromHeight(52),
                         ),
-                        onPressed: onNext ?? next,
+                        onPressed: nextEnabled ? onNext ?? next : null,
                         child: Text(
                           textAlign: TextAlign.center,
                           nextLabel ??
