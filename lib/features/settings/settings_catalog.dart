@@ -158,7 +158,8 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         (l) =>
             l.downloadAllEditions('').replaceAll(RegExp(r'\s*[(（].*[)）]'), ''),
         (c, r) => const DownloadAllButton(),
-        keywords: 'تحميل كل المصاحف download all',
+        keywords:
+            'مركز التحميلات تحميل كل المصاحف download all downloads center',
       ),
     ]),
     SettingsGroup(Icons.auto_stories_outlined, (l) => l.appearanceTitle, [
@@ -390,6 +391,18 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
           onTap: () => c.push('/settings/storage'),
         ),
         keywords: 'مساحة تخزين حذف storage space delete',
+      ),
+      SettingEntry(
+        'downloads',
+        (l) => l.downloadsOpen,
+        (c, r) => SettingsNavTile(
+          icon: Icons.download_for_offline_outlined,
+          title: AppLocalizations.of(c).downloadsOpen,
+          subtitle: AppLocalizations.of(c).downloadsOpenHint,
+          // Only shows the downloads: it never starts one.
+          onTap: () => c.push('/downloads'),
+        ),
+        keywords: 'التحميلات تحميل تنزيل إيقاف متابعة downloads download pause resume',
       ),
       SettingEntry(
         'backupExport',

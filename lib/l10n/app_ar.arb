@@ -346,7 +346,21 @@
   "reciteMode": "وضع التسميع",
   "autoScroll": "التمرير التلقائي",
   "resume": "متابعة",
+  "downloadsSectionMushaf": "المصاحف",
+  "downloadsSectionRecitations": "القراءات الصوتية",
+  "downloadsSectionResources": "الموارد",
+  "downloadsOnDevice": "على الجهاز · {size} ميجا",
+  "@downloadsOnDevice": {"placeholders": {"size": {"type": "String"}}},
+  "downloadsAvailable": "متاح للتحميل · {size} ميجا",
+  "@downloadsAvailable": {"placeholders": {"size": {"type": "String"}}},
+  "downloadsReciterOnDevice": "على الجهاز: {done} / {total} · {size} ميجا",
+  "@downloadsReciterOnDevice": {"placeholders": {"done": {"type": "String"}, "total": {"type": "String"}, "size": {"type": "String"}}},
+  "downloadsAvailableShort": "متاح للتحميل",
+  "downloadsGoesOn": "يكمل التحميل في الخلفية",
   "pause": "إيقاف مؤقت",
+  "downloadsOpen": "مركز التحميلات",
+  "downloadsOpenHint": "المصاحف والقراءات الصوتية والموارد: ما على الجهاز وما يحمَّل وما هو متاح",
+  "audioDownloadResume": "استئناف",
   "slower": "أبطأ",
   "faster": "أسرع",
   "stopAutoScroll": "إيقاف التمرير",
@@ -606,7 +620,7 @@
       }
     }
   },
-  "downloadAllEditions": "تحميل كل المصاحف ({size} ميجا)",
+  "downloadAllEditions": "مركز التحميلات ({size} ميجا متاحة)",
   "@downloadAllEditions": {
     "placeholders": {
       "size": {
@@ -723,7 +737,7 @@
       }
     }
   },
-  "downloadAllTitle": "تحميل كل المصاحف",
+  "downloadAllTitle": "مركز التحميلات",
   "downloadAllCount": "اكتمل {done} من {total}",
   "@downloadAllCount": {
     "placeholders": {

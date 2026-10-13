@@ -28,6 +28,8 @@ import 'package:tibyan/l10n/app_localizations.dart';
 class FakeDownloader implements FileDownloader {
   final enqueued = <DownloadTask>[];
   final canceled = <String>[];
+  final paused = <String>[];
+  final resumed = <String>[];
   final _updates = StreamController<TaskUpdate>();
   final db = FakeDatabase();
 
@@ -68,6 +70,26 @@ class FakeDownloader implements FileDownloader {
     bool doRescheduleKilledTasks = true,
     bool autoCleanDatabase = false,
   }) async {}
+
+  @override
+  FileDownloader registerCallbacks({
+    String group = 'default',
+    TaskStatusCallback? taskStatusCallback,
+    TaskProgressCallback? taskProgressCallback,
+    TaskNotificationTapCallback? taskNotificationTapCallback,
+  }) => this;
+
+  @override
+  Future<bool> pause(DownloadTask task) async {
+    paused.add(task.taskId);
+    return true;
+  }
+
+  @override
+  Future<bool> resume(DownloadTask task) async {
+    resumed.add(task.taskId);
+    return true;
+  }
 
   @override
   Future<bool> cancelTasksWithIds(Iterable<String> taskIds) async {
@@ -284,6 +306,35 @@ void main() {
     await recitations.cancelReciter(7);
     expect(fake.canceled, hasLength(114));
     expect(downloads.tasks.value, isEmpty);
+  });
+
+  test('a reciter is paused (waiting surahs held) and resumed', () async {
+    await downloads.start();
+    await recitations.enqueueAll(
+      _reciter,
+      urls: (s) => surahUrls(_reciter, s),
+      displayName: 'المنشاوي',
+    );
+    final first = fake.enqueued.first;
+    fake.send(TaskProgressUpdate(first, .5, 1000));
+    await pumpEventQueue();
+
+    await recitations.pauseReciter(7);
+    await pumpEventQueue();
+    expect(fake.paused, [first.taskId]);
+    fake.send(TaskStatusUpdate(first, TaskStatus.paused));
+    // The system reports the held ones cancelled: they stay listed.
+    for (final t in fake.enqueued.skip(1)) {
+      fake.send(TaskStatusUpdate(t, TaskStatus.canceled));
+    }
+    await pumpEventQueue();
+    expect(recitations.paused(7), isTrue);
+    expect(downloads.tasks.value, hasLength(114));
+
+    await recitations.resumeReciter(7);
+    expect(fake.resumed, [first.taskId]);
+    expect(fake.enqueued, hasLength(114 + 113));
+    expect(recitations.paused(7), isFalse);
   });
 
   testWidgets('the Downloads screen lists the model and the recitation', (

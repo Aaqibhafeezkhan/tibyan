@@ -508,7 +508,47 @@ class AppLocalizationsAr extends AppLocalizations {
   String get resume => 'متابعة';
 
   @override
+  String get downloadsSectionMushaf => 'المصاحف';
+
+  @override
+  String get downloadsSectionRecitations => 'القراءات الصوتية';
+
+  @override
+  String get downloadsSectionResources => 'الموارد';
+
+  @override
+  String downloadsOnDevice(String size) {
+    return 'على الجهاز · $size ميجا';
+  }
+
+  @override
+  String downloadsAvailable(String size) {
+    return 'متاح للتحميل · $size ميجا';
+  }
+
+  @override
+  String downloadsReciterOnDevice(String done, String total, String size) {
+    return 'على الجهاز: $done / $total · $size ميجا';
+  }
+
+  @override
+  String get downloadsAvailableShort => 'متاح للتحميل';
+
+  @override
+  String get downloadsGoesOn => 'يكمل التحميل في الخلفية';
+
+  @override
   String get pause => 'إيقاف مؤقت';
+
+  @override
+  String get downloadsOpen => 'مركز التحميلات';
+
+  @override
+  String get downloadsOpenHint =>
+      'المصاحف والقراءات الصوتية والموارد: ما على الجهاز وما يحمَّل وما هو متاح';
+
+  @override
+  String get audioDownloadResume => 'استئناف';
 
   @override
   String get slower => 'أبطأ';
@@ -845,7 +885,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String downloadAllEditions(String size) {
-    return 'تحميل كل المصاحف ($size ميجا)';
+    return 'مركز التحميلات ($size ميجا متاحة)';
   }
 
   @override
@@ -1017,7 +1057,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get downloadAllTitle => 'تحميل كل المصاحف';
+  String get downloadAllTitle => 'مركز التحميلات';
 
   @override
   String downloadAllCount(String done, String total) {

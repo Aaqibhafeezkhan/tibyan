@@ -20,6 +20,7 @@ import 'features/settings/report/problem_report.dart';
 import 'core/crash/crash_reporting.dart';
 import 'core/db/content_database.dart';
 import 'core/db/user_database.dart';
+import 'core/downloads/background_downloads.dart';
 import 'core/flags/feature_flags.dart';
 import 'core/router/app_router.dart';
 import 'core/settings/settings_controller.dart';
@@ -214,6 +215,13 @@ void _startKhatma(ProviderContainer container) {
     await container.read(appRouterReadyProvider).future;
     container.read(appRouterProvider).go(route);
   }
+
+  // A download's notification opens the Downloads screen, which only
+  // shows them: it never queues anything.
+  container.read(backgroundDownloadsProvider).onNotificationTap = () async {
+    await container.read(appRouterReadyProvider).future;
+    container.read(appRouterProvider).push('/downloads');
+  };
 
   final reminders = container.read(reminderSchedulerProvider);
   reminders.onTap = (payload) => open(Uri.tryParse(payload));

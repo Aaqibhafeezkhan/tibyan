@@ -43,6 +43,11 @@ class BackgroundDownloads {
   final _handlers = <String, DownloadHandler>{};
   StreamSubscription<TaskUpdate>? _sub;
   Future<void>? _started;
+  final _held = <String>{};
+
+  /// Called when the reader taps a download's notification (the app
+  /// opens the Downloads screen; nothing is queued).
+  void Function()? onNotificationTap;
 
   /// Every task not yet finished and installed, by task id.
   final tasks = ValueNotifier<Map<String, TaskRecord>>(const {});
@@ -61,6 +66,10 @@ class BackgroundDownloads {
         paused: n.paused,
         progressBar: true,
         groupNotificationId: n.groupNotificationId,
+      );
+      dl.registerCallbacks(
+        group: handler.group,
+        taskNotificationTapCallback: (_, _) => onNotificationTap?.call(),
       );
     }
   }
@@ -125,9 +134,29 @@ class BackgroundDownloads {
 
   /// Resumes a paused task; false when there is none to resume.
   Future<bool> resume(String id) async {
+    if (_held.remove(id)) return false;
     final t = await dl.taskForId(id);
     if (t is DownloadTask) return dl.resume(t);
     return false;
+  }
+
+  /// Holds a task that has not started yet (the system cannot pause one
+  /// still waiting in its queue): it leaves the queue and is listed as
+  /// paused; [resume] reports false for it, and its handler queues it
+  /// again.
+  Future<void> hold(String id) async {
+    final old = tasks.value[id];
+    if (old == null) return;
+    _held.add(id);
+    await dl.cancelTasksWithIds([id]);
+    _set(
+      TaskRecord(
+        old.task,
+        TaskStatus.paused,
+        old.progress,
+        old.expectedFileSize,
+      ),
+    );
   }
 
   Future<void> cancel(Iterable<String> ids) async {
@@ -140,6 +169,7 @@ class BackgroundDownloads {
 
   /// Drops a task's record once its handler is done with it.
   Future<void> forget(String id) async {
+    _held.remove(id);
     await dl.database.deleteRecordWithId(id);
     if (tasks.value.containsKey(id)) {
       tasks.value = {...tasks.value}..remove(id);
@@ -152,6 +182,8 @@ class BackgroundDownloads {
     final task = update.task;
     final h = _handlers[task.group];
     if (h == null) return;
+    // A held task's cancellation: it stays listed as paused.
+    if (_held.contains(task.taskId)) return;
     final old = tasks.value[task.taskId];
     switch (update) {
       case TaskProgressUpdate(:final progress, :final expectedFileSize):

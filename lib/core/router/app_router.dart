@@ -21,7 +21,7 @@ import '../../features/khatma/presentation/khatma_screen.dart';
 import '../../features/khatma/presentation/new_khatma_screen.dart';
 import '../../features/khatma/presentation/reports_screen.dart';
 import '../../features/mushaf/presentation/about_mushaf_screen.dart';
-import '../../features/mushaf/presentation/download_all_screen.dart';
+import '../../features/mushaf/presentation/downloads_center_screen.dart';
 import '../../features/mushaf/presentation/download_screen.dart';
 import '../../features/mushaf/presentation/fawasil_screen.dart';
 import '../../features/mushaf/presentation/index_screen.dart';
@@ -89,7 +89,7 @@ final appRouterProvider = Provider<GoRouter>(
       GoRoute(
         path: '/downloads',
         builder: (context, state) =>
-            const LookTheme(child: DownloadAllScreen()),
+            const LookTheme(child: DownloadsCenterScreen()),
       ),
       GoRoute(
         path: '/splash',

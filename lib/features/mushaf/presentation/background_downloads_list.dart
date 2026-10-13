@@ -14,24 +14,33 @@ import 'widgets/illuminated_frame.dart';
 /// model, recitations), each with its progress and pause / resume / retry
 /// / cancel. Nothing when there are none.
 class BackgroundDownloadsList extends ConsumerWidget {
-  const BackgroundDownloadsList({super.key});
+  const BackgroundDownloadsList({
+    super.key,
+    this.model = true,
+    this.recitations = true,
+  });
+
+  /// Whether to list the recognition model's download.
+  final bool model;
+
+  /// Whether to list the recitations' downloads.
+  final bool recitations;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final downloads = ref.watch(backgroundDownloadsProvider);
-    final model = ref.watch(backgroundModelDownloadProvider);
-    final recitations = ref.watch(backgroundRecitationsProvider);
+    final modelDl = ref.watch(backgroundModelDownloadProvider);
+    final bg = ref.watch(backgroundRecitationsProvider);
     return ListenableBuilder(
-      listenable: Listenable.merge([
-        downloads.tasks,
-        recitations.files.changes,
-      ]),
+      listenable: Listenable.merge([downloads.tasks, bg.files.changes]),
       builder: (context, _) {
         final records = downloads.tasks.value.values;
-        final manifest = model.active;
+        final manifest = model ? modelDl.active : null;
         final byReciter = <int, List<TaskRecord>>{};
         for (final r in records) {
-          if (r.group != BackgroundRecitations.kGroup) continue;
+          if (!recitations || r.group != BackgroundRecitations.kGroup) {
+            continue;
+          }
           final d = BackgroundRecitations.decode(r.task);
           if (d != null) (byReciter[d.reciter] ??= []).add(r);
         }
@@ -44,10 +53,10 @@ class BackgroundDownloadsList extends ConsumerWidget {
                   for (final r in records)
                     if (r.group == BackgroundModelDownload.kGroup) r,
                 ],
-                model: model,
+                model: modelDl,
               ),
             for (final e in byReciter.entries)
-              _ReciterRow(reciter: e.key, records: e.value, bg: recitations),
+              _ReciterRow(reciter: e.key, records: e.value, bg: bg),
           ],
         );
       },
@@ -58,14 +67,19 @@ class BackgroundDownloadsList extends ConsumerWidget {
 bool _failed(TaskRecord r) =>
     r.status == TaskStatus.failed || r.status == TaskStatus.notFound;
 
-class _Row extends StatelessWidget {
-  const _Row({
+/// One download: its title, progress, status line and actions.
+class DownloadRow extends StatelessWidget {
+  const DownloadRow({
     super.key,
     required this.title,
     required this.status,
     required this.fraction,
     required this.actions,
+    this.done = false,
   });
+
+  /// Finished: no progress bar.
+  final bool done;
 
   final String title;
   final String status;
@@ -97,8 +111,10 @@ class _Row extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      LinearProgressIndicator(value: fraction, minHeight: 6),
+                      if (!done) ...[
+                        const SizedBox(height: 8),
+                        LinearProgressIndicator(value: fraction, minHeight: 6),
+                      ],
                       const SizedBox(height: 6),
                       Text(
                         status,
@@ -146,7 +162,7 @@ class _ModelRow extends StatelessWidget {
     final paused =
         records.isNotEmpty &&
         records.every((r) => r.status == TaskStatus.paused);
-    return _Row(
+    return DownloadRow(
       key: const ValueKey('downloads-tasmee-model'),
       title: l.tasmeeModelTitle,
       fraction: total == 0 ? null : received / total,
@@ -199,10 +215,18 @@ class _ReciterRow extends StatelessWidget {
     final digits = NumberFormatter(Localizations.localeOf(context));
     final done = bg.files.downloaded(reciter).length;
     final failed = records.any(_failed);
-    return _Row(
+    final paused = bg.paused(reciter);
+    // Surahs on their way count by how far they have come.
+    var partial = 0.0;
+    for (final r in records) {
+      if (r.status == TaskStatus.running || r.status == TaskStatus.paused) {
+        partial += r.progress.clamp(0, 1);
+      }
+    }
+    return DownloadRow(
       key: ValueKey('downloads-reciter-$reciter'),
       title: records.first.task.displayName,
-      fraction: done / 114,
+      fraction: ((done + partial) / 114).clamp(0, 1),
       status: failed
           ? l.downloadFailed('')
           : '${l.audioDownloaded}: ${digits(done)} / ${digits(114)}',
@@ -212,6 +236,18 @@ class _ReciterRow extends StatelessWidget {
             tooltip: l.downloadRetry,
             onPressed: () => bg.retryReciter(reciter),
             icon: const Icon(Icons.refresh),
+          )
+        else if (paused)
+          IconButton(
+            tooltip: l.downloadResume,
+            onPressed: () => bg.resumeReciter(reciter),
+            icon: const Icon(Icons.play_arrow),
+          )
+        else
+          IconButton(
+            tooltip: l.downloadPause,
+            onPressed: () => bg.pauseReciter(reciter),
+            icon: const Icon(Icons.pause),
           ),
         IconButton(
           tooltip: l.cancel,

@@ -86,6 +86,7 @@ class _AudioDownloadsScreenState extends ConsumerState<AudioDownloadsScreen> {
     final files = ref.read(audioFilesProvider);
     final bg = ref.read(backgroundRecitationsProvider);
     final all = _anyQueued(bg, reciter.id);
+    final paused = bg.paused(reciter.id);
     return LookScaffold(
       body: SafeArea(
         bottom: false,
@@ -106,9 +107,24 @@ class _AudioDownloadsScreenState extends ConsumerState<AudioDownloadsScreen> {
                       '${l.audioDownloaded}: ${digits(have.length)} / ${digits(114)}',
                     ),
                     trailing: all
-                        ? TextButton(
-                            onPressed: () => bg.cancelReciter(reciter.id),
-                            child: Text(l.cancel),
+                        ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              TextButton(
+                                key: const ValueKey('audio-all-toggle'),
+                                onPressed: () => paused
+                                    ? bg.resumeReciter(reciter.id)
+                                    : bg.pauseReciter(reciter.id),
+                                child: Text(
+                                  paused ? l.audioDownloadResume : l.pause,
+                                ),
+                              ),
+                              IconButton(
+                                tooltip: l.cancel,
+                                onPressed: () => bg.cancelReciter(reciter.id),
+                                icon: const Icon(Icons.close),
+                              ),
+                            ],
                           )
                         : FilledButton.tonal(
                             onPressed: have.length == 114

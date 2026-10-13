@@ -39,7 +39,7 @@ import 'package:tibyan/features/khatma/presentation/new_khatma_screen.dart';
 import 'package:tibyan/features/khatma/presentation/reports_screen.dart';
 import 'package:tibyan/features/mushaf/data/mushaf_repository.dart';
 import 'package:tibyan/features/mushaf/presentation/about_mushaf_screen.dart';
-import 'package:tibyan/features/mushaf/presentation/download_all_screen.dart';
+import 'package:tibyan/features/mushaf/presentation/downloads_center_screen.dart';
 import 'package:tibyan/features/mushaf/presentation/fawasil_screen.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/go_to_page.dart';
 import 'package:tibyan/features/onboarding/onboarding_edition_screen.dart';
@@ -223,7 +223,7 @@ void main() {
         ('tajweed_marks', const TajweedMarksScreen()),
         ('fawasil', const FawasilScreen()),
         ('search', const SearchScreen()),
-        ('downloads', const DownloadAllScreen()),
+        ('downloads', const DownloadsCenterScreen()),
         ('storage', const StorageScreen()),
         ('audio_downloads', const AudioDownloadsScreen()),
         ('about', const AboutMushafScreen()),

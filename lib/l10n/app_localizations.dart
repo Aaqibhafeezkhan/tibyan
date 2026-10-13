@@ -914,11 +914,77 @@ abstract class AppLocalizations {
   /// **'متابعة'**
   String get resume;
 
+  /// No description provided for @downloadsSectionMushaf.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصاحف'**
+  String get downloadsSectionMushaf;
+
+  /// No description provided for @downloadsSectionRecitations.
+  ///
+  /// In ar, this message translates to:
+  /// **'القراءات الصوتية'**
+  String get downloadsSectionRecitations;
+
+  /// No description provided for @downloadsSectionResources.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموارد'**
+  String get downloadsSectionResources;
+
+  /// No description provided for @downloadsOnDevice.
+  ///
+  /// In ar, this message translates to:
+  /// **'على الجهاز · {size} ميجا'**
+  String downloadsOnDevice(String size);
+
+  /// No description provided for @downloadsAvailable.
+  ///
+  /// In ar, this message translates to:
+  /// **'متاح للتحميل · {size} ميجا'**
+  String downloadsAvailable(String size);
+
+  /// No description provided for @downloadsReciterOnDevice.
+  ///
+  /// In ar, this message translates to:
+  /// **'على الجهاز: {done} / {total} · {size} ميجا'**
+  String downloadsReciterOnDevice(String done, String total, String size);
+
+  /// No description provided for @downloadsAvailableShort.
+  ///
+  /// In ar, this message translates to:
+  /// **'متاح للتحميل'**
+  String get downloadsAvailableShort;
+
+  /// No description provided for @downloadsGoesOn.
+  ///
+  /// In ar, this message translates to:
+  /// **'يكمل التحميل في الخلفية'**
+  String get downloadsGoesOn;
+
   /// No description provided for @pause.
   ///
   /// In ar, this message translates to:
   /// **'إيقاف مؤقت'**
   String get pause;
+
+  /// No description provided for @downloadsOpen.
+  ///
+  /// In ar, this message translates to:
+  /// **'مركز التحميلات'**
+  String get downloadsOpen;
+
+  /// No description provided for @downloadsOpenHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصاحف والقراءات الصوتية والموارد: ما على الجهاز وما يحمَّل وما هو متاح'**
+  String get downloadsOpenHint;
+
+  /// No description provided for @audioDownloadResume.
+  ///
+  /// In ar, this message translates to:
+  /// **'استئناف'**
+  String get audioDownloadResume;
 
   /// No description provided for @slower.
   ///
@@ -1475,7 +1541,7 @@ abstract class AppLocalizations {
   /// No description provided for @downloadAllEditions.
   ///
   /// In ar, this message translates to:
-  /// **'تحميل كل المصاحف ({size} ميجا)'**
+  /// **'مركز التحميلات ({size} ميجا متاحة)'**
   String downloadAllEditions(String size);
 
   /// No description provided for @downloadInBackgroundNote.
@@ -1721,7 +1787,7 @@ abstract class AppLocalizations {
   /// No description provided for @downloadAllTitle.
   ///
   /// In ar, this message translates to:
-  /// **'تحميل كل المصاحف'**
+  /// **'مركز التحميلات'**
   String get downloadAllTitle;
 
   /// No description provided for @downloadAllCount.

@@ -497,7 +497,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resume => 'Resume';
 
   @override
+  String get downloadsSectionMushaf => 'Mushafs';
+
+  @override
+  String get downloadsSectionRecitations => 'Recitations';
+
+  @override
+  String get downloadsSectionResources => 'Resources';
+
+  @override
+  String downloadsOnDevice(String size) {
+    return 'On the device · $size MB';
+  }
+
+  @override
+  String downloadsAvailable(String size) {
+    return 'Available · $size MB';
+  }
+
+  @override
+  String downloadsReciterOnDevice(String done, String total, String size) {
+    return 'On the device: $done / $total · $size MB';
+  }
+
+  @override
+  String get downloadsAvailableShort => 'Available';
+
+  @override
+  String get downloadsGoesOn => 'The download goes on in the background';
+
+  @override
   String get pause => 'Pause';
+
+  @override
+  String get downloadsOpen => 'Downloads Center';
+
+  @override
+  String get downloadsOpenHint =>
+      'Mushafs, recitations and resources: on the device, downloading and available';
+
+  @override
+  String get audioDownloadResume => 'Resume';
 
   @override
   String get slower => 'Slower';
@@ -834,7 +874,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String downloadAllEditions(String size) {
-    return 'Download all editions ($size MB)';
+    return 'Downloads Center ($size MB available)';
   }
 
   @override
@@ -997,7 +1037,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get downloadAllTitle => 'Download all editions';
+  String get downloadAllTitle => 'Downloads Center';
 
   @override
   String downloadAllCount(String done, String total) {

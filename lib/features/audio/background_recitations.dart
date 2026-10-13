@@ -130,6 +130,51 @@ class BackgroundRecitations implements DownloadHandler {
       if (r.group == kGroup && decode(r.task)?.reciter == reciter) r.taskId,
   ]);
 
+  Iterable<TaskRecord> _records(int reciter) => _downloads.tasks.value.values
+      .where((r) => r.group == kGroup && decode(r.task)?.reciter == reciter);
+
+  /// Whether [reciter] has surahs queued and every one of them is paused.
+  bool paused(int reciter) {
+    final rs = _records(reciter).where(
+      (r) => r.status != TaskStatus.failed && r.status != TaskStatus.notFound,
+    );
+    return rs.isNotEmpty && rs.every((r) => r.status == TaskStatus.paused);
+  }
+
+  /// Pauses [reciter]'s surahs that are downloading or waiting; a waiting
+  /// one is held as paused so it does not start.
+  Future<void> pauseReciter(int reciter) async {
+    for (final r in _records(reciter).toList()) {
+      if (r.status == TaskStatus.running) {
+        await _downloads.pause(r.taskId);
+      } else if (r.status == TaskStatus.enqueued) {
+        await _downloads.hold(r.taskId);
+      }
+    }
+  }
+
+  /// Continues [reciter]'s paused surahs.
+  Future<void> resumeReciter(int reciter) async {
+    for (final r in _records(reciter).toList()) {
+      if (r.status != TaskStatus.paused) continue;
+      if (!await _downloads.resume(r.taskId)) {
+        // Held before it started (or the system lost it): queue it again.
+        final d = decode(r.task);
+        await _downloads.forget(r.taskId);
+        if (d == null || files.has(d.reciter, d.surah)) continue;
+        await _downloads.enqueue(
+          _task(
+            reciter: d.reciter,
+            surah: d.surah,
+            urls: d.urls,
+            source: d.source,
+            displayName: r.task.displayName,
+          ),
+        );
+      }
+    }
+  }
+
   /// Queues again [reciter]'s surahs that failed.
   Future<void> retryReciter(int reciter) async {
     for (final r in _downloads.tasks.value.values.toList()) {

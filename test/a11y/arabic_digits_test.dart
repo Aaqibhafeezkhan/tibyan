@@ -9,7 +9,7 @@ import 'package:tibyan/features/khatma/presentation/journal_screen.dart';
 import 'package:tibyan/features/khatma/presentation/khatma_screen.dart';
 import 'package:tibyan/features/khatma/presentation/new_khatma_screen.dart';
 import 'package:tibyan/features/khatma/presentation/reports_screen.dart';
-import 'package:tibyan/features/mushaf/presentation/download_all_screen.dart';
+import 'package:tibyan/features/mushaf/presentation/downloads_center_screen.dart';
 import 'package:tibyan/features/settings/storage_screen.dart';
 import 'package:tibyan/features/tasmee/presentation/tasmee_settings_screen.dart';
 import 'package:tibyan/features/tasmee/presentation/tasmee_setup_screen.dart';
@@ -81,7 +81,7 @@ void main() {
     'assistant': const AssistantScreen(),
     'tajweed marks': const TajweedMarksScreen(),
     'hifz': const HifzScreen(),
-    'downloads': const DownloadAllScreen(),
+    'downloads': const DownloadsCenterScreen(),
     'storage': const StorageScreen(),
   };
 

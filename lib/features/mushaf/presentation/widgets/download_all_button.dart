@@ -8,8 +8,8 @@ import '../../data/page_pack.dart';
 import '../../mushaf_providers.dart';
 import 'illuminated_frame.dart';
 
-/// Queues every edition that is not on the device yet, in one tap, and
-/// opens the screen that follows them. Hidden when all of them are there.
+/// Opens the Downloads Center, where the editions not on the device yet
+/// can be downloaded. Hidden when all of them are there.
 class DownloadAllButton extends ConsumerWidget {
   const DownloadAllButton({super.key});
 
@@ -29,10 +29,8 @@ class DownloadAllButton extends ConsumerWidget {
       child: OutlinedButton.icon(
         icon: const Icon(Icons.download_for_offline_outlined),
         label: Text(l.downloadAllEditions(digits((mb / 1e6).round()))),
-        onPressed: () async {
-          await ref.read(pageDownloadProvider.notifier).startAll();
-          if (context.mounted) context.push('/downloads');
-        },
+        // Opens the Downloads Center; downloading is its own button there.
+        onPressed: () => context.push('/downloads'),
       ),
     );
   }

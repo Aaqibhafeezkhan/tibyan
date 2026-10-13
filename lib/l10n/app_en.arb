@@ -203,7 +203,21 @@
   "reciteMode": "Recitation mode",
   "autoScroll": "Auto-scroll",
   "resume": "Resume",
+  "downloadsSectionMushaf": "Mushafs",
+  "downloadsSectionRecitations": "Recitations",
+  "downloadsSectionResources": "Resources",
+  "downloadsOnDevice": "On the device · {size} MB",
+  "@downloadsOnDevice": {"placeholders": {"size": {"type": "String"}}},
+  "downloadsAvailable": "Available · {size} MB",
+  "@downloadsAvailable": {"placeholders": {"size": {"type": "String"}}},
+  "downloadsReciterOnDevice": "On the device: {done} / {total} · {size} MB",
+  "@downloadsReciterOnDevice": {"placeholders": {"done": {"type": "String"}, "total": {"type": "String"}, "size": {"type": "String"}}},
+  "downloadsAvailableShort": "Available",
+  "downloadsGoesOn": "The download goes on in the background",
   "pause": "Pause",
+  "downloadsOpen": "Downloads Center",
+  "downloadsOpenHint": "Mushafs, recitations and resources: on the device, downloading and available",
+  "audioDownloadResume": "Resume",
   "slower": "Slower",
   "faster": "Faster",
   "stopAutoScroll": "Stop scrolling",
@@ -446,7 +460,7 @@
       }
     }
   },
-  "downloadAllEditions": "Download all editions ({size} MB)",
+  "downloadAllEditions": "Downloads Center ({size} MB available)",
   "@downloadAllEditions": {
     "placeholders": {
       "size": {
@@ -534,7 +548,7 @@
   "rootOccurrencesCount": "Words: {words}, verses: {verses}",
   "verseNoMeanings": "Al-Muyassar fi Gharib al-Quran has no entries for this verse.",
   "wordStudyVerse": "{surah}, verse {ayah}",
-  "downloadAllTitle": "Download all editions",
+  "downloadAllTitle": "Downloads Center",
   "downloadAllCount": "{done} of {total} done",
   "@downloadAllCount": {
     "placeholders": {
