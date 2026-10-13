@@ -2528,6 +2528,39 @@ class AppLocalizationsAr extends AppLocalizations {
       'ضغطة مطولة على الصفحة تفتح نافذة فيها كل الأدوات';
 
   @override
+  String get pageTurnLabel => 'تأثير قلب الصفحة';
+
+  @override
+  String get pageTurnNormal => 'طبيعي';
+
+  @override
+  String get pageTurnNormalHint => 'تنزلق الصفحة جانبًا';
+
+  @override
+  String get pageTurnCurl => 'قلب ثلاثي الأبعاد';
+
+  @override
+  String get pageTurnCurlHint => 'تنقلب الصفحة كورق المصحف';
+
+  @override
+  String get pageTurnBend => 'انحناء الورقة';
+
+  @override
+  String get pageTurnBendHint => 'تلتف الصفحة مع إصبعك كالورق ويظهر ظهرها';
+
+  @override
+  String get pageTurnFold => 'انحناء خفيف';
+
+  @override
+  String get pageTurnFoldHint => 'ينثني طرف الصفحة مع إصبعك، أخف على الجهاز';
+
+  @override
+  String get pageTurnFade => 'تلاشي';
+
+  @override
+  String get pageTurnFadeHint => 'تظهر الصفحة التالية فوق السابقة بهدوء';
+
+  @override
   String get pageFillLabel => 'ملء الشاشة';
 
   @override

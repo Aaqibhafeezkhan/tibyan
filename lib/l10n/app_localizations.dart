@@ -4195,6 +4195,72 @@ abstract class AppLocalizations {
   /// **'ضغطة مطولة على الصفحة تفتح نافذة فيها كل الأدوات'**
   String get focusToolsMenuHint;
 
+  /// No description provided for @pageTurnLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأثير قلب الصفحة'**
+  String get pageTurnLabel;
+
+  /// No description provided for @pageTurnNormal.
+  ///
+  /// In ar, this message translates to:
+  /// **'طبيعي'**
+  String get pageTurnNormal;
+
+  /// No description provided for @pageTurnNormalHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنزلق الصفحة جانبًا'**
+  String get pageTurnNormalHint;
+
+  /// No description provided for @pageTurnCurl.
+  ///
+  /// In ar, this message translates to:
+  /// **'قلب ثلاثي الأبعاد'**
+  String get pageTurnCurl;
+
+  /// No description provided for @pageTurnCurlHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنقلب الصفحة كورق المصحف'**
+  String get pageTurnCurlHint;
+
+  /// No description provided for @pageTurnBend.
+  ///
+  /// In ar, this message translates to:
+  /// **'انحناء الورقة'**
+  String get pageTurnBend;
+
+  /// No description provided for @pageTurnBendHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تلتف الصفحة مع إصبعك كالورق ويظهر ظهرها'**
+  String get pageTurnBendHint;
+
+  /// No description provided for @pageTurnFold.
+  ///
+  /// In ar, this message translates to:
+  /// **'انحناء خفيف'**
+  String get pageTurnFold;
+
+  /// No description provided for @pageTurnFoldHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'ينثني طرف الصفحة مع إصبعك، أخف على الجهاز'**
+  String get pageTurnFoldHint;
+
+  /// No description provided for @pageTurnFade.
+  ///
+  /// In ar, this message translates to:
+  /// **'تلاشي'**
+  String get pageTurnFade;
+
+  /// No description provided for @pageTurnFadeHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تظهر الصفحة التالية فوق السابقة بهدوء'**
+  String get pageTurnFadeHint;
+
   /// No description provided for @pageFillLabel.
   ///
   /// In ar, this message translates to:

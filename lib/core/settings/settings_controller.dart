@@ -60,6 +60,7 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kFocusToolsShown = 'settings.focusToolsShown';
   static const _kAutoScrollSpeed = 'settings.autoScrollSpeed';
   static const _kPageFill = 'settings.pageFill';
+  static const _kPageTurn = 'settings.pageTurn';
   static const _kPlayerStyle = 'settings.playerStyle';
   static const _kPlayerX = 'settings.playerX';
   static const _kPlayerY = 'settings.playerY';
@@ -160,6 +161,9 @@ class SettingsController extends Notifier<AppSettings> {
       pageFill:
           _enumByName(PageFill.values, _prefs.getString(_kPageFill)) ??
           PageFill.lines,
+      pageTurn:
+          _enumByName(PageTurn.values, _prefs.getString(_kPageTurn)) ??
+          PageTurn.normal,
       playerStyle:
           _enumByName(PlayerStyle.values, _prefs.getString(_kPlayerStyle)) ??
           PlayerStyle.auto,
@@ -437,6 +441,11 @@ class SettingsController extends Notifier<AppSettings> {
     final speed = value.clamp(1, 10);
     state = state.copyWith(autoScrollSpeed: speed);
     await _prefs.setInt(_kAutoScrollSpeed, speed);
+  }
+
+  Future<void> setPageTurn(PageTurn value) async {
+    state = state.copyWith(pageTurn: value);
+    await _prefs.setString(_kPageTurn, value.name);
   }
 
   Future<void> setPageFill(PageFill value) async {

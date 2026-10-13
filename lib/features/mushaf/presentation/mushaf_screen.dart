@@ -59,6 +59,7 @@ import '../../sajdah/sajdah_positions.dart';
 import '../mushaf_providers.dart';
 import 'download_screen.dart';
 import 'page_spreads.dart';
+import 'widgets/page_turn_effect.dart';
 import 'widgets/art_frame.dart';
 import 'widgets/fasil_sheet.dart';
 import 'widgets/go_to_page.dart';
@@ -554,14 +555,33 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     if (n.depth != 0) return false;
     if (n is ScrollStartNotification) {
       _barHold ??= _indexOf(_page);
-    } else if (n is ScrollEndNotification && _barHold != null) {
-      setState(() => _barHold = null);
+    } else if (n is ScrollEndNotification) {
+      final settled = _pendingIndex;
+      _pendingIndex = null;
+      if (settled != null) {
+        _barHold = null;
+        _showPage(_pagesAt(settled).first);
+      } else if (_barHold != null) {
+        setState(() => _barHold = null);
+      }
     }
     return false;
   }
 
-  /// The pager turned to [index] (a page, or a spread).
-  Future<void> _onPageChanged(int index) => _showPage(_pagesAt(index).first);
+  /// The page the pager crossed to mid-turn, shown once it comes to rest.
+  int? _pendingIndex;
+
+  /// The pager turned to [index] (a page, or a spread). The pager reports
+  /// this half way through the turn; the page's state, overlays and saved
+  /// position wait for the turn to finish, so the animation keeps the
+  /// frame budget.
+  Future<void> _onPageChanged(int index) async {
+    if (_barHold != null) {
+      _pendingIndex = index;
+      return;
+    }
+    await _showPage(_pagesAt(index).first);
+  }
 
   Future<void> _showPage(int page) async {
     setState(() {
@@ -1151,33 +1171,41 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                                                               true,
                                                           onPageChanged:
                                                               _onPageChanged,
-                                                          itemBuilder: (context, i) {
-                                                            final pages =
-                                                                _pagesAt(i);
-                                                            if (pages.length ==
-                                                                1) {
-                                                              return pageOf(
-                                                                pages.single,
+                                                          itemBuilder: (context, i) => PageTurnEffect(
+                                                            controller:
+                                                                _controller,
+                                                            index: i,
+                                                            effect: settings
+                                                                .pageTurn,
+                                                            child: () {
+                                                              final pages =
+                                                                  _pagesAt(i);
+                                                              if (pages
+                                                                      .length ==
+                                                                  1) {
+                                                                return pageOf(
+                                                                  pages.single,
+                                                                );
+                                                              }
+                                                              // Right page first: the mushaf opens
+                                                              // from the right.
+                                                              return Row(
+                                                                textDirection:
+                                                                    TextDirection
+                                                                        .rtl,
+                                                                children: [
+                                                                  for (final pg
+                                                                      in pages)
+                                                                    Expanded(
+                                                                      child:
+                                                                          pageOf(
+                                                                            pg,
+                                                                          ),
+                                                                    ),
+                                                                ],
                                                               );
-                                                            }
-                                                            // Right page first: the mushaf opens
-                                                            // from the right.
-                                                            return Row(
-                                                              textDirection:
-                                                                  TextDirection
-                                                                      .rtl,
-                                                              children: [
-                                                                for (final pg
-                                                                    in pages)
-                                                                  Expanded(
-                                                                    child:
-                                                                        pageOf(
-                                                                          pg,
-                                                                        ),
-                                                                  ),
-                                                              ],
-                                                            );
-                                                          },
+                                                            }(),
+                                                          ),
                                                         ),
                                                       ),
                                                     );

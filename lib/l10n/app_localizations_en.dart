@@ -2487,6 +2487,41 @@ class AppLocalizationsEn extends AppLocalizations {
       'A long press on the page opens a window with every tool';
 
   @override
+  String get pageTurnLabel => 'Page turn effect';
+
+  @override
+  String get pageTurnNormal => 'Normal';
+
+  @override
+  String get pageTurnNormalHint => 'The page slides aside';
+
+  @override
+  String get pageTurnCurl => '3D page flip';
+
+  @override
+  String get pageTurnCurlHint => 'The page turns over like paper';
+
+  @override
+  String get pageTurnBend => 'Paper curl';
+
+  @override
+  String get pageTurnBendHint =>
+      'The page curls round with your finger like paper, its back showing';
+
+  @override
+  String get pageTurnFold => 'Light curl';
+
+  @override
+  String get pageTurnFoldHint =>
+      'The page\'s edge folds back with your finger, lighter on the device';
+
+  @override
+  String get pageTurnFade => 'Fade';
+
+  @override
+  String get pageTurnFadeHint => 'The next page fades in over the last';
+
+  @override
   String get pageFillLabel => 'Filling the screen';
 
   @override

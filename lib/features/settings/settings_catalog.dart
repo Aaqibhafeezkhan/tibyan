@@ -221,6 +221,12 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         ),
         keywords: 'صفحتين متقابلتين جهاز لوحي two pages spread tablet',
       ),
+      SettingEntry(
+        'pageTurn',
+        (l) => l.pageTurnLabel,
+        (c, r) => const PageTurnCard(),
+        keywords: 'تأثير قلب الصفحة تقليب ثلاثي الأبعاد تلاشي حركة انحناء الورقة ثني page turn flip curl bend paper 3d fade animation',
+      ),
     ]),
     SettingsGroup(Icons.fullscreen, (l) => l.focusModeTitle, [
       SettingEntry(

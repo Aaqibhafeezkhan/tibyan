@@ -70,6 +70,14 @@ enum FocusTools { button, menu }
 /// axes to the room, which changes the letters' shape.
 enum PageFill { lines, stretch, full }
 
+/// «تأثير قلب الصفحة»: how the mushaf turns a page. [normal]: the page
+/// slides (the default); [curl]: the page folds over in 3D like paper;
+/// [bend]: the page wraps round a cylinder that follows the finger, its
+/// print bending with it and its back showing (a fragment shader);
+/// [fold]: a lighter bend, the edge folded back flat along a line;
+/// [fade]: the next page fades in over the last.
+enum PageTurn { normal, curl, bend, fold, fade }
+
 /// «شكل المشغل»: the player over the mushaf. [auto]: the normal bar, and
 /// the pill in focus mode; [normal]: the bar everywhere; [pill]: the small
 /// floating pill everywhere; [button]: one small round button everywhere.
@@ -163,6 +171,7 @@ class AppSettings {
     this.focusToolsShown = false,
     this.autoScrollSpeed = 3,
     this.pageFill = PageFill.lines,
+    this.pageTurn = PageTurn.normal,
     this.playerStyle = PlayerStyle.auto,
     this.playerPosition,
     this.sajdahTimer = false,
@@ -305,6 +314,9 @@ class AppSettings {
   /// How the page fills the screen in focus mode.
   final PageFill pageFill;
 
+  /// How a page turn looks.
+  final PageTurn pageTurn;
+
   /// How the player over the mushaf looks.
   final PlayerStyle playerStyle;
 
@@ -386,6 +398,7 @@ class AppSettings {
     bool? focusToolsShown,
     int? autoScrollSpeed,
     PageFill? pageFill,
+    PageTurn? pageTurn,
     PlayerStyle? playerStyle,
     Offset? Function()? playerPosition,
     bool? sajdahTimer,
@@ -436,6 +449,7 @@ class AppSettings {
     focusToolsShown: focusToolsShown ?? this.focusToolsShown,
     autoScrollSpeed: autoScrollSpeed ?? this.autoScrollSpeed,
     pageFill: pageFill ?? this.pageFill,
+    pageTurn: pageTurn ?? this.pageTurn,
     playerStyle: playerStyle ?? this.playerStyle,
     playerPosition: playerPosition == null
         ? this.playerPosition
