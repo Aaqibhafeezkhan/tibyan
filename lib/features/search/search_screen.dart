@@ -19,6 +19,7 @@ import 'search_engine.dart';
 import '../mushaf/presentation/navigation.dart';
 import 'semantic/meaning_results.dart';
 import '../khatma/domain/khatmah.dart' show EntryPoint;
+import '../../core/ui/responsive.dart';
 
 /// Every verse's searchable text, loaded once.
 final searchVersesProvider = FutureProvider<List<SearchVerse>>((ref) async {
@@ -197,6 +198,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final total = hits.fold<int>(0, (n, h) => n + h.count);
 
     return LookScaffold(
+      maxWidth: ContentWidth.text,
       body: SafeArea(
         bottom: false,
         child: Column(

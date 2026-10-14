@@ -7,6 +7,7 @@ import '../../../core/ui/look_kit.dart';
 import '../../../l10n/app_localizations.dart';
 import '../settings_widgets.dart' show appVersionProvider;
 import 'problem_report.dart';
+import '../../../core/ui/responsive.dart';
 
 const reportLocation = '/settings/report';
 
@@ -108,7 +109,9 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 560),
+                  constraints: const BoxConstraints(
+                    maxWidth: ContentWidth.narrow,
+                  ),
                   child: Form(
                     key: _form,
                     child: ListView(

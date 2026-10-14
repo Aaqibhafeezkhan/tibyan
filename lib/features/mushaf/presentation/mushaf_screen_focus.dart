@@ -227,7 +227,7 @@ class _SmallFocusButton extends StatelessWidget {
       child: Tooltip(
         message: label,
         excludeFromSemantics: true,
-        child: InkResponse(
+        child: HoverHalo(
           onTap: onTap,
           radius: 20,
           child: SizedBox.square(

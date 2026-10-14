@@ -163,7 +163,7 @@ class SettingsController extends Notifier<AppSettings> {
           PageFill.lines,
       pageTurn:
           _enumByName(PageTurn.values, _prefs.getString(_kPageTurn)) ??
-          PageTurn.normal,
+          PageTurn.fold,
       playerStyle:
           _enumByName(PlayerStyle.values, _prefs.getString(_kPlayerStyle)) ??
           PlayerStyle.auto,

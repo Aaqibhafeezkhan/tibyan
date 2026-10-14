@@ -7,6 +7,7 @@ import '../../core/theme/interface_style.dart';
 import '../../core/ui/look_kit.dart';
 import '../../l10n/app_localizations.dart';
 import 'settings_catalog.dart';
+import '../../core/ui/responsive.dart';
 
 /// One tile of the settings grid: its groups of settings. With [focus]
 /// (a setting's id, from the search) it scrolls to that setting and
@@ -71,7 +72,9 @@ class _SettingsSectionScreenState extends ConsumerState<SettingsSectionScreen> {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 760),
+                  constraints: const BoxConstraints(
+                    maxWidth: ContentWidth.text,
+                  ),
                   // Built whole, not lazily: the search scrolls to any
                   // setting, so each must exist.
                   child: SingleChildScrollView(

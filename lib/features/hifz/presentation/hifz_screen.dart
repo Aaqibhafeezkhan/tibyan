@@ -21,6 +21,7 @@ import 'goals_tab.dart';
 import 'hifz_sheets.dart';
 import 'progress_tabs.dart';
 import 'strength_style.dart';
+import '../../../core/ui/responsive.dart';
 
 /// Opens the mushaf on a unit's first page in recitation mode, as a test
 /// of that unit (graded at the end).
@@ -105,7 +106,9 @@ class HifzScreen extends StatelessWidget {
                   // whole window.
                   child: Center(
                     child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 820),
+                      constraints: const BoxConstraints(
+                        maxWidth: ContentWidth.text,
+                      ),
                       child: TabBarView(
                         children: [
                           const _TodayTab(),

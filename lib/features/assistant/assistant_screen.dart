@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
 import 'help_topics.dart';
+import '../../core/ui/responsive.dart';
 
 /// Where the Assistant opens.
 const assistantLocation = '/assistant';
@@ -40,7 +41,9 @@ class AssistantScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 560),
+                  constraints: const BoxConstraints(
+                    maxWidth: ContentWidth.narrow,
+                  ),
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
                     children: [
@@ -145,7 +148,9 @@ class HelpTopicScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 560),
+                  constraints: const BoxConstraints(
+                    maxWidth: ContentWidth.narrow,
+                  ),
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
                     children: [

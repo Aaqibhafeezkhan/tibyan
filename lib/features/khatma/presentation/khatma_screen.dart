@@ -16,6 +16,7 @@ import '../domain/khatma_stats.dart';
 import '../domain/khatmah.dart'
     show CountingMode, EntryPoint, Khatmah, KhatmahStatus;
 import '../khatma_providers.dart';
+import '../../../core/ui/responsive.dart';
 
 enum _RecoveryAction { today, gradually, spread, extend }
 
@@ -190,7 +191,7 @@ class _Column extends StatelessWidget {
   Widget build(BuildContext context) => Align(
     alignment: Alignment.topCenter,
     child: ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 640),
+      constraints: const BoxConstraints(maxWidth: ContentWidth.text),
       child: child,
     ),
   );

@@ -211,6 +211,29 @@ ThemeData buildTheme({
       ),
     ),
     dividerTheme: DividerThemeData(color: t.border, space: 1),
+    // Scrollbars on tablets and desktop windows (AppScrollBehavior): thin,
+    // in the ink's colour, and draggable.
+    scrollbarTheme: ScrollbarThemeData(
+      thickness: WidgetStateProperty.resolveWith(
+        (states) => states.contains(WidgetState.hovered) ? 10 : 6,
+      ),
+      radius: const Radius.circular(8),
+      interactive: true,
+      thumbColor: WidgetStateProperty.resolveWith(
+        (states) => t.ink.withValues(
+          alpha: states.contains(WidgetState.dragged)
+              ? .55
+              : states.contains(WidgetState.hovered)
+              ? .40
+              : .25,
+        ),
+      ),
+      trackVisibility: WidgetStateProperty.resolveWith(
+        (states) => states.contains(WidgetState.hovered),
+      ),
+      trackColor: WidgetStatePropertyAll(t.ink.withValues(alpha: .05)),
+      trackBorderColor: const WidgetStatePropertyAll(Colors.transparent),
+    ),
     listTileTheme: ListTileThemeData(
       iconColor: t.goldText,
       textColor: t.ink,

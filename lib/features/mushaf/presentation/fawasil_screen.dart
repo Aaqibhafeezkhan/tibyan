@@ -12,6 +12,7 @@ import '../mushaf_providers.dart';
 import 'mushaf_screen.dart';
 import 'navigation.dart';
 import '../../khatma/domain/khatmah.dart' show EntryPoint;
+import '../../../core/ui/responsive.dart';
 
 /// The last reading position and the reader's named bookmarks (fawasil).
 class FawasilScreen extends ConsumerWidget {
@@ -32,6 +33,7 @@ class FawasilScreen extends ConsumerWidget {
         '${ref.watch(versePageProvider((surah, ayah))).value ?? saved}';
 
     return LookScaffold(
+      maxWidth: ContentWidth.text,
       body: SafeArea(
         bottom: false,
         child: Column(

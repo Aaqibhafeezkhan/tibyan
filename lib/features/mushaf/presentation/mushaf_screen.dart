@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/interface_style.dart';
 import '../../../core/ui/look_kit.dart';
+import '../../../core/ui/hover_halo.dart';
 
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/semantics.dart';
@@ -1041,7 +1042,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
               (Icons.fullscreen_exit, l.focusExit, _exitFocus),
               if (settings.focusTools == FocusTools.button) ...[
                 (
-                  Icons.handyman_outlined,
+                  Icons.tune,
                   _focusTools ? l.focusHideTools : l.focusShowTools,
                   _toggleFocusTools,
                 ),
@@ -1177,6 +1178,16 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                                                             index: i,
                                                             effect: settings
                                                                 .pageTurn,
+                                                            isSpread: (j) =>
+                                                                _spread &&
+                                                                j >= 0 &&
+                                                                j <
+                                                                    _spreads
+                                                                        .count &&
+                                                                _pagesAt(
+                                                                      j,
+                                                                    ).length ==
+                                                                    2,
                                                             child: () {
                                                               final pages =
                                                                   _pagesAt(i);

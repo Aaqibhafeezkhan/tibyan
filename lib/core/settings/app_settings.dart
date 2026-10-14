@@ -171,7 +171,7 @@ class AppSettings {
     this.focusToolsShown = false,
     this.autoScrollSpeed = 3,
     this.pageFill = PageFill.lines,
-    this.pageTurn = PageTurn.normal,
+    this.pageTurn = PageTurn.fold,
     this.playerStyle = PlayerStyle.auto,
     this.playerPosition,
     this.sajdahTimer = false,

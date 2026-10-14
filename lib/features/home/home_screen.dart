@@ -20,6 +20,11 @@ import '../mushaf/presentation/mushaf_screen.dart';
 import '../mushaf/presentation/widgets/illuminated_frame.dart';
 import '../tasmee/presentation/tasmee_setup_screen.dart' show showTasmeeSetup;
 import 'whats_new.dart';
+import '../../core/ui/responsive.dart';
+
+/// How much larger the home's cards and buttons draw on a tablet or a
+/// desktop window, so the extra room is used rather than left empty.
+double _scale(BuildContext context) => context.isExpanded ? 1.3 : 1.0;
 
 /// A section of the home: its icon, name, a short note and where it goes.
 typedef _Section = ({
@@ -155,6 +160,7 @@ class HomeScreen extends ConsumerWidget {
     final journey = _JourneyCard(progress: ref.watch(journeyProvider));
 
     return LookScaffold(
+      maxWidth: double.infinity,
       selected: RailItem.home,
       hero: true,
       body: SafeArea(
@@ -171,7 +177,9 @@ class HomeScreen extends ConsumerWidget {
               return Align(
                 alignment: Alignment.topCenter,
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1180),
+                  constraints: const BoxConstraints(
+                    maxWidth: ContentWidth.full,
+                  ),
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(32, 16, 32, 32),
                     children: [
@@ -206,7 +214,9 @@ class HomeScreen extends ConsumerWidget {
             return Align(
               alignment: Alignment.topCenter,
               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600),
+                constraints: const BoxConstraints(
+                  maxWidth: 600, // the tiles grid is tuned to this width
+                ),
                 child: ListView(
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
                   children: [
@@ -277,7 +287,7 @@ class _TopBar extends StatelessWidget {
                   l.appTagline,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: lookTitleStyle(context, size: 22),
+                  style: lookTitleStyle(context, size: 22 * _scale(context)),
                 ),
               ),
             )
@@ -336,6 +346,7 @@ class _ContinueCard extends StatelessWidget {
     final l = AppLocalizations.of(context);
     final look = context.look;
     final s = surahRow;
+    final k = _scale(context);
     return ExcludeSemantics(
       child: Column(
         crossAxisAlignment: center
@@ -343,12 +354,15 @@ class _ContinueCard extends StatelessWidget {
             : CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(l.homeContinueHint, style: TextStyle(fontSize: 13, color: sub)),
+          Text(
+            l.homeContinueHint,
+            style: TextStyle(fontSize: 13 * k, color: sub),
+          ),
           if (s != null)
             SurahNameText(
               surah: s.id,
               name: s.nameAr,
-              size: look.elderly ? 50 : 44,
+              size: (look.elderly ? 50 : 44) * k,
               color: ink,
               height: 1.7,
             ),
@@ -357,7 +371,7 @@ class _ContinueCard extends StatelessWidget {
               detail!,
               textAlign: center ? TextAlign.center : TextAlign.start,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 14 * k,
                 fontWeight: FontWeight.w500,
                 color: sub,
               ),
@@ -369,17 +383,18 @@ class _ContinueCard extends StatelessWidget {
 
   Widget _button(BuildContext context, Color bg, Color fg, double radius) {
     final l = AppLocalizations.of(context);
+    final k = _scale(context);
     return FilledButton(
       onPressed: onOpen,
       style: FilledButton.styleFrom(
         backgroundColor: bg,
         foregroundColor: fg,
-        minimumSize: Size(160, context.look.target),
+        minimumSize: Size(160 * k, context.look.target * k),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radius),
         ),
         textStyle: Theme.of(context).textTheme.labelLarge
-            ?.copyWith(fontSize: 15, fontWeight: FontWeight.w600),
+            ?.copyWith(fontSize: 15 * k, fontWeight: FontWeight.w600),
       ),
       child: Text(l.continueReading),
     );
@@ -453,8 +468,9 @@ class _ContinueCard extends StatelessWidget {
         ? (look.night ? look.gold : look.onFrame)
         : (look.night ? look.accent : const Color(0xFFFFFCF6));
     final buttonFg = layli ? look.frame : (look.night ? look.bg : look.accent);
+    final k = _scale(context);
     return SizedBox(
-      height: look.elderly ? 340 : 300,
+      height: (look.elderly ? 340 : 300) * k,
       child: Stack(
         children: [
           Positioned.fill(
@@ -490,7 +506,7 @@ class _ContinueCard extends StatelessWidget {
           ),
           Positioned.fill(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 76, 20, 20),
+              padding: EdgeInsets.fromLTRB(20, 76 * k, 20, 20 * k),
               child: Column(
                 children: [
                   _text(context, ink, sub, center: true),
@@ -560,6 +576,7 @@ class _TodayCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final look = context.look;
+    final k = _scale(context);
     return Semantics(
       button: true,
       label: '$title. $detail',
@@ -575,11 +592,11 @@ class _TodayCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16 * k),
             child: Row(
               children: [
                 SizedBox.square(
-                  dimension: 60,
+                  dimension: 60 * k,
                   child: CustomPaint(
                     painter: Ring(
                       done.clamp(0, 1),
@@ -592,7 +609,7 @@ class _TodayCard extends StatelessWidget {
                         '$percent%',
                         textScaler: TextScaler.noScaling,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 14 * k,
                           fontWeight: FontWeight.w600,
                           color: look.ink,
                         ),
@@ -600,7 +617,7 @@ class _TodayCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 14),
+                SizedBox(width: 14 * k),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -608,7 +625,7 @@ class _TodayCard extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 16 * k,
                           fontWeight: FontWeight.w600,
                           color: look.ink,
                         ),
@@ -616,7 +633,7 @@ class _TodayCard extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         detail,
-                        style: TextStyle(fontSize: 13, color: look.sub),
+                        style: TextStyle(fontSize: 13 * k, color: look.sub),
                       ),
                     ],
                   ),
@@ -652,7 +669,7 @@ class _SectionsGrid extends StatelessWidget {
             header: true,
             child: Text(
               l.homeSections,
-              style: lookTitleStyle(context, size: 20),
+              style: lookTitleStyle(context, size: 20 * _scale(context)),
             ),
           ),
         ),
@@ -660,9 +677,12 @@ class _SectionsGrid extends StatelessWidget {
           crossAxisCount: columns,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 10,
-          childAspectRatio: look.isLayli ? .66 : .74,
+          mainAxisSpacing: context.isExpanded ? 16 : 12,
+          crossAxisSpacing: context.isExpanded ? 16 : 10,
+          // Wide windows draw each section as a card that fills its cell.
+          childAspectRatio: context.isExpanded
+              ? (look.isLayli ? .82 : .9)
+              : (look.isLayli ? .66 : .74),
           children: [for (final s in sections) _SectionTile(s)],
         ),
       ],
@@ -678,17 +698,20 @@ class _SectionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final look = context.look;
+    final card = context.isExpanded;
+    final k = _scale(context);
+    final glyph = 24 * k;
     final Widget icon = switch (look.style) {
       InterfaceStyle.makhtuta => SizedBox.square(
-        dimension: 62,
+        dimension: 62 * k,
         child: CustomPaint(
           painter: StarPainter(look.surface, look.gold),
-          child: Icon(s.icon, color: look.accent, size: 24),
+          child: Icon(s.icon, color: look.accent, size: glyph),
         ),
       ),
       InterfaceStyle.handasi => Container(
-        width: 62,
-        height: 62,
+        width: 62 * k,
+        height: 62 * k,
         decoration: BoxDecoration(
           color: look.surface,
           borderRadius: BorderRadius.circular(16),
@@ -699,12 +722,12 @@ class _SectionTile extends StatelessWidget {
             look.accent.withValues(alpha: .10),
             Colors.transparent,
           ),
-          child: Icon(s.icon, color: look.accent, size: 24),
+          child: Icon(s.icon, color: look.accent, size: glyph),
         ),
       ),
       InterfaceStyle.layli => SizedBox(
-        width: 64,
-        height: 78,
+        width: 64 * k,
+        height: 78 * k,
         child: Stack(
           children: [
             Positioned.fill(
@@ -723,46 +746,67 @@ class _SectionTile extends StatelessWidget {
               ),
             ),
             Positioned.fill(
-              top: 20,
-              child: Icon(s.icon, color: look.goldText, size: 24),
+              top: 20 * k,
+              child: Icon(s.icon, color: look.goldText, size: glyph),
             ),
           ],
         ),
       ),
     };
+    final content = Column(
+      mainAxisAlignment: card
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.start,
+      children: [
+        icon,
+        SizedBox(height: 8 * k),
+        Text(
+          s.label,
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 13 * k,
+            fontWeight: FontWeight.w600,
+            color: look.ink,
+          ),
+        ),
+        Text(
+          s.note,
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontSize: 11 * k, color: look.sub),
+        ),
+      ],
+    );
     return Semantics(
       button: true,
       label: '${s.label}. ${s.note}',
       excludeSemantics: true,
       onTap: s.onTap,
-      child: InkWell(
-        onTap: s.onTap,
-        borderRadius: BorderRadius.circular(look.radius),
-        child: Column(
-          children: [
-            icon,
-            const SizedBox(height: 8),
-            Text(
-              s.label,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: look.ink,
+      child: card
+          // A wide window: a bordered card, the whole of it a target.
+          ? Material(
+              color: look.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(look.radius),
+                side: BorderSide(color: look.line),
               ),
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: s.onTap,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: content,
+                ),
+              ),
+            )
+          : InkWell(
+              onTap: s.onTap,
+              borderRadius: BorderRadius.circular(look.radius),
+              child: content,
             ),
-            Text(
-              s.note,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 11, color: look.sub),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -782,13 +826,14 @@ class _ElderlyHome extends ConsumerWidget {
     final khatma = ref.watch(khatmaStatusProvider).value;
     final portion = khatma?.todayPortion;
     return LookScaffold(
+      maxWidth: double.infinity,
       selected: RailItem.home,
       hero: true,
       body: SafeArea(
         child: Align(
           alignment: Alignment.topCenter,
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 680),
+            constraints: const BoxConstraints(maxWidth: ContentWidth.text),
             child: ListView(
               padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 20, 32),
               children: [

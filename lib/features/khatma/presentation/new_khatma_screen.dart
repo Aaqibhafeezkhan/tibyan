@@ -19,6 +19,7 @@ import '../domain/planner.dart';
 import '../domain/quran_index.dart';
 import '../khatma_providers.dart';
 import 'khatma_screen.dart' show formatDay, formatMinutes;
+import '../../../core/ui/responsive.dart';
 
 enum _PlanBy { date, amount }
 
@@ -121,7 +122,9 @@ class _NewKhatmaScreenState extends ConsumerState<NewKhatmaScreen> {
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 640),
+                    constraints: const BoxConstraints(
+                      maxWidth: ContentWidth.text,
+                    ),
                     child: Column(
                       children: [
                         Padding(

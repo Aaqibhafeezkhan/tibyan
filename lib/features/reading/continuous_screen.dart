@@ -51,6 +51,7 @@ class ContinuousScreen extends ConsumerWidget {
     final riwaya = ref.watch(editionProvider).isRiwaya;
 
     return LookScaffold(
+      maxWidth: double.infinity,
       body: SafeArea(
         bottom: false,
         child: Column(

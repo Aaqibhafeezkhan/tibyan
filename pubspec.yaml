@@ -76,6 +76,7 @@ dependencies:
   sherpa_onnx: ^1.13.8
   record: ^7.1.1
   url_launcher: ^6.3.3
+  window_manager: ^0.5.2
 
 dev_dependencies:
   flutter_test:
@@ -100,6 +101,7 @@ flutter:
 
   shaders:
     - shaders/page_curl.frag
+    - shaders/page_curl_spread.frag
 
   assets:
     - assets/themes/

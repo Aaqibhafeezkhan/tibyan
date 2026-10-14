@@ -15,6 +15,7 @@ import '../../mushaf/presentation/widgets/illuminated_frame.dart'
 import '../domain/day.dart';
 import '../khatma_providers.dart';
 import 'khatma_screen.dart' show formatDay;
+import '../../../core/ui/responsive.dart';
 
 final _journalProvider = StreamProvider.family<List<ReflectionRow>, String>(
   (ref, query) =>
@@ -56,6 +57,7 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
     final t = context.tokens.colors;
     final notes = ref.watch(_journalProvider(_query)).value;
     return LookScaffold(
+      maxWidth: ContentWidth.text,
       body: SafeArea(
         bottom: false,
         child: Column(

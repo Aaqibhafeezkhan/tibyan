@@ -10,6 +10,7 @@ import '../../../l10n/app_localizations.dart';
 import '../mushaf_providers.dart';
 import '../../tasmee/data/tasmee_backend.dart';
 import 'source_names.dart';
+import '../../../core/ui/responsive.dart';
 
 /// Where the text and pages come from, their licences, and open review notes.
 class AboutMushafScreen extends ConsumerWidget {
@@ -29,6 +30,7 @@ class AboutMushafScreen extends ConsumerWidget {
     };
 
     return LookScaffold(
+      maxWidth: ContentWidth.text,
       body: SafeArea(
         bottom: false,
         child: Column(

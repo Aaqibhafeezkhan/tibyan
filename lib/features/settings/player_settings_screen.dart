@@ -4,6 +4,7 @@ import '../../core/ui/look_kit.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../audio/player_bar.dart';
+import '../../core/ui/responsive.dart';
 
 /// The listening options, kept for the next time: the same as in the
 /// player's sheet, reached from the settings.
@@ -12,6 +13,7 @@ class PlayerSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => LookScaffold(
+    maxWidth: ContentWidth.text,
     body: SafeArea(
       bottom: false,
       child: Column(

@@ -16,6 +16,7 @@ import '../mushaf/mushaf_providers.dart';
 import '../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
 import 'storage.dart';
+import '../../core/ui/responsive.dart';
 
 final _storageProvider = FutureProvider.autoDispose<List<StorageEntry>>((ref) {
   ref.watch(packInstallsProvider);
@@ -123,6 +124,7 @@ class StorageScreen extends ConsumerWidget {
     }
 
     return LookScaffold(
+      maxWidth: ContentWidth.text,
       body: SafeArea(
         bottom: false,
         child: Column(

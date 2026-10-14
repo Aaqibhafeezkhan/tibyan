@@ -8,6 +8,7 @@ import '../../core/theme/interface_style.dart';
 import '../../core/ui/look_kit.dart';
 import '../../l10n/app_localizations.dart';
 import '../mushaf/mushaf_providers.dart';
+import '../../core/ui/responsive.dart';
 import '../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
 
@@ -93,7 +94,7 @@ class OnboardingFrame extends ConsumerWidget {
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 560),
+            constraints: const BoxConstraints(maxWidth: ContentWidth.narrow),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

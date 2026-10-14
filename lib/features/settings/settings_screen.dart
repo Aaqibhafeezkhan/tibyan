@@ -8,6 +8,7 @@ import '../../core/theme/ornaments.dart';
 import '../../core/ui/look_kit.dart';
 import '../../l10n/app_localizations.dart';
 import 'settings_catalog.dart';
+import '../../core/ui/responsive.dart';
 
 export 'settings_widgets.dart'
     show InterfaceStylePicker, LightModePicker, appVersionProvider;
@@ -52,7 +53,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 960),
+                  constraints: const BoxConstraints(
+                    maxWidth: ContentWidth.wide,
+                  ),
                   child: CustomScrollView(
                     slivers: [
                       SliverPadding(

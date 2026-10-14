@@ -105,10 +105,10 @@ class _ReadingTools extends StatelessWidget {
       child: Tooltip(
         message: label,
         excludeFromSemantics: true,
-        child: InkResponse(
+        child: HoverHalo(
           onTap: onTap,
           onLongPress: onLongPress,
-          radius: 24,
+          radius: 22,
           // A 48 px target around the small drawn button.
           child: Container(
             width: 48,

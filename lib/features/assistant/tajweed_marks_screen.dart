@@ -18,6 +18,7 @@ import '../mushaf/presentation/mushaf_screen.dart' show surahName;
 import '../mushaf/presentation/navigation.dart';
 import '../mushaf/presentation/widgets/tajweed_legend.dart';
 import '../share_image/share_text_runs.dart';
+import '../../core/ui/responsive.dart';
 
 /// Where the tajweed marks (the rules with their colours) open.
 const tajweedMarksLocation = '/assistant/tajweed';
@@ -57,7 +58,9 @@ class TajweedMarksScreen extends ConsumerWidget {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 640),
+                  constraints: const BoxConstraints(
+                    maxWidth: ContentWidth.text,
+                  ),
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(8, 8, 8, 24),
                     children: [

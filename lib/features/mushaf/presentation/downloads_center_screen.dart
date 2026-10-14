@@ -25,6 +25,7 @@ import '../data/page_pack.dart';
 import '../mushaf_providers.dart';
 import 'background_downloads_list.dart';
 import 'widgets/illuminated_frame.dart';
+import '../../../core/ui/responsive.dart';
 
 /// The Downloads Center: what is on the device, what is downloading and
 /// what can be downloaded, in three sections (the mushafs, the
@@ -74,7 +75,9 @@ class DownloadsCenterScreen extends ConsumerWidget {
                 child: SafeArea(
                   child: Center(
                     child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 720),
+                      constraints: const BoxConstraints(
+                        maxWidth: ContentWidth.text,
+                      ),
                       child: ListView(
                         padding: const EdgeInsets.all(20),
                         children: [

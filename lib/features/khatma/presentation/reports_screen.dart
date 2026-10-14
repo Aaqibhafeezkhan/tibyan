@@ -12,6 +12,7 @@ import '../../mushaf/presentation/widgets/illuminated_frame.dart'
 import '../domain/day.dart';
 import '../domain/reading_stats.dart';
 import '../khatma_providers.dart';
+import '../../../core/ui/responsive.dart';
 
 final _readingProvider = StreamProvider.family<List<ReadingSessionRow>, int>(
   (ref, days) => ref
@@ -85,7 +86,9 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 640),
+                  constraints: const BoxConstraints(
+                    maxWidth: ContentWidth.text,
+                  ),
                   child: ListView(
                     padding: const EdgeInsets.all(16),
                     children: [

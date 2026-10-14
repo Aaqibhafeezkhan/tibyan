@@ -15,6 +15,7 @@ import 'mushaf_screen.dart';
 import 'navigation.dart';
 import 'pages_map.dart';
 import 'widgets/illuminated_frame.dart' show NumberFormatter;
+import '../../../core/ui/responsive.dart';
 
 /// Removes Arabic marks and unifies alef forms, for matching surah names.
 String _fold(String s) => s
@@ -284,7 +285,7 @@ class _IndexScreenState extends ConsumerState<IndexScreen> {
     return Align(
       alignment: Alignment.topCenter,
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 820),
+        constraints: const BoxConstraints(maxWidth: ContentWidth.text),
         child: Column(
           children: [
             Padding(
@@ -884,7 +885,7 @@ class _StartsTab extends ConsumerWidget {
     return Align(
       alignment: Alignment.topCenter,
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 820),
+        constraints: const BoxConstraints(maxWidth: ContentWidth.text),
         child: _CurrentList(
           count: list.length,
           currentIndex: current == null ? null : current! - 1,

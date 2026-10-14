@@ -19,6 +19,7 @@ import '../domain/word_match.dart';
 import 'tasmee_sheets.dart';
 import 'tasmee_style.dart';
 import 'tasmee_train_card.dart';
+import '../../../core/ui/responsive.dart';
 
 /// The model on the device: installed or not, and the space it takes.
 final tasmeeModelInfoProvider =
@@ -84,6 +85,7 @@ class TasmeeSettingsScreen extends ConsumerWidget {
     );
 
     return LookScaffold(
+      maxWidth: ContentWidth.text,
       body: SafeArea(
         bottom: false,
         child: Column(

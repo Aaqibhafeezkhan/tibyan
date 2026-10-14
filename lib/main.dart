@@ -23,6 +23,7 @@ import 'core/db/user_database.dart';
 import 'core/downloads/background_downloads.dart';
 import 'core/flags/feature_flags.dart';
 import 'core/router/app_router.dart';
+import 'core/ui/desktop_window.dart';
 import 'core/settings/settings_controller.dart';
 import 'core/theme/theme_registry.dart';
 import 'features/audio/background_recitations.dart';
@@ -74,6 +75,8 @@ Future<void> main() async {
   final registry = await ThemeRegistry.load(rootBundle);
   final flags = await FeatureFlags.load(rootBundle);
   final prefs = await SharedPreferences.getInstance();
+  // On the desktop: the window's size and place, as last left.
+  await DesktopWindow.init(prefs, title: 'Tibyan');
   final content = await ContentDatabase.openBundled(rootBundle);
   final packRoot = await getApplicationSupportDirectory();
   final timing = TimingUpdates(Directory(p.join(packRoot.path, 'timing')));

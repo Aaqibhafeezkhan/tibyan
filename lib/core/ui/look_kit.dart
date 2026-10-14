@@ -11,12 +11,13 @@ import '../theme/contrast.dart';
 import '../theme/interface_style.dart';
 import '../theme/ornaments.dart';
 import '../theme/theme_tokens.dart';
+import 'responsive.dart';
 
-/// Wider than this, screens get the side rail and two columns.
-const wideBreakpoint = 900.0;
+/// From this width, screens get the full side rail and two columns.
+const wideBreakpoint = Breakpoints.expanded;
 
 bool isWide(BuildContext context) =>
-    MediaQuery.sizeOf(context).width > wideBreakpoint;
+    MediaQuery.sizeOf(context).width >= wideBreakpoint;
 
 /// The «تبيان» calligraphy (assets/brand/tibyan_logo.svg, traced from the
 /// logo artwork), tinted in [color] (the style's gold text by default).
@@ -165,7 +166,7 @@ class LookBackground extends StatelessWidget {
 }
 
 /// A destination of the wide-window rail.
-enum RailItem { home, contents, listen, settings }
+enum RailItem { home, mushaf, contents, listen, settings }
 
 /// The frame of the app's own screens in the interface style: the style's
 /// controls and ground, and on a wide window a side rail with the brand
@@ -180,7 +181,13 @@ class LookScaffold extends StatelessWidget {
     this.floatingActionButton,
     this.bottomNavigationBar,
     this.resizeToAvoidBottomInset,
+    this.maxWidth = ContentWidth.wide,
   });
+
+  /// How wide the screen's content may grow on a big window before it is
+  /// centred (the ground pattern still fills the window). Infinity for a
+  /// screen that lays itself out across any width.
+  final double maxWidth;
 
   final Widget body;
   final RailItem? selected;
@@ -198,7 +205,16 @@ class LookScaffold extends StatelessWidget {
     final content = Stack(
       children: [
         Positioned.fill(child: LookBackground(hero: hero)),
-        body,
+        if (maxWidth.isFinite)
+          Align(
+            alignment: Alignment.topCenter,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: maxWidth),
+              child: body,
+            ),
+          )
+        else
+          body,
       ],
     );
     return Theme(
@@ -208,23 +224,57 @@ class LookScaffold extends StatelessWidget {
         floatingActionButton: floatingActionButton,
         bottomNavigationBar: bottomNavigationBar,
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-        body: rail && isWide(context)
-            ? Row(
-                children: [
-                  _Rail(selected: selected),
-                  Expanded(child: content),
-                ],
-              )
-            : content,
+        // The rail follows the room the screen really has.
+        body: !rail
+            ? content
+            : LayoutBuilder(
+                builder: (context, box) {
+                  final w = box.maxWidth;
+                  if (w >= wideBreakpoint) {
+                    return Row(
+                      children: [
+                        _Rail(selected: selected),
+                        Expanded(child: content),
+                      ],
+                    );
+                  }
+                  final compact =
+                      w >= Breakpoints.medium &&
+                      (isDesktopPlatform ||
+                          box.biggest.shortestSide >= Breakpoints.medium);
+                  if (!compact) return content;
+                  final mq = MediaQuery.of(context);
+                  return Row(
+                    children: [
+                      _Rail(selected: selected, compact: true),
+                      // Layouts that size themselves from the window see
+                      // the room beside the rail, not the whole window.
+                      Expanded(
+                        child: MediaQuery(
+                          data: mq.copyWith(
+                            size: Size(w - _Rail.compactWidth, box.maxHeight),
+                          ),
+                          child: content,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
       ),
     );
   }
 }
 
 class _Rail extends StatelessWidget {
-  const _Rail({this.selected});
+  const _Rail({this.selected, this.compact = false});
 
   final RailItem? selected;
+
+  /// Icons only (a medium window).
+  final bool compact;
+
+  static const compactWidth = 80.0;
 
   @override
   Widget build(BuildContext context) {
@@ -232,12 +282,20 @@ class _Rail extends StatelessWidget {
     final s = AppLocalizations.of(context);
     final items = [
       (RailItem.home, s.navHome, Icons.home_outlined, '/'),
+      // The reading, where it was left: like «تابع القراءة» on the home.
+      (
+        RailItem.mushaf,
+        s.sectionMushaf,
+        Icons.menu_book_outlined,
+        '/mushaf?entry=home',
+      ),
       (RailItem.contents, s.indexTitle, Icons.list_alt, '/mushaf/index'),
       (RailItem.listen, s.sectionListen, Icons.headphones_outlined, null),
       (RailItem.settings, s.settingsTitle, Icons.tune, '/settings'),
     ];
+    final radius = BorderRadius.circular(l.isMakhtuta ? 4 : 12);
     return Container(
-      width: 248,
+      width: compact ? compactWidth : 248,
       color: l.frame,
       child: Stack(
         children: [
@@ -253,58 +311,71 @@ class _Rail extends StatelessWidget {
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 28, 20, 20),
+              padding: compact
+                  ? const EdgeInsets.fromLTRB(12, 20, 12, 12)
+                  : const EdgeInsets.fromLTRB(20, 28, 20, 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Center(child: TibyanWordmark(color: l.onFrame, height: 64)),
-                  const SizedBox(height: 28),
+                  Center(
+                    child: TibyanWordmark(
+                      color: l.onFrame,
+                      height: compact ? 32 : 64,
+                    ),
+                  ),
+                  SizedBox(height: compact ? 20 : 28),
                   for (final (item, label, icon, route) in items)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 6),
                       child: Semantics(
                         selected: item == selected,
                         button: true,
-                        child: Material(
-                          color: item == selected
-                              ? l.onFrame.withValues(alpha: .14)
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(
-                            l.isMakhtuta ? 4 : 12,
-                          ),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(
-                              l.isMakhtuta ? 4 : 12,
-                            ),
-                            onTap: item == selected
-                                ? null
-                                : () => route == null
-                                      ? context.push('/mushaf/audio')
-                                      : context.go(route),
-                            child: SizedBox(
-                              height: 52,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(icon, color: l.onFrame, size: 22),
-                                    const SizedBox(width: 14),
-                                    Expanded(
-                                      child: Text(
-                                        label,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: l.onFrame,
-                                          fontWeight: item == selected
-                                              ? FontWeight.w600
-                                              : FontWeight.w400,
+                        label: compact ? label : null,
+                        child: Tooltip(
+                          message: compact ? label : '',
+                          child: Material(
+                            color: item == selected
+                                ? l.onFrame.withValues(alpha: .14)
+                                : Colors.transparent,
+                            borderRadius: radius,
+                            child: InkWell(
+                              borderRadius: radius,
+                              onTap: item == selected
+                                  ? null
+                                  : () => route == null
+                                        ? context.push('/mushaf/audio')
+                                        : context.go(route),
+                              child: SizedBox(
+                                height: compact ? 56 : 52,
+                                child: compact
+                                    ? Icon(icon, color: l.onFrame, size: 24)
+                                    : Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              icon,
+                                              color: l.onFrame,
+                                              size: 22,
+                                            ),
+                                            const SizedBox(width: 14),
+                                            Expanded(
+                                              child: Text(
+                                                label,
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: l.onFrame,
+                                                  fontWeight: item == selected
+                                                      ? FontWeight.w600
+                                                      : FontWeight.w400,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
                               ),
                             ),
                           ),
