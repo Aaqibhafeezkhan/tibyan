@@ -226,6 +226,22 @@
       "note": "Stays generated from the private cache until QUL grants permission."
     },
     {
+      "slug": "akhdar",
+      "id": 16,
+      "name_ar": "إبراهيم الأخضر",
+      "name_en": "Ibrahim al-Akhdar",
+      "riwaya": "hafs",
+      "folder_url": "https://cdn.mp3quran.net/audio/ibrahim-akhdar/r1/",
+      "licence": "publishable",
+      "publish": false,
+      "verse_timing": {
+        "source": "mp3quran.net ayat_timing (read 1)",
+        "licence": "mp3quran.net general permission: \"we allow any visitor or developer to copy any material or use any link\" (docs/licenses/2026-09-28_mp3quran_privacy.pdf)",
+        "attribution": "mp3quran.net"
+      },
+      "note": "Added 2026-10-14 with mp3quran's published verse timing (every verse of all 114 surahs). Not exported yet: check its boundaries on the files (tools/verify_word_timing.py) before publishing or re-timing it."
+    },
+    {
       "slug": "warsh-husary-101",
       "id": 101,
       "name_ar": "محمود خليل الحصري",

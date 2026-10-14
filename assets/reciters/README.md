@@ -27,6 +27,7 @@
 | 5 | مصطفى إسماعيل | [Commons](https://commons.wikimedia.org/wiki/File:Mustafa_Ismail_(1).jpg) — صورة الوش |
 | 14 | محمد محمود الطبلاوي | صورة اختارها مالك المشروع |
 | 15 | ماهر المعيقلي | [Commons](https://commons.wikimedia.org/wiki/File:Maher_Al_Mueaqly.png) — وليد أيوب، CC BY-SA 3.0 (`fetch_reciter_photos.py 15`) |
+| 16 | إبراهيم الأخضر | صورة اختارها مالك المشروع (2026-10-14)، مقصوصة على الوجه |
 
 **تبديل أو إضافة صورة:** حِطّ ملفك في `tools/photos/<رقم القارئ>.jpg`
 وشغّل `python3 tools/build_reciter_photos.py` — مفيش أي تعديل كود.

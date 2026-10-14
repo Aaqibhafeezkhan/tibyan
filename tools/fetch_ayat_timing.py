@@ -25,7 +25,8 @@ API = 'https://www.mp3quran.net/api/v3/ayat_timing?surah={surah}&read={read}'
 # Each of these seven covers all 114 surahs with every verse timed, measured
 # 2026-10-01; reads 31 (al-Shuraim) and 74 (al-Hudhaify) were left out: a
 # duplicated verse and a gap in nearly every surah make them unusable.
-READS = [112, 118, 53, 54, 106, 123, 30]
+# Read 1 (Ibrahim al-Akhdar) was added 2026-10-14, checked the same way.
+READS = [112, 118, 53, 54, 106, 123, 30, 1]
 
 
 def fetch(url):
