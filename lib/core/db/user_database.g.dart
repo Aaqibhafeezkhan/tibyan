@@ -1140,6 +1140,193 @@ class $KhatmasTable extends Khatmas with TableInfo<$KhatmasTable, KhatmaRow> {
     requiredDuringInsert: false,
     clientDefault: DateTime.now,
   );
+  static const VerificationMeta _kindMeta = const VerificationMeta('kind');
+  @override
+  late final GeneratedColumn<String> kind = GeneratedColumn<String>(
+    'kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('fullQuran'),
+  );
+  static const VerificationMeta _rangeStartMeta = const VerificationMeta(
+    'rangeStart',
+  );
+  @override
+  late final GeneratedColumn<int> rangeStart = GeneratedColumn<int>(
+    'range_start',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _rangeEndMeta = const VerificationMeta(
+    'rangeEnd',
+  );
+  @override
+  late final GeneratedColumn<int> rangeEnd = GeneratedColumn<int>(
+    'range_end',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _startAtMeta = const VerificationMeta(
+    'startAt',
+  );
+  @override
+  late final GeneratedColumn<int> startAt = GeneratedColumn<int>(
+    'start_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _pacingModeMeta = const VerificationMeta(
+    'pacingMode',
+  );
+  @override
+  late final GeneratedColumn<String> pacingMode = GeneratedColumn<String>(
+    'pacing_mode',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('endDate'),
+  );
+  static const VerificationMeta _scheduleModeMeta = const VerificationMeta(
+    'scheduleMode',
+  );
+  @override
+  late final GeneratedColumn<String> scheduleMode = GeneratedColumn<String>(
+    'schedule_mode',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('adaptive'),
+  );
+  static const VerificationMeta _dailyWeightMeta = const VerificationMeta(
+    'dailyWeight',
+  );
+  @override
+  late final GeneratedColumn<double> dailyWeight = GeneratedColumn<double>(
+    'daily_weight',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _restWeekdaysMeta = const VerificationMeta(
+    'restWeekdays',
+  );
+  @override
+  late final GeneratedColumn<String> restWeekdays = GeneratedColumn<String>(
+    'rest_weekdays',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _countingModeMeta = const VerificationMeta(
+    'countingMode',
+  );
+  @override
+  late final GeneratedColumn<String> countingMode = GeneratedColumn<String>(
+    'counting_mode',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('auto'),
+  );
+  static const VerificationMeta _isPrimaryMeta = const VerificationMeta(
+    'isPrimary',
+  );
+  @override
+  late final GeneratedColumn<bool> isPrimary = GeneratedColumn<bool>(
+    'is_primary',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_primary" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('active'),
+  );
+  static const VerificationMeta _autoRestartMeta = const VerificationMeta(
+    'autoRestart',
+  );
+  @override
+  late final GeneratedColumn<bool> autoRestart = GeneratedColumn<bool>(
+    'auto_restart',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("auto_restart" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _presetIdMeta = const VerificationMeta(
+    'presetId',
+  );
+  @override
+  late final GeneratedColumn<String> presetId = GeneratedColumn<String>(
+    'preset_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _aheadChoiceMeta = const VerificationMeta(
+    'aheadChoice',
+  );
+  @override
+  late final GeneratedColumn<String> aheadChoice = GeneratedColumn<String>(
+    'ahead_choice',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reminderKindsMeta = const VerificationMeta(
+    'reminderKinds',
+  );
+  @override
+  late final GeneratedColumn<String> reminderKinds = GeneratedColumn<String>(
+    'reminder_kinds',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _recoveryMeta = const VerificationMeta(
+    'recovery',
+  );
+  @override
+  late final GeneratedColumn<String> recovery = GeneratedColumn<String>(
+    'recovery',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     uuid,
@@ -1156,6 +1343,22 @@ class $KhatmasTable extends Khatmas with TableInfo<$KhatmasTable, KhatmaRow> {
     rebasedOn,
     completedAt,
     createdAt,
+    kind,
+    rangeStart,
+    rangeEnd,
+    startAt,
+    pacingMode,
+    scheduleMode,
+    dailyWeight,
+    restWeekdays,
+    countingMode,
+    isPrimary,
+    status,
+    autoRestart,
+    presetId,
+    aheadChoice,
+    reminderKinds,
+    recovery,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1267,6 +1470,123 @@ class $KhatmasTable extends Khatmas with TableInfo<$KhatmasTable, KhatmaRow> {
         createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
       );
     }
+    if (data.containsKey('kind')) {
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
+    }
+    if (data.containsKey('range_start')) {
+      context.handle(
+        _rangeStartMeta,
+        rangeStart.isAcceptableOrUnknown(data['range_start']!, _rangeStartMeta),
+      );
+    }
+    if (data.containsKey('range_end')) {
+      context.handle(
+        _rangeEndMeta,
+        rangeEnd.isAcceptableOrUnknown(data['range_end']!, _rangeEndMeta),
+      );
+    }
+    if (data.containsKey('start_at')) {
+      context.handle(
+        _startAtMeta,
+        startAt.isAcceptableOrUnknown(data['start_at']!, _startAtMeta),
+      );
+    }
+    if (data.containsKey('pacing_mode')) {
+      context.handle(
+        _pacingModeMeta,
+        pacingMode.isAcceptableOrUnknown(data['pacing_mode']!, _pacingModeMeta),
+      );
+    }
+    if (data.containsKey('schedule_mode')) {
+      context.handle(
+        _scheduleModeMeta,
+        scheduleMode.isAcceptableOrUnknown(
+          data['schedule_mode']!,
+          _scheduleModeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('daily_weight')) {
+      context.handle(
+        _dailyWeightMeta,
+        dailyWeight.isAcceptableOrUnknown(
+          data['daily_weight']!,
+          _dailyWeightMeta,
+        ),
+      );
+    }
+    if (data.containsKey('rest_weekdays')) {
+      context.handle(
+        _restWeekdaysMeta,
+        restWeekdays.isAcceptableOrUnknown(
+          data['rest_weekdays']!,
+          _restWeekdaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('counting_mode')) {
+      context.handle(
+        _countingModeMeta,
+        countingMode.isAcceptableOrUnknown(
+          data['counting_mode']!,
+          _countingModeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_primary')) {
+      context.handle(
+        _isPrimaryMeta,
+        isPrimary.isAcceptableOrUnknown(data['is_primary']!, _isPrimaryMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('auto_restart')) {
+      context.handle(
+        _autoRestartMeta,
+        autoRestart.isAcceptableOrUnknown(
+          data['auto_restart']!,
+          _autoRestartMeta,
+        ),
+      );
+    }
+    if (data.containsKey('preset_id')) {
+      context.handle(
+        _presetIdMeta,
+        presetId.isAcceptableOrUnknown(data['preset_id']!, _presetIdMeta),
+      );
+    }
+    if (data.containsKey('ahead_choice')) {
+      context.handle(
+        _aheadChoiceMeta,
+        aheadChoice.isAcceptableOrUnknown(
+          data['ahead_choice']!,
+          _aheadChoiceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reminder_kinds')) {
+      context.handle(
+        _reminderKindsMeta,
+        reminderKinds.isAcceptableOrUnknown(
+          data['reminder_kinds']!,
+          _reminderKindsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('recovery')) {
+      context.handle(
+        _recoveryMeta,
+        recovery.isAcceptableOrUnknown(data['recovery']!, _recoveryMeta),
+      );
+    }
     return context;
   }
 
@@ -1332,6 +1652,70 @@ class $KhatmasTable extends Khatmas with TableInfo<$KhatmasTable, KhatmaRow> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
       )!,
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
+      rangeStart: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}range_start'],
+      ),
+      rangeEnd: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}range_end'],
+      ),
+      startAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}start_at'],
+      ),
+      pacingMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pacing_mode'],
+      )!,
+      scheduleMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}schedule_mode'],
+      )!,
+      dailyWeight: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}daily_weight'],
+      ),
+      restWeekdays: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rest_weekdays'],
+      )!,
+      countingMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}counting_mode'],
+      )!,
+      isPrimary: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_primary'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      autoRestart: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}auto_restart'],
+      )!,
+      presetId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}preset_id'],
+      ),
+      aheadChoice: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ahead_choice'],
+      ),
+      reminderKinds: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reminder_kinds'],
+      )!,
+      recovery: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}recovery'],
+      ),
     );
   }
 
@@ -1364,9 +1748,53 @@ class KhatmaRow extends DataClass implements Insertable<KhatmaRow> {
   final int? reminderTime;
 
   /// The day the rest was spread again over the remaining days (catch-up).
+  /// Since v5 the day the plan's pace is counted from.
   final String? rebasedOn;
   final DateTime? completedAt;
   final DateTime createdAt;
+
+  /// `fullQuran`, `partial`, `dailyWird` or `custom`.
+  final String kind;
+
+  /// The verses of the khatma (`ayah.id`), and where reading starts.
+  final int? rangeStart;
+  final int? rangeEnd;
+  final int? startAt;
+
+  /// `duration`, `endDate`, `dailyAmount` or `openEnded`.
+  final String pacingMode;
+
+  /// `adaptive` or `fixed`.
+  final String scheduleMode;
+
+  /// The planned amount a day, in Madina pages (verse weights).
+  final double? dailyWeight;
+
+  /// Rest weekdays (`DateTime.weekday`, 1 = Monday), comma separated:
+  /// `5` for Friday.
+  final String restWeekdays;
+
+  /// `auto`, `ask` or `manual`.
+  final String countingMode;
+  final bool isPrimary;
+
+  /// `active`, `paused`, `completed` or `cancelled`. Replaces reading it
+  /// from [completedAt] and `deletedAt`, which are still written.
+  final String status;
+  final bool autoRestart;
+
+  /// The preset it was made from (`ramadan_30`…).
+  final String? presetId;
+
+  /// The answer to «finish early, or a lighter portion?»: null (not asked
+  /// yet), `finishEarly` or `lighter`.
+  final String? aheadChoice;
+
+  /// Notification kinds on for this khatma, comma separated.
+  final String reminderKinds;
+
+  /// A catch-up the reader chose (JSON), or null.
+  final String? recovery;
   const KhatmaRow({
     required this.uuid,
     required this.updatedAt,
@@ -1382,6 +1810,22 @@ class KhatmaRow extends DataClass implements Insertable<KhatmaRow> {
     this.rebasedOn,
     this.completedAt,
     required this.createdAt,
+    required this.kind,
+    this.rangeStart,
+    this.rangeEnd,
+    this.startAt,
+    required this.pacingMode,
+    required this.scheduleMode,
+    this.dailyWeight,
+    required this.restWeekdays,
+    required this.countingMode,
+    required this.isPrimary,
+    required this.status,
+    required this.autoRestart,
+    this.presetId,
+    this.aheadChoice,
+    required this.reminderKinds,
+    this.recovery,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1410,6 +1854,36 @@ class KhatmaRow extends DataClass implements Insertable<KhatmaRow> {
       map['completed_at'] = Variable<DateTime>(completedAt);
     }
     map['created_at'] = Variable<DateTime>(createdAt);
+    map['kind'] = Variable<String>(kind);
+    if (!nullToAbsent || rangeStart != null) {
+      map['range_start'] = Variable<int>(rangeStart);
+    }
+    if (!nullToAbsent || rangeEnd != null) {
+      map['range_end'] = Variable<int>(rangeEnd);
+    }
+    if (!nullToAbsent || startAt != null) {
+      map['start_at'] = Variable<int>(startAt);
+    }
+    map['pacing_mode'] = Variable<String>(pacingMode);
+    map['schedule_mode'] = Variable<String>(scheduleMode);
+    if (!nullToAbsent || dailyWeight != null) {
+      map['daily_weight'] = Variable<double>(dailyWeight);
+    }
+    map['rest_weekdays'] = Variable<String>(restWeekdays);
+    map['counting_mode'] = Variable<String>(countingMode);
+    map['is_primary'] = Variable<bool>(isPrimary);
+    map['status'] = Variable<String>(status);
+    map['auto_restart'] = Variable<bool>(autoRestart);
+    if (!nullToAbsent || presetId != null) {
+      map['preset_id'] = Variable<String>(presetId);
+    }
+    if (!nullToAbsent || aheadChoice != null) {
+      map['ahead_choice'] = Variable<String>(aheadChoice);
+    }
+    map['reminder_kinds'] = Variable<String>(reminderKinds);
+    if (!nullToAbsent || recovery != null) {
+      map['recovery'] = Variable<String>(recovery);
+    }
     return map;
   }
 
@@ -1439,6 +1913,36 @@ class KhatmaRow extends DataClass implements Insertable<KhatmaRow> {
           ? const Value.absent()
           : Value(completedAt),
       createdAt: Value(createdAt),
+      kind: Value(kind),
+      rangeStart: rangeStart == null && nullToAbsent
+          ? const Value.absent()
+          : Value(rangeStart),
+      rangeEnd: rangeEnd == null && nullToAbsent
+          ? const Value.absent()
+          : Value(rangeEnd),
+      startAt: startAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startAt),
+      pacingMode: Value(pacingMode),
+      scheduleMode: Value(scheduleMode),
+      dailyWeight: dailyWeight == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dailyWeight),
+      restWeekdays: Value(restWeekdays),
+      countingMode: Value(countingMode),
+      isPrimary: Value(isPrimary),
+      status: Value(status),
+      autoRestart: Value(autoRestart),
+      presetId: presetId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(presetId),
+      aheadChoice: aheadChoice == null && nullToAbsent
+          ? const Value.absent()
+          : Value(aheadChoice),
+      reminderKinds: Value(reminderKinds),
+      recovery: recovery == null && nullToAbsent
+          ? const Value.absent()
+          : Value(recovery),
     );
   }
 
@@ -1462,6 +1966,22 @@ class KhatmaRow extends DataClass implements Insertable<KhatmaRow> {
       rebasedOn: serializer.fromJson<String?>(json['rebasedOn']),
       completedAt: serializer.fromJson<DateTime?>(json['completedAt']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      kind: serializer.fromJson<String>(json['kind']),
+      rangeStart: serializer.fromJson<int?>(json['rangeStart']),
+      rangeEnd: serializer.fromJson<int?>(json['rangeEnd']),
+      startAt: serializer.fromJson<int?>(json['startAt']),
+      pacingMode: serializer.fromJson<String>(json['pacingMode']),
+      scheduleMode: serializer.fromJson<String>(json['scheduleMode']),
+      dailyWeight: serializer.fromJson<double?>(json['dailyWeight']),
+      restWeekdays: serializer.fromJson<String>(json['restWeekdays']),
+      countingMode: serializer.fromJson<String>(json['countingMode']),
+      isPrimary: serializer.fromJson<bool>(json['isPrimary']),
+      status: serializer.fromJson<String>(json['status']),
+      autoRestart: serializer.fromJson<bool>(json['autoRestart']),
+      presetId: serializer.fromJson<String?>(json['presetId']),
+      aheadChoice: serializer.fromJson<String?>(json['aheadChoice']),
+      reminderKinds: serializer.fromJson<String>(json['reminderKinds']),
+      recovery: serializer.fromJson<String?>(json['recovery']),
     );
   }
   @override
@@ -1482,6 +2002,22 @@ class KhatmaRow extends DataClass implements Insertable<KhatmaRow> {
       'rebasedOn': serializer.toJson<String?>(rebasedOn),
       'completedAt': serializer.toJson<DateTime?>(completedAt),
       'createdAt': serializer.toJson<DateTime>(createdAt),
+      'kind': serializer.toJson<String>(kind),
+      'rangeStart': serializer.toJson<int?>(rangeStart),
+      'rangeEnd': serializer.toJson<int?>(rangeEnd),
+      'startAt': serializer.toJson<int?>(startAt),
+      'pacingMode': serializer.toJson<String>(pacingMode),
+      'scheduleMode': serializer.toJson<String>(scheduleMode),
+      'dailyWeight': serializer.toJson<double?>(dailyWeight),
+      'restWeekdays': serializer.toJson<String>(restWeekdays),
+      'countingMode': serializer.toJson<String>(countingMode),
+      'isPrimary': serializer.toJson<bool>(isPrimary),
+      'status': serializer.toJson<String>(status),
+      'autoRestart': serializer.toJson<bool>(autoRestart),
+      'presetId': serializer.toJson<String?>(presetId),
+      'aheadChoice': serializer.toJson<String?>(aheadChoice),
+      'reminderKinds': serializer.toJson<String>(reminderKinds),
+      'recovery': serializer.toJson<String?>(recovery),
     };
   }
 
@@ -1500,6 +2036,22 @@ class KhatmaRow extends DataClass implements Insertable<KhatmaRow> {
     Value<String?> rebasedOn = const Value.absent(),
     Value<DateTime?> completedAt = const Value.absent(),
     DateTime? createdAt,
+    String? kind,
+    Value<int?> rangeStart = const Value.absent(),
+    Value<int?> rangeEnd = const Value.absent(),
+    Value<int?> startAt = const Value.absent(),
+    String? pacingMode,
+    String? scheduleMode,
+    Value<double?> dailyWeight = const Value.absent(),
+    String? restWeekdays,
+    String? countingMode,
+    bool? isPrimary,
+    String? status,
+    bool? autoRestart,
+    Value<String?> presetId = const Value.absent(),
+    Value<String?> aheadChoice = const Value.absent(),
+    String? reminderKinds,
+    Value<String?> recovery = const Value.absent(),
   }) => KhatmaRow(
     uuid: uuid ?? this.uuid,
     updatedAt: updatedAt ?? this.updatedAt,
@@ -1515,6 +2067,22 @@ class KhatmaRow extends DataClass implements Insertable<KhatmaRow> {
     rebasedOn: rebasedOn.present ? rebasedOn.value : this.rebasedOn,
     completedAt: completedAt.present ? completedAt.value : this.completedAt,
     createdAt: createdAt ?? this.createdAt,
+    kind: kind ?? this.kind,
+    rangeStart: rangeStart.present ? rangeStart.value : this.rangeStart,
+    rangeEnd: rangeEnd.present ? rangeEnd.value : this.rangeEnd,
+    startAt: startAt.present ? startAt.value : this.startAt,
+    pacingMode: pacingMode ?? this.pacingMode,
+    scheduleMode: scheduleMode ?? this.scheduleMode,
+    dailyWeight: dailyWeight.present ? dailyWeight.value : this.dailyWeight,
+    restWeekdays: restWeekdays ?? this.restWeekdays,
+    countingMode: countingMode ?? this.countingMode,
+    isPrimary: isPrimary ?? this.isPrimary,
+    status: status ?? this.status,
+    autoRestart: autoRestart ?? this.autoRestart,
+    presetId: presetId.present ? presetId.value : this.presetId,
+    aheadChoice: aheadChoice.present ? aheadChoice.value : this.aheadChoice,
+    reminderKinds: reminderKinds ?? this.reminderKinds,
+    recovery: recovery.present ? recovery.value : this.recovery,
   );
   KhatmaRow copyWithCompanion(KhatmasCompanion data) {
     return KhatmaRow(
@@ -1540,6 +2108,40 @@ class KhatmaRow extends DataClass implements Insertable<KhatmaRow> {
           ? data.completedAt.value
           : this.completedAt,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      kind: data.kind.present ? data.kind.value : this.kind,
+      rangeStart: data.rangeStart.present
+          ? data.rangeStart.value
+          : this.rangeStart,
+      rangeEnd: data.rangeEnd.present ? data.rangeEnd.value : this.rangeEnd,
+      startAt: data.startAt.present ? data.startAt.value : this.startAt,
+      pacingMode: data.pacingMode.present
+          ? data.pacingMode.value
+          : this.pacingMode,
+      scheduleMode: data.scheduleMode.present
+          ? data.scheduleMode.value
+          : this.scheduleMode,
+      dailyWeight: data.dailyWeight.present
+          ? data.dailyWeight.value
+          : this.dailyWeight,
+      restWeekdays: data.restWeekdays.present
+          ? data.restWeekdays.value
+          : this.restWeekdays,
+      countingMode: data.countingMode.present
+          ? data.countingMode.value
+          : this.countingMode,
+      isPrimary: data.isPrimary.present ? data.isPrimary.value : this.isPrimary,
+      status: data.status.present ? data.status.value : this.status,
+      autoRestart: data.autoRestart.present
+          ? data.autoRestart.value
+          : this.autoRestart,
+      presetId: data.presetId.present ? data.presetId.value : this.presetId,
+      aheadChoice: data.aheadChoice.present
+          ? data.aheadChoice.value
+          : this.aheadChoice,
+      reminderKinds: data.reminderKinds.present
+          ? data.reminderKinds.value
+          : this.reminderKinds,
+      recovery: data.recovery.present ? data.recovery.value : this.recovery,
     );
   }
 
@@ -1559,13 +2161,29 @@ class KhatmaRow extends DataClass implements Insertable<KhatmaRow> {
           ..write('reminderTime: $reminderTime, ')
           ..write('rebasedOn: $rebasedOn, ')
           ..write('completedAt: $completedAt, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('kind: $kind, ')
+          ..write('rangeStart: $rangeStart, ')
+          ..write('rangeEnd: $rangeEnd, ')
+          ..write('startAt: $startAt, ')
+          ..write('pacingMode: $pacingMode, ')
+          ..write('scheduleMode: $scheduleMode, ')
+          ..write('dailyWeight: $dailyWeight, ')
+          ..write('restWeekdays: $restWeekdays, ')
+          ..write('countingMode: $countingMode, ')
+          ..write('isPrimary: $isPrimary, ')
+          ..write('status: $status, ')
+          ..write('autoRestart: $autoRestart, ')
+          ..write('presetId: $presetId, ')
+          ..write('aheadChoice: $aheadChoice, ')
+          ..write('reminderKinds: $reminderKinds, ')
+          ..write('recovery: $recovery')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     uuid,
     updatedAt,
     deletedAt,
@@ -1580,7 +2198,23 @@ class KhatmaRow extends DataClass implements Insertable<KhatmaRow> {
     rebasedOn,
     completedAt,
     createdAt,
-  );
+    kind,
+    rangeStart,
+    rangeEnd,
+    startAt,
+    pacingMode,
+    scheduleMode,
+    dailyWeight,
+    restWeekdays,
+    countingMode,
+    isPrimary,
+    status,
+    autoRestart,
+    presetId,
+    aheadChoice,
+    reminderKinds,
+    recovery,
+  ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1598,7 +2232,23 @@ class KhatmaRow extends DataClass implements Insertable<KhatmaRow> {
           other.reminderTime == this.reminderTime &&
           other.rebasedOn == this.rebasedOn &&
           other.completedAt == this.completedAt &&
-          other.createdAt == this.createdAt);
+          other.createdAt == this.createdAt &&
+          other.kind == this.kind &&
+          other.rangeStart == this.rangeStart &&
+          other.rangeEnd == this.rangeEnd &&
+          other.startAt == this.startAt &&
+          other.pacingMode == this.pacingMode &&
+          other.scheduleMode == this.scheduleMode &&
+          other.dailyWeight == this.dailyWeight &&
+          other.restWeekdays == this.restWeekdays &&
+          other.countingMode == this.countingMode &&
+          other.isPrimary == this.isPrimary &&
+          other.status == this.status &&
+          other.autoRestart == this.autoRestart &&
+          other.presetId == this.presetId &&
+          other.aheadChoice == this.aheadChoice &&
+          other.reminderKinds == this.reminderKinds &&
+          other.recovery == this.recovery);
 }
 
 class KhatmasCompanion extends UpdateCompanion<KhatmaRow> {
@@ -1616,6 +2266,22 @@ class KhatmasCompanion extends UpdateCompanion<KhatmaRow> {
   final Value<String?> rebasedOn;
   final Value<DateTime?> completedAt;
   final Value<DateTime> createdAt;
+  final Value<String> kind;
+  final Value<int?> rangeStart;
+  final Value<int?> rangeEnd;
+  final Value<int?> startAt;
+  final Value<String> pacingMode;
+  final Value<String> scheduleMode;
+  final Value<double?> dailyWeight;
+  final Value<String> restWeekdays;
+  final Value<String> countingMode;
+  final Value<bool> isPrimary;
+  final Value<String> status;
+  final Value<bool> autoRestart;
+  final Value<String?> presetId;
+  final Value<String?> aheadChoice;
+  final Value<String> reminderKinds;
+  final Value<String?> recovery;
   const KhatmasCompanion({
     this.uuid = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -1631,6 +2297,22 @@ class KhatmasCompanion extends UpdateCompanion<KhatmaRow> {
     this.rebasedOn = const Value.absent(),
     this.completedAt = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.rangeStart = const Value.absent(),
+    this.rangeEnd = const Value.absent(),
+    this.startAt = const Value.absent(),
+    this.pacingMode = const Value.absent(),
+    this.scheduleMode = const Value.absent(),
+    this.dailyWeight = const Value.absent(),
+    this.restWeekdays = const Value.absent(),
+    this.countingMode = const Value.absent(),
+    this.isPrimary = const Value.absent(),
+    this.status = const Value.absent(),
+    this.autoRestart = const Value.absent(),
+    this.presetId = const Value.absent(),
+    this.aheadChoice = const Value.absent(),
+    this.reminderKinds = const Value.absent(),
+    this.recovery = const Value.absent(),
   });
   KhatmasCompanion.insert({
     this.uuid = const Value.absent(),
@@ -1647,6 +2329,22 @@ class KhatmasCompanion extends UpdateCompanion<KhatmaRow> {
     this.rebasedOn = const Value.absent(),
     this.completedAt = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.rangeStart = const Value.absent(),
+    this.rangeEnd = const Value.absent(),
+    this.startAt = const Value.absent(),
+    this.pacingMode = const Value.absent(),
+    this.scheduleMode = const Value.absent(),
+    this.dailyWeight = const Value.absent(),
+    this.restWeekdays = const Value.absent(),
+    this.countingMode = const Value.absent(),
+    this.isPrimary = const Value.absent(),
+    this.status = const Value.absent(),
+    this.autoRestart = const Value.absent(),
+    this.presetId = const Value.absent(),
+    this.aheadChoice = const Value.absent(),
+    this.reminderKinds = const Value.absent(),
+    this.recovery = const Value.absent(),
   }) : title = Value(title),
        edition = Value(edition),
        startDate = Value(startDate),
@@ -1666,6 +2364,22 @@ class KhatmasCompanion extends UpdateCompanion<KhatmaRow> {
     Expression<String>? rebasedOn,
     Expression<DateTime>? completedAt,
     Expression<DateTime>? createdAt,
+    Expression<String>? kind,
+    Expression<int>? rangeStart,
+    Expression<int>? rangeEnd,
+    Expression<int>? startAt,
+    Expression<String>? pacingMode,
+    Expression<String>? scheduleMode,
+    Expression<double>? dailyWeight,
+    Expression<String>? restWeekdays,
+    Expression<String>? countingMode,
+    Expression<bool>? isPrimary,
+    Expression<String>? status,
+    Expression<bool>? autoRestart,
+    Expression<String>? presetId,
+    Expression<String>? aheadChoice,
+    Expression<String>? reminderKinds,
+    Expression<String>? recovery,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
@@ -1682,6 +2396,22 @@ class KhatmasCompanion extends UpdateCompanion<KhatmaRow> {
       if (rebasedOn != null) 'rebased_on': rebasedOn,
       if (completedAt != null) 'completed_at': completedAt,
       if (createdAt != null) 'created_at': createdAt,
+      if (kind != null) 'kind': kind,
+      if (rangeStart != null) 'range_start': rangeStart,
+      if (rangeEnd != null) 'range_end': rangeEnd,
+      if (startAt != null) 'start_at': startAt,
+      if (pacingMode != null) 'pacing_mode': pacingMode,
+      if (scheduleMode != null) 'schedule_mode': scheduleMode,
+      if (dailyWeight != null) 'daily_weight': dailyWeight,
+      if (restWeekdays != null) 'rest_weekdays': restWeekdays,
+      if (countingMode != null) 'counting_mode': countingMode,
+      if (isPrimary != null) 'is_primary': isPrimary,
+      if (status != null) 'status': status,
+      if (autoRestart != null) 'auto_restart': autoRestart,
+      if (presetId != null) 'preset_id': presetId,
+      if (aheadChoice != null) 'ahead_choice': aheadChoice,
+      if (reminderKinds != null) 'reminder_kinds': reminderKinds,
+      if (recovery != null) 'recovery': recovery,
     });
   }
 
@@ -1700,6 +2430,22 @@ class KhatmasCompanion extends UpdateCompanion<KhatmaRow> {
     Value<String?>? rebasedOn,
     Value<DateTime?>? completedAt,
     Value<DateTime>? createdAt,
+    Value<String>? kind,
+    Value<int?>? rangeStart,
+    Value<int?>? rangeEnd,
+    Value<int?>? startAt,
+    Value<String>? pacingMode,
+    Value<String>? scheduleMode,
+    Value<double?>? dailyWeight,
+    Value<String>? restWeekdays,
+    Value<String>? countingMode,
+    Value<bool>? isPrimary,
+    Value<String>? status,
+    Value<bool>? autoRestart,
+    Value<String?>? presetId,
+    Value<String?>? aheadChoice,
+    Value<String>? reminderKinds,
+    Value<String?>? recovery,
   }) {
     return KhatmasCompanion(
       uuid: uuid ?? this.uuid,
@@ -1716,6 +2462,22 @@ class KhatmasCompanion extends UpdateCompanion<KhatmaRow> {
       rebasedOn: rebasedOn ?? this.rebasedOn,
       completedAt: completedAt ?? this.completedAt,
       createdAt: createdAt ?? this.createdAt,
+      kind: kind ?? this.kind,
+      rangeStart: rangeStart ?? this.rangeStart,
+      rangeEnd: rangeEnd ?? this.rangeEnd,
+      startAt: startAt ?? this.startAt,
+      pacingMode: pacingMode ?? this.pacingMode,
+      scheduleMode: scheduleMode ?? this.scheduleMode,
+      dailyWeight: dailyWeight ?? this.dailyWeight,
+      restWeekdays: restWeekdays ?? this.restWeekdays,
+      countingMode: countingMode ?? this.countingMode,
+      isPrimary: isPrimary ?? this.isPrimary,
+      status: status ?? this.status,
+      autoRestart: autoRestart ?? this.autoRestart,
+      presetId: presetId ?? this.presetId,
+      aheadChoice: aheadChoice ?? this.aheadChoice,
+      reminderKinds: reminderKinds ?? this.reminderKinds,
+      recovery: recovery ?? this.recovery,
     );
   }
 
@@ -1764,6 +2526,54 @@ class KhatmasCompanion extends UpdateCompanion<KhatmaRow> {
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
+    if (kind.present) {
+      map['kind'] = Variable<String>(kind.value);
+    }
+    if (rangeStart.present) {
+      map['range_start'] = Variable<int>(rangeStart.value);
+    }
+    if (rangeEnd.present) {
+      map['range_end'] = Variable<int>(rangeEnd.value);
+    }
+    if (startAt.present) {
+      map['start_at'] = Variable<int>(startAt.value);
+    }
+    if (pacingMode.present) {
+      map['pacing_mode'] = Variable<String>(pacingMode.value);
+    }
+    if (scheduleMode.present) {
+      map['schedule_mode'] = Variable<String>(scheduleMode.value);
+    }
+    if (dailyWeight.present) {
+      map['daily_weight'] = Variable<double>(dailyWeight.value);
+    }
+    if (restWeekdays.present) {
+      map['rest_weekdays'] = Variable<String>(restWeekdays.value);
+    }
+    if (countingMode.present) {
+      map['counting_mode'] = Variable<String>(countingMode.value);
+    }
+    if (isPrimary.present) {
+      map['is_primary'] = Variable<bool>(isPrimary.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (autoRestart.present) {
+      map['auto_restart'] = Variable<bool>(autoRestart.value);
+    }
+    if (presetId.present) {
+      map['preset_id'] = Variable<String>(presetId.value);
+    }
+    if (aheadChoice.present) {
+      map['ahead_choice'] = Variable<String>(aheadChoice.value);
+    }
+    if (reminderKinds.present) {
+      map['reminder_kinds'] = Variable<String>(reminderKinds.value);
+    }
+    if (recovery.present) {
+      map['recovery'] = Variable<String>(recovery.value);
+    }
     return map;
   }
 
@@ -1783,7 +2593,23 @@ class KhatmasCompanion extends UpdateCompanion<KhatmaRow> {
           ..write('reminderTime: $reminderTime, ')
           ..write('rebasedOn: $rebasedOn, ')
           ..write('completedAt: $completedAt, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('kind: $kind, ')
+          ..write('rangeStart: $rangeStart, ')
+          ..write('rangeEnd: $rangeEnd, ')
+          ..write('startAt: $startAt, ')
+          ..write('pacingMode: $pacingMode, ')
+          ..write('scheduleMode: $scheduleMode, ')
+          ..write('dailyWeight: $dailyWeight, ')
+          ..write('restWeekdays: $restWeekdays, ')
+          ..write('countingMode: $countingMode, ')
+          ..write('isPrimary: $isPrimary, ')
+          ..write('status: $status, ')
+          ..write('autoRestart: $autoRestart, ')
+          ..write('presetId: $presetId, ')
+          ..write('aheadChoice: $aheadChoice, ')
+          ..write('reminderKinds: $reminderKinds, ')
+          ..write('recovery: $recovery')
           ..write(')'))
         .toString();
   }
@@ -2392,6 +3218,49 @@ class $ReadingSessionsTable extends ReadingSessions
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('reader'),
+  );
+  static const VerificationMeta _entryPointMeta = const VerificationMeta(
+    'entryPoint',
+  );
+  @override
+  late final GeneratedColumn<String> entryPoint = GeneratedColumn<String>(
+    'entry_point',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('other'),
+  );
+  static const VerificationMeta _activeSecondsMeta = const VerificationMeta(
+    'activeSeconds',
+  );
+  @override
+  late final GeneratedColumn<int> activeSeconds = GeneratedColumn<int>(
+    'active_seconds',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _rangesMeta = const VerificationMeta('ranges');
+  @override
+  late final GeneratedColumn<String> ranges = GeneratedColumn<String>(
+    'ranges',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     uuid,
@@ -2403,6 +3272,10 @@ class $ReadingSessionsTable extends ReadingSessions
     pages,
     mode,
     edition,
+    source,
+    entryPoint,
+    activeSeconds,
+    ranges,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2473,6 +3346,33 @@ class $ReadingSessionsTable extends ReadingSessions
         edition.isAcceptableOrUnknown(data['edition']!, _editionMeta),
       );
     }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    }
+    if (data.containsKey('entry_point')) {
+      context.handle(
+        _entryPointMeta,
+        entryPoint.isAcceptableOrUnknown(data['entry_point']!, _entryPointMeta),
+      );
+    }
+    if (data.containsKey('active_seconds')) {
+      context.handle(
+        _activeSecondsMeta,
+        activeSeconds.isAcceptableOrUnknown(
+          data['active_seconds']!,
+          _activeSecondsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('ranges')) {
+      context.handle(
+        _rangesMeta,
+        ranges.isAcceptableOrUnknown(data['ranges']!, _rangesMeta),
+      );
+    }
     return context;
   }
 
@@ -2518,6 +3418,22 @@ class $ReadingSessionsTable extends ReadingSessions
         DriftSqlType.string,
         data['${effectivePrefix}edition'],
       ),
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      entryPoint: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entry_point'],
+      )!,
+      activeSeconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}active_seconds'],
+      ),
+      ranges: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ranges'],
+      )!,
     );
   }
 
@@ -2539,9 +3455,22 @@ class ReadingSessionRow extends DataClass
   /// Pages that stayed on screen long enough to count as read.
   final int pages;
 
-  /// `page` (the page view).
+  /// How it was read: `page` (the page view), `scroll` (auto-scroll),
+  /// `verse` («آية آية») or `continuous`.
   final String mode;
   final String? edition;
+
+  /// `reader`, `audio` or `manual`.
+  final String source;
+
+  /// Where the reading was opened from (`EntryPoint.name`).
+  final String entryPoint;
+
+  /// Time spent reading, idle stretches left out.
+  final int? activeSeconds;
+
+  /// The verses read (JSON runs of `ayah.id`).
+  final String ranges;
   const ReadingSessionRow({
     required this.uuid,
     required this.updatedAt,
@@ -2552,6 +3481,10 @@ class ReadingSessionRow extends DataClass
     required this.pages,
     required this.mode,
     this.edition,
+    required this.source,
+    required this.entryPoint,
+    this.activeSeconds,
+    required this.ranges,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2569,6 +3502,12 @@ class ReadingSessionRow extends DataClass
     if (!nullToAbsent || edition != null) {
       map['edition'] = Variable<String>(edition);
     }
+    map['source'] = Variable<String>(source);
+    map['entry_point'] = Variable<String>(entryPoint);
+    if (!nullToAbsent || activeSeconds != null) {
+      map['active_seconds'] = Variable<int>(activeSeconds);
+    }
+    map['ranges'] = Variable<String>(ranges);
     return map;
   }
 
@@ -2587,6 +3526,12 @@ class ReadingSessionRow extends DataClass
       edition: edition == null && nullToAbsent
           ? const Value.absent()
           : Value(edition),
+      source: Value(source),
+      entryPoint: Value(entryPoint),
+      activeSeconds: activeSeconds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(activeSeconds),
+      ranges: Value(ranges),
     );
   }
 
@@ -2605,6 +3550,10 @@ class ReadingSessionRow extends DataClass
       pages: serializer.fromJson<int>(json['pages']),
       mode: serializer.fromJson<String>(json['mode']),
       edition: serializer.fromJson<String?>(json['edition']),
+      source: serializer.fromJson<String>(json['source']),
+      entryPoint: serializer.fromJson<String>(json['entryPoint']),
+      activeSeconds: serializer.fromJson<int?>(json['activeSeconds']),
+      ranges: serializer.fromJson<String>(json['ranges']),
     );
   }
   @override
@@ -2620,6 +3569,10 @@ class ReadingSessionRow extends DataClass
       'pages': serializer.toJson<int>(pages),
       'mode': serializer.toJson<String>(mode),
       'edition': serializer.toJson<String?>(edition),
+      'source': serializer.toJson<String>(source),
+      'entryPoint': serializer.toJson<String>(entryPoint),
+      'activeSeconds': serializer.toJson<int?>(activeSeconds),
+      'ranges': serializer.toJson<String>(ranges),
     };
   }
 
@@ -2633,6 +3586,10 @@ class ReadingSessionRow extends DataClass
     int? pages,
     String? mode,
     Value<String?> edition = const Value.absent(),
+    String? source,
+    String? entryPoint,
+    Value<int?> activeSeconds = const Value.absent(),
+    String? ranges,
   }) => ReadingSessionRow(
     uuid: uuid ?? this.uuid,
     updatedAt: updatedAt ?? this.updatedAt,
@@ -2643,6 +3600,12 @@ class ReadingSessionRow extends DataClass
     pages: pages ?? this.pages,
     mode: mode ?? this.mode,
     edition: edition.present ? edition.value : this.edition,
+    source: source ?? this.source,
+    entryPoint: entryPoint ?? this.entryPoint,
+    activeSeconds: activeSeconds.present
+        ? activeSeconds.value
+        : this.activeSeconds,
+    ranges: ranges ?? this.ranges,
   );
   ReadingSessionRow copyWithCompanion(ReadingSessionsCompanion data) {
     return ReadingSessionRow(
@@ -2655,6 +3618,14 @@ class ReadingSessionRow extends DataClass
       pages: data.pages.present ? data.pages.value : this.pages,
       mode: data.mode.present ? data.mode.value : this.mode,
       edition: data.edition.present ? data.edition.value : this.edition,
+      source: data.source.present ? data.source.value : this.source,
+      entryPoint: data.entryPoint.present
+          ? data.entryPoint.value
+          : this.entryPoint,
+      activeSeconds: data.activeSeconds.present
+          ? data.activeSeconds.value
+          : this.activeSeconds,
+      ranges: data.ranges.present ? data.ranges.value : this.ranges,
     );
   }
 
@@ -2669,7 +3640,11 @@ class ReadingSessionRow extends DataClass
           ..write('endedAt: $endedAt, ')
           ..write('pages: $pages, ')
           ..write('mode: $mode, ')
-          ..write('edition: $edition')
+          ..write('edition: $edition, ')
+          ..write('source: $source, ')
+          ..write('entryPoint: $entryPoint, ')
+          ..write('activeSeconds: $activeSeconds, ')
+          ..write('ranges: $ranges')
           ..write(')'))
         .toString();
   }
@@ -2685,6 +3660,10 @@ class ReadingSessionRow extends DataClass
     pages,
     mode,
     edition,
+    source,
+    entryPoint,
+    activeSeconds,
+    ranges,
   );
   @override
   bool operator ==(Object other) =>
@@ -2698,7 +3677,11 @@ class ReadingSessionRow extends DataClass
           other.endedAt == this.endedAt &&
           other.pages == this.pages &&
           other.mode == this.mode &&
-          other.edition == this.edition);
+          other.edition == this.edition &&
+          other.source == this.source &&
+          other.entryPoint == this.entryPoint &&
+          other.activeSeconds == this.activeSeconds &&
+          other.ranges == this.ranges);
 }
 
 class ReadingSessionsCompanion extends UpdateCompanion<ReadingSessionRow> {
@@ -2711,6 +3694,10 @@ class ReadingSessionsCompanion extends UpdateCompanion<ReadingSessionRow> {
   final Value<int> pages;
   final Value<String> mode;
   final Value<String?> edition;
+  final Value<String> source;
+  final Value<String> entryPoint;
+  final Value<int?> activeSeconds;
+  final Value<String> ranges;
   const ReadingSessionsCompanion({
     this.uuid = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -2721,6 +3708,10 @@ class ReadingSessionsCompanion extends UpdateCompanion<ReadingSessionRow> {
     this.pages = const Value.absent(),
     this.mode = const Value.absent(),
     this.edition = const Value.absent(),
+    this.source = const Value.absent(),
+    this.entryPoint = const Value.absent(),
+    this.activeSeconds = const Value.absent(),
+    this.ranges = const Value.absent(),
   });
   ReadingSessionsCompanion.insert({
     this.uuid = const Value.absent(),
@@ -2732,6 +3723,10 @@ class ReadingSessionsCompanion extends UpdateCompanion<ReadingSessionRow> {
     required int pages,
     this.mode = const Value.absent(),
     this.edition = const Value.absent(),
+    this.source = const Value.absent(),
+    this.entryPoint = const Value.absent(),
+    this.activeSeconds = const Value.absent(),
+    this.ranges = const Value.absent(),
   }) : startedAt = Value(startedAt),
        endedAt = Value(endedAt),
        pages = Value(pages);
@@ -2745,6 +3740,10 @@ class ReadingSessionsCompanion extends UpdateCompanion<ReadingSessionRow> {
     Expression<int>? pages,
     Expression<String>? mode,
     Expression<String>? edition,
+    Expression<String>? source,
+    Expression<String>? entryPoint,
+    Expression<int>? activeSeconds,
+    Expression<String>? ranges,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
@@ -2756,6 +3755,10 @@ class ReadingSessionsCompanion extends UpdateCompanion<ReadingSessionRow> {
       if (pages != null) 'pages': pages,
       if (mode != null) 'mode': mode,
       if (edition != null) 'edition': edition,
+      if (source != null) 'source': source,
+      if (entryPoint != null) 'entry_point': entryPoint,
+      if (activeSeconds != null) 'active_seconds': activeSeconds,
+      if (ranges != null) 'ranges': ranges,
     });
   }
 
@@ -2769,6 +3772,10 @@ class ReadingSessionsCompanion extends UpdateCompanion<ReadingSessionRow> {
     Value<int>? pages,
     Value<String>? mode,
     Value<String?>? edition,
+    Value<String>? source,
+    Value<String>? entryPoint,
+    Value<int?>? activeSeconds,
+    Value<String>? ranges,
   }) {
     return ReadingSessionsCompanion(
       uuid: uuid ?? this.uuid,
@@ -2780,6 +3787,10 @@ class ReadingSessionsCompanion extends UpdateCompanion<ReadingSessionRow> {
       pages: pages ?? this.pages,
       mode: mode ?? this.mode,
       edition: edition ?? this.edition,
+      source: source ?? this.source,
+      entryPoint: entryPoint ?? this.entryPoint,
+      activeSeconds: activeSeconds ?? this.activeSeconds,
+      ranges: ranges ?? this.ranges,
     );
   }
 
@@ -2813,6 +3824,18 @@ class ReadingSessionsCompanion extends UpdateCompanion<ReadingSessionRow> {
     if (edition.present) {
       map['edition'] = Variable<String>(edition.value);
     }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (entryPoint.present) {
+      map['entry_point'] = Variable<String>(entryPoint.value);
+    }
+    if (activeSeconds.present) {
+      map['active_seconds'] = Variable<int>(activeSeconds.value);
+    }
+    if (ranges.present) {
+      map['ranges'] = Variable<String>(ranges.value);
+    }
     return map;
   }
 
@@ -2827,7 +3850,11 @@ class ReadingSessionsCompanion extends UpdateCompanion<ReadingSessionRow> {
           ..write('endedAt: $endedAt, ')
           ..write('pages: $pages, ')
           ..write('mode: $mode, ')
-          ..write('edition: $edition')
+          ..write('edition: $edition, ')
+          ..write('source: $source, ')
+          ..write('entryPoint: $entryPoint, ')
+          ..write('activeSeconds: $activeSeconds, ')
+          ..write('ranges: $ranges')
           ..write(')'))
         .toString();
   }
@@ -5340,6 +6367,4533 @@ class MemorizationsCompanion extends UpdateCompanion<MemorizationRow> {
   }
 }
 
+class $KhatmaPausesTable extends KhatmaPauses
+    with TableInfo<$KhatmaPausesTable, KhatmaPauseRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $KhatmaPausesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+    'uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+    clientDefault: newUuid,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _khatmaUuidMeta = const VerificationMeta(
+    'khatmaUuid',
+  );
+  @override
+  late final GeneratedColumn<String> khatmaUuid = GeneratedColumn<String>(
+    'khatma_uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fromDayMeta = const VerificationMeta(
+    'fromDay',
+  );
+  @override
+  late final GeneratedColumn<String> fromDay = GeneratedColumn<String>(
+    'from_day',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _toDayMeta = const VerificationMeta('toDay');
+  @override
+  late final GeneratedColumn<String> toDay = GeneratedColumn<String>(
+    'to_day',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    khatmaUuid,
+    fromDay,
+    toDay,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'khatma_pause';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<KhatmaPauseRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+        _uuidMeta,
+        uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('khatma_uuid')) {
+      context.handle(
+        _khatmaUuidMeta,
+        khatmaUuid.isAcceptableOrUnknown(data['khatma_uuid']!, _khatmaUuidMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_khatmaUuidMeta);
+    }
+    if (data.containsKey('from_day')) {
+      context.handle(
+        _fromDayMeta,
+        fromDay.isAcceptableOrUnknown(data['from_day']!, _fromDayMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fromDayMeta);
+    }
+    if (data.containsKey('to_day')) {
+      context.handle(
+        _toDayMeta,
+        toDay.isAcceptableOrUnknown(data['to_day']!, _toDayMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  KhatmaPauseRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return KhatmaPauseRow(
+      uuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}uuid'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      khatmaUuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}khatma_uuid'],
+      )!,
+      fromDay: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}from_day'],
+      )!,
+      toDay: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}to_day'],
+      ),
+    );
+  }
+
+  @override
+  $KhatmaPausesTable createAlias(String alias) {
+    return $KhatmaPausesTable(attachedDatabase, alias);
+  }
+}
+
+class KhatmaPauseRow extends DataClass implements Insertable<KhatmaPauseRow> {
+  final String uuid;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final int id;
+  final String khatmaUuid;
+
+  /// First paused day, and the last (null while still paused).
+  final String fromDay;
+  final String? toDay;
+  const KhatmaPauseRow({
+    required this.uuid,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.id,
+    required this.khatmaUuid,
+    required this.fromDay,
+    this.toDay,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['id'] = Variable<int>(id);
+    map['khatma_uuid'] = Variable<String>(khatmaUuid);
+    map['from_day'] = Variable<String>(fromDay);
+    if (!nullToAbsent || toDay != null) {
+      map['to_day'] = Variable<String>(toDay);
+    }
+    return map;
+  }
+
+  KhatmaPausesCompanion toCompanion(bool nullToAbsent) {
+    return KhatmaPausesCompanion(
+      uuid: Value(uuid),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      id: Value(id),
+      khatmaUuid: Value(khatmaUuid),
+      fromDay: Value(fromDay),
+      toDay: toDay == null && nullToAbsent
+          ? const Value.absent()
+          : Value(toDay),
+    );
+  }
+
+  factory KhatmaPauseRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return KhatmaPauseRow(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      id: serializer.fromJson<int>(json['id']),
+      khatmaUuid: serializer.fromJson<String>(json['khatmaUuid']),
+      fromDay: serializer.fromJson<String>(json['fromDay']),
+      toDay: serializer.fromJson<String?>(json['toDay']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'id': serializer.toJson<int>(id),
+      'khatmaUuid': serializer.toJson<String>(khatmaUuid),
+      'fromDay': serializer.toJson<String>(fromDay),
+      'toDay': serializer.toJson<String?>(toDay),
+    };
+  }
+
+  KhatmaPauseRow copyWith({
+    String? uuid,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    int? id,
+    String? khatmaUuid,
+    String? fromDay,
+    Value<String?> toDay = const Value.absent(),
+  }) => KhatmaPauseRow(
+    uuid: uuid ?? this.uuid,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    id: id ?? this.id,
+    khatmaUuid: khatmaUuid ?? this.khatmaUuid,
+    fromDay: fromDay ?? this.fromDay,
+    toDay: toDay.present ? toDay.value : this.toDay,
+  );
+  KhatmaPauseRow copyWithCompanion(KhatmaPausesCompanion data) {
+    return KhatmaPauseRow(
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      id: data.id.present ? data.id.value : this.id,
+      khatmaUuid: data.khatmaUuid.present
+          ? data.khatmaUuid.value
+          : this.khatmaUuid,
+      fromDay: data.fromDay.present ? data.fromDay.value : this.fromDay,
+      toDay: data.toDay.present ? data.toDay.value : this.toDay,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('KhatmaPauseRow(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('khatmaUuid: $khatmaUuid, ')
+          ..write('fromDay: $fromDay, ')
+          ..write('toDay: $toDay')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(uuid, updatedAt, deletedAt, id, khatmaUuid, fromDay, toDay);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is KhatmaPauseRow &&
+          other.uuid == this.uuid &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.id == this.id &&
+          other.khatmaUuid == this.khatmaUuid &&
+          other.fromDay == this.fromDay &&
+          other.toDay == this.toDay);
+}
+
+class KhatmaPausesCompanion extends UpdateCompanion<KhatmaPauseRow> {
+  final Value<String> uuid;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<int> id;
+  final Value<String> khatmaUuid;
+  final Value<String> fromDay;
+  final Value<String?> toDay;
+  const KhatmaPausesCompanion({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    this.khatmaUuid = const Value.absent(),
+    this.fromDay = const Value.absent(),
+    this.toDay = const Value.absent(),
+  });
+  KhatmaPausesCompanion.insert({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    required String khatmaUuid,
+    required String fromDay,
+    this.toDay = const Value.absent(),
+  }) : khatmaUuid = Value(khatmaUuid),
+       fromDay = Value(fromDay);
+  static Insertable<KhatmaPauseRow> custom({
+    Expression<String>? uuid,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? id,
+    Expression<String>? khatmaUuid,
+    Expression<String>? fromDay,
+    Expression<String>? toDay,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (id != null) 'id': id,
+      if (khatmaUuid != null) 'khatma_uuid': khatmaUuid,
+      if (fromDay != null) 'from_day': fromDay,
+      if (toDay != null) 'to_day': toDay,
+    });
+  }
+
+  KhatmaPausesCompanion copyWith({
+    Value<String>? uuid,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<int>? id,
+    Value<String>? khatmaUuid,
+    Value<String>? fromDay,
+    Value<String?>? toDay,
+  }) {
+    return KhatmaPausesCompanion(
+      uuid: uuid ?? this.uuid,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      id: id ?? this.id,
+      khatmaUuid: khatmaUuid ?? this.khatmaUuid,
+      fromDay: fromDay ?? this.fromDay,
+      toDay: toDay ?? this.toDay,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (khatmaUuid.present) {
+      map['khatma_uuid'] = Variable<String>(khatmaUuid.value);
+    }
+    if (fromDay.present) {
+      map['from_day'] = Variable<String>(fromDay.value);
+    }
+    if (toDay.present) {
+      map['to_day'] = Variable<String>(toDay.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('KhatmaPausesCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('khatmaUuid: $khatmaUuid, ')
+          ..write('fromDay: $fromDay, ')
+          ..write('toDay: $toDay')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SessionAttributionsTable extends SessionAttributions
+    with TableInfo<$SessionAttributionsTable, SessionAttributionRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SessionAttributionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+    'uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+    clientDefault: newUuid,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _sessionUuidMeta = const VerificationMeta(
+    'sessionUuid',
+  );
+  @override
+  late final GeneratedColumn<String> sessionUuid = GeneratedColumn<String>(
+    'session_uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _khatmaUuidMeta = const VerificationMeta(
+    'khatmaUuid',
+  );
+  @override
+  late final GeneratedColumn<String> khatmaUuid = GeneratedColumn<String>(
+    'khatma_uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _rangesMeta = const VerificationMeta('ranges');
+  @override
+  late final GeneratedColumn<String> ranges = GeneratedColumn<String>(
+    'ranges',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _newWeightMeta = const VerificationMeta(
+    'newWeight',
+  );
+  @override
+  late final GeneratedColumn<double> newWeight = GeneratedColumn<double>(
+    'new_weight',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _decidedByMeta = const VerificationMeta(
+    'decidedBy',
+  );
+  @override
+  late final GeneratedColumn<String> decidedBy = GeneratedColumn<String>(
+    'decided_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _undoneMeta = const VerificationMeta('undone');
+  @override
+  late final GeneratedColumn<bool> undone = GeneratedColumn<bool>(
+    'undone',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("undone" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _dayMeta = const VerificationMeta('day');
+  @override
+  late final GeneratedColumn<String> day = GeneratedColumn<String>(
+    'day',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _atMeta = const VerificationMeta('at');
+  @override
+  late final GeneratedColumn<DateTime> at = GeneratedColumn<DateTime>(
+    'at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    sessionUuid,
+    khatmaUuid,
+    ranges,
+    newWeight,
+    decidedBy,
+    undone,
+    day,
+    at,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'session_attribution';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SessionAttributionRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+        _uuidMeta,
+        uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('session_uuid')) {
+      context.handle(
+        _sessionUuidMeta,
+        sessionUuid.isAcceptableOrUnknown(
+          data['session_uuid']!,
+          _sessionUuidMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sessionUuidMeta);
+    }
+    if (data.containsKey('khatma_uuid')) {
+      context.handle(
+        _khatmaUuidMeta,
+        khatmaUuid.isAcceptableOrUnknown(data['khatma_uuid']!, _khatmaUuidMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_khatmaUuidMeta);
+    }
+    if (data.containsKey('ranges')) {
+      context.handle(
+        _rangesMeta,
+        ranges.isAcceptableOrUnknown(data['ranges']!, _rangesMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_rangesMeta);
+    }
+    if (data.containsKey('new_weight')) {
+      context.handle(
+        _newWeightMeta,
+        newWeight.isAcceptableOrUnknown(data['new_weight']!, _newWeightMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_newWeightMeta);
+    }
+    if (data.containsKey('decided_by')) {
+      context.handle(
+        _decidedByMeta,
+        decidedBy.isAcceptableOrUnknown(data['decided_by']!, _decidedByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_decidedByMeta);
+    }
+    if (data.containsKey('undone')) {
+      context.handle(
+        _undoneMeta,
+        undone.isAcceptableOrUnknown(data['undone']!, _undoneMeta),
+      );
+    }
+    if (data.containsKey('day')) {
+      context.handle(
+        _dayMeta,
+        day.isAcceptableOrUnknown(data['day']!, _dayMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dayMeta);
+    }
+    if (data.containsKey('at')) {
+      context.handle(_atMeta, at.isAcceptableOrUnknown(data['at']!, _atMeta));
+    } else if (isInserting) {
+      context.missing(_atMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SessionAttributionRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SessionAttributionRow(
+      uuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}uuid'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      sessionUuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}session_uuid'],
+      )!,
+      khatmaUuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}khatma_uuid'],
+      )!,
+      ranges: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ranges'],
+      )!,
+      newWeight: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}new_weight'],
+      )!,
+      decidedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}decided_by'],
+      )!,
+      undone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}undone'],
+      )!,
+      day: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}day'],
+      )!,
+      at: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}at'],
+      )!,
+    );
+  }
+
+  @override
+  $SessionAttributionsTable createAlias(String alias) {
+    return $SessionAttributionsTable(attachedDatabase, alias);
+  }
+}
+
+class SessionAttributionRow extends DataClass
+    implements Insertable<SessionAttributionRow> {
+  final String uuid;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final int id;
+  final String sessionUuid;
+  final String khatmaUuid;
+
+  /// The verses counted, new to the khatma when counted (JSON runs).
+  final String ranges;
+
+  /// Their weight then.
+  final double newWeight;
+
+  /// `auto`, `userAccepted`, `manual`, or `declined` (an «ask» answered
+  /// no; kept so it is not asked again).
+  final String decidedBy;
+  final bool undone;
+
+  /// The logical day of the session, and when it started (for order).
+  final String day;
+  final DateTime at;
+  const SessionAttributionRow({
+    required this.uuid,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.id,
+    required this.sessionUuid,
+    required this.khatmaUuid,
+    required this.ranges,
+    required this.newWeight,
+    required this.decidedBy,
+    required this.undone,
+    required this.day,
+    required this.at,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['id'] = Variable<int>(id);
+    map['session_uuid'] = Variable<String>(sessionUuid);
+    map['khatma_uuid'] = Variable<String>(khatmaUuid);
+    map['ranges'] = Variable<String>(ranges);
+    map['new_weight'] = Variable<double>(newWeight);
+    map['decided_by'] = Variable<String>(decidedBy);
+    map['undone'] = Variable<bool>(undone);
+    map['day'] = Variable<String>(day);
+    map['at'] = Variable<DateTime>(at);
+    return map;
+  }
+
+  SessionAttributionsCompanion toCompanion(bool nullToAbsent) {
+    return SessionAttributionsCompanion(
+      uuid: Value(uuid),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      id: Value(id),
+      sessionUuid: Value(sessionUuid),
+      khatmaUuid: Value(khatmaUuid),
+      ranges: Value(ranges),
+      newWeight: Value(newWeight),
+      decidedBy: Value(decidedBy),
+      undone: Value(undone),
+      day: Value(day),
+      at: Value(at),
+    );
+  }
+
+  factory SessionAttributionRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SessionAttributionRow(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      id: serializer.fromJson<int>(json['id']),
+      sessionUuid: serializer.fromJson<String>(json['sessionUuid']),
+      khatmaUuid: serializer.fromJson<String>(json['khatmaUuid']),
+      ranges: serializer.fromJson<String>(json['ranges']),
+      newWeight: serializer.fromJson<double>(json['newWeight']),
+      decidedBy: serializer.fromJson<String>(json['decidedBy']),
+      undone: serializer.fromJson<bool>(json['undone']),
+      day: serializer.fromJson<String>(json['day']),
+      at: serializer.fromJson<DateTime>(json['at']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'id': serializer.toJson<int>(id),
+      'sessionUuid': serializer.toJson<String>(sessionUuid),
+      'khatmaUuid': serializer.toJson<String>(khatmaUuid),
+      'ranges': serializer.toJson<String>(ranges),
+      'newWeight': serializer.toJson<double>(newWeight),
+      'decidedBy': serializer.toJson<String>(decidedBy),
+      'undone': serializer.toJson<bool>(undone),
+      'day': serializer.toJson<String>(day),
+      'at': serializer.toJson<DateTime>(at),
+    };
+  }
+
+  SessionAttributionRow copyWith({
+    String? uuid,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    int? id,
+    String? sessionUuid,
+    String? khatmaUuid,
+    String? ranges,
+    double? newWeight,
+    String? decidedBy,
+    bool? undone,
+    String? day,
+    DateTime? at,
+  }) => SessionAttributionRow(
+    uuid: uuid ?? this.uuid,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    id: id ?? this.id,
+    sessionUuid: sessionUuid ?? this.sessionUuid,
+    khatmaUuid: khatmaUuid ?? this.khatmaUuid,
+    ranges: ranges ?? this.ranges,
+    newWeight: newWeight ?? this.newWeight,
+    decidedBy: decidedBy ?? this.decidedBy,
+    undone: undone ?? this.undone,
+    day: day ?? this.day,
+    at: at ?? this.at,
+  );
+  SessionAttributionRow copyWithCompanion(SessionAttributionsCompanion data) {
+    return SessionAttributionRow(
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      id: data.id.present ? data.id.value : this.id,
+      sessionUuid: data.sessionUuid.present
+          ? data.sessionUuid.value
+          : this.sessionUuid,
+      khatmaUuid: data.khatmaUuid.present
+          ? data.khatmaUuid.value
+          : this.khatmaUuid,
+      ranges: data.ranges.present ? data.ranges.value : this.ranges,
+      newWeight: data.newWeight.present ? data.newWeight.value : this.newWeight,
+      decidedBy: data.decidedBy.present ? data.decidedBy.value : this.decidedBy,
+      undone: data.undone.present ? data.undone.value : this.undone,
+      day: data.day.present ? data.day.value : this.day,
+      at: data.at.present ? data.at.value : this.at,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SessionAttributionRow(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('sessionUuid: $sessionUuid, ')
+          ..write('khatmaUuid: $khatmaUuid, ')
+          ..write('ranges: $ranges, ')
+          ..write('newWeight: $newWeight, ')
+          ..write('decidedBy: $decidedBy, ')
+          ..write('undone: $undone, ')
+          ..write('day: $day, ')
+          ..write('at: $at')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    sessionUuid,
+    khatmaUuid,
+    ranges,
+    newWeight,
+    decidedBy,
+    undone,
+    day,
+    at,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SessionAttributionRow &&
+          other.uuid == this.uuid &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.id == this.id &&
+          other.sessionUuid == this.sessionUuid &&
+          other.khatmaUuid == this.khatmaUuid &&
+          other.ranges == this.ranges &&
+          other.newWeight == this.newWeight &&
+          other.decidedBy == this.decidedBy &&
+          other.undone == this.undone &&
+          other.day == this.day &&
+          other.at == this.at);
+}
+
+class SessionAttributionsCompanion
+    extends UpdateCompanion<SessionAttributionRow> {
+  final Value<String> uuid;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<int> id;
+  final Value<String> sessionUuid;
+  final Value<String> khatmaUuid;
+  final Value<String> ranges;
+  final Value<double> newWeight;
+  final Value<String> decidedBy;
+  final Value<bool> undone;
+  final Value<String> day;
+  final Value<DateTime> at;
+  const SessionAttributionsCompanion({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    this.sessionUuid = const Value.absent(),
+    this.khatmaUuid = const Value.absent(),
+    this.ranges = const Value.absent(),
+    this.newWeight = const Value.absent(),
+    this.decidedBy = const Value.absent(),
+    this.undone = const Value.absent(),
+    this.day = const Value.absent(),
+    this.at = const Value.absent(),
+  });
+  SessionAttributionsCompanion.insert({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    required String sessionUuid,
+    required String khatmaUuid,
+    required String ranges,
+    required double newWeight,
+    required String decidedBy,
+    this.undone = const Value.absent(),
+    required String day,
+    required DateTime at,
+  }) : sessionUuid = Value(sessionUuid),
+       khatmaUuid = Value(khatmaUuid),
+       ranges = Value(ranges),
+       newWeight = Value(newWeight),
+       decidedBy = Value(decidedBy),
+       day = Value(day),
+       at = Value(at);
+  static Insertable<SessionAttributionRow> custom({
+    Expression<String>? uuid,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? id,
+    Expression<String>? sessionUuid,
+    Expression<String>? khatmaUuid,
+    Expression<String>? ranges,
+    Expression<double>? newWeight,
+    Expression<String>? decidedBy,
+    Expression<bool>? undone,
+    Expression<String>? day,
+    Expression<DateTime>? at,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (id != null) 'id': id,
+      if (sessionUuid != null) 'session_uuid': sessionUuid,
+      if (khatmaUuid != null) 'khatma_uuid': khatmaUuid,
+      if (ranges != null) 'ranges': ranges,
+      if (newWeight != null) 'new_weight': newWeight,
+      if (decidedBy != null) 'decided_by': decidedBy,
+      if (undone != null) 'undone': undone,
+      if (day != null) 'day': day,
+      if (at != null) 'at': at,
+    });
+  }
+
+  SessionAttributionsCompanion copyWith({
+    Value<String>? uuid,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<int>? id,
+    Value<String>? sessionUuid,
+    Value<String>? khatmaUuid,
+    Value<String>? ranges,
+    Value<double>? newWeight,
+    Value<String>? decidedBy,
+    Value<bool>? undone,
+    Value<String>? day,
+    Value<DateTime>? at,
+  }) {
+    return SessionAttributionsCompanion(
+      uuid: uuid ?? this.uuid,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      id: id ?? this.id,
+      sessionUuid: sessionUuid ?? this.sessionUuid,
+      khatmaUuid: khatmaUuid ?? this.khatmaUuid,
+      ranges: ranges ?? this.ranges,
+      newWeight: newWeight ?? this.newWeight,
+      decidedBy: decidedBy ?? this.decidedBy,
+      undone: undone ?? this.undone,
+      day: day ?? this.day,
+      at: at ?? this.at,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (sessionUuid.present) {
+      map['session_uuid'] = Variable<String>(sessionUuid.value);
+    }
+    if (khatmaUuid.present) {
+      map['khatma_uuid'] = Variable<String>(khatmaUuid.value);
+    }
+    if (ranges.present) {
+      map['ranges'] = Variable<String>(ranges.value);
+    }
+    if (newWeight.present) {
+      map['new_weight'] = Variable<double>(newWeight.value);
+    }
+    if (decidedBy.present) {
+      map['decided_by'] = Variable<String>(decidedBy.value);
+    }
+    if (undone.present) {
+      map['undone'] = Variable<bool>(undone.value);
+    }
+    if (day.present) {
+      map['day'] = Variable<String>(day.value);
+    }
+    if (at.present) {
+      map['at'] = Variable<DateTime>(at.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SessionAttributionsCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('sessionUuid: $sessionUuid, ')
+          ..write('khatmaUuid: $khatmaUuid, ')
+          ..write('ranges: $ranges, ')
+          ..write('newWeight: $newWeight, ')
+          ..write('decidedBy: $decidedBy, ')
+          ..write('undone: $undone, ')
+          ..write('day: $day, ')
+          ..write('at: $at')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $KhatmaCoveragesTable extends KhatmaCoverages
+    with TableInfo<$KhatmaCoveragesTable, KhatmaCoverageRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $KhatmaCoveragesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _khatmaUuidMeta = const VerificationMeta(
+    'khatmaUuid',
+  );
+  @override
+  late final GeneratedColumn<String> khatmaUuid = GeneratedColumn<String>(
+    'khatma_uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _rangesMeta = const VerificationMeta('ranges');
+  @override
+  late final GeneratedColumn<String> ranges = GeneratedColumn<String>(
+    'ranges',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _coveredWeightMeta = const VerificationMeta(
+    'coveredWeight',
+  );
+  @override
+  late final GeneratedColumn<double> coveredWeight = GeneratedColumn<double>(
+    'covered_weight',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _frontierMeta = const VerificationMeta(
+    'frontier',
+  );
+  @override
+  late final GeneratedColumn<int> frontier = GeneratedColumn<int>(
+    'frontier',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    khatmaUuid,
+    ranges,
+    coveredWeight,
+    frontier,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'khatma_coverage';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<KhatmaCoverageRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('khatma_uuid')) {
+      context.handle(
+        _khatmaUuidMeta,
+        khatmaUuid.isAcceptableOrUnknown(data['khatma_uuid']!, _khatmaUuidMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_khatmaUuidMeta);
+    }
+    if (data.containsKey('ranges')) {
+      context.handle(
+        _rangesMeta,
+        ranges.isAcceptableOrUnknown(data['ranges']!, _rangesMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_rangesMeta);
+    }
+    if (data.containsKey('covered_weight')) {
+      context.handle(
+        _coveredWeightMeta,
+        coveredWeight.isAcceptableOrUnknown(
+          data['covered_weight']!,
+          _coveredWeightMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_coveredWeightMeta);
+    }
+    if (data.containsKey('frontier')) {
+      context.handle(
+        _frontierMeta,
+        frontier.isAcceptableOrUnknown(data['frontier']!, _frontierMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {khatmaUuid};
+  @override
+  KhatmaCoverageRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return KhatmaCoverageRow(
+      khatmaUuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}khatma_uuid'],
+      )!,
+      ranges: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ranges'],
+      )!,
+      coveredWeight: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}covered_weight'],
+      )!,
+      frontier: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}frontier'],
+      ),
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $KhatmaCoveragesTable createAlias(String alias) {
+    return $KhatmaCoveragesTable(attachedDatabase, alias);
+  }
+}
+
+class KhatmaCoverageRow extends DataClass
+    implements Insertable<KhatmaCoverageRow> {
+  final String khatmaUuid;
+  final String ranges;
+  final double coveredWeight;
+  final int? frontier;
+  final DateTime updatedAt;
+  const KhatmaCoverageRow({
+    required this.khatmaUuid,
+    required this.ranges,
+    required this.coveredWeight,
+    this.frontier,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['khatma_uuid'] = Variable<String>(khatmaUuid);
+    map['ranges'] = Variable<String>(ranges);
+    map['covered_weight'] = Variable<double>(coveredWeight);
+    if (!nullToAbsent || frontier != null) {
+      map['frontier'] = Variable<int>(frontier);
+    }
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  KhatmaCoveragesCompanion toCompanion(bool nullToAbsent) {
+    return KhatmaCoveragesCompanion(
+      khatmaUuid: Value(khatmaUuid),
+      ranges: Value(ranges),
+      coveredWeight: Value(coveredWeight),
+      frontier: frontier == null && nullToAbsent
+          ? const Value.absent()
+          : Value(frontier),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory KhatmaCoverageRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return KhatmaCoverageRow(
+      khatmaUuid: serializer.fromJson<String>(json['khatmaUuid']),
+      ranges: serializer.fromJson<String>(json['ranges']),
+      coveredWeight: serializer.fromJson<double>(json['coveredWeight']),
+      frontier: serializer.fromJson<int?>(json['frontier']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'khatmaUuid': serializer.toJson<String>(khatmaUuid),
+      'ranges': serializer.toJson<String>(ranges),
+      'coveredWeight': serializer.toJson<double>(coveredWeight),
+      'frontier': serializer.toJson<int?>(frontier),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  KhatmaCoverageRow copyWith({
+    String? khatmaUuid,
+    String? ranges,
+    double? coveredWeight,
+    Value<int?> frontier = const Value.absent(),
+    DateTime? updatedAt,
+  }) => KhatmaCoverageRow(
+    khatmaUuid: khatmaUuid ?? this.khatmaUuid,
+    ranges: ranges ?? this.ranges,
+    coveredWeight: coveredWeight ?? this.coveredWeight,
+    frontier: frontier.present ? frontier.value : this.frontier,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  KhatmaCoverageRow copyWithCompanion(KhatmaCoveragesCompanion data) {
+    return KhatmaCoverageRow(
+      khatmaUuid: data.khatmaUuid.present
+          ? data.khatmaUuid.value
+          : this.khatmaUuid,
+      ranges: data.ranges.present ? data.ranges.value : this.ranges,
+      coveredWeight: data.coveredWeight.present
+          ? data.coveredWeight.value
+          : this.coveredWeight,
+      frontier: data.frontier.present ? data.frontier.value : this.frontier,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('KhatmaCoverageRow(')
+          ..write('khatmaUuid: $khatmaUuid, ')
+          ..write('ranges: $ranges, ')
+          ..write('coveredWeight: $coveredWeight, ')
+          ..write('frontier: $frontier, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(khatmaUuid, ranges, coveredWeight, frontier, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is KhatmaCoverageRow &&
+          other.khatmaUuid == this.khatmaUuid &&
+          other.ranges == this.ranges &&
+          other.coveredWeight == this.coveredWeight &&
+          other.frontier == this.frontier &&
+          other.updatedAt == this.updatedAt);
+}
+
+class KhatmaCoveragesCompanion extends UpdateCompanion<KhatmaCoverageRow> {
+  final Value<String> khatmaUuid;
+  final Value<String> ranges;
+  final Value<double> coveredWeight;
+  final Value<int?> frontier;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const KhatmaCoveragesCompanion({
+    this.khatmaUuid = const Value.absent(),
+    this.ranges = const Value.absent(),
+    this.coveredWeight = const Value.absent(),
+    this.frontier = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  KhatmaCoveragesCompanion.insert({
+    required String khatmaUuid,
+    required String ranges,
+    required double coveredWeight,
+    this.frontier = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : khatmaUuid = Value(khatmaUuid),
+       ranges = Value(ranges),
+       coveredWeight = Value(coveredWeight);
+  static Insertable<KhatmaCoverageRow> custom({
+    Expression<String>? khatmaUuid,
+    Expression<String>? ranges,
+    Expression<double>? coveredWeight,
+    Expression<int>? frontier,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (khatmaUuid != null) 'khatma_uuid': khatmaUuid,
+      if (ranges != null) 'ranges': ranges,
+      if (coveredWeight != null) 'covered_weight': coveredWeight,
+      if (frontier != null) 'frontier': frontier,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  KhatmaCoveragesCompanion copyWith({
+    Value<String>? khatmaUuid,
+    Value<String>? ranges,
+    Value<double>? coveredWeight,
+    Value<int?>? frontier,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return KhatmaCoveragesCompanion(
+      khatmaUuid: khatmaUuid ?? this.khatmaUuid,
+      ranges: ranges ?? this.ranges,
+      coveredWeight: coveredWeight ?? this.coveredWeight,
+      frontier: frontier ?? this.frontier,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (khatmaUuid.present) {
+      map['khatma_uuid'] = Variable<String>(khatmaUuid.value);
+    }
+    if (ranges.present) {
+      map['ranges'] = Variable<String>(ranges.value);
+    }
+    if (coveredWeight.present) {
+      map['covered_weight'] = Variable<double>(coveredWeight.value);
+    }
+    if (frontier.present) {
+      map['frontier'] = Variable<int>(frontier.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('KhatmaCoveragesCompanion(')
+          ..write('khatmaUuid: $khatmaUuid, ')
+          ..write('ranges: $ranges, ')
+          ..write('coveredWeight: $coveredWeight, ')
+          ..write('frontier: $frontier, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DailyStatsTable extends DailyStats
+    with TableInfo<$DailyStatsTable, DailyStatRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DailyStatsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _khatmaUuidMeta = const VerificationMeta(
+    'khatmaUuid',
+  );
+  @override
+  late final GeneratedColumn<String> khatmaUuid = GeneratedColumn<String>(
+    'khatma_uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _dayMeta = const VerificationMeta('day');
+  @override
+  late final GeneratedColumn<String> day = GeneratedColumn<String>(
+    'day',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _weightReadMeta = const VerificationMeta(
+    'weightRead',
+  );
+  @override
+  late final GeneratedColumn<double> weightRead = GeneratedColumn<double>(
+    'weight_read',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sessionsMeta = const VerificationMeta(
+    'sessions',
+  );
+  @override
+  late final GeneratedColumn<int> sessions = GeneratedColumn<int>(
+    'sessions',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _secondsMeta = const VerificationMeta(
+    'seconds',
+  );
+  @override
+  late final GeneratedColumn<int> seconds = GeneratedColumn<int>(
+    'seconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetMeta = const VerificationMeta('target');
+  @override
+  late final GeneratedColumn<double> target = GeneratedColumn<double>(
+    'target',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    khatmaUuid,
+    day,
+    weightRead,
+    sessions,
+    seconds,
+    target,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'daily_stat';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DailyStatRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('khatma_uuid')) {
+      context.handle(
+        _khatmaUuidMeta,
+        khatmaUuid.isAcceptableOrUnknown(data['khatma_uuid']!, _khatmaUuidMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_khatmaUuidMeta);
+    }
+    if (data.containsKey('day')) {
+      context.handle(
+        _dayMeta,
+        day.isAcceptableOrUnknown(data['day']!, _dayMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dayMeta);
+    }
+    if (data.containsKey('weight_read')) {
+      context.handle(
+        _weightReadMeta,
+        weightRead.isAcceptableOrUnknown(data['weight_read']!, _weightReadMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_weightReadMeta);
+    }
+    if (data.containsKey('sessions')) {
+      context.handle(
+        _sessionsMeta,
+        sessions.isAcceptableOrUnknown(data['sessions']!, _sessionsMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sessionsMeta);
+    }
+    if (data.containsKey('seconds')) {
+      context.handle(
+        _secondsMeta,
+        seconds.isAcceptableOrUnknown(data['seconds']!, _secondsMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_secondsMeta);
+    }
+    if (data.containsKey('target')) {
+      context.handle(
+        _targetMeta,
+        target.isAcceptableOrUnknown(data['target']!, _targetMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {khatmaUuid, day};
+  @override
+  DailyStatRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DailyStatRow(
+      khatmaUuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}khatma_uuid'],
+      )!,
+      day: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}day'],
+      )!,
+      weightRead: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}weight_read'],
+      )!,
+      sessions: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sessions'],
+      )!,
+      seconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}seconds'],
+      )!,
+      target: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}target'],
+      ),
+    );
+  }
+
+  @override
+  $DailyStatsTable createAlias(String alias) {
+    return $DailyStatsTable(attachedDatabase, alias);
+  }
+}
+
+class DailyStatRow extends DataClass implements Insertable<DailyStatRow> {
+  final String khatmaUuid;
+  final String day;
+  final double weightRead;
+  final int sessions;
+  final int seconds;
+  final double? target;
+  const DailyStatRow({
+    required this.khatmaUuid,
+    required this.day,
+    required this.weightRead,
+    required this.sessions,
+    required this.seconds,
+    this.target,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['khatma_uuid'] = Variable<String>(khatmaUuid);
+    map['day'] = Variable<String>(day);
+    map['weight_read'] = Variable<double>(weightRead);
+    map['sessions'] = Variable<int>(sessions);
+    map['seconds'] = Variable<int>(seconds);
+    if (!nullToAbsent || target != null) {
+      map['target'] = Variable<double>(target);
+    }
+    return map;
+  }
+
+  DailyStatsCompanion toCompanion(bool nullToAbsent) {
+    return DailyStatsCompanion(
+      khatmaUuid: Value(khatmaUuid),
+      day: Value(day),
+      weightRead: Value(weightRead),
+      sessions: Value(sessions),
+      seconds: Value(seconds),
+      target: target == null && nullToAbsent
+          ? const Value.absent()
+          : Value(target),
+    );
+  }
+
+  factory DailyStatRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DailyStatRow(
+      khatmaUuid: serializer.fromJson<String>(json['khatmaUuid']),
+      day: serializer.fromJson<String>(json['day']),
+      weightRead: serializer.fromJson<double>(json['weightRead']),
+      sessions: serializer.fromJson<int>(json['sessions']),
+      seconds: serializer.fromJson<int>(json['seconds']),
+      target: serializer.fromJson<double?>(json['target']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'khatmaUuid': serializer.toJson<String>(khatmaUuid),
+      'day': serializer.toJson<String>(day),
+      'weightRead': serializer.toJson<double>(weightRead),
+      'sessions': serializer.toJson<int>(sessions),
+      'seconds': serializer.toJson<int>(seconds),
+      'target': serializer.toJson<double?>(target),
+    };
+  }
+
+  DailyStatRow copyWith({
+    String? khatmaUuid,
+    String? day,
+    double? weightRead,
+    int? sessions,
+    int? seconds,
+    Value<double?> target = const Value.absent(),
+  }) => DailyStatRow(
+    khatmaUuid: khatmaUuid ?? this.khatmaUuid,
+    day: day ?? this.day,
+    weightRead: weightRead ?? this.weightRead,
+    sessions: sessions ?? this.sessions,
+    seconds: seconds ?? this.seconds,
+    target: target.present ? target.value : this.target,
+  );
+  DailyStatRow copyWithCompanion(DailyStatsCompanion data) {
+    return DailyStatRow(
+      khatmaUuid: data.khatmaUuid.present
+          ? data.khatmaUuid.value
+          : this.khatmaUuid,
+      day: data.day.present ? data.day.value : this.day,
+      weightRead: data.weightRead.present
+          ? data.weightRead.value
+          : this.weightRead,
+      sessions: data.sessions.present ? data.sessions.value : this.sessions,
+      seconds: data.seconds.present ? data.seconds.value : this.seconds,
+      target: data.target.present ? data.target.value : this.target,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyStatRow(')
+          ..write('khatmaUuid: $khatmaUuid, ')
+          ..write('day: $day, ')
+          ..write('weightRead: $weightRead, ')
+          ..write('sessions: $sessions, ')
+          ..write('seconds: $seconds, ')
+          ..write('target: $target')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(khatmaUuid, day, weightRead, sessions, seconds, target);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DailyStatRow &&
+          other.khatmaUuid == this.khatmaUuid &&
+          other.day == this.day &&
+          other.weightRead == this.weightRead &&
+          other.sessions == this.sessions &&
+          other.seconds == this.seconds &&
+          other.target == this.target);
+}
+
+class DailyStatsCompanion extends UpdateCompanion<DailyStatRow> {
+  final Value<String> khatmaUuid;
+  final Value<String> day;
+  final Value<double> weightRead;
+  final Value<int> sessions;
+  final Value<int> seconds;
+  final Value<double?> target;
+  final Value<int> rowid;
+  const DailyStatsCompanion({
+    this.khatmaUuid = const Value.absent(),
+    this.day = const Value.absent(),
+    this.weightRead = const Value.absent(),
+    this.sessions = const Value.absent(),
+    this.seconds = const Value.absent(),
+    this.target = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DailyStatsCompanion.insert({
+    required String khatmaUuid,
+    required String day,
+    required double weightRead,
+    required int sessions,
+    required int seconds,
+    this.target = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : khatmaUuid = Value(khatmaUuid),
+       day = Value(day),
+       weightRead = Value(weightRead),
+       sessions = Value(sessions),
+       seconds = Value(seconds);
+  static Insertable<DailyStatRow> custom({
+    Expression<String>? khatmaUuid,
+    Expression<String>? day,
+    Expression<double>? weightRead,
+    Expression<int>? sessions,
+    Expression<int>? seconds,
+    Expression<double>? target,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (khatmaUuid != null) 'khatma_uuid': khatmaUuid,
+      if (day != null) 'day': day,
+      if (weightRead != null) 'weight_read': weightRead,
+      if (sessions != null) 'sessions': sessions,
+      if (seconds != null) 'seconds': seconds,
+      if (target != null) 'target': target,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DailyStatsCompanion copyWith({
+    Value<String>? khatmaUuid,
+    Value<String>? day,
+    Value<double>? weightRead,
+    Value<int>? sessions,
+    Value<int>? seconds,
+    Value<double?>? target,
+    Value<int>? rowid,
+  }) {
+    return DailyStatsCompanion(
+      khatmaUuid: khatmaUuid ?? this.khatmaUuid,
+      day: day ?? this.day,
+      weightRead: weightRead ?? this.weightRead,
+      sessions: sessions ?? this.sessions,
+      seconds: seconds ?? this.seconds,
+      target: target ?? this.target,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (khatmaUuid.present) {
+      map['khatma_uuid'] = Variable<String>(khatmaUuid.value);
+    }
+    if (day.present) {
+      map['day'] = Variable<String>(day.value);
+    }
+    if (weightRead.present) {
+      map['weight_read'] = Variable<double>(weightRead.value);
+    }
+    if (sessions.present) {
+      map['sessions'] = Variable<int>(sessions.value);
+    }
+    if (seconds.present) {
+      map['seconds'] = Variable<int>(seconds.value);
+    }
+    if (target.present) {
+      map['target'] = Variable<double>(target.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyStatsCompanion(')
+          ..write('khatmaUuid: $khatmaUuid, ')
+          ..write('day: $day, ')
+          ..write('weightRead: $weightRead, ')
+          ..write('sessions: $sessions, ')
+          ..write('seconds: $seconds, ')
+          ..write('target: $target, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RecitationSessionsTable extends RecitationSessions
+    with TableInfo<$RecitationSessionsTable, RecitationSessionRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RecitationSessionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+    'uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+    clientDefault: newUuid,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _kindMeta = const VerificationMeta('kind');
+  @override
+  late final GeneratedColumn<String> kind = GeneratedColumn<String>(
+    'kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fromVerseMeta = const VerificationMeta(
+    'fromVerse',
+  );
+  @override
+  late final GeneratedColumn<int> fromVerse = GeneratedColumn<int>(
+    'from_verse',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _toVerseMeta = const VerificationMeta(
+    'toVerse',
+  );
+  @override
+  late final GeneratedColumn<int> toVerse = GeneratedColumn<int>(
+    'to_verse',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startedAtMeta = const VerificationMeta(
+    'startedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startedAt = GeneratedColumn<DateTime>(
+    'started_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _endedAtMeta = const VerificationMeta(
+    'endedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> endedAt = GeneratedColumn<DateTime>(
+    'ended_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _accuracyMeta = const VerificationMeta(
+    'accuracy',
+  );
+  @override
+  late final GeneratedColumn<double> accuracy = GeneratedColumn<double>(
+    'accuracy',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sensitivityMeta = const VerificationMeta(
+    'sensitivity',
+  );
+  @override
+  late final GeneratedColumn<String> sensitivity = GeneratedColumn<String>(
+    'sensitivity',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    kind,
+    fromVerse,
+    toVerse,
+    startedAt,
+    endedAt,
+    accuracy,
+    sensitivity,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'recitation_session';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RecitationSessionRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+        _uuidMeta,
+        uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('kind')) {
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_kindMeta);
+    }
+    if (data.containsKey('from_verse')) {
+      context.handle(
+        _fromVerseMeta,
+        fromVerse.isAcceptableOrUnknown(data['from_verse']!, _fromVerseMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fromVerseMeta);
+    }
+    if (data.containsKey('to_verse')) {
+      context.handle(
+        _toVerseMeta,
+        toVerse.isAcceptableOrUnknown(data['to_verse']!, _toVerseMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_toVerseMeta);
+    }
+    if (data.containsKey('started_at')) {
+      context.handle(
+        _startedAtMeta,
+        startedAt.isAcceptableOrUnknown(data['started_at']!, _startedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startedAtMeta);
+    }
+    if (data.containsKey('ended_at')) {
+      context.handle(
+        _endedAtMeta,
+        endedAt.isAcceptableOrUnknown(data['ended_at']!, _endedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_endedAtMeta);
+    }
+    if (data.containsKey('accuracy')) {
+      context.handle(
+        _accuracyMeta,
+        accuracy.isAcceptableOrUnknown(data['accuracy']!, _accuracyMeta),
+      );
+    }
+    if (data.containsKey('sensitivity')) {
+      context.handle(
+        _sensitivityMeta,
+        sensitivity.isAcceptableOrUnknown(
+          data['sensitivity']!,
+          _sensitivityMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  RecitationSessionRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RecitationSessionRow(
+      uuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}uuid'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
+      fromVerse: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}from_verse'],
+      )!,
+      toVerse: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}to_verse'],
+      )!,
+      startedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}started_at'],
+      )!,
+      endedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}ended_at'],
+      )!,
+      accuracy: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}accuracy'],
+      ),
+      sensitivity: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sensitivity'],
+      ),
+    );
+  }
+
+  @override
+  $RecitationSessionsTable createAlias(String alias) {
+    return $RecitationSessionsTable(attachedDatabase, alias);
+  }
+}
+
+class RecitationSessionRow extends DataClass
+    implements Insertable<RecitationSessionRow> {
+  final String uuid;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final int id;
+
+  /// `voice`, `touch` or `test` ([RecitationKind]).
+  final String kind;
+
+  /// First and last verse of the range recited, `ayah.id`.
+  final int fromVerse;
+  final int toVerse;
+  final DateTime startedAt;
+  final DateTime endedAt;
+
+  /// Correct words over the words judged, 0..1; null when none was judged.
+  final double? accuracy;
+
+  /// The matching strictness of a voice session (`MatchStrictness.name`).
+  final String? sensitivity;
+  const RecitationSessionRow({
+    required this.uuid,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.id,
+    required this.kind,
+    required this.fromVerse,
+    required this.toVerse,
+    required this.startedAt,
+    required this.endedAt,
+    this.accuracy,
+    this.sensitivity,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['id'] = Variable<int>(id);
+    map['kind'] = Variable<String>(kind);
+    map['from_verse'] = Variable<int>(fromVerse);
+    map['to_verse'] = Variable<int>(toVerse);
+    map['started_at'] = Variable<DateTime>(startedAt);
+    map['ended_at'] = Variable<DateTime>(endedAt);
+    if (!nullToAbsent || accuracy != null) {
+      map['accuracy'] = Variable<double>(accuracy);
+    }
+    if (!nullToAbsent || sensitivity != null) {
+      map['sensitivity'] = Variable<String>(sensitivity);
+    }
+    return map;
+  }
+
+  RecitationSessionsCompanion toCompanion(bool nullToAbsent) {
+    return RecitationSessionsCompanion(
+      uuid: Value(uuid),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      id: Value(id),
+      kind: Value(kind),
+      fromVerse: Value(fromVerse),
+      toVerse: Value(toVerse),
+      startedAt: Value(startedAt),
+      endedAt: Value(endedAt),
+      accuracy: accuracy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accuracy),
+      sensitivity: sensitivity == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sensitivity),
+    );
+  }
+
+  factory RecitationSessionRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RecitationSessionRow(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      id: serializer.fromJson<int>(json['id']),
+      kind: serializer.fromJson<String>(json['kind']),
+      fromVerse: serializer.fromJson<int>(json['fromVerse']),
+      toVerse: serializer.fromJson<int>(json['toVerse']),
+      startedAt: serializer.fromJson<DateTime>(json['startedAt']),
+      endedAt: serializer.fromJson<DateTime>(json['endedAt']),
+      accuracy: serializer.fromJson<double?>(json['accuracy']),
+      sensitivity: serializer.fromJson<String?>(json['sensitivity']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'id': serializer.toJson<int>(id),
+      'kind': serializer.toJson<String>(kind),
+      'fromVerse': serializer.toJson<int>(fromVerse),
+      'toVerse': serializer.toJson<int>(toVerse),
+      'startedAt': serializer.toJson<DateTime>(startedAt),
+      'endedAt': serializer.toJson<DateTime>(endedAt),
+      'accuracy': serializer.toJson<double?>(accuracy),
+      'sensitivity': serializer.toJson<String?>(sensitivity),
+    };
+  }
+
+  RecitationSessionRow copyWith({
+    String? uuid,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    int? id,
+    String? kind,
+    int? fromVerse,
+    int? toVerse,
+    DateTime? startedAt,
+    DateTime? endedAt,
+    Value<double?> accuracy = const Value.absent(),
+    Value<String?> sensitivity = const Value.absent(),
+  }) => RecitationSessionRow(
+    uuid: uuid ?? this.uuid,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    id: id ?? this.id,
+    kind: kind ?? this.kind,
+    fromVerse: fromVerse ?? this.fromVerse,
+    toVerse: toVerse ?? this.toVerse,
+    startedAt: startedAt ?? this.startedAt,
+    endedAt: endedAt ?? this.endedAt,
+    accuracy: accuracy.present ? accuracy.value : this.accuracy,
+    sensitivity: sensitivity.present ? sensitivity.value : this.sensitivity,
+  );
+  RecitationSessionRow copyWithCompanion(RecitationSessionsCompanion data) {
+    return RecitationSessionRow(
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      id: data.id.present ? data.id.value : this.id,
+      kind: data.kind.present ? data.kind.value : this.kind,
+      fromVerse: data.fromVerse.present ? data.fromVerse.value : this.fromVerse,
+      toVerse: data.toVerse.present ? data.toVerse.value : this.toVerse,
+      startedAt: data.startedAt.present ? data.startedAt.value : this.startedAt,
+      endedAt: data.endedAt.present ? data.endedAt.value : this.endedAt,
+      accuracy: data.accuracy.present ? data.accuracy.value : this.accuracy,
+      sensitivity: data.sensitivity.present
+          ? data.sensitivity.value
+          : this.sensitivity,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationSessionRow(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('kind: $kind, ')
+          ..write('fromVerse: $fromVerse, ')
+          ..write('toVerse: $toVerse, ')
+          ..write('startedAt: $startedAt, ')
+          ..write('endedAt: $endedAt, ')
+          ..write('accuracy: $accuracy, ')
+          ..write('sensitivity: $sensitivity')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    kind,
+    fromVerse,
+    toVerse,
+    startedAt,
+    endedAt,
+    accuracy,
+    sensitivity,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RecitationSessionRow &&
+          other.uuid == this.uuid &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.id == this.id &&
+          other.kind == this.kind &&
+          other.fromVerse == this.fromVerse &&
+          other.toVerse == this.toVerse &&
+          other.startedAt == this.startedAt &&
+          other.endedAt == this.endedAt &&
+          other.accuracy == this.accuracy &&
+          other.sensitivity == this.sensitivity);
+}
+
+class RecitationSessionsCompanion
+    extends UpdateCompanion<RecitationSessionRow> {
+  final Value<String> uuid;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<int> id;
+  final Value<String> kind;
+  final Value<int> fromVerse;
+  final Value<int> toVerse;
+  final Value<DateTime> startedAt;
+  final Value<DateTime> endedAt;
+  final Value<double?> accuracy;
+  final Value<String?> sensitivity;
+  const RecitationSessionsCompanion({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.fromVerse = const Value.absent(),
+    this.toVerse = const Value.absent(),
+    this.startedAt = const Value.absent(),
+    this.endedAt = const Value.absent(),
+    this.accuracy = const Value.absent(),
+    this.sensitivity = const Value.absent(),
+  });
+  RecitationSessionsCompanion.insert({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    required String kind,
+    required int fromVerse,
+    required int toVerse,
+    required DateTime startedAt,
+    required DateTime endedAt,
+    this.accuracy = const Value.absent(),
+    this.sensitivity = const Value.absent(),
+  }) : kind = Value(kind),
+       fromVerse = Value(fromVerse),
+       toVerse = Value(toVerse),
+       startedAt = Value(startedAt),
+       endedAt = Value(endedAt);
+  static Insertable<RecitationSessionRow> custom({
+    Expression<String>? uuid,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? id,
+    Expression<String>? kind,
+    Expression<int>? fromVerse,
+    Expression<int>? toVerse,
+    Expression<DateTime>? startedAt,
+    Expression<DateTime>? endedAt,
+    Expression<double>? accuracy,
+    Expression<String>? sensitivity,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (id != null) 'id': id,
+      if (kind != null) 'kind': kind,
+      if (fromVerse != null) 'from_verse': fromVerse,
+      if (toVerse != null) 'to_verse': toVerse,
+      if (startedAt != null) 'started_at': startedAt,
+      if (endedAt != null) 'ended_at': endedAt,
+      if (accuracy != null) 'accuracy': accuracy,
+      if (sensitivity != null) 'sensitivity': sensitivity,
+    });
+  }
+
+  RecitationSessionsCompanion copyWith({
+    Value<String>? uuid,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<int>? id,
+    Value<String>? kind,
+    Value<int>? fromVerse,
+    Value<int>? toVerse,
+    Value<DateTime>? startedAt,
+    Value<DateTime>? endedAt,
+    Value<double?>? accuracy,
+    Value<String?>? sensitivity,
+  }) {
+    return RecitationSessionsCompanion(
+      uuid: uuid ?? this.uuid,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      id: id ?? this.id,
+      kind: kind ?? this.kind,
+      fromVerse: fromVerse ?? this.fromVerse,
+      toVerse: toVerse ?? this.toVerse,
+      startedAt: startedAt ?? this.startedAt,
+      endedAt: endedAt ?? this.endedAt,
+      accuracy: accuracy ?? this.accuracy,
+      sensitivity: sensitivity ?? this.sensitivity,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (kind.present) {
+      map['kind'] = Variable<String>(kind.value);
+    }
+    if (fromVerse.present) {
+      map['from_verse'] = Variable<int>(fromVerse.value);
+    }
+    if (toVerse.present) {
+      map['to_verse'] = Variable<int>(toVerse.value);
+    }
+    if (startedAt.present) {
+      map['started_at'] = Variable<DateTime>(startedAt.value);
+    }
+    if (endedAt.present) {
+      map['ended_at'] = Variable<DateTime>(endedAt.value);
+    }
+    if (accuracy.present) {
+      map['accuracy'] = Variable<double>(accuracy.value);
+    }
+    if (sensitivity.present) {
+      map['sensitivity'] = Variable<String>(sensitivity.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationSessionsCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('kind: $kind, ')
+          ..write('fromVerse: $fromVerse, ')
+          ..write('toVerse: $toVerse, ')
+          ..write('startedAt: $startedAt, ')
+          ..write('endedAt: $endedAt, ')
+          ..write('accuracy: $accuracy, ')
+          ..write('sensitivity: $sensitivity')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RecitationVersesTable extends RecitationVerses
+    with TableInfo<$RecitationVersesTable, RecitationVerseRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RecitationVersesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _sessionMeta = const VerificationMeta(
+    'session',
+  );
+  @override
+  late final GeneratedColumn<String> session = GeneratedColumn<String>(
+    'session',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _verseMeta = const VerificationMeta('verse');
+  @override
+  late final GeneratedColumn<int> verse = GeneratedColumn<int>(
+    'verse',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _accuracyMeta = const VerificationMeta(
+    'accuracy',
+  );
+  @override
+  late final GeneratedColumn<double> accuracy = GeneratedColumn<double>(
+    'accuracy',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _wordsMeta = const VerificationMeta('words');
+  @override
+  late final GeneratedColumn<int> words = GeneratedColumn<int>(
+    'words',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _wrongMeta = const VerificationMeta('wrong');
+  @override
+  late final GeneratedColumn<int> wrong = GeneratedColumn<int>(
+    'wrong',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _skippedMeta = const VerificationMeta(
+    'skipped',
+  );
+  @override
+  late final GeneratedColumn<int> skipped = GeneratedColumn<int>(
+    'skipped',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _correctedMeta = const VerificationMeta(
+    'corrected',
+  );
+  @override
+  late final GeneratedColumn<int> corrected = GeneratedColumn<int>(
+    'corrected',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _doubtfulMeta = const VerificationMeta(
+    'doubtful',
+  );
+  @override
+  late final GeneratedColumn<int> doubtful = GeneratedColumn<int>(
+    'doubtful',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _atMeta = const VerificationMeta('at');
+  @override
+  late final GeneratedColumn<DateTime> at = GeneratedColumn<DateTime>(
+    'at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    session,
+    verse,
+    accuracy,
+    words,
+    wrong,
+    skipped,
+    corrected,
+    doubtful,
+    at,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'recitation_verse';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RecitationVerseRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('session')) {
+      context.handle(
+        _sessionMeta,
+        session.isAcceptableOrUnknown(data['session']!, _sessionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sessionMeta);
+    }
+    if (data.containsKey('verse')) {
+      context.handle(
+        _verseMeta,
+        verse.isAcceptableOrUnknown(data['verse']!, _verseMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_verseMeta);
+    }
+    if (data.containsKey('accuracy')) {
+      context.handle(
+        _accuracyMeta,
+        accuracy.isAcceptableOrUnknown(data['accuracy']!, _accuracyMeta),
+      );
+    }
+    if (data.containsKey('words')) {
+      context.handle(
+        _wordsMeta,
+        words.isAcceptableOrUnknown(data['words']!, _wordsMeta),
+      );
+    }
+    if (data.containsKey('wrong')) {
+      context.handle(
+        _wrongMeta,
+        wrong.isAcceptableOrUnknown(data['wrong']!, _wrongMeta),
+      );
+    }
+    if (data.containsKey('skipped')) {
+      context.handle(
+        _skippedMeta,
+        skipped.isAcceptableOrUnknown(data['skipped']!, _skippedMeta),
+      );
+    }
+    if (data.containsKey('corrected')) {
+      context.handle(
+        _correctedMeta,
+        corrected.isAcceptableOrUnknown(data['corrected']!, _correctedMeta),
+      );
+    }
+    if (data.containsKey('doubtful')) {
+      context.handle(
+        _doubtfulMeta,
+        doubtful.isAcceptableOrUnknown(data['doubtful']!, _doubtfulMeta),
+      );
+    }
+    if (data.containsKey('at')) {
+      context.handle(_atMeta, at.isAcceptableOrUnknown(data['at']!, _atMeta));
+    } else if (isInserting) {
+      context.missing(_atMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {session, verse},
+  ];
+  @override
+  RecitationVerseRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RecitationVerseRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      session: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}session'],
+      )!,
+      verse: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}verse'],
+      )!,
+      accuracy: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}accuracy'],
+      ),
+      words: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}words'],
+      )!,
+      wrong: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}wrong'],
+      )!,
+      skipped: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}skipped'],
+      )!,
+      corrected: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}corrected'],
+      )!,
+      doubtful: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}doubtful'],
+      )!,
+      at: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}at'],
+      )!,
+    );
+  }
+
+  @override
+  $RecitationVersesTable createAlias(String alias) {
+    return $RecitationVersesTable(attachedDatabase, alias);
+  }
+}
+
+class RecitationVerseRow extends DataClass
+    implements Insertable<RecitationVerseRow> {
+  final int id;
+
+  /// The session's uuid.
+  final String session;
+
+  /// `ayah.id`.
+  final int verse;
+  final double? accuracy;
+  final int words;
+  final int wrong;
+  final int skipped;
+  final int corrected;
+  final int doubtful;
+
+  /// When it was recited (the session's end), for the latest result.
+  final DateTime at;
+  const RecitationVerseRow({
+    required this.id,
+    required this.session,
+    required this.verse,
+    this.accuracy,
+    required this.words,
+    required this.wrong,
+    required this.skipped,
+    required this.corrected,
+    required this.doubtful,
+    required this.at,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['session'] = Variable<String>(session);
+    map['verse'] = Variable<int>(verse);
+    if (!nullToAbsent || accuracy != null) {
+      map['accuracy'] = Variable<double>(accuracy);
+    }
+    map['words'] = Variable<int>(words);
+    map['wrong'] = Variable<int>(wrong);
+    map['skipped'] = Variable<int>(skipped);
+    map['corrected'] = Variable<int>(corrected);
+    map['doubtful'] = Variable<int>(doubtful);
+    map['at'] = Variable<DateTime>(at);
+    return map;
+  }
+
+  RecitationVersesCompanion toCompanion(bool nullToAbsent) {
+    return RecitationVersesCompanion(
+      id: Value(id),
+      session: Value(session),
+      verse: Value(verse),
+      accuracy: accuracy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accuracy),
+      words: Value(words),
+      wrong: Value(wrong),
+      skipped: Value(skipped),
+      corrected: Value(corrected),
+      doubtful: Value(doubtful),
+      at: Value(at),
+    );
+  }
+
+  factory RecitationVerseRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RecitationVerseRow(
+      id: serializer.fromJson<int>(json['id']),
+      session: serializer.fromJson<String>(json['session']),
+      verse: serializer.fromJson<int>(json['verse']),
+      accuracy: serializer.fromJson<double?>(json['accuracy']),
+      words: serializer.fromJson<int>(json['words']),
+      wrong: serializer.fromJson<int>(json['wrong']),
+      skipped: serializer.fromJson<int>(json['skipped']),
+      corrected: serializer.fromJson<int>(json['corrected']),
+      doubtful: serializer.fromJson<int>(json['doubtful']),
+      at: serializer.fromJson<DateTime>(json['at']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'session': serializer.toJson<String>(session),
+      'verse': serializer.toJson<int>(verse),
+      'accuracy': serializer.toJson<double?>(accuracy),
+      'words': serializer.toJson<int>(words),
+      'wrong': serializer.toJson<int>(wrong),
+      'skipped': serializer.toJson<int>(skipped),
+      'corrected': serializer.toJson<int>(corrected),
+      'doubtful': serializer.toJson<int>(doubtful),
+      'at': serializer.toJson<DateTime>(at),
+    };
+  }
+
+  RecitationVerseRow copyWith({
+    int? id,
+    String? session,
+    int? verse,
+    Value<double?> accuracy = const Value.absent(),
+    int? words,
+    int? wrong,
+    int? skipped,
+    int? corrected,
+    int? doubtful,
+    DateTime? at,
+  }) => RecitationVerseRow(
+    id: id ?? this.id,
+    session: session ?? this.session,
+    verse: verse ?? this.verse,
+    accuracy: accuracy.present ? accuracy.value : this.accuracy,
+    words: words ?? this.words,
+    wrong: wrong ?? this.wrong,
+    skipped: skipped ?? this.skipped,
+    corrected: corrected ?? this.corrected,
+    doubtful: doubtful ?? this.doubtful,
+    at: at ?? this.at,
+  );
+  RecitationVerseRow copyWithCompanion(RecitationVersesCompanion data) {
+    return RecitationVerseRow(
+      id: data.id.present ? data.id.value : this.id,
+      session: data.session.present ? data.session.value : this.session,
+      verse: data.verse.present ? data.verse.value : this.verse,
+      accuracy: data.accuracy.present ? data.accuracy.value : this.accuracy,
+      words: data.words.present ? data.words.value : this.words,
+      wrong: data.wrong.present ? data.wrong.value : this.wrong,
+      skipped: data.skipped.present ? data.skipped.value : this.skipped,
+      corrected: data.corrected.present ? data.corrected.value : this.corrected,
+      doubtful: data.doubtful.present ? data.doubtful.value : this.doubtful,
+      at: data.at.present ? data.at.value : this.at,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationVerseRow(')
+          ..write('id: $id, ')
+          ..write('session: $session, ')
+          ..write('verse: $verse, ')
+          ..write('accuracy: $accuracy, ')
+          ..write('words: $words, ')
+          ..write('wrong: $wrong, ')
+          ..write('skipped: $skipped, ')
+          ..write('corrected: $corrected, ')
+          ..write('doubtful: $doubtful, ')
+          ..write('at: $at')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    session,
+    verse,
+    accuracy,
+    words,
+    wrong,
+    skipped,
+    corrected,
+    doubtful,
+    at,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RecitationVerseRow &&
+          other.id == this.id &&
+          other.session == this.session &&
+          other.verse == this.verse &&
+          other.accuracy == this.accuracy &&
+          other.words == this.words &&
+          other.wrong == this.wrong &&
+          other.skipped == this.skipped &&
+          other.corrected == this.corrected &&
+          other.doubtful == this.doubtful &&
+          other.at == this.at);
+}
+
+class RecitationVersesCompanion extends UpdateCompanion<RecitationVerseRow> {
+  final Value<int> id;
+  final Value<String> session;
+  final Value<int> verse;
+  final Value<double?> accuracy;
+  final Value<int> words;
+  final Value<int> wrong;
+  final Value<int> skipped;
+  final Value<int> corrected;
+  final Value<int> doubtful;
+  final Value<DateTime> at;
+  const RecitationVersesCompanion({
+    this.id = const Value.absent(),
+    this.session = const Value.absent(),
+    this.verse = const Value.absent(),
+    this.accuracy = const Value.absent(),
+    this.words = const Value.absent(),
+    this.wrong = const Value.absent(),
+    this.skipped = const Value.absent(),
+    this.corrected = const Value.absent(),
+    this.doubtful = const Value.absent(),
+    this.at = const Value.absent(),
+  });
+  RecitationVersesCompanion.insert({
+    this.id = const Value.absent(),
+    required String session,
+    required int verse,
+    this.accuracy = const Value.absent(),
+    this.words = const Value.absent(),
+    this.wrong = const Value.absent(),
+    this.skipped = const Value.absent(),
+    this.corrected = const Value.absent(),
+    this.doubtful = const Value.absent(),
+    required DateTime at,
+  }) : session = Value(session),
+       verse = Value(verse),
+       at = Value(at);
+  static Insertable<RecitationVerseRow> custom({
+    Expression<int>? id,
+    Expression<String>? session,
+    Expression<int>? verse,
+    Expression<double>? accuracy,
+    Expression<int>? words,
+    Expression<int>? wrong,
+    Expression<int>? skipped,
+    Expression<int>? corrected,
+    Expression<int>? doubtful,
+    Expression<DateTime>? at,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (session != null) 'session': session,
+      if (verse != null) 'verse': verse,
+      if (accuracy != null) 'accuracy': accuracy,
+      if (words != null) 'words': words,
+      if (wrong != null) 'wrong': wrong,
+      if (skipped != null) 'skipped': skipped,
+      if (corrected != null) 'corrected': corrected,
+      if (doubtful != null) 'doubtful': doubtful,
+      if (at != null) 'at': at,
+    });
+  }
+
+  RecitationVersesCompanion copyWith({
+    Value<int>? id,
+    Value<String>? session,
+    Value<int>? verse,
+    Value<double?>? accuracy,
+    Value<int>? words,
+    Value<int>? wrong,
+    Value<int>? skipped,
+    Value<int>? corrected,
+    Value<int>? doubtful,
+    Value<DateTime>? at,
+  }) {
+    return RecitationVersesCompanion(
+      id: id ?? this.id,
+      session: session ?? this.session,
+      verse: verse ?? this.verse,
+      accuracy: accuracy ?? this.accuracy,
+      words: words ?? this.words,
+      wrong: wrong ?? this.wrong,
+      skipped: skipped ?? this.skipped,
+      corrected: corrected ?? this.corrected,
+      doubtful: doubtful ?? this.doubtful,
+      at: at ?? this.at,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (session.present) {
+      map['session'] = Variable<String>(session.value);
+    }
+    if (verse.present) {
+      map['verse'] = Variable<int>(verse.value);
+    }
+    if (accuracy.present) {
+      map['accuracy'] = Variable<double>(accuracy.value);
+    }
+    if (words.present) {
+      map['words'] = Variable<int>(words.value);
+    }
+    if (wrong.present) {
+      map['wrong'] = Variable<int>(wrong.value);
+    }
+    if (skipped.present) {
+      map['skipped'] = Variable<int>(skipped.value);
+    }
+    if (corrected.present) {
+      map['corrected'] = Variable<int>(corrected.value);
+    }
+    if (doubtful.present) {
+      map['doubtful'] = Variable<int>(doubtful.value);
+    }
+    if (at.present) {
+      map['at'] = Variable<DateTime>(at.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationVersesCompanion(')
+          ..write('id: $id, ')
+          ..write('session: $session, ')
+          ..write('verse: $verse, ')
+          ..write('accuracy: $accuracy, ')
+          ..write('words: $words, ')
+          ..write('wrong: $wrong, ')
+          ..write('skipped: $skipped, ')
+          ..write('corrected: $corrected, ')
+          ..write('doubtful: $doubtful, ')
+          ..write('at: $at')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RecitationWordsTable extends RecitationWords
+    with TableInfo<$RecitationWordsTable, RecitationWordRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RecitationWordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _sessionMeta = const VerificationMeta(
+    'session',
+  );
+  @override
+  late final GeneratedColumn<String> session = GeneratedColumn<String>(
+    'session',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _verseMeta = const VerificationMeta('verse');
+  @override
+  late final GeneratedColumn<int> verse = GeneratedColumn<int>(
+    'verse',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _wordMeta = const VerificationMeta('word');
+  @override
+  late final GeneratedColumn<int> word = GeneratedColumn<int>(
+    'word',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _kindMeta = const VerificationMeta('kind');
+  @override
+  late final GeneratedColumn<String> kind = GeneratedColumn<String>(
+    'kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _atMeta = const VerificationMeta('at');
+  @override
+  late final GeneratedColumn<DateTime> at = GeneratedColumn<DateTime>(
+    'at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, session, verse, word, kind, at];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'recitation_word';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RecitationWordRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('session')) {
+      context.handle(
+        _sessionMeta,
+        session.isAcceptableOrUnknown(data['session']!, _sessionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sessionMeta);
+    }
+    if (data.containsKey('verse')) {
+      context.handle(
+        _verseMeta,
+        verse.isAcceptableOrUnknown(data['verse']!, _verseMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_verseMeta);
+    }
+    if (data.containsKey('word')) {
+      context.handle(
+        _wordMeta,
+        word.isAcceptableOrUnknown(data['word']!, _wordMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_wordMeta);
+    }
+    if (data.containsKey('kind')) {
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_kindMeta);
+    }
+    if (data.containsKey('at')) {
+      context.handle(_atMeta, at.isAcceptableOrUnknown(data['at']!, _atMeta));
+    } else if (isInserting) {
+      context.missing(_atMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {session, verse, word},
+  ];
+  @override
+  RecitationWordRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RecitationWordRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      session: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}session'],
+      )!,
+      verse: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}verse'],
+      )!,
+      word: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}word'],
+      )!,
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
+      at: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}at'],
+      )!,
+    );
+  }
+
+  @override
+  $RecitationWordsTable createAlias(String alias) {
+    return $RecitationWordsTable(attachedDatabase, alias);
+  }
+}
+
+class RecitationWordRow extends DataClass
+    implements Insertable<RecitationWordRow> {
+  final int id;
+  final String session;
+  final int verse;
+  final int word;
+
+  /// `wrong` or `skipped`.
+  final String kind;
+  final DateTime at;
+  const RecitationWordRow({
+    required this.id,
+    required this.session,
+    required this.verse,
+    required this.word,
+    required this.kind,
+    required this.at,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['session'] = Variable<String>(session);
+    map['verse'] = Variable<int>(verse);
+    map['word'] = Variable<int>(word);
+    map['kind'] = Variable<String>(kind);
+    map['at'] = Variable<DateTime>(at);
+    return map;
+  }
+
+  RecitationWordsCompanion toCompanion(bool nullToAbsent) {
+    return RecitationWordsCompanion(
+      id: Value(id),
+      session: Value(session),
+      verse: Value(verse),
+      word: Value(word),
+      kind: Value(kind),
+      at: Value(at),
+    );
+  }
+
+  factory RecitationWordRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RecitationWordRow(
+      id: serializer.fromJson<int>(json['id']),
+      session: serializer.fromJson<String>(json['session']),
+      verse: serializer.fromJson<int>(json['verse']),
+      word: serializer.fromJson<int>(json['word']),
+      kind: serializer.fromJson<String>(json['kind']),
+      at: serializer.fromJson<DateTime>(json['at']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'session': serializer.toJson<String>(session),
+      'verse': serializer.toJson<int>(verse),
+      'word': serializer.toJson<int>(word),
+      'kind': serializer.toJson<String>(kind),
+      'at': serializer.toJson<DateTime>(at),
+    };
+  }
+
+  RecitationWordRow copyWith({
+    int? id,
+    String? session,
+    int? verse,
+    int? word,
+    String? kind,
+    DateTime? at,
+  }) => RecitationWordRow(
+    id: id ?? this.id,
+    session: session ?? this.session,
+    verse: verse ?? this.verse,
+    word: word ?? this.word,
+    kind: kind ?? this.kind,
+    at: at ?? this.at,
+  );
+  RecitationWordRow copyWithCompanion(RecitationWordsCompanion data) {
+    return RecitationWordRow(
+      id: data.id.present ? data.id.value : this.id,
+      session: data.session.present ? data.session.value : this.session,
+      verse: data.verse.present ? data.verse.value : this.verse,
+      word: data.word.present ? data.word.value : this.word,
+      kind: data.kind.present ? data.kind.value : this.kind,
+      at: data.at.present ? data.at.value : this.at,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationWordRow(')
+          ..write('id: $id, ')
+          ..write('session: $session, ')
+          ..write('verse: $verse, ')
+          ..write('word: $word, ')
+          ..write('kind: $kind, ')
+          ..write('at: $at')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, session, verse, word, kind, at);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RecitationWordRow &&
+          other.id == this.id &&
+          other.session == this.session &&
+          other.verse == this.verse &&
+          other.word == this.word &&
+          other.kind == this.kind &&
+          other.at == this.at);
+}
+
+class RecitationWordsCompanion extends UpdateCompanion<RecitationWordRow> {
+  final Value<int> id;
+  final Value<String> session;
+  final Value<int> verse;
+  final Value<int> word;
+  final Value<String> kind;
+  final Value<DateTime> at;
+  const RecitationWordsCompanion({
+    this.id = const Value.absent(),
+    this.session = const Value.absent(),
+    this.verse = const Value.absent(),
+    this.word = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.at = const Value.absent(),
+  });
+  RecitationWordsCompanion.insert({
+    this.id = const Value.absent(),
+    required String session,
+    required int verse,
+    required int word,
+    required String kind,
+    required DateTime at,
+  }) : session = Value(session),
+       verse = Value(verse),
+       word = Value(word),
+       kind = Value(kind),
+       at = Value(at);
+  static Insertable<RecitationWordRow> custom({
+    Expression<int>? id,
+    Expression<String>? session,
+    Expression<int>? verse,
+    Expression<int>? word,
+    Expression<String>? kind,
+    Expression<DateTime>? at,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (session != null) 'session': session,
+      if (verse != null) 'verse': verse,
+      if (word != null) 'word': word,
+      if (kind != null) 'kind': kind,
+      if (at != null) 'at': at,
+    });
+  }
+
+  RecitationWordsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? session,
+    Value<int>? verse,
+    Value<int>? word,
+    Value<String>? kind,
+    Value<DateTime>? at,
+  }) {
+    return RecitationWordsCompanion(
+      id: id ?? this.id,
+      session: session ?? this.session,
+      verse: verse ?? this.verse,
+      word: word ?? this.word,
+      kind: kind ?? this.kind,
+      at: at ?? this.at,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (session.present) {
+      map['session'] = Variable<String>(session.value);
+    }
+    if (verse.present) {
+      map['verse'] = Variable<int>(verse.value);
+    }
+    if (word.present) {
+      map['word'] = Variable<int>(word.value);
+    }
+    if (kind.present) {
+      map['kind'] = Variable<String>(kind.value);
+    }
+    if (at.present) {
+      map['at'] = Variable<DateTime>(at.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecitationWordsCompanion(')
+          ..write('id: $id, ')
+          ..write('session: $session, ')
+          ..write('verse: $verse, ')
+          ..write('word: $word, ')
+          ..write('kind: $kind, ')
+          ..write('at: $at')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $HifzGoalsTable extends HifzGoals
+    with TableInfo<$HifzGoalsTable, HifzGoalRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HifzGoalsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+    'uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+    clientDefault: newUuid,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _templateMeta = const VerificationMeta(
+    'template',
+  );
+  @override
+  late final GeneratedColumn<String> template = GeneratedColumn<String>(
+    'template',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _rangeStartMeta = const VerificationMeta(
+    'rangeStart',
+  );
+  @override
+  late final GeneratedColumn<int> rangeStart = GeneratedColumn<int>(
+    'range_start',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _rangeEndMeta = const VerificationMeta(
+    'rangeEnd',
+  );
+  @override
+  late final GeneratedColumn<int> rangeEnd = GeneratedColumn<int>(
+    'range_end',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startDateMeta = const VerificationMeta(
+    'startDate',
+  );
+  @override
+  late final GeneratedColumn<String> startDate = GeneratedColumn<String>(
+    'start_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetDateMeta = const VerificationMeta(
+    'targetDate',
+  );
+  @override
+  late final GeneratedColumn<String> targetDate = GeneratedColumn<String>(
+    'target_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _planFromMeta = const VerificationMeta(
+    'planFrom',
+  );
+  @override
+  late final GeneratedColumn<String> planFrom = GeneratedColumn<String>(
+    'plan_from',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dailyWeightMeta = const VerificationMeta(
+    'dailyWeight',
+  );
+  @override
+  late final GeneratedColumn<double> dailyWeight = GeneratedColumn<double>(
+    'daily_weight',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _unitMeta = const VerificationMeta('unit');
+  @override
+  late final GeneratedColumn<String> unit = GeneratedColumn<String>(
+    'unit',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('page'),
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('active'),
+  );
+  static const VerificationMeta _pausesMeta = const VerificationMeta('pauses');
+  @override
+  late final GeneratedColumn<String> pauses = GeneratedColumn<String>(
+    'pauses',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
+  static const VerificationMeta _recoveryMeta = const VerificationMeta(
+    'recovery',
+  );
+  @override
+  late final GeneratedColumn<String> recovery = GeneratedColumn<String>(
+    'recovery',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reminderTimeMeta = const VerificationMeta(
+    'reminderTime',
+  );
+  @override
+  late final GeneratedColumn<int> reminderTime = GeneratedColumn<int>(
+    'reminder_time',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reviewMeta = const VerificationMeta('review');
+  @override
+  late final GeneratedColumn<bool> review = GeneratedColumn<bool>(
+    'review',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("review" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    template,
+    rangeStart,
+    rangeEnd,
+    startDate,
+    targetDate,
+    planFrom,
+    dailyWeight,
+    unit,
+    status,
+    pauses,
+    recovery,
+    reminderTime,
+    review,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'hifz_goal';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<HifzGoalRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+        _uuidMeta,
+        uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('template')) {
+      context.handle(
+        _templateMeta,
+        template.isAcceptableOrUnknown(data['template']!, _templateMeta),
+      );
+    }
+    if (data.containsKey('range_start')) {
+      context.handle(
+        _rangeStartMeta,
+        rangeStart.isAcceptableOrUnknown(data['range_start']!, _rangeStartMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_rangeStartMeta);
+    }
+    if (data.containsKey('range_end')) {
+      context.handle(
+        _rangeEndMeta,
+        rangeEnd.isAcceptableOrUnknown(data['range_end']!, _rangeEndMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_rangeEndMeta);
+    }
+    if (data.containsKey('start_date')) {
+      context.handle(
+        _startDateMeta,
+        startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startDateMeta);
+    }
+    if (data.containsKey('target_date')) {
+      context.handle(
+        _targetDateMeta,
+        targetDate.isAcceptableOrUnknown(data['target_date']!, _targetDateMeta),
+      );
+    }
+    if (data.containsKey('plan_from')) {
+      context.handle(
+        _planFromMeta,
+        planFrom.isAcceptableOrUnknown(data['plan_from']!, _planFromMeta),
+      );
+    }
+    if (data.containsKey('daily_weight')) {
+      context.handle(
+        _dailyWeightMeta,
+        dailyWeight.isAcceptableOrUnknown(
+          data['daily_weight']!,
+          _dailyWeightMeta,
+        ),
+      );
+    }
+    if (data.containsKey('unit')) {
+      context.handle(
+        _unitMeta,
+        unit.isAcceptableOrUnknown(data['unit']!, _unitMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('pauses')) {
+      context.handle(
+        _pausesMeta,
+        pauses.isAcceptableOrUnknown(data['pauses']!, _pausesMeta),
+      );
+    }
+    if (data.containsKey('recovery')) {
+      context.handle(
+        _recoveryMeta,
+        recovery.isAcceptableOrUnknown(data['recovery']!, _recoveryMeta),
+      );
+    }
+    if (data.containsKey('reminder_time')) {
+      context.handle(
+        _reminderTimeMeta,
+        reminderTime.isAcceptableOrUnknown(
+          data['reminder_time']!,
+          _reminderTimeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('review')) {
+      context.handle(
+        _reviewMeta,
+        review.isAcceptableOrUnknown(data['review']!, _reviewMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HifzGoalRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HifzGoalRow(
+      uuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}uuid'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      template: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}template'],
+      ),
+      rangeStart: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}range_start'],
+      )!,
+      rangeEnd: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}range_end'],
+      )!,
+      startDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}start_date'],
+      )!,
+      targetDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}target_date'],
+      ),
+      planFrom: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}plan_from'],
+      ),
+      dailyWeight: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}daily_weight'],
+      ),
+      unit: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}unit'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      pauses: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pauses'],
+      )!,
+      recovery: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}recovery'],
+      ),
+      reminderTime: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}reminder_time'],
+      ),
+      review: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}review'],
+      )!,
+    );
+  }
+
+  @override
+  $HifzGoalsTable createAlias(String alias) {
+    return $HifzGoalsTable(attachedDatabase, alias);
+  }
+}
+
+class HifzGoalRow extends DataClass implements Insertable<HifzGoalRow> {
+  final String uuid;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final int id;
+
+  /// A template's id ([GoalTemplate.name]), or null for an open goal.
+  final String? template;
+
+  /// Verses, `ayah.id`, both ends included.
+  final int rangeStart;
+  final int rangeEnd;
+
+  /// `yyyy-MM-dd`; [targetDate] null for an open-ended goal.
+  final String startDate;
+  final String? targetDate;
+
+  /// The day the pace is counted from after a catch-up; null: [startDate].
+  final String? planFrom;
+
+  /// Madina pages a day, when set by amount.
+  final double? dailyWeight;
+
+  /// `WirdUnit.name`: where a day's portion ends.
+  final String unit;
+
+  /// `active`, `paused`, `completed` or `cancelled`.
+  final String status;
+
+  /// Pauses as JSON `[["2026-10-01","2026-10-04"], ["2026-10-09", null]]`.
+  final String pauses;
+
+  /// A chosen catch-up ([RecoveryChoice.toJson]).
+  final String? recovery;
+
+  /// Daily reminder, minutes after midnight; null for none.
+  final int? reminderTime;
+
+  /// A review goal (a hizb a week, fixing a surah): only recitations made
+  /// since it began count. A memorizing goal counts every mastered verse.
+  final bool review;
+  const HifzGoalRow({
+    required this.uuid,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.id,
+    this.template,
+    required this.rangeStart,
+    required this.rangeEnd,
+    required this.startDate,
+    this.targetDate,
+    this.planFrom,
+    this.dailyWeight,
+    required this.unit,
+    required this.status,
+    required this.pauses,
+    this.recovery,
+    this.reminderTime,
+    required this.review,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || template != null) {
+      map['template'] = Variable<String>(template);
+    }
+    map['range_start'] = Variable<int>(rangeStart);
+    map['range_end'] = Variable<int>(rangeEnd);
+    map['start_date'] = Variable<String>(startDate);
+    if (!nullToAbsent || targetDate != null) {
+      map['target_date'] = Variable<String>(targetDate);
+    }
+    if (!nullToAbsent || planFrom != null) {
+      map['plan_from'] = Variable<String>(planFrom);
+    }
+    if (!nullToAbsent || dailyWeight != null) {
+      map['daily_weight'] = Variable<double>(dailyWeight);
+    }
+    map['unit'] = Variable<String>(unit);
+    map['status'] = Variable<String>(status);
+    map['pauses'] = Variable<String>(pauses);
+    if (!nullToAbsent || recovery != null) {
+      map['recovery'] = Variable<String>(recovery);
+    }
+    if (!nullToAbsent || reminderTime != null) {
+      map['reminder_time'] = Variable<int>(reminderTime);
+    }
+    map['review'] = Variable<bool>(review);
+    return map;
+  }
+
+  HifzGoalsCompanion toCompanion(bool nullToAbsent) {
+    return HifzGoalsCompanion(
+      uuid: Value(uuid),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      id: Value(id),
+      template: template == null && nullToAbsent
+          ? const Value.absent()
+          : Value(template),
+      rangeStart: Value(rangeStart),
+      rangeEnd: Value(rangeEnd),
+      startDate: Value(startDate),
+      targetDate: targetDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(targetDate),
+      planFrom: planFrom == null && nullToAbsent
+          ? const Value.absent()
+          : Value(planFrom),
+      dailyWeight: dailyWeight == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dailyWeight),
+      unit: Value(unit),
+      status: Value(status),
+      pauses: Value(pauses),
+      recovery: recovery == null && nullToAbsent
+          ? const Value.absent()
+          : Value(recovery),
+      reminderTime: reminderTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reminderTime),
+      review: Value(review),
+    );
+  }
+
+  factory HifzGoalRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HifzGoalRow(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      id: serializer.fromJson<int>(json['id']),
+      template: serializer.fromJson<String?>(json['template']),
+      rangeStart: serializer.fromJson<int>(json['rangeStart']),
+      rangeEnd: serializer.fromJson<int>(json['rangeEnd']),
+      startDate: serializer.fromJson<String>(json['startDate']),
+      targetDate: serializer.fromJson<String?>(json['targetDate']),
+      planFrom: serializer.fromJson<String?>(json['planFrom']),
+      dailyWeight: serializer.fromJson<double?>(json['dailyWeight']),
+      unit: serializer.fromJson<String>(json['unit']),
+      status: serializer.fromJson<String>(json['status']),
+      pauses: serializer.fromJson<String>(json['pauses']),
+      recovery: serializer.fromJson<String?>(json['recovery']),
+      reminderTime: serializer.fromJson<int?>(json['reminderTime']),
+      review: serializer.fromJson<bool>(json['review']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'id': serializer.toJson<int>(id),
+      'template': serializer.toJson<String?>(template),
+      'rangeStart': serializer.toJson<int>(rangeStart),
+      'rangeEnd': serializer.toJson<int>(rangeEnd),
+      'startDate': serializer.toJson<String>(startDate),
+      'targetDate': serializer.toJson<String?>(targetDate),
+      'planFrom': serializer.toJson<String?>(planFrom),
+      'dailyWeight': serializer.toJson<double?>(dailyWeight),
+      'unit': serializer.toJson<String>(unit),
+      'status': serializer.toJson<String>(status),
+      'pauses': serializer.toJson<String>(pauses),
+      'recovery': serializer.toJson<String?>(recovery),
+      'reminderTime': serializer.toJson<int?>(reminderTime),
+      'review': serializer.toJson<bool>(review),
+    };
+  }
+
+  HifzGoalRow copyWith({
+    String? uuid,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    int? id,
+    Value<String?> template = const Value.absent(),
+    int? rangeStart,
+    int? rangeEnd,
+    String? startDate,
+    Value<String?> targetDate = const Value.absent(),
+    Value<String?> planFrom = const Value.absent(),
+    Value<double?> dailyWeight = const Value.absent(),
+    String? unit,
+    String? status,
+    String? pauses,
+    Value<String?> recovery = const Value.absent(),
+    Value<int?> reminderTime = const Value.absent(),
+    bool? review,
+  }) => HifzGoalRow(
+    uuid: uuid ?? this.uuid,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    id: id ?? this.id,
+    template: template.present ? template.value : this.template,
+    rangeStart: rangeStart ?? this.rangeStart,
+    rangeEnd: rangeEnd ?? this.rangeEnd,
+    startDate: startDate ?? this.startDate,
+    targetDate: targetDate.present ? targetDate.value : this.targetDate,
+    planFrom: planFrom.present ? planFrom.value : this.planFrom,
+    dailyWeight: dailyWeight.present ? dailyWeight.value : this.dailyWeight,
+    unit: unit ?? this.unit,
+    status: status ?? this.status,
+    pauses: pauses ?? this.pauses,
+    recovery: recovery.present ? recovery.value : this.recovery,
+    reminderTime: reminderTime.present ? reminderTime.value : this.reminderTime,
+    review: review ?? this.review,
+  );
+  HifzGoalRow copyWithCompanion(HifzGoalsCompanion data) {
+    return HifzGoalRow(
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      id: data.id.present ? data.id.value : this.id,
+      template: data.template.present ? data.template.value : this.template,
+      rangeStart: data.rangeStart.present
+          ? data.rangeStart.value
+          : this.rangeStart,
+      rangeEnd: data.rangeEnd.present ? data.rangeEnd.value : this.rangeEnd,
+      startDate: data.startDate.present ? data.startDate.value : this.startDate,
+      targetDate: data.targetDate.present
+          ? data.targetDate.value
+          : this.targetDate,
+      planFrom: data.planFrom.present ? data.planFrom.value : this.planFrom,
+      dailyWeight: data.dailyWeight.present
+          ? data.dailyWeight.value
+          : this.dailyWeight,
+      unit: data.unit.present ? data.unit.value : this.unit,
+      status: data.status.present ? data.status.value : this.status,
+      pauses: data.pauses.present ? data.pauses.value : this.pauses,
+      recovery: data.recovery.present ? data.recovery.value : this.recovery,
+      reminderTime: data.reminderTime.present
+          ? data.reminderTime.value
+          : this.reminderTime,
+      review: data.review.present ? data.review.value : this.review,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HifzGoalRow(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('template: $template, ')
+          ..write('rangeStart: $rangeStart, ')
+          ..write('rangeEnd: $rangeEnd, ')
+          ..write('startDate: $startDate, ')
+          ..write('targetDate: $targetDate, ')
+          ..write('planFrom: $planFrom, ')
+          ..write('dailyWeight: $dailyWeight, ')
+          ..write('unit: $unit, ')
+          ..write('status: $status, ')
+          ..write('pauses: $pauses, ')
+          ..write('recovery: $recovery, ')
+          ..write('reminderTime: $reminderTime, ')
+          ..write('review: $review')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    template,
+    rangeStart,
+    rangeEnd,
+    startDate,
+    targetDate,
+    planFrom,
+    dailyWeight,
+    unit,
+    status,
+    pauses,
+    recovery,
+    reminderTime,
+    review,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HifzGoalRow &&
+          other.uuid == this.uuid &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.id == this.id &&
+          other.template == this.template &&
+          other.rangeStart == this.rangeStart &&
+          other.rangeEnd == this.rangeEnd &&
+          other.startDate == this.startDate &&
+          other.targetDate == this.targetDate &&
+          other.planFrom == this.planFrom &&
+          other.dailyWeight == this.dailyWeight &&
+          other.unit == this.unit &&
+          other.status == this.status &&
+          other.pauses == this.pauses &&
+          other.recovery == this.recovery &&
+          other.reminderTime == this.reminderTime &&
+          other.review == this.review);
+}
+
+class HifzGoalsCompanion extends UpdateCompanion<HifzGoalRow> {
+  final Value<String> uuid;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<int> id;
+  final Value<String?> template;
+  final Value<int> rangeStart;
+  final Value<int> rangeEnd;
+  final Value<String> startDate;
+  final Value<String?> targetDate;
+  final Value<String?> planFrom;
+  final Value<double?> dailyWeight;
+  final Value<String> unit;
+  final Value<String> status;
+  final Value<String> pauses;
+  final Value<String?> recovery;
+  final Value<int?> reminderTime;
+  final Value<bool> review;
+  const HifzGoalsCompanion({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    this.template = const Value.absent(),
+    this.rangeStart = const Value.absent(),
+    this.rangeEnd = const Value.absent(),
+    this.startDate = const Value.absent(),
+    this.targetDate = const Value.absent(),
+    this.planFrom = const Value.absent(),
+    this.dailyWeight = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.status = const Value.absent(),
+    this.pauses = const Value.absent(),
+    this.recovery = const Value.absent(),
+    this.reminderTime = const Value.absent(),
+    this.review = const Value.absent(),
+  });
+  HifzGoalsCompanion.insert({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    this.template = const Value.absent(),
+    required int rangeStart,
+    required int rangeEnd,
+    required String startDate,
+    this.targetDate = const Value.absent(),
+    this.planFrom = const Value.absent(),
+    this.dailyWeight = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.status = const Value.absent(),
+    this.pauses = const Value.absent(),
+    this.recovery = const Value.absent(),
+    this.reminderTime = const Value.absent(),
+    this.review = const Value.absent(),
+  }) : rangeStart = Value(rangeStart),
+       rangeEnd = Value(rangeEnd),
+       startDate = Value(startDate);
+  static Insertable<HifzGoalRow> custom({
+    Expression<String>? uuid,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? id,
+    Expression<String>? template,
+    Expression<int>? rangeStart,
+    Expression<int>? rangeEnd,
+    Expression<String>? startDate,
+    Expression<String>? targetDate,
+    Expression<String>? planFrom,
+    Expression<double>? dailyWeight,
+    Expression<String>? unit,
+    Expression<String>? status,
+    Expression<String>? pauses,
+    Expression<String>? recovery,
+    Expression<int>? reminderTime,
+    Expression<bool>? review,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (id != null) 'id': id,
+      if (template != null) 'template': template,
+      if (rangeStart != null) 'range_start': rangeStart,
+      if (rangeEnd != null) 'range_end': rangeEnd,
+      if (startDate != null) 'start_date': startDate,
+      if (targetDate != null) 'target_date': targetDate,
+      if (planFrom != null) 'plan_from': planFrom,
+      if (dailyWeight != null) 'daily_weight': dailyWeight,
+      if (unit != null) 'unit': unit,
+      if (status != null) 'status': status,
+      if (pauses != null) 'pauses': pauses,
+      if (recovery != null) 'recovery': recovery,
+      if (reminderTime != null) 'reminder_time': reminderTime,
+      if (review != null) 'review': review,
+    });
+  }
+
+  HifzGoalsCompanion copyWith({
+    Value<String>? uuid,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<int>? id,
+    Value<String?>? template,
+    Value<int>? rangeStart,
+    Value<int>? rangeEnd,
+    Value<String>? startDate,
+    Value<String?>? targetDate,
+    Value<String?>? planFrom,
+    Value<double?>? dailyWeight,
+    Value<String>? unit,
+    Value<String>? status,
+    Value<String>? pauses,
+    Value<String?>? recovery,
+    Value<int?>? reminderTime,
+    Value<bool>? review,
+  }) {
+    return HifzGoalsCompanion(
+      uuid: uuid ?? this.uuid,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      id: id ?? this.id,
+      template: template ?? this.template,
+      rangeStart: rangeStart ?? this.rangeStart,
+      rangeEnd: rangeEnd ?? this.rangeEnd,
+      startDate: startDate ?? this.startDate,
+      targetDate: targetDate ?? this.targetDate,
+      planFrom: planFrom ?? this.planFrom,
+      dailyWeight: dailyWeight ?? this.dailyWeight,
+      unit: unit ?? this.unit,
+      status: status ?? this.status,
+      pauses: pauses ?? this.pauses,
+      recovery: recovery ?? this.recovery,
+      reminderTime: reminderTime ?? this.reminderTime,
+      review: review ?? this.review,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (template.present) {
+      map['template'] = Variable<String>(template.value);
+    }
+    if (rangeStart.present) {
+      map['range_start'] = Variable<int>(rangeStart.value);
+    }
+    if (rangeEnd.present) {
+      map['range_end'] = Variable<int>(rangeEnd.value);
+    }
+    if (startDate.present) {
+      map['start_date'] = Variable<String>(startDate.value);
+    }
+    if (targetDate.present) {
+      map['target_date'] = Variable<String>(targetDate.value);
+    }
+    if (planFrom.present) {
+      map['plan_from'] = Variable<String>(planFrom.value);
+    }
+    if (dailyWeight.present) {
+      map['daily_weight'] = Variable<double>(dailyWeight.value);
+    }
+    if (unit.present) {
+      map['unit'] = Variable<String>(unit.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (pauses.present) {
+      map['pauses'] = Variable<String>(pauses.value);
+    }
+    if (recovery.present) {
+      map['recovery'] = Variable<String>(recovery.value);
+    }
+    if (reminderTime.present) {
+      map['reminder_time'] = Variable<int>(reminderTime.value);
+    }
+    if (review.present) {
+      map['review'] = Variable<bool>(review.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HifzGoalsCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('template: $template, ')
+          ..write('rangeStart: $rangeStart, ')
+          ..write('rangeEnd: $rangeEnd, ')
+          ..write('startDate: $startDate, ')
+          ..write('targetDate: $targetDate, ')
+          ..write('planFrom: $planFrom, ')
+          ..write('dailyWeight: $dailyWeight, ')
+          ..write('unit: $unit, ')
+          ..write('status: $status, ')
+          ..write('pauses: $pauses, ')
+          ..write('recovery: $recovery, ')
+          ..write('reminderTime: $reminderTime, ')
+          ..write('review: $review')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$UserDatabase extends GeneratedDatabase {
   _$UserDatabase(QueryExecutor e) : super(e);
   $UserDatabaseManager get managers => $UserDatabaseManager(this);
@@ -5358,6 +10912,22 @@ abstract class _$UserDatabase extends GeneratedDatabase {
   late final $OutboxTable outbox = $OutboxTable(this);
   late final $SrsItemsTable srsItems = $SrsItemsTable(this);
   late final $MemorizationsTable memorizations = $MemorizationsTable(this);
+  late final $KhatmaPausesTable khatmaPauses = $KhatmaPausesTable(this);
+  late final $SessionAttributionsTable sessionAttributions =
+      $SessionAttributionsTable(this);
+  late final $KhatmaCoveragesTable khatmaCoverages = $KhatmaCoveragesTable(
+    this,
+  );
+  late final $DailyStatsTable dailyStats = $DailyStatsTable(this);
+  late final $RecitationSessionsTable recitationSessions =
+      $RecitationSessionsTable(this);
+  late final $RecitationVersesTable recitationVerses = $RecitationVersesTable(
+    this,
+  );
+  late final $RecitationWordsTable recitationWords = $RecitationWordsTable(
+    this,
+  );
+  late final $HifzGoalsTable hifzGoals = $HifzGoalsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -5373,6 +10943,14 @@ abstract class _$UserDatabase extends GeneratedDatabase {
     outbox,
     srsItems,
     memorizations,
+    khatmaPauses,
+    sessionAttributions,
+    khatmaCoverages,
+    dailyStats,
+    recitationSessions,
+    recitationVerses,
+    recitationWords,
+    hifzGoals,
   ];
 }
 
@@ -5923,6 +11501,22 @@ typedef $$KhatmasTableCreateCompanionBuilder = KhatmasCompanion Function({
   Value<String?> rebasedOn,
   Value<DateTime?> completedAt,
   Value<DateTime> createdAt,
+  Value<String> kind,
+  Value<int?> rangeStart,
+  Value<int?> rangeEnd,
+  Value<int?> startAt,
+  Value<String> pacingMode,
+  Value<String> scheduleMode,
+  Value<double?> dailyWeight,
+  Value<String> restWeekdays,
+  Value<String> countingMode,
+  Value<bool> isPrimary,
+  Value<String> status,
+  Value<bool> autoRestart,
+  Value<String?> presetId,
+  Value<String?> aheadChoice,
+  Value<String> reminderKinds,
+  Value<String?> recovery,
 });
 typedef $$KhatmasTableUpdateCompanionBuilder = KhatmasCompanion Function({
   Value<String> uuid,
@@ -5939,6 +11533,22 @@ typedef $$KhatmasTableUpdateCompanionBuilder = KhatmasCompanion Function({
   Value<String?> rebasedOn,
   Value<DateTime?> completedAt,
   Value<DateTime> createdAt,
+  Value<String> kind,
+  Value<int?> rangeStart,
+  Value<int?> rangeEnd,
+  Value<int?> startAt,
+  Value<String> pacingMode,
+  Value<String> scheduleMode,
+  Value<double?> dailyWeight,
+  Value<String> restWeekdays,
+  Value<String> countingMode,
+  Value<bool> isPrimary,
+  Value<String> status,
+  Value<bool> autoRestart,
+  Value<String?> presetId,
+  Value<String?> aheadChoice,
+  Value<String> reminderKinds,
+  Value<String?> recovery,
 });
 
 class $$KhatmasTableFilterComposer
@@ -6017,6 +11627,86 @@ class $$KhatmasTableFilterComposer
 
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get rangeStart => $composableBuilder(
+    column: $table.rangeStart,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get rangeEnd => $composableBuilder(
+    column: $table.rangeEnd,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get startAt => $composableBuilder(
+    column: $table.startAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pacingMode => $composableBuilder(
+    column: $table.pacingMode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get scheduleMode => $composableBuilder(
+    column: $table.scheduleMode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get dailyWeight => $composableBuilder(
+    column: $table.dailyWeight,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get restWeekdays => $composableBuilder(
+    column: $table.restWeekdays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get countingMode => $composableBuilder(
+    column: $table.countingMode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isPrimary => $composableBuilder(
+    column: $table.isPrimary,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get autoRestart => $composableBuilder(
+    column: $table.autoRestart,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get presetId => $composableBuilder(
+    column: $table.presetId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get aheadChoice => $composableBuilder(
+    column: $table.aheadChoice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reminderKinds => $composableBuilder(
+    column: $table.reminderKinds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get recovery => $composableBuilder(
+    column: $table.recovery,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -6099,6 +11789,86 @@ class $$KhatmasTableOrderingComposer
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get rangeStart => $composableBuilder(
+    column: $table.rangeStart,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get rangeEnd => $composableBuilder(
+    column: $table.rangeEnd,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get startAt => $composableBuilder(
+    column: $table.startAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pacingMode => $composableBuilder(
+    column: $table.pacingMode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get scheduleMode => $composableBuilder(
+    column: $table.scheduleMode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get dailyWeight => $composableBuilder(
+    column: $table.dailyWeight,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get restWeekdays => $composableBuilder(
+    column: $table.restWeekdays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get countingMode => $composableBuilder(
+    column: $table.countingMode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isPrimary => $composableBuilder(
+    column: $table.isPrimary,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get autoRestart => $composableBuilder(
+    column: $table.autoRestart,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get presetId => $composableBuilder(
+    column: $table.presetId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get aheadChoice => $composableBuilder(
+    column: $table.aheadChoice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reminderKinds => $composableBuilder(
+    column: $table.reminderKinds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get recovery => $composableBuilder(
+    column: $table.recovery,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$KhatmasTableAnnotationComposer
@@ -6159,6 +11929,72 @@ class $$KhatmasTableAnnotationComposer
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
+
+  GeneratedColumn<int> get rangeStart => $composableBuilder(
+    column: $table.rangeStart,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get rangeEnd =>
+      $composableBuilder(column: $table.rangeEnd, builder: (column) => column);
+
+  GeneratedColumn<int> get startAt =>
+      $composableBuilder(column: $table.startAt, builder: (column) => column);
+
+  GeneratedColumn<String> get pacingMode => $composableBuilder(
+    column: $table.pacingMode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get scheduleMode => $composableBuilder(
+    column: $table.scheduleMode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get dailyWeight => $composableBuilder(
+    column: $table.dailyWeight,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get restWeekdays => $composableBuilder(
+    column: $table.restWeekdays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get countingMode => $composableBuilder(
+    column: $table.countingMode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isPrimary =>
+      $composableBuilder(column: $table.isPrimary, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<bool> get autoRestart => $composableBuilder(
+    column: $table.autoRestart,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get presetId =>
+      $composableBuilder(column: $table.presetId, builder: (column) => column);
+
+  GeneratedColumn<String> get aheadChoice => $composableBuilder(
+    column: $table.aheadChoice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reminderKinds => $composableBuilder(
+    column: $table.reminderKinds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get recovery =>
+      $composableBuilder(column: $table.recovery, builder: (column) => column);
 }
 
 class $$KhatmasTableTableManager
@@ -6203,6 +12039,22 @@ class $$KhatmasTableTableManager
                 Value<String?> rebasedOn = const Value.absent(),
                 Value<DateTime?> completedAt = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
+                Value<String> kind = const Value.absent(),
+                Value<int?> rangeStart = const Value.absent(),
+                Value<int?> rangeEnd = const Value.absent(),
+                Value<int?> startAt = const Value.absent(),
+                Value<String> pacingMode = const Value.absent(),
+                Value<String> scheduleMode = const Value.absent(),
+                Value<double?> dailyWeight = const Value.absent(),
+                Value<String> restWeekdays = const Value.absent(),
+                Value<String> countingMode = const Value.absent(),
+                Value<bool> isPrimary = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<bool> autoRestart = const Value.absent(),
+                Value<String?> presetId = const Value.absent(),
+                Value<String?> aheadChoice = const Value.absent(),
+                Value<String> reminderKinds = const Value.absent(),
+                Value<String?> recovery = const Value.absent(),
               }) => KhatmasCompanion(
                 uuid: uuid,
                 updatedAt: updatedAt,
@@ -6218,6 +12070,22 @@ class $$KhatmasTableTableManager
                 rebasedOn: rebasedOn,
                 completedAt: completedAt,
                 createdAt: createdAt,
+                kind: kind,
+                rangeStart: rangeStart,
+                rangeEnd: rangeEnd,
+                startAt: startAt,
+                pacingMode: pacingMode,
+                scheduleMode: scheduleMode,
+                dailyWeight: dailyWeight,
+                restWeekdays: restWeekdays,
+                countingMode: countingMode,
+                isPrimary: isPrimary,
+                status: status,
+                autoRestart: autoRestart,
+                presetId: presetId,
+                aheadChoice: aheadChoice,
+                reminderKinds: reminderKinds,
+                recovery: recovery,
               ),
           createCompanionCallback:
               ({
@@ -6235,6 +12103,22 @@ class $$KhatmasTableTableManager
                 Value<String?> rebasedOn = const Value.absent(),
                 Value<DateTime?> completedAt = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
+                Value<String> kind = const Value.absent(),
+                Value<int?> rangeStart = const Value.absent(),
+                Value<int?> rangeEnd = const Value.absent(),
+                Value<int?> startAt = const Value.absent(),
+                Value<String> pacingMode = const Value.absent(),
+                Value<String> scheduleMode = const Value.absent(),
+                Value<double?> dailyWeight = const Value.absent(),
+                Value<String> restWeekdays = const Value.absent(),
+                Value<String> countingMode = const Value.absent(),
+                Value<bool> isPrimary = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<bool> autoRestart = const Value.absent(),
+                Value<String?> presetId = const Value.absent(),
+                Value<String?> aheadChoice = const Value.absent(),
+                Value<String> reminderKinds = const Value.absent(),
+                Value<String?> recovery = const Value.absent(),
               }) => KhatmasCompanion.insert(
                 uuid: uuid,
                 updatedAt: updatedAt,
@@ -6250,6 +12134,22 @@ class $$KhatmasTableTableManager
                 rebasedOn: rebasedOn,
                 completedAt: completedAt,
                 createdAt: createdAt,
+                kind: kind,
+                rangeStart: rangeStart,
+                rangeEnd: rangeEnd,
+                startAt: startAt,
+                pacingMode: pacingMode,
+                scheduleMode: scheduleMode,
+                dailyWeight: dailyWeight,
+                restWeekdays: restWeekdays,
+                countingMode: countingMode,
+                isPrimary: isPrimary,
+                status: status,
+                autoRestart: autoRestart,
+                presetId: presetId,
+                aheadChoice: aheadChoice,
+                reminderKinds: reminderKinds,
+                recovery: recovery,
               ),
           withReferenceMapper: (p0) => p0
               .map(
@@ -6553,6 +12453,10 @@ typedef $$ReadingSessionsTableCreateCompanionBuilder =
       required int pages,
       Value<String> mode,
       Value<String?> edition,
+      Value<String> source,
+      Value<String> entryPoint,
+      Value<int?> activeSeconds,
+      Value<String> ranges,
     });
 typedef $$ReadingSessionsTableUpdateCompanionBuilder =
     ReadingSessionsCompanion Function({
@@ -6565,6 +12469,10 @@ typedef $$ReadingSessionsTableUpdateCompanionBuilder =
       Value<int> pages,
       Value<String> mode,
       Value<String?> edition,
+      Value<String> source,
+      Value<String> entryPoint,
+      Value<int?> activeSeconds,
+      Value<String> ranges,
     });
 
 class $$ReadingSessionsTableFilterComposer
@@ -6618,6 +12526,26 @@ class $$ReadingSessionsTableFilterComposer
 
   ColumnFilters<String> get edition => $composableBuilder(
     column: $table.edition,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get entryPoint => $composableBuilder(
+    column: $table.entryPoint,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get activeSeconds => $composableBuilder(
+    column: $table.activeSeconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get ranges => $composableBuilder(
+    column: $table.ranges,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -6675,6 +12603,26 @@ class $$ReadingSessionsTableOrderingComposer
     column: $table.edition,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get entryPoint => $composableBuilder(
+    column: $table.entryPoint,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get activeSeconds => $composableBuilder(
+    column: $table.activeSeconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get ranges => $composableBuilder(
+    column: $table.ranges,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ReadingSessionsTableAnnotationComposer
@@ -6712,6 +12660,22 @@ class $$ReadingSessionsTableAnnotationComposer
 
   GeneratedColumn<String> get edition =>
       $composableBuilder(column: $table.edition, builder: (column) => column);
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get entryPoint => $composableBuilder(
+    column: $table.entryPoint,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get activeSeconds => $composableBuilder(
+    column: $table.activeSeconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get ranges =>
+      $composableBuilder(column: $table.ranges, builder: (column) => column);
 }
 
 class $$ReadingSessionsTableTableManager
@@ -6760,6 +12724,10 @@ class $$ReadingSessionsTableTableManager
                 Value<int> pages = const Value.absent(),
                 Value<String> mode = const Value.absent(),
                 Value<String?> edition = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String> entryPoint = const Value.absent(),
+                Value<int?> activeSeconds = const Value.absent(),
+                Value<String> ranges = const Value.absent(),
               }) => ReadingSessionsCompanion(
                 uuid: uuid,
                 updatedAt: updatedAt,
@@ -6770,6 +12738,10 @@ class $$ReadingSessionsTableTableManager
                 pages: pages,
                 mode: mode,
                 edition: edition,
+                source: source,
+                entryPoint: entryPoint,
+                activeSeconds: activeSeconds,
+                ranges: ranges,
               ),
           createCompanionCallback:
               ({
@@ -6782,6 +12754,10 @@ class $$ReadingSessionsTableTableManager
                 required int pages,
                 Value<String> mode = const Value.absent(),
                 Value<String?> edition = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String> entryPoint = const Value.absent(),
+                Value<int?> activeSeconds = const Value.absent(),
+                Value<String> ranges = const Value.absent(),
               }) => ReadingSessionsCompanion.insert(
                 uuid: uuid,
                 updatedAt: updatedAt,
@@ -6792,6 +12768,10 @@ class $$ReadingSessionsTableTableManager
                 pages: pages,
                 mode: mode,
                 edition: edition,
+                source: source,
+                entryPoint: entryPoint,
+                activeSeconds: activeSeconds,
+                ranges: ranges,
               ),
           withReferenceMapper: (p0) => p0
               .map(
@@ -8160,6 +14140,2373 @@ typedef $$MemorizationsTableProcessedTableManager =
       MemorizationRow,
       PrefetchHooks Function()
     >;
+typedef $$KhatmaPausesTableCreateCompanionBuilder =
+    KhatmaPausesCompanion Function({
+      Value<String> uuid,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<int> id,
+      required String khatmaUuid,
+      required String fromDay,
+      Value<String?> toDay,
+    });
+typedef $$KhatmaPausesTableUpdateCompanionBuilder =
+    KhatmaPausesCompanion Function({
+      Value<String> uuid,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<int> id,
+      Value<String> khatmaUuid,
+      Value<String> fromDay,
+      Value<String?> toDay,
+    });
+
+class $$KhatmaPausesTableFilterComposer
+    extends Composer<_$UserDatabase, $KhatmaPausesTable> {
+  $$KhatmaPausesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get khatmaUuid => $composableBuilder(
+    column: $table.khatmaUuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get fromDay => $composableBuilder(
+    column: $table.fromDay,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get toDay => $composableBuilder(
+    column: $table.toDay,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$KhatmaPausesTableOrderingComposer
+    extends Composer<_$UserDatabase, $KhatmaPausesTable> {
+  $$KhatmaPausesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get khatmaUuid => $composableBuilder(
+    column: $table.khatmaUuid,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get fromDay => $composableBuilder(
+    column: $table.fromDay,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get toDay => $composableBuilder(
+    column: $table.toDay,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$KhatmaPausesTableAnnotationComposer
+    extends Composer<_$UserDatabase, $KhatmaPausesTable> {
+  $$KhatmaPausesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get uuid =>
+      $composableBuilder(column: $table.uuid, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get khatmaUuid => $composableBuilder(
+    column: $table.khatmaUuid,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get fromDay =>
+      $composableBuilder(column: $table.fromDay, builder: (column) => column);
+
+  GeneratedColumn<String> get toDay =>
+      $composableBuilder(column: $table.toDay, builder: (column) => column);
+}
+
+class $$KhatmaPausesTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $KhatmaPausesTable,
+          KhatmaPauseRow,
+          $$KhatmaPausesTableFilterComposer,
+          $$KhatmaPausesTableOrderingComposer,
+          $$KhatmaPausesTableAnnotationComposer,
+          $$KhatmaPausesTableCreateCompanionBuilder,
+          $$KhatmaPausesTableUpdateCompanionBuilder,
+          (
+            KhatmaPauseRow,
+            BaseReferences<_$UserDatabase, $KhatmaPausesTable, KhatmaPauseRow>,
+          ),
+          KhatmaPauseRow,
+          PrefetchHooks Function()
+        > {
+  $$KhatmaPausesTableTableManager(_$UserDatabase db, $KhatmaPausesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$KhatmaPausesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$KhatmaPausesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$KhatmaPausesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                Value<String> khatmaUuid = const Value.absent(),
+                Value<String> fromDay = const Value.absent(),
+                Value<String?> toDay = const Value.absent(),
+              }) => KhatmaPausesCompanion(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                khatmaUuid: khatmaUuid,
+                fromDay: fromDay,
+                toDay: toDay,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                required String khatmaUuid,
+                required String fromDay,
+                Value<String?> toDay = const Value.absent(),
+              }) => KhatmaPausesCompanion.insert(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                khatmaUuid: khatmaUuid,
+                fromDay: fromDay,
+                toDay: toDay,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$KhatmaPausesTable, KhatmaPauseRow>(table),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $KhatmaPausesTable,
+                    KhatmaPauseRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$KhatmaPausesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $KhatmaPausesTable,
+      KhatmaPauseRow,
+      $$KhatmaPausesTableFilterComposer,
+      $$KhatmaPausesTableOrderingComposer,
+      $$KhatmaPausesTableAnnotationComposer,
+      $$KhatmaPausesTableCreateCompanionBuilder,
+      $$KhatmaPausesTableUpdateCompanionBuilder,
+      (
+        KhatmaPauseRow,
+        BaseReferences<_$UserDatabase, $KhatmaPausesTable, KhatmaPauseRow>,
+      ),
+      KhatmaPauseRow,
+      PrefetchHooks Function()
+    >;
+typedef $$SessionAttributionsTableCreateCompanionBuilder =
+    SessionAttributionsCompanion Function({
+      Value<String> uuid,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<int> id,
+      required String sessionUuid,
+      required String khatmaUuid,
+      required String ranges,
+      required double newWeight,
+      required String decidedBy,
+      Value<bool> undone,
+      required String day,
+      required DateTime at,
+    });
+typedef $$SessionAttributionsTableUpdateCompanionBuilder =
+    SessionAttributionsCompanion Function({
+      Value<String> uuid,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<int> id,
+      Value<String> sessionUuid,
+      Value<String> khatmaUuid,
+      Value<String> ranges,
+      Value<double> newWeight,
+      Value<String> decidedBy,
+      Value<bool> undone,
+      Value<String> day,
+      Value<DateTime> at,
+    });
+
+class $$SessionAttributionsTableFilterComposer
+    extends Composer<_$UserDatabase, $SessionAttributionsTable> {
+  $$SessionAttributionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sessionUuid => $composableBuilder(
+    column: $table.sessionUuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get khatmaUuid => $composableBuilder(
+    column: $table.khatmaUuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get ranges => $composableBuilder(
+    column: $table.ranges,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get newWeight => $composableBuilder(
+    column: $table.newWeight,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get decidedBy => $composableBuilder(
+    column: $table.decidedBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get undone => $composableBuilder(
+    column: $table.undone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get day => $composableBuilder(
+    column: $table.day,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get at => $composableBuilder(
+    column: $table.at,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SessionAttributionsTableOrderingComposer
+    extends Composer<_$UserDatabase, $SessionAttributionsTable> {
+  $$SessionAttributionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sessionUuid => $composableBuilder(
+    column: $table.sessionUuid,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get khatmaUuid => $composableBuilder(
+    column: $table.khatmaUuid,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get ranges => $composableBuilder(
+    column: $table.ranges,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get newWeight => $composableBuilder(
+    column: $table.newWeight,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get decidedBy => $composableBuilder(
+    column: $table.decidedBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get undone => $composableBuilder(
+    column: $table.undone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get day => $composableBuilder(
+    column: $table.day,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get at => $composableBuilder(
+    column: $table.at,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SessionAttributionsTableAnnotationComposer
+    extends Composer<_$UserDatabase, $SessionAttributionsTable> {
+  $$SessionAttributionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get uuid =>
+      $composableBuilder(column: $table.uuid, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get sessionUuid => $composableBuilder(
+    column: $table.sessionUuid,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get khatmaUuid => $composableBuilder(
+    column: $table.khatmaUuid,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get ranges =>
+      $composableBuilder(column: $table.ranges, builder: (column) => column);
+
+  GeneratedColumn<double> get newWeight =>
+      $composableBuilder(column: $table.newWeight, builder: (column) => column);
+
+  GeneratedColumn<String> get decidedBy =>
+      $composableBuilder(column: $table.decidedBy, builder: (column) => column);
+
+  GeneratedColumn<bool> get undone =>
+      $composableBuilder(column: $table.undone, builder: (column) => column);
+
+  GeneratedColumn<String> get day =>
+      $composableBuilder(column: $table.day, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get at =>
+      $composableBuilder(column: $table.at, builder: (column) => column);
+}
+
+class $$SessionAttributionsTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $SessionAttributionsTable,
+          SessionAttributionRow,
+          $$SessionAttributionsTableFilterComposer,
+          $$SessionAttributionsTableOrderingComposer,
+          $$SessionAttributionsTableAnnotationComposer,
+          $$SessionAttributionsTableCreateCompanionBuilder,
+          $$SessionAttributionsTableUpdateCompanionBuilder,
+          (
+            SessionAttributionRow,
+            BaseReferences<
+              _$UserDatabase,
+              $SessionAttributionsTable,
+              SessionAttributionRow
+            >,
+          ),
+          SessionAttributionRow,
+          PrefetchHooks Function()
+        > {
+  $$SessionAttributionsTableTableManager(
+    _$UserDatabase db,
+    $SessionAttributionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SessionAttributionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SessionAttributionsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$SessionAttributionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                Value<String> sessionUuid = const Value.absent(),
+                Value<String> khatmaUuid = const Value.absent(),
+                Value<String> ranges = const Value.absent(),
+                Value<double> newWeight = const Value.absent(),
+                Value<String> decidedBy = const Value.absent(),
+                Value<bool> undone = const Value.absent(),
+                Value<String> day = const Value.absent(),
+                Value<DateTime> at = const Value.absent(),
+              }) => SessionAttributionsCompanion(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                sessionUuid: sessionUuid,
+                khatmaUuid: khatmaUuid,
+                ranges: ranges,
+                newWeight: newWeight,
+                decidedBy: decidedBy,
+                undone: undone,
+                day: day,
+                at: at,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                required String sessionUuid,
+                required String khatmaUuid,
+                required String ranges,
+                required double newWeight,
+                required String decidedBy,
+                Value<bool> undone = const Value.absent(),
+                required String day,
+                required DateTime at,
+              }) => SessionAttributionsCompanion.insert(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                sessionUuid: sessionUuid,
+                khatmaUuid: khatmaUuid,
+                ranges: ranges,
+                newWeight: newWeight,
+                decidedBy: decidedBy,
+                undone: undone,
+                day: day,
+                at: at,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SessionAttributionsTable, SessionAttributionRow>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $SessionAttributionsTable,
+                    SessionAttributionRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SessionAttributionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $SessionAttributionsTable,
+      SessionAttributionRow,
+      $$SessionAttributionsTableFilterComposer,
+      $$SessionAttributionsTableOrderingComposer,
+      $$SessionAttributionsTableAnnotationComposer,
+      $$SessionAttributionsTableCreateCompanionBuilder,
+      $$SessionAttributionsTableUpdateCompanionBuilder,
+      (
+        SessionAttributionRow,
+        BaseReferences<
+          _$UserDatabase,
+          $SessionAttributionsTable,
+          SessionAttributionRow
+        >,
+      ),
+      SessionAttributionRow,
+      PrefetchHooks Function()
+    >;
+typedef $$KhatmaCoveragesTableCreateCompanionBuilder =
+    KhatmaCoveragesCompanion Function({
+      required String khatmaUuid,
+      required String ranges,
+      required double coveredWeight,
+      Value<int?> frontier,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+typedef $$KhatmaCoveragesTableUpdateCompanionBuilder =
+    KhatmaCoveragesCompanion Function({
+      Value<String> khatmaUuid,
+      Value<String> ranges,
+      Value<double> coveredWeight,
+      Value<int?> frontier,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$KhatmaCoveragesTableFilterComposer
+    extends Composer<_$UserDatabase, $KhatmaCoveragesTable> {
+  $$KhatmaCoveragesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get khatmaUuid => $composableBuilder(
+    column: $table.khatmaUuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get ranges => $composableBuilder(
+    column: $table.ranges,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get coveredWeight => $composableBuilder(
+    column: $table.coveredWeight,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get frontier => $composableBuilder(
+    column: $table.frontier,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$KhatmaCoveragesTableOrderingComposer
+    extends Composer<_$UserDatabase, $KhatmaCoveragesTable> {
+  $$KhatmaCoveragesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get khatmaUuid => $composableBuilder(
+    column: $table.khatmaUuid,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get ranges => $composableBuilder(
+    column: $table.ranges,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get coveredWeight => $composableBuilder(
+    column: $table.coveredWeight,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get frontier => $composableBuilder(
+    column: $table.frontier,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$KhatmaCoveragesTableAnnotationComposer
+    extends Composer<_$UserDatabase, $KhatmaCoveragesTable> {
+  $$KhatmaCoveragesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get khatmaUuid => $composableBuilder(
+    column: $table.khatmaUuid,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get ranges =>
+      $composableBuilder(column: $table.ranges, builder: (column) => column);
+
+  GeneratedColumn<double> get coveredWeight => $composableBuilder(
+    column: $table.coveredWeight,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get frontier =>
+      $composableBuilder(column: $table.frontier, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$KhatmaCoveragesTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $KhatmaCoveragesTable,
+          KhatmaCoverageRow,
+          $$KhatmaCoveragesTableFilterComposer,
+          $$KhatmaCoveragesTableOrderingComposer,
+          $$KhatmaCoveragesTableAnnotationComposer,
+          $$KhatmaCoveragesTableCreateCompanionBuilder,
+          $$KhatmaCoveragesTableUpdateCompanionBuilder,
+          (
+            KhatmaCoverageRow,
+            BaseReferences<
+              _$UserDatabase,
+              $KhatmaCoveragesTable,
+              KhatmaCoverageRow
+            >,
+          ),
+          KhatmaCoverageRow,
+          PrefetchHooks Function()
+        > {
+  $$KhatmaCoveragesTableTableManager(
+    _$UserDatabase db,
+    $KhatmaCoveragesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$KhatmaCoveragesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$KhatmaCoveragesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$KhatmaCoveragesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> khatmaUuid = const Value.absent(),
+                Value<String> ranges = const Value.absent(),
+                Value<double> coveredWeight = const Value.absent(),
+                Value<int?> frontier = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => KhatmaCoveragesCompanion(
+                khatmaUuid: khatmaUuid,
+                ranges: ranges,
+                coveredWeight: coveredWeight,
+                frontier: frontier,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String khatmaUuid,
+                required String ranges,
+                required double coveredWeight,
+                Value<int?> frontier = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => KhatmaCoveragesCompanion.insert(
+                khatmaUuid: khatmaUuid,
+                ranges: ranges,
+                coveredWeight: coveredWeight,
+                frontier: frontier,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$KhatmaCoveragesTable, KhatmaCoverageRow>(table),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $KhatmaCoveragesTable,
+                    KhatmaCoverageRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$KhatmaCoveragesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $KhatmaCoveragesTable,
+      KhatmaCoverageRow,
+      $$KhatmaCoveragesTableFilterComposer,
+      $$KhatmaCoveragesTableOrderingComposer,
+      $$KhatmaCoveragesTableAnnotationComposer,
+      $$KhatmaCoveragesTableCreateCompanionBuilder,
+      $$KhatmaCoveragesTableUpdateCompanionBuilder,
+      (
+        KhatmaCoverageRow,
+        BaseReferences<
+          _$UserDatabase,
+          $KhatmaCoveragesTable,
+          KhatmaCoverageRow
+        >,
+      ),
+      KhatmaCoverageRow,
+      PrefetchHooks Function()
+    >;
+typedef $$DailyStatsTableCreateCompanionBuilder = DailyStatsCompanion Function({
+  required String khatmaUuid,
+  required String day,
+  required double weightRead,
+  required int sessions,
+  required int seconds,
+  Value<double?> target,
+  Value<int> rowid,
+});
+typedef $$DailyStatsTableUpdateCompanionBuilder = DailyStatsCompanion Function({
+  Value<String> khatmaUuid,
+  Value<String> day,
+  Value<double> weightRead,
+  Value<int> sessions,
+  Value<int> seconds,
+  Value<double?> target,
+  Value<int> rowid,
+});
+
+class $$DailyStatsTableFilterComposer
+    extends Composer<_$UserDatabase, $DailyStatsTable> {
+  $$DailyStatsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get khatmaUuid => $composableBuilder(
+    column: $table.khatmaUuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get day => $composableBuilder(
+    column: $table.day,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get weightRead => $composableBuilder(
+    column: $table.weightRead,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sessions => $composableBuilder(
+    column: $table.sessions,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get seconds => $composableBuilder(
+    column: $table.seconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get target => $composableBuilder(
+    column: $table.target,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DailyStatsTableOrderingComposer
+    extends Composer<_$UserDatabase, $DailyStatsTable> {
+  $$DailyStatsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get khatmaUuid => $composableBuilder(
+    column: $table.khatmaUuid,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get day => $composableBuilder(
+    column: $table.day,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get weightRead => $composableBuilder(
+    column: $table.weightRead,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sessions => $composableBuilder(
+    column: $table.sessions,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get seconds => $composableBuilder(
+    column: $table.seconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get target => $composableBuilder(
+    column: $table.target,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DailyStatsTableAnnotationComposer
+    extends Composer<_$UserDatabase, $DailyStatsTable> {
+  $$DailyStatsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get khatmaUuid => $composableBuilder(
+    column: $table.khatmaUuid,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get day =>
+      $composableBuilder(column: $table.day, builder: (column) => column);
+
+  GeneratedColumn<double> get weightRead => $composableBuilder(
+    column: $table.weightRead,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get sessions =>
+      $composableBuilder(column: $table.sessions, builder: (column) => column);
+
+  GeneratedColumn<int> get seconds =>
+      $composableBuilder(column: $table.seconds, builder: (column) => column);
+
+  GeneratedColumn<double> get target =>
+      $composableBuilder(column: $table.target, builder: (column) => column);
+}
+
+class $$DailyStatsTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $DailyStatsTable,
+          DailyStatRow,
+          $$DailyStatsTableFilterComposer,
+          $$DailyStatsTableOrderingComposer,
+          $$DailyStatsTableAnnotationComposer,
+          $$DailyStatsTableCreateCompanionBuilder,
+          $$DailyStatsTableUpdateCompanionBuilder,
+          (
+            DailyStatRow,
+            BaseReferences<_$UserDatabase, $DailyStatsTable, DailyStatRow>,
+          ),
+          DailyStatRow,
+          PrefetchHooks Function()
+        > {
+  $$DailyStatsTableTableManager(_$UserDatabase db, $DailyStatsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DailyStatsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DailyStatsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DailyStatsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> khatmaUuid = const Value.absent(),
+                Value<String> day = const Value.absent(),
+                Value<double> weightRead = const Value.absent(),
+                Value<int> sessions = const Value.absent(),
+                Value<int> seconds = const Value.absent(),
+                Value<double?> target = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DailyStatsCompanion(
+                khatmaUuid: khatmaUuid,
+                day: day,
+                weightRead: weightRead,
+                sessions: sessions,
+                seconds: seconds,
+                target: target,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String khatmaUuid,
+                required String day,
+                required double weightRead,
+                required int sessions,
+                required int seconds,
+                Value<double?> target = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DailyStatsCompanion.insert(
+                khatmaUuid: khatmaUuid,
+                day: day,
+                weightRead: weightRead,
+                sessions: sessions,
+                seconds: seconds,
+                target: target,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$DailyStatsTable, DailyStatRow>(table),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $DailyStatsTable,
+                    DailyStatRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DailyStatsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $DailyStatsTable,
+      DailyStatRow,
+      $$DailyStatsTableFilterComposer,
+      $$DailyStatsTableOrderingComposer,
+      $$DailyStatsTableAnnotationComposer,
+      $$DailyStatsTableCreateCompanionBuilder,
+      $$DailyStatsTableUpdateCompanionBuilder,
+      (
+        DailyStatRow,
+        BaseReferences<_$UserDatabase, $DailyStatsTable, DailyStatRow>,
+      ),
+      DailyStatRow,
+      PrefetchHooks Function()
+    >;
+typedef $$RecitationSessionsTableCreateCompanionBuilder =
+    RecitationSessionsCompanion Function({
+      Value<String> uuid,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<int> id,
+      required String kind,
+      required int fromVerse,
+      required int toVerse,
+      required DateTime startedAt,
+      required DateTime endedAt,
+      Value<double?> accuracy,
+      Value<String?> sensitivity,
+    });
+typedef $$RecitationSessionsTableUpdateCompanionBuilder =
+    RecitationSessionsCompanion Function({
+      Value<String> uuid,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<int> id,
+      Value<String> kind,
+      Value<int> fromVerse,
+      Value<int> toVerse,
+      Value<DateTime> startedAt,
+      Value<DateTime> endedAt,
+      Value<double?> accuracy,
+      Value<String?> sensitivity,
+    });
+
+class $$RecitationSessionsTableFilterComposer
+    extends Composer<_$UserDatabase, $RecitationSessionsTable> {
+  $$RecitationSessionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get fromVerse => $composableBuilder(
+    column: $table.fromVerse,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get toVerse => $composableBuilder(
+    column: $table.toVerse,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startedAt => $composableBuilder(
+    column: $table.startedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get endedAt => $composableBuilder(
+    column: $table.endedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get accuracy => $composableBuilder(
+    column: $table.accuracy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sensitivity => $composableBuilder(
+    column: $table.sensitivity,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RecitationSessionsTableOrderingComposer
+    extends Composer<_$UserDatabase, $RecitationSessionsTable> {
+  $$RecitationSessionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get fromVerse => $composableBuilder(
+    column: $table.fromVerse,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get toVerse => $composableBuilder(
+    column: $table.toVerse,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startedAt => $composableBuilder(
+    column: $table.startedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get endedAt => $composableBuilder(
+    column: $table.endedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get accuracy => $composableBuilder(
+    column: $table.accuracy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sensitivity => $composableBuilder(
+    column: $table.sensitivity,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RecitationSessionsTableAnnotationComposer
+    extends Composer<_$UserDatabase, $RecitationSessionsTable> {
+  $$RecitationSessionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get uuid =>
+      $composableBuilder(column: $table.uuid, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
+
+  GeneratedColumn<int> get fromVerse =>
+      $composableBuilder(column: $table.fromVerse, builder: (column) => column);
+
+  GeneratedColumn<int> get toVerse =>
+      $composableBuilder(column: $table.toVerse, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startedAt =>
+      $composableBuilder(column: $table.startedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get endedAt =>
+      $composableBuilder(column: $table.endedAt, builder: (column) => column);
+
+  GeneratedColumn<double> get accuracy =>
+      $composableBuilder(column: $table.accuracy, builder: (column) => column);
+
+  GeneratedColumn<String> get sensitivity => $composableBuilder(
+    column: $table.sensitivity,
+    builder: (column) => column,
+  );
+}
+
+class $$RecitationSessionsTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $RecitationSessionsTable,
+          RecitationSessionRow,
+          $$RecitationSessionsTableFilterComposer,
+          $$RecitationSessionsTableOrderingComposer,
+          $$RecitationSessionsTableAnnotationComposer,
+          $$RecitationSessionsTableCreateCompanionBuilder,
+          $$RecitationSessionsTableUpdateCompanionBuilder,
+          (
+            RecitationSessionRow,
+            BaseReferences<
+              _$UserDatabase,
+              $RecitationSessionsTable,
+              RecitationSessionRow
+            >,
+          ),
+          RecitationSessionRow,
+          PrefetchHooks Function()
+        > {
+  $$RecitationSessionsTableTableManager(
+    _$UserDatabase db,
+    $RecitationSessionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RecitationSessionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RecitationSessionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RecitationSessionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                Value<String> kind = const Value.absent(),
+                Value<int> fromVerse = const Value.absent(),
+                Value<int> toVerse = const Value.absent(),
+                Value<DateTime> startedAt = const Value.absent(),
+                Value<DateTime> endedAt = const Value.absent(),
+                Value<double?> accuracy = const Value.absent(),
+                Value<String?> sensitivity = const Value.absent(),
+              }) => RecitationSessionsCompanion(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                kind: kind,
+                fromVerse: fromVerse,
+                toVerse: toVerse,
+                startedAt: startedAt,
+                endedAt: endedAt,
+                accuracy: accuracy,
+                sensitivity: sensitivity,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                required String kind,
+                required int fromVerse,
+                required int toVerse,
+                required DateTime startedAt,
+                required DateTime endedAt,
+                Value<double?> accuracy = const Value.absent(),
+                Value<String?> sensitivity = const Value.absent(),
+              }) => RecitationSessionsCompanion.insert(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                kind: kind,
+                fromVerse: fromVerse,
+                toVerse: toVerse,
+                startedAt: startedAt,
+                endedAt: endedAt,
+                accuracy: accuracy,
+                sensitivity: sensitivity,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$RecitationSessionsTable, RecitationSessionRow>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $RecitationSessionsTable,
+                    RecitationSessionRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RecitationSessionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $RecitationSessionsTable,
+      RecitationSessionRow,
+      $$RecitationSessionsTableFilterComposer,
+      $$RecitationSessionsTableOrderingComposer,
+      $$RecitationSessionsTableAnnotationComposer,
+      $$RecitationSessionsTableCreateCompanionBuilder,
+      $$RecitationSessionsTableUpdateCompanionBuilder,
+      (
+        RecitationSessionRow,
+        BaseReferences<
+          _$UserDatabase,
+          $RecitationSessionsTable,
+          RecitationSessionRow
+        >,
+      ),
+      RecitationSessionRow,
+      PrefetchHooks Function()
+    >;
+typedef $$RecitationVersesTableCreateCompanionBuilder =
+    RecitationVersesCompanion Function({
+      Value<int> id,
+      required String session,
+      required int verse,
+      Value<double?> accuracy,
+      Value<int> words,
+      Value<int> wrong,
+      Value<int> skipped,
+      Value<int> corrected,
+      Value<int> doubtful,
+      required DateTime at,
+    });
+typedef $$RecitationVersesTableUpdateCompanionBuilder =
+    RecitationVersesCompanion Function({
+      Value<int> id,
+      Value<String> session,
+      Value<int> verse,
+      Value<double?> accuracy,
+      Value<int> words,
+      Value<int> wrong,
+      Value<int> skipped,
+      Value<int> corrected,
+      Value<int> doubtful,
+      Value<DateTime> at,
+    });
+
+class $$RecitationVersesTableFilterComposer
+    extends Composer<_$UserDatabase, $RecitationVersesTable> {
+  $$RecitationVersesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get session => $composableBuilder(
+    column: $table.session,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get verse => $composableBuilder(
+    column: $table.verse,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get accuracy => $composableBuilder(
+    column: $table.accuracy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get words => $composableBuilder(
+    column: $table.words,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get wrong => $composableBuilder(
+    column: $table.wrong,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get skipped => $composableBuilder(
+    column: $table.skipped,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get corrected => $composableBuilder(
+    column: $table.corrected,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get doubtful => $composableBuilder(
+    column: $table.doubtful,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get at => $composableBuilder(
+    column: $table.at,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RecitationVersesTableOrderingComposer
+    extends Composer<_$UserDatabase, $RecitationVersesTable> {
+  $$RecitationVersesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get session => $composableBuilder(
+    column: $table.session,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get verse => $composableBuilder(
+    column: $table.verse,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get accuracy => $composableBuilder(
+    column: $table.accuracy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get words => $composableBuilder(
+    column: $table.words,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get wrong => $composableBuilder(
+    column: $table.wrong,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get skipped => $composableBuilder(
+    column: $table.skipped,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get corrected => $composableBuilder(
+    column: $table.corrected,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get doubtful => $composableBuilder(
+    column: $table.doubtful,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get at => $composableBuilder(
+    column: $table.at,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RecitationVersesTableAnnotationComposer
+    extends Composer<_$UserDatabase, $RecitationVersesTable> {
+  $$RecitationVersesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get session =>
+      $composableBuilder(column: $table.session, builder: (column) => column);
+
+  GeneratedColumn<int> get verse =>
+      $composableBuilder(column: $table.verse, builder: (column) => column);
+
+  GeneratedColumn<double> get accuracy =>
+      $composableBuilder(column: $table.accuracy, builder: (column) => column);
+
+  GeneratedColumn<int> get words =>
+      $composableBuilder(column: $table.words, builder: (column) => column);
+
+  GeneratedColumn<int> get wrong =>
+      $composableBuilder(column: $table.wrong, builder: (column) => column);
+
+  GeneratedColumn<int> get skipped =>
+      $composableBuilder(column: $table.skipped, builder: (column) => column);
+
+  GeneratedColumn<int> get corrected =>
+      $composableBuilder(column: $table.corrected, builder: (column) => column);
+
+  GeneratedColumn<int> get doubtful =>
+      $composableBuilder(column: $table.doubtful, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get at =>
+      $composableBuilder(column: $table.at, builder: (column) => column);
+}
+
+class $$RecitationVersesTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $RecitationVersesTable,
+          RecitationVerseRow,
+          $$RecitationVersesTableFilterComposer,
+          $$RecitationVersesTableOrderingComposer,
+          $$RecitationVersesTableAnnotationComposer,
+          $$RecitationVersesTableCreateCompanionBuilder,
+          $$RecitationVersesTableUpdateCompanionBuilder,
+          (
+            RecitationVerseRow,
+            BaseReferences<
+              _$UserDatabase,
+              $RecitationVersesTable,
+              RecitationVerseRow
+            >,
+          ),
+          RecitationVerseRow,
+          PrefetchHooks Function()
+        > {
+  $$RecitationVersesTableTableManager(
+    _$UserDatabase db,
+    $RecitationVersesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RecitationVersesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RecitationVersesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RecitationVersesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> session = const Value.absent(),
+                Value<int> verse = const Value.absent(),
+                Value<double?> accuracy = const Value.absent(),
+                Value<int> words = const Value.absent(),
+                Value<int> wrong = const Value.absent(),
+                Value<int> skipped = const Value.absent(),
+                Value<int> corrected = const Value.absent(),
+                Value<int> doubtful = const Value.absent(),
+                Value<DateTime> at = const Value.absent(),
+              }) => RecitationVersesCompanion(
+                id: id,
+                session: session,
+                verse: verse,
+                accuracy: accuracy,
+                words: words,
+                wrong: wrong,
+                skipped: skipped,
+                corrected: corrected,
+                doubtful: doubtful,
+                at: at,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String session,
+                required int verse,
+                Value<double?> accuracy = const Value.absent(),
+                Value<int> words = const Value.absent(),
+                Value<int> wrong = const Value.absent(),
+                Value<int> skipped = const Value.absent(),
+                Value<int> corrected = const Value.absent(),
+                Value<int> doubtful = const Value.absent(),
+                required DateTime at,
+              }) => RecitationVersesCompanion.insert(
+                id: id,
+                session: session,
+                verse: verse,
+                accuracy: accuracy,
+                words: words,
+                wrong: wrong,
+                skipped: skipped,
+                corrected: corrected,
+                doubtful: doubtful,
+                at: at,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$RecitationVersesTable, RecitationVerseRow>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $RecitationVersesTable,
+                    RecitationVerseRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RecitationVersesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $RecitationVersesTable,
+      RecitationVerseRow,
+      $$RecitationVersesTableFilterComposer,
+      $$RecitationVersesTableOrderingComposer,
+      $$RecitationVersesTableAnnotationComposer,
+      $$RecitationVersesTableCreateCompanionBuilder,
+      $$RecitationVersesTableUpdateCompanionBuilder,
+      (
+        RecitationVerseRow,
+        BaseReferences<
+          _$UserDatabase,
+          $RecitationVersesTable,
+          RecitationVerseRow
+        >,
+      ),
+      RecitationVerseRow,
+      PrefetchHooks Function()
+    >;
+typedef $$RecitationWordsTableCreateCompanionBuilder =
+    RecitationWordsCompanion Function({
+      Value<int> id,
+      required String session,
+      required int verse,
+      required int word,
+      required String kind,
+      required DateTime at,
+    });
+typedef $$RecitationWordsTableUpdateCompanionBuilder =
+    RecitationWordsCompanion Function({
+      Value<int> id,
+      Value<String> session,
+      Value<int> verse,
+      Value<int> word,
+      Value<String> kind,
+      Value<DateTime> at,
+    });
+
+class $$RecitationWordsTableFilterComposer
+    extends Composer<_$UserDatabase, $RecitationWordsTable> {
+  $$RecitationWordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get session => $composableBuilder(
+    column: $table.session,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get verse => $composableBuilder(
+    column: $table.verse,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get word => $composableBuilder(
+    column: $table.word,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get at => $composableBuilder(
+    column: $table.at,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RecitationWordsTableOrderingComposer
+    extends Composer<_$UserDatabase, $RecitationWordsTable> {
+  $$RecitationWordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get session => $composableBuilder(
+    column: $table.session,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get verse => $composableBuilder(
+    column: $table.verse,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get word => $composableBuilder(
+    column: $table.word,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get at => $composableBuilder(
+    column: $table.at,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RecitationWordsTableAnnotationComposer
+    extends Composer<_$UserDatabase, $RecitationWordsTable> {
+  $$RecitationWordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get session =>
+      $composableBuilder(column: $table.session, builder: (column) => column);
+
+  GeneratedColumn<int> get verse =>
+      $composableBuilder(column: $table.verse, builder: (column) => column);
+
+  GeneratedColumn<int> get word =>
+      $composableBuilder(column: $table.word, builder: (column) => column);
+
+  GeneratedColumn<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get at =>
+      $composableBuilder(column: $table.at, builder: (column) => column);
+}
+
+class $$RecitationWordsTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $RecitationWordsTable,
+          RecitationWordRow,
+          $$RecitationWordsTableFilterComposer,
+          $$RecitationWordsTableOrderingComposer,
+          $$RecitationWordsTableAnnotationComposer,
+          $$RecitationWordsTableCreateCompanionBuilder,
+          $$RecitationWordsTableUpdateCompanionBuilder,
+          (
+            RecitationWordRow,
+            BaseReferences<
+              _$UserDatabase,
+              $RecitationWordsTable,
+              RecitationWordRow
+            >,
+          ),
+          RecitationWordRow,
+          PrefetchHooks Function()
+        > {
+  $$RecitationWordsTableTableManager(
+    _$UserDatabase db,
+    $RecitationWordsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RecitationWordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RecitationWordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RecitationWordsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> session = const Value.absent(),
+                Value<int> verse = const Value.absent(),
+                Value<int> word = const Value.absent(),
+                Value<String> kind = const Value.absent(),
+                Value<DateTime> at = const Value.absent(),
+              }) => RecitationWordsCompanion(
+                id: id,
+                session: session,
+                verse: verse,
+                word: word,
+                kind: kind,
+                at: at,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String session,
+                required int verse,
+                required int word,
+                required String kind,
+                required DateTime at,
+              }) => RecitationWordsCompanion.insert(
+                id: id,
+                session: session,
+                verse: verse,
+                word: word,
+                kind: kind,
+                at: at,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$RecitationWordsTable, RecitationWordRow>(table),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $RecitationWordsTable,
+                    RecitationWordRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RecitationWordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $RecitationWordsTable,
+      RecitationWordRow,
+      $$RecitationWordsTableFilterComposer,
+      $$RecitationWordsTableOrderingComposer,
+      $$RecitationWordsTableAnnotationComposer,
+      $$RecitationWordsTableCreateCompanionBuilder,
+      $$RecitationWordsTableUpdateCompanionBuilder,
+      (
+        RecitationWordRow,
+        BaseReferences<
+          _$UserDatabase,
+          $RecitationWordsTable,
+          RecitationWordRow
+        >,
+      ),
+      RecitationWordRow,
+      PrefetchHooks Function()
+    >;
+typedef $$HifzGoalsTableCreateCompanionBuilder = HifzGoalsCompanion Function({
+  Value<String> uuid,
+  Value<DateTime> updatedAt,
+  Value<DateTime?> deletedAt,
+  Value<int> id,
+  Value<String?> template,
+  required int rangeStart,
+  required int rangeEnd,
+  required String startDate,
+  Value<String?> targetDate,
+  Value<String?> planFrom,
+  Value<double?> dailyWeight,
+  Value<String> unit,
+  Value<String> status,
+  Value<String> pauses,
+  Value<String?> recovery,
+  Value<int?> reminderTime,
+  Value<bool> review,
+});
+typedef $$HifzGoalsTableUpdateCompanionBuilder = HifzGoalsCompanion Function({
+  Value<String> uuid,
+  Value<DateTime> updatedAt,
+  Value<DateTime?> deletedAt,
+  Value<int> id,
+  Value<String?> template,
+  Value<int> rangeStart,
+  Value<int> rangeEnd,
+  Value<String> startDate,
+  Value<String?> targetDate,
+  Value<String?> planFrom,
+  Value<double?> dailyWeight,
+  Value<String> unit,
+  Value<String> status,
+  Value<String> pauses,
+  Value<String?> recovery,
+  Value<int?> reminderTime,
+  Value<bool> review,
+});
+
+class $$HifzGoalsTableFilterComposer
+    extends Composer<_$UserDatabase, $HifzGoalsTable> {
+  $$HifzGoalsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get template => $composableBuilder(
+    column: $table.template,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get rangeStart => $composableBuilder(
+    column: $table.rangeStart,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get rangeEnd => $composableBuilder(
+    column: $table.rangeEnd,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get targetDate => $composableBuilder(
+    column: $table.targetDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get planFrom => $composableBuilder(
+    column: $table.planFrom,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get dailyWeight => $composableBuilder(
+    column: $table.dailyWeight,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get unit => $composableBuilder(
+    column: $table.unit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pauses => $composableBuilder(
+    column: $table.pauses,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get recovery => $composableBuilder(
+    column: $table.recovery,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get reminderTime => $composableBuilder(
+    column: $table.reminderTime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get review => $composableBuilder(
+    column: $table.review,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$HifzGoalsTableOrderingComposer
+    extends Composer<_$UserDatabase, $HifzGoalsTable> {
+  $$HifzGoalsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get template => $composableBuilder(
+    column: $table.template,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get rangeStart => $composableBuilder(
+    column: $table.rangeStart,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get rangeEnd => $composableBuilder(
+    column: $table.rangeEnd,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get targetDate => $composableBuilder(
+    column: $table.targetDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get planFrom => $composableBuilder(
+    column: $table.planFrom,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get dailyWeight => $composableBuilder(
+    column: $table.dailyWeight,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get unit => $composableBuilder(
+    column: $table.unit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pauses => $composableBuilder(
+    column: $table.pauses,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get recovery => $composableBuilder(
+    column: $table.recovery,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get reminderTime => $composableBuilder(
+    column: $table.reminderTime,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get review => $composableBuilder(
+    column: $table.review,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$HifzGoalsTableAnnotationComposer
+    extends Composer<_$UserDatabase, $HifzGoalsTable> {
+  $$HifzGoalsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get uuid =>
+      $composableBuilder(column: $table.uuid, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get template =>
+      $composableBuilder(column: $table.template, builder: (column) => column);
+
+  GeneratedColumn<int> get rangeStart => $composableBuilder(
+    column: $table.rangeStart,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get rangeEnd =>
+      $composableBuilder(column: $table.rangeEnd, builder: (column) => column);
+
+  GeneratedColumn<String> get startDate =>
+      $composableBuilder(column: $table.startDate, builder: (column) => column);
+
+  GeneratedColumn<String> get targetDate => $composableBuilder(
+    column: $table.targetDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get planFrom =>
+      $composableBuilder(column: $table.planFrom, builder: (column) => column);
+
+  GeneratedColumn<double> get dailyWeight => $composableBuilder(
+    column: $table.dailyWeight,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get unit =>
+      $composableBuilder(column: $table.unit, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get pauses =>
+      $composableBuilder(column: $table.pauses, builder: (column) => column);
+
+  GeneratedColumn<String> get recovery =>
+      $composableBuilder(column: $table.recovery, builder: (column) => column);
+
+  GeneratedColumn<int> get reminderTime => $composableBuilder(
+    column: $table.reminderTime,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get review =>
+      $composableBuilder(column: $table.review, builder: (column) => column);
+}
+
+class $$HifzGoalsTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $HifzGoalsTable,
+          HifzGoalRow,
+          $$HifzGoalsTableFilterComposer,
+          $$HifzGoalsTableOrderingComposer,
+          $$HifzGoalsTableAnnotationComposer,
+          $$HifzGoalsTableCreateCompanionBuilder,
+          $$HifzGoalsTableUpdateCompanionBuilder,
+          (
+            HifzGoalRow,
+            BaseReferences<_$UserDatabase, $HifzGoalsTable, HifzGoalRow>,
+          ),
+          HifzGoalRow,
+          PrefetchHooks Function()
+        > {
+  $$HifzGoalsTableTableManager(_$UserDatabase db, $HifzGoalsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HifzGoalsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HifzGoalsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HifzGoalsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                Value<String?> template = const Value.absent(),
+                Value<int> rangeStart = const Value.absent(),
+                Value<int> rangeEnd = const Value.absent(),
+                Value<String> startDate = const Value.absent(),
+                Value<String?> targetDate = const Value.absent(),
+                Value<String?> planFrom = const Value.absent(),
+                Value<double?> dailyWeight = const Value.absent(),
+                Value<String> unit = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> pauses = const Value.absent(),
+                Value<String?> recovery = const Value.absent(),
+                Value<int?> reminderTime = const Value.absent(),
+                Value<bool> review = const Value.absent(),
+              }) => HifzGoalsCompanion(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                template: template,
+                rangeStart: rangeStart,
+                rangeEnd: rangeEnd,
+                startDate: startDate,
+                targetDate: targetDate,
+                planFrom: planFrom,
+                dailyWeight: dailyWeight,
+                unit: unit,
+                status: status,
+                pauses: pauses,
+                recovery: recovery,
+                reminderTime: reminderTime,
+                review: review,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                Value<String?> template = const Value.absent(),
+                required int rangeStart,
+                required int rangeEnd,
+                required String startDate,
+                Value<String?> targetDate = const Value.absent(),
+                Value<String?> planFrom = const Value.absent(),
+                Value<double?> dailyWeight = const Value.absent(),
+                Value<String> unit = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> pauses = const Value.absent(),
+                Value<String?> recovery = const Value.absent(),
+                Value<int?> reminderTime = const Value.absent(),
+                Value<bool> review = const Value.absent(),
+              }) => HifzGoalsCompanion.insert(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                template: template,
+                rangeStart: rangeStart,
+                rangeEnd: rangeEnd,
+                startDate: startDate,
+                targetDate: targetDate,
+                planFrom: planFrom,
+                dailyWeight: dailyWeight,
+                unit: unit,
+                status: status,
+                pauses: pauses,
+                recovery: recovery,
+                reminderTime: reminderTime,
+                review: review,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$HifzGoalsTable, HifzGoalRow>(table),
+                  BaseReferences<_$UserDatabase, $HifzGoalsTable, HifzGoalRow>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$HifzGoalsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $HifzGoalsTable,
+      HifzGoalRow,
+      $$HifzGoalsTableFilterComposer,
+      $$HifzGoalsTableOrderingComposer,
+      $$HifzGoalsTableAnnotationComposer,
+      $$HifzGoalsTableCreateCompanionBuilder,
+      $$HifzGoalsTableUpdateCompanionBuilder,
+      (
+        HifzGoalRow,
+        BaseReferences<_$UserDatabase, $HifzGoalsTable, HifzGoalRow>,
+      ),
+      HifzGoalRow,
+      PrefetchHooks Function()
+    >;
 
 class $UserDatabaseManager {
   final _$UserDatabase _db;
@@ -8184,4 +16531,20 @@ class $UserDatabaseManager {
       $$SrsItemsTableTableManager(_db, _db.srsItems);
   $$MemorizationsTableTableManager get memorizations =>
       $$MemorizationsTableTableManager(_db, _db.memorizations);
+  $$KhatmaPausesTableTableManager get khatmaPauses =>
+      $$KhatmaPausesTableTableManager(_db, _db.khatmaPauses);
+  $$SessionAttributionsTableTableManager get sessionAttributions =>
+      $$SessionAttributionsTableTableManager(_db, _db.sessionAttributions);
+  $$KhatmaCoveragesTableTableManager get khatmaCoverages =>
+      $$KhatmaCoveragesTableTableManager(_db, _db.khatmaCoverages);
+  $$DailyStatsTableTableManager get dailyStats =>
+      $$DailyStatsTableTableManager(_db, _db.dailyStats);
+  $$RecitationSessionsTableTableManager get recitationSessions =>
+      $$RecitationSessionsTableTableManager(_db, _db.recitationSessions);
+  $$RecitationVersesTableTableManager get recitationVerses =>
+      $$RecitationVersesTableTableManager(_db, _db.recitationVerses);
+  $$RecitationWordsTableTableManager get recitationWords =>
+      $$RecitationWordsTableTableManager(_db, _db.recitationWords);
+  $$HifzGoalsTableTableManager get hifzGoals =>
+      $$HifzGoalsTableTableManager(_db, _db.hifzGoals);
 }

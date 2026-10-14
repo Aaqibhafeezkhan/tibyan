@@ -4,7 +4,11 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/db/content_database.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/ui/look_kit.dart';
 import '../../l10n/app_localizations.dart';
+import '../books/books_providers.dart';
+import '../books/presentation/book_section.dart';
+import '../books/presentation/quran_quotes.dart';
 import '../mushaf/data/mushaf_repository.dart';
 import '../mushaf/mushaf_providers.dart';
 import '../mushaf/presentation/mushaf_screen.dart';
@@ -13,6 +17,7 @@ import '../mushaf/presentation/widgets/illuminated_frame.dart';
 import 'data/word_study_repository.dart';
 import 'word_study_providers.dart';
 import '../mushaf/presentation/navigation.dart';
+import '../khatma/domain/khatmah.dart' show EntryPoint;
 
 /// Opens «دراسة الكلمة» for a word of a verse; [word] null lets the reader
 /// choose one of the verse's words first.
@@ -26,13 +31,15 @@ Future<void> showWordStudy(
   isScrollControlled: true,
   useSafeArea: true,
   showDragHandle: true,
-  builder: (context) => DraggableScrollableSheet(
-    expand: false,
-    initialChildSize: 0.72,
-    minChildSize: 0.4,
-    maxChildSize: 0.95,
-    builder: (context, scroll) =>
-        WordStudySheet(surah: surah, ayah: ayah, word: word, scroll: scroll),
+  builder: (_) => LookTheme(
+    child: DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 0.72,
+      minChildSize: 0.4,
+      maxChildSize: 0.95,
+      builder: (context, scroll) =>
+          WordStudySheet(surah: surah, ayah: ayah, word: word, scroll: scroll),
+    ),
   ),
 );
 
@@ -45,21 +52,28 @@ Future<void> showVerseMeanings(
   isScrollControlled: true,
   useSafeArea: true,
   showDragHandle: true,
-  builder: (context) => DraggableScrollableSheet(
-    expand: false,
-    initialChildSize: 0.6,
-    minChildSize: 0.3,
-    maxChildSize: 0.95,
-    builder: (sheet, scroll) => VerseMeaningsSheet(
-      verses: verses,
-      scroll: scroll,
-      // The sheet closes first; the word study opens from the caller's
-      // context, which stays mounted.
-      onStudy: (g) {
-        Navigator.of(sheet).pop();
-        if (!context.mounted) return;
-        showWordStudy(context, surah: g.surah, ayah: g.ayah, word: g.wordFrom);
-      },
+  builder: (context) => LookTheme(
+    child: DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 0.6,
+      minChildSize: 0.3,
+      maxChildSize: 0.95,
+      builder: (sheet, scroll) => VerseMeaningsSheet(
+        verses: verses,
+        scroll: scroll,
+        // The sheet closes first; the word study opens from the caller's
+        // context, which stays mounted.
+        onStudy: (g) {
+          Navigator.of(sheet).pop();
+          if (!context.mounted) return;
+          showWordStudy(
+            context,
+            surah: g.surah,
+            ayah: g.ayah,
+            word: g.wordFrom,
+          );
+        },
+      ),
     ),
   ),
 );
@@ -166,6 +180,18 @@ class _WordStudySheetState extends ConsumerState<WordStudySheet> {
         ? const <GharibRow>[]
         : meaningsOfWord(gharib, word);
     final found = occurrences?.value;
+    // al-Damghani's senses of this word here, from a reviewed pack.
+    final BookQuery? wujuh = word == null
+        ? null
+        : (
+            spec: BookSectionSpec.wujuh,
+            surah: widget.surah,
+            ayah: widget.ayah,
+            source: null,
+            word: word,
+          );
+    final hasWujuh =
+        wujuh != null && ref.watch(bookEntriesProvider(wujuh)).isNotEmpty;
 
     return CustomScrollView(
       controller: widget.scroll,
@@ -270,6 +296,17 @@ class _WordStudySheetState extends ConsumerState<WordStudySheet> {
                       credit(_corpusKey),
                     ],
                   },
+                if (hasWujuh)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 18),
+                    child: BookSection(
+                      spec: BookSectionSpec.wujuh,
+                      surah: widget.surah,
+                      ayah: widget.ayah,
+                      word: word,
+                      titleSize: 15,
+                    ),
+                  ),
                 if (rootText != null) ...[
                   section(l.rootOccurrencesTitle),
                   if (found != null)
@@ -323,21 +360,14 @@ class _GharibEntry extends StatelessWidget {
           children: [
             // The brackets in the text font: the Hafs font draws them as
             // verse ornaments.
-            TextSpan(
-              text: '﴿',
-              style: TextStyle(color: t.goldText),
-            ),
-            TextSpan(
-              text: entry.phrase,
-              style: TextStyle(
+            ...quranQuoteSpans(
+              '$quoteOpen${entry.phrase}$quoteClose',
+              quoteStyle: TextStyle(
                 fontFamily: 'UthmanicHafs',
                 fontSize: 20,
                 color: t.goldText,
               ),
-            ),
-            TextSpan(
-              text: '﴾',
-              style: TextStyle(color: t.goldText),
+              bracketStyle: TextStyle(color: t.goldText),
             ),
             const TextSpan(text: ': '),
             TextSpan(text: entry.body),
@@ -389,7 +419,14 @@ class _Occurrence extends ConsumerWidget {
             versePageProvider((a.surah, a.number)).future,
           );
           navigator.pop();
-          router.go(mushafLocation(page, surah: a.surah, ayah: a.number));
+          router.go(
+            mushafLocation(
+              page,
+              surah: a.surah,
+              ayah: a.number,
+              entry: EntryPoint.search,
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.fromLTRB(14, 8, 14, 10),

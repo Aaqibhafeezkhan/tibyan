@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/db/user_database.dart';
@@ -9,6 +12,7 @@ import '../../mushaf/presentation/widgets/illuminated_frame.dart'
 import '../domain/day.dart';
 import '../domain/reading_stats.dart';
 import '../khatma_providers.dart';
+import '../../../core/ui/responsive.dart';
 
 final _readingProvider = StreamProvider.family<List<ReadingSessionRow>, int>(
   (ref, days) => ref
@@ -36,7 +40,8 @@ final reportProvider = Provider.family<ReadingReport?, int>((ref, days) {
   );
 });
 
-/// Days with reading or listening over the last year, for the streak.
+/// Days with reading or listening over the last year, for the notes and
+/// «قرأت X من آخر Y يوما».
 final activeDaysProvider = Provider<Set<Day>>(
   (ref) => {
     for (final d in ref.watch(reportProvider(366))?.days ?? const [])
@@ -64,73 +69,113 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
     final active = ref.watch(activeDaysProvider);
     final notesOn = ref.watch(streakNotesProvider);
     final today = ref.watch(todayProvider);
-    final streak = currentStreak(active, today);
     final note = switch (streakNote(active, today)) {
       StreakNote.none => null,
-      StreakNote.readToday => l.streakReadToday(digits(streak)),
-      StreakNote.continueToday => l.streakContinue(digits(streak)),
+      StreakNote.readToday => l.streakReadToday,
       StreakNote.welcomeBack => l.streakWelcome,
     };
+    final regular = readDaysOfLast(active, today);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l.reportsTitle)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          if (notesOn && note != null)
-            Card(
-              child: ListTile(
-                leading: Icon(Icons.wb_twilight_outlined, color: t.goldText),
-                title: Text(note),
-              ),
-            ),
-          if (week != null) _WeekStrip(report: week),
-          const SizedBox(height: 12),
-          SegmentedButton<int>(
-            segments: [
-              ButtonSegment(value: 7, label: Text(l.reportsWeek)),
-              ButtonSegment(value: 30, label: Text(l.reportsMonth)),
-            ],
-            selected: {_days},
-            onSelectionChanged: (s) => setState(() => _days = s.single),
-          ),
-          const SizedBox(height: 12),
-          if (report != null)
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 1.7,
-              children: [
-                _Stat(l.reportsDays, digits(report.activeDays)),
-                _Stat(l.reportsPages, digits(report.pages)),
-                _Stat(l.reportsReadingMinutes, digits(report.readingMinutes)),
-                _Stat(
-                  l.reportsListeningMinutes,
-                  digits(report.listeningMinutes),
+    return LookScaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(title: l.reportsTitle),
+            Expanded(
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: ContentWidth.text,
+                  ),
+                  child: ListView(
+                    padding: const EdgeInsets.all(16),
+                    children: [
+                      if (notesOn && note != null)
+                        Card(
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.wb_twilight_outlined,
+                              color: t.goldText,
+                            ),
+                            title: Text(note),
+                          ),
+                        ),
+                      if (week != null) _WeekStrip(report: week),
+                      if (regular != null)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 8,
+                          ),
+                          child: Text(
+                            l.readDaysOfLast(
+                              digits(regular.read),
+                              regular.days,
+                              digits(regular.days),
+                            ),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: t.muted),
+                          ),
+                        ),
+                      const SizedBox(height: 12),
+                      SegmentedButton<int>(
+                        segments: [
+                          ButtonSegment(value: 7, label: Text(l.reportsWeek)),
+                          ButtonSegment(value: 30, label: Text(l.reportsMonth)),
+                        ],
+                        selected: {_days},
+                        onSelectionChanged: (s) =>
+                            setState(() => _days = s.single),
+                      ),
+                      const SizedBox(height: 12),
+                      if (report != null)
+                        GridView.count(
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          childAspectRatio: 1.7,
+                          children: [
+                            _Stat(l.reportsDays, digits(report.activeDays)),
+                            _Stat(l.reportsPages, digits(report.pages)),
+                            _Stat(
+                              l.reportsReadingMinutes,
+                              digits(report.readingMinutes),
+                            ),
+                            _Stat(
+                              l.reportsListeningMinutes,
+                              digits(report.listeningMinutes),
+                            ),
+                          ],
+                        ),
+                      if (report != null && report.activeDays == 0)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Text(
+                            l.reportsEmpty,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: t.muted),
+                          ),
+                        ),
+                      const SizedBox(height: 12),
+                      SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(l.streakNotesToggle),
+                        subtitle: Text(l.streakNotesHint),
+                        value: notesOn,
+                        onChanged: (on) =>
+                            ref.read(streakNotesProvider.notifier).set(on),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          if (report != null && report.activeDays == 0)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Text(
-                l.reportsEmpty,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: t.muted),
               ),
             ),
-          const SizedBox(height: 12),
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text(l.streakNotesToggle),
-            subtitle: Text(l.streakNotesHint),
-            value: notesOn,
-            onChanged: (on) => ref.read(streakNotesProvider.notifier).set(on),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

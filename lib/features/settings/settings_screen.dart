@@ -2,227 +2,338 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/settings/app_settings.dart';
 import '../../core/settings/settings_controller.dart';
-import '../../core/theme/app_theme.dart';
+import '../../core/theme/interface_style.dart';
+import '../../core/theme/ornaments.dart';
+import '../../core/ui/look_kit.dart';
 import '../../l10n/app_localizations.dart';
-import '../audio/player_bar.dart';
-import '../audio/recitation.dart';
-import '../mushaf/mushaf_providers.dart';
-import '../mushaf/presentation/widgets/download_all_button.dart';
-import '../mushaf/presentation/widgets/edition_badge.dart';
+import 'settings_catalog.dart';
+import '../../core/ui/responsive.dart';
 
-class SettingsScreen extends ConsumerWidget {
+export 'settings_widgets.dart'
+    show InterfaceStylePicker, LightModePicker, appVersionProvider;
+
+/// The settings: a search over every setting, then eight ornamented
+/// tiles (two columns on a phone, four on a wide window), each opening its
+/// own section.
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l = AppLocalizations.of(context);
-    final settings = ref.watch(settingsProvider);
-    final controller = ref.read(settingsProvider.notifier);
-    final t = context.tokens.colors;
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l.settingsTitle)),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-        children: [
-          Card(
-            child: SwitchListTile(
-              secondary: const Icon(Icons.elderly),
-              title: Text(l.elderlyMode),
-              subtitle: Text(
-                l.elderlyModeHint,
-                style: TextStyle(color: t.muted),
-              ),
-              value: settings.elderlyMode,
-              onChanged: controller.setElderlyMode,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.palette_outlined),
-              title: Text(l.appearanceTitle),
-              subtitle: Text(
-                ref
-                    .watch(themeRegistryProvider)
-                    .byId(settings.styleId)
-                    .localizedName(
-                      Localizations.localeOf(context).languageCode,
-                    ),
-                style: TextStyle(color: t.muted),
-              ),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => context.go('/settings/appearance'),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.headphones_outlined),
-              title: Text(l.playerSettings),
-              subtitle: Text(switch (ref.watch(currentReciterProvider).value) {
-                final r? => reciterLabel(context, r),
-                null => '',
-              }, style: TextStyle(color: t.muted)),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => context.go('/settings/player'),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.info_outline),
-              title: Text(l.aboutMushafTitle),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => context.push('/mushaf/about'),
-            ),
-          ),
-          const SizedBox(height: 16),
-          _SectionTitle(l.languageLabel),
-          Card(
-            child: RadioGroup<LanguageSetting>(
-              groupValue: settings.language,
-              onChanged: (v) => v == null ? null : controller.setLanguage(v),
-              child: Column(
-                children: [
-                  RadioListTile(
-                    value: LanguageSetting.system,
-                    title: Text(l.languageSystem),
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  final _query = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _query.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _query.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final look = context.look;
+    final query = _query.text.trim();
+    return LookScaffold(
+      selected: RailItem.settings,
+      body: SafeArea(
+        child: Column(
+          children: [
+            LookTopBar(title: l.settingsTitle),
+            Expanded(
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: ContentWidth.wide,
                   ),
-                  RadioListTile(
-                    value: LanguageSetting.ar,
-                    title: Text(l.languageArabic),
-                  ),
-                  RadioListTile(
-                    value: LanguageSetting.en,
-                    title: Text(l.languageEnglish),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          _SectionTitle(l.readingTitle),
-          Card(
-            child: Column(
-              children: [
-                RadioGroup<MushafEdition>(
-                  groupValue: settings.edition,
-                  onChanged: (v) async {
-                    if (v == null) return;
-                    await controller.setEdition(v);
-                    // An edition not on the device yet goes straight to
-                    // its download, which starts on its own.
-                    if (!ref.read(installedEditionsProvider).contains(v) &&
-                        context.mounted) {
-                      context.push('/mushaf/download');
-                    }
-                  },
-                  child: Column(
-                    children: [
-                      for (final (e, name) in [
-                        (MushafEdition.madina1441, l.editionNew),
-                        (MushafEdition.madina1405, l.editionOld),
-                        (MushafEdition.shamarly, l.editionShamarly),
-                      ])
-                        RadioListTile(
-                          value: e,
-                          title: Text(name),
-                          subtitle: EditionBadge(edition: e),
-                        ),
-                      // The KFGQPC Madina mushafs of the other riwayat.
-                      ListTile(
-                        title: Text(
-                          l.riwayatTitle,
-                          style: const TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                        subtitle: Text(l.riwayaEditionDesc),
-                      ),
-                      for (final e in MushafEdition.values)
-                        if (e.isRiwaya)
-                          RadioListTile(
-                            value: e,
-                            title: Text(editionName(l, e)),
-                            subtitle: EditionBadge(edition: e),
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverPadding(
+                        padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                        sliver: SliverToBoxAdapter(
+                          child: TextField(
+                            key: const ValueKey('settings-search'),
+                            controller: _query,
+                            textInputAction: TextInputAction.search,
+                            decoration: InputDecoration(
+                              hintText: l.settingsSearchHint,
+                              prefixIcon: const Icon(Icons.search),
+                              suffixIcon: query.isEmpty
+                                  ? null
+                                  : IconButton(
+                                      tooltip: MaterialLocalizations.of(context)
+                                          .deleteButtonTooltip,
+                                      icon: const Icon(Icons.close),
+                                      onPressed: _query.clear,
+                                    ),
+                              filled: true,
+                              fillColor: look.surface,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                  look.radius,
+                                ),
+                                borderSide: BorderSide(color: look.line),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                  look.radius,
+                                ),
+                                borderSide: BorderSide(color: look.line),
+                              ),
+                            ),
                           ),
+                        ),
+                      ),
+                      if (query.isEmpty)
+                        const _Grid()
+                      else
+                        _Results(query: query),
                     ],
                   ),
                 ),
-                const DownloadAllButton(),
-                const Divider(height: 1),
-                SwitchListTile(
-                  title: Text(l.keepScreenOn),
-                  value: settings.keepScreenOn,
-                  onChanged: controller.setKeepScreenOn,
-                ),
-                SwitchListTile(
-                  title: Text(l.highlightDivineNames),
-                  subtitle: Text(
-                    l.highlightDivineNamesHint,
-                    style: TextStyle(color: t.muted),
-                  ),
-                  value: settings.highlightDivineNames,
-                  onChanged: controller.setHighlightDivineNames,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          _SectionTitle(l.privacyTitle),
-          Card(
-            child: SwitchListTile(
-              value: settings.crashReportsOptIn,
-              onChanged: controller.setCrashReportsOptIn,
-              title: Text(l.crashReportsLabel),
-              subtitle: Text(
-                l.crashReportsHint,
-                style: TextStyle(color: t.muted),
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          _SectionTitle(l.aboutTitle),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(l.aboutBody),
-                  const SizedBox(height: 8),
-                  Text(
-                    l.versionLabel('0.1.1'),
-                    style: TextStyle(color: t.muted),
-                  ),
-                ],
-              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Results extends StatelessWidget {
+  const _Results({required this.query});
+
+  final String query;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final look = context.look;
+    final hits = searchSettings(query);
+    if (hits.isEmpty) {
+      return SliverPadding(
+        padding: const EdgeInsets.all(32),
+        sliver: SliverToBoxAdapter(
+          child: Semantics(
+            liveRegion: true,
+            child: Text(
+              l.settingsSearchEmpty,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: look.sub),
             ),
           ),
+        ),
+      );
+    }
+    return SliverPadding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+      sliver: SliverList.list(
+        children: [
+          for (final (section, e) in hits)
+            Card(
+              margin: const EdgeInsets.only(bottom: 8),
+              child: ListTile(
+                key: ValueKey('settings-hit.${e.id}'),
+                leading: Icon(section.icon, color: look.goldText),
+                title: Text(e.title(l)),
+                subtitle: Text(
+                  section.title(l),
+                  style: TextStyle(color: look.sub),
+                ),
+                trailing: Icon(Icons.chevron_right, color: look.sub),
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  if (e.link case final link?) {
+                    context.push(link);
+                  } else {
+                    context.go('${section.location}?focus=${e.id}');
+                  }
+                },
+              ),
+            ),
         ],
       ),
     );
   }
 }
 
-class _SectionTitle extends StatelessWidget {
-  const _SectionTitle(this.text);
-
-  final String text;
+class _Grid extends ConsumerWidget {
+  const _Grid();
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 8),
-    child: Semantics(
-      header: true,
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: context.tokens.colors.goldText,
-          fontWeight: FontWeight.w600,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final elderly = ref.watch(settingsProvider.select((s) => s.elderlyMode));
+    final wide = isWide(context);
+    return SliverPadding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+      sliver: SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: wide ? 4 : 2,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          mainAxisExtent: elderly ? 196 : 156,
+        ),
+        delegate: SliverChildListDelegate([
+          for (final s in SettingsSection.values)
+            _Tile(section: s, elderly: elderly),
+        ]),
+      ),
+    );
+  }
+}
+
+/// A large tile: the section's emblem in the style's medallion, a corner
+/// ornament, its name and what it holds.
+class _Tile extends StatelessWidget {
+  const _Tile({required this.section, required this.elderly});
+
+  final SettingsSection section;
+  final bool elderly;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final look = context.look;
+    final arabic = Localizations.localeOf(context).languageCode == 'ar';
+    final radius = BorderRadius.circular(look.radius);
+    final Widget emblem = switch (look.style) {
+      InterfaceStyle.makhtuta => SizedBox.square(
+        dimension: 48,
+        child: CustomPaint(
+          painter: StarPainter(look.frame, look.gold),
+          child: Icon(section.icon, size: 22, color: look.onFrame),
         ),
       ),
-    ),
-  );
+      InterfaceStyle.handasi => Container(
+        width: 46,
+        height: 46,
+        decoration: BoxDecoration(
+          color: look.control,
+          borderRadius: BorderRadius.circular(13),
+        ),
+        child: Icon(section.icon, size: 24, color: look.onControl),
+      ),
+      InterfaceStyle.layli => SizedBox(
+        width: 40,
+        height: 50,
+        child: CustomPaint(
+          painter: ArchBorder(look.gold, spring: .5, inset: 2),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: Icon(section.icon, size: 22, color: look.goldText),
+          ),
+        ),
+      ),
+    };
+    final ornament = switch (look.style) {
+      InterfaceStyle.makhtuta => StarPainter(
+        look.gold.withValues(alpha: .08),
+        look.gold.withValues(alpha: .35),
+      ),
+      InterfaceStyle.handasi => GirihPainter(
+        look.accent.withValues(alpha: look.night ? .22 : .16),
+        cell: 26,
+      ),
+      InterfaceStyle.layli => StarPainter(
+        Colors.transparent,
+        look.gold.withValues(alpha: .35),
+      ),
+    };
+    return Semantics(
+      button: true,
+      label: '${section.title(l)}، ${section.hint(l)}',
+      excludeSemantics: true,
+      onTap: () => context.go(section.location),
+      child: Material(
+        color: look.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: radius,
+          side: BorderSide(
+            color: look.isMakhtuta ? look.gold : look.line,
+            width: look.isMakhtuta ? 1.4 : 1,
+          ),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          key: ValueKey('settings-tile.${section.name}'),
+          onTap: () => context.go(section.location),
+          child: Stack(
+            children: [
+              PositionedDirectional(
+                top: -26,
+                end: -26,
+                width: 96,
+                height: 96,
+                child: ExcludeSemantics(
+                  // The pattern fades out from the corner.
+                  child: ShaderMask(
+                    blendMode: BlendMode.dstIn,
+                    shaderCallback: (rect) => const RadialGradient(
+                      colors: [Colors.white, Colors.transparent],
+                      stops: [.45, 1],
+                    ).createShader(rect),
+                    child: ClipRect(child: CustomPaint(painter: ornament)),
+                  ),
+                ),
+              ),
+              if (look.isMakhtuta)
+                const PositionedDirectional(
+                  start: 0,
+                  end: 0,
+                  bottom: 0,
+                  child: ExcludeSemantics(child: TazhibBand(height: 6)),
+                ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    emblem,
+                    const Spacer(),
+                    Text(
+                      section.title(l),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: arabic ? look.headFont : null,
+                        fontWeight: arabic && look.headFont != null
+                            ? null
+                            : FontWeight.w700,
+                        fontSize:
+                            (elderly ? 20 : 16) +
+                            (arabic && look.headFont != null ? 2 : 0),
+                        height: 1.25,
+                        color: look.ink,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      section.hint(l),
+                      maxLines: elderly ? 1 : 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: elderly ? 14 : 12,
+                        height: 1.35,
+                        color: look.sub,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

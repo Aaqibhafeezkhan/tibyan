@@ -1,0 +1,196 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:tibyan/features/tasmee/data/model_auto_updater.dart';
+import 'package:tibyan/features/tasmee/data/model_downloader.dart';
+import 'package:tibyan/features/tasmee/data/model_manifest.dart';
+import 'package:tibyan/features/tasmee/data/model_store.dart';
+import 'package:tibyan/features/tasmee/data/tasmee_audio_capture.dart';
+import 'package:tibyan/features/tasmee/data/tasmee_backend.dart';
+import 'package:tibyan/features/tasmee/domain/recitation_recognizer.dart';
+
+/// The mirror's manifest (version 1), or the same model as [version].
+ModelManifest fakeManifest({String version = '1'}) => ModelManifest.fromJson({
+  ...jsonDecode(
+    File('test/tasmee/fixtures/recitation_model_manifest.json')
+        .readAsStringSync(),
+  ) as Map<String, dynamic>,
+  'version': version,
+});
+
+InstalledModel fakeModel({String version = '1'}) => InstalledModel(
+  manifest: fakeManifest(version: version),
+  directory: Directory.systemTemp,
+);
+
+/// A recogniser that writes down whatever the test says.
+class FakeRecognizer implements RecitationRecognizer {
+  final _events = StreamController<RecognizerEvent>.broadcast();
+  bool started = false;
+  bool disposed = false;
+  int samples = 0;
+
+  void say(String text) => _events.add(FinalTranscript(text));
+
+  @override
+  Future<void> start() async => started = true;
+
+  @override
+  void acceptAudio(Int16List pcm) => samples += pcm.length;
+
+  @override
+  void endOfSpeech() {}
+
+  @override
+  Stream<RecognizerEvent> get events => _events.stream;
+
+  @override
+  Future<void> dispose() async {
+    disposed = true;
+    await _events.close();
+  }
+}
+
+class FakeMicrophone implements TasmeeMicrophone {
+  FakeMicrophone({this.denied = false});
+
+  final bool denied;
+  bool running = false;
+  int starts = 0;
+  PcmCallback? onFrame;
+
+  @override
+  Future<void> start({
+    required PcmCallback onPcm,
+    required AudioLevelCallback onLevel,
+    required SpeechEndedCallback onSpeechEnded,
+    required AudioErrorCallback onError,
+    PcmCallback? onFrame,
+  }) async {
+    if (denied) throw const MicrophonePermissionDenied();
+    starts++;
+    running = true;
+    this.onFrame = onFrame;
+  }
+
+  @override
+  Future<void> stop() async => running = false;
+
+  @override
+  Future<void> dispose() async => running = false;
+}
+
+/// The device side of the tasmee, in memory.
+class FakeBackend extends TasmeeBackend {
+  FakeBackend({
+    this.installed = true,
+    this.micDenied = false,
+    this.mirrorVersion = '1',
+  });
+
+  bool installed;
+
+  /// The version of the model on the device.
+  String installedVersion = '1';
+
+  /// The version the mirror's manifest offers; null: offline.
+  String? mirrorVersion;
+  int manifestFetches = 0;
+  final downloads = <ModelManifest>[];
+  final bool micDenied;
+  final recognizer0 = FakeRecognizer();
+  late final microphone0 = FakeMicrophone(denied: micDenied);
+  int settingsOpened = 0;
+  int deleted = 0;
+  Completer<void>? downloadGate;
+
+  @override
+  Future<InstalledModel?> installedModel() async =>
+      installed ? fakeModel(version: installedVersion) : null;
+
+  @override
+  Future<ModelManifest> fetchManifest() async {
+    manifestFetches++;
+    final version = mirrorVersion;
+    if (version == null) throw const SocketException('offline');
+    return fakeManifest(version: version);
+  }
+
+  @override
+  Future<InstalledModel> download(
+    ModelManifest manifest, {
+    required void Function(ModelDownloadProgress progress) onProgress,
+    required ModelDownloadCancel cancel,
+  }) async {
+    onProgress(
+      ModelDownloadProgress(
+        receivedBytes: manifest.totalBytes ~/ 2,
+        totalBytes: manifest.totalBytes,
+        file: 'model.int8.onnx',
+      ),
+    );
+    downloads.add(manifest);
+    await downloadGate?.future;
+    installed = true;
+    installedVersion = manifest.version;
+    return fakeModel(version: manifest.version);
+  }
+
+  /// Wi‑Fi fetches the automatic update asked for (none succeeds here).
+  final wifiFetches = <String>[];
+
+  late final _models = Directory.systemTemp.createTempSync('tasmee_models');
+
+  @override
+  Future<ModelStore> modelStore() async => ModelStore(_models);
+
+  @override
+  WifiFileFetcher wifiFetcher() => FakeWifiFetcher(onFetch: wifiFetches.add);
+
+  @override
+  Future<int> usedBytes() async => installed ? 131665482 : 0;
+
+  @override
+  Future<void> deleteModel() async {
+    deleted++;
+    installed = false;
+  }
+
+  @override
+  RecitationRecognizer recognizer(InstalledModel model) => recognizer0;
+
+  @override
+  TasmeeMicrophone microphone() => microphone0;
+
+  @override
+  Future<bool> openDeviceSettings() async {
+    settingsOpened++;
+    return true;
+  }
+}
+
+/// A Wi‑Fi fetcher that writes [bodies] (by URL) or fails (no Wi‑Fi).
+class FakeWifiFetcher implements WifiFileFetcher {
+  FakeWifiFetcher({this.bodies = const {}, this.onFetch});
+
+  final Map<String, List<int>> bodies;
+  final void Function(String taskId)? onFetch;
+  bool wifi = true;
+  int fetches = 0;
+
+  @override
+  Future<bool> fetch({
+    required String taskId,
+    required Uri url,
+    required File dest,
+  }) async {
+    fetches++;
+    onFetch?.call(taskId);
+    final body = bodies[url.toString()];
+    if (!wifi || body == null) return false;
+    await dest.writeAsBytes(body, flush: true);
+    return true;
+  }
+}

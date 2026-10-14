@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+
+import 'widgets/illuminated_frame.dart' show NumberFormatter;
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_theme.dart';
@@ -6,6 +11,8 @@ import '../../../l10n/app_localizations.dart';
 import '../mushaf_providers.dart';
 import 'mushaf_screen.dart';
 import 'navigation.dart';
+import '../../khatma/domain/khatmah.dart' show EntryPoint;
+import '../../../core/ui/responsive.dart';
 
 /// The last reading position and the reader's named bookmarks (fawasil).
 class FawasilScreen extends ConsumerWidget {
@@ -25,94 +32,127 @@ class FawasilScreen extends ConsumerWidget {
     String pageOf(int surah, int ayah, int saved) =>
         '${ref.watch(versePageProvider((surah, ayah))).value ?? saved}';
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l.fawasilTitle)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          if (last != null)
-            Card(
-              child: ListTile(
-                leading: Icon(Icons.history, color: t.goldText),
-                title: Text(l.lastPosition),
-                subtitle: Text(
-                  l.fasilLastAt(
-                    name(last.surah),
-                    '${last.ayah}',
-                    last.edition == edition.name
-                        ? '${last.page}'
-                        : pageOf(last.surah, last.ayah, last.page),
-                  ),
-                ),
-                onTap: () => last.edition == edition.name && last.view == 'page'
-                    ? openPage(context, ref, last.page)
-                    : openVerse(
-                        context,
-                        ref,
-                        surah: last.surah,
-                        ayah: last.ayah,
+    return LookScaffold(
+      maxWidth: ContentWidth.text,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(title: l.fawasilTitle),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  if (last != null)
+                    Card(
+                      child: ListTile(
+                        leading: Icon(Icons.history, color: t.goldText),
+                        title: Text(l.lastPosition),
+                        subtitle: Text(
+                          NumberFormatter(
+                            Localizations.localeOf(context),
+                          ).decimal(
+                            l.fasilLastAt(
+                              name(last.surah),
+                              '${last.ayah}',
+                              last.edition == edition.name
+                                  ? '${last.page}'
+                                  : pageOf(last.surah, last.ayah, last.page),
+                            ),
+                          ),
+                        ),
+                        onTap: () =>
+                            last.edition == edition.name && last.view == 'page'
+                            ? openPage(context, ref, last.page)
+                            : openVerse(
+                                context,
+                                ref,
+                                surah: last.surah,
+                                ayah: last.ayah,
+                                entry: EntryPoint.lastRead,
+                              ),
                       ),
-              ),
-            ),
-          const SizedBox(height: 12),
-          Text(
-            l.yourFawasil,
-            style: TextStyle(color: t.goldText, fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 6),
-          if (sets != null && sets.isEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24),
-              child: Text(
-                '${l.noFawasil}\n${l.fasilHint}',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: t.muted, height: 1.7),
-              ),
-            ),
-          for (final s in sets ?? const [])
-            Card(
-              child: ListTile(
-                leading: Icon(Icons.bookmark, color: Color(s.color)),
-                title: Text(s.name),
-                subtitle: Text(
-                  l.fasilLastAt(
-                    name(s.surah),
-                    '${s.ayah}',
-                    pageOf(s.surah, s.ayah, s.page),
+                    ),
+                  const SizedBox(height: 12),
+                  Text(
+                    l.yourFawasil,
+                    style: TextStyle(
+                      color: t.goldText,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                onTap: () =>
-                    openVerse(context, ref, surah: s.surah, ayah: s.ayah),
-                trailing: IconButton(
-                  tooltip: l.delete,
-                  icon: const Icon(Icons.delete_outline),
-                  onPressed: () async {
-                    final ok = await showDialog<bool>(
-                      context: context,
-                      builder: (d) => AlertDialog(
+                  const SizedBox(height: 6),
+                  if (sets != null && sets.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24),
+                      child: Text(
+                        '${l.noFawasil}\n${l.fasilHint}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: t.muted, height: 1.7),
+                      ),
+                    ),
+                  for (final s in sets ?? const [])
+                    Card(
+                      child: ListTile(
+                        leading: Icon(Icons.bookmark, color: Color(s.color)),
                         title: Text(s.name),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(d).pop(false),
-                            child: Text(l.cancel),
-                          ),
-                          FilledButton(
-                            onPressed: () => Navigator.of(d).pop(true),
-                            child: Text(l.delete),
-                          ),
-                        ],
+                        subtitle: Text(
+                          NumberFormatter(Localizations.localeOf(context))
+                              .decimal(
+                                l.fasilLastAt(
+                                  name(s.surah),
+                                  '${s.ayah}',
+                                  pageOf(s.surah, s.ayah, s.page),
+                                ),
+                              ),
+                        ),
+                        onTap: () => openVerse(
+                          context,
+                          ref,
+                          surah: s.surah,
+                          ayah: s.ayah,
+                          entry: EntryPoint.bookmark,
+                        ),
+                        trailing: IconButton(
+                          tooltip: l.delete,
+                          icon: const Icon(Icons.delete_outline),
+                          onPressed: () async {
+                            final ok = await showDialog<bool>(
+                              context: context,
+                              builder: (_) => LookTheme(
+                                child: Builder(
+                                  builder: (d) => AlertDialog(
+                                    title: Text(s.name),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(d).pop(false),
+                                        child: Text(l.cancel),
+                                      ),
+                                      FilledButton(
+                                        onPressed: () =>
+                                            Navigator.of(d).pop(true),
+                                        child: Text(l.delete),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                            if (ok == true) {
+                              await ref
+                                  .read(userDatabaseProvider)
+                                  .deleteBookmarkSet(s.id);
+                            }
+                          },
+                        ),
                       ),
-                    );
-                    if (ok == true) {
-                      await ref
-                          .read(userDatabaseProvider)
-                          .deleteBookmarkSet(s.id);
-                    }
-                  },
-                ),
+                    ),
+                ],
               ),
             ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -162,7 +162,7 @@
   "modes": {
     "light": {
       "bg": "#F6F5F2",
-      "paper": "#FFFFFF",
+      "paper": "#F8F1E2",
       "ink": "#26292C",
       "frame": "#5E5A55",
       "goldText": "#5E5A55",

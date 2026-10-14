@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,8 +17,11 @@ import '../data/hifz_repository.dart';
 import '../data/hifz_store.dart';
 import '../domain/strength.dart';
 import '../hifz_providers.dart';
+import 'goals_tab.dart';
 import 'hifz_sheets.dart';
+import 'progress_tabs.dart';
 import 'strength_style.dart';
+import '../../../core/ui/responsive.dart';
 
 /// Opens the mushaf on a unit's first page in recitation mode, as a test
 /// of that unit (graded at the end).
@@ -32,7 +38,8 @@ Future<void> openHifzTest(
   if (verses.isEmpty || !context.mounted) return;
   final page = verses.first.pageIn(ref.read(editionProvider));
   await context.push(
-    '/mushaf?page=$page&hifz=${kind.name}&from=$fromRef&to=$toRef',
+    '/mushaf?page=$page&hifz=${kind.name}&from=$fromRef&to=$toRef'
+    '&entry=memorization',
   );
 }
 
@@ -60,9 +67,75 @@ String unitTitle(
   };
 }
 
-/// Memorization: today's review, starting a test, and the hifz map.
-class HifzScreen extends ConsumerWidget {
-  const HifzScreen({super.key});
+/// The hifz screen's tabs, in order.
+enum HifzTab { today, progress, history, hardWords, goals }
+
+/// Memorization: today's review and the tests, progress, the recitation
+/// record, hard words and goals.
+class HifzScreen extends StatelessWidget {
+  const HifzScreen({super.key, this.tab = HifzTab.today});
+
+  final HifzTab tab;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return DefaultTabController(
+      length: HifzTab.values.length,
+      initialIndex: tab.index,
+      child: LookScaffold(
+        body: SafeArea(
+          bottom: false,
+          child: Builder(
+            builder: (context) => Column(
+              children: [
+                LookTopBar(title: l.hifzTitle),
+                TabBar(
+                  isScrollable: true,
+                  tabAlignment: TabAlignment.start,
+                  tabs: [
+                    Tab(text: l.hifzTabToday),
+                    Tab(text: l.hifzTabProgress),
+                    Tab(text: l.hifzTabHistory),
+                    Tab(text: l.hifzTabHardWords),
+                    Tab(text: l.hifzTabGoals),
+                  ],
+                ),
+                Expanded(
+                  // A laptop: the tabs read as one column, not across the
+                  // whole window.
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: ContentWidth.text,
+                      ),
+                      child: TabBarView(
+                        children: [
+                          const _TodayTab(),
+                          const ProgressTab(),
+                          const HistoryTab(),
+                          const HardWordsTab(),
+                          GoalsTab(
+                            onReview: () =>
+                                DefaultTabController.of(context).animateTo(0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Today's review, starting a test, and the hifz map.
+class _TodayTab extends ConsumerWidget {
+  const _TodayTab();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -94,85 +167,77 @@ class HifzScreen extends ConsumerWidget {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l.hifzTitle)),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-        children: [
-          FilledButton.icon(
-            onPressed: start,
-            icon: const Icon(Icons.visibility_off_outlined),
-            label: Text(l.hifzStartTest),
-            style: FilledButton.styleFrom(
-              minimumSize: const Size.fromHeight(52),
-            ),
-          ),
-          const SizedBox(height: 20),
-          _Heading(l.hifzToday),
-          if (due.isEmpty)
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l.hifzNothingDue,
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l.hifzNothingDueHint,
-                      style: TextStyle(color: t.muted),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          else
-            for (final i in due) _UnitTile(item: i, due: true),
-          const SizedBox(height: 20),
-          _Heading(l.hifzMap),
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+      children: [
+        FilledButton.icon(
+          onPressed: start,
+          icon: const Icon(Icons.visibility_off_outlined),
+          label: Text(l.hifzStartTest),
+          style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(52)),
+        ),
+        const SizedBox(height: 20),
+        _Heading(l.hifzToday),
+        if (due.isEmpty)
           Card(
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              onTap: () => context.push('/hifz/map'),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(l.hifzMapHint, style: TextStyle(color: t.muted)),
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 8,
-                      children: [
-                        for (final s in Strength.values.skip(1))
-                          _LegendChip(
-                            strength: s,
-                            label:
-                                '${strengthLabel(l, s)} ${digits(counts[s] ?? 0)}',
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Align(
-                      alignment: AlignmentDirectional.centerEnd,
-                      child: Icon(Icons.arrow_forward, color: t.control),
-                    ),
-                  ],
-                ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l.hifzNothingDue,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(l.hifzNothingDueHint, style: TextStyle(color: t.muted)),
+                ],
+              ),
+            ),
+          )
+        else
+          for (final i in due) _UnitTile(item: i, due: true),
+        const SizedBox(height: 20),
+        _Heading(l.hifzMap),
+        Card(
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: () => context.push('/hifz/map'),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(l.hifzMapHint, style: TextStyle(color: t.muted)),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 8,
+                    children: [
+                      for (final s in Strength.values.skip(1))
+                        _LegendChip(
+                          strength: s,
+                          label:
+                              '${strengthLabel(l, s)} ${digits(counts[s] ?? 0)}',
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: Icon(Icons.arrow_forward, color: t.control),
+                  ),
+                ],
               ),
             ),
           ),
-          if (later.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            _Heading(l.hifzAllUnits),
-            for (final i in later) _UnitTile(item: i, due: false),
-          ],
+        ),
+        if (later.isNotEmpty) ...[
+          const SizedBox(height: 20),
+          _Heading(l.hifzAllUnits),
+          for (final i in later) _UnitTile(item: i, due: false),
         ],
-      ),
+      ],
     );
   }
 }

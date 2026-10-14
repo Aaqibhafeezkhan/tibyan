@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/db/user_database.dart';
@@ -12,6 +15,7 @@ import '../../mushaf/presentation/widgets/illuminated_frame.dart'
 import '../domain/day.dart';
 import '../khatma_providers.dart';
 import 'khatma_screen.dart' show formatDay;
+import '../../../core/ui/responsive.dart';
 
 final _journalProvider = StreamProvider.family<List<ReflectionRow>, String>(
   (ref, query) =>
@@ -52,41 +56,54 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
     final l = AppLocalizations.of(context);
     final t = context.tokens.colors;
     final notes = ref.watch(_journalProvider(_query)).value;
-    return Scaffold(
-      appBar: AppBar(title: Text(l.journalTitle)),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-            child: TextField(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                hintText: l.journalSearch,
-                border: const OutlineInputBorder(),
-                isDense: true,
-              ),
-              onChanged: (v) => setState(() => _query = v),
-            ),
-          ),
-          Expanded(
-            child: notes == null
-                ? const Center(child: CircularProgressIndicator())
-                : notes.isEmpty
-                ? Padding(
-                    padding: const EdgeInsets.all(32),
-                    child: Text(
-                      _query.trim().isEmpty ? l.journalEmpty : l.journalNoMatch,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: t.muted, height: 1.7),
+    return LookScaffold(
+      maxWidth: ContentWidth.text,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LookTopBar(title: l.journalTitle),
+            Expanded(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.search),
+                        hintText: l.journalSearch,
+                        border: const OutlineInputBorder(),
+                        isDense: true,
+                      ),
+                      onChanged: (v) => setState(() => _query = v),
                     ),
-                  )
-                : ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: notes.length,
-                    itemBuilder: (context, i) => _NoteCard(note: notes[i]),
                   ),
-          ),
-        ],
+                  Expanded(
+                    child: notes == null
+                        ? const Center(child: CircularProgressIndicator())
+                        : notes.isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.all(32),
+                            child: Text(
+                              _query.trim().isEmpty
+                                  ? l.journalEmpty
+                                  : l.journalNoMatch,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: t.muted, height: 1.7),
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: const EdgeInsets.all(16),
+                            itemCount: notes.length,
+                            itemBuilder: (context, i) =>
+                                _NoteCard(note: notes[i]),
+                          ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -169,24 +186,28 @@ Future<String?> _editText(BuildContext context, String initial) {
   final c = TextEditingController(text: initial);
   return showDialog<String>(
     context: context,
-    builder: (d) => AlertDialog(
-      title: Text(l.journalEdit),
-      content: TextField(
-        controller: c,
-        autofocus: true,
-        minLines: 3,
-        maxLines: 8,
+    builder: (_) => LookTheme(
+      child: Builder(
+        builder: (d) => AlertDialog(
+          title: Text(l.journalEdit),
+          content: TextField(
+            controller: c,
+            autofocus: true,
+            minLines: 3,
+            maxLines: 8,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(d).pop(),
+              child: Text(l.cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(d).pop(c.text.trim()),
+              child: Text(l.save),
+            ),
+          ],
+        ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(d).pop(),
-          child: Text(l.cancel),
-        ),
-        FilledButton(
-          onPressed: () => Navigator.of(d).pop(c.text.trim()),
-          child: Text(l.save),
-        ),
-      ],
     ),
   ).whenComplete(c.dispose);
 }
@@ -201,7 +222,11 @@ Future<void> showReflectionSheet(
   context: context,
   isScrollControlled: true,
   showDragHandle: true,
-  builder: (_) => _ReflectionSheet(surah: surah, ayah: ayah),
+  builder: (_) => LookTheme(
+    child: Builder(
+      builder: (_) => _ReflectionSheet(surah: surah, ayah: ayah),
+    ),
+  ),
 );
 
 class _ReflectionSheet extends ConsumerStatefulWidget {

@@ -1,3 +1,5 @@
+import '../../tasmee/data/model_manifest.dart';
+
 /// How each source in content.db is named in the interface, in Arabic and
 /// English: title, publisher, licence and credit line. Keyed by the
 /// source's `key`. A source's published notice (for example Tanzil's) is
@@ -10,6 +12,12 @@ typedef SourceText = ({
 });
 
 const _ar = <String, SourceText>{
+  'kfgqpc-qcf4-surah-names': (
+    title: 'خط أسماء السور (QCF4_QBSML)',
+    publisher: 'مجمع الملك فهد لطباعة المصحف الشريف',
+    license: 'وفق شروط خطوط المجمع: الاستخدام والتوزيع مجانا دون بيع أو تعديل',
+    credit: 'خط أسماء السور: مجمع الملك فهد لطباعة المصحف الشريف',
+  ),
   'tanzil-uthmani': (
     title: 'نص القرآن الكريم بالرسم العثماني (تنزيل)',
     publisher: 'مشروع تنزيل',
@@ -102,6 +110,29 @@ const _ar = <String, SourceText>{
     license: 'إذن مكتوب من نقاية: بلا إعلانات ولا ربح',
     credit: 'الميسر في غريب القرآن: عن التفسير التفاعلي لنقاية (read.tafsir.one)، بإذنهم',
   ),
+  // Streamed audio and an optional pack, each behind its flag
+  // (docs/features/audio_content.md); not in content.db, so not listed in
+  // «عن المصحف» until published.
+  'nuqayah-tafsir-audio': (
+    title: 'التفسير المسموع (الميسر والسعدي)',
+    publisher: 'نقاية (التفسير التفاعلي read.tafsir.one)، بإذن مكتوب',
+    license: 'إذن مكتوب من نقاية: بلا إعلانات ولا ربح',
+    credit: 'التفسير المسموع: عن التفسير التفاعلي لنقاية (read.tafsir.one)، بإذنهم، بلا إعلانات ولا ربح',
+  ),
+  'quranenc-english-rwwad-audio': (
+    title: 'الترجمة الإنجليزية المسموعة (مركز رواد الترجمة)',
+    publisher: 'مركز رواد الترجمة، عبر موقع QuranEnc.com',
+    license:
+        'شروط موسوعة القرآن الكريم (QuranEnc)، وسُئلوا عن الصوت (الرسالة 12)',
+    credit:
+        'الترجمة الإنجليزية المسموعة: مركز رواد الترجمة، عبر موقع QuranEnc.com',
+  ),
+  'quranenc-english-mokhtasar': (
+    title: 'المختصر في تفسير القرآن الكريم، بالإنجليزية',
+    publisher: 'مركز تفسير للدراسات القرآنية، عبر موقع QuranEnc.com',
+    license: 'شروط موسوعة القرآن الكريم (QuranEnc): دون تعديل أو إضافة أو حذف، مع ذكر الناشر والموقع ورقم الإصدار',
+    credit: 'المختصر في تفسير القرآن الكريم (بالإنجليزية): مركز تفسير للدراسات القرآنية، عبر موقع QuranEnc.com',
+  ),
   'quranicaudio': (
     title: 'تلاوة ياسر الدوسري (مرتل)',
     publisher: 'موقع quranicaudio.com (صوت Quran.com)',
@@ -140,9 +171,21 @@ const _ar = <String, SourceText>{
     credit:
         'البحث بالمعنى: نموذج multilingual-e5-small (MIT)، في حزمة اختيارية',
   ),
+  'nvidia-stt-ar-fastconformer': (
+    title: 'نموذج التعرف على الكلام للتسميع (FastConformer العربي)',
+    publisher: 'NVIDIA، على Hugging Face (nvidia/stt_ar_fastconformer_hybrid_large_pcd_v1.0)؛ حوّل تبيان فرعه CTC إلى صيغة ONNX وضغطه (int8)، دون تأييد من NVIDIA',
+    license: 'المشاع الإبداعي، النسبة 4.0 (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/',
+    credit: 'التسميع: نموذج NVIDIA العربي للتعرف على الكلام (FastConformer) برخصة CC BY 4.0، معدّلا: فرعه CTC وحده بصيغة ONNX مضغوطا (int8). يُنزَّل منفصلا عن التطبيق ويعمل على الجهاز.',
+  ),
 };
 
 const _en = <String, SourceText>{
+  'kfgqpc-qcf4-surah-names': (
+    title: 'Surah name font (QCF4_QBSML)',
+    publisher: 'King Fahd Glorious Quran Printing Complex',
+    license: "Per the Complex's font terms: free to use and distribute, no sale or modification",
+    credit: 'Surah name font: King Fahd Glorious Quran Printing Complex',
+  ),
   'tanzil-uthmani': (
     title: 'Quran text, Uthmani script (Tanzil)',
     publisher: 'Tanzil Project',
@@ -234,6 +277,24 @@ const _en = <String, SourceText>{
     license: 'Written permission from Nuqayah: no ads and no profit',
     credit: 'Al-Muyassar fi Gharib al-Quran: from Nuqayah\'s read.tafsir.one, by permission',
   ),
+  'nuqayah-tafsir-audio': (
+    title: 'Tafsir audio (al-Muyassar and al-Sa\'di)',
+    publisher: 'Nuqayah (read.tafsir.one), by written permission',
+    license: 'Written permission from Nuqayah: no ads and no profit',
+    credit: 'Tafsir audio: from Nuqayah\'s read.tafsir.one, by permission, with no ads and no profit',
+  ),
+  'quranenc-english-rwwad-audio': (
+    title: 'English translation audio (Rowwad Translation Center)',
+    publisher: 'Rowwad Translation Center, via QuranEnc.com',
+    license: 'QuranEnc terms; asked about the audio (letter 12)',
+    credit: 'English translation audio: Rowwad Translation Center, via QuranEnc.com',
+  ),
+  'quranenc-english-mokhtasar': (
+    title: 'Al-Mukhtasar fi Tafsir al-Quran al-Karim (English)',
+    publisher: 'Tafsir Center for Quranic Studies, via QuranEnc.com',
+    license: 'QuranEnc terms: no change, addition or deletion; publisher, site and version named',
+    credit: 'Al-Mukhtasar in Tafsir (English): Tafsir Center for Quranic Studies, via QuranEnc.com',
+  ),
   'quranicaudio': (
     title: 'Yasser al-Dosari (murattal)',
     publisher: 'quranicaudio.com (Quran.com audio)',
@@ -271,11 +332,22 @@ const _en = <String, SourceText>{
     license: 'MIT License, as stated on the model card: use, copy, modify and distribute with the licence kept',
     credit: 'Search by meaning: the multilingual-e5-small model (MIT), in an optional pack',
   ),
+  'nvidia-stt-ar-fastconformer': (
+    title: 'Speech recognition model for tasmee (Arabic FastConformer)',
+    publisher: 'NVIDIA, on Hugging Face (nvidia/stt_ar_fastconformer_hybrid_large_pcd_v1.0); its CTC branch converted to ONNX and quantised to int8 by Tibyan, not endorsed by NVIDIA',
+    license: 'Creative Commons Attribution 4.0 (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/',
+    credit: 'Tasmee: NVIDIA\'s Arabic speech recognition model (FastConformer) under CC BY 4.0, modified: its CTC branch alone, in ONNX, quantised to int8. Downloaded separately from the app; runs on the device.',
+  ),
 };
 
 /// Sources that are not in content.db (bundled with the app), listed after
 /// the database's own: key, link and version.
 const bundledSources = [
+  (
+    key: 'kfgqpc-qcf4-surah-names',
+    url: 'https://github.com/nuqayah/qpc-fonts/tree/8a4f39d563ea69c994416a1692827e38156c548d/mushaf-v4-hafs',
+    version: '8a4f39d563ea69c994416a1692827e38156c548d',
+  ),
   (
     key: 'quran-assets',
     url: 'https://github.com/quran-ws/quran-assets',
@@ -285,6 +357,13 @@ const bundledSources = [
     key: 'multilingual-e5-small',
     url: 'https://huggingface.co/intfloat/multilingual-e5-small',
     version: '614241f622f53c4eeff9890bdc4f31cfecc418b3',
+  ),
+  // The tasmee's model (downloaded on first use, not bundled): credited
+  // here, in one place, rather than on the tasmee screens.
+  (
+    key: 'nvidia-stt-ar-fastconformer',
+    url: 'https://huggingface.co/nvidia/stt_ar_fastconformer_hybrid_large_pcd_v1.0',
+    version: '7f32349',
   ),
 ];
 
@@ -353,3 +432,59 @@ const reciterPhotoCredits = [
 /// then shown as stored).
 SourceText? sourceText(String key, String languageCode) =>
     (languageCode == 'ar' ? _ar : _en)[key];
+
+/// The key of the tasmee's recognition model in [bundledSources].
+const recitationModelSourceKey = 'nvidia-stt-ar-fastconformer';
+
+/// The recognition model as About › Sources shows it: what the INSTALLED
+/// model's manifest says (its version, licence, published attribution and
+/// any `credits`), or the static entry when no model is installed.
+/// [published] is the manifest's attribution exactly as published (shown
+/// untranslated); [credits] are the extra names in the interface language.
+({
+  SourceText text,
+  String version,
+  bool installed,
+  String? published,
+  List<String> credits,
+})
+recitationModelSource(ModelManifest? installed, String languageCode) {
+  final named = sourceText(recitationModelSourceKey, languageCode)!;
+  final fallbackVersion = bundledSources
+      .firstWhere((s) => s.key == recitationModelSourceKey)
+      .version
+      .substring(0, 7);
+  if (installed == null) {
+    return (
+      text: named,
+      version: fallbackVersion,
+      installed: false,
+      published: null,
+      credits: const [],
+    );
+  }
+  var credits = installed.credits;
+  final attribution = installed.attribution;
+  // A version trained on the volunteers' recitations names them in its
+  // attribution even before its manifest carries `credits`.
+  if (credits.isEmpty &&
+      attribution != null &&
+      attribution.contains('Tibyan volunteers')) {
+    credits = const [ModelCredit(ar: 'متطوعو تبيان', en: 'Tibyan volunteers')];
+  }
+  final license = installed.license == 'CC-BY-4.0'
+      ? named.license
+      : installed.license;
+  return (
+    text: (
+      title: named.title,
+      publisher: named.publisher,
+      license: license,
+      credit: named.credit,
+    ),
+    version: installed.version,
+    installed: true,
+    published: attribution,
+    credits: [for (final c in credits) c.name(languageCode)],
+  );
+}

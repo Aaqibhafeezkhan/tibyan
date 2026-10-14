@@ -167,6 +167,10 @@ RECITERS = [
     # other takes: nothing from them could be placed on these files.
     (15, 'ماهر المعيقلي', 'Maher al-Muaiqly', 'murattal',
      'https://download.quranicaudio.com/quran/maher_almu3aiqly/year1440/', None),
+    # From mp3quran, with its published timing (read 1): every verse of all
+    # 114 surahs, no duplicates (measured 2026-10-14).
+    (16, 'إبراهيم الأخضر', 'Ibrahim al-Akhdar', 'murattal',
+     'https://cdn.mp3quran.net/audio/ibrahim-akhdar/r1/', 1),
 ]
 
 
@@ -223,6 +227,18 @@ def add_qul_timing(db, today):
     verses = json.loads((CACHE / 'qul_ayah_timing.json').read_text(encoding='utf-8'))
     words = json.loads((CACHE / 'qul_word_timing.json').read_text(encoding='utf-8'))
     reciters = sorted({r[0] for r in verses})
+    # Verses QUL gives no usable words (MISSING_DATA ث10), measured in
+    # Tibyan inside QUL's verse windows (measure_timing.py verses, the
+    # timing-measure workflow's private/ output): only where QUL has none.
+    for reciter in reciters:
+        measured = CACHE / f'aligned_words_{reciter}.json'
+        if measured.exists():
+            have = {(r[1], r[2]) for r in words if r[0] == reciter}
+            extra = [tuple(r) for r in json.loads(measured.read_text(encoding='utf-8'))
+                     if r[0] == reciter and (r[1], r[2]) not in have]
+            words += extra
+            print(f'QUL reciter {reciter}: words of {len({(r[1], r[2]) for r in extra})} verses '
+                  f'measured in Tibyan ({measured.name})')
     marks = ','.join('?' * len(reciters))
     db.execute('DELETE FROM source WHERE id = ?', (QUL_SOURCE_ID,))
     db.execute(f'DELETE FROM ayah_timing WHERE reciter IN ({marks})', reciters)
@@ -755,9 +771,9 @@ def main():
     assert check.execute('PRAGMA user_version').fetchone()[0] == SCHEMA_VERSION
     assert check.execute('SELECT COUNT(*) FROM word_box').fetchone()[0] == 77430
     assert check.execute('SELECT COUNT(*) FROM commentary').fetchone()[0] == 3 * 6236
-    # Verse timings: the eleven Hafs recitations and ten of the riwaya ones
+    # Verse timings: the twelve Hafs recitations and ten of the riwaya ones
     # (four riwaya recitations have none published).
-    assert check.execute('SELECT COUNT(DISTINCT reciter) FROM ayah_timing WHERE reciter < 100').fetchone()[0] == 11
+    assert check.execute('SELECT COUNT(DISTINCT reciter) FROM ayah_timing WHERE reciter < 100').fetchone()[0] == 12
     assert check.execute('SELECT COUNT(DISTINCT reciter) FROM ayah_timing WHERE reciter > 100').fetchone()[0] == 10
     # Shamarly: every text page 2..522 carries verses; verses in order never go back a page.
     covered = {p for s, e in check.execute('SELECT page_shamarly, page_shamarly_end FROM ayah')
@@ -804,5 +820,31 @@ def update_qul():
     return 0
 
 
+def update_reciters():
+    """Puts the reciters added to RECITERS since content.db was built, and
+    their mp3quran verse timings (tools/fetch_ayat_timing.py), into the
+    content.db already built (`build_content_db.py reciters`). Reciters
+    that already have timing rows are left as they are."""
+    check_reciters()
+    db = sqlite3.connect(OUT)
+    add_reciters(db)
+    timed = {r[0] for r in db.execute('SELECT DISTINCT reciter FROM ayah_timing')}
+    counts = dict(db.execute('SELECT surah, COUNT(*) FROM ayah GROUP BY surah'))
+    timing = json.loads((CACHE / 'mp3quran_ayat_timing.json').read_text(encoding='utf-8'))
+    rows, gaps = timing_rows(timing, counts)
+    rows = [r for r in rows if r[0] not in timed]
+    db.executemany('INSERT INTO ayah_timing VALUES (?,?,?,?,?)', rows)
+    db.commit()
+    db.execute('VACUUM')
+    db.close()
+    added = sorted({r[0] for r in rows})
+    print(f'updated {OUT.relative_to(REPO)}: timing for reciters {added} '
+          f'({len(rows)} verses); surahs without full timing: '
+          f'{[g for g in gaps if g[0] in added]}')
+    return 0
+
+
 if __name__ == '__main__':
-    sys.exit(update_qul() if sys.argv[1:] == ['qul'] else main())
+    mode = sys.argv[1:]
+    sys.exit(update_qul() if mode == ['qul']
+             else update_reciters() if mode == ['reciters'] else main())

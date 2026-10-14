@@ -41,9 +41,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sectionSearch => 'Search';
 
   @override
-  String get comingSoon => 'Coming soon';
-
-  @override
   String get settingsTitle => 'Settings';
 
   @override
@@ -112,7 +109,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'Tibyan is a free, non-profit app with no ads and no purchases, and its code is open. Every text in it comes from a verified source, shown next to it.';
+      'Tibyan is an app for reading and reflecting on the Quran, and its code is open. Every text in it comes from a verified source, shown next to it.';
 
   @override
   String versionLabel(String version) {
@@ -279,8 +276,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get medinan => 'Medinan';
 
   @override
-  String ayahCount(String count) {
-    return '$count verses';
+  String ayahCount(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count verses',
+      one: '$count verse',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -361,8 +364,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewNotesTitle => 'Questions under review';
 
   @override
-  String reviewNotesBody(String count) {
-    return '$count places where the two text sources differ (two juz boundaries and four spellings) are with a qualified reviewer. The app follows the Tanzil text until a decision is made.';
+  String reviewNotesBody(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count places',
+      one: '$count place',
+    );
+    return '$_temp0 where the two text sources differ (two juz boundaries and four spellings) are with a qualified reviewer. The app follows the Tanzil text until a decision is made.';
   }
 
   @override
@@ -440,8 +449,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String versesCount(String count) {
-    return '$count verses';
+  String versesCount(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count verses',
+      one: '$count verse',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -482,7 +497,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resume => 'Resume';
 
   @override
+  String get downloadsSectionMushaf => 'Mushafs';
+
+  @override
+  String get downloadsSectionRecitations => 'Recitations';
+
+  @override
+  String get downloadsSectionResources => 'Resources';
+
+  @override
+  String downloadsOnDevice(String size) {
+    return 'On the device · $size MB';
+  }
+
+  @override
+  String downloadsAvailable(String size) {
+    return 'Available · $size MB';
+  }
+
+  @override
+  String downloadsReciterOnDevice(String done, String total, String size) {
+    return 'On the device: $done / $total · $size MB';
+  }
+
+  @override
+  String get downloadsAvailableShort => 'Available';
+
+  @override
+  String get downloadsGoesOn => 'The download goes on in the background';
+
+  @override
   String get pause => 'Pause';
+
+  @override
+  String get downloadsOpen => 'Downloads Center';
+
+  @override
+  String get downloadsOpenHint =>
+      'Mushafs, recitations and resources: on the device, downloading and available';
+
+  @override
+  String get audioDownloadResume => 'Resume';
 
   @override
   String get slower => 'Slower';
@@ -556,7 +611,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get multiSelect => 'Select several verses';
 
   @override
-  String get multiSelectHint => 'Drag the handles to select verses';
+  String get multiSelectHint =>
+      'Drag the handles, or turn the page and tap a verse to extend the selection to it';
 
   @override
   String get doneLabel => 'Done';
@@ -569,6 +625,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noMarks => 'No marks yet. Tap a verse marker to mark it.';
+
+  @override
+  String get shareBrandColours => 'Tibyan\'s original colours';
+
+  @override
+  String get shareBrandColoursHint =>
+      'Instead of the current interface and mushaf colours';
 
   @override
   String get highlightDivineNames => 'Highlight the divine name';
@@ -597,6 +660,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tafsirShown => 'Texts shown';
+
+  @override
+  String get englishTafsirVisibilityLabel => 'English tafsir';
 
   @override
   String get tafsirNoneShown =>
@@ -690,6 +756,55 @@ class AppLocalizationsEn extends AppLocalizations {
   String get followRecitation => 'Turn pages with the recitation';
 
   @override
+  String get sajdahTimer => 'Sajdah timer';
+
+  @override
+  String get sajdahTimerHint =>
+      'At a verse of prostration the reciter pauses and a card with the supplications of prostration counts down, then the recitation goes on';
+
+  @override
+  String get sajdahTimerLength => 'Timer length';
+
+  @override
+  String get sajdahCardLabel => 'Prostration of recitation';
+
+  @override
+  String get sajdahTapToContinue => 'Tap to continue';
+
+  @override
+  String get sajdahContinue => 'Continue';
+
+  @override
+  String sajdahSecondsLeft(int seconds, String n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other: '$n seconds left',
+      one: '$n second left',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tapJumpLabel => 'Tapping a verse while listening';
+
+  @override
+  String get tapJumpHint =>
+      'A tap on a verse on the page moves the reciter there';
+
+  @override
+  String get tapJumpVerseStart => 'From the verse\'s start';
+
+  @override
+  String get tapJumpFromWord => 'From the word tapped';
+
+  @override
+  String get tapJumpNoTiming => 'This recitation can\'t jump to a verse';
+
+  @override
+  String get listenFromVerse => 'Listen from this verse';
+
+  @override
   String get audioDownloads => 'Download recitations';
 
   @override
@@ -721,6 +836,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get audioCredit => 'Recitations and verse timings: mp3quran.net';
 
   @override
+  String get tafsirAudioListen => 'Listen to the tafsir';
+
+  @override
+  String get tafsirAudioListenSurah => 'Listen to the surah\'s tafsir';
+
+  @override
+  String get translationAudioAfterVerse => 'Translation audio after each verse';
+
+  @override
+  String get translationAudioHint =>
+      'Each verse\'s translation is heard after it is recited, when verses play on without repeating';
+
+  @override
+  String clipTranslationOf(String ayah) {
+    return 'Translation of verse $ayah';
+  }
+
+  @override
+  String englishTafsirOffer(String title) {
+    return 'Download the English tafsir: $title';
+  }
+
+  @override
   String get touchReading => 'Touch reading';
 
   @override
@@ -736,7 +874,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String downloadAllEditions(String size) {
-    return 'Download all editions ($size MB)';
+    return 'Downloads Center ($size MB available)';
   }
 
   @override
@@ -804,13 +942,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchNothing => 'No results';
 
   @override
-  String searchCount(String count, String verses) {
-    return '$count matches in $verses verses';
+  String searchCount(int total, String count, int verseTotal, String verses) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$count matches',
+      one: '$count match',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      verseTotal,
+      locale: localeName,
+      other: '$verses verses',
+      one: '$verses verse',
+    );
+    return '$_temp0 in $_temp1';
   }
 
   @override
-  String searchMore(String count) {
-    return 'and $count more verses; narrow the search to see them';
+  String searchMore(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'and $count more verses',
+      one: 'and $count more verse',
+    );
+    return '$_temp0; narrow the search to see them';
   }
 
   @override
@@ -824,7 +980,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String continueReadingAt(String surah, String ayah, String page) {
-    return '$surah · verse $ayah · page $page';
+    return '$surah | verse $ayah · page $page';
   }
 
   @override
@@ -881,7 +1037,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get downloadAllTitle => 'Download all editions';
+  String get downloadAllTitle => 'Downloads Center';
 
   @override
   String downloadAllCount(String done, String total) {
@@ -894,6 +1050,255 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get khatmaTitle => 'Khatma';
+
+  @override
+  String get khatmaPrimaryLabel => 'Primary khatma';
+
+  @override
+  String get khatmaOtherPlans => 'Other khatmas';
+
+  @override
+  String get khatmaSetPrimary => 'Set as primary';
+
+  @override
+  String get khatmaPause => 'Pause';
+
+  @override
+  String get khatmaResume => 'Resume';
+
+  @override
+  String get khatmaPaused => 'Paused';
+
+  @override
+  String get khatmaStepPlan => 'Plan';
+
+  @override
+  String get khatmaStepSchedule => 'Schedule';
+
+  @override
+  String get khatmaStepReview => 'Review';
+
+  @override
+  String khatmaLoadFailed(String error) {
+    return 'Couldn\'t load khatma setup data: $error';
+  }
+
+  @override
+  String khatmaCreateFailed(String error) {
+    return 'Couldn\'t create the khatma: $error';
+  }
+
+  @override
+  String get khatmaKindLabel => 'Plan type';
+
+  @override
+  String get khatmaSettings => 'Khatma settings';
+
+  @override
+  String get khatmaTabPlan => 'Plan';
+
+  @override
+  String get khatmaTabStats => 'Statistics';
+
+  @override
+  String get khatmaStatsPageEquivalents => 'Page equivalents';
+
+  @override
+  String get khatmaStatsSessions => 'Reading sessions';
+
+  @override
+  String get khatmaStatsMinutes => 'Reading minutes';
+
+  @override
+  String get khatmaStatsNoActivity =>
+      'No khatma reading recorded in this period.';
+
+  @override
+  String get khatmaStatsWeek => 'Week';
+
+  @override
+  String get khatmaStatsMonth => 'Month';
+
+  @override
+  String get khatmaStatsYear => 'Year';
+
+  @override
+  String get khatmaStatsPreviousPeriod => 'Previous period';
+
+  @override
+  String get khatmaStatsNextPeriod => 'Next period';
+
+  @override
+  String khatmaReminderForPlan(String plan) {
+    return 'Khatma: $plan';
+  }
+
+  @override
+  String khatmaReminderMissedTitle(String plan) {
+    return 'Still time for $plan';
+  }
+
+  @override
+  String khatmaReminderMissedBody(String from, String to) {
+    return 'Today\'s portion: pages $from to $to.';
+  }
+
+  @override
+  String khatmaReminderRecoveryTitle(String plan) {
+    return 'A catch-up plan for $plan';
+  }
+
+  @override
+  String khatmaReminderRecoveryBody(String from, String to) {
+    return 'Today\'s portion is pages $from to $to. Open the plan to review gentle catch-up options.';
+  }
+
+  @override
+  String khatmaReminderTargetTitle(String plan) {
+    return 'One day until $plan is due';
+  }
+
+  @override
+  String get khatmaReminderTargetBody =>
+      'Review your progress and plan before the target date.';
+
+  @override
+  String khatmaReminderCompletedTitle(String plan) {
+    return 'Khatma completed: $plan';
+  }
+
+  @override
+  String get khatmaReminderCompletedBody =>
+      'You completed the khatma. May Allah accept it from you.';
+
+  @override
+  String get khatmaReminderPlanLimit =>
+      'Reminders can be enabled for up to 20 open khatmas.';
+
+  @override
+  String get khatmaSaveSettings => 'Save settings';
+
+  @override
+  String khatmaSaveFailed(String error) {
+    return 'Couldn\'t save khatma settings: $error';
+  }
+
+  @override
+  String get khatmaAutoRestart => 'Start this plan again when it finishes';
+
+  @override
+  String get khatmaReplan => 'Adjust the plan';
+
+  @override
+  String get khatmaCatchUpToday => 'Finish the missed portion today';
+
+  @override
+  String get khatmaCatchUpGradually => 'Catch up gradually';
+
+  @override
+  String get khatmaCompletionBody =>
+      'You completed this khatma. May Allah accept it from you.';
+
+  @override
+  String get khatmaReusePlan => 'Use this plan again';
+
+  @override
+  String get khatmaKindFull => 'Full Quran';
+
+  @override
+  String get khatmaKindPartial => 'Selected range';
+
+  @override
+  String get khatmaKindDaily => 'Daily wird';
+
+  @override
+  String get khatmaKindCustom => 'Custom range';
+
+  @override
+  String get khatmaPresetLabel => 'Template';
+
+  @override
+  String get khatmaPresetCustom => 'Custom plan';
+
+  @override
+  String get khatmaPresetMonth => 'One month';
+
+  @override
+  String khatmaPresetRamadan30(int n, String days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$days days',
+      one: '$days day',
+    );
+    return 'Ramadan: $_temp0';
+  }
+
+  @override
+  String get khatmaPresetRamadanTwice => 'Two khatmas in Ramadan';
+
+  @override
+  String get khatmaPresetBeforeLastTen => 'Before the last ten nights';
+
+  @override
+  String get khatmaPresetWeekly => 'One week';
+
+  @override
+  String get khatmaPresetDailyJuz => 'A juz a day';
+
+  @override
+  String get khatmaFromSurah => 'From surah';
+
+  @override
+  String get khatmaToSurah => 'To surah';
+
+  @override
+  String get khatmaFromAyah => 'From verse';
+
+  @override
+  String get khatmaToAyah => 'To verse';
+
+  @override
+  String get khatmaRangeError => 'Choose a start verse before the end verse.';
+
+  @override
+  String get khatmaScheduleMode => 'Schedule';
+
+  @override
+  String get khatmaScheduleAdaptive => 'Adaptive';
+
+  @override
+  String get khatmaScheduleFixed => 'Fixed';
+
+  @override
+  String get khatmaRestDays => 'Rest days (optional)';
+
+  @override
+  String get khatmaAtLeastOneReadingDay =>
+      'Keep at least one reading day each week.';
+
+  @override
+  String get khatmaCountingMode => 'How reading counts';
+
+  @override
+  String get khatmaCountAuto => 'Count automatically';
+
+  @override
+  String get khatmaCountAsk => 'Ask each time';
+
+  @override
+  String get khatmaCountManual => 'Only when I mark it';
+
+  @override
+  String get khatmaMakePrimary => 'Make this the primary khatma';
+
+  @override
+  String get khatmaUnitRub => 'Quarter hizb';
+
+  @override
+  String khatmaReviewRange(String from, String to) {
+    return 'Range: $from–$to';
+  }
 
   @override
   String get khatmaNew => 'New khatma';
@@ -933,13 +1338,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get khatmaUnitHizb => 'Hizb';
 
   @override
-  String khatmaAboutPerDay(String count) {
-    return 'About $count pages a day';
+  String khatmaAboutPerDay(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count pages',
+      one: '$count page',
+    );
+    return 'About $_temp0 a day';
   }
 
   @override
-  String khatmaDuration(String count, String date) {
-    return '$count days, finishing on $date';
+  String khatmaDuration(int n, String count, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count days',
+      one: '$count day',
+    );
+    return '$_temp0, finishing on $date';
   }
 
   @override
@@ -989,8 +1406,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get khatmaContinue => 'Keep reading';
 
   @override
-  String khatmaProgress(String done, String total) {
-    return '$done of $total pages';
+  String khatmaProgress(String done, int n, String total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$total pages',
+      one: '$total page',
+    );
+    return '$done of $_temp0';
   }
 
   @override
@@ -1010,7 +1433,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get khatmaBehindBody =>
-      'They are added to today\'s portion. You can spread them over the days left, or move the end date.';
+      'They join today\'s portion. Choose whether to finish them today, catch up gradually, spread the remaining amount, or move the end date.';
 
   @override
   String get khatmaSpread => 'Spread over the days left';
@@ -1089,24 +1512,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportsDayRead => 'A day with reading or listening';
 
   @override
-  String streakReadToday(String count) {
-    return 'You read today. Days in a row: $count';
-  }
-
-  @override
-  String streakContinue(String count) {
-    return 'Days in a row until yesterday: $count. A page today continues it.';
-  }
+  String get streakReadToday => 'You read today.';
 
   @override
   String get streakWelcome => 'Welcome back. Pick up where you left off.';
 
   @override
-  String get streakNotesToggle => 'Streak notes';
+  String readDaysOfLast(String read, int n, String days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$days days',
+      one: 'day',
+    );
+    return 'You read on $read of the last $_temp0';
+  }
+
+  @override
+  String get streakNotesToggle => 'Gentle notes';
 
   @override
   String get streakNotesHint =>
-      'Shows days in a row only; missed days are never shown.';
+      'Calm notes on your reading; they never count days in a row or show missed days.';
 
   @override
   String get journalTitle => 'Tadabbur journal';
@@ -1135,7 +1562,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String journalVerseRef(String surah, String ayah) {
-    return '$surah · verse $ayah';
+    return '$surah | verse $ayah';
   }
 
   @override
@@ -1170,8 +1597,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String searchMeaningCount(String count) {
-    return '$count verses';
+  String searchMeaningCount(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count verses',
+      one: '$count verse',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -1596,7 +2029,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get riwayaGaps =>
-      'In the riwaya editions: no word highlighting while listening, no colouring of the divine names, and no hizb or quarter in the frame (the page carries its own printed signs).';
+      'In the riwaya editions: no word highlighting while listening (their recitations are timed by verse only), and no hizb or quarter in the frame (the page carries its own printed signs).';
+
+  @override
+  String get riwayaNoWordBoxes =>
+      'This riwaya\'s downloaded pages carry no word boxes, so the divine names are not coloured and words cannot be picked. The newer page pack carries them.';
+
+  @override
+  String get riwayaWordNoStudy =>
+      'No word study for this word here: word study is built on the words of Hafs, and opens for a riwaya\'s word only when it is the same word, letter for letter, in the same verse of Hafs.';
 
   @override
   String riwayaTafsirNote(
@@ -1657,4 +2098,1865 @@ class AppLocalizationsEn extends AppLocalizations {
   String reciterOfRiwaya(String riwaya) {
     return 'Riwaya of $riwaya';
   }
+
+  @override
+  String get copyVerses => 'Copy';
+
+  @override
+  String get shareVerseText => 'Share as text';
+
+  @override
+  String get shareVerseImage => 'Share as image';
+
+  @override
+  String get sharePreparing => 'Preparing the image…';
+
+  @override
+  String get shareImageFailed => 'Could not prepare the image';
+
+  @override
+  String get shareSurahImage => 'Share the surah as images';
+
+  @override
+  String get shareImageTitle => 'Share as image';
+
+  @override
+  String shareImageOf(String n, String total) {
+    return '$n of $total';
+  }
+
+  @override
+  String get sharePreviousImage => 'Previous picture';
+
+  @override
+  String get shareNextImage => 'Next picture';
+
+  @override
+  String get shareButton => 'Share';
+
+  @override
+  String get saveToPhotos => 'Save to Photos';
+
+  @override
+  String get savedToPhotos => 'Saved to Photos';
+
+  @override
+  String savedToFolder(String folder) {
+    return 'Saved in $folder';
+  }
+
+  @override
+  String get saveToPhotosFailed => 'Could not save to Photos';
+
+  @override
+  String get shareImageRiwayaUnavailable =>
+      'This riwaya\'s text and font are not on this device yet, so its verses cannot be shared as images. Download its pages first.';
+
+  @override
+  String get backupTitle => 'Backup';
+
+  @override
+  String get backupExport => 'Save a backup';
+
+  @override
+  String get backupExportHint =>
+      'One file with your bookmarks, marks, reading position, khatma, reports, tadabbur notes and hifz progress, and your settings. Keep it, or send it to yourself.';
+
+  @override
+  String get backupImport => 'Restore from a backup';
+
+  @override
+  String get backupImportHint =>
+      'Merges the backup with what is on this device: nothing is deleted, the newer copy wins where they differ, and the settings come back as they were in the backup.';
+
+  @override
+  String backupDone(String added, String updated) {
+    return 'Restored: $added new, $updated updated';
+  }
+
+  @override
+  String get backupInvalid => 'This file is not a Tibyan backup';
+
+  @override
+  String get backupFailed => 'That did not work';
+
+  @override
+  String get playbackSpeedLabel => 'Recitation speed';
+
+  @override
+  String playbackSpeedValue(String value) {
+    return '×$value';
+  }
+
+  @override
+  String get storageTitle => 'Storage and downloads';
+
+  @override
+  String get storageOpen => 'Storage and downloads';
+
+  @override
+  String get storageOpenHint =>
+      'What is downloaded on this device and how big it is; delete what you do not need';
+
+  @override
+  String get storageIntro =>
+      'Everything the app downloaded to this device. You can delete any of it and download it again later. Your own data (bookmarks, khatma, notes) is not listed here and is never touched.';
+
+  @override
+  String storageTotal(String size) {
+    return 'Total: $size';
+  }
+
+  @override
+  String get storageBundled => 'Comes with the app';
+
+  @override
+  String storageSize(String mb) {
+    return '$mb MB';
+  }
+
+  @override
+  String storageAudioOf(String name) {
+    return '$name\'s recitations';
+  }
+
+  @override
+  String get storageSemantic => 'Search-by-meaning pack';
+
+  @override
+  String get storageTiming => 'Recitation timing updates';
+
+  @override
+  String get storagePartial => 'Unfinished downloads';
+
+  @override
+  String get storagePartialHint =>
+      'What is left of downloads that stopped; safe to delete';
+
+  @override
+  String get storageClean => 'Clean up';
+
+  @override
+  String storageDeleteAsk(String name, String size) {
+    return 'Delete $name ($size)?';
+  }
+
+  @override
+  String storageFreed(String size) {
+    return 'Freed $size';
+  }
+
+  @override
+  String get storageEmpty =>
+      'Nothing is downloaded beyond what comes with the app';
+
+  @override
+  String get storageUnknown => 'Other files';
+
+  @override
+  String get asbabTitle => 'Occasions of revelation';
+
+  @override
+  String asbabCount(String count) {
+    return 'Occasions of revelation ($count)';
+  }
+
+  @override
+  String bookCitationTahqiq(String name) {
+    return 'ed. $name';
+  }
+
+  @override
+  String bookCitationVolume(String volume) {
+    return 'vol. $volume';
+  }
+
+  @override
+  String bookCitationPage(String page) {
+    return 'p. $page';
+  }
+
+  @override
+  String bookCitationPages(String from, String to) {
+    return 'pp. $from–$to';
+  }
+
+  @override
+  String storageBook(String title) {
+    return 'Book: $title';
+  }
+
+  @override
+  String get storageBooksAvailable => 'Books you can download';
+
+  @override
+  String get bookPackDownload => 'Download';
+
+  @override
+  String get munasabatTitle => 'Connections between verses';
+
+  @override
+  String munasabatCount(String count) {
+    return 'Connections between verses ($count)';
+  }
+
+  @override
+  String get wujuhTitle => 'Senses of the word in the Quran';
+
+  @override
+  String get bookKindTafsir => 'Tafsir';
+
+  @override
+  String bookEntryVerses(String from, String to) {
+    return 'Verses $from–$to';
+  }
+
+  @override
+  String get continuousView => 'Continuous view';
+
+  @override
+  String get underVerseTitle => 'Under each verse';
+
+  @override
+  String get underArabicOnly => 'Arabic only';
+
+  @override
+  String get underTranslation => 'Arabic with a translation';
+
+  @override
+  String get underTranslationHint => 'Choose one or two';
+
+  @override
+  String get underMuyassar => 'Arabic with al-Tafsir al-Muyassar';
+
+  @override
+  String get splitTranslationLabel => 'Beside the page on wide screens';
+
+  @override
+  String get splitTranslationHint =>
+      'The page as printed, with your choice for its verses beside it';
+
+  @override
+  String get nextSurah => 'Next surah';
+
+  @override
+  String get previousSurah => 'Previous surah';
+
+  @override
+  String get hafsTextNote => 'The text here is in the Hafs riwaya';
+
+  @override
+  String get twoPageSpread => 'Two facing pages';
+
+  @override
+  String get twoPageSpreadHint =>
+      'On wide screens held sideways, like an open mushaf';
+
+  @override
+  String get oneVerse => 'Verse by verse';
+
+  @override
+  String get oneVerseHint =>
+      'One verse a screen in large print, the phone sideways';
+
+  @override
+  String get oneVerseAutoOff => 'Auto-turn is off. Tap to turn it on';
+
+  @override
+  String oneVerseAutoOn(int n, String seconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$seconds seconds',
+      one: 'second',
+    );
+    return 'Turns to the next verse every $_temp0. Tap to change';
+  }
+
+  @override
+  String get oneVerseAutoShort => 'Auto';
+
+  @override
+  String secondsShort(String n) {
+    return '$n s';
+  }
+
+  @override
+  String get searchScopeAll => 'The whole mushaf';
+
+  @override
+  String get searchScopeJuz => 'In a juz';
+
+  @override
+  String get searchScopeSurah => 'In a surah';
+
+  @override
+  String get whatsNewTitle => 'What\'s new';
+
+  @override
+  String get whatsNewDone => 'OK';
+
+  @override
+  String get newOneVerse => 'Verse by verse';
+
+  @override
+  String get newOneVerseBody =>
+      'A button under the page turns the phone sideways and shows one verse in large print, with an optional auto-turn.';
+
+  @override
+  String get newUnderVerse => 'Translation under the verse';
+
+  @override
+  String get newUnderVerseBody =>
+      'The continuous view, from the page\'s tools: one or two translations, or al-Muyassar, under each verse.';
+
+  @override
+  String get newShare => 'Copy and share';
+
+  @override
+  String get newShareBody =>
+      'Copy a verse, or share it as text or as a picture in Tibyan\'s design, even over a page break. Long-press the surah\'s name above the page to share the whole surah as pictures.';
+
+  @override
+  String get newSpread => 'Two facing pages';
+
+  @override
+  String get newSpreadBody =>
+      'On a tablet or a wide screen held sideways, the mushaf opens like a printed copy.';
+
+  @override
+  String get newWidgets => 'Widgets';
+
+  @override
+  String get newWidgetsBody =>
+      'Today\'s khatma portion and reading shortcuts on the home screen, and a Listen tile in Quick Settings.';
+
+  @override
+  String get newBackup => 'Backup';
+
+  @override
+  String get newBackupBody =>
+      'Save your bookmarks, khatma, notes and settings in one file, and restore them on any device.';
+
+  @override
+  String get carContinue => 'Continue where you stopped reading';
+
+  @override
+  String get carReciters => 'Reciters';
+
+  @override
+  String get pagesMapCurrent => 'Current page';
+
+  @override
+  String get pagesMapRead => 'Read in the khatma';
+
+  @override
+  String get pagesMapMarked => 'Has a bookmark';
+
+  @override
+  String pagesRange(String first, String last) {
+    return 'p. $first–$last';
+  }
+
+  @override
+  String pagesMapJuzRead(String read, String total) {
+    return '$read of $total read';
+  }
+
+  @override
+  String get focusModeTitle => 'Focus mode';
+
+  @override
+  String get focusModeHint =>
+      'The page alone, with no frame and nothing under it, and a thin bar at the top';
+
+  @override
+  String get focusToolsLabel => 'Showing the tools';
+
+  @override
+  String get focusToolsButton => 'Simple buttons';
+
+  @override
+  String get focusToolsButtonHint => 'Three small buttons in the top bar';
+
+  @override
+  String get focusToolsMenu => 'Menu';
+
+  @override
+  String get focusToolsMenuHint =>
+      'A long press on the page opens a window with every tool';
+
+  @override
+  String get pageTurnLabel => 'Page turn effect';
+
+  @override
+  String get pageTurnNormal => 'Normal';
+
+  @override
+  String get pageTurnNormalHint => 'The page slides aside';
+
+  @override
+  String get pageTurnCurl => '3D page flip';
+
+  @override
+  String get pageTurnCurlHint => 'The page turns over like paper';
+
+  @override
+  String get pageTurnBend => 'Paper curl';
+
+  @override
+  String get pageTurnBendHint =>
+      'The page curls round with your finger like paper, its back showing';
+
+  @override
+  String get pageTurnFold => 'Light curl';
+
+  @override
+  String get pageTurnFoldHint =>
+      'The page\'s edge folds back with your finger, lighter on the device';
+
+  @override
+  String get pageTurnFade => 'Fade';
+
+  @override
+  String get pageTurnFadeHint => 'The next page fades in over the last';
+
+  @override
+  String get pageFillLabel => 'Filling the screen';
+
+  @override
+  String get pageFillLines => 'Spread the lines';
+
+  @override
+  String get pageFillLinesHint =>
+      'Each line as wide as the screen, the lines spread over its height';
+
+  @override
+  String get pageFillStretch => 'Spread + slight stretch';
+
+  @override
+  String get pageFillStretchHint =>
+      'Plus up to 12% wider where the page fills the height';
+
+  @override
+  String get pageFillFull => 'Full stretch';
+
+  @override
+  String get pageFillFullHint =>
+      'The page fills the screen both ways, which changes the letters\' shape';
+
+  @override
+  String get playerStyleLabel => 'Player style';
+
+  @override
+  String get playerStyleAuto => 'Automatic';
+
+  @override
+  String get playerStyleAutoHint =>
+      'The normal player when reading, the focus player in focus mode';
+
+  @override
+  String get playerStyleNormal => 'Normal';
+
+  @override
+  String get playerStylePill => 'Focus';
+
+  @override
+  String get playerStylePillHint =>
+      'Small and see-through, with play, settings and close';
+
+  @override
+  String get playerStyleButton => 'Single button';
+
+  @override
+  String get playerStyleButtonHint =>
+      'A small button: tap to play or pause, long press for the menu';
+
+  @override
+  String get focusExit => 'Exit focus';
+
+  @override
+  String get focusTools => 'Tools';
+
+  @override
+  String get focusShowTools => 'Show the tools';
+
+  @override
+  String get focusHideTools => 'Hide the tools';
+
+  @override
+  String get focusMenus => 'Menus';
+
+  @override
+  String get focusPageTools => 'Page tools';
+
+  @override
+  String get playerFull => 'Full player';
+
+  @override
+  String get tajweedMarksSubtitle => 'Tajweed rules: colours and places';
+
+  @override
+  String get tajweedMarksHint =>
+      'Each rule in the colour the mushaf pages give it, and every place it falls in the mushaf. Tap a rule to see its places, and a place to open its page.';
+
+  @override
+  String tajweedRuleCount(String verses, String letters) {
+    return 'Verses: $verses · Coloured letters: $letters';
+  }
+
+  @override
+  String tajweedPlaceAt(String surah, String ayah, String page) {
+    return '$surah $ayah · page $page';
+  }
+
+  @override
+  String get tajweedIndexColorNote =>
+      'Colours as the pages draw them now: your choice, or the default. Change them in Mushaf look.';
+
+  @override
+  String get tajweedIndexLoadError =>
+      'The places of this rule could not be read.';
+
+  @override
+  String get tajweedMarksInkNote =>
+      'Where a rule falls on a mark alone (like the small meem), the mark stays in the text colour here: the font cannot colour a mark without part of its letter. The mushaf page shows it in colour.';
+
+  @override
+  String get assistantTitle => 'Assistant';
+
+  @override
+  String get assistantIntro => 'Help with using the app and the mushaf';
+
+  @override
+  String get tajweedMarksTitle => 'Tajweed marks';
+
+  @override
+  String get moreLabel => 'More';
+
+  @override
+  String wirdIndicator(String read, String total) {
+    return 'Today\'s portion: $read of $total';
+  }
+
+  @override
+  String get khatmaContinueMine => 'Continue my khatma';
+
+  @override
+  String askCreditLine(String plan) {
+    return 'Your last reading is part of “$plan”. Count it?';
+  }
+
+  @override
+  String get askCreditCount => 'Count it';
+
+  @override
+  String get askCreditNo => 'No';
+
+  @override
+  String get khatmaPendingTitle => 'Readings waiting to be counted';
+
+  @override
+  String khatmaPendingOn(String date) {
+    return 'Reading on $date';
+  }
+
+  @override
+  String get tasmeeTitle => 'Recitation practice';
+
+  @override
+  String get tasmeeDescription =>
+      'Recite from memory. Tibyan listens on this device, reveals words, and marks possible mistakes. Audio is not sent anywhere; tajweed is not graded.';
+
+  @override
+  String get tasmeeSelectRange => 'Choose a practice range';
+
+  @override
+  String get tasmeeSurah => 'Surah';
+
+  @override
+  String get tasmeeJuz => 'Juz';
+
+  @override
+  String get tasmeeHizb => 'Hizb';
+
+  @override
+  String get tasmeeFirstHalf => 'First';
+
+  @override
+  String get tasmeeSecondHalf => 'Second';
+
+  @override
+  String get tasmeeFromSecondQuarter => 'Start from the second quarter';
+
+  @override
+  String get tasmeeMode => 'Practice mode';
+
+  @override
+  String get tasmeeContinuous => 'Continuous';
+
+  @override
+  String get tasmeeVerseByVerse => 'Verse by verse';
+
+  @override
+  String get tasmeeInvalidRange => 'Check the selected range numbers.';
+
+  @override
+  String get tasmeeDownloadModel => 'Download recitation model';
+
+  @override
+  String get tasmeeListening => 'Listening';
+
+  @override
+  String get tasmeeNotListening => 'Tap to start and recite from memory';
+
+  @override
+  String get tasmeeModelLoad => 'Preparing model';
+
+  @override
+  String get tasmeeWordWrong => 'Mistake';
+
+  @override
+  String get tasmeeWordSkipped => 'Skipped';
+
+  @override
+  String get tasmeeSessionComplete => 'Recitation complete';
+
+  @override
+  String tasmeeSessionDoubtful(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count unsure words, not counted in the accuracy',
+      one: '$count unsure word, not counted in the accuracy',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tasmeeAccuracy => 'Accuracy';
+
+  @override
+  String get tasmeeAccuracyShort => 'accuracy';
+
+  @override
+  String tasmeeAcrossSurahs(
+    String fromSurah,
+    String fromAyah,
+    String toSurah,
+    String toAyah,
+    String mode,
+  ) {
+    return '$fromSurah $fromAyah – $toSurah $toAyah · $mode';
+  }
+
+  @override
+  String get tasmeeAyah => 'Verse';
+
+  @override
+  String get tasmeeCancelDownload => 'Cancel download';
+
+  @override
+  String get tasmeeClearHistory => 'Clear the tasmee history';
+
+  @override
+  String get tasmeeClearHistoryBody =>
+      'What the app keeps of your past sessions (the last tasmee) is removed. No audio is ever kept.';
+
+  @override
+  String get tasmeeClearHistoryHint => 'The last tasmee and its result';
+
+  @override
+  String get tasmeeTrainTitle =>
+      'Help us improve and train the model with your recordings';
+
+  @override
+  String get tasmeeTrainBody =>
+      'On the «Tasmee training» platform you recite verses from memory and donate your recording, so the tasmee model learns and gets more accurate. Taking part is entirely optional.';
+
+  @override
+  String get tasmeeTrainHowTitle => 'How to take part?';
+
+  @override
+  String get tasmeeTrainStep1 =>
+      'Create an account with your email and accept the participation terms.';
+
+  @override
+  String get tasmeeTrainStep2 =>
+      'Pick a surah and a range of verses, and recite them from memory into the microphone. Each recording can be up to two minutes.';
+
+  @override
+  String get tasmeeTrainStep3 =>
+      'Record in a quiet place, close to the microphone, clearly and at a comfortable pace. Both correct recitations and deliberate mistakes are needed for training.';
+
+  @override
+  String get tasmeeTrainStep4 =>
+      'Volunteers review your recording before it joins the training data.';
+
+  @override
+  String get tasmeeTrainPrivacy =>
+      'Privacy: we ask only for your email and birth year; anyone under 18 needs parental consent. Accepted recordings are shared under CC BY 4.0, raw files are never public, and you can delete your recordings at any time.';
+
+  @override
+  String get tasmeeTrainOpen => 'Open the training platform';
+
+  @override
+  String get tasmeeTrainOpenFailed =>
+      'Couldn\'t open the browser. Open train.altibyan.app manually.';
+
+  @override
+  String get tasmeeClose => 'Close';
+
+  @override
+  String get tasmeeConfirm => 'Confirm';
+
+  @override
+  String get tasmeeContinueLast => 'Continue';
+
+  @override
+  String get tasmeeContinuousHint =>
+      'Read on; each word appears in place as you read it';
+
+  @override
+  String get tasmeeDefaultsNote => 'Defaults come from Settings › Tasmee';
+
+  @override
+  String get tasmeeDeleteModel => 'Delete the model';
+
+  @override
+  String get tasmeeDeleteModelBody =>
+      'The tasmee model is removed from this device. You will need to download it again before the next tasmee.';
+
+  @override
+  String get tasmeeDone => 'Done';
+
+  @override
+  String get tasmeeDownloadShort => 'Get model';
+
+  @override
+  String tasmeeDownloadSize(String size) {
+    return 'Download ($size MB)';
+  }
+
+  @override
+  String tasmeeDurationWords(
+    String minutes,
+    String seconds,
+    int n,
+    String words,
+  ) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$words words',
+      one: '$words word',
+    );
+    return '$minutes min $seconds s · $_temp0';
+  }
+
+  @override
+  String get tasmeeElapsed => 'Time';
+
+  @override
+  String get tasmeeEnd => 'Finish';
+
+  @override
+  String get tasmeeFeedback => 'While reciting';
+
+  @override
+  String get tasmeeFinishing => 'Finishing…';
+
+  @override
+  String get tasmeeFromPage => 'From page';
+
+  @override
+  String get tasmeeFromSurah => 'From surah';
+
+  @override
+  String get tasmeeHelp => 'Help';
+
+  @override
+  String get tasmeeHint => 'Hint';
+
+  @override
+  String get tasmeeHistory => 'History';
+
+  @override
+  String get tasmeeKindHalfHizb => 'Half hizb';
+
+  @override
+  String get tasmeeKindHizb => 'Hizb';
+
+  @override
+  String get tasmeeKindJuz => 'Juz';
+
+  @override
+  String get tasmeeKindPages => 'Pages';
+
+  @override
+  String get tasmeeKindQuarter => 'Quarter';
+
+  @override
+  String get tasmeeKindSurah => 'Surah';
+
+  @override
+  String get tasmeeKindThreeQuarters => '¾ hizb';
+
+  @override
+  String get tasmeeKindVerses => 'Verses';
+
+  @override
+  String tasmeeLastSession(String range, String accuracy) {
+    return 'Last tasmee: $range · $accuracy';
+  }
+
+  @override
+  String get tasmeeLenient => 'Lenient';
+
+  @override
+  String get tasmeeLenientHint => 'Accepts a word heard less exactly';
+
+  @override
+  String get tasmeeLess => 'Less';
+
+  @override
+  String tasmeeListeningVerse(String ayah) {
+    return 'Verse $ayah: listening';
+  }
+
+  @override
+  String get tasmeeMarkAndGoOn => 'Mark and go on';
+
+  @override
+  String get tasmeeMedium => 'Medium';
+
+  @override
+  String get tasmeeMediumHint => 'Forgives one letter in a long word';
+
+  @override
+  String get tasmeeMicOff => 'Microphone access is off';
+
+  @override
+  String get tasmeeMicPrivacy =>
+      'Tasmee listens on this device only. Nothing is sent or kept.';
+
+  @override
+  String tasmeeMistakes(String count) {
+    return '$count mistakes';
+  }
+
+  @override
+  String get tasmeeModelChecking => 'Checking the size…';
+
+  @override
+  String get tasmeeModelDetails =>
+      'Source and licence in About this mushaf › Sources';
+
+  @override
+  String get tasmeeModelFailed =>
+      'Could not connect. Check the internet and try again.';
+
+  @override
+  String tasmeeModelInstalled(String version) {
+    return 'Model installed (version $version)';
+  }
+
+  @override
+  String get tasmeeModelMissing => 'The tasmee model is not downloaded';
+
+  @override
+  String get tasmeeModelOffline => 'Works offline afterwards';
+
+  @override
+  String tasmeeModelProgress(String done, String total) {
+    return '$done of $total MB';
+  }
+
+  @override
+  String get tasmeeModelRemove => 'Remove it any time in Settings › Tasmee';
+
+  @override
+  String tasmeeModelSize(String size) {
+    return '$size MB · one time';
+  }
+
+  @override
+  String get tasmeeModelSizeUnknown => 'One time';
+
+  @override
+  String tasmeeModelSpace(String size) {
+    return 'Space used: $size MB';
+  }
+
+  @override
+  String get tasmeeModelTitle => 'Tasmee model';
+
+  @override
+  String get tasmeeModelUpdate => 'Update';
+
+  @override
+  String tasmeeModelUpdateAvailable(String size) {
+    return 'Model update available ($size MB)';
+  }
+
+  @override
+  String get tasmeeModelUpdateKeeps =>
+      'The current model keeps working until the new one is fully downloaded, then it is removed';
+
+  @override
+  String get tasmeeModelUpdateTitle => 'Update the tasmee model';
+
+  @override
+  String get tasmeeModelVoiceStays =>
+      'Your voice stays on this device, never sent or kept';
+
+  @override
+  String get tasmeeModelWifiNote => 'Best on Wi‑Fi; mobile data may be charged';
+
+  @override
+  String get tasmeeMore => 'More';
+
+  @override
+  String get tasmeeNew => 'New tasmee';
+
+  @override
+  String get tasmeeNoAudioKept =>
+      'The last tasmee is kept so you can continue. No audio is kept.';
+
+  @override
+  String get tasmeeNoMistakes => 'no mistakes';
+
+  @override
+  String get tasmeeNotNow => 'Not now';
+
+  @override
+  String get tasmeeNothingToReview => 'Well done: no verse needs review.';
+
+  @override
+  String get tasmeeNoticeDeviceBody =>
+      'Your voice is never sent anywhere or kept.';
+
+  @override
+  String get tasmeeNoticeDeviceTitle => 'It runs on your device';
+
+  @override
+  String get tasmeeNoticeMishearBody =>
+      'A word it is unsure of gets a dotted line and does not count against you.';
+
+  @override
+  String get tasmeeNoticeMishearTitle => 'It can mishear';
+
+  @override
+  String get tasmeeNoticeOk => 'Got it';
+
+  @override
+  String get tasmeeNoticeStart => 'Got it, start';
+
+  @override
+  String get tasmeeNoticeTajweedBody =>
+      'Nor makharij, madd, or where you stop and start.';
+
+  @override
+  String get tasmeeNoticeTajweedTitle => 'It does not judge tajweed';
+
+  @override
+  String get tasmeeNoticeTitle =>
+      'Tasmee checks your memorisation, not your tajweed';
+
+  @override
+  String get tasmeeNoticeWordsBody =>
+      'Did you read what is in the mushaf, word by word?';
+
+  @override
+  String get tasmeeNoticeWordsTitle => 'It checks the words and their order';
+
+  @override
+  String get tasmeeOnError => 'On a mistake';
+
+  @override
+  String get tasmeeOneMistake => 'one mistake';
+
+  @override
+  String tasmeeOneTo(String max) {
+    return '1 to $max';
+  }
+
+  @override
+  String get tasmeeOpenDeviceSettings => 'Open device settings';
+
+  @override
+  String get tasmeeOtherEdition =>
+      'Tasmee follows the pages of the new Madina mushaf (1441); with your edition the words appear here in order.';
+
+  @override
+  String get tasmeePause => 'Pause';
+
+  @override
+  String get tasmeePaused => 'Paused';
+
+  @override
+  String get tasmeeProgress => 'Range recited';
+
+  @override
+  String get tasmeeQuarterOfHizb => 'Quarter';
+
+  @override
+  String get tasmeeRange => 'Range';
+
+  @override
+  String tasmeeRangeSummary(
+    String from,
+    String to,
+    int verseTotal,
+    String verses,
+    int wordTotal,
+    String words,
+    String pages,
+  ) {
+    String _temp0 = intl.Intl.pluralLogic(
+      verseTotal,
+      locale: localeName,
+      other: '$verses verses',
+      one: '$verses verse',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      wordTotal,
+      locale: localeName,
+      other: '$words words',
+      one: '$words word',
+    );
+    return 'From $from to $to · $_temp0 · $_temp1 · p. $pages';
+  }
+
+  @override
+  String get tasmeeReReadWord => 'Re-read the word marked in red';
+
+  @override
+  String get tasmeeReciteAgain => 'Recite these again';
+
+  @override
+  String get tasmeeReciteVerse => 'Recite verse';
+
+  @override
+  String get tasmeeRedownload => 'Download the model again';
+
+  @override
+  String get tasmeeRedownloadBody =>
+      'The current model is removed and downloaded again.';
+
+  @override
+  String get tasmeeRepeat => 'Again';
+
+  @override
+  String get tasmeeResume => 'Resume';
+
+  @override
+  String get tasmeeRetry => 'Try again';
+
+  @override
+  String tasmeeReviewRow(String ayah, String accuracy) {
+    return 'Verse $ayah, accuracy $accuracy';
+  }
+
+  @override
+  String tasmeeRingSemantics(String title, String note, String value) {
+    return '$title, $note: $value';
+  }
+
+  @override
+  String tasmeeSeconds(String count) {
+    return '$count s';
+  }
+
+  @override
+  String tasmeeSessionTitle(String surah) {
+    return 'Tasmee · $surah';
+  }
+
+  @override
+  String get tasmeeSettingsNote => 'Mode, mistakes, the model';
+
+  @override
+  String get tasmeeSkipWord => 'Skip it';
+
+  @override
+  String get tasmeeStart => 'Start';
+
+  @override
+  String get tasmeeStartReciting => 'Start reciting';
+
+  @override
+  String get tasmeeStopToCorrect => 'Stop to correct';
+
+  @override
+  String get tasmeeStopToCorrectHint => 'Waits until you read the right word';
+
+  @override
+  String get tasmeeStrict => 'Strict';
+
+  @override
+  String get tasmeeStrictHint => 'The word letter for letter';
+
+  @override
+  String get tasmeeStrictness => 'Matching';
+
+  @override
+  String get tasmeeSummary => 'Summary';
+
+  @override
+  String get tasmeeTestByTouch => 'Test yourself by tapping instead';
+
+  @override
+  String get tasmeeThisVerse => 'this verse';
+
+  @override
+  String get tasmeeToPage => 'To page';
+
+  @override
+  String get tasmeeToReview => 'Verses to review';
+
+  @override
+  String get tasmeeToSurah => 'To surah';
+
+  @override
+  String get tasmeeToastDuration => 'How long a verse result shows';
+
+  @override
+  String get tasmeeVerseByVerseHint =>
+      'Tap, recite one verse, then see it whole with its result';
+
+  @override
+  String get tasmeeVerseDone => 'Verse done';
+
+  @override
+  String tasmeeVerseNumber(String ayah) {
+    return 'Verse $ayah';
+  }
+
+  @override
+  String tasmeeVerseOf(String n, String count) {
+    return 'Verse $n of $count: tap and recite it';
+  }
+
+  @override
+  String tasmeeVerseResult(String ayah, String accuracy, String detail) {
+    return 'Verse $ayah · $accuracy · $detail';
+  }
+
+  @override
+  String get tasmeeVersesHeading => 'Verses';
+
+  @override
+  String tasmeeVersesLine(String from, String to, String mode) {
+    return 'Verses $from–$to · $mode';
+  }
+
+  @override
+  String get tasmeeVibration => 'Vibrate on a mistake';
+
+  @override
+  String get tasmeeVibrationHint =>
+      'A light buzz when a word is marked wrong or skipped';
+
+  @override
+  String get tasmeeWholeSession => 'whole tasmee';
+
+  @override
+  String get tasmeeWordCorrectedShort => 'Corrected';
+
+  @override
+  String get tasmeeWordHinted => 'Hinted';
+
+  @override
+  String get tasmeeAllowMicHint =>
+      'Open the device settings and allow Tibyan to use the microphone.';
+
+  @override
+  String get newKhatmah => 'The new khatma';
+
+  @override
+  String get newKhatmahBody =>
+      'Several khatmas at once, a setup wizard with ready plans, an adaptive daily portion, clearer stats and reminders, and today\'s portion shown in the mushaf.';
+
+  @override
+  String get newTasmee => 'Recite from memory (beta)';
+
+  @override
+  String get newTasmeeBody =>
+      'Recite from memory and each word appears in its place, with mistakes marked. It runs on your device, offline after the model download, and checks memorisation, not tajweed.';
+
+  @override
+  String get newSajdah => 'Sajdah timer';
+
+  @override
+  String get newSajdahBody =>
+      'At a verse of prostration the reciter pauses and a card shows the supplications with a countdown, then the recitation resumes. Turn it on in Settings.';
+
+  @override
+  String get newAssistant => 'The Assistant: help with using the app';
+
+  @override
+  String get newAssistantBody =>
+      'A new screen with the tajweed rules and their colours, each with its places in the mushaf.';
+
+  @override
+  String get newFocus => 'Focus mode';
+
+  @override
+  String get newFocusBody =>
+      'The page alone, frameless and filling the screen, tools when you need them, and a small player you can drag anywhere.';
+
+  @override
+  String get tasmeeAutoUpdateModel => 'Update the model automatically on Wi‑Fi';
+
+  @override
+  String get tasmeeAutoUpdateModelHint =>
+      'The newer version downloads in the background; the current one keeps working until it is complete';
+
+  @override
+  String tasmeeModelUpdated(String version) {
+    return 'The tasmee model was updated to version $version';
+  }
+
+  @override
+  String sourceInstalledVersion(String version) {
+    return 'Installed version: $version';
+  }
+
+  @override
+  String sourceAlsoCredited(String names) {
+    return 'Also credited: $names';
+  }
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get homeSections => 'Sections';
+
+  @override
+  String get homeContinueHint => 'Continue where you stopped';
+
+  @override
+  String get interfaceStyleTitle => 'Interface style';
+
+  @override
+  String get interfaceStyleHint =>
+      'The look of home, the index, settings and dialogs; the mushaf page keeps its own style';
+
+  @override
+  String get interfaceStyleMakhtuta => 'Manuscript';
+
+  @override
+  String get interfaceStyleHandasi => 'Geometric';
+
+  @override
+  String get interfaceStyleLayli => 'Night gold';
+
+  @override
+  String get settingsGroupAppearance => 'Appearance';
+
+  @override
+  String get settingsGroupListening => 'Listening and recitation';
+
+  @override
+  String get settingsGroupData => 'Data and privacy';
+
+  @override
+  String get newLook => 'A new look';
+
+  @override
+  String get newLookBody =>
+      'Three styles to choose from in Settings: Geometric, Manuscript and Night gold, with surah names in the King Fahd Complex\'s calligraphy and Meccan/Medinan emblems.';
+
+  @override
+  String get newModelUpdate => 'Automatic tasmee model updates';
+
+  @override
+  String get newModelUpdateBody =>
+      'When the recitation model improves, it downloads by itself on Wi‑Fi, and the old one keeps working until the new one is complete.';
+
+  @override
+  String get progressSaved => 'Result saved';
+
+  @override
+  String progressNewlyMastered(String count) {
+    return 'Newly mastered verses: $count';
+  }
+
+  @override
+  String progressStillMastered(String count) {
+    return 'Mastered: $count';
+  }
+
+  @override
+  String progressToReview(String count) {
+    return 'To review: $count';
+  }
+
+  @override
+  String get hifzTabToday => 'Today';
+
+  @override
+  String get hifzTabProgress => 'Progress';
+
+  @override
+  String get hifzTabHistory => 'History';
+
+  @override
+  String get hifzTabHardWords => 'Hard words';
+
+  @override
+  String get hifzTabGoals => 'Goals';
+
+  @override
+  String get hifzJourney => 'Hifz journey';
+
+  @override
+  String hifzJourneyLine(int n, String memorized, String mastered) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$memorized verses memorized',
+      one: '$memorized verse memorized',
+    );
+    return '$_temp0, $mastered mastered';
+  }
+
+  @override
+  String get hifzJourneyEmpty =>
+      'Recite what you know and your progress is kept here.';
+
+  @override
+  String get progressOverall => 'Overall';
+
+  @override
+  String get progressJuzCount => 'Juz';
+
+  @override
+  String get progressPagesCount => 'Pages';
+
+  @override
+  String get progressVersesCount => 'Verses';
+
+  @override
+  String get progressMemorized => 'Memorized';
+
+  @override
+  String get progressMastered => 'Mastered';
+
+  @override
+  String get progressNeedsReview => 'Needs review';
+
+  @override
+  String get progressAccuracy30 => 'Average accuracy, last 30 days';
+
+  @override
+  String get progressBySurah => 'By surah';
+
+  @override
+  String get progressByJuz => 'By juz';
+
+  @override
+  String progressLastRecited(String date) {
+    return 'Last recited $date';
+  }
+
+  @override
+  String get progressNotRecited => 'Not recited yet';
+
+  @override
+  String progressShares(String memorized, String mastered) {
+    return 'Memorized $memorized · mastered $mastered';
+  }
+
+  @override
+  String progressAccuracy(String value) {
+    return 'Accuracy $value';
+  }
+
+  @override
+  String progressSuggestRecite(String count) {
+    return 'Memorized verses not recited yet: $count. Recite them to master them.';
+  }
+
+  @override
+  String get progressMasteryRule =>
+      'A verse becomes “mastered” when you recite it at 90% accuracy or more.';
+
+  @override
+  String get progressEmpty =>
+      'Nothing memorized yet. Mark what you know on the map, or recite.';
+
+  @override
+  String get progressOpenMap => 'Open the map';
+
+  @override
+  String get historyEmpty =>
+      'No recitation saved yet. Every session is saved here on its own: its result only, never audio.';
+
+  @override
+  String get recitationVoice => 'By voice';
+
+  @override
+  String get recitationTouch => 'By touch';
+
+  @override
+  String get recitationTest => 'Hifz test';
+
+  @override
+  String historyVerses(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count verses',
+      one: '$count verse',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get sessionSummary => 'Session summary';
+
+  @override
+  String get sessionDelete => 'Remove from history';
+
+  @override
+  String sessionSensitivity(String level) {
+    return 'Matching: $level';
+  }
+
+  @override
+  String get sessionSlips => 'Slips';
+
+  @override
+  String get hardWordsEmpty =>
+      'No hard words yet. A word you miss or skip more than once shows here.';
+
+  @override
+  String hardWordsCount(int n, String count, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count times',
+      one: '$count time',
+    );
+    return '$_temp0 · last $date';
+  }
+
+  @override
+  String get hardWordsHint => 'These words\' verses come first in review.';
+
+  @override
+  String get goalsEmpty => 'No goals yet. Pick a ready goal or make your own.';
+
+  @override
+  String get goalNew => 'New goal';
+
+  @override
+  String get goalTemplateAmma => 'Juz Amma in two months';
+
+  @override
+  String get goalTemplatePageDaily => 'A page a day';
+
+  @override
+  String get goalTemplateHizbWeekly => 'Review a hizb a week';
+
+  @override
+  String get goalTemplateFixSurah => 'Fix a surah';
+
+  @override
+  String get goalOpen => 'Open goal';
+
+  @override
+  String get goalOpenHint => 'Choose the range, length and unit';
+
+  @override
+  String get goalFromSurah => 'From surah';
+
+  @override
+  String get goalToSurah => 'To surah';
+
+  @override
+  String get goalSurah => 'Surah';
+
+  @override
+  String get goalHizb => 'Hizb';
+
+  @override
+  String goalDays(int n, String days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$days days',
+      one: '$days day',
+    );
+    return 'Length: $_temp0';
+  }
+
+  @override
+  String get goalUnit => 'Unit';
+
+  @override
+  String get goalCreate => 'Create the goal';
+
+  @override
+  String get goalTodayWird => 'Today’s portion';
+
+  @override
+  String get goalMemorize => 'Memorize';
+
+  @override
+  String get goalReview => 'Review';
+
+  @override
+  String goalReviewDue(String count) {
+    return 'Units due for review: $count';
+  }
+
+  @override
+  String goalReviewHard(String count) {
+    return 'Verses with hard words: $count';
+  }
+
+  @override
+  String get goalNothingToday => 'No portion today.';
+
+  @override
+  String goalMasteredShare(String value) {
+    return 'Mastered $value';
+  }
+
+  @override
+  String goalLeft(int n, String pages) {
+    return 'Pages left: $pages';
+  }
+
+  @override
+  String goalUntil(String date) {
+    return 'Until $date';
+  }
+
+  @override
+  String goalBehind(int n, String pages) {
+    return 'Pages left from past days: $pages';
+  }
+
+  @override
+  String get goalCatchUp => 'Catch up over days';
+
+  @override
+  String get goalExtend => 'Move the end date';
+
+  @override
+  String get goalPause => 'Pause';
+
+  @override
+  String get goalResume => 'Resume';
+
+  @override
+  String get goalDelete => 'Delete the goal';
+
+  @override
+  String get goalReminder => 'Daily reminder';
+
+  @override
+  String goalReminderAt(String time) {
+    return 'Reminder $time';
+  }
+
+  @override
+  String get goalReminderOff => 'Turn the reminder off';
+
+  @override
+  String get goalPaused => 'Paused';
+
+  @override
+  String get goalComplete => 'Goal complete, may Allah bless you.';
+
+  @override
+  String get goalCountedByMastery =>
+      'Progress counts mastered recitation, not marking by hand.';
+
+  @override
+  String get goalReminderTitle => 'Hifz portion';
+
+  @override
+  String goalReminderBody(String from, String to) {
+    return 'Memorize: pages $from–$to';
+  }
+
+  @override
+  String get goalRecite => 'Recite';
+
+  @override
+  String get hifzMapShowMastery => 'Mastery';
+
+  @override
+  String get hifzMapShowStrength => 'Strength';
+
+  @override
+  String get whatsNewHifzProgress => 'Hifz journey';
+
+  @override
+  String get newJourney => 'Your memorisation journey';
+
+  @override
+  String get newJourneyBody =>
+      'Every recitation is saved and measures your mastery: progress per surah and juz, a mastery map, the words you miss, and memorisation goals with a daily portion.';
+
+  @override
+  String onbStepOf(String step, String total) {
+    return 'Step $step of $total';
+  }
+
+  @override
+  String get onbSkipAll => 'Skip all';
+
+  @override
+  String get onbSkip => 'Skip';
+
+  @override
+  String get onbInterfaceTitle => 'Choose the interface style and its light';
+
+  @override
+  String get onbPageTitle => 'Choose how the mushaf page looks';
+
+  @override
+  String get onbReciterTitle => 'Listen to the mushaf in a voice you love';
+
+  @override
+  String onbReciterSuggest(String name) {
+    return 'Download the whole mushaf recited by $name';
+  }
+
+  @override
+  String onbReciterSize(String size) {
+    return 'About $size MB · carries on in the background';
+  }
+
+  @override
+  String get onbReciterOther => 'Choose another reciter';
+
+  @override
+  String get onbReciterOnline =>
+      'You can listen to any reciter online without downloading';
+
+  @override
+  String onbDownloadingBg(String done, String total) {
+    return 'Downloading in the background: $done of $total';
+  }
+
+  @override
+  String get onbTasmeeTitle => 'Recite and be checked';
+
+  @override
+  String get onbTasmeeBody =>
+      'Tibyan listens as you recite and marks slips, on your device and offline. It needs a speech model, downloaded once.';
+
+  @override
+  String get onbTasmeeDownload => 'Download the model';
+
+  @override
+  String onbTasmeeDownloading(String percent) {
+    return 'Downloading the model in the background: $percent%';
+  }
+
+  @override
+  String get onbTasmeeReady => 'The recitation model is ready';
+
+  @override
+  String get onbTasmeeFailed =>
+      'The download failed. You can get it later in Settings › Memorization.';
+
+  @override
+  String get onbStart => 'Start reading';
+
+  @override
+  String get settingsSectionAppearance => 'Appearance';
+
+  @override
+  String get settingsSectionAppearanceHint => 'Style, light, language, font';
+
+  @override
+  String get settingsSectionMushaf => 'Mushaf';
+
+  @override
+  String get settingsSectionMushafHint => 'Edition, page look, tajweed, focus';
+
+  @override
+  String get settingsSectionListening => 'Listening';
+
+  @override
+  String get settingsSectionListeningHint => 'Reciters, player, sajdah timer';
+
+  @override
+  String get settingsSectionHifz => 'Memorization';
+
+  @override
+  String get settingsSectionHifzHint => 'Hifz, recitation check, model';
+
+  @override
+  String get settingsSectionKhatma => 'Khatma & reminders';
+
+  @override
+  String get settingsSectionKhatmaHint => 'Plans, reminders, daily portion';
+
+  @override
+  String get settingsSectionStorage => 'Storage & backup';
+
+  @override
+  String get settingsSectionStorageHint => 'Space, backup, restore';
+
+  @override
+  String get settingsSectionAssistant => 'Assistant';
+
+  @override
+  String get settingsSectionAssistantHint =>
+      'Help with using the app and the mushaf';
+
+  @override
+  String get settingsSectionAbout => 'About Tibyan';
+
+  @override
+  String get settingsSectionAboutHint => 'What’s new, sources, version';
+
+  @override
+  String get settingsSearchHint => 'Search settings';
+
+  @override
+  String get settingsSearchEmpty => 'No setting matches. Try another word.';
+
+  @override
+  String get settingsKhatmaPlans => 'Khatma plans and reminders';
+
+  @override
+  String get settingsWirdIndicator => 'Daily portion indicator on the mushaf';
+
+  @override
+  String get settingsCountListening =>
+      'Count listening toward the daily portion';
+
+  @override
+  String get settingsHifzGoals => 'Memorization goals and reminders';
+
+  @override
+  String get digitsFontTitle => 'Interface digits font (Tibyan Digits)';
+
+  @override
+  String get digitsFontNote =>
+      'Every interface digit uses one clear font: a digits-only subset of IBM Plex Sans Arabic (© 2017 IBM Corp.), renamed because \"Plex\" is a Reserved Font Name. Licence: SIL Open Font License 1.1, which permits subsetting and modification under a new name and the same licence.';
+
+  @override
+  String get newSettings => 'Easier settings';
+
+  @override
+  String get newSettingsBody =>
+      'Settings are now eight sections with a search that takes you to any setting, plus clearer numbers across the app.';
+
+  @override
+  String get reportProblemTitle => 'Report a problem';
+
+  @override
+  String get reportProblemHint => 'Send us a bug, a problem or a suggestion';
+
+  @override
+  String get reportType => 'Report type';
+
+  @override
+  String get reportTypeBug => 'Bug';
+
+  @override
+  String get reportTypeProblem => 'Problem';
+
+  @override
+  String get reportTypeSuggestion => 'Suggested improvement';
+
+  @override
+  String get reportTypeOther => 'Other';
+
+  @override
+  String get reportDescription => 'Description';
+
+  @override
+  String get reportDescriptionHint =>
+      'What happened, where, and what you expected';
+
+  @override
+  String get reportDescriptionShort => 'Write at least five characters';
+
+  @override
+  String get reportPhone => 'Phone (optional)';
+
+  @override
+  String get reportPhoneInvalid => 'Invalid phone number';
+
+  @override
+  String get reportEmail => 'Email (optional)';
+
+  @override
+  String get reportEmailInvalid => 'Invalid email address';
+
+  @override
+  String get reportContactNote =>
+      'We use your phone and email only to reply to you, if you give them.';
+
+  @override
+  String get reportDeviceTitle => 'Attached to the report';
+
+  @override
+  String reportDeviceVersion(String version) {
+    return 'App version: $version';
+  }
+
+  @override
+  String reportDeviceSystem(String platform, String os) {
+    return 'System: $platform $os';
+  }
+
+  @override
+  String get reportSend => 'Send report';
+
+  @override
+  String get reportSent => 'Your report arrived, thank you.';
+
+  @override
+  String get reportQueued =>
+      'You\'re offline. The report is saved and will be sent when you\'re back online.';
+
+  @override
+  String get reportFailed =>
+      'The report couldn\'t be sent. Check what you wrote and try again.';
+
+  @override
+  String get reportRateLimited =>
+      'You\'ve just sent several reports. Try again shortly.';
+
+  @override
+  String reportPendingCount(int n) {
+    return 'Reports waiting to be sent: $n';
+  }
+
+  @override
+  String get helpGroupUsage => 'Using the app';
+
+  @override
+  String get helpGroupMarks => 'Tajweed and dabt';
+
+  @override
+  String get helpGroupFaq => 'FAQ and troubleshooting';
+
+  @override
+  String get onbTasmeeChecking => 'Checking the model\'s size…';
+
+  @override
+  String get onbTasmeeManifestFailed =>
+      'Couldn\'t fetch the model\'s details. Check your connection and try again.';
+
+  @override
+  String get onbTasmeeUnsupported =>
+      'Recitation checking isn\'t available on this device yet. You can carry on with the rest of the app.';
+
+  @override
+  String get assistantTileNote => 'Help and how-to';
 }

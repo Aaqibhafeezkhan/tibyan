@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,11 +11,14 @@ import '../../core/settings/settings_controller.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/theme/theme_tokens.dart';
 import '../../l10n/app_localizations.dart';
+import '../content_extras/credits.dart';
+import '../content_extras/verse_audio_index.dart';
 import '../mushaf/mushaf_providers.dart';
 import '../mushaf/presentation/mushaf_screen.dart';
 import '../mushaf/presentation/widgets/illuminated_frame.dart';
 import 'recitation.dart';
 import 'reciter_avatar.dart';
+import 'verse_queue.dart';
 
 String reciterLabel(BuildContext context, ReciterRow r) {
   final l = AppLocalizations.of(context);
@@ -36,9 +42,19 @@ class PlayerBar extends ConsumerWidget {
     final surahs = ref.watch(surahsProvider).value;
     final reciter = ref.watch(currentReciterProvider).value;
     final surah = surahs == null ? '' : surahName(context, surahs[s.surah - 1]);
-    final where = s.ayah == null
+    final lang = Localizations.localeOf(context).languageCode;
+    final clip = s.clip;
+    // A clip (the translation after a verse, or a tafsir) is named with
+    // its source's credit line under it while it plays.
+    final where = clip != null
+        ? clip.kind == VerseAudioKind.translation
+              ? '${l.surahWord(surah)} | ${l.clipTranslationOf(digits(clip.ayah))}'
+              : clip.wholeSurah
+              ? '${clip.title(lang)} · ${l.surahWord(surah)}'
+              : '${clip.title(lang)} · ${l.surahWord(surah)} | ${digits(clip.ayah)}'
+        : s.ayah == null
         ? l.surahWord(surah)
-        : '${l.surahWord(surah)} · ${digits(s.ayah!)}';
+        : '${l.surahWord(surah)} | ${digits(s.ayah!)}';
     final repeating = s.timed && s.repeat != 1;
     // Verses go right to left in Arabic: "previous" points right there.
     final rtl = Directionality.of(context) == TextDirection.rtl;
@@ -56,6 +72,29 @@ class PlayerBar extends ConsumerWidget {
               onPressed: c.stop,
               icon: Icon(Icons.close, color: t.playerFg),
             ),
+            // The reciter's photo in a circle, while a recitation (not a
+            // clip from another source) plays. Their name is read below.
+            if (reciter != null && clip == null)
+              Padding(
+                padding: const EdgeInsetsDirectional.only(end: 10),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: t.playerFg.withValues(alpha: .35),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: ReciterAvatar(
+                      id: reciter.id,
+                      name: reciterLabel(context, reciter),
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ),
             Expanded(
               child: InkWell(
                 onTap: () => showPlayerSheet(context),
@@ -84,6 +123,8 @@ class PlayerBar extends ConsumerWidget {
                         child: Text(
                           s.error != null
                               ? l.playerError
+                              : clip != null
+                              ? contentCredit(clip.source, lang)
                               : repeating
                               ? l.repeatProgress(
                                   digits(s.repeatDone + 1),
@@ -164,7 +205,11 @@ Future<void> showPlayerSheet(BuildContext context) {
     context: context,
     isScrollControlled: true,
     backgroundColor: t.player,
-    builder: (_) => Theme(data: panel, child: const _PlayerSheet()),
+    builder: (_) => LookTheme(
+      child: Builder(
+        builder: (_) => Theme(data: panel, child: const _PlayerSheet()),
+      ),
+    ),
   );
 }
 
@@ -437,6 +482,25 @@ class PlayerOptions extends ConsumerWidget {
           ),
           const SizedBox(height: 12),
         ],
+        Semantics(
+          header: true,
+          child: Text(l.playbackSpeedLabel, style: title),
+        ),
+        const SizedBox(height: 6),
+        chips<double>(
+          [
+            for (final v in [0.75, 1.0, 1.25, 1.5, 2.0])
+              (
+                v,
+                l.playbackSpeedValue(
+                  v == v.roundToDouble() ? digits(v.toInt()) : v.toString(),
+                ),
+              ),
+          ],
+          settings.playbackSpeed,
+          c.setSpeed,
+        ),
+        const SizedBox(height: 12),
         // A sleep timer belongs to one listening, so it is set only then.
         if (playing) ...[
           Semantics(header: true, child: Text(l.sleepLabel, style: title)),
@@ -470,12 +534,56 @@ class PlayerOptions extends ConsumerWidget {
           settings.versePause,
           ref.read(settingsProvider.notifier).setVersePause,
         ),
+        const SizedBox(height: 12),
+        Semantics(header: true, child: Text(l.tapJumpLabel, style: title)),
+        Text(l.tapJumpHint, style: hint),
+        const SizedBox(height: 6),
+        chips<bool>(
+          [(false, l.tapJumpVerseStart), (true, l.tapJumpFromWord)],
+          settings.tapJumpFromWord,
+          ref.read(settingsProvider.notifier).setTapJumpFromWord,
+        ),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
           title: Text(l.followRecitation),
           value: settings.followRecitation,
           onChanged: ref.read(settingsProvider.notifier).setFollowRecitation,
         ),
+        // Offered only while its flag is on and its index is available, and
+        // for Hafs, whose verse numbers the translation follows.
+        if (riwaya == Riwaya.hafs)
+          if (ref.watch(translationAudioIndexProvider).value case final idx?)
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(l.translationAudioAfterVerse),
+              subtitle: Text(
+                '${l.translationAudioHint}\n'
+                '${contentCredit(idx.source, Localizations.localeOf(context).languageCode)}',
+              ),
+              value: ref.watch(translationAudioChoiceProvider),
+              onChanged: c.setTranslationAfterVerses,
+            ),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          title: Text(l.sajdahTimer),
+          subtitle: Text(l.sajdahTimerHint),
+          value: settings.sajdahTimer,
+          onChanged: ref.read(settingsProvider.notifier).setSajdahTimer,
+        ),
+        // The length shows only while the timer is on.
+        if (settings.sajdahTimer) ...[
+          Semantics(
+            header: true,
+            child: Text(l.sajdahTimerLength, style: title),
+          ),
+          const SizedBox(height: 6),
+          chips<int>(
+            [for (final n in sajdahTimerLengths) (n, l.seconds(digits(n)))],
+            settings.sajdahSeconds,
+            ref.read(settingsProvider.notifier).setSajdahSeconds,
+          ),
+          const SizedBox(height: 12),
+        ],
         OutlinedButton.icon(
           onPressed: () {
             if (inSheet) Navigator.pop(context);

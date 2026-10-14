@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../../core/ui/look_kit.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
@@ -26,69 +29,73 @@ Future<void> showSaveToFasil(
   return showModalBottomSheet<void>(
     context: context,
     showDragHandle: true,
-    builder: (sheet) => Consumer(
-      builder: (context, ref, _) {
-        final l = AppLocalizations.of(context);
-        final t = context.tokens.colors;
-        final db = ref.read(userDatabaseProvider);
-        final sets = ref.watch(bookmarkSetsProvider).value ?? const [];
-        void done() {
-          Navigator.of(sheet).pop();
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(l.saved)));
-        }
+    builder: (_) => LookTheme(
+      child: Builder(
+        builder: (sheet) => Consumer(
+          builder: (context, ref, _) {
+            final l = AppLocalizations.of(context);
+            final t = context.tokens.colors;
+            final db = ref.read(userDatabaseProvider);
+            final sets = ref.watch(bookmarkSetsProvider).value ?? const [];
+            void done() {
+              Navigator.of(sheet).pop();
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text(l.saved)));
+            }
 
-        return SafeArea(
-          child: ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(bottom: 12),
-            children: [
-              Semantics(
-                header: true,
-                child: ListTile(
-                  title: Text(
-                    l.fasilSaveHere,
-                    style: TextStyle(
-                      color: t.goldText,
-                      fontWeight: FontWeight.w600,
+            return SafeArea(
+              child: ListView(
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(bottom: 12),
+                children: [
+                  Semantics(
+                    header: true,
+                    child: ListTile(
+                      title: Text(
+                        l.fasilSaveHere,
+                        style: TextStyle(
+                          color: t.goldText,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  for (final s in sets)
+                    ListTile(
+                      leading: Icon(Icons.bookmark, color: Color(s.color)),
+                      title: Text(s.name),
+                      onTap: () async {
+                        await db.moveBookmarkSet(
+                          s.id,
+                          surah: verse.surah,
+                          ayah: verse.ayah,
+                          page: page,
+                        );
+                        done();
+                      },
+                    ),
+                  ListTile(
+                    leading: const Icon(Icons.add),
+                    title: Text(l.fasilNew),
+                    onTap: () async {
+                      final name = await _askName(context);
+                      if (name == null || name.isEmpty) return;
+                      await db.addBookmarkSet(
+                        name: name,
+                        color: fasilColors[sets.length % fasilColors.length],
+                        surah: verse.surah,
+                        ayah: verse.ayah,
+                        page: page,
+                      );
+                      done();
+                    },
+                  ),
+                ],
               ),
-              for (final s in sets)
-                ListTile(
-                  leading: Icon(Icons.bookmark, color: Color(s.color)),
-                  title: Text(s.name),
-                  onTap: () async {
-                    await db.moveBookmarkSet(
-                      s.id,
-                      surah: verse.surah,
-                      ayah: verse.ayah,
-                      page: page,
-                    );
-                    done();
-                  },
-                ),
-              ListTile(
-                leading: const Icon(Icons.add),
-                title: Text(l.fasilNew),
-                onTap: () async {
-                  final name = await _askName(context);
-                  if (name == null || name.isEmpty) return;
-                  await db.addBookmarkSet(
-                    name: name,
-                    color: fasilColors[sets.length % fasilColors.length],
-                    surah: verse.surah,
-                    ayah: verse.ayah,
-                    page: page,
-                  );
-                  done();
-                },
-              ),
-            ],
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     ),
   );
 }
@@ -98,28 +105,32 @@ Future<String?> _askName(BuildContext context) {
   final field = TextEditingController();
   return showDialog<String>(
     context: context,
-    builder: (dialog) => AlertDialog(
-      title: Text(l.fasilNew),
-      content: TextField(
-        controller: field,
-        autofocus: true,
-        maxLength: 40,
-        decoration: InputDecoration(
-          labelText: l.fasilName,
-          helperText: l.fasilHint,
+    builder: (_) => LookTheme(
+      child: Builder(
+        builder: (dialog) => AlertDialog(
+          title: Text(l.fasilNew),
+          content: TextField(
+            controller: field,
+            autofocus: true,
+            maxLength: 40,
+            decoration: InputDecoration(
+              labelText: l.fasilName,
+              helperText: l.fasilHint,
+            ),
+            onSubmitted: (v) => Navigator.of(dialog).pop(v.trim()),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialog).pop(),
+              child: Text(l.cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(dialog).pop(field.text.trim()),
+              child: Text(l.save),
+            ),
+          ],
         ),
-        onSubmitted: (v) => Navigator.of(dialog).pop(v.trim()),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(dialog).pop(),
-          child: Text(l.cancel),
-        ),
-        FilledButton(
-          onPressed: () => Navigator.of(dialog).pop(field.text.trim()),
-          child: Text(l.save),
-        ),
-      ],
     ),
   );
 }

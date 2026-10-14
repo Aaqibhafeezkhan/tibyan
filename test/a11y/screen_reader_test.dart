@@ -22,7 +22,9 @@ import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/page_interaction.dart';
 import 'package:tibyan/features/search/search_screen.dart';
 import 'package:tibyan/features/search/semantic/meaning_providers.dart';
+import 'package:tibyan/features/settings/settings_catalog.dart';
 import 'package:tibyan/features/settings/settings_screen.dart';
+import 'package:tibyan/features/settings/settings_section_screen.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 import 'package:tibyan/features/khatma/khatma_providers.dart';
 import 'package:tibyan/features/hifz/hifz_providers.dart';
@@ -120,6 +122,7 @@ void main() {
       overrides: [
         khatmaStatusProvider.overrideWith((ref) async => null),
         srsItemsProvider.overrideWith((ref) => Stream.value(const [])),
+        journeyProvider.overrideWithValue((memorized: 0, mastered: 0)),
       ],
     );
     await guidelines(tester);
@@ -137,6 +140,11 @@ void main() {
   testWidgets('settings: labelled, large enough, readable', (tester) async {
     final handle = tester.ensureSemantics();
     await pump(tester, const SettingsScreen());
+    await guidelines(tester);
+    await pump(
+      tester,
+      const SettingsSectionScreen(section: SettingsSection.appearance),
+    );
     await guidelines(tester);
     // The elderly-mode switch says what it is and whether it is on.
     final node = tester.getSemantics(find.text('وضع كبار السن'));

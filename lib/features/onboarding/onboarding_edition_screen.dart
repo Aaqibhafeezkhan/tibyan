@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../core/settings/app_settings.dart';
 import '../../core/settings/settings_controller.dart';
@@ -10,8 +9,9 @@ import '../mushaf/presentation/widgets/download_all_button.dart';
 import '../mushaf/presentation/widgets/edition_badge.dart';
 import '../../l10n/app_localizations.dart';
 import '../mushaf/data/page_pack.dart';
+import 'onboarding_frame.dart';
 
-/// First launch, screen 2: which Madina mushaf edition to read.
+/// First launch, step 4: which Madina mushaf edition to read.
 class OnboardingEditionScreen extends ConsumerWidget {
   const OnboardingEditionScreen({super.key});
 
@@ -26,97 +26,66 @@ class OnboardingEditionScreen extends ConsumerWidget {
         .watch(installedEditionsProvider)
         .contains(settings.edition);
 
-    Future<void> finish(String to) async {
-      await ctrl.completeOnboarding();
-      if (context.mounted) context.go(to);
-    }
-
-    return Scaffold(
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
-          children: [
-            Text(
-              l.appTitle,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'ArefRuqaa',
-                fontSize: 36,
-                color: t.goldText,
-                height: 1.2,
-              ),
+    return OnboardingFrame(
+      step: OnboardingStep.edition,
+      title: l.onbEditionTitle,
+      hint: l.onbStyleHint,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          RadioGroup<MushafEdition>(
+            groupValue: settings.edition,
+            onChanged: (v) => v == null ? null : ctrl.setEdition(v),
+            child: Column(
+              children: [
+                _EditionCard(
+                  value: MushafEdition.madina1441,
+                  title: l.editionNew,
+                  body: l.editionNewDesc,
+                  tag: l.defaultTag,
+                ),
+                const SizedBox(height: 12),
+                _EditionCard(
+                  value: MushafEdition.madina1405,
+                  title: l.editionOld,
+                  body: l.editionOldDesc,
+                ),
+                const SizedBox(height: 12),
+                _EditionCard(
+                  value: MushafEdition.shamarly,
+                  title: l.editionShamarly,
+                  body: l.editionShamarlyDesc,
+                ),
+              ],
             ),
-            Text(
-              l.onbEditionTitle,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            Text(
-              l.onbStyleHint,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: t.muted, fontSize: 13),
-            ),
-            const SizedBox(height: 18),
-            RadioGroup<MushafEdition>(
-              groupValue: settings.edition,
-              onChanged: (v) => v == null ? null : ctrl.setEdition(v),
-              child: Column(
-                children: [
-                  _EditionCard(
-                    value: MushafEdition.madina1441,
-                    title: l.editionNew,
-                    body: l.editionNewDesc,
-                    tag: l.defaultTag,
-                  ),
-                  const SizedBox(height: 12),
-                  _EditionCard(
-                    value: MushafEdition.madina1405,
-                    title: l.editionOld,
-                    body: l.editionOldDesc,
-                  ),
-                  const SizedBox(height: 12),
-                  _EditionCard(
-                    value: MushafEdition.shamarly,
-                    title: l.editionShamarly,
-                    body: l.editionShamarlyDesc,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 14),
-            if (!onDevice)
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(14),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(Icons.download_outlined, color: t.goldText),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          l.pagesDownloadNote(
-                            (PagePackSpec.of(settings.edition).bytes / 1e6)
-                                .round()
-                                .toString(),
-                          ),
-                          style: const TextStyle(height: 1.6),
+          ),
+          const SizedBox(height: 14),
+          if (!onDevice)
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(14),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.download_outlined, color: t.goldText),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        l.pagesDownloadNote(
+                          (PagePackSpec.of(settings.edition).bytes / 1e6)
+                              .round()
+                              .toString(),
                         ),
+                        style: const TextStyle(height: 1.6),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            const SizedBox(height: 12),
-            const DownloadAllButton(),
-            const SizedBox(height: 10),
-            FilledButton(
-              onPressed: () =>
-                  finish(onDevice ? '/mushaf' : '/mushaf/download'),
-              child: Text(l.continueLabel),
             ),
-          ],
-        ),
+          const SizedBox(height: 12),
+          const DownloadAllButton(),
+        ],
       ),
     );
   }

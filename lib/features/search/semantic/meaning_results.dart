@@ -66,7 +66,7 @@ class MeaningResults extends ConsumerWidget {
                   child: Text(
                     hits.isEmpty
                         ? l.searchNothing
-                        : '${l.searchMeaningCount(digits(hits.length))}'
+                        : '${l.searchMeaningCount(hits.length, digits(hits.length))}'
                               '${searcher.value?.semantic ?? false ? ' · ${l.semanticResultsNote}' : ''}',
                     style: TextStyle(color: t.muted),
                   ),
@@ -128,7 +128,7 @@ class MeaningResultCard extends ConsumerWidget {
                 label: l.verseLabel(name, digits(hit.ayah)),
                 excludeSemantics: true,
                 child: Text(
-                  '${l.surahWord(name)} · ${digits(hit.ayah)}',
+                  '${l.surahWord(name)} | ${digits(hit.ayah)}',
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 13,

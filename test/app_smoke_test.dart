@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tibyan/core/ui/look_kit.dart';
+import 'package:tibyan/features/home/whats_new.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tibyan/app.dart';
 import 'package:tibyan/core/flags/feature_flags.dart';
@@ -18,6 +20,8 @@ void main() {
     SharedPreferences.setMockInitialValues({
       'settings.language': 'ar',
       'settings.onboardingDone': true,
+      // Up to date: no «what's new» over the home screen.
+      whatsNewSeenKey: whatsNewId,
     });
     final registry = await ThemeRegistry.load(rootBundle);
     final flags = await FeatureFlags.load(rootBundle);
@@ -40,8 +44,13 @@ void main() {
     await tester.pump(const Duration(seconds: 2));
     await tester.pumpAndSettle();
 
-    expect(find.text('تبيان'), findsOneWidget);
-    final dir = Directionality.of(tester.element(find.text('تبيان')));
+    // The brand mark: the logo calligraphy, read out as «تبيان».
+    // (The test window, 800 by 600, is a tablet: the icon rail shows it
+    // too.)
+    expect(find.byType(TibyanWordmark), findsWidgets);
+    final dir = Directionality.of(
+      tester.element(find.byType(TibyanWordmark).first),
+    );
     expect(dir, TextDirection.rtl);
 
     await tester.tap(find.byTooltip('فتح الإعدادات'));

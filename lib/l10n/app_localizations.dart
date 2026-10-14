@@ -158,12 +158,6 @@ abstract class AppLocalizations {
   /// **'البحث'**
   String get sectionSearch;
 
-  /// No description provided for @comingSoon.
-  ///
-  /// In ar, this message translates to:
-  /// **'قريبا'**
-  String get comingSoon;
-
   /// No description provided for @settingsTitle.
   ///
   /// In ar, this message translates to:
@@ -299,7 +293,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutBody.
   ///
   /// In ar, this message translates to:
-  /// **'تبيان تطبيق مجاني غير ربحي، بلا إعلانات ولا مشتريات، وشيفرته مفتوحة. كل نص فيه من مصدر موثق مذكور بجانبه.'**
+  /// **'تبيان تطبيق لقراءة القرآن الكريم وتدبّره، وشيفرته مفتوحة. كل نص فيه من مصدر موثق مذكور بجانبه.'**
   String get aboutBody;
 
   /// No description provided for @versionLabel.
@@ -359,7 +353,7 @@ abstract class AppLocalizations {
   /// No description provided for @editionNewDesc.
   ///
   /// In ar, this message translates to:
-  /// **'طبعة 1441هـ من مجمع الملك فهد، مع تظليل الآية أثناء التلاوة.'**
+  /// **'طبعة ١٤٤١هـ من مجمع الملك فهد، مع تظليل الآية أثناء التلاوة.'**
   String get editionNewDesc;
 
   /// No description provided for @editionOld.
@@ -371,7 +365,7 @@ abstract class AppLocalizations {
   /// No description provided for @editionOldDesc.
   ///
   /// In ar, this message translates to:
-  /// **'طبعة 1405هـ المشهورة في التطبيقات القديمة، مع تظليل الكلمة.'**
+  /// **'طبعة ١٤٠٥هـ المشهورة في التطبيقات القديمة، مع تظليل الكلمة.'**
   String get editionOldDesc;
 
   /// No description provided for @editionShamarly.
@@ -383,7 +377,7 @@ abstract class AppLocalizations {
   /// No description provided for @editionShamarlyDesc.
   ///
   /// In ar, this message translates to:
-  /// **'طبعة الشمرلي المصرية المعروفة، 522 صفحة، مع تظليل الآية وتظليل الكلمة في كثير من الآيات.'**
+  /// **'طبعة الشمرلي المصرية المعروفة، ٥٢٢ صفحة، مع تظليل الآية وتظليل الكلمة في كثير من الآيات.'**
   String get editionShamarlyDesc;
 
   /// No description provided for @defaultTag.
@@ -587,8 +581,8 @@ abstract class AppLocalizations {
   /// No description provided for @ayahCount.
   ///
   /// In ar, this message translates to:
-  /// **'{count} آية'**
-  String ayahCount(String count);
+  /// **'{n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{count} آيات} many{{count} آية} other{{count} آية}}'**
+  String ayahCount(int n, String count);
 
   /// No description provided for @juzLabel.
   ///
@@ -719,8 +713,8 @@ abstract class AppLocalizations {
   /// No description provided for @reviewNotesBody.
   ///
   /// In ar, this message translates to:
-  /// **'{count} مواضع يختلف فيها مصدرا النص (حدود جزأين، وأربعة مواضع في الرسم) معروضة على مراجع متخصص، ويتبع التطبيق نص تنزيل حتى يصدر القرار.'**
-  String reviewNotesBody(String count);
+  /// **'{n, plural, =0{لا مواضع} =1{موضع واحد} =2{موضعان} few{{count} مواضع} many{{count} موضعًا} other{{count} موضع}} يختلف فيها مصدرا النص (حدود جزأين، وأربعة مواضع في الرسم) معروضة على مراجع متخصص، ويتبع التطبيق نص تنزيل حتى يصدر القرار.'**
+  String reviewNotesBody(int n, String count);
 
   /// No description provided for @mushafOpen.
   ///
@@ -845,8 +839,8 @@ abstract class AppLocalizations {
   /// No description provided for @versesCount.
   ///
   /// In ar, this message translates to:
-  /// **'{count} آيات'**
-  String versesCount(String count);
+  /// **'{n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{count} آيات} many{{count} آية} other{{count} آية}}'**
+  String versesCount(int n, String count);
 
   /// No description provided for @twoVerses.
   ///
@@ -920,11 +914,77 @@ abstract class AppLocalizations {
   /// **'متابعة'**
   String get resume;
 
+  /// No description provided for @downloadsSectionMushaf.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصاحف'**
+  String get downloadsSectionMushaf;
+
+  /// No description provided for @downloadsSectionRecitations.
+  ///
+  /// In ar, this message translates to:
+  /// **'القراءات الصوتية'**
+  String get downloadsSectionRecitations;
+
+  /// No description provided for @downloadsSectionResources.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموارد'**
+  String get downloadsSectionResources;
+
+  /// No description provided for @downloadsOnDevice.
+  ///
+  /// In ar, this message translates to:
+  /// **'على الجهاز · {size} ميجا'**
+  String downloadsOnDevice(String size);
+
+  /// No description provided for @downloadsAvailable.
+  ///
+  /// In ar, this message translates to:
+  /// **'متاح للتحميل · {size} ميجا'**
+  String downloadsAvailable(String size);
+
+  /// No description provided for @downloadsReciterOnDevice.
+  ///
+  /// In ar, this message translates to:
+  /// **'على الجهاز: {done} / {total} · {size} ميجا'**
+  String downloadsReciterOnDevice(String done, String total, String size);
+
+  /// No description provided for @downloadsAvailableShort.
+  ///
+  /// In ar, this message translates to:
+  /// **'متاح للتحميل'**
+  String get downloadsAvailableShort;
+
+  /// No description provided for @downloadsGoesOn.
+  ///
+  /// In ar, this message translates to:
+  /// **'يكمل التحميل في الخلفية'**
+  String get downloadsGoesOn;
+
   /// No description provided for @pause.
   ///
   /// In ar, this message translates to:
   /// **'إيقاف مؤقت'**
   String get pause;
+
+  /// No description provided for @downloadsOpen.
+  ///
+  /// In ar, this message translates to:
+  /// **'مركز التحميلات'**
+  String get downloadsOpen;
+
+  /// No description provided for @downloadsOpenHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصاحف والقراءات الصوتية والموارد: ما على الجهاز وما يحمَّل وما هو متاح'**
+  String get downloadsOpenHint;
+
+  /// No description provided for @audioDownloadResume.
+  ///
+  /// In ar, this message translates to:
+  /// **'استئناف'**
+  String get audioDownloadResume;
 
   /// No description provided for @slower.
   ///
@@ -1031,7 +1091,7 @@ abstract class AppLocalizations {
   /// No description provided for @multiSelectHint.
   ///
   /// In ar, this message translates to:
-  /// **'اسحب المقبضين لتحديد الآيات'**
+  /// **'اسحب المقبضين، أو اقلب الصفحة واضغط آية لتمديد التحديد إليها'**
   String get multiSelectHint;
 
   /// No description provided for @doneLabel.
@@ -1057,6 +1117,18 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لا توجد فواصل بعد. اضغط على فاصل أي آية لتعليمها.'**
   String get noMarks;
+
+  /// No description provided for @shareBrandColours.
+  ///
+  /// In ar, this message translates to:
+  /// **'ألوان تبيان الأصلية'**
+  String get shareBrandColours;
+
+  /// No description provided for @shareBrandColoursHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'بدلًا من ألوان الواجهة والمصحف الحالية'**
+  String get shareBrandColoursHint;
 
   /// No description provided for @highlightDivineNames.
   ///
@@ -1111,6 +1183,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'النصوص المعروضة'**
   String get tafsirShown;
+
+  /// No description provided for @englishTafsirVisibilityLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'التفسير الإنجليزي'**
+  String get englishTafsirVisibilityLabel;
 
   /// No description provided for @tafsirNoneShown.
   ///
@@ -1268,6 +1346,84 @@ abstract class AppLocalizations {
   /// **'تقليب الصفحات مع التلاوة'**
   String get followRecitation;
 
+  /// No description provided for @sajdahTimer.
+  ///
+  /// In ar, this message translates to:
+  /// **'مؤقت سجدات التلاوة'**
+  String get sajdahTimer;
+
+  /// No description provided for @sajdahTimerHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'عند آية السجدة يتوقف الشيخ وتظهر بطاقة بأدعية السجود وعدّ تنازلي، ثم تُستكمل التلاوة'**
+  String get sajdahTimerHint;
+
+  /// No description provided for @sajdahTimerLength.
+  ///
+  /// In ar, this message translates to:
+  /// **'مدة المؤقت'**
+  String get sajdahTimerLength;
+
+  /// No description provided for @sajdahCardLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجدة تلاوة'**
+  String get sajdahCardLabel;
+
+  /// No description provided for @sajdahTapToContinue.
+  ///
+  /// In ar, this message translates to:
+  /// **'اضغط للاستكمال'**
+  String get sajdahTapToContinue;
+
+  /// No description provided for @sajdahContinue.
+  ///
+  /// In ar, this message translates to:
+  /// **'استكمال'**
+  String get sajdahContinue;
+
+  /// No description provided for @sajdahSecondsLeft.
+  ///
+  /// In ar, this message translates to:
+  /// **'{seconds, plural, =0{لم تبقَ ثوانٍ} =1{ثانية واحدة متبقية} =2{ثانيتان متبقيتان} few{{n} ثوانٍ متبقية} many{{n} ثانية متبقية} other{{n} ثانية متبقية}}'**
+  String sajdahSecondsLeft(int seconds, String n);
+
+  /// No description provided for @tapJumpLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'عند لمس آية أثناء الاستماع'**
+  String get tapJumpLabel;
+
+  /// No description provided for @tapJumpHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'لمسة على آية في الصفحة تنقل الشيخ إليها'**
+  String get tapJumpHint;
+
+  /// No description provided for @tapJumpVerseStart.
+  ///
+  /// In ar, this message translates to:
+  /// **'من أول الآية'**
+  String get tapJumpVerseStart;
+
+  /// No description provided for @tapJumpFromWord.
+  ///
+  /// In ar, this message translates to:
+  /// **'من الكلمة الملموسة'**
+  String get tapJumpFromWord;
+
+  /// No description provided for @tapJumpNoTiming.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذه التلاوة لا تدعم الانتقال إلى آية'**
+  String get tapJumpNoTiming;
+
+  /// No description provided for @listenFromVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'استمع من هذه الآية'**
+  String get listenFromVerse;
+
   /// No description provided for @audioDownloads.
   ///
   /// In ar, this message translates to:
@@ -1322,6 +1478,42 @@ abstract class AppLocalizations {
   /// **'التلاوات وتوقيت الآيات: mp3quran.net'**
   String get audioCredit;
 
+  /// No description provided for @tafsirAudioListen.
+  ///
+  /// In ar, this message translates to:
+  /// **'استمع للتفسير'**
+  String get tafsirAudioListen;
+
+  /// No description provided for @tafsirAudioListenSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'استمع لتفسير السورة'**
+  String get tafsirAudioListenSurah;
+
+  /// No description provided for @translationAudioAfterVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'الترجمة المسموعة بعد كل آية'**
+  String get translationAudioAfterVerse;
+
+  /// No description provided for @translationAudioHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تُسمع ترجمة كل آية بعد تلاوتها، حين تتوالى الآيات بلا تكرار'**
+  String get translationAudioHint;
+
+  /// No description provided for @clipTranslationOf.
+  ///
+  /// In ar, this message translates to:
+  /// **'ترجمة الآية {ayah}'**
+  String clipTranslationOf(String ayah);
+
+  /// No description provided for @englishTafsirOffer.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنزيل التفسير الإنجليزي: {title}'**
+  String englishTafsirOffer(String title);
+
   /// No description provided for @touchReading.
   ///
   /// In ar, this message translates to:
@@ -1349,7 +1541,7 @@ abstract class AppLocalizations {
   /// No description provided for @downloadAllEditions.
   ///
   /// In ar, this message translates to:
-  /// **'تحميل كل المصاحف ({size} ميجا)'**
+  /// **'مركز التحميلات ({size} ميجا متاحة)'**
   String downloadAllEditions(String size);
 
   /// No description provided for @downloadInBackgroundNote.
@@ -1469,14 +1661,14 @@ abstract class AppLocalizations {
   /// No description provided for @searchCount.
   ///
   /// In ar, this message translates to:
-  /// **'{count} موضعا في {verses} آية'**
-  String searchCount(String count, String verses);
+  /// **'{total, plural, =0{لا مواضع} =1{موضع واحد} =2{موضعان} few{{count} مواضع} many{{count} موضعًا} other{{count} موضع}} {verseTotal, plural, =0{في لا آيات} =1{في آية واحدة} =2{في آيتين} few{في {verses} آيات} many{في {verses} آية} other{في {verses} آية}}'**
+  String searchCount(int total, String count, int verseTotal, String verses);
 
   /// No description provided for @searchMore.
   ///
   /// In ar, this message translates to:
-  /// **'و{count} آية أخرى، ضيّق البحث لرؤيتها'**
-  String searchMore(String count);
+  /// **'{n, plural, =0{} =1{وآية أخرى} =2{وآيتان أخريان} few{و{count} آيات أخرى} many{و{count} آية أخرى} other{و{count} آية أخرى}}، ضيّق البحث لرؤيتها'**
+  String searchMore(int n, String count);
 
   /// No description provided for @searchHistory.
   ///
@@ -1499,7 +1691,7 @@ abstract class AppLocalizations {
   /// No description provided for @continueReadingAt.
   ///
   /// In ar, this message translates to:
-  /// **'{surah} · الآية {ayah} · صفحة {page}'**
+  /// **'{surah} | الآية {ayah} · صفحة {page}'**
   String continueReadingAt(String surah, String ayah, String page);
 
   /// No description provided for @openLabel.
@@ -1595,7 +1787,7 @@ abstract class AppLocalizations {
   /// No description provided for @downloadAllTitle.
   ///
   /// In ar, this message translates to:
-  /// **'تحميل كل المصاحف'**
+  /// **'مركز التحميلات'**
   String get downloadAllTitle;
 
   /// No description provided for @downloadAllCount.
@@ -1615,6 +1807,432 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'الختمة'**
   String get khatmaTitle;
+
+  /// No description provided for @khatmaPrimaryLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'الختمة الأساسية'**
+  String get khatmaPrimaryLabel;
+
+  /// No description provided for @khatmaOtherPlans.
+  ///
+  /// In ar, this message translates to:
+  /// **'ختمات أخرى'**
+  String get khatmaOtherPlans;
+
+  /// No description provided for @khatmaSetPrimary.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعيين كأساسية'**
+  String get khatmaSetPrimary;
+
+  /// No description provided for @khatmaPause.
+  ///
+  /// In ar, this message translates to:
+  /// **'إيقاف مؤقت'**
+  String get khatmaPause;
+
+  /// No description provided for @khatmaResume.
+  ///
+  /// In ar, this message translates to:
+  /// **'استئناف'**
+  String get khatmaResume;
+
+  /// No description provided for @khatmaPaused.
+  ///
+  /// In ar, this message translates to:
+  /// **'متوقفة مؤقتا'**
+  String get khatmaPaused;
+
+  /// No description provided for @khatmaStepPlan.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخطة'**
+  String get khatmaStepPlan;
+
+  /// No description provided for @khatmaStepSchedule.
+  ///
+  /// In ar, this message translates to:
+  /// **'الجدول'**
+  String get khatmaStepSchedule;
+
+  /// No description provided for @khatmaStepReview.
+  ///
+  /// In ar, this message translates to:
+  /// **'المراجعة'**
+  String get khatmaStepReview;
+
+  /// No description provided for @khatmaLoadFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذر تحميل بيانات إعداد الختمة: {error}'**
+  String khatmaLoadFailed(String error);
+
+  /// No description provided for @khatmaCreateFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذر إنشاء الختمة: {error}'**
+  String khatmaCreateFailed(String error);
+
+  /// No description provided for @khatmaKindLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'نوع الخطة'**
+  String get khatmaKindLabel;
+
+  /// No description provided for @khatmaSettings.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعدادات الختمة'**
+  String get khatmaSettings;
+
+  /// No description provided for @khatmaTabPlan.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخطة'**
+  String get khatmaTabPlan;
+
+  /// No description provided for @khatmaTabStats.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإحصاءات'**
+  String get khatmaTabStats;
+
+  /// No description provided for @khatmaStatsPageEquivalents.
+  ///
+  /// In ar, this message translates to:
+  /// **'مكافئ الصفحات'**
+  String get khatmaStatsPageEquivalents;
+
+  /// No description provided for @khatmaStatsSessions.
+  ///
+  /// In ar, this message translates to:
+  /// **'جلسات القراءة'**
+  String get khatmaStatsSessions;
+
+  /// No description provided for @khatmaStatsMinutes.
+  ///
+  /// In ar, this message translates to:
+  /// **'دقائق القراءة'**
+  String get khatmaStatsMinutes;
+
+  /// No description provided for @khatmaStatsNoActivity.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد قراءة مسجلة لهذه الختمة في هذه الفترة.'**
+  String get khatmaStatsNoActivity;
+
+  /// No description provided for @khatmaStatsWeek.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأسبوع'**
+  String get khatmaStatsWeek;
+
+  /// No description provided for @khatmaStatsMonth.
+  ///
+  /// In ar, this message translates to:
+  /// **'الشهر'**
+  String get khatmaStatsMonth;
+
+  /// No description provided for @khatmaStatsYear.
+  ///
+  /// In ar, this message translates to:
+  /// **'السنة'**
+  String get khatmaStatsYear;
+
+  /// No description provided for @khatmaStatsPreviousPeriod.
+  ///
+  /// In ar, this message translates to:
+  /// **'الفترة السابقة'**
+  String get khatmaStatsPreviousPeriod;
+
+  /// No description provided for @khatmaStatsNextPeriod.
+  ///
+  /// In ar, this message translates to:
+  /// **'الفترة التالية'**
+  String get khatmaStatsNextPeriod;
+
+  /// No description provided for @khatmaReminderForPlan.
+  ///
+  /// In ar, this message translates to:
+  /// **'الختمة: {plan}'**
+  String khatmaReminderForPlan(String plan);
+
+  /// No description provided for @khatmaReminderMissedTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'ما زال هناك وقت لورد {plan}'**
+  String khatmaReminderMissedTitle(String plan);
+
+  /// No description provided for @khatmaReminderMissedBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'ورد اليوم: من صفحة {from} إلى صفحة {to}'**
+  String khatmaReminderMissedBody(String from, String to);
+
+  /// No description provided for @khatmaReminderRecoveryTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطة تعويض لطيفة لختمة {plan}'**
+  String khatmaReminderRecoveryTitle(String plan);
+
+  /// No description provided for @khatmaReminderRecoveryBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'ورد اليوم من صفحة {from} إلى صفحة {to}. افتح الخطة للاطلاع على خيارات التعويض.'**
+  String khatmaReminderRecoveryBody(String from, String to);
+
+  /// No description provided for @khatmaReminderTargetTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'بقي يوم على موعد ختمة {plan}'**
+  String khatmaReminderTargetTitle(String plan);
+
+  /// No description provided for @khatmaReminderTargetBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'راجع تقدمك وخطتك قبل الموعد.'**
+  String get khatmaReminderTargetBody;
+
+  /// No description provided for @khatmaReminderCompletedTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'أتممت ختمة {plan}'**
+  String khatmaReminderCompletedTitle(String plan);
+
+  /// No description provided for @khatmaReminderCompletedBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'أتممت الختمة. تقبّل الله منك.'**
+  String get khatmaReminderCompletedBody;
+
+  /// No description provided for @khatmaReminderPlanLimit.
+  ///
+  /// In ar, this message translates to:
+  /// **'يمكن تفعيل التذكيرات لعشرين ختمة مفتوحة كحد أقصى.'**
+  String get khatmaReminderPlanLimit;
+
+  /// No description provided for @khatmaSaveSettings.
+  ///
+  /// In ar, this message translates to:
+  /// **'حفظ الإعدادات'**
+  String get khatmaSaveSettings;
+
+  /// No description provided for @khatmaSaveFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذر حفظ إعدادات الختمة: {error}'**
+  String khatmaSaveFailed(String error);
+
+  /// No description provided for @khatmaAutoRestart.
+  ///
+  /// In ar, this message translates to:
+  /// **'بدء الخطة من جديد عند إكمالها'**
+  String get khatmaAutoRestart;
+
+  /// No description provided for @khatmaReplan.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعديل الخطة'**
+  String get khatmaReplan;
+
+  /// No description provided for @khatmaCatchUpToday.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنجاز الورد الفائت اليوم'**
+  String get khatmaCatchUpToday;
+
+  /// No description provided for @khatmaCatchUpGradually.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعويض الورد تدريجيا'**
+  String get khatmaCatchUpGradually;
+
+  /// No description provided for @khatmaCompletionBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'أتممت هذه الختمة. تقبّل الله منك.'**
+  String get khatmaCompletionBody;
+
+  /// No description provided for @khatmaReusePlan.
+  ///
+  /// In ar, this message translates to:
+  /// **'استخدام هذه الخطة مرة أخرى'**
+  String get khatmaReusePlan;
+
+  /// No description provided for @khatmaKindFull.
+  ///
+  /// In ar, this message translates to:
+  /// **'القرآن كاملا'**
+  String get khatmaKindFull;
+
+  /// No description provided for @khatmaKindPartial.
+  ///
+  /// In ar, this message translates to:
+  /// **'نطاق محدد'**
+  String get khatmaKindPartial;
+
+  /// No description provided for @khatmaKindDaily.
+  ///
+  /// In ar, this message translates to:
+  /// **'ورد يومي'**
+  String get khatmaKindDaily;
+
+  /// No description provided for @khatmaKindCustom.
+  ///
+  /// In ar, this message translates to:
+  /// **'نطاق مخصص'**
+  String get khatmaKindCustom;
+
+  /// No description provided for @khatmaPresetLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'قالب جاهز'**
+  String get khatmaPresetLabel;
+
+  /// No description provided for @khatmaPresetCustom.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطة مخصصة'**
+  String get khatmaPresetCustom;
+
+  /// No description provided for @khatmaPresetMonth.
+  ///
+  /// In ar, this message translates to:
+  /// **'ختمة في شهر'**
+  String get khatmaPresetMonth;
+
+  /// No description provided for @khatmaPresetRamadan30.
+  ///
+  /// In ar, this message translates to:
+  /// **'رمضان: {n, plural, =0{لا أيام} =1{يوم واحد} =2{يومان} few{{days} أيام} many{{days} يومًا} other{{days} يوم}}'**
+  String khatmaPresetRamadan30(int n, String days);
+
+  /// No description provided for @khatmaPresetRamadanTwice.
+  ///
+  /// In ar, this message translates to:
+  /// **'ختمتان في رمضان'**
+  String get khatmaPresetRamadanTwice;
+
+  /// No description provided for @khatmaPresetBeforeLastTen.
+  ///
+  /// In ar, this message translates to:
+  /// **'قبل العشر الأواخر'**
+  String get khatmaPresetBeforeLastTen;
+
+  /// No description provided for @khatmaPresetWeekly.
+  ///
+  /// In ar, this message translates to:
+  /// **'ختمة في أسبوع'**
+  String get khatmaPresetWeekly;
+
+  /// No description provided for @khatmaPresetDailyJuz.
+  ///
+  /// In ar, this message translates to:
+  /// **'جزء يوميا'**
+  String get khatmaPresetDailyJuz;
+
+  /// No description provided for @khatmaFromSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'من سورة'**
+  String get khatmaFromSurah;
+
+  /// No description provided for @khatmaToSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلى سورة'**
+  String get khatmaToSurah;
+
+  /// No description provided for @khatmaFromAyah.
+  ///
+  /// In ar, this message translates to:
+  /// **'من آية'**
+  String get khatmaFromAyah;
+
+  /// No description provided for @khatmaToAyah.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلى آية'**
+  String get khatmaToAyah;
+
+  /// No description provided for @khatmaRangeError.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر آية بداية تسبق آية النهاية.'**
+  String get khatmaRangeError;
+
+  /// No description provided for @khatmaScheduleMode.
+  ///
+  /// In ar, this message translates to:
+  /// **'طريقة توزيع الورد'**
+  String get khatmaScheduleMode;
+
+  /// No description provided for @khatmaScheduleAdaptive.
+  ///
+  /// In ar, this message translates to:
+  /// **'متغير حسب التقدم'**
+  String get khatmaScheduleAdaptive;
+
+  /// No description provided for @khatmaScheduleFixed.
+  ///
+  /// In ar, this message translates to:
+  /// **'جدول ثابت'**
+  String get khatmaScheduleFixed;
+
+  /// No description provided for @khatmaRestDays.
+  ///
+  /// In ar, this message translates to:
+  /// **'أيام راحة (اختياري)'**
+  String get khatmaRestDays;
+
+  /// No description provided for @khatmaAtLeastOneReadingDay.
+  ///
+  /// In ar, this message translates to:
+  /// **'اترك يوما واحدا على الأقل للقراءة كل أسبوع.'**
+  String get khatmaAtLeastOneReadingDay;
+
+  /// No description provided for @khatmaCountingMode.
+  ///
+  /// In ar, this message translates to:
+  /// **'طريقة احتساب القراءة'**
+  String get khatmaCountingMode;
+
+  /// No description provided for @khatmaCountAuto.
+  ///
+  /// In ar, this message translates to:
+  /// **'احتساب تلقائي'**
+  String get khatmaCountAuto;
+
+  /// No description provided for @khatmaCountAsk.
+  ///
+  /// In ar, this message translates to:
+  /// **'السؤال في كل مرة'**
+  String get khatmaCountAsk;
+
+  /// No description provided for @khatmaCountManual.
+  ///
+  /// In ar, this message translates to:
+  /// **'عند تحديدها كمقروءة فقط'**
+  String get khatmaCountManual;
+
+  /// No description provided for @khatmaMakePrimary.
+  ///
+  /// In ar, this message translates to:
+  /// **'جعلها الختمة الأساسية'**
+  String get khatmaMakePrimary;
+
+  /// No description provided for @khatmaUnitRub.
+  ///
+  /// In ar, this message translates to:
+  /// **'ربع حزب'**
+  String get khatmaUnitRub;
+
+  /// No description provided for @khatmaReviewRange.
+  ///
+  /// In ar, this message translates to:
+  /// **'النطاق: {from}–{to}'**
+  String khatmaReviewRange(String from, String to);
 
   /// No description provided for @khatmaNew.
   ///
@@ -1691,14 +2309,14 @@ abstract class AppLocalizations {
   /// No description provided for @khatmaAboutPerDay.
   ///
   /// In ar, this message translates to:
-  /// **'نحو {count} صفحة في اليوم'**
-  String khatmaAboutPerDay(String count);
+  /// **'نحو {n, plural, =0{لا صفحات} =1{صفحة واحدة} =2{صفحتين} few{{count} صفحات} many{{count} صفحة} other{{count} صفحة}} في اليوم'**
+  String khatmaAboutPerDay(int n, String count);
 
   /// No description provided for @khatmaDuration.
   ///
   /// In ar, this message translates to:
-  /// **'المدة: {count} يوم، والختم يوم {date}'**
-  String khatmaDuration(String count, String date);
+  /// **'المدة: {n, plural, =0{لا أيام} =1{يوم واحد} =2{يومان} few{{count} أيام} many{{count} يومًا} other{{count} يوم}}، والختم يوم {date}'**
+  String khatmaDuration(int n, String count, String date);
 
   /// No description provided for @khatmaEditionNote.
   ///
@@ -1781,8 +2399,8 @@ abstract class AppLocalizations {
   /// No description provided for @khatmaProgress.
   ///
   /// In ar, this message translates to:
-  /// **'{done} من {total} صفحة'**
-  String khatmaProgress(String done, String total);
+  /// **'{done} من {n, plural, =0{لا صفحات} =1{صفحة واحدة} =2{صفحتين} few{{total} صفحات} many{{total} صفحة} other{{total} صفحة}}'**
+  String khatmaProgress(String done, int n, String total);
 
   /// No description provided for @khatmaDaysLeft.
   ///
@@ -1805,7 +2423,7 @@ abstract class AppLocalizations {
   /// No description provided for @khatmaBehindBody.
   ///
   /// In ar, this message translates to:
-  /// **'أُضيفت إلى ورد اليوم. يمكنك توزيعها على الأيام الباقية، أو تأخير موعد الختم.'**
+  /// **'ينضم ما فات إلى ورد اليوم. اختر إنجازه اليوم، أو تعويضه تدريجيا، أو توزيع الباقي، أو مد موعد الختم.'**
   String get khatmaBehindBody;
 
   /// No description provided for @khatmaSpread.
@@ -1949,20 +2567,20 @@ abstract class AppLocalizations {
   /// No description provided for @streakReadToday.
   ///
   /// In ar, this message translates to:
-  /// **'قرأت اليوم. الأيام المتتالية: {count}'**
-  String streakReadToday(String count);
-
-  /// No description provided for @streakContinue.
-  ///
-  /// In ar, this message translates to:
-  /// **'الأيام المتتالية حتى أمس: {count}. صفحة اليوم تصلها.'**
-  String streakContinue(String count);
+  /// **'قرأت اليوم.'**
+  String get streakReadToday;
 
   /// No description provided for @streakWelcome.
   ///
   /// In ar, this message translates to:
   /// **'مرحبا بعودتك. تابع من حيث وقفت.'**
   String get streakWelcome;
+
+  /// No description provided for @readDaysOfLast.
+  ///
+  /// In ar, this message translates to:
+  /// **'قرأت {read} من {n, plural, =0{لا أيام} =1{آخر يوم} =2{آخر يومين} few{آخر {days} أيام} many{آخر {days} يومًا} other{آخر {days} يوم}}'**
+  String readDaysOfLast(String read, int n, String days);
 
   /// No description provided for @streakNotesToggle.
   ///
@@ -1973,7 +2591,7 @@ abstract class AppLocalizations {
   /// No description provided for @streakNotesHint.
   ///
   /// In ar, this message translates to:
-  /// **'تعرض الأيام المتتالية فقط، ولا تعرض الأيام الفائتة.'**
+  /// **'ملاحظات هادئة عن قراءتك، لا تعدّ الأيام المتتالية ولا تعرض الأيام الفائتة.'**
   String get streakNotesHint;
 
   /// No description provided for @journalTitle.
@@ -2027,7 +2645,7 @@ abstract class AppLocalizations {
   /// No description provided for @journalVerseRef.
   ///
   /// In ar, this message translates to:
-  /// **'سورة {surah} · آية {ayah}'**
+  /// **'سورة {surah} | آية {ayah}'**
   String journalVerseRef(String surah, String ayah);
 
   /// No description provided for @journalSaved.
@@ -2087,8 +2705,8 @@ abstract class AppLocalizations {
   /// No description provided for @searchMeaningCount.
   ///
   /// In ar, this message translates to:
-  /// **'{count} آية'**
-  String searchMeaningCount(String count);
+  /// **'{n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{count} آيات} many{{count} آية} other{{count} آية}}'**
+  String searchMeaningCount(int n, String count);
 
   /// No description provided for @semanticPackName.
   ///
@@ -2693,25 +3311,25 @@ abstract class AppLocalizations {
   /// No description provided for @tajweedMadd246.
   ///
   /// In ar, this message translates to:
-  /// **'المد العارض واللين (2 أو 4 أو 6 حركات)'**
+  /// **'المد العارض واللين (٢ أو ٤ أو ٦ حركات)'**
   String get tajweedMadd246;
 
   /// No description provided for @tajweedMaddMuttasil.
   ///
   /// In ar, this message translates to:
-  /// **'المد المتصل (4 أو 5 حركات)'**
+  /// **'المد المتصل (٤ أو ٥ حركات)'**
   String get tajweedMaddMuttasil;
 
   /// No description provided for @tajweedMaddMunfasil.
   ///
   /// In ar, this message translates to:
-  /// **'المد المنفصل (4 أو 5 حركات)'**
+  /// **'المد المنفصل (٤ أو ٥ حركات)'**
   String get tajweedMaddMunfasil;
 
   /// No description provided for @tajweedMadd6.
   ///
   /// In ar, this message translates to:
-  /// **'المد اللازم (6 حركات)'**
+  /// **'المد اللازم (٦ حركات)'**
   String get tajweedMadd6;
 
   /// No description provided for @tajweedGhunnah.
@@ -2837,8 +3455,20 @@ abstract class AppLocalizations {
   /// No description provided for @riwayaGaps.
   ///
   /// In ar, this message translates to:
-  /// **'في مصاحف الروايات: لا تظليل للكلمة أثناء التلاوة ولا تلوين للفظ الجلالة، ولا يظهر الحزب وأرباعه في الإطار (الصفحة نفسها تحمل علاماتها المطبوعة).'**
+  /// **'في مصاحف الروايات: لا تظليل للكلمة أثناء التلاوة (تلاواتها موقّتة بالآيات وحدها)، ولا يظهر الحزب وأرباعه في الإطار (الصفحة نفسها تحمل علاماتها المطبوعة).'**
   String get riwayaGaps;
+
+  /// No description provided for @riwayaNoWordBoxes.
+  ///
+  /// In ar, this message translates to:
+  /// **'صفحات هذه الرواية المنزّلة لا تحمل مربعات الكلمات، فلا تلوين فيها للفظ الجلالة ولا اختيار للكلمة. تحملها حزمة الصفحات الأحدث.'**
+  String get riwayaNoWordBoxes;
+
+  /// No description provided for @riwayaWordNoStudy.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا دراسة لهذه الكلمة هنا: دراسة الكلمة مبنية على كلمات رواية حفص، وتُفتح لكلمة الرواية حين تكون هي كلمة حفص نفسها في الآية نفسها، بحروفها.'**
+  String get riwayaWordNoStudy;
 
   /// No description provided for @riwayaTafsirNote.
   ///
@@ -2922,6 +3552,3109 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'رواية {riwaya}'**
   String reciterOfRiwaya(String riwaya);
+
+  /// No description provided for @copyVerses.
+  ///
+  /// In ar, this message translates to:
+  /// **'نسخ'**
+  String get copyVerses;
+
+  /// No description provided for @shareVerseText.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشاركة نصًا'**
+  String get shareVerseText;
+
+  /// No description provided for @shareVerseImage.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشاركة كصورة'**
+  String get shareVerseImage;
+
+  /// No description provided for @sharePreparing.
+  ///
+  /// In ar, this message translates to:
+  /// **'جارٍ تجهيز الصورة…'**
+  String get sharePreparing;
+
+  /// No description provided for @shareImageFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذر تجهيز الصورة'**
+  String get shareImageFailed;
+
+  /// No description provided for @shareSurahImage.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشاركة السورة كصورة'**
+  String get shareSurahImage;
+
+  /// No description provided for @shareImageTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشاركة كصورة'**
+  String get shareImageTitle;
+
+  /// No description provided for @shareImageOf.
+  ///
+  /// In ar, this message translates to:
+  /// **'{n} من {total}'**
+  String shareImageOf(String n, String total);
+
+  /// No description provided for @sharePreviousImage.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصورة السابقة'**
+  String get sharePreviousImage;
+
+  /// No description provided for @shareNextImage.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصورة التالية'**
+  String get shareNextImage;
+
+  /// No description provided for @shareButton.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشاركة'**
+  String get shareButton;
+
+  /// No description provided for @saveToPhotos.
+  ///
+  /// In ar, this message translates to:
+  /// **'حفظ في الصور'**
+  String get saveToPhotos;
+
+  /// No description provided for @savedToPhotos.
+  ///
+  /// In ar, this message translates to:
+  /// **'حُفظت الصور'**
+  String get savedToPhotos;
+
+  /// No description provided for @savedToFolder.
+  ///
+  /// In ar, this message translates to:
+  /// **'حُفظت الصور في {folder}'**
+  String savedToFolder(String folder);
+
+  /// No description provided for @saveToPhotosFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذر الحفظ في الصور'**
+  String get saveToPhotosFailed;
+
+  /// No description provided for @shareImageRiwayaUnavailable.
+  ///
+  /// In ar, this message translates to:
+  /// **'نص هذه الرواية وخطها غير متاحين على هذا الجهاز بعد، فلا تُشارك آياتها صورةً. نزّل صفحات الرواية أولا.'**
+  String get shareImageRiwayaUnavailable;
+
+  /// No description provided for @backupTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'النسخ الاحتياطي'**
+  String get backupTitle;
+
+  /// No description provided for @backupExport.
+  ///
+  /// In ar, this message translates to:
+  /// **'حفظ نسخة احتياطية'**
+  String get backupExport;
+
+  /// No description provided for @backupExportHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملف واحد فيه فواصلك وعلاماتك وموضع القراءة والختمة والتقارير وملاحظات التدبر وتقدم الحفظ، وإعداداتك. احتفظ به أو أرسله لنفسك.'**
+  String get backupExportHint;
+
+  /// No description provided for @backupImport.
+  ///
+  /// In ar, this message translates to:
+  /// **'استعادة من نسخة'**
+  String get backupImport;
+
+  /// No description provided for @backupImportHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'يدمج النسخة مع ما على جهازك: لا يحذف شيئا، ويأخذ الأحدث عند التعارض، ويعيد الإعدادات كما كانت في النسخة.'**
+  String get backupImportHint;
+
+  /// No description provided for @backupDone.
+  ///
+  /// In ar, this message translates to:
+  /// **'تمت الاستعادة: {added} جديد، {updated} محدَّث'**
+  String backupDone(String added, String updated);
+
+  /// No description provided for @backupInvalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا الملف ليس نسخة احتياطية من تبيان'**
+  String get backupInvalid;
+
+  /// No description provided for @backupFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذرت العملية'**
+  String get backupFailed;
+
+  /// No description provided for @playbackSpeedLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'سرعة التلاوة'**
+  String get playbackSpeedLabel;
+
+  /// No description provided for @playbackSpeedValue.
+  ///
+  /// In ar, this message translates to:
+  /// **'×{value}'**
+  String playbackSpeedValue(String value);
+
+  /// No description provided for @storageTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'التخزين والتنزيلات'**
+  String get storageTitle;
+
+  /// No description provided for @storageOpen.
+  ///
+  /// In ar, this message translates to:
+  /// **'التخزين والتنزيلات'**
+  String get storageOpen;
+
+  /// No description provided for @storageOpenHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'ما نُزِّل على الجهاز وأحجامه، وحذف ما لا تحتاجه'**
+  String get storageOpenHint;
+
+  /// No description provided for @storageIntro.
+  ///
+  /// In ar, this message translates to:
+  /// **'كل ما نزّله التطبيق على جهازك. يمكنك حذف أي منها وتنزيله لاحقا. بياناتك (الفواصل، الختمة، الملاحظات) لا تظهر هنا ولا تُمس.'**
+  String get storageIntro;
+
+  /// No description provided for @storageTotal.
+  ///
+  /// In ar, this message translates to:
+  /// **'المجموع: {size}'**
+  String storageTotal(String size);
+
+  /// No description provided for @storageBundled.
+  ///
+  /// In ar, this message translates to:
+  /// **'مضمّن مع التطبيق'**
+  String get storageBundled;
+
+  /// No description provided for @storageSize.
+  ///
+  /// In ar, this message translates to:
+  /// **'{mb} ميجا'**
+  String storageSize(String mb);
+
+  /// No description provided for @storageAudioOf.
+  ///
+  /// In ar, this message translates to:
+  /// **'تلاوات {name}'**
+  String storageAudioOf(String name);
+
+  /// No description provided for @storageSemantic.
+  ///
+  /// In ar, this message translates to:
+  /// **'حزمة البحث بالمعنى'**
+  String get storageSemantic;
+
+  /// No description provided for @storageTiming.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديثات توقيت التلاوة'**
+  String get storageTiming;
+
+  /// No description provided for @storagePartial.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنزيلات غير مكتملة'**
+  String get storagePartial;
+
+  /// No description provided for @storagePartialHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'بقايا تنزيلات توقفت؛ حذفها آمن'**
+  String get storagePartialHint;
+
+  /// No description provided for @storageClean.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنظيف'**
+  String get storageClean;
+
+  /// No description provided for @storageDeleteAsk.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف {name} ({size})؟'**
+  String storageDeleteAsk(String name, String size);
+
+  /// No description provided for @storageFreed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم تحرير {size}'**
+  String storageFreed(String size);
+
+  /// No description provided for @storageEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا شيء منزَّل غير ما يأتي مع التطبيق'**
+  String get storageEmpty;
+
+  /// No description provided for @storageUnknown.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملفات أخرى'**
+  String get storageUnknown;
+
+  /// No description provided for @asbabTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'أسباب النزول'**
+  String get asbabTitle;
+
+  /// No description provided for @asbabCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'أسباب النزول ({count})'**
+  String asbabCount(String count);
+
+  /// No description provided for @bookCitationTahqiq.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحقيق {name}'**
+  String bookCitationTahqiq(String name);
+
+  /// No description provided for @bookCitationVolume.
+  ///
+  /// In ar, this message translates to:
+  /// **'ج {volume}'**
+  String bookCitationVolume(String volume);
+
+  /// No description provided for @bookCitationPage.
+  ///
+  /// In ar, this message translates to:
+  /// **'ص {page}'**
+  String bookCitationPage(String page);
+
+  /// No description provided for @bookCitationPages.
+  ///
+  /// In ar, this message translates to:
+  /// **'ص {from}–{to}'**
+  String bookCitationPages(String from, String to);
+
+  /// No description provided for @storageBook.
+  ///
+  /// In ar, this message translates to:
+  /// **'كتاب «{title}»'**
+  String storageBook(String title);
+
+  /// No description provided for @storageBooksAvailable.
+  ///
+  /// In ar, this message translates to:
+  /// **'كتب يمكن تنزيلها'**
+  String get storageBooksAvailable;
+
+  /// No description provided for @bookPackDownload.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنزيل'**
+  String get bookPackDownload;
+
+  /// No description provided for @munasabatTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'المناسبات'**
+  String get munasabatTitle;
+
+  /// No description provided for @munasabatCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'المناسبات ({count})'**
+  String munasabatCount(String count);
+
+  /// No description provided for @wujuhTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'الوجوه والنظائر'**
+  String get wujuhTitle;
+
+  /// No description provided for @bookKindTafsir.
+  ///
+  /// In ar, this message translates to:
+  /// **'تفسير'**
+  String get bookKindTafsir;
+
+  /// No description provided for @bookEntryVerses.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآيات {from}–{to}'**
+  String bookEntryVerses(String from, String to);
+
+  /// No description provided for @continuousView.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض متتالي'**
+  String get continuousView;
+
+  /// No description provided for @underVerseTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'ما يظهر تحت الآية'**
+  String get underVerseTitle;
+
+  /// No description provided for @underArabicOnly.
+  ///
+  /// In ar, this message translates to:
+  /// **'عربي فقط'**
+  String get underArabicOnly;
+
+  /// No description provided for @underTranslation.
+  ///
+  /// In ar, this message translates to:
+  /// **'عربي مع ترجمة'**
+  String get underTranslation;
+
+  /// No description provided for @underTranslationHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر ترجمة أو اثنتين'**
+  String get underTranslationHint;
+
+  /// No description provided for @underMuyassar.
+  ///
+  /// In ar, this message translates to:
+  /// **'عربي مع التفسير الميسر'**
+  String get underMuyassar;
+
+  /// No description provided for @splitTranslationLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'بجانب الصفحة على الشاشات العريضة'**
+  String get splitTranslationLabel;
+
+  /// No description provided for @splitTranslationHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصفحة كما هي، وبجانبها ما اخترته لآياتها'**
+  String get splitTranslationHint;
+
+  /// No description provided for @nextSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'السورة التالية'**
+  String get nextSurah;
+
+  /// No description provided for @previousSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'السورة السابقة'**
+  String get previousSurah;
+
+  /// No description provided for @hafsTextNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'النص هنا برواية حفص'**
+  String get hafsTextNote;
+
+  /// No description provided for @twoPageSpread.
+  ///
+  /// In ar, this message translates to:
+  /// **'صفحتان متقابلتان'**
+  String get twoPageSpread;
+
+  /// No description provided for @twoPageSpreadHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'على الشاشات العريضة في الوضع الأفقي، كالمصحف المفتوح'**
+  String get twoPageSpreadHint;
+
+  /// No description provided for @oneVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'آية آية'**
+  String get oneVerse;
+
+  /// No description provided for @oneVerseHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'آية واحدة في كل شاشة بخط كبير، والجهاز بالعرض'**
+  String get oneVerseHint;
+
+  /// No description provided for @oneVerseAutoOff.
+  ///
+  /// In ar, this message translates to:
+  /// **'الانتقال التلقائي متوقف. اضغط لتشغيله'**
+  String get oneVerseAutoOff;
+
+  /// No description provided for @oneVerseAutoOn.
+  ///
+  /// In ar, this message translates to:
+  /// **'ينتقل للآية التالية {n, plural, =0{فورًا} =1{كل ثانية} =2{كل ثانيتين} few{كل {seconds} ثوانٍ} many{كل {seconds} ثانية} other{كل {seconds} ثانية}}. اضغط للتغيير'**
+  String oneVerseAutoOn(int n, String seconds);
+
+  /// No description provided for @oneVerseAutoShort.
+  ///
+  /// In ar, this message translates to:
+  /// **'تلقائي'**
+  String get oneVerseAutoShort;
+
+  /// No description provided for @secondsShort.
+  ///
+  /// In ar, this message translates to:
+  /// **'{n} ث'**
+  String secondsShort(String n);
+
+  /// No description provided for @searchScopeAll.
+  ///
+  /// In ar, this message translates to:
+  /// **'كل المصحف'**
+  String get searchScopeAll;
+
+  /// No description provided for @searchScopeJuz.
+  ///
+  /// In ar, this message translates to:
+  /// **'في جزء'**
+  String get searchScopeJuz;
+
+  /// No description provided for @searchScopeSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'في سورة'**
+  String get searchScopeSurah;
+
+  /// No description provided for @whatsNewTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'ما الجديد'**
+  String get whatsNewTitle;
+
+  /// No description provided for @whatsNewDone.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسنا'**
+  String get whatsNewDone;
+
+  /// No description provided for @newOneVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'آية آية'**
+  String get newOneVerse;
+
+  /// No description provided for @newOneVerseBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'زر تحت الصفحة يقلب الموبايل بالعرض ويعرض آية واحدة بخط كبير، مع انتقال تلقائي اختياري.'**
+  String get newOneVerseBody;
+
+  /// No description provided for @newUnderVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'الترجمة تحت الآية'**
+  String get newUnderVerse;
+
+  /// No description provided for @newUnderVerseBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'العرض المتتالي من أدوات الصفحة: ترجمة أو اثنتان أو التفسير الميسر تحت كل آية.'**
+  String get newUnderVerseBody;
+
+  /// No description provided for @newShare.
+  ///
+  /// In ar, this message translates to:
+  /// **'النسخ والمشاركة'**
+  String get newShare;
+
+  /// No description provided for @newShareBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'انسخ الآية أو شاركها نصا أو صورة بتصميم تبيان، ولو امتدت على صفحات. واضغط مطولا على اسم السورة أعلى الصفحة لمشاركة السورة كلها صورا.'**
+  String get newShareBody;
+
+  /// No description provided for @newSpread.
+  ///
+  /// In ar, this message translates to:
+  /// **'صفحتان متقابلتان'**
+  String get newSpread;
+
+  /// No description provided for @newSpreadBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'على التابلت والشاشات العريضة بالعرض يظهر المصحف مفتوحا.'**
+  String get newSpreadBody;
+
+  /// No description provided for @newWidgets.
+  ///
+  /// In ar, this message translates to:
+  /// **'أدوات الشاشة'**
+  String get newWidgets;
+
+  /// No description provided for @newWidgetsBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'ورد الختمة واختصارات القراءة والاستماع على الشاشة الرئيسية، وزر استماع في الإعدادات السريعة.'**
+  String get newWidgetsBody;
+
+  /// No description provided for @newBackup.
+  ///
+  /// In ar, this message translates to:
+  /// **'النسخة الاحتياطية'**
+  String get newBackup;
+
+  /// No description provided for @newBackupBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'احفظ فواصلك وختمتك وملاحظاتك وإعداداتك في ملف واحد، واستعدها على أي جهاز.'**
+  String get newBackupBody;
+
+  /// No description provided for @carContinue.
+  ///
+  /// In ar, this message translates to:
+  /// **'تابع من موضع القراءة'**
+  String get carContinue;
+
+  /// No description provided for @carReciters.
+  ///
+  /// In ar, this message translates to:
+  /// **'القراء'**
+  String get carReciters;
+
+  /// No description provided for @pagesMapCurrent.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصفحة الحالية'**
+  String get pagesMapCurrent;
+
+  /// No description provided for @pagesMapRead.
+  ///
+  /// In ar, this message translates to:
+  /// **'مقروءة في الختمة'**
+  String get pagesMapRead;
+
+  /// No description provided for @pagesMapMarked.
+  ///
+  /// In ar, this message translates to:
+  /// **'فيها فاصل'**
+  String get pagesMapMarked;
+
+  /// No description provided for @pagesRange.
+  ///
+  /// In ar, this message translates to:
+  /// **'ص {first}–{last}'**
+  String pagesRange(String first, String last);
+
+  /// No description provided for @pagesMapJuzRead.
+  ///
+  /// In ar, this message translates to:
+  /// **'قُرئ {read} من {total}'**
+  String pagesMapJuzRead(String read, String total);
+
+  /// No description provided for @focusModeTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'وضع التركيز'**
+  String get focusModeTitle;
+
+  /// No description provided for @focusModeHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصفحة وحدها بلا إطار ولا شيء تحتها، وشريط رفيع في الأعلى'**
+  String get focusModeHint;
+
+  /// No description provided for @focusToolsLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'إظهار الأدوات'**
+  String get focusToolsLabel;
+
+  /// No description provided for @focusToolsButton.
+  ///
+  /// In ar, this message translates to:
+  /// **'الزرار البسيط'**
+  String get focusToolsButton;
+
+  /// No description provided for @focusToolsButtonHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'ثلاثة أزرار صغيرة في الشريط العلوي'**
+  String get focusToolsButtonHint;
+
+  /// No description provided for @focusToolsMenu.
+  ///
+  /// In ar, this message translates to:
+  /// **'القائمة'**
+  String get focusToolsMenu;
+
+  /// No description provided for @focusToolsMenuHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'ضغطة مطولة على الصفحة تفتح نافذة فيها كل الأدوات'**
+  String get focusToolsMenuHint;
+
+  /// No description provided for @pageTurnLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأثير قلب الصفحة'**
+  String get pageTurnLabel;
+
+  /// No description provided for @pageTurnNormal.
+  ///
+  /// In ar, this message translates to:
+  /// **'طبيعي'**
+  String get pageTurnNormal;
+
+  /// No description provided for @pageTurnNormalHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنزلق الصفحة جانبًا'**
+  String get pageTurnNormalHint;
+
+  /// No description provided for @pageTurnCurl.
+  ///
+  /// In ar, this message translates to:
+  /// **'قلب ثلاثي الأبعاد'**
+  String get pageTurnCurl;
+
+  /// No description provided for @pageTurnCurlHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنقلب الصفحة كورق المصحف'**
+  String get pageTurnCurlHint;
+
+  /// No description provided for @pageTurnBend.
+  ///
+  /// In ar, this message translates to:
+  /// **'انحناء الورقة'**
+  String get pageTurnBend;
+
+  /// No description provided for @pageTurnBendHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تلتف الصفحة مع إصبعك كالورق ويظهر ظهرها'**
+  String get pageTurnBendHint;
+
+  /// No description provided for @pageTurnFold.
+  ///
+  /// In ar, this message translates to:
+  /// **'انحناء خفيف'**
+  String get pageTurnFold;
+
+  /// No description provided for @pageTurnFoldHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'ينثني طرف الصفحة مع إصبعك، أخف على الجهاز'**
+  String get pageTurnFoldHint;
+
+  /// No description provided for @pageTurnFade.
+  ///
+  /// In ar, this message translates to:
+  /// **'تلاشي'**
+  String get pageTurnFade;
+
+  /// No description provided for @pageTurnFadeHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تظهر الصفحة التالية فوق السابقة بهدوء'**
+  String get pageTurnFadeHint;
+
+  /// No description provided for @pageFillLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملء الشاشة'**
+  String get pageFillLabel;
+
+  /// No description provided for @pageFillLines.
+  ///
+  /// In ar, this message translates to:
+  /// **'توزيع السطور'**
+  String get pageFillLines;
+
+  /// No description provided for @pageFillLinesHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'كل سطر بعرض الشاشة، والسطور موزعة على طولها'**
+  String get pageFillLinesHint;
+
+  /// No description provided for @pageFillStretch.
+  ///
+  /// In ar, this message translates to:
+  /// **'توزيع + مط خفيف'**
+  String get pageFillStretch;
+
+  /// No description provided for @pageFillStretchHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'ومط أفقي حتى ١٢٪ حيث تملأ الصفحة الطول'**
+  String get pageFillStretchHint;
+
+  /// No description provided for @pageFillFull.
+  ///
+  /// In ar, this message translates to:
+  /// **'مط كامل'**
+  String get pageFillFull;
+
+  /// No description provided for @pageFillFullHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تملأ الصفحة الشاشة طولا وعرضا، ويتغير بذلك شكل الحروف'**
+  String get pageFillFullHint;
+
+  /// No description provided for @playerStyleLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'شكل المشغل'**
+  String get playerStyleLabel;
+
+  /// No description provided for @playerStyleAuto.
+  ///
+  /// In ar, this message translates to:
+  /// **'تلقائي'**
+  String get playerStyleAuto;
+
+  /// No description provided for @playerStyleAutoHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'العادي في القراءة، وشكل وضع التركيز مع وضع التركيز'**
+  String get playerStyleAutoHint;
+
+  /// No description provided for @playerStyleNormal.
+  ///
+  /// In ar, this message translates to:
+  /// **'العادي'**
+  String get playerStyleNormal;
+
+  /// No description provided for @playerStylePill.
+  ///
+  /// In ar, this message translates to:
+  /// **'وضع التركيز'**
+  String get playerStylePill;
+
+  /// No description provided for @playerStylePillHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'صغير وشفاف، فيه تشغيل وإعدادات وإغلاق'**
+  String get playerStylePillHint;
+
+  /// No description provided for @playerStyleButton.
+  ///
+  /// In ar, this message translates to:
+  /// **'الزر الواحد'**
+  String get playerStyleButton;
+
+  /// No description provided for @playerStyleButtonHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'زر صغير: ضغطة للتشغيل والإيقاف، وضغطة مطولة للقائمة'**
+  String get playerStyleButtonHint;
+
+  /// No description provided for @focusExit.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنهاء التركيز'**
+  String get focusExit;
+
+  /// No description provided for @focusTools.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأدوات'**
+  String get focusTools;
+
+  /// No description provided for @focusShowTools.
+  ///
+  /// In ar, this message translates to:
+  /// **'إظهار الأدوات'**
+  String get focusShowTools;
+
+  /// No description provided for @focusHideTools.
+  ///
+  /// In ar, this message translates to:
+  /// **'إخفاء الأدوات'**
+  String get focusHideTools;
+
+  /// No description provided for @focusMenus.
+  ///
+  /// In ar, this message translates to:
+  /// **'القوائم'**
+  String get focusMenus;
+
+  /// No description provided for @focusPageTools.
+  ///
+  /// In ar, this message translates to:
+  /// **'أدوات الصفحة'**
+  String get focusPageTools;
+
+  /// No description provided for @playerFull.
+  ///
+  /// In ar, this message translates to:
+  /// **'المشغل كاملًا'**
+  String get playerFull;
+
+  /// No description provided for @tajweedMarksSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'أحكام التجويد: ألوانها ومواضعها'**
+  String get tajweedMarksSubtitle;
+
+  /// No description provided for @tajweedMarksHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'كل حكم بلونه في صفحات المصحف، ومواضعه في المصحف كله. اضغط الحكم لتعرض مواضعه، واضغط الموضع لتفتح صفحته.'**
+  String get tajweedMarksHint;
+
+  /// No description provided for @tajweedRuleCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآيات: {verses} · الحروف الملونة: {letters}'**
+  String tajweedRuleCount(String verses, String letters);
+
+  /// No description provided for @tajweedPlaceAt.
+  ///
+  /// In ar, this message translates to:
+  /// **'{surah} {ayah} · الصفحة {page}'**
+  String tajweedPlaceAt(String surah, String ayah, String page);
+
+  /// No description provided for @tajweedIndexColorNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'الألوان كما تُرسم في الصفحات الآن: اختيارك، أو اللون الافتراضي. وتُغيَّر من «شكل المصحف».'**
+  String get tajweedIndexColorNote;
+
+  /// No description provided for @tajweedIndexLoadError.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذرت قراءة مواضع هذا الحكم.'**
+  String get tajweedIndexLoadError;
+
+  /// No description provided for @tajweedMarksInkNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'حين يقع الحكم على علامة وحدها (مثل الميم الصغيرة) تبقى العلامة هنا بلون النص: الخط لا يلوّن العلامة دون جزء من حرفها. وتظهر ملونة في صفحة المصحف.'**
+  String get tajweedMarksInkNote;
+
+  /// No description provided for @assistantTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'المساعد'**
+  String get assistantTitle;
+
+  /// No description provided for @assistantIntro.
+  ///
+  /// In ar, this message translates to:
+  /// **'المساعدة في استخدام التطبيق والمصحف'**
+  String get assistantIntro;
+
+  /// No description provided for @tajweedMarksTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'علامات التجويد'**
+  String get tajweedMarksTitle;
+
+  /// No description provided for @moreLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'المزيد'**
+  String get moreLabel;
+
+  /// No description provided for @wirdIndicator.
+  ///
+  /// In ar, this message translates to:
+  /// **'ورد اليوم: {read} من {total}'**
+  String wirdIndicator(String read, String total);
+
+  /// No description provided for @khatmaContinueMine.
+  ///
+  /// In ar, this message translates to:
+  /// **'متابعة ختمتي'**
+  String get khatmaContinueMine;
+
+  /// No description provided for @askCreditLine.
+  ///
+  /// In ar, this message translates to:
+  /// **'قراءتك الأخيرة تدخل في «{plan}». أتُحتسب لها؟'**
+  String askCreditLine(String plan);
+
+  /// No description provided for @askCreditCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'احتسب'**
+  String get askCreditCount;
+
+  /// No description provided for @askCreditNo.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا'**
+  String get askCreditNo;
+
+  /// No description provided for @khatmaPendingTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'قراءات تنتظر الاحتساب'**
+  String get khatmaPendingTitle;
+
+  /// No description provided for @khatmaPendingOn.
+  ///
+  /// In ar, this message translates to:
+  /// **'قراءة {date}'**
+  String khatmaPendingOn(String date);
+
+  /// No description provided for @tasmeeTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'التسميع'**
+  String get tasmeeTitle;
+
+  /// No description provided for @tasmeeDescription.
+  ///
+  /// In ar, this message translates to:
+  /// **'اقرأ من حفظك؛ يسمعك تبيان على جهازك ويُظهر الكلمات ويعلّم مواضع الخطأ. لا يُرسل الصوت ولا يُقيَّم التجويد.'**
+  String get tasmeeDescription;
+
+  /// No description provided for @tasmeeSelectRange.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر نطاق التسميع'**
+  String get tasmeeSelectRange;
+
+  /// No description provided for @tasmeeSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'السورة'**
+  String get tasmeeSurah;
+
+  /// No description provided for @tasmeeJuz.
+  ///
+  /// In ar, this message translates to:
+  /// **'الجزء'**
+  String get tasmeeJuz;
+
+  /// No description provided for @tasmeeHizb.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحزب'**
+  String get tasmeeHizb;
+
+  /// No description provided for @tasmeeFirstHalf.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأول'**
+  String get tasmeeFirstHalf;
+
+  /// No description provided for @tasmeeSecondHalf.
+  ///
+  /// In ar, this message translates to:
+  /// **'الثاني'**
+  String get tasmeeSecondHalf;
+
+  /// No description provided for @tasmeeFromSecondQuarter.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابدأ من الربع الثاني'**
+  String get tasmeeFromSecondQuarter;
+
+  /// No description provided for @tasmeeMode.
+  ///
+  /// In ar, this message translates to:
+  /// **'طريقة التسميع'**
+  String get tasmeeMode;
+
+  /// No description provided for @tasmeeContinuous.
+  ///
+  /// In ar, this message translates to:
+  /// **'متصل'**
+  String get tasmeeContinuous;
+
+  /// No description provided for @tasmeeVerseByVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'آية بآية'**
+  String get tasmeeVerseByVerse;
+
+  /// No description provided for @tasmeeInvalidRange.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحقق من أرقام النطاق.'**
+  String get tasmeeInvalidRange;
+
+  /// No description provided for @tasmeeDownloadModel.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنزيل نموذج التسميع'**
+  String get tasmeeDownloadModel;
+
+  /// No description provided for @tasmeeListening.
+  ///
+  /// In ar, this message translates to:
+  /// **'أستمع إليك'**
+  String get tasmeeListening;
+
+  /// No description provided for @tasmeeNotListening.
+  ///
+  /// In ar, this message translates to:
+  /// **'اضغط للبدء واقرأ من حفظك'**
+  String get tasmeeNotListening;
+
+  /// No description provided for @tasmeeModelLoad.
+  ///
+  /// In ar, this message translates to:
+  /// **'جارٍ تجهيز النموذج'**
+  String get tasmeeModelLoad;
+
+  /// No description provided for @tasmeeWordWrong.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ'**
+  String get tasmeeWordWrong;
+
+  /// No description provided for @tasmeeWordSkipped.
+  ///
+  /// In ar, this message translates to:
+  /// **'متجاوزة'**
+  String get tasmeeWordSkipped;
+
+  /// No description provided for @tasmeeSessionComplete.
+  ///
+  /// In ar, this message translates to:
+  /// **'انتهى التسميع'**
+  String get tasmeeSessionComplete;
+
+  /// No description provided for @tasmeeSessionDoubtful.
+  ///
+  /// In ar, this message translates to:
+  /// **'{n, plural, =0{لا كلمات مشكوك فيها} =1{كلمة واحدة مشكوك فيها، لم تُحسب في الدقة} =2{كلمتان مشكوك فيهما، لم تُحسبا في الدقة} few{{count} كلمات مشكوك فيها، لم تُحسب في الدقة} many{{count} كلمة مشكوك فيها، لم تُحسب في الدقة} other{{count} كلمة مشكوك فيها، لم تُحسب في الدقة}}'**
+  String tasmeeSessionDoubtful(int n, String count);
+
+  /// No description provided for @tasmeeAccuracy.
+  ///
+  /// In ar, this message translates to:
+  /// **'الدقة'**
+  String get tasmeeAccuracy;
+
+  /// No description provided for @tasmeeAccuracyShort.
+  ///
+  /// In ar, this message translates to:
+  /// **'الدقة'**
+  String get tasmeeAccuracyShort;
+
+  /// No description provided for @tasmeeAcrossSurahs.
+  ///
+  /// In ar, this message translates to:
+  /// **'{fromSurah} {fromAyah} – {toSurah} {toAyah} · {mode}'**
+  String tasmeeAcrossSurahs(
+    String fromSurah,
+    String fromAyah,
+    String toSurah,
+    String toAyah,
+    String mode,
+  );
+
+  /// No description provided for @tasmeeAyah.
+  ///
+  /// In ar, this message translates to:
+  /// **'آية'**
+  String get tasmeeAyah;
+
+  /// No description provided for @tasmeeCancelDownload.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء التنزيل'**
+  String get tasmeeCancelDownload;
+
+  /// No description provided for @tasmeeClearHistory.
+  ///
+  /// In ar, this message translates to:
+  /// **'مسح سجل التسميع'**
+  String get tasmeeClearHistory;
+
+  /// No description provided for @tasmeeClearHistoryBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُمسح ما يحفظه التطبيق عن جلساتك السابقة (آخر تسميع). لا يوجد صوت محفوظ أصلا.'**
+  String get tasmeeClearHistoryBody;
+
+  /// No description provided for @tasmeeClearHistoryHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'آخر تسميع ونتيجته'**
+  String get tasmeeClearHistoryHint;
+
+  /// No description provided for @tasmeeTrainTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'ساعدنا في تحسين النموذج وتدريبه بتسجيلاتك'**
+  String get tasmeeTrainTitle;
+
+  /// No description provided for @tasmeeTrainBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'على منصة «تدريب التسميع» تقرأ آيات من حفظك وتتبرّع بتسجيلك، ليتعلّم نموذج التسميع ويصبح أدق. المشاركة اختيارية بالكامل.'**
+  String get tasmeeTrainBody;
+
+  /// No description provided for @tasmeeTrainHowTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'كيف تشارك؟'**
+  String get tasmeeTrainHowTitle;
+
+  /// No description provided for @tasmeeTrainStep1.
+  ///
+  /// In ar, this message translates to:
+  /// **'أنشئ حسابًا ببريدك الإلكتروني ووافق على شروط المشاركة.'**
+  String get tasmeeTrainStep1;
+
+  /// No description provided for @tasmeeTrainStep2.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر سورة ونطاق آيات، واقرأها من حفظك في الميكروفون. التسجيل الواحد حتى دقيقتين.'**
+  String get tasmeeTrainStep2;
+
+  /// No description provided for @tasmeeTrainStep3.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجّل في مكان هادئ وقريبًا من الميكروفون، بوضوح وبسرعة مريحة. القراءة الصحيحة والخطأ المتعمّد كلاهما مطلوب للتدريب.'**
+  String get tasmeeTrainStep3;
+
+  /// No description provided for @tasmeeTrainStep4.
+  ///
+  /// In ar, this message translates to:
+  /// **'يراجع متطوعون تسجيلك قبل دخوله بيانات التدريب.'**
+  String get tasmeeTrainStep4;
+
+  /// No description provided for @tasmeeTrainPrivacy.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخصوصية: نطلب بريدك الإلكتروني وسنة ميلادك فقط، ومن هم دون ١٨ يحتاجون موافقة ولي الأمر. التسجيلات المقبولة تُشارك برخصة CC BY 4.0، والملفات الخام لا تُعرض للعامة، وتقدر تمسح تسجيلاتك في أي وقت.'**
+  String get tasmeeTrainPrivacy;
+
+  /// No description provided for @tasmeeTrainOpen.
+  ///
+  /// In ar, this message translates to:
+  /// **'افتح منصة التدريب'**
+  String get tasmeeTrainOpen;
+
+  /// No description provided for @tasmeeTrainOpenFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر فتح المتصفح. افتح train.altibyan.app يدويًا.'**
+  String get tasmeeTrainOpenFailed;
+
+  /// No description provided for @tasmeeClose.
+  ///
+  /// In ar, this message translates to:
+  /// **'إغلاق'**
+  String get tasmeeClose;
+
+  /// No description provided for @tasmeeConfirm.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأكيد'**
+  String get tasmeeConfirm;
+
+  /// No description provided for @tasmeeContinueLast.
+  ///
+  /// In ar, this message translates to:
+  /// **'أكمل'**
+  String get tasmeeContinueLast;
+
+  /// No description provided for @tasmeeContinuousHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اقرأ متصلا؛ تظهر كل كلمة في موضعها لحظة قراءتها'**
+  String get tasmeeContinuousHint;
+
+  /// No description provided for @tasmeeDefaultsNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'القيم الافتراضية من الإعدادات › التسميع'**
+  String get tasmeeDefaultsNote;
+
+  /// No description provided for @tasmeeDeleteModel.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف النموذج'**
+  String get tasmeeDeleteModel;
+
+  /// No description provided for @tasmeeDeleteModelBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُحذف نموذج التسميع من الجهاز. تحتاج إلى تنزيله ثانية قبل التسميع القادم.'**
+  String get tasmeeDeleteModelBody;
+
+  /// No description provided for @tasmeeDone.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم'**
+  String get tasmeeDone;
+
+  /// No description provided for @tasmeeDownloadShort.
+  ///
+  /// In ar, this message translates to:
+  /// **'نزّل النموذج'**
+  String get tasmeeDownloadShort;
+
+  /// No description provided for @tasmeeDownloadSize.
+  ///
+  /// In ar, this message translates to:
+  /// **'نزّل ({size} م.ب)'**
+  String tasmeeDownloadSize(String size);
+
+  /// No description provided for @tasmeeDurationWords.
+  ///
+  /// In ar, this message translates to:
+  /// **'المدة {minutes} د {seconds} ث · {n, plural, =0{لا كلمات} =1{كلمة واحدة} =2{كلمتان} few{{words} كلمات} many{{words} كلمة} other{{words} كلمة}}'**
+  String tasmeeDurationWords(
+    String minutes,
+    String seconds,
+    int n,
+    String words,
+  );
+
+  /// No description provided for @tasmeeElapsed.
+  ///
+  /// In ar, this message translates to:
+  /// **'المدة'**
+  String get tasmeeElapsed;
+
+  /// No description provided for @tasmeeEnd.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنهاء'**
+  String get tasmeeEnd;
+
+  /// No description provided for @tasmeeFeedback.
+  ///
+  /// In ar, this message translates to:
+  /// **'أثناء التسميع'**
+  String get tasmeeFeedback;
+
+  /// No description provided for @tasmeeFinishing.
+  ///
+  /// In ar, this message translates to:
+  /// **'أنهي التسميع…'**
+  String get tasmeeFinishing;
+
+  /// No description provided for @tasmeeFromPage.
+  ///
+  /// In ar, this message translates to:
+  /// **'من صفحة'**
+  String get tasmeeFromPage;
+
+  /// No description provided for @tasmeeFromSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'من سورة'**
+  String get tasmeeFromSurah;
+
+  /// No description provided for @tasmeeHelp.
+  ///
+  /// In ar, this message translates to:
+  /// **'المساعدة'**
+  String get tasmeeHelp;
+
+  /// No description provided for @tasmeeHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تلميح'**
+  String get tasmeeHint;
+
+  /// No description provided for @tasmeeHistory.
+  ///
+  /// In ar, this message translates to:
+  /// **'السجل'**
+  String get tasmeeHistory;
+
+  /// No description provided for @tasmeeKindHalfHizb.
+  ///
+  /// In ar, this message translates to:
+  /// **'نصف حزب'**
+  String get tasmeeKindHalfHizb;
+
+  /// No description provided for @tasmeeKindHizb.
+  ///
+  /// In ar, this message translates to:
+  /// **'حزب'**
+  String get tasmeeKindHizb;
+
+  /// No description provided for @tasmeeKindJuz.
+  ///
+  /// In ar, this message translates to:
+  /// **'جزء'**
+  String get tasmeeKindJuz;
+
+  /// No description provided for @tasmeeKindPages.
+  ///
+  /// In ar, this message translates to:
+  /// **'صفحات'**
+  String get tasmeeKindPages;
+
+  /// No description provided for @tasmeeKindQuarter.
+  ///
+  /// In ar, this message translates to:
+  /// **'ربع حزب'**
+  String get tasmeeKindQuarter;
+
+  /// No description provided for @tasmeeKindSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'سورة'**
+  String get tasmeeKindSurah;
+
+  /// No description provided for @tasmeeKindThreeQuarters.
+  ///
+  /// In ar, this message translates to:
+  /// **'٣ أرباع حزب'**
+  String get tasmeeKindThreeQuarters;
+
+  /// No description provided for @tasmeeKindVerses.
+  ///
+  /// In ar, this message translates to:
+  /// **'آيات'**
+  String get tasmeeKindVerses;
+
+  /// No description provided for @tasmeeLastSession.
+  ///
+  /// In ar, this message translates to:
+  /// **'آخر تسميع: {range} · {accuracy}'**
+  String tasmeeLastSession(String range, String accuracy);
+
+  /// No description provided for @tasmeeLenient.
+  ///
+  /// In ar, this message translates to:
+  /// **'متسامح'**
+  String get tasmeeLenient;
+
+  /// No description provided for @tasmeeLenientHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'يقبل فرقا أكبر في نطق الكلمة'**
+  String get tasmeeLenientHint;
+
+  /// No description provided for @tasmeeLess.
+  ///
+  /// In ar, this message translates to:
+  /// **'أقل'**
+  String get tasmeeLess;
+
+  /// No description provided for @tasmeeListeningVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآية {ayah}: أستمع إليك'**
+  String tasmeeListeningVerse(String ayah);
+
+  /// No description provided for @tasmeeMarkAndGoOn.
+  ///
+  /// In ar, this message translates to:
+  /// **'تابع وعلّمه'**
+  String get tasmeeMarkAndGoOn;
+
+  /// No description provided for @tasmeeMedium.
+  ///
+  /// In ar, this message translates to:
+  /// **'متوسط'**
+  String get tasmeeMedium;
+
+  /// No description provided for @tasmeeMediumHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'يتجاوز عن حرف واحد في الكلمة الطويلة'**
+  String get tasmeeMediumHint;
+
+  /// No description provided for @tasmeeMicOff.
+  ///
+  /// In ar, this message translates to:
+  /// **'الميكروفون غير مسموح'**
+  String get tasmeeMicOff;
+
+  /// No description provided for @tasmeeMicPrivacy.
+  ///
+  /// In ar, this message translates to:
+  /// **'التسميع يسمع قراءتك على جهازك فقط. لا يُرسل الصوت ولا يُحفظ.'**
+  String get tasmeeMicPrivacy;
+
+  /// No description provided for @tasmeeMistakes.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count} أخطاء'**
+  String tasmeeMistakes(String count);
+
+  /// No description provided for @tasmeeModelChecking.
+  ///
+  /// In ar, this message translates to:
+  /// **'جارٍ معرفة الحجم…'**
+  String get tasmeeModelChecking;
+
+  /// No description provided for @tasmeeModelDetails.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصدر والرخصة في «عن المصحف» › المصادر'**
+  String get tasmeeModelDetails;
+
+  /// No description provided for @tasmeeModelFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذر الاتصال. تحقق من الإنترنت وحاول ثانية.'**
+  String get tasmeeModelFailed;
+
+  /// No description provided for @tasmeeModelInstalled.
+  ///
+  /// In ar, this message translates to:
+  /// **'النموذج منزّل (الإصدار {version})'**
+  String tasmeeModelInstalled(String version);
+
+  /// No description provided for @tasmeeModelMissing.
+  ///
+  /// In ar, this message translates to:
+  /// **'نموذج التسميع غير منزّل'**
+  String get tasmeeModelMissing;
+
+  /// No description provided for @tasmeeModelOffline.
+  ///
+  /// In ar, this message translates to:
+  /// **'يعمل بعدها بلا إنترنت'**
+  String get tasmeeModelOffline;
+
+  /// No description provided for @tasmeeModelProgress.
+  ///
+  /// In ar, this message translates to:
+  /// **'{done} من {total} م.ب'**
+  String tasmeeModelProgress(String done, String total);
+
+  /// No description provided for @tasmeeModelRemove.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحذفه متى شئت من الإعدادات › التسميع'**
+  String get tasmeeModelRemove;
+
+  /// No description provided for @tasmeeModelSize.
+  ///
+  /// In ar, this message translates to:
+  /// **'{size} م.ب · مرة واحدة'**
+  String tasmeeModelSize(String size);
+
+  /// No description provided for @tasmeeModelSizeUnknown.
+  ///
+  /// In ar, this message translates to:
+  /// **'مرة واحدة'**
+  String get tasmeeModelSizeUnknown;
+
+  /// No description provided for @tasmeeModelSpace.
+  ///
+  /// In ar, this message translates to:
+  /// **'المساحة المستخدمة: {size} م.ب'**
+  String tasmeeModelSpace(String size);
+
+  /// No description provided for @tasmeeModelTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'نموذج التسميع'**
+  String get tasmeeModelTitle;
+
+  /// No description provided for @tasmeeModelUpdate.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث النموذج'**
+  String get tasmeeModelUpdate;
+
+  /// No description provided for @tasmeeModelUpdateAvailable.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث لنموذج التسميع متاح ({size} م.ب)'**
+  String tasmeeModelUpdateAvailable(String size);
+
+  /// No description provided for @tasmeeModelUpdateKeeps.
+  ///
+  /// In ar, this message translates to:
+  /// **'يبقى النموذج الحالي يعمل حتى يكتمل تنزيل الجديد، ثم يُحذف'**
+  String get tasmeeModelUpdateKeeps;
+
+  /// No description provided for @tasmeeModelUpdateTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث نموذج التسميع'**
+  String get tasmeeModelUpdateTitle;
+
+  /// No description provided for @tasmeeModelVoiceStays.
+  ///
+  /// In ar, this message translates to:
+  /// **'صوتك يبقى على جهازك، لا يُرسل ولا يُحفظ'**
+  String get tasmeeModelVoiceStays;
+
+  /// No description provided for @tasmeeModelWifiNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُفضَّل التنزيل عبر Wi‑Fi؛ قد تُحسب بيانات الهاتف'**
+  String get tasmeeModelWifiNote;
+
+  /// No description provided for @tasmeeMore.
+  ///
+  /// In ar, this message translates to:
+  /// **'أكثر'**
+  String get tasmeeMore;
+
+  /// No description provided for @tasmeeNew.
+  ///
+  /// In ar, this message translates to:
+  /// **'تسميع جديد'**
+  String get tasmeeNew;
+
+  /// No description provided for @tasmeeNoAudioKept.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُحفظ آخر تسميع لتكمل منه. لا يُحفظ أي صوت.'**
+  String get tasmeeNoAudioKept;
+
+  /// No description provided for @tasmeeNoMistakes.
+  ///
+  /// In ar, this message translates to:
+  /// **'بلا أخطاء'**
+  String get tasmeeNoMistakes;
+
+  /// No description provided for @tasmeeNotNow.
+  ///
+  /// In ar, this message translates to:
+  /// **'ليس الآن'**
+  String get tasmeeNotNow;
+
+  /// No description provided for @tasmeeNothingToReview.
+  ///
+  /// In ar, this message translates to:
+  /// **'أحسنت، لا آيات تحتاج مراجعة.'**
+  String get tasmeeNothingToReview;
+
+  /// No description provided for @tasmeeNoticeDeviceBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'صوتك لا يُرسل إلى أي خادم ولا يُحفظ.'**
+  String get tasmeeNoticeDeviceBody;
+
+  /// No description provided for @tasmeeNoticeDeviceTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'يعمل على جهازك'**
+  String get tasmeeNoticeDeviceTitle;
+
+  /// No description provided for @tasmeeNoticeMishearBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'الكلمة التي يشك فيها تُعلَّم بنقاط خفيفة ولا تُحسب عليك.'**
+  String get tasmeeNoticeMishearBody;
+
+  /// No description provided for @tasmeeNoticeMishearTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'قد يخطئ في السماع'**
+  String get tasmeeNoticeMishearTitle;
+
+  /// No description provided for @tasmeeNoticeOk.
+  ///
+  /// In ar, this message translates to:
+  /// **'فهمت'**
+  String get tasmeeNoticeOk;
+
+  /// No description provided for @tasmeeNoticeStart.
+  ///
+  /// In ar, this message translates to:
+  /// **'فهمت، ابدأ'**
+  String get tasmeeNoticeStart;
+
+  /// No description provided for @tasmeeNoticeTajweedBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'ولا المخارج ولا المدود ولا الوقف والابتداء.'**
+  String get tasmeeNoticeTajweedBody;
+
+  /// No description provided for @tasmeeNoticeTajweedTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يقيّم التجويد ولا أحكام الأداء'**
+  String get tasmeeNoticeTajweedTitle;
+
+  /// No description provided for @tasmeeNoticeTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'التسميع يختبر حفظك، لا تجويدك'**
+  String get tasmeeNoticeTitle;
+
+  /// No description provided for @tasmeeNoticeWordsBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'هل قرأت ما في المصحف كلمة كلمة؟'**
+  String get tasmeeNoticeWordsBody;
+
+  /// No description provided for @tasmeeNoticeWordsTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'يتحقق من الكلمات وترتيبها'**
+  String get tasmeeNoticeWordsTitle;
+
+  /// No description provided for @tasmeeOnError.
+  ///
+  /// In ar, this message translates to:
+  /// **'عند الخطأ'**
+  String get tasmeeOnError;
+
+  /// No description provided for @tasmeeOneMistake.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ واحد'**
+  String get tasmeeOneMistake;
+
+  /// No description provided for @tasmeeOneTo.
+  ///
+  /// In ar, this message translates to:
+  /// **'من ١ إلى {max}'**
+  String tasmeeOneTo(String max);
+
+  /// No description provided for @tasmeeOpenDeviceSettings.
+  ///
+  /// In ar, this message translates to:
+  /// **'افتح إعدادات الجهاز'**
+  String get tasmeeOpenDeviceSettings;
+
+  /// No description provided for @tasmeeOtherEdition.
+  ///
+  /// In ar, this message translates to:
+  /// **'التسميع يتبع صفحات مصحف المدينة الجديد (١٤٤١)؛ في طبعتك تظهر الكلمات هنا متتابعة.'**
+  String get tasmeeOtherEdition;
+
+  /// No description provided for @tasmeePause.
+  ///
+  /// In ar, this message translates to:
+  /// **'إيقاف مؤقت'**
+  String get tasmeePause;
+
+  /// No description provided for @tasmeePaused.
+  ///
+  /// In ar, this message translates to:
+  /// **'متوقف مؤقتا'**
+  String get tasmeePaused;
+
+  /// No description provided for @tasmeeProgress.
+  ///
+  /// In ar, this message translates to:
+  /// **'ما سُمّع من النطاق'**
+  String get tasmeeProgress;
+
+  /// No description provided for @tasmeeQuarterOfHizb.
+  ///
+  /// In ar, this message translates to:
+  /// **'الربع'**
+  String get tasmeeQuarterOfHizb;
+
+  /// No description provided for @tasmeeRange.
+  ///
+  /// In ar, this message translates to:
+  /// **'النطاق'**
+  String get tasmeeRange;
+
+  /// No description provided for @tasmeeRangeSummary.
+  ///
+  /// In ar, this message translates to:
+  /// **'من {from} إلى {to} · {verseTotal, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{verses} آيات} many{{verses} آية} other{{verses} آية}} · {wordTotal, plural, =0{لا كلمات} =1{كلمة واحدة} =2{كلمتان} few{{words} كلمات} many{{words} كلمة} other{{words} كلمة}} · ص {pages}'**
+  String tasmeeRangeSummary(
+    String from,
+    String to,
+    int verseTotal,
+    String verses,
+    int wordTotal,
+    String words,
+    String pages,
+  );
+
+  /// No description provided for @tasmeeReReadWord.
+  ///
+  /// In ar, this message translates to:
+  /// **'أعد قراءة الكلمة المعلّمة بالأحمر'**
+  String get tasmeeReReadWord;
+
+  /// No description provided for @tasmeeReciteAgain.
+  ///
+  /// In ar, this message translates to:
+  /// **'سمّع هذه الآيات ثانية'**
+  String get tasmeeReciteAgain;
+
+  /// No description provided for @tasmeeReciteVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'سمّع الآية'**
+  String get tasmeeReciteVerse;
+
+  /// No description provided for @tasmeeRedownload.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعادة تنزيل النموذج'**
+  String get tasmeeRedownload;
+
+  /// No description provided for @tasmeeRedownloadBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُحذف النموذج الحالي ثم يُنزّل من جديد.'**
+  String get tasmeeRedownloadBody;
+
+  /// No description provided for @tasmeeRepeat.
+  ///
+  /// In ar, this message translates to:
+  /// **'أعد'**
+  String get tasmeeRepeat;
+
+  /// No description provided for @tasmeeResume.
+  ///
+  /// In ar, this message translates to:
+  /// **'متابعة'**
+  String get tasmeeResume;
+
+  /// No description provided for @tasmeeRetry.
+  ///
+  /// In ar, this message translates to:
+  /// **'حاول ثانية'**
+  String get tasmeeRetry;
+
+  /// No description provided for @tasmeeReviewRow.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآية {ayah}، الدقة {accuracy}'**
+  String tasmeeReviewRow(String ayah, String accuracy);
+
+  /// No description provided for @tasmeeRingSemantics.
+  ///
+  /// In ar, this message translates to:
+  /// **'{title}، {note}: {value}'**
+  String tasmeeRingSemantics(String title, String note, String value);
+
+  /// No description provided for @tasmeeSeconds.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count} ث'**
+  String tasmeeSeconds(String count);
+
+  /// No description provided for @tasmeeSessionTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تسميع · {surah}'**
+  String tasmeeSessionTitle(String surah);
+
+  /// No description provided for @tasmeeSettingsNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'الطريقة، السلوك عند الخطأ، النموذج'**
+  String get tasmeeSettingsNote;
+
+  /// No description provided for @tasmeeSkipWord.
+  ///
+  /// In ar, this message translates to:
+  /// **'تجاوزها'**
+  String get tasmeeSkipWord;
+
+  /// No description provided for @tasmeeStart.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابدأ'**
+  String get tasmeeStart;
+
+  /// No description provided for @tasmeeStartReciting.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابدأ التسميع'**
+  String get tasmeeStartReciting;
+
+  /// No description provided for @tasmeeStopToCorrect.
+  ///
+  /// In ar, this message translates to:
+  /// **'توقّف للتصحيح'**
+  String get tasmeeStopToCorrect;
+
+  /// No description provided for @tasmeeStopToCorrectHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يتقدم حتى تقرأ الكلمة الصحيحة'**
+  String get tasmeeStopToCorrectHint;
+
+  /// No description provided for @tasmeeStrict.
+  ///
+  /// In ar, this message translates to:
+  /// **'صارم'**
+  String get tasmeeStrict;
+
+  /// No description provided for @tasmeeStrictHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الكلمة كما هي حرفا حرفا'**
+  String get tasmeeStrictHint;
+
+  /// No description provided for @tasmeeStrictness.
+  ///
+  /// In ar, this message translates to:
+  /// **'حساسية المطابقة'**
+  String get tasmeeStrictness;
+
+  /// No description provided for @tasmeeSummary.
+  ///
+  /// In ar, this message translates to:
+  /// **'الملخص'**
+  String get tasmeeSummary;
+
+  /// No description provided for @tasmeeTestByTouch.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختبر حفظك باللمس بدلا من ذلك'**
+  String get tasmeeTestByTouch;
+
+  /// No description provided for @tasmeeThisVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'دقة الآية'**
+  String get tasmeeThisVerse;
+
+  /// No description provided for @tasmeeToPage.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلى صفحة'**
+  String get tasmeeToPage;
+
+  /// No description provided for @tasmeeToReview.
+  ///
+  /// In ar, this message translates to:
+  /// **'آيات تحتاج مراجعة'**
+  String get tasmeeToReview;
+
+  /// No description provided for @tasmeeToSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلى سورة'**
+  String get tasmeeToSurah;
+
+  /// No description provided for @tasmeeToastDuration.
+  ///
+  /// In ar, this message translates to:
+  /// **'مدة ظهور نتيجة الآية'**
+  String get tasmeeToastDuration;
+
+  /// No description provided for @tasmeeVerseByVerseHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اضغط، اقرأ آية، ثم تظهر كاملة بنتيجتها'**
+  String get tasmeeVerseByVerseHint;
+
+  /// No description provided for @tasmeeVerseDone.
+  ///
+  /// In ar, this message translates to:
+  /// **'انتهت الآية'**
+  String get tasmeeVerseDone;
+
+  /// No description provided for @tasmeeVerseNumber.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآية {ayah}'**
+  String tasmeeVerseNumber(String ayah);
+
+  /// No description provided for @tasmeeVerseOf.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآية {n} من {count}: اضغط وسمّعها'**
+  String tasmeeVerseOf(String n, String count);
+
+  /// No description provided for @tasmeeVerseResult.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآية {ayah} · {accuracy} · {detail}'**
+  String tasmeeVerseResult(String ayah, String accuracy, String detail);
+
+  /// No description provided for @tasmeeVersesHeading.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآيات'**
+  String get tasmeeVersesHeading;
+
+  /// No description provided for @tasmeeVersesLine.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآيات {from}–{to} · {mode}'**
+  String tasmeeVersesLine(String from, String to, String mode);
+
+  /// No description provided for @tasmeeVibration.
+  ///
+  /// In ar, this message translates to:
+  /// **'الاهتزاز عند الخطأ'**
+  String get tasmeeVibration;
+
+  /// No description provided for @tasmeeVibrationHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اهتزاز خفيف حين تُعلَّم كلمة خطأ أو متجاوزة'**
+  String get tasmeeVibrationHint;
+
+  /// No description provided for @tasmeeWholeSession.
+  ///
+  /// In ar, this message translates to:
+  /// **'للتسميع كله'**
+  String get tasmeeWholeSession;
+
+  /// No description provided for @tasmeeWordCorrectedShort.
+  ///
+  /// In ar, this message translates to:
+  /// **'صُحّحت'**
+  String get tasmeeWordCorrectedShort;
+
+  /// No description provided for @tasmeeWordHinted.
+  ///
+  /// In ar, this message translates to:
+  /// **'بتلميح'**
+  String get tasmeeWordHinted;
+
+  /// No description provided for @tasmeeAllowMicHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'افتح إعدادات الجهاز، ثم اسمح لتبيان باستخدام الميكروفون.'**
+  String get tasmeeAllowMicHint;
+
+  /// No description provided for @newKhatmah.
+  ///
+  /// In ar, this message translates to:
+  /// **'الختمة الجديدة'**
+  String get newKhatmah;
+
+  /// No description provided for @newKhatmahBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'أكثر من ختمة معا، ومعالج إنشاء بقوالب جاهزة، وورد يومي يتكيّف، وإحصاءات وتذكيرات أدق، ومؤشر ورد اليوم في المصحف.'**
+  String get newKhatmahBody;
+
+  /// No description provided for @newTasmee.
+  ///
+  /// In ar, this message translates to:
+  /// **'التسميع بالصوت (تجريبي)'**
+  String get newTasmee;
+
+  /// No description provided for @newTasmeeBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'اقرأ من حفظك، فتظهر كل كلمة في موضعها وتُعلَّم الأخطاء. يعمل على جهازك دون إنترنت بعد تنزيل النموذج، ويختبر الحفظ لا التجويد.'**
+  String get newTasmeeBody;
+
+  /// No description provided for @newSajdah.
+  ///
+  /// In ar, this message translates to:
+  /// **'مؤقت سجدات التلاوة'**
+  String get newSajdah;
+
+  /// No description provided for @newSajdahBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'عند آية السجدة يتوقف الشيخ وتظهر بطاقة بأذكار السجود وعدّ تنازلي، ثم تُستكمل التلاوة. يُفعَّل من الإعدادات.'**
+  String get newSajdahBody;
+
+  /// No description provided for @newAssistant.
+  ///
+  /// In ar, this message translates to:
+  /// **'المساعد: المساعدة في استخدام التطبيق'**
+  String get newAssistant;
+
+  /// No description provided for @newAssistantBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'شاشة جديدة فيها أحكام التجويد بألوانها، ولكل حكم مواضعه في المصحف.'**
+  String get newAssistantBody;
+
+  /// No description provided for @newFocus.
+  ///
+  /// In ar, this message translates to:
+  /// **'وضع التركيز'**
+  String get newFocus;
+
+  /// No description provided for @newFocusBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصفحة وحدها بلا إطار وتملأ الشاشة، والأدوات عند الحاجة، ومشغّل صغير تسحبه أينما شئت.'**
+  String get newFocusBody;
+
+  /// No description provided for @tasmeeAutoUpdateModel.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث النموذج تلقائيًا على الواي فاي'**
+  String get tasmeeAutoUpdateModel;
+
+  /// No description provided for @tasmeeAutoUpdateModelHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُنزَّل الإصدار الأحدث في الخلفية ويبقى الحالي يعمل حتى يكتمل'**
+  String get tasmeeAutoUpdateModelHint;
+
+  /// No description provided for @tasmeeModelUpdated.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم تحديث نموذج التسميع إلى الإصدار {version}'**
+  String tasmeeModelUpdated(String version);
+
+  /// No description provided for @sourceInstalledVersion.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإصدار المثبّت: {version}'**
+  String sourceInstalledVersion(String version);
+
+  /// No description provided for @sourceAlsoCredited.
+  ///
+  /// In ar, this message translates to:
+  /// **'ويُنسب أيضًا إلى: {names}'**
+  String sourceAlsoCredited(String names);
+
+  /// No description provided for @navHome.
+  ///
+  /// In ar, this message translates to:
+  /// **'الرئيسية'**
+  String get navHome;
+
+  /// No description provided for @homeSections.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأقسام'**
+  String get homeSections;
+
+  /// No description provided for @homeContinueHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تابع من حيث توقفت'**
+  String get homeContinueHint;
+
+  /// No description provided for @interfaceStyleTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'شكل الواجهة'**
+  String get interfaceStyleTitle;
+
+  /// No description provided for @interfaceStyleHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'شكل الرئيسية والفهرس والإعدادات والنوافذ، ولا يغيّر شكل صفحة المصحف'**
+  String get interfaceStyleHint;
+
+  /// No description provided for @interfaceStyleMakhtuta.
+  ///
+  /// In ar, this message translates to:
+  /// **'مخطوطة'**
+  String get interfaceStyleMakhtuta;
+
+  /// No description provided for @interfaceStyleHandasi.
+  ///
+  /// In ar, this message translates to:
+  /// **'هندسي'**
+  String get interfaceStyleHandasi;
+
+  /// No description provided for @interfaceStyleLayli.
+  ///
+  /// In ar, this message translates to:
+  /// **'ليلي ذهبي'**
+  String get interfaceStyleLayli;
+
+  /// No description provided for @settingsGroupAppearance.
+  ///
+  /// In ar, this message translates to:
+  /// **'المظهر'**
+  String get settingsGroupAppearance;
+
+  /// No description provided for @settingsGroupListening.
+  ///
+  /// In ar, this message translates to:
+  /// **'الاستماع والتسميع'**
+  String get settingsGroupListening;
+
+  /// No description provided for @settingsGroupData.
+  ///
+  /// In ar, this message translates to:
+  /// **'البيانات والخصوصية'**
+  String get settingsGroupData;
+
+  /// No description provided for @newLook.
+  ///
+  /// In ar, this message translates to:
+  /// **'شكل جديد للواجهة'**
+  String get newLook;
+
+  /// No description provided for @newLookBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'ثلاثة أشكال تختار منها في الإعدادات: هندسي ومخطوطة وليلي ذهبي، بأسماء السور بخط مجمع الملك فهد، وعلامات المكية والمدنية.'**
+  String get newLookBody;
+
+  /// No description provided for @newModelUpdate.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث نموذج التسميع تلقائيًا'**
+  String get newModelUpdate;
+
+  /// No description provided for @newModelUpdateBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'حين يتحسّن نموذج التسميع ينزل وحده على الواي فاي، ويظل القديم يعمل حتى يكتمل الجديد.'**
+  String get newModelUpdateBody;
+
+  /// No description provided for @progressSaved.
+  ///
+  /// In ar, this message translates to:
+  /// **'حُفظت النتيجة'**
+  String get progressSaved;
+
+  /// No description provided for @progressNewlyMastered.
+  ///
+  /// In ar, this message translates to:
+  /// **'أُتقنت آيات جديدة: {count}'**
+  String progressNewlyMastered(String count);
+
+  /// No description provided for @progressStillMastered.
+  ///
+  /// In ar, this message translates to:
+  /// **'متقن: {count}'**
+  String progressStillMastered(String count);
+
+  /// No description provided for @progressToReview.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحتاج مراجعة: {count}'**
+  String progressToReview(String count);
+
+  /// No description provided for @hifzTabToday.
+  ///
+  /// In ar, this message translates to:
+  /// **'اليوم'**
+  String get hifzTabToday;
+
+  /// No description provided for @hifzTabProgress.
+  ///
+  /// In ar, this message translates to:
+  /// **'التقدّم'**
+  String get hifzTabProgress;
+
+  /// No description provided for @hifzTabHistory.
+  ///
+  /// In ar, this message translates to:
+  /// **'السجل'**
+  String get hifzTabHistory;
+
+  /// No description provided for @hifzTabHardWords.
+  ///
+  /// In ar, this message translates to:
+  /// **'الكلمات الصعبة'**
+  String get hifzTabHardWords;
+
+  /// No description provided for @hifzTabGoals.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأهداف'**
+  String get hifzTabGoals;
+
+  /// No description provided for @hifzJourney.
+  ///
+  /// In ar, this message translates to:
+  /// **'مسيرة الحفظ'**
+  String get hifzJourney;
+
+  /// No description provided for @hifzJourneyLine.
+  ///
+  /// In ar, this message translates to:
+  /// **'محفوظ {n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{memorized} آيات} many{{memorized} آية} other{{memorized} آية}}، منها {mastered} متقنة'**
+  String hifzJourneyLine(int n, String memorized, String mastered);
+
+  /// No description provided for @hifzJourneyEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'سمّع ما تحفظ فيُحفظ هنا تقدّمك.'**
+  String get hifzJourneyEmpty;
+
+  /// No description provided for @progressOverall.
+  ///
+  /// In ar, this message translates to:
+  /// **'في المجمل'**
+  String get progressOverall;
+
+  /// No description provided for @progressJuzCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'أجزاء'**
+  String get progressJuzCount;
+
+  /// No description provided for @progressPagesCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'صفحات'**
+  String get progressPagesCount;
+
+  /// No description provided for @progressVersesCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'آيات'**
+  String get progressVersesCount;
+
+  /// No description provided for @progressMemorized.
+  ///
+  /// In ar, this message translates to:
+  /// **'محفوظ'**
+  String get progressMemorized;
+
+  /// No description provided for @progressMastered.
+  ///
+  /// In ar, this message translates to:
+  /// **'متقن'**
+  String get progressMastered;
+
+  /// No description provided for @progressNeedsReview.
+  ///
+  /// In ar, this message translates to:
+  /// **'يحتاج مراجعة'**
+  String get progressNeedsReview;
+
+  /// No description provided for @progressAccuracy30.
+  ///
+  /// In ar, this message translates to:
+  /// **'متوسط الدقة في آخر ٣٠ يوما'**
+  String get progressAccuracy30;
+
+  /// No description provided for @progressBySurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسب السورة'**
+  String get progressBySurah;
+
+  /// No description provided for @progressByJuz.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسب الجزء'**
+  String get progressByJuz;
+
+  /// No description provided for @progressLastRecited.
+  ///
+  /// In ar, this message translates to:
+  /// **'آخر تسميع {date}'**
+  String progressLastRecited(String date);
+
+  /// No description provided for @progressNotRecited.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يُسمَّع بعد'**
+  String get progressNotRecited;
+
+  /// No description provided for @progressShares.
+  ///
+  /// In ar, this message translates to:
+  /// **'محفوظ {memorized} · متقن {mastered}'**
+  String progressShares(String memorized, String mastered);
+
+  /// No description provided for @progressAccuracy.
+  ///
+  /// In ar, this message translates to:
+  /// **'الدقة {value}'**
+  String progressAccuracy(String value);
+
+  /// No description provided for @progressSuggestRecite.
+  ///
+  /// In ar, this message translates to:
+  /// **'آيات محفوظة لم تُسمَّع بعد: {count}. سمّعها لتصير متقنة.'**
+  String progressSuggestRecite(String count);
+
+  /// No description provided for @progressMasteryRule.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآية تصير «متقنة» إذا سمّعتها بدقة ٩٠٪ أو أكثر.'**
+  String get progressMasteryRule;
+
+  /// No description provided for @progressEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم تعلّم حفظ شيء بعد. علّم ما تحفظ في الخريطة، أو سمّع.'**
+  String get progressEmpty;
+
+  /// No description provided for @progressOpenMap.
+  ///
+  /// In ar, this message translates to:
+  /// **'افتح الخريطة'**
+  String get progressOpenMap;
+
+  /// No description provided for @historyEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا تسميع محفوظ بعد. كل جلسة تسميع تُحفظ هنا وحدها، نتيجتها فقط دون صوت.'**
+  String get historyEmpty;
+
+  /// No description provided for @recitationVoice.
+  ///
+  /// In ar, this message translates to:
+  /// **'بالصوت'**
+  String get recitationVoice;
+
+  /// No description provided for @recitationTouch.
+  ///
+  /// In ar, this message translates to:
+  /// **'باللمس'**
+  String get recitationTouch;
+
+  /// No description provided for @recitationTest.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختبار الحفظ'**
+  String get recitationTest;
+
+  /// No description provided for @historyVerses.
+  ///
+  /// In ar, this message translates to:
+  /// **'{n, plural, =0{لا آيات} =1{آية واحدة} =2{آيتان} few{{count} آيات} many{{count} آية} other{{count} آية}}'**
+  String historyVerses(int n, String count);
+
+  /// No description provided for @sessionSummary.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملخّص الجلسة'**
+  String get sessionSummary;
+
+  /// No description provided for @sessionDelete.
+  ///
+  /// In ar, this message translates to:
+  /// **'احذف من السجل'**
+  String get sessionDelete;
+
+  /// No description provided for @sessionSensitivity.
+  ///
+  /// In ar, this message translates to:
+  /// **'حساسية المطابقة: {level}'**
+  String sessionSensitivity(String level);
+
+  /// No description provided for @sessionSlips.
+  ///
+  /// In ar, this message translates to:
+  /// **'مواضع الخطأ'**
+  String get sessionSlips;
+
+  /// No description provided for @hardWordsEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا كلمات صعبة بعد. الكلمة التي تخطئ فيها أو تتخطاها أكثر من مرة تظهر هنا.'**
+  String get hardWordsEmpty;
+
+  /// No description provided for @hardWordsCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'{n, plural, =0{لا مرات} =1{مرة واحدة} =2{مرتان} few{{count} مرات} many{{count} مرة} other{{count} مرة}} · آخرها {date}'**
+  String hardWordsCount(int n, String count, String date);
+
+  /// No description provided for @hardWordsHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'آيات هذه الكلمات تأتي أولا في المراجعة.'**
+  String get hardWordsHint;
+
+  /// No description provided for @goalsEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا أهداف بعد. اختر هدفا جاهزا أو اصنع هدفك.'**
+  String get goalsEmpty;
+
+  /// No description provided for @goalNew.
+  ///
+  /// In ar, this message translates to:
+  /// **'هدف جديد'**
+  String get goalNew;
+
+  /// No description provided for @goalTemplateAmma.
+  ///
+  /// In ar, this message translates to:
+  /// **'جزء عمّ في شهرين'**
+  String get goalTemplateAmma;
+
+  /// No description provided for @goalTemplatePageDaily.
+  ///
+  /// In ar, this message translates to:
+  /// **'صفحة يوميا'**
+  String get goalTemplatePageDaily;
+
+  /// No description provided for @goalTemplateHizbWeekly.
+  ///
+  /// In ar, this message translates to:
+  /// **'مراجعة حزب كل أسبوع'**
+  String get goalTemplateHizbWeekly;
+
+  /// No description provided for @goalTemplateFixSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'تثبيت سورة'**
+  String get goalTemplateFixSurah;
+
+  /// No description provided for @goalOpen.
+  ///
+  /// In ar, this message translates to:
+  /// **'هدف مفتوح'**
+  String get goalOpen;
+
+  /// No description provided for @goalOpenHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تختار النطاق والمدة والوحدة'**
+  String get goalOpenHint;
+
+  /// No description provided for @goalFromSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'من سورة'**
+  String get goalFromSurah;
+
+  /// No description provided for @goalToSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلى سورة'**
+  String get goalToSurah;
+
+  /// No description provided for @goalSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'السورة'**
+  String get goalSurah;
+
+  /// No description provided for @goalHizb.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحزب'**
+  String get goalHizb;
+
+  /// No description provided for @goalDays.
+  ///
+  /// In ar, this message translates to:
+  /// **'المدة: {n, plural, =0{لا أيام} =1{يوم واحد} =2{يومان} few{{days} أيام} many{{days} يومًا} other{{days} يوم}}'**
+  String goalDays(int n, String days);
+
+  /// No description provided for @goalUnit.
+  ///
+  /// In ar, this message translates to:
+  /// **'الوحدة'**
+  String get goalUnit;
+
+  /// No description provided for @goalCreate.
+  ///
+  /// In ar, this message translates to:
+  /// **'أنشئ الهدف'**
+  String get goalCreate;
+
+  /// No description provided for @goalTodayWird.
+  ///
+  /// In ar, this message translates to:
+  /// **'ورد اليوم'**
+  String get goalTodayWird;
+
+  /// No description provided for @goalMemorize.
+  ///
+  /// In ar, this message translates to:
+  /// **'احفظ'**
+  String get goalMemorize;
+
+  /// No description provided for @goalReview.
+  ///
+  /// In ar, this message translates to:
+  /// **'راجع'**
+  String get goalReview;
+
+  /// No description provided for @goalReviewDue.
+  ///
+  /// In ar, this message translates to:
+  /// **'وحدات مستحقة للمراجعة: {count}'**
+  String goalReviewDue(String count);
+
+  /// No description provided for @goalReviewHard.
+  ///
+  /// In ar, this message translates to:
+  /// **'آيات فيها كلمات صعبة: {count}'**
+  String goalReviewHard(String count);
+
+  /// No description provided for @goalNothingToday.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا ورد اليوم.'**
+  String get goalNothingToday;
+
+  /// No description provided for @goalMasteredShare.
+  ///
+  /// In ar, this message translates to:
+  /// **'متقن {value}'**
+  String goalMasteredShare(String value);
+
+  /// No description provided for @goalLeft.
+  ///
+  /// In ar, this message translates to:
+  /// **'{n, plural, =0{لم تبقَ صفحات} =1{تبقّت صفحة واحدة} =2{تبقّت صفحتان} few{تبقّت {pages} صفحات} many{تبقّى {pages} صفحة} other{تبقّى {pages} صفحة}}'**
+  String goalLeft(int n, String pages);
+
+  /// No description provided for @goalUntil.
+  ///
+  /// In ar, this message translates to:
+  /// **'حتى {date}'**
+  String goalUntil(String date);
+
+  /// No description provided for @goalBehind.
+  ///
+  /// In ar, this message translates to:
+  /// **'تبقّى من الأيام الماضية {n, plural, =0{لا شيء} =1{صفحة واحدة} =2{صفحتان} few{{pages} صفحات} many{{pages} صفحة} other{{pages} صفحة}}'**
+  String goalBehind(int n, String pages);
+
+  /// No description provided for @goalCatchUp.
+  ///
+  /// In ar, this message translates to:
+  /// **'عوّض على أيام'**
+  String get goalCatchUp;
+
+  /// No description provided for @goalExtend.
+  ///
+  /// In ar, this message translates to:
+  /// **'مد الموعد'**
+  String get goalExtend;
+
+  /// No description provided for @goalPause.
+  ///
+  /// In ar, this message translates to:
+  /// **'أوقف مؤقتا'**
+  String get goalPause;
+
+  /// No description provided for @goalResume.
+  ///
+  /// In ar, this message translates to:
+  /// **'استأنف'**
+  String get goalResume;
+
+  /// No description provided for @goalDelete.
+  ///
+  /// In ar, this message translates to:
+  /// **'احذف الهدف'**
+  String get goalDelete;
+
+  /// No description provided for @goalReminder.
+  ///
+  /// In ar, this message translates to:
+  /// **'تذكير يومي'**
+  String get goalReminder;
+
+  /// No description provided for @goalReminderAt.
+  ///
+  /// In ar, this message translates to:
+  /// **'تذكير {time}'**
+  String goalReminderAt(String time);
+
+  /// No description provided for @goalReminderOff.
+  ///
+  /// In ar, this message translates to:
+  /// **'أوقف التذكير'**
+  String get goalReminderOff;
+
+  /// No description provided for @goalPaused.
+  ///
+  /// In ar, this message translates to:
+  /// **'متوقف'**
+  String get goalPaused;
+
+  /// No description provided for @goalComplete.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتمل الهدف، بارك الله فيك.'**
+  String get goalComplete;
+
+  /// No description provided for @goalCountedByMastery.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُحسب التقدّم بالتسميع المتقن، لا بالتعليم باليد.'**
+  String get goalCountedByMastery;
+
+  /// No description provided for @goalReminderTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'ورد الحفظ'**
+  String get goalReminderTitle;
+
+  /// No description provided for @goalReminderBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'احفظ: الصفحات {from}–{to}'**
+  String goalReminderBody(String from, String to);
+
+  /// No description provided for @goalRecite.
+  ///
+  /// In ar, this message translates to:
+  /// **'سمّع'**
+  String get goalRecite;
+
+  /// No description provided for @hifzMapShowMastery.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإتقان'**
+  String get hifzMapShowMastery;
+
+  /// No description provided for @hifzMapShowStrength.
+  ///
+  /// In ar, this message translates to:
+  /// **'القوة'**
+  String get hifzMapShowStrength;
+
+  /// No description provided for @whatsNewHifzProgress.
+  ///
+  /// In ar, this message translates to:
+  /// **'مسيرة الحفظ'**
+  String get whatsNewHifzProgress;
+
+  /// No description provided for @newJourney.
+  ///
+  /// In ar, this message translates to:
+  /// **'مسيرة الحفظ'**
+  String get newJourney;
+
+  /// No description provided for @newJourneyBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'كل تسميع يُحفظ ويقيس إتقانك: نسب لكل سورة وجزء، وخريطة إتقان، والكلمات التي تخطئ فيها، وأهداف حفظ بورد يومي.'**
+  String get newJourneyBody;
+
+  /// No description provided for @onbStepOf.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخطوة {step} من {total}'**
+  String onbStepOf(String step, String total);
+
+  /// No description provided for @onbSkipAll.
+  ///
+  /// In ar, this message translates to:
+  /// **'تخطَّ الكل'**
+  String get onbSkipAll;
+
+  /// No description provided for @onbSkip.
+  ///
+  /// In ar, this message translates to:
+  /// **'تخطَّ'**
+  String get onbSkip;
+
+  /// No description provided for @onbInterfaceTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر شكل الواجهة وإضاءتها'**
+  String get onbInterfaceTitle;
+
+  /// No description provided for @onbPageTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر شكل صفحة المصحف'**
+  String get onbPageTitle;
+
+  /// No description provided for @onbReciterTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسمع المصحف بصوت من تحب'**
+  String get onbReciterTitle;
+
+  /// No description provided for @onbReciterSuggest.
+  ///
+  /// In ar, this message translates to:
+  /// **'نزّل المصحف كاملًا بصوت الشيخ {name}'**
+  String onbReciterSuggest(String name);
+
+  /// No description provided for @onbReciterSize.
+  ///
+  /// In ar, this message translates to:
+  /// **'نحو {size} ميجا · يكمل في الخلفية وأنت تتابع'**
+  String onbReciterSize(String size);
+
+  /// No description provided for @onbReciterOther.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر شيخًا آخر'**
+  String get onbReciterOther;
+
+  /// No description provided for @onbReciterOnline.
+  ///
+  /// In ar, this message translates to:
+  /// **'تقدر تسمع أي شيخ أونلاين من غير تحميل'**
+  String get onbReciterOnline;
+
+  /// No description provided for @onbDownloadingBg.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُنزَّل في الخلفية: {done} من {total}'**
+  String onbDownloadingBg(String done, String total);
+
+  /// No description provided for @onbTasmeeTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'التسميع بصوتك'**
+  String get onbTasmeeTitle;
+
+  /// No description provided for @onbTasmeeBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'يستمع تبيان لتلاوتك وينبّهك عند الخطأ، على جهازك ومن غير إنترنت. يحتاج نموذج تعرّف على الصوت يُنزَّل مرة واحدة.'**
+  String get onbTasmeeBody;
+
+  /// No description provided for @onbTasmeeDownload.
+  ///
+  /// In ar, this message translates to:
+  /// **'نزّل النموذج'**
+  String get onbTasmeeDownload;
+
+  /// No description provided for @onbTasmeeDownloading.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُنزَّل النموذج في الخلفية: {percent}٪'**
+  String onbTasmeeDownloading(String percent);
+
+  /// No description provided for @onbTasmeeReady.
+  ///
+  /// In ar, this message translates to:
+  /// **'نموذج التسميع جاهز'**
+  String get onbTasmeeReady;
+
+  /// No description provided for @onbTasmeeFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر التنزيل. تقدر تنزّله لاحقًا من الإعدادات › الحفظ والتسميع.'**
+  String get onbTasmeeFailed;
+
+  /// No description provided for @onbStart.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابدأ القراءة'**
+  String get onbStart;
+
+  /// No description provided for @settingsSectionAppearance.
+  ///
+  /// In ar, this message translates to:
+  /// **'المظهر'**
+  String get settingsSectionAppearance;
+
+  /// No description provided for @settingsSectionAppearanceHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الواجهة، الإضاءة، اللغة، الخط'**
+  String get settingsSectionAppearanceHint;
+
+  /// No description provided for @settingsSectionMushaf.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصحف'**
+  String get settingsSectionMushaf;
+
+  /// No description provided for @settingsSectionMushafHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الطبعة، شكل الصفحة، التجويد، التركيز'**
+  String get settingsSectionMushafHint;
+
+  /// No description provided for @settingsSectionListening.
+  ///
+  /// In ar, this message translates to:
+  /// **'الاستماع'**
+  String get settingsSectionListening;
+
+  /// No description provided for @settingsSectionListeningHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'القرّاء، المشغّل، مؤقت السجدة'**
+  String get settingsSectionListeningHint;
+
+  /// No description provided for @settingsSectionHifz.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحفظ والتسميع'**
+  String get settingsSectionHifz;
+
+  /// No description provided for @settingsSectionHifzHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحفظ، التسميع، نموذج الصوت'**
+  String get settingsSectionHifzHint;
+
+  /// No description provided for @settingsSectionKhatma.
+  ///
+  /// In ar, this message translates to:
+  /// **'الختمة والتذكيرات'**
+  String get settingsSectionKhatma;
+
+  /// No description provided for @settingsSectionKhatmaHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخطط، التذكيرات، الورد'**
+  String get settingsSectionKhatmaHint;
+
+  /// No description provided for @settingsSectionStorage.
+  ///
+  /// In ar, this message translates to:
+  /// **'التخزين والنسخ الاحتياطي'**
+  String get settingsSectionStorage;
+
+  /// No description provided for @settingsSectionStorageHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'المساحة، النسخ، الاستعادة'**
+  String get settingsSectionStorageHint;
+
+  /// No description provided for @settingsSectionAssistant.
+  ///
+  /// In ar, this message translates to:
+  /// **'المساعد'**
+  String get settingsSectionAssistant;
+
+  /// No description provided for @settingsSectionAssistantHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'المساعدة في استخدام التطبيق والمصحف'**
+  String get settingsSectionAssistantHint;
+
+  /// No description provided for @settingsSectionAbout.
+  ///
+  /// In ar, this message translates to:
+  /// **'عن تبيان'**
+  String get settingsSectionAbout;
+
+  /// No description provided for @settingsSectionAboutHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الجديد، المصادر، الإصدار'**
+  String get settingsSectionAboutHint;
+
+  /// No description provided for @settingsSearchHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابحث في الإعدادات'**
+  String get settingsSearchHint;
+
+  /// No description provided for @settingsSearchEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا إعداد بهذا الاسم. جرّب كلمة أخرى.'**
+  String get settingsSearchEmpty;
+
+  /// No description provided for @settingsKhatmaPlans.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطط الختمة وتذكيراتها'**
+  String get settingsKhatmaPlans;
+
+  /// No description provided for @settingsWirdIndicator.
+  ///
+  /// In ar, this message translates to:
+  /// **'مؤشر الورد فوق المصحف'**
+  String get settingsWirdIndicator;
+
+  /// No description provided for @settingsCountListening.
+  ///
+  /// In ar, this message translates to:
+  /// **'احتساب الاستماع من الورد'**
+  String get settingsCountListening;
+
+  /// No description provided for @settingsHifzGoals.
+  ///
+  /// In ar, this message translates to:
+  /// **'أهداف الحفظ وتذكيراتها'**
+  String get settingsHifzGoals;
+
+  /// No description provided for @digitsFontTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'خط الأرقام في الواجهة (Tibyan Digits)'**
+  String get digitsFontTitle;
+
+  /// No description provided for @digitsFontNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرقام الواجهة كلها بخط واحد واضح: مقتطع من IBM Plex Sans Arabic (حقوقه لشركة IBM، 2017) يضم الأرقام وحدها، وسُمّي باسم جديد لأن «Plex» اسم محجوز. الرخصة: رخصة الخطوط المفتوحة SIL OFL 1.1، وهي تبيح الاقتطاع والتعديل بشرط تغيير الاسم وبقاء الرخصة نفسها.'**
+  String get digitsFontNote;
+
+  /// No description provided for @newSettings.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعدادات أسهل'**
+  String get newSettings;
+
+  /// No description provided for @newSettingsBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإعدادات صارت ثمانية أقسام مع بحث يوصلك لأي إعداد، وصيغ الأعداد صحيحة («٧ آيات»)، وأرقام أوضح في الواجهة.'**
+  String get newSettingsBody;
+
+  /// No description provided for @reportProblemTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإبلاغ عن مشكلة'**
+  String get reportProblemTitle;
+
+  /// No description provided for @reportProblemHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرسل لنا عطلا أو مشكلة أو اقتراحا'**
+  String get reportProblemHint;
+
+  /// No description provided for @reportType.
+  ///
+  /// In ar, this message translates to:
+  /// **'نوع البلاغ'**
+  String get reportType;
+
+  /// No description provided for @reportTypeBug.
+  ///
+  /// In ar, this message translates to:
+  /// **'عطل'**
+  String get reportTypeBug;
+
+  /// No description provided for @reportTypeProblem.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشكلة'**
+  String get reportTypeProblem;
+
+  /// No description provided for @reportTypeSuggestion.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحسين مقترح'**
+  String get reportTypeSuggestion;
+
+  /// No description provided for @reportTypeOther.
+  ///
+  /// In ar, this message translates to:
+  /// **'أخرى'**
+  String get reportTypeOther;
+
+  /// No description provided for @reportDescription.
+  ///
+  /// In ar, this message translates to:
+  /// **'الوصف'**
+  String get reportDescription;
+
+  /// No description provided for @reportDescriptionHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتب ما حدث، وأين، وما توقعت أن يحدث'**
+  String get reportDescriptionHint;
+
+  /// No description provided for @reportDescriptionShort.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتب خمسة أحرف على الأقل'**
+  String get reportDescriptionShort;
+
+  /// No description provided for @reportPhone.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم الهاتف (اختياري)'**
+  String get reportPhone;
+
+  /// No description provided for @reportPhoneInvalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم الهاتف غير صحيح'**
+  String get reportPhoneInvalid;
+
+  /// No description provided for @reportEmail.
+  ///
+  /// In ar, this message translates to:
+  /// **'البريد الإلكتروني (اختياري)'**
+  String get reportEmail;
+
+  /// No description provided for @reportEmailInvalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'البريد الإلكتروني غير صحيح'**
+  String get reportEmailInvalid;
+
+  /// No description provided for @reportContactNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'نستخدم الهاتف والبريد للرد عليك فقط إن كتبتهما.'**
+  String get reportContactNote;
+
+  /// No description provided for @reportDeviceTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُرفق مع البلاغ'**
+  String get reportDeviceTitle;
+
+  /// No description provided for @reportDeviceVersion.
+  ///
+  /// In ar, this message translates to:
+  /// **'إصدار التطبيق: {version}'**
+  String reportDeviceVersion(String version);
+
+  /// No description provided for @reportDeviceSystem.
+  ///
+  /// In ar, this message translates to:
+  /// **'النظام: {platform} {os}'**
+  String reportDeviceSystem(String platform, String os);
+
+  /// No description provided for @reportSend.
+  ///
+  /// In ar, this message translates to:
+  /// **'إرسال البلاغ'**
+  String get reportSend;
+
+  /// No description provided for @reportSent.
+  ///
+  /// In ar, this message translates to:
+  /// **'وصل بلاغك، شكرا لك.'**
+  String get reportSent;
+
+  /// No description provided for @reportQueued.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا اتصال الآن. حُفظ البلاغ وسيُرسل وحده حين يعود الاتصال.'**
+  String get reportQueued;
+
+  /// No description provided for @reportFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر إرسال البلاغ. راجع ما كتبت وحاول مرة أخرى.'**
+  String get reportFailed;
+
+  /// No description provided for @reportRateLimited.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرسلت بلاغات كثيرة للتو. حاول بعد قليل.'**
+  String get reportRateLimited;
+
+  /// No description provided for @reportPendingCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'بلاغات تنتظر الإرسال: {n}'**
+  String reportPendingCount(int n);
+
+  /// No description provided for @helpGroupUsage.
+  ///
+  /// In ar, this message translates to:
+  /// **'استخدام التطبيق'**
+  String get helpGroupUsage;
+
+  /// No description provided for @helpGroupMarks.
+  ///
+  /// In ar, this message translates to:
+  /// **'التجويد والضبط'**
+  String get helpGroupMarks;
+
+  /// No description provided for @helpGroupFaq.
+  ///
+  /// In ar, this message translates to:
+  /// **'أسئلة شائعة وحلول'**
+  String get helpGroupFaq;
+
+  /// No description provided for @onbTasmeeChecking.
+  ///
+  /// In ar, this message translates to:
+  /// **'نتحقق من حجم النموذج…'**
+  String get onbTasmeeChecking;
+
+  /// No description provided for @onbTasmeeManifestFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر جلب معلومات النموذج. تأكد من اتصالك بالإنترنت ثم أعد المحاولة.'**
+  String get onbTasmeeManifestFailed;
+
+  /// No description provided for @onbTasmeeUnsupported.
+  ///
+  /// In ar, this message translates to:
+  /// **'التسميع بالصوت غير متاح على هذا الجهاز بعد. تقدر تكمل وتستخدم باقي التطبيق.'**
+  String get onbTasmeeUnsupported;
+
+  /// No description provided for @assistantTileNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'دليل الاستخدام'**
+  String get assistantTileNote;
 }
 
 class _AppLocalizationsDelegate
