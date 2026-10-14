@@ -2,7 +2,7 @@
 each of their subscribed browsers.
 
 Events (kind -> recipients):
-  admins:     new_recording, beta_request, contact_message,
+  admins:     new_recording, beta_request, contact_message, app_report,
               deletion_request, training_done, training_failed
   volunteers: recording_accepted, recording_rejected (the owner only)
 """
@@ -23,6 +23,7 @@ ADMIN_KINDS = {
     "new_recording",
     "beta_request",
     "contact_message",
+    "app_report",
     "deletion_request",
     "training_done",
     "training_failed",

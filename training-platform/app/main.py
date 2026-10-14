@@ -23,6 +23,7 @@ from .routes import (
     notify,
     pages,
     record,
+    reports,
     runner,
     validate,
 )
@@ -55,3 +56,4 @@ app.include_router(admin_requests.router)
 app.include_router(admin_training.router)
 app.include_router(notifications.router)
 app.include_router(runner.router)
+app.include_router(reports.router)

@@ -14,19 +14,22 @@ def valid_email(value: str) -> bool:
     return bool(_EMAIL_RE.match(value))
 
 
-def send_mail(subject: str, body: str) -> bool:
+def send_mail(subject: str, body: str, to: str | None = None, reply_to: str | None = None) -> bool:
     """Send via the configured SMTP; return False when it is not set up."""
     if not settings.smtp_host:
         return False
-    if not settings.smtp_from or not settings.smtp_to:
-        raise ValueError("SMTP_FROM and SMTP_TO are required when SMTP is enabled.")
+    to = to or settings.smtp_to
+    if not settings.smtp_from or not to:
+        raise ValueError("SMTP_FROM and a recipient are required when SMTP is enabled.")
     if bool(settings.smtp_user) != bool(settings.smtp_pass):
         raise ValueError("SMTP_USER and SMTP_PASS must be configured together.")
 
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = settings.smtp_from
-    msg["To"] = settings.smtp_to
+    msg["To"] = to
+    if reply_to:
+        msg["Reply-To"] = reply_to
     msg.set_content(body)
 
     if settings.smtp_port == 465:

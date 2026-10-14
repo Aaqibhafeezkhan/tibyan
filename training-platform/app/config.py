@@ -40,6 +40,8 @@ class Settings(BaseSettings):
     smtp_pass: str = ""
     smtp_from: str = ""
     smtp_to: str = ""
+    # Recipient of in-app reports (POST /api/reports). Empty = SMTP_TO.
+    admin_report_email: str = ""
 
     # Web Push (VAPID). Generate once with tools/gen_vapid.py and keep the
     # private key only in the server's .env. Empty = push disabled; the

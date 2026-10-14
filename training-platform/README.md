@@ -278,3 +278,17 @@ hostname.
   from the app's verified `content.db`; it is never typed or edited by hand.
 - Raw recordings are stored outside `public_html` and are never publicly
   listed; only consented, processed files reach the training mirror.
+
+## App reports (`POST /api/reports`)
+
+Public JSON endpoint for bug reports, problems and suggestions from the
+mobile app: `{type: bug|problem|suggestion|other, description (5..4000),
+phone?, email?, app_version?, platform?, os_version?, client_id?, website}`
+→ `201 {id}`. `website` is a honeypot (filled → `202`, nothing stored).
+Bodies over 16 KB → `413`; more than 5 reports per IP in 10 minutes or 30
+per day → `429` (counted in the database, so it holds across workers; the
+IP is stored only as a salted hash). Reports land in the `app_reports`
+table (created at startup), show under **Admin → Requests → App reports**
+(newest first, mark handled), notify admins in-app / by Web Push, and are
+emailed in the background to `ADMIN_REPORT_EMAIL` (falls back to
+`SMTP_TO`) when SMTP is configured; mail errors are only logged.
