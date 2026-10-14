@@ -109,7 +109,8 @@ class KhatmahStore {
       unit: enumNamed(WirdUnit.values, r.unit) ?? WirdUnit.page,
       restWeekdays: parseWeekdays(r.restWeekdays),
       counting:
-          enumNamed(CountingMode.values, r.countingMode) ?? CountingMode.auto,
+          enumNamed(CountingMode.values, r.countingMode) ??
+          CountingMode.wirdConfirm,
       isPrimary: r.isPrimary,
       status: status,
       autoRestart: r.autoRestart,

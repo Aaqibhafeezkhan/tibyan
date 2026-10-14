@@ -655,6 +655,7 @@ class KhatmaService {
           PortionUnit.page => WirdUnit.page,
         },
         isPrimary: true,
+        counting: _ref.read(settingsProvider).khatmaCountingMode,
         edition: edition.name,
         reminderTime: reminderTime,
         createdAt: DateTime.now(),

@@ -1281,6 +1281,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get khatmaCountingMode => 'How reading counts';
 
   @override
+  String get khatmaCountWirdConfirm => 'Confirm Wird (Recommended)';
+
+  @override
+  String get khatmaCountWirdConfirmSubtitle =>
+      'Manual confirmation when finishing today\'s wird to prevent phantom counting';
+
+  @override
+  String get wirdConfirmDone => 'Confirm Wird Completion ✓';
+
+  @override
+  String get wirdCompletedCelebration =>
+      'Congratulations! Today\'s wird marked as complete 🌿';
+
+  @override
+  String get wirdEndOfPortion => 'End of today\'s wird reached';
+
+  @override
+  String get wirdEndOfPortionQuestion => 'Have you completed today\'s wird?';
+
+  @override
+  String get wirdCompletedToday => 'Today\'s wird completed ✓';
+
+  @override
+  String get wirdLater => 'Later';
+
+  @override
   String get khatmaCountAuto => 'Count automatically';
 
   @override

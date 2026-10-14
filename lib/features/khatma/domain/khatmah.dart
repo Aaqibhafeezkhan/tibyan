@@ -19,9 +19,9 @@ enum ScheduleMode { adaptive, fixed }
 /// What a day's portion is shown in and rounded to.
 enum WirdUnit { page, rub, hizb, juz }
 
-/// How reading is counted for a khatma: at once, after asking, or only
-/// when marked by hand.
-enum CountingMode { auto, ask, manual }
+/// How reading is counted for a khatma: with confirmation button, at once,
+/// after asking, or only when marked by hand.
+enum CountingMode { wirdConfirm, auto, ask, manual }
 
 enum KhatmahStatus { active, paused, completed, cancelled }
 

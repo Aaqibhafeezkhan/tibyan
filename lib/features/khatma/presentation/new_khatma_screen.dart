@@ -38,7 +38,7 @@ class _NewKhatmaScreenState extends ConsumerState<NewKhatmaScreen> {
   _PlanBy _by = _PlanBy.date;
   WirdUnit _unit = WirdUnit.page;
   ScheduleMode _schedule = ScheduleMode.adaptive;
-  CountingMode _counting = CountingMode.auto;
+  CountingMode _counting = CountingMode.wirdConfirm;
   int _days = 30;
   double _amount = 1;
   int _fromSurah = 1;
@@ -679,6 +679,10 @@ class _NewKhatmaScreenState extends ConsumerState<NewKhatmaScreen> {
           ),
           items: [
             DropdownMenuItem(
+              value: CountingMode.wirdConfirm,
+              child: Text(l.khatmaCountWirdConfirm),
+            ),
+            DropdownMenuItem(
               value: CountingMode.auto,
               child: Text(l.khatmaCountAuto),
             ),
@@ -704,7 +708,7 @@ class _NewKhatmaScreenState extends ConsumerState<NewKhatmaScreen> {
           onChanged: (value) => setState(() {
             _isPrimary = value;
             if (value && _counting == CountingMode.ask) {
-              _counting = CountingMode.auto;
+              _counting = CountingMode.wirdConfirm;
             }
           }),
         ),
@@ -934,6 +938,7 @@ class _NewKhatmaScreenState extends ConsumerState<NewKhatmaScreen> {
 
   String _countingLabel(AppLocalizations l, CountingMode mode) =>
       switch (mode) {
+        CountingMode.wirdConfirm => l.khatmaCountWirdConfirm,
         CountingMode.auto => l.khatmaCountAuto,
         CountingMode.ask => l.khatmaCountAsk,
         CountingMode.manual => l.khatmaCountManual,

@@ -1498,18 +1498,36 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
               left: 12,
               right: 12,
               bottom: 12,
-              child: AskCreditLine(
-                currentSession: () => _tracker.session,
-                allowed:
-                    !_chrome &&
-                    !_testing &&
-                    !_recite &&
-                    !_autoScroll &&
-                    !_multi &&
-                    range == null &&
-                    !recitation.active &&
-                    !(focus && _focusTools) &&
-                    ref.watch(sajdahCardProvider) == null,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  WirdCompletionBanner(
+                    shownPages: shownPages,
+                    allowed:
+                        !_chrome &&
+                        !_testing &&
+                        !_recite &&
+                        !_autoScroll &&
+                        !_multi &&
+                        range == null &&
+                        !recitation.active &&
+                        !(focus && _focusTools) &&
+                        ref.watch(sajdahCardProvider) == null,
+                  ),
+                  AskCreditLine(
+                    currentSession: () => _tracker.session,
+                    allowed:
+                        !_chrome &&
+                        !_testing &&
+                        !_recite &&
+                        !_autoScroll &&
+                        !_multi &&
+                        range == null &&
+                        !recitation.active &&
+                        !(focus && _focusTools) &&
+                        ref.watch(sajdahCardProvider) == null,
+                  ),
+                ],
               ),
             ),
             const SajdahCardLayer(),

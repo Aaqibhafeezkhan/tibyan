@@ -6,6 +6,7 @@ import '../theme/app_theme.dart';
 import '../theme/interface_style.dart';
 import '../theme/theme_registry.dart';
 import '../../features/home/whats_new.dart' show whatsNewId, whatsNewSeenKey;
+import '../../features/khatma/domain/khatmah.dart' show CountingMode;
 import 'app_settings.dart';
 
 /// Overridden in `main()` once assets and preferences are loaded.
@@ -70,6 +71,7 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kReadingSpeed = 'settings.khatma.readingSpeed';
   static const _kCountListening = 'settings.khatma.countListening';
   static const _kWirdIndicator = 'settings.khatma.showWirdIndicator';
+  static const _kCountingMode = 'settings.khatma.countingMode';
   static const _kInterfaceStyle = 'settings.interfaceStyle';
 
   SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
@@ -182,6 +184,9 @@ class SettingsController extends Notifier<AppSettings> {
           ReadingSpeed.medium,
       countListening: _prefs.getBool(_kCountListening) ?? true,
       showWirdIndicator: _prefs.getBool(_kWirdIndicator) ?? true,
+      khatmaCountingMode:
+          _enumByName(CountingMode.values, _prefs.getString(_kCountingMode)) ??
+          CountingMode.wirdConfirm,
       interfaceStyle:
           _enumByName(
             InterfaceStyle.values,
@@ -499,6 +504,11 @@ class SettingsController extends Notifier<AppSettings> {
   Future<void> setShowWirdIndicator(bool on) async {
     state = state.copyWith(showWirdIndicator: on);
     await _prefs.setBool(_kWirdIndicator, on);
+  }
+
+  Future<void> setKhatmaCountingMode(CountingMode mode) async {
+    state = state.copyWith(khatmaCountingMode: mode);
+    await _prefs.setString(_kCountingMode, mode.name);
   }
 
   /// «شكل الواجهة»: applied at once, kept across launches.

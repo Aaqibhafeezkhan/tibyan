@@ -94,7 +94,11 @@ class KhatmahEngine {
   ) {
     final out = <Attribution>[];
     for (final k in khatmahs) {
-      if (!k.isActive || k.counting == CountingMode.manual) continue;
+      if (!k.isActive ||
+          k.counting == CountingMode.manual ||
+          k.counting == CountingMode.wirdConfirm) {
+        continue;
+      }
       final fresh = verses.intersect(k.range).subtract(coverage(k));
       if (fresh.isEmpty) continue;
       out.add(
@@ -248,7 +252,9 @@ class KhatmahEngine {
           isPrimary: true,
           counting: k.counting == CountingMode.manual
               ? CountingMode.manual
-              : CountingMode.auto,
+              : (k.counting == CountingMode.wirdConfirm
+                  ? CountingMode.wirdConfirm
+                  : CountingMode.auto),
         )
       else if (k.isPrimary)
         k.copyWith(

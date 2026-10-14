@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' show Color;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -72,7 +73,7 @@ class LocalReminderScheduler implements ReminderScheduler {
     }
     await _plugin.initialize(
       settings: const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        android: AndroidInitializationSettings('ic_stat_tibyan'),
         iOS: DarwinInitializationSettings(
           requestAlertPermission: false,
           requestBadgePermission: false,
@@ -161,6 +162,9 @@ class LocalReminderScheduler implements ReminderScheduler {
       android: AndroidNotificationDetails(
         'app.tibyan.khatma',
         channel,
+        icon: 'ic_stat_tibyan',
+        largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+        color: const Color(0xFFC59A44),
         importance: Importance.defaultImportance,
         priority: Priority.defaultPriority,
       ),

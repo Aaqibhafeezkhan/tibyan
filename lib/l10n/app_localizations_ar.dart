@@ -1302,6 +1302,32 @@ class AppLocalizationsAr extends AppLocalizations {
   String get khatmaCountingMode => 'طريقة احتساب القراءة';
 
   @override
+  String get khatmaCountWirdConfirm => 'تأكيد إتمام الورد (الموصى به)';
+
+  @override
+  String get khatmaCountWirdConfirmSubtitle =>
+      'تأكيد يدوي عند إتمام ورد اليوم لمنع الاحتساب الوهمي';
+
+  @override
+  String get wirdConfirmDone => 'تأكيد إتمام الورد ✓';
+
+  @override
+  String get wirdCompletedCelebration =>
+      'مبارك! تم تسجيل إتمام ورد اليوم بنجاح 🌿';
+
+  @override
+  String get wirdEndOfPortion => 'وصلت لنهاية ورد اليوم';
+
+  @override
+  String get wirdEndOfPortionQuestion => 'هل أتممت قراءة ورد اليوم؟';
+
+  @override
+  String get wirdCompletedToday => 'تم إتمام ورد اليوم ✓';
+
+  @override
+  String get wirdLater => 'لاحقاً';
+
+  @override
   String get khatmaCountAuto => 'احتساب تلقائي';
 
   @override

@@ -2198,6 +2198,54 @@ abstract class AppLocalizations {
   /// **'طريقة احتساب القراءة'**
   String get khatmaCountingMode;
 
+  /// No description provided for @khatmaCountWirdConfirm.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأكيد إتمام الورد (الموصى به)'**
+  String get khatmaCountWirdConfirm;
+
+  /// No description provided for @khatmaCountWirdConfirmSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأكيد يدوي عند إتمام ورد اليوم لمنع الاحتساب الوهمي'**
+  String get khatmaCountWirdConfirmSubtitle;
+
+  /// No description provided for @wirdConfirmDone.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأكيد إتمام الورد ✓'**
+  String get wirdConfirmDone;
+
+  /// No description provided for @wirdCompletedCelebration.
+  ///
+  /// In ar, this message translates to:
+  /// **'مبارك! تم تسجيل إتمام ورد اليوم بنجاح 🌿'**
+  String get wirdCompletedCelebration;
+
+  /// No description provided for @wirdEndOfPortion.
+  ///
+  /// In ar, this message translates to:
+  /// **'وصلت لنهاية ورد اليوم'**
+  String get wirdEndOfPortion;
+
+  /// No description provided for @wirdEndOfPortionQuestion.
+  ///
+  /// In ar, this message translates to:
+  /// **'هل أتممت قراءة ورد اليوم؟'**
+  String get wirdEndOfPortionQuestion;
+
+  /// No description provided for @wirdCompletedToday.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إتمام ورد اليوم ✓'**
+  String get wirdCompletedToday;
+
+  /// No description provided for @wirdLater.
+  ///
+  /// In ar, this message translates to:
+  /// **'لاحقاً'**
+  String get wirdLater;
+
   /// No description provided for @khatmaCountAuto.
   ///
   /// In ar, this message translates to:

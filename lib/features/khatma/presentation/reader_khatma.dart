@@ -26,6 +26,16 @@ import '../khatma_providers.dart';
   return (read: pages.intersection(s.read).length, total: pages.length);
 }
 
+/// The last page of today's portion in the edition being read.
+int? lastWirdPageOf(KhatmaStatus s) {
+  final w = s.wird;
+  if (w == null || s.complete || !s.khatmah.isActive) return null;
+  final pages = {
+    for (final r in w.ranges.ranges) ...s.pages.pagesOf(r.from, r.to),
+  };
+  return pages.isEmpty ? null : pages.reduce((a, b) => a > b ? a : b);
+}
+
 /// The primary khatma's portion for the reader's indicator, when the
 /// indicator is on (settings: «إظهار مؤشر الورد»).
 final readerWirdProvider =
@@ -126,13 +136,63 @@ class WirdIndicator extends ConsumerWidget {
                         Flexible(child: text),
                         const SizedBox(width: 10),
                         Text(
-                          l.khatmaContinueMine,
+                          done ? l.wirdCompletedToday : l.khatmaContinueMine,
                           style: TextStyle(
                             color: t.control,
                             fontWeight: FontWeight.w600,
                             fontSize: context.tokens.elderly ? 17 : 13,
                           ),
                         ),
+                        if (!done) ...[
+                          const SizedBox(width: 10),
+                          InkWell(
+                            onTap: () async {
+                              await ref
+                                  .read(khatmaServiceProvider)
+                                  .markTodayRead(
+                                    uuid: wird.status.khatmah.uuid,
+                                  );
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(l.wirdCompletedCelebration),
+                                    duration: const Duration(seconds: 3),
+                                  ),
+                                );
+                              }
+                            },
+                            borderRadius: BorderRadius.circular(16),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: t.goldText.withValues(alpha: 0.12),
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: t.goldText.withValues(alpha: 0.35),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.check, size: 14, color: t.goldText),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    l.wirdConfirmDone,
+                                    style: TextStyle(
+                                      color: t.goldText,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize:
+                                          context.tokens.elderly ? 14 : 11,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),
@@ -262,6 +322,114 @@ class _AskCreditLineState extends ConsumerState<AskCreditLine> {
                   unawaited(service.acceptPending(p));
                 },
                 child: Text(l.askCreditCount),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A focused card that appears at the bottom of the reader when the reader
+/// lands on the final page of today's wird and the portion is not yet complete.
+class WirdCompletionBanner extends ConsumerStatefulWidget {
+  const WirdCompletionBanner({
+    super.key,
+    required this.shownPages,
+    required this.allowed,
+  });
+
+  final List<int> shownPages;
+  final bool allowed;
+
+  @override
+  ConsumerState<WirdCompletionBanner> createState() =>
+      _WirdCompletionBannerState();
+}
+
+class _WirdCompletionBannerState extends ConsumerState<WirdCompletionBanner> {
+  final Set<String> _dismissed = {};
+
+  @override
+  Widget build(BuildContext context) {
+    if (!widget.allowed) return const SizedBox.shrink();
+    final wird = ref.watch(readerWirdProvider);
+    if (wird == null) return const SizedBox.shrink();
+    final status = wird.status;
+    final w = status.wird;
+    if (w == null || w.done) return const SizedBox.shrink();
+
+    final lastPage = lastWirdPageOf(status);
+    if (lastPage == null || !widget.shownPages.contains(lastPage)) {
+      return const SizedBox.shrink();
+    }
+
+    final key = '${status.khatmah.uuid}_${w.day.key}';
+    if (_dismissed.contains(key)) return const SizedBox.shrink();
+
+    final l = AppLocalizations.of(context);
+    final t = context.tokens.colors;
+
+    return SafeArea(
+      top: false,
+      child: Material(
+        color: t.paper,
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: t.goldText.withValues(alpha: 0.5)),
+        ),
+        child: Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 8, 8),
+          child: Row(
+            children: [
+              Icon(Icons.stars_outlined, color: t.goldText, size: 22),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l.wirdEndOfPortion,
+                      style: TextStyle(
+                        color: t.ink,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      l.wirdEndOfPortionQuestion,
+                      style: TextStyle(
+                        color: t.control,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              TextButton(
+                onPressed: () => setState(() => _dismissed.add(key)),
+                child: Text(l.wirdLater),
+              ),
+              FilledButton.icon(
+                onPressed: () async {
+                  setState(() => _dismissed.add(key));
+                  await ref
+                      .read(khatmaServiceProvider)
+                      .markTodayRead(uuid: status.khatmah.uuid);
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(l.wirdCompletedCelebration),
+                        duration: const Duration(seconds: 4),
+                      ),
+                    );
+                  }
+                },
+                icon: const Icon(Icons.check, size: 16),
+                label: Text(l.wirdConfirmDone),
               ),
             ],
           ),

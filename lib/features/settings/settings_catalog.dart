@@ -10,6 +10,8 @@ import '../assistant/help_topics.dart';
 import '../audio/player_bar.dart' show reciterLabel;
 import '../audio/recitation.dart';
 import '../home/whats_new.dart';
+import '../khatma/domain/khatmah.dart' show CountingMode;
+import '../khatma/khatma_providers.dart' show khatmaServiceProvider;
 import '../mushaf/mushaf_providers.dart';
 import '../mushaf/presentation/widgets/download_all_button.dart';
 import '../mushaf/presentation/widgets/edition_badge.dart';
@@ -364,6 +366,12 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         keywords: 'ورد مؤشر wird portion indicator',
       ),
       SettingEntry(
+        'khatmaCountingMode',
+        (l) => l.khatmaCountingMode,
+        (c, r) => const _KhatmaCountingModeTile(),
+        keywords: 'احتساب طريقة ورد ختمة عد counting mode confirm',
+      ),
+      SettingEntry(
         'countListening',
         (l) => l.settingsCountListening,
         (c, r) => _switch(
@@ -657,6 +665,96 @@ class _EditionPicker extends ConsumerWidget {
                 subtitle: EditionBadge(edition: e),
               ),
         ],
+      ),
+    );
+  }
+}
+
+class _KhatmaCountingModeTile extends ConsumerWidget {
+  const _KhatmaCountingModeTile();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
+    final mode = ref.watch(
+      settingsProvider.select((s) => s.khatmaCountingMode),
+    );
+    final label = switch (mode) {
+      CountingMode.wirdConfirm => l.khatmaCountWirdConfirm,
+      CountingMode.auto => l.khatmaCountAuto,
+      CountingMode.ask => l.khatmaCountAsk,
+      CountingMode.manual => l.khatmaCountManual,
+    };
+    return ListTile(
+      title: Text(l.khatmaCountingMode),
+      subtitle: Text(label, style: TextStyle(color: context.look.sub)),
+      trailing: const Icon(Icons.chevron_left),
+      onTap: () => _pickMode(context, ref, mode),
+    );
+  }
+
+  void _pickMode(
+    BuildContext context,
+    WidgetRef ref,
+    CountingMode current,
+  ) {
+    final l = AppLocalizations.of(context);
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              child: Text(
+                l.khatmaCountingMode,
+                style: Theme.of(sheetContext).textTheme.titleMedium,
+              ),
+            ),
+            RadioGroup<CountingMode>(
+              groupValue: current,
+              onChanged: (v) async {
+                if (v == null) return;
+                Navigator.of(sheetContext).pop();
+                await ref
+                    .read(settingsProvider.notifier)
+                    .setKhatmaCountingMode(v);
+                final primary =
+                    await ref.read(khatmaServiceProvider).status();
+                if (primary != null) {
+                  await ref.read(khatmaServiceProvider).updatePlan(
+                    primary.khatmah.copyWith(counting: v),
+                  );
+                }
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RadioListTile<CountingMode>(
+                    value: CountingMode.wirdConfirm,
+                    title: Text(l.khatmaCountWirdConfirm),
+                    subtitle: Text(l.khatmaCountWirdConfirmSubtitle),
+                  ),
+                  RadioListTile<CountingMode>(
+                    value: CountingMode.auto,
+                    title: Text(l.khatmaCountAuto),
+                  ),
+                  RadioListTile<CountingMode>(
+                    value: CountingMode.ask,
+                    title: Text(l.khatmaCountAsk),
+                  ),
+                  RadioListTile<CountingMode>(
+                    value: CountingMode.manual,
+                    title: Text(l.khatmaCountManual),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

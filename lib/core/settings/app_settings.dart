@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../theme/app_theme.dart';
 import '../theme/interface_style.dart';
 import '../theme/theme_tokens.dart';
+import '../../features/khatma/domain/khatmah.dart' show CountingMode;
 
 /// How the colour mode is chosen: by the device, or fixed by the user.
 enum ModeSetting { system, light, white, night, black }
@@ -180,6 +181,7 @@ class AppSettings {
     this.readingSpeed = ReadingSpeed.medium,
     this.countListening = true,
     this.showWirdIndicator = true,
+    this.khatmaCountingMode = CountingMode.wirdConfirm,
     this.interfaceStyle = defaultInterfaceStyle,
   });
 
@@ -346,6 +348,9 @@ class AppSettings {
   /// Khatmas: today's portion shown in the reader («ورد اليوم · 18 / 20»).
   final bool showWirdIndicator;
 
+  /// Khatmas: default counting mode («طريقة احتساب القراءة»).
+  final CountingMode khatmaCountingMode;
+
   /// «شكل الواجهة»: the look of home, index, settings and the app's
   /// dialogs and sheets («هندسي» by default).
   final InterfaceStyle interfaceStyle;
@@ -407,6 +412,7 @@ class AppSettings {
     ReadingSpeed? readingSpeed,
     bool? countListening,
     bool? showWirdIndicator,
+    CountingMode? khatmaCountingMode,
     InterfaceStyle? interfaceStyle,
   }) => AppSettings(
     styleId: styleId ?? this.styleId,
@@ -460,6 +466,7 @@ class AppSettings {
     readingSpeed: readingSpeed ?? this.readingSpeed,
     countListening: countListening ?? this.countListening,
     showWirdIndicator: showWirdIndicator ?? this.showWirdIndicator,
+    khatmaCountingMode: khatmaCountingMode ?? this.khatmaCountingMode,
     interfaceStyle: interfaceStyle ?? this.interfaceStyle,
   );
 

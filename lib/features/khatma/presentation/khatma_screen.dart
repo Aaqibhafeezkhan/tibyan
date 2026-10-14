@@ -1229,7 +1229,7 @@ class _KhatmaSettingsSheetState extends State<_KhatmaSettingsSheet> {
     _title = TextEditingController(text: widget.plan.title);
     _counting =
         widget.plan.isPrimary && widget.plan.counting == CountingMode.ask
-        ? CountingMode.auto
+        ? CountingMode.wirdConfirm
         : widget.plan.counting;
     _autoRestart = widget.plan.autoRestart;
     _restWeekdays = {...widget.plan.restWeekdays};
@@ -1277,6 +1277,10 @@ class _KhatmaSettingsSheetState extends State<_KhatmaSettingsSheet> {
                 border: const OutlineInputBorder(),
               ),
               items: [
+                DropdownMenuItem(
+                  value: CountingMode.wirdConfirm,
+                  child: Text(l.khatmaCountWirdConfirm),
+                ),
                 DropdownMenuItem(
                   value: CountingMode.auto,
                   child: Text(l.khatmaCountAuto),
