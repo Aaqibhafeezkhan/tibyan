@@ -35,7 +35,7 @@ SCHEMA_VERSION = 16
 RIWAYA_RECITERS = [
     (101, 'محمود خليل الحصري', 'Mahmoud Khalil al-Husary', 'warsh',
      'https://server13.mp3quran.net/husr/Rewayat-Warsh-A-n-Nafi/', 120),
-    (102, 'القارئ ياسين', 'al-Qari Yasin', 'warsh',
+    (102, 'ياسين الجزائري', 'Yassin al-Jazairi', 'warsh',
      'https://server11.mp3quran.net/qari/', 14),
     (103, 'العيون الكوشي', 'al-Oyoun al-Koushi', 'warsh',
      'https://server11.mp3quran.net/koshi/', 16),

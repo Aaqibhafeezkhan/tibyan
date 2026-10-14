@@ -235,11 +235,16 @@
       "licence": "publishable",
       "publish": false,
       "verse_timing": {
-        "source": "mp3quran.net ayat_timing (read 1)",
-        "licence": "mp3quran.net general permission: \"we allow any visitor or developer to copy any material or use any link\" (docs/licenses/2026-09-28_mp3quran_privacy.pdf)",
-        "attribution": "mp3quran.net"
+        "source": "Tibyan: measured by forced alignment on the mp3quran surah files played (tools/build_aligned_timing.py, wav2vec2 Arabic model, Apache-2.0); each boundary at the quietest point of the pause between the verses",
+        "licence": "Tibyan (published here under CC BY 4.0)",
+        "attribution": "Tibyan"
       },
-      "note": "Added 2026-10-14 with mp3quran's published verse timing (every verse of all 114 surahs). Not exported yet: check its boundaries on the files (tools/verify_word_timing.py) before publishing or re-timing it."
+      "word_timing": {
+        "source": "Tibyan: measured by forced alignment on the same files (tools/build_aligned_timing.py)",
+        "licence": "Tibyan (published here under CC BY 4.0)",
+        "attribution": "Tibyan"
+      },
+      "note": "Timed 2026-10-14 like reciters 10-14: 6,128 of 6,236 verses with words (76,890 words); 0.00% of words in a pause, 99.5% of verse boundaries in a heard pause. Not exported to data/timing yet (publish: false)."
     },
     {
       "slug": "warsh-husary-101",
@@ -260,8 +265,8 @@
     {
       "slug": "warsh-yasin-102",
       "id": 102,
-      "name_ar": "القارئ ياسين",
-      "name_en": "al-Qari Yasin",
+      "name_ar": "ياسين الجزائري",
+      "name_en": "Yassin al-Jazairi",
       "riwaya": "warsh",
       "folder_url": "https://server11.mp3quran.net/qari/",
       "licence": "publishable",

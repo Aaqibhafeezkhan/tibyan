@@ -11,4 +11,6 @@
     <string name="actions_read">Read</string>
     <string name="actions_done">Done</string>
     <string name="tile_listen_label">Listen</string>
+    <string name="verse_widget_label">Verse of the Day</string>
+    <string name="verse_widget_description">A verse of the Quran every day</string>
 </resources>

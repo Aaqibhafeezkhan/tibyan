@@ -121,6 +121,13 @@ private let families: [WidgetFamily] = [.systemSmall, .systemMedium]
 #endif
 
 @main
+struct TibyanWidgets: WidgetBundle {
+  var body: some Widget {
+    TibyanWidget()
+    TibyanVerseWidget()
+  }
+}
+
 struct TibyanWidget: Widget {
   // Must match PluginHomeWidgetSync.iosKind.
   let kind = "TibyanWidget"
@@ -128,9 +135,138 @@ struct TibyanWidget: Widget {
   var body: some WidgetConfiguration {
     StaticConfiguration(kind: kind, provider: Provider()) { entry in
       KhatmaWidgetView(entry: entry)
+        .environment(\.layoutDirection, WidgetStore.direction)
     }
     .configurationDisplayName("الختمة")
     .description("ورد اليوم من الختمة")
     .supportedFamilies(families)
+  }
+}
+
+// MARK: - «آية اليوم»
+//
+// One verse a day, drawn by the app from the whole mushaf
+// (lib/features/khatma/services/verse_of_day.dart), which writes a month
+// ahead: `vod_text_<day>`, `vod_ref_<day>`, `vod_uri_<day>`. In the same
+// extension as the khatma widget, so it needs no target of its own.
+
+struct VerseEntry: TimelineEntry {
+  let date: Date
+  let title: String
+  let text: String
+  let reference: String
+  let url: URL?
+}
+
+private func verseEntry(for date: Date) -> VerseEntry {
+  let data = WidgetStore.defaults
+  var key = WidgetStore.dayKey(date)
+  // Past the days written (the app not opened for a month): the last one.
+  if data?.string(forKey: "vod_text_\(key)") == nil,
+    let last = data?.string(forKey: "vod_days")?.split(separator: ",").last
+  {
+    key = String(last)
+  }
+  return VerseEntry(
+    date: date,
+    title: data?.string(forKey: "vod_title") ?? WidgetStore.text("آية اليوم", "Verse of the Day"),
+    text: data?.string(forKey: "vod_text_\(key)") ?? WidgetStore.text("افتح تبيان", "Open Tibyan"),
+    reference: data?.string(forKey: "vod_ref_\(key)") ?? "",
+    url: URL(string: data?.string(forKey: "vod_uri_\(key)") ?? "tibyan://action/continue?homeWidget")
+  )
+}
+
+struct VerseProvider: TimelineProvider {
+  func placeholder(in context: Context) -> VerseEntry {
+    VerseEntry(date: Date(), title: "آية اليوم", text: "", reference: "", url: nil)
+  }
+
+  func getSnapshot(in context: Context, completion: @escaping (VerseEntry) -> Void) {
+    completion(verseEntry(for: Date()))
+  }
+
+  func getTimeline(in context: Context, completion: @escaping (Timeline<VerseEntry>) -> Void) {
+    let calendar = Calendar.current
+    let today = calendar.startOfDay(for: Date())
+    var entries = [verseEntry(for: Date())]
+    for i in 1..<14 {
+      if let d = calendar.date(byAdding: .day, value: i, to: today) {
+        entries.append(verseEntry(for: d))
+      }
+    }
+    completion(Timeline(entries: entries, policy: .atEnd))
+  }
+}
+
+struct VerseWidgetView: View {
+  var entry: VerseEntry
+  @Environment(\.widgetFamily) private var family
+
+  var body: some View {
+    switch family {
+    #if os(iOS)
+    case .accessoryRectangular:
+      VStack(alignment: .leading, spacing: 1) {
+        Text(entry.text).font(.footnote).lineLimit(3).minimumScaleFactor(0.6)
+        if !entry.reference.isEmpty {
+          Text(entry.reference).font(.caption2).lineLimit(1)
+        }
+      }
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .widgetURL(entry.url)
+      .containerBackground(.clear, for: .widget)
+    #endif
+    default:
+      homeBody
+    }
+  }
+
+  private var homeBody: some View {
+    VStack(alignment: .leading, spacing: 6) {
+      Text(entry.title)
+        .font(.caption.bold())
+        .foregroundColor(Color(red: 0.72, green: 0.57, blue: 0.24))
+      // The verse whole, never cut off: the app draws verses that fit, and
+      // the text shrinks rather than end in «…».
+      Text(entry.text)
+        .font(family == .systemSmall ? .callout : .title3)
+        .foregroundColor(Color(red: 0.96, green: 0.93, blue: 0.87))
+        .multilineTextAlignment(.leading)
+        .minimumScaleFactor(0.4)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+      if !entry.reference.isEmpty {
+        Text(entry.reference)
+          .font(.caption)
+          .foregroundColor(Color(red: 0.79, green: 0.83, blue: 0.80))
+          .lineLimit(1)
+      }
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+    .widgetURL(entry.url)
+    .containerBackground(Color(red: 0.07, green: 0.25, blue: 0.19), for: .widget)
+  }
+}
+
+#if os(iOS)
+private let verseFamilies: [WidgetFamily] = [
+  .systemSmall, .systemMedium, .systemLarge, .accessoryRectangular,
+]
+#else
+private let verseFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
+#endif
+
+struct TibyanVerseWidget: Widget {
+  // Must match PluginHomeWidgetSync.iosVerseKind.
+  let kind = "TibyanVerseWidget"
+
+  var body: some WidgetConfiguration {
+    StaticConfiguration(kind: kind, provider: VerseProvider()) { entry in
+      VerseWidgetView(entry: entry)
+        // The verse is Arabic: always right to left.
+        .environment(\.layoutDirection, .rightToLeft)
+    }
+    .configurationDisplayName("آية اليوم")
+    .description("آية من القرآن كل يوم")
+    .supportedFamilies(verseFamilies)
   }
 }

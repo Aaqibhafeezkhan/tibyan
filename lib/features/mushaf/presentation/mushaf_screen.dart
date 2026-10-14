@@ -721,6 +721,9 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       now,
     ) {
       if (now.$2 == null) return;
+      // A recitation of another riwaya (from the listening screen): its
+      // verse numbers are not this mushaf's.
+      if (ref.read(recitationProvider).foreign) return;
       // While a file loads, the verse reported is the new file's start
       // until it is placed at the verse: following it turned the page to
       // the surah's first page whenever the reader changed reciter.

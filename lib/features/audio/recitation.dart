@@ -418,7 +418,17 @@ class RecitationState {
     this.sleep,
     this.error,
     this.clip,
+    this.reciterId,
+    this.foreign = false,
   });
+
+  /// The recitation playing (or loaded); null when idle.
+  final int? reciterId;
+
+  /// A recitation of another riwaya than the mushaf's, chosen on the
+  /// listening screen: its verses are numbered by its own riwaya, so the
+  /// mushaf does not follow it and it counts toward no khatma.
+  final bool foreign;
 
   /// The player bar is shown.
   final bool active;
@@ -468,6 +478,8 @@ class RecitationState {
     SleepTimer? Function()? sleep,
     String? Function()? error,
     RecitationClip? Function()? clip,
+    int? Function()? reciterId,
+    bool? foreign,
   }) => RecitationState(
     active: active ?? this.active,
     playing: playing ?? this.playing,
@@ -484,6 +496,8 @@ class RecitationState {
     sleep: sleep == null ? this.sleep : sleep(),
     error: error == null ? this.error : error(),
     clip: clip == null ? this.clip : clip(),
+    reciterId: reciterId == null ? this.reciterId : reciterId(),
+    foreign: foreign ?? this.foreign,
   );
 }
 
@@ -679,7 +693,7 @@ class RecitationController extends Notifier<RecitationState> {
     // Verse numbers differ between riwayat: a recitation stops when the
     // reader turns to an edition of another riwaya.
     ref.listen(editionProvider.select((e) => e.riwaya), (before, now) {
-      if (before != now && state.active) unawaited(stop());
+      if (before != now && state.active && !state.foreign) unawaited(stop());
     });
     return _idle();
   }
@@ -695,8 +709,21 @@ class RecitationController extends Notifier<RecitationState> {
 
   /// The recitation playing (or last chosen) for the riwaya being read.
   int get _reciterId =>
+      _override?.id ??
       ref.read(currentReciterProvider).value?.id ??
       ref.read(settingsProvider).reciterId;
+
+  /// A recitation of another riwaya, chosen on the listening screen; null
+  /// plays the reader's choice for the mushaf's riwaya.
+  ReciterRow? _override;
+
+  /// The reciter named for the next file: read back from the settings
+  /// right after choosing him, the choice is not there yet and the one
+  /// before would play.
+  ReciterRow? _next;
+
+  Future<ReciterRow?> _reciter() async =>
+      _override ?? await ref.read(currentReciterProvider.future);
 
   /// Starts reciting [surah] at [from] (the whole surah when null). With
   /// [to], only [rangeFrom] (by default [from])..[to] plays. [repeat]
@@ -714,6 +741,45 @@ class RecitationController extends Notifier<RecitationState> {
     bool start = true,
     bool nearSpeech = false,
     int? word,
+    ReciterRow? reciter,
+  }) async {
+    // A reciter named by the listening screen: of the mushaf's riwaya, it
+    // becomes the reader's choice; of another, it plays on its own.
+    if (reciter != null) {
+      _next = reciter;
+      final riwaya = ref.read(editionProvider).riwaya;
+      if (reciter.riwaya == riwaya.name) {
+        _override = null;
+        await ref
+            .read(settingsProvider.notifier)
+            .setReciter(reciter.id, riwaya: riwaya);
+      } else {
+        _override = reciter;
+      }
+    }
+    return _play(
+      surah,
+      from: from,
+      to: to,
+      rangeFrom: rangeFrom,
+      repeat: repeat,
+      silence: silence,
+      start: start,
+      nearSpeech: nearSpeech,
+      word: word,
+    );
+  }
+
+  Future<void> _play(
+    int surah, {
+    int? from,
+    int? to,
+    int? rangeFrom,
+    int? repeat,
+    Duration? silence,
+    bool start = true,
+    bool nearSpeech = false,
+    int? word,
   }) async {
     final load = ++_loads;
     _loading = true;
@@ -722,7 +788,8 @@ class RecitationController extends Notifier<RecitationState> {
     _restartAt = null;
     _leaveSajdah();
     _sajdahDone = null;
-    final reciter = await ref.read(currentReciterProvider.future);
+    final reciter = _next ?? await _reciter();
+    _next = null;
     if (reciter == null) {
       _loading = false;
       return;
@@ -775,6 +842,8 @@ class RecitationController extends Notifier<RecitationState> {
       silence: silence,
       error: () => null,
       clip: () => null,
+      reciterId: () => reciter.id,
+      foreign: _override != null,
     );
     final files = ref.read(audioFilesProvider);
     final local = files.file(reciter.id, surah);
@@ -1053,13 +1122,18 @@ class RecitationController extends Notifier<RecitationState> {
   /// the verse being recited when it has verse timings for this surah, and
   /// from the start of the surah when it has none.
   Future<void> changeReciter(int id) async {
+    _override = null;
     await ref
         .read(settingsProvider.notifier)
         .setReciter(id, riwaya: ref.read(editionProvider).riwaya);
     final s = state;
     if (!s.active || (s.clip?.standalone ?? false)) return;
+    final row = (await ref.read(allRecitersProvider.future))
+        .where((r) => r.id == id)
+        .firstOrNull;
     await play(
       s.surah,
+      reciter: row,
       from: s.ayah,
       to: s.rangeTo,
       rangeFrom: s.rangeFrom,
@@ -1261,7 +1335,9 @@ class RecitationController extends Notifier<RecitationState> {
       state = state.copyWith(playing: playing);
       // Listening time for the reading reports: the recitation (with the
       // translation between its verses), not a tafsir on its own.
-      final recitation = playing && !(state.clip?.standalone ?? false);
+      // A recitation of another riwaya counts toward no khatma.
+      final recitation =
+          playing && !(state.clip?.standalone ?? false) && !state.foreign;
       ref.read(listeningTrackerProvider).playing(recitation, _reciterId);
       // The khatma's listening session runs while the recitation plays.
       ref.read(khatmaServiceProvider).recitationPlaying(recitation);
@@ -1405,7 +1481,7 @@ class RecitationController extends Notifier<RecitationState> {
     if (s.surah != surah || s.clip != null || s.loading || _loading) {
       // Another file (or the recitation's own, after a translation clip
       // or while it loads): only when it times the verse.
-      final reciter = await ref.read(currentReciterProvider.future);
+      final reciter = await _reciter();
       if (reciter == null) return VerseJump.ignored;
       final timings = await ref
           .read(mushafRepositoryProvider)
@@ -1524,6 +1600,19 @@ class RecitationController extends Notifier<RecitationState> {
     _sleepTimer?.cancel();
     _sleepTimer = null;
     await _player?.stop();
+    _override = null;
     state = _idle();
   }
 }
+
+/// The recitation playing, of any riwaya; else the reader's choice for the
+/// mushaf's riwaya.
+final playingReciterProvider = FutureProvider<ReciterRow?>((ref) async {
+  final id = ref.watch(recitationProvider.select((s) => s.reciterId));
+  if (id != null) {
+    for (final r in await ref.watch(allRecitersProvider.future)) {
+      if (r.id == id) return r;
+    }
+  }
+  return ref.watch(currentReciterProvider.future);
+});

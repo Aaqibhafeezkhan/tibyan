@@ -572,7 +572,7 @@ def source_row(today):
             MODEL_REVISION, today)
 
 
-RECITERS = [10, 11, 12, 13, 14]   # content.db ids timed here
+RECITERS = [10, 11, 12, 13, 14, 16]   # content.db ids timed here
 
 
 def write_rows(db, reciter, out):

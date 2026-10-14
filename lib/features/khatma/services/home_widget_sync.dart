@@ -79,6 +79,10 @@ Map<String, String> widgetEntries(WidgetData data) => {
 abstract interface class HomeWidgetSync {
   Future<void> write(WidgetData data);
 
+  /// The verse of the day's keys (verse_of_day.dart), and `lang`, which
+  /// sets every widget's direction; all the widgets are redrawn.
+  Future<void> writeVerses(Map<String, String> entries);
+
   /// Actions queued by the widget while the app was not running (a button
   /// that must not open it), oldest first; the queue is emptied.
   Future<List<WidgetAction>> takePending();
@@ -95,6 +99,12 @@ class NoHomeWidget implements HomeWidgetSync {
 
   @override
   Future<void> write(WidgetData data) async => last = data;
+
+  Map<String, String>? verses;
+
+  @override
+  Future<void> writeVerses(Map<String, String> entries) async =>
+      verses = entries;
 
   @override
   Future<Uri?> launchUri() async => null;
@@ -124,6 +134,34 @@ class PluginHomeWidgetSync implements HomeWidgetSync {
   static const androidActionsProvider =
       'app.tibyan.tibyan.ActionsWidgetProvider';
   static const iosActionsKind = 'TibyanActionsWidget';
+
+  /// «آية اليوم».
+  static const androidVerseProvider = 'app.tibyan.tibyan.VerseWidgetProvider';
+  static const iosVerseKind = 'TibyanVerseWidget';
+
+  @override
+  Future<void> writeVerses(Map<String, String> entries) async {
+    try {
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        await HomeWidget.setAppGroupId(appGroup);
+      }
+      for (final MapEntry(key: k, value: v) in entries.entries) {
+        await HomeWidget.saveWidgetData<String>(k, v);
+      }
+      for (final (android, ios) in [
+        (androidVerseProvider, iosVerseKind),
+        (androidProvider, iosKind),
+        (androidActionsProvider, iosActionsKind),
+      ]) {
+        await HomeWidget.updateWidget(
+          qualifiedAndroidName: android,
+          iOSName: ios,
+        );
+      }
+    } catch (_) {
+      // No widget support (or the extension is not set up yet).
+    }
+  }
 
   @override
   Future<void> write(WidgetData data) async {
@@ -201,6 +239,15 @@ class MacHomeWidgetSync implements HomeWidgetSync {
   Future<void> write(WidgetData data) async {
     try {
       await _channel.invokeMethod<void>('save', widgetEntries(data));
+    } catch (_) {
+      // No widget extension in this build.
+    }
+  }
+
+  @override
+  Future<void> writeVerses(Map<String, String> entries) async {
+    try {
+      await _channel.invokeMethod<void>('save', entries);
     } catch (_) {
       // No widget extension in this build.
     }

@@ -3959,4 +3959,85 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get assistantTileNote => 'Help and how-to';
+
+  @override
+  String get menuGo => 'Go';
+
+  @override
+  String get menuPlayback => 'Playback';
+
+  @override
+  String get menuView => 'View';
+
+  @override
+  String get menuWindow => 'Window';
+
+  @override
+  String get menuHelp => 'Help';
+
+  @override
+  String get aboutApp => 'About Tibyan';
+
+  @override
+  String get playPause => 'Play or pause';
+
+  @override
+  String get verseOfDayTitle => 'Verse of the Day';
+
+  @override
+  String get widgetsTitle => 'Widgets';
+
+  @override
+  String get widgetVerseHint =>
+      'A verse of the Quran every day; a tap opens it in the mushaf';
+
+  @override
+  String get widgetKhatmaHint =>
+      'Today\'s khatma portion and the verse it starts at';
+
+  @override
+  String get widgetActionsTitle => 'Tibyan: shortcuts';
+
+  @override
+  String get widgetActionsHint =>
+      'Continue reading, listen, search, mark today\'s portion read';
+
+  @override
+  String get widgetAdd => 'Add';
+
+  @override
+  String get widgetHowToIos =>
+      'To add one: touch and hold the Home Screen, tap «+», and search for «Tibyan».';
+
+  @override
+  String get widgetHowToMac =>
+      'To add one: Control-click the desktop, choose «Edit Widgets», and search for «Tibyan».';
+
+  @override
+  String get widgetHowToAndroid =>
+      'To add one: touch and hold the home screen, choose «Widgets», and pick «Tibyan».';
+
+  @override
+  String get widgetRefresh => 'Refresh widgets now';
+
+  @override
+  String get widgetRefreshed => 'Widgets refreshed';
+
+  @override
+  String playSurahNamed(String surah) {
+    return 'Listen to surah $surah';
+  }
+
+  @override
+  String get listenNowPlaying => 'Now playing';
+
+  @override
+  String get listenChooseReciter => 'Choose a reciter';
+
+  @override
+  String get listenSurahs => 'Surahs';
+
+  @override
+  String get listenOtherRiwayaNote =>
+      'The open mushaf does not follow these (their verses are numbered differently), and they count toward no khatma.';
 }

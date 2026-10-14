@@ -6655,6 +6655,150 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'دليل الاستخدام'**
   String get assistantTileNote;
+
+  /// No description provided for @menuGo.
+  ///
+  /// In ar, this message translates to:
+  /// **'انتقال'**
+  String get menuGo;
+
+  /// No description provided for @menuPlayback.
+  ///
+  /// In ar, this message translates to:
+  /// **'التلاوة'**
+  String get menuPlayback;
+
+  /// No description provided for @menuView.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض'**
+  String get menuView;
+
+  /// No description provided for @menuWindow.
+  ///
+  /// In ar, this message translates to:
+  /// **'نافذة'**
+  String get menuWindow;
+
+  /// No description provided for @menuHelp.
+  ///
+  /// In ar, this message translates to:
+  /// **'مساعدة'**
+  String get menuHelp;
+
+  /// No description provided for @aboutApp.
+  ///
+  /// In ar, this message translates to:
+  /// **'عن تبيان'**
+  String get aboutApp;
+
+  /// No description provided for @playPause.
+  ///
+  /// In ar, this message translates to:
+  /// **'تشغيل أو إيقاف مؤقت'**
+  String get playPause;
+
+  /// No description provided for @verseOfDayTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'آية اليوم'**
+  String get verseOfDayTitle;
+
+  /// No description provided for @widgetsTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'الودجات'**
+  String get widgetsTitle;
+
+  /// No description provided for @widgetVerseHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'آية من القرآن كل يوم، تفتحها في المصحف بلمسة'**
+  String get widgetVerseHint;
+
+  /// No description provided for @widgetKhatmaHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'ورد اليوم من الختمة وأول آية فيه'**
+  String get widgetKhatmaHint;
+
+  /// No description provided for @widgetActionsTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تبيان: اختصارات'**
+  String get widgetActionsTitle;
+
+  /// No description provided for @widgetActionsHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'متابعة القراءة، الاستماع، البحث، وتسجيل ورد اليوم'**
+  String get widgetActionsHint;
+
+  /// No description provided for @widgetAdd.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة'**
+  String get widgetAdd;
+
+  /// No description provided for @widgetHowToIos.
+  ///
+  /// In ar, this message translates to:
+  /// **'للإضافة: اضغط مطولًا على الشاشة الرئيسية، ثم «+»، وابحث عن «تبيان».'**
+  String get widgetHowToIos;
+
+  /// No description provided for @widgetHowToMac.
+  ///
+  /// In ar, this message translates to:
+  /// **'للإضافة: انقر بزر الفأرة الأيمن على سطح المكتب، ثم «تعديل الأدوات»، وابحث عن «تبيان».'**
+  String get widgetHowToMac;
+
+  /// No description provided for @widgetHowToAndroid.
+  ///
+  /// In ar, this message translates to:
+  /// **'للإضافة: اضغط مطولًا على الشاشة الرئيسية، ثم «الأدوات»، واختر «تبيان».'**
+  String get widgetHowToAndroid;
+
+  /// No description provided for @widgetRefresh.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث الودجات الآن'**
+  String get widgetRefresh;
+
+  /// No description provided for @widgetRefreshed.
+  ///
+  /// In ar, this message translates to:
+  /// **'حُدّثت الودجات'**
+  String get widgetRefreshed;
+
+  /// No description provided for @playSurahNamed.
+  ///
+  /// In ar, this message translates to:
+  /// **'استمع إلى سورة {surah}'**
+  String playSurahNamed(String surah);
+
+  /// No description provided for @listenNowPlaying.
+  ///
+  /// In ar, this message translates to:
+  /// **'تُتلى الآن'**
+  String get listenNowPlaying;
+
+  /// No description provided for @listenChooseReciter.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر القارئ'**
+  String get listenChooseReciter;
+
+  /// No description provided for @listenSurahs.
+  ///
+  /// In ar, this message translates to:
+  /// **'السور'**
+  String get listenSurahs;
+
+  /// No description provided for @listenOtherRiwayaNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يتابعها المصحف المفتوح لاختلاف ترقيم الآيات، ولا تُحتسب في الختمة.'**
+  String get listenOtherRiwayaNote;
 }
 
 class _AppLocalizationsDelegate

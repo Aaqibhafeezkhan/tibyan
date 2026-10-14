@@ -3,6 +3,7 @@
 // place the reader left it at every time after.
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
@@ -41,7 +42,17 @@ class DesktopWindow with WindowListener {
         await windowManager.focus();
       },
     );
+    // macOS: the close button hides the window and the app stays (the
+    // Dock icon brings it back, ⌘Q quits), as every Mac app does.
+    if (defaultTargetPlatform == TargetPlatform.macOS) {
+      await windowManager.setPreventClose(true);
+    }
     windowManager.addListener(DesktopWindow._(prefs));
+  }
+
+  @override
+  void onWindowClose() {
+    if (defaultTargetPlatform == TargetPlatform.macOS) windowManager.hide();
   }
 
   /// The saved bounds, or null when there are none or they make no sense

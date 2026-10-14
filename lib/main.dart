@@ -32,7 +32,9 @@ import 'features/audio/car_channel.dart';
 import 'features/audio/recitation.dart';
 import 'features/audio/timing_updates.dart';
 import 'features/khatma/khatma_providers.dart';
+import 'features/khatma/domain/day.dart';
 import 'features/khatma/services/home_widget_sync.dart';
+import 'features/khatma/services/verse_of_day.dart';
 import 'features/khatma/services/reminder_scheduler.dart';
 import 'features/mushaf/data/background_packs.dart';
 import 'features/mushaf/data/bundled_pack.dart';
@@ -184,6 +186,18 @@ void _startKhatma(ProviderContainer container) {
         if (a == WidgetAction.portionDone) await service.markTodayRead();
       }
       await service.refresh();
+    } catch (_) {}
+    // «آية اليوم»: a month ahead, whether or not there is a khatma.
+    try {
+      final settings = container.read(settingsProvider);
+      await widget.writeVerses(
+        await verseOfDayEntries(
+          ayahById: container.read(mushafRepositoryProvider).ayahById,
+          surahs: await container.read(surahsProvider.future),
+          l: lookupAppLocalizations(settings.locale ?? const Locale('ar')),
+          from: Day.today(),
+        ),
+      );
     } catch (_) {}
   }
 

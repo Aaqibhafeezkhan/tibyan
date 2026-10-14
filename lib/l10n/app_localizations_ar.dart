@@ -4032,4 +4032,83 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get assistantTileNote => 'دليل الاستخدام';
+
+  @override
+  String get menuGo => 'انتقال';
+
+  @override
+  String get menuPlayback => 'التلاوة';
+
+  @override
+  String get menuView => 'عرض';
+
+  @override
+  String get menuWindow => 'نافذة';
+
+  @override
+  String get menuHelp => 'مساعدة';
+
+  @override
+  String get aboutApp => 'عن تبيان';
+
+  @override
+  String get playPause => 'تشغيل أو إيقاف مؤقت';
+
+  @override
+  String get verseOfDayTitle => 'آية اليوم';
+
+  @override
+  String get widgetsTitle => 'الودجات';
+
+  @override
+  String get widgetVerseHint => 'آية من القرآن كل يوم، تفتحها في المصحف بلمسة';
+
+  @override
+  String get widgetKhatmaHint => 'ورد اليوم من الختمة وأول آية فيه';
+
+  @override
+  String get widgetActionsTitle => 'تبيان: اختصارات';
+
+  @override
+  String get widgetActionsHint =>
+      'متابعة القراءة، الاستماع، البحث، وتسجيل ورد اليوم';
+
+  @override
+  String get widgetAdd => 'إضافة';
+
+  @override
+  String get widgetHowToIos =>
+      'للإضافة: اضغط مطولًا على الشاشة الرئيسية، ثم «+»، وابحث عن «تبيان».';
+
+  @override
+  String get widgetHowToMac =>
+      'للإضافة: انقر بزر الفأرة الأيمن على سطح المكتب، ثم «تعديل الأدوات»، وابحث عن «تبيان».';
+
+  @override
+  String get widgetHowToAndroid =>
+      'للإضافة: اضغط مطولًا على الشاشة الرئيسية، ثم «الأدوات»، واختر «تبيان».';
+
+  @override
+  String get widgetRefresh => 'تحديث الودجات الآن';
+
+  @override
+  String get widgetRefreshed => 'حُدّثت الودجات';
+
+  @override
+  String playSurahNamed(String surah) {
+    return 'استمع إلى سورة $surah';
+  }
+
+  @override
+  String get listenNowPlaying => 'تُتلى الآن';
+
+  @override
+  String get listenChooseReciter => 'اختر القارئ';
+
+  @override
+  String get listenSurahs => 'السور';
+
+  @override
+  String get listenOtherRiwayaNote =>
+      'لا يتابعها المصحف المفتوح لاختلاف ترقيم الآيات، ولا تُحتسب في الختمة.';
 }

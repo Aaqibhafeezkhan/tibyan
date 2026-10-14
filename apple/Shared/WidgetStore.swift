@@ -4,6 +4,7 @@
 // action for the app to apply the next time it runs.
 
 import Foundation
+import SwiftUI
 
 enum WidgetStore {
   /// The App Group of the app and its extensions. Read from the bundle's
@@ -34,9 +35,15 @@ enum WidgetStore {
     d.set(now.isEmpty ? action : now + "," + action, forKey: pendingKey)
   }
 
+  /// The app's language as the app last wrote it (`lang`), else the
+  /// device's: the widgets speak the app's language, not the system's.
   static var isArabic: Bool {
-    (Locale.preferredLanguages.first ?? "ar").hasPrefix("ar")
+    let lang = defaults?.string(forKey: "lang") ?? Locale.preferredLanguages.first ?? "ar"
+    return lang.hasPrefix("ar")
   }
+
+  /// Arabic reads right to left whatever the device's language is.
+  static var direction: LayoutDirection { isArabic ? .rightToLeft : .leftToRight }
 
   /// The widgets' few words, in the device's language.
   static func text(_ ar: String, _ en: String) -> String { isArabic ? ar : en }

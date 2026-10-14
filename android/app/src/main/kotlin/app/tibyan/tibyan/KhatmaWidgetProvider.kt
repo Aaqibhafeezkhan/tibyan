@@ -34,6 +34,7 @@ class KhatmaWidgetProvider : HomeWidgetProvider() {
 
     for (id in appWidgetIds) {
       val views = RemoteViews(context.packageName, R.layout.khatma_widget)
+      views.applyDirection(R.id.khatma_root, widgetData)
       views.setTextViewText(
           R.id.khatma_title,
           title ?: context.getString(R.string.khatma_widget_label),

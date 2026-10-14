@@ -7,6 +7,8 @@ import 'core/router/app_router.dart';
 import 'core/router/keyboard_dismiss.dart';
 import 'core/settings/settings_controller.dart';
 import 'core/theme/app_theme.dart';
+import 'core/ui/mac_menu.dart';
+import 'features/audio/global_player.dart';
 import 'l10n/app_localizations.dart';
 
 class TibyanApp extends ConsumerWidget {
@@ -20,10 +22,11 @@ class TibyanApp extends ConsumerWidget {
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
     final mode = settings.resolveMode(platformBrightness);
 
+    final router = ref.watch(appRouterProvider);
     return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       debugShowCheckedModeBanner: false,
-      routerConfig: ref.watch(appRouterProvider),
+      routerConfig: router,
       scrollBehavior: const AppScrollBehavior(),
       // A tap outside a text field closes the keyboard.
       actions: {...WidgetsApp.defaultActions, ...tapOutsideActions()},
@@ -42,22 +45,26 @@ class TibyanApp extends ConsumerWidget {
         elderly: settings.elderlyMode,
         interfaceStyle: settings.interfaceStyle,
       ),
-      // Elderly mode: text at least a quarter larger, whatever the device
-      // asks for (a larger system size is kept).
-      builder: settings.elderlyMode
-          ? (context, child) {
-              final mq = MediaQuery.of(context);
-              final scale = mq.textScaler.scale(1);
-              return MediaQuery(
-                data: mq.copyWith(
-                  textScaler: TextScaler.linear(
-                    scale < elderlyTextScale ? elderlyTextScale : scale,
-                  ),
-                ),
-                child: child!,
-              );
-            }
-          : null,
+      // The player on every screen while a recitation plays; elderly
+      // mode: text at least a quarter larger, whatever the device asks for
+      // (a larger system size is kept).
+      builder: (context, child) {
+        final player = MacMenu(
+          router: router,
+          child: GlobalPlayer(router: router, child: child!),
+        );
+        if (!settings.elderlyMode) return player;
+        final mq = MediaQuery.of(context);
+        final scale = mq.textScaler.scale(1);
+        return MediaQuery(
+          data: mq.copyWith(
+            textScaler: TextScaler.linear(
+              scale < elderlyTextScale ? elderlyTextScale : scale,
+            ),
+          ),
+          child: player,
+        );
+      },
     );
   }
 }

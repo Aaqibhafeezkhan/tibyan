@@ -35,6 +35,7 @@ class ActionsWidgetProvider : HomeWidgetProvider() {
 
     for (id in appWidgetIds) {
       val views = RemoteViews(context.packageName, R.layout.actions_widget)
+      views.applyDirection(R.id.actions_root, widgetData)
       views.setTextViewText(
           R.id.actions_title,
           widgetData.getString("title", null) ?: context.getString(R.string.actions_widget_label),

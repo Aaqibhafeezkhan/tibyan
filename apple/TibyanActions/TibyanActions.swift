@@ -169,6 +169,7 @@ struct TibyanActionsWidget: Widget {
   var body: some WidgetConfiguration {
     StaticConfiguration(kind: kind, provider: ActionsProvider()) { entry in
       ActionsView(entry: entry)
+        .environment(\.layoutDirection, WidgetStore.direction)
     }
     .configurationDisplayName("تبيان: اختصارات")
     .description("متابعة القراءة، الاستماع، البحث، وتسجيل ورد اليوم")

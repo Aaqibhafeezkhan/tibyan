@@ -30,7 +30,11 @@ String reciterLabel(BuildContext context, ReciterRow r) {
 
 /// The recitation controls shown over the mushaf while listening.
 class PlayerBar extends ConsumerWidget {
-  const PlayerBar({super.key});
+  const PlayerBar({super.key, this.sheetContext});
+
+  /// Where the player's sheet opens: the app's navigator when the bar is
+  /// drawn above it (the global player, [GlobalPlayer]).
+  final BuildContext? Function()? sheetContext;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,7 +44,7 @@ class PlayerBar extends ConsumerWidget {
     final s = ref.watch(recitationProvider);
     final c = ref.read(recitationProvider.notifier);
     final surahs = ref.watch(surahsProvider).value;
-    final reciter = ref.watch(currentReciterProvider).value;
+    final reciter = ref.watch(playingReciterProvider).value;
     final surah = surahs == null ? '' : surahName(context, surahs[s.surah - 1]);
     final lang = Localizations.localeOf(context).languageCode;
     final clip = s.clip;
@@ -97,7 +101,7 @@ class PlayerBar extends ConsumerWidget {
               ),
             Expanded(
               child: InkWell(
-                onTap: () => showPlayerSheet(context),
+                onTap: () => showPlayerSheet(sheetContext?.call() ?? context),
                 borderRadius: BorderRadius.circular(12),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
@@ -188,7 +192,7 @@ class PlayerBar extends ConsumerWidget {
               ),
             IconButton(
               tooltip: l.playerSettings,
-              onPressed: () => showPlayerSheet(context),
+              onPressed: () => showPlayerSheet(sheetContext?.call() ?? context),
               icon: Icon(Icons.tune, color: t.playerFg),
             ),
           ],
@@ -584,6 +588,21 @@ class PlayerOptions extends ConsumerWidget {
           ),
           const SizedBox(height: 12),
         ],
+        // «شكل المشغل», as on the settings screen: every listening setting
+        // is here too, so the reader need not leave the page.
+        Semantics(header: true, child: Text(l.playerStyleLabel, style: title)),
+        const SizedBox(height: 6),
+        chips<PlayerStyle>(
+          [
+            (PlayerStyle.auto, l.playerStyleAuto),
+            (PlayerStyle.normal, l.playerStyleNormal),
+            (PlayerStyle.pill, l.playerStylePill),
+            (PlayerStyle.button, l.playerStyleButton),
+          ],
+          settings.playerStyle,
+          ref.read(settingsProvider.notifier).setPlayerStyle,
+        ),
+        const SizedBox(height: 12),
         OutlinedButton.icon(
           onPressed: () {
             if (inSheet) Navigator.pop(context);

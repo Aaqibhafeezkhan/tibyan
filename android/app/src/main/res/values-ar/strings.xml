@@ -11,4 +11,6 @@
     <string name="actions_read">قرأت الورد</string>
     <string name="actions_done">تم</string>
     <string name="tile_listen_label">استماع</string>
+    <string name="verse_widget_label">آية اليوم</string>
+    <string name="verse_widget_description">آية من القرآن كل يوم</string>
 </resources>

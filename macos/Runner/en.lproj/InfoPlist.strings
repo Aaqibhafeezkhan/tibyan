@@ -1,0 +1,3 @@
+/* The app menu's name and the name under the Dock icon. */
+"CFBundleName" = "Tibyan";
+"CFBundleDisplayName" = "Tibyan";

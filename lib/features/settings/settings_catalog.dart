@@ -16,6 +16,7 @@ import '../mushaf/presentation/widgets/download_all_button.dart';
 import '../mushaf/presentation/widgets/edition_badge.dart';
 import '../mushaf/presentation/widgets/tajweed_legend.dart';
 import 'report/report_screen.dart' show reportLocation;
+import 'home_widgets_card.dart';
 import 'settings_widgets.dart';
 
 /// The eight tiles of the settings grid, each opening its own screen.
@@ -142,6 +143,14 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         (l) => l.uiFontLabel,
         (c, r) => const UiFontPicker(),
         keywords: 'خط الواجهة font typeface changa plex',
+      ),
+    ]),
+    SettingsGroup(Icons.widgets_outlined, (l) => l.widgetsTitle, [
+      SettingEntry(
+        'homeWidgets',
+        (l) => l.widgetsTitle,
+        (c, r) => const HomeWidgetsCard(),
+        keywords: 'ودجت ودجات أداة أدوات الشاشة الرئيسية آية اليوم widget widgets home screen verse of the day',
       ),
     ]),
   ],

@@ -67,6 +67,14 @@ class AppDelegate: FlutterAppDelegate {
         WidgetCenter.shared.reloadAllTimelines()
       }
       result(nil)
+    case "appLanguage":
+      // The app's own language for macOS (the app menu's name, system
+      // panels), from the next launch: «التبيان» when the app is in Arabic,
+      // whatever the Mac's language is.
+      if let lang = call.arguments as? String {
+        UserDefaults.standard.set([lang], forKey: "AppleLanguages")
+      }
+      result(nil)
     case "initialLink":
       dartAsked = true
       let link = initialLink
@@ -81,7 +89,21 @@ class AppDelegate: FlutterAppDelegate {
     }
   }
 
+  // As on any Mac app: closing the window keeps the app running (and a
+  // recitation playing); a click on the Dock icon brings the window back,
+  // and ⌘Q quits. Dart hides the window on close (desktop_window.dart).
   override func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+    return false
+  }
+
+  override func applicationShouldHandleReopen(
+    _ sender: NSApplication, hasVisibleWindows flag: Bool
+  ) -> Bool {
+    if !flag {
+      for window in sender.windows where window is MainFlutterWindow {
+        window.makeKeyAndOrderFront(self)
+      }
+    }
     return true
   }
 

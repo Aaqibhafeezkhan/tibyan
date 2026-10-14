@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
 /// The same reader's recitation in another riwaya uses that reader's photo:
-/// al-Husary (Warsh, Qalun, al-Duri) and Abdul Basit (Warsh).
-const _photoOf = {101: 2, 111: 2, 121: 2, 106: 3};
+/// al-Husary (Warsh, Qalun, al-Duri), Abdul Basit (Warsh) and al-Hudhaifi
+/// (Shu'bah).
+const _photoOf = {101: 2, 111: 2, 121: 2, 106: 3, 131: 112};
 
 /// A reciter's photo beside their name, or their initials while there is
 /// no photo for them.
