@@ -14,6 +14,7 @@ import 'package:tibyan/core/theme/app_theme.dart';
 import 'package:tibyan/core/theme/theme_registry.dart';
 import 'package:tibyan/core/theme/theme_tokens.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
+import 'package:tibyan/features/assistant/help_topics.dart';
 import 'package:tibyan/features/settings/settings_catalog.dart';
 import 'package:tibyan/features/settings/settings_screen.dart';
 import 'package:tibyan/features/settings/settings_section_screen.dart';
@@ -127,17 +128,16 @@ void main() {
     }
   });
 
-  test('the assistant section draws one entry; its topics are found by '
-      'search and open the topic', () {
+  test('the assistant section draws every topic grouped; topics are found '
+      'by search', () {
     final drawn = [
       for (final g in SettingsSection.assistant.groups)
         for (final e in g.entries)
           if (e.link == null) e.id,
     ];
-    expect(drawn, ['assistant']);
+    expect(drawn, [for (final t in helpTopics) 'help.${t.id}']);
     final marks = searchSettings('علامات التجويد');
     expect(marks.first.$2.id, 'help.marks');
-    expect(marks.first.$2.link, '/assistant/tajweed');
     expect(
       searchSettings('microphone').map((h) => h.$2.id),
       contains('help.faq-mic'),
@@ -145,6 +145,25 @@ void main() {
     expect(
       searchSettings('النسخ الاحتياطي').map((h) => h.$2.id),
       contains('help.backup'),
+    );
+  });
+
+  test('tasmee settings draws one entry in hifz; model and train are searchable', () {
+    final tasmeeGroup = SettingsSection.hifz.groups.firstWhere(
+      (g) => g.entries.any((e) => e.id == 'tasmee'),
+    );
+    final drawn = [
+      for (final e in tasmeeGroup.entries)
+        if (e.link == null) e.id,
+    ];
+    expect(drawn, ['tasmee']);
+    expect(
+      searchSettings('نموذج التسميع').map((h) => h.$2.id),
+      contains('tasmeeModel'),
+    );
+    expect(
+      searchSettings('تدريب').map((h) => h.$2.id),
+      contains('tasmeeTrain'),
     );
   });
 

@@ -6,7 +6,6 @@ import '../../core/settings/app_settings.dart';
 import '../../core/settings/settings_controller.dart';
 import '../../core/theme/interface_style.dart';
 import '../../l10n/app_localizations.dart';
-import '../assistant/assistant_screen.dart' show assistantLocation;
 import '../assistant/help_topics.dart';
 import '../audio/player_bar.dart' show reciterLabel;
 import '../audio/recitation.dart';
@@ -327,22 +326,16 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
       SettingEntry(
         'tasmeeModel',
         (l) => l.tasmeeModelTitle,
-        (c, r) => SettingsNavTile(
-          icon: Icons.memory,
-          title: AppLocalizations.of(c).tasmeeModelTitle,
-          onTap: () => c.push('/settings/tasmee'),
-        ),
+        _none,
         keywords: 'نموذج التعرف الصوت تنزيل model speech download',
+        link: '/settings/tasmee',
       ),
       SettingEntry(
         'tasmeeTrain',
         (l) => l.tasmeeTrainTitle,
-        (c, r) => SettingsNavTile(
-          icon: Icons.volunteer_activism,
-          title: AppLocalizations.of(c).tasmeeTrainTitle,
-          onTap: () => c.push('/settings/tasmee'),
-        ),
+        _none,
         keywords: 'تدريب تسجيلات ساهم مساهمة تطوع منصة train training recordings contribute volunteer',
+        link: '/settings/tasmee',
       ),
     ]),
   ],
@@ -460,30 +453,32 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
     ]),
   ],
   SettingsSection.assistant: [
-    SettingsGroup(Icons.lightbulb_outline, (l) => l.assistantTitle, [
-      SettingEntry(
-        'assistant',
-        (l) => l.assistantTitle,
-        (c, r) => SettingsNavTile(
-          icon: Icons.lightbulb_outline,
-          title: AppLocalizations.of(c).assistantTitle,
-          subtitle: AppLocalizations.of(c).assistantIntro,
-          onTap: () => c.push(assistantLocation),
-        ),
-        keywords: 'مساعد مساعدة دليل أسئلة assistant help guide faq',
+    for (final g in HelpGroup.values)
+      SettingsGroup(
+        switch (g) {
+          HelpGroup.usage => Icons.auto_stories_outlined,
+          HelpGroup.marks => Icons.spellcheck,
+          HelpGroup.faq => Icons.quiz_outlined,
+        },
+        switch (g) {
+          HelpGroup.usage => (l) => l.helpGroupUsage,
+          HelpGroup.marks => (l) => l.helpGroupMarks,
+          HelpGroup.faq => (l) => l.helpGroupFaq,
+        },
+        [
+          for (final t in helpTopics.where((t) => t.group == g))
+            SettingEntry(
+              'help.${t.id}',
+              (l) => t.titleIn(l.localeName),
+              (c, r) => SettingsNavTile(
+                icon: t.icon,
+                title: t.titleIn(AppLocalizations.of(c).localeName),
+                onTap: () => c.push(t.route),
+              ),
+              keywords: '${t.keywords} مساعد مساعدة assistant help',
+            ),
+        ],
       ),
-    ]),
-    // Each help topic, found by the settings search and opened from it.
-    SettingsGroup(Icons.help_outline, (l) => l.assistantTitle, [
-      for (final t in helpTopics)
-        SettingEntry(
-          'help.${t.id}',
-          (l) => t.titleIn(l.localeName),
-          _none,
-          keywords: t.keywords,
-          link: t.route,
-        ),
-    ]),
   ],
   SettingsSection.about: [
     SettingsGroup(Icons.info_outline, (l) => l.settingsSectionAbout, [
