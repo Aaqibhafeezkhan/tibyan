@@ -72,6 +72,29 @@ class PlayerBar extends ConsumerWidget {
               onPressed: c.stop,
               icon: Icon(Icons.close, color: t.playerFg),
             ),
+            // The reciter's photo in a circle, while a recitation (not a
+            // clip from another source) plays. Their name is read below.
+            if (reciter != null && clip == null)
+              Padding(
+                padding: const EdgeInsetsDirectional.only(end: 10),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: t.playerFg.withValues(alpha: .35),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: ReciterAvatar(
+                      id: reciter.id,
+                      name: reciterLabel(context, reciter),
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ),
             Expanded(
               child: InkWell(
                 onTap: () => showPlayerSheet(context),
