@@ -4,7 +4,10 @@ import 'dart:ui' show Locale;
 
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show ProviderOrFamily;
 import 'package:flutter/widgets.dart' show AppLifecycleState, WidgetsBinding;
+
+import '../../core/ui/after_first_frame.dart';
 
 import '../../core/db/user_database.dart';
 import '../../core/flags/feature_flags.dart';
@@ -23,7 +26,13 @@ import 'data/activity_repository.dart';
 import 'data/khatma_repository.dart';
 import 'data/khatmah_book.dart';
 import '../hifz/data/goal_reminders.dart';
-import '../hifz/hifz_providers.dart' show goalOf;
+import '../hifz/hifz_providers.dart'
+    show
+        goalOf,
+        goalStatusesProvider,
+        hifzProgressProvider,
+        pageRevealUnitsProvider,
+        verseCellsProvider;
 import 'data/khatmah_store.dart';
 import 'data/quran_index_loader.dart';
 import 'domain/day.dart';
@@ -408,7 +417,7 @@ class KhatmaService {
     }
   }
 
-  Future<void> _prepareOnce(KhatmahBook book) async {
+  Future<void> _prepareOnce(KhatmahBook book, {bool rebuildNow = false}) async {
     final editions = {for (final k in await _store.khatmahs()) k.edition};
     final rows = await (_ref
         .read(userDatabaseProvider)
@@ -419,9 +428,43 @@ class KhatmaService {
       for (final e in editions)
         e: await _ref.read(editionPagesProvider(editionNamed(e)).future),
     };
-    await book.prepare((e) => maps[e]);
+    await book.prepare((e) => maps[e], rebuildCaches: rebuildNow);
     _prepared = true;
     _preparing = null;
+    if (!rebuildNow) unawaited(_rebuildCachesLater(book));
+  }
+
+  /// The caches (khatma_coverage, daily_stat) are not read to show a
+  /// khatma, so the start does not wait for them: they are rebuilt once
+  /// the first frame is on the screen.
+  Future<void> _rebuildCachesLater(KhatmahBook book) async {
+    await afterFirstFrame();
+    try {
+      await book.store.rebuildAll(book.index);
+    } on Object catch (e) {
+      debugPrint('khatma caches: $e');
+    }
+  }
+
+  /// After a backup is restored: its khatmas carried over with one
+  /// primary, the caches rebuilt from the restored attributions now, and
+  /// what shows the khatmas and the hifz worked out again, without a
+  /// restart.
+  Future<void> afterRestore() async {
+    final pending = _preparing;
+    if (pending != null) {
+      try {
+        await pending;
+      } on Object {
+        // Prepared again below.
+      }
+    }
+    _prepared = false;
+    _preparing = null;
+    await _prepareOnce(await _book, rebuildNow: true);
+    for (final p in afterRestoreProviders) {
+      _ref.invalidate(p);
+    }
   }
 
   Future<KhatmaStatus?> status() async {
@@ -1284,3 +1327,17 @@ class StreakNotesSetting extends Notifier<bool> {
 final streakNotesProvider = NotifierProvider<StreakNotesSetting, bool>(
   StreakNotesSetting.new,
 );
+
+/// Worked out again after a backup restore ([KhatmaService.afterRestore]);
+/// the streams over the tables follow the restored rows by themselves.
+final List<ProviderOrFamily> afterRestoreProviders = [
+  khatmahBookProvider,
+  khatmaStatusProvider,
+  khatmaStatusesProvider,
+  completedKhatmaStatusProvider,
+  pendingCreditsProvider,
+  hifzProgressProvider,
+  goalStatusesProvider,
+  verseCellsProvider,
+  pageRevealUnitsProvider,
+];

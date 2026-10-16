@@ -133,6 +133,68 @@ void settingsAndOutbox() {
     expect(fresh.getStringList('search.history'), isNull);
   });
 
+  test('the reader\'s choices outside settings.* travel too; the device\'s '
+      'state does not', () async {
+    SharedPreferences.setMockInitialValues({
+      'tasmee.mode': 'hidden',
+      'tasmee.toastSeconds': 5,
+      'tasmee.vibration': false,
+      'tasmee.firstUseSeen': true,
+      'habits.streakNotes': false,
+      'search.mode': 'meaning',
+      'app.whatsNewSeen': 'v2',
+      'window.bounds': ['0', '0', '800', '600'],
+      'sync.lastPull': 123,
+      'reports.queue': ['{"email":"a@b.co"}'],
+      'tasmee.modelLatest': '{}',
+      'khatma.wirdBannerDismissed': 'k1:2026-10-07',
+    });
+    final prefs = await SharedPreferences.getInstance();
+    final a = _db();
+    final text = await Backup(a, prefs: prefs).export();
+    await a.close();
+    expect(text, isNot(contains('a@b.co')));
+
+    SharedPreferences.setMockInitialValues({});
+    final fresh = await SharedPreferences.getInstance();
+    final b = _db();
+    final r = await Backup(b, prefs: fresh).import(text);
+    await b.close();
+    expect(r.settings, 7);
+    expect(fresh.getString('tasmee.mode'), 'hidden');
+    expect(fresh.getInt('tasmee.toastSeconds'), 5);
+    expect(fresh.getBool('tasmee.vibration'), isFalse);
+    expect(fresh.getBool('tasmee.firstUseSeen'), isTrue);
+    expect(fresh.getBool('habits.streakNotes'), isFalse);
+    expect(fresh.getString('search.mode'), 'meaning');
+    expect(fresh.getString('app.whatsNewSeen'), 'v2');
+    for (final k in [
+      'window.bounds',
+      'sync.lastPull',
+      'reports.queue',
+      'tasmee.modelLatest',
+      'khatma.wirdBannerDismissed',
+    ]) {
+      expect(fresh.containsKey(k), isFalse, reason: k);
+    }
+  });
+
+  test('a file holding keys a backup does not carry restores only the '
+      'carried ones', () async {
+    SharedPreferences.setMockInitialValues({});
+    final fresh = await SharedPreferences.getInstance();
+    final b = _db();
+    // As an older file (settings only) or an edited one may be.
+    final r = await Backup(b, prefs: fresh).import(
+      '{"app":"tibyan","format":1,"tables":{},'
+      '"settings":{"settings.style":"seljuk","sync.lastPull":9}}',
+    );
+    await b.close();
+    expect(r.settings, 1);
+    expect(fresh.getString('settings.style'), 'seljuk');
+    expect(fresh.containsKey('sync.lastPull'), isFalse);
+  });
+
   test('a restored note is queued for sync like any other write', () async {
     final a = _db();
     final b = _db();
