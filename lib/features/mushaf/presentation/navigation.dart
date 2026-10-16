@@ -40,6 +40,19 @@ Future<void> openVerse(
   context.go(mushafLocation(page, entry: entry));
 }
 
+/// Where a `tibyan://verse` link (a shared verse, «آية اليوم» on the home
+/// screen) opens: the page holding [surah]:[ayah] (Hafs numbers) in the
+/// edition being read, 1441, 1405 or a riwaya's, with the verse named.
+Future<String> verseLinkLocation(
+  ProviderContainer container,
+  int surah,
+  int ayah,
+) async => mushafLocation(
+  await container.read(versePageProvider((surah, ayah)).future),
+  surah: surah,
+  ayah: ayah,
+);
+
 /// Opens a page of the edition being read.
 Future<void> openPage(BuildContext context, WidgetRef ref, int page) async {
   context.go(mushafLocation(page));
