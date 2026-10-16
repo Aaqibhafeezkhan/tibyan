@@ -4358,13 +4358,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'والمسبحة مفتوحة، كل ضغطة تعدّ ولا يتغير الصوت';
 
   @override
-  String get tasbihLockScreen => 'العدّ والشاشة مقفلة';
-
-  @override
-  String get tasbihLockScreenHint =>
-      'أندرويد فقط. يعمل بإشعار ظاهر ما دامت المسبحة مفتوحة، ويعدّ بأزرار الصوت والشاشة مقفلة. يستهلك بطارية قليلة، ومغلق افتراضيًا.';
-
-  @override
   String get tasbihSourcesTitle => 'مصدر أذكار المسبحة';
 
   @override

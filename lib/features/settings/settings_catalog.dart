@@ -490,20 +490,6 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         keywords: 'أزرار الصوت مسبحة volume buttons keys tasbih',
       ),
       SettingEntry(
-        'tasbihLockScreen',
-        (l) => l.tasbihLockScreen,
-        (c, r) => lockScreenCountingAvailable
-            ? TasbihSwitch(
-                title: (l) => l.tasbihLockScreen,
-                hint: (l) => l.tasbihLockScreenHint,
-                value: (s) => s.lockScreen,
-                set: (ctrl, v) => ctrl.setLockScreen(v),
-              )
-            : const SizedBox.shrink(),
-        keywords:
-            'قفل الشاشة مقفلة إشعار مسبحة lock screen notification tasbih',
-      ),
-      SettingEntry(
         'tasbihLog',
         (l) => l.tasbihLog,
         (c, r) => SettingsNavTile(

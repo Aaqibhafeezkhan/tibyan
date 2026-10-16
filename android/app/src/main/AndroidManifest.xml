@@ -183,12 +183,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/tasbih_widget_info"/>
         </receiver>
-        <!-- «العدّ والشاشة مقفلة»: off by default; a media session whose
-             volume buttons count while the misbaha is open. -->
-        <service
-            android:name=".TasbihService"
-            android:exported="false"
-            android:foregroundServiceType="mediaPlayback"/>
         <!-- Android Auto: the recitations can be browsed and played from
              the car (audio_service's MediaBrowserService above). -->
         <meta-data

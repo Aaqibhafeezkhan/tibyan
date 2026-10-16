@@ -38,7 +38,6 @@ import UserNotifications
 /// volume press only through the output volume changing, so the volume is
 /// set back each time through a hidden system volume view (which also keeps
 /// the volume HUD away), and kept off both ends so a press always moves it.
-/// No lock-screen counting on iOS.
 final class TasbihChannel: NSObject {
   private static var shared: TasbihChannel?
   private let channel: FlutterMethodChannel
@@ -73,10 +72,6 @@ final class TasbihChannel: NSObject {
     case "setVolumeKeys":
       setVolumeKeys((call.arguments as? Bool) ?? false)
       result(nil)
-    case "setLockScreen":
-      result(nil)
-    case "takePending":
-      result(0)
     default:
       result(FlutterMethodNotImplemented)
     }

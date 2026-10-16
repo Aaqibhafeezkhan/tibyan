@@ -1,10 +1,8 @@
 package app.tibyan.tibyan
 
 import android.content.Context
-import android.content.Intent
 import android.media.AudioAttributes
 import android.media.SoundPool
-import android.os.Build
 import io.flutter.FlutterInjector
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
@@ -12,9 +10,8 @@ import java.io.File
 
 /**
  * «المسبحة»'s channel (`app.tibyan/tasbih`): the bead's click through a
- * SoundPool (no delay, mixes with other sound), counting with the volume
- * buttons while the app is open, the lock-screen service, and the counts
- * made away from the app.
+ * SoundPool (no delay, mixes with other sound) and counting with the
+ * volume buttons while the app is open.
  */
 class TasbihNative(private val context: Context, messenger: BinaryMessenger) {
   val channel = MethodChannel(messenger, "app.tibyan/tasbih")
@@ -38,23 +35,6 @@ class TasbihNative(private val context: Context, messenger: BinaryMessenger) {
           volumeKeys = call.arguments as? Boolean ?: false
           result.success(null)
         }
-        "setLockScreen" -> {
-          val on = call.argument<Boolean>("on") ?: false
-          val intent = Intent(context, TasbihService::class.java)
-          if (on) {
-            intent.putExtra(TasbihService.EXTRA_TITLE, call.argument<String>("title") ?: "")
-            intent.putExtra(TasbihService.EXTRA_TEXT, call.argument<String>("text") ?: "")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-              context.startForegroundService(intent)
-            } else {
-              context.startService(intent)
-            }
-          } else {
-            context.stopService(intent)
-          }
-          result.success(null)
-        }
-        "takePending" -> result.success(TasbihService.takePending(context))
         else -> result.notImplemented()
       }
     }

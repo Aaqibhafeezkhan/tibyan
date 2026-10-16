@@ -4285,13 +4285,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'While the misbaha is open, each press counts and the volume stays';
 
   @override
-  String get tasbihLockScreen => 'Count with the screen locked';
-
-  @override
-  String get tasbihLockScreenHint =>
-      'Android only. While the misbaha is open, a visible notification keeps the volume buttons counting with the screen locked. Uses a little battery; off by default.';
-
-  @override
   String get tasbihSourcesTitle => 'Misbaha adhkar source';
 
   @override

@@ -72,6 +72,9 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
     onUpdate(context, manager, ids, prefs)
   }
 
+  private fun arabicDigits(n: Int): String =
+      n.toString().map { (0x0660 + (it - '0')).toChar() }.joinToString("")
+
   companion object {
     const val COUNT = "app.tibyan.tibyan.TASBIH_WIDGET_COUNT"
     const val PREFERENCES = "HomeWidgetPreferences"

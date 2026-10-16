@@ -7220,18 +7220,6 @@ abstract class AppLocalizations {
   /// **'والمسبحة مفتوحة، كل ضغطة تعدّ ولا يتغير الصوت'**
   String get tasbihVolumeKeysHint;
 
-  /// No description provided for @tasbihLockScreen.
-  ///
-  /// In ar, this message translates to:
-  /// **'العدّ والشاشة مقفلة'**
-  String get tasbihLockScreen;
-
-  /// No description provided for @tasbihLockScreenHint.
-  ///
-  /// In ar, this message translates to:
-  /// **'أندرويد فقط. يعمل بإشعار ظاهر ما دامت المسبحة مفتوحة، ويعدّ بأزرار الصوت والشاشة مقفلة. يستهلك بطارية قليلة، ومغلق افتراضيًا.'**
-  String get tasbihLockScreenHint;
-
   /// No description provided for @tasbihSourcesTitle.
   ///
   /// In ar, this message translates to:

@@ -45,7 +45,6 @@ class TasbihSettings {
     this.sound = false,
     this.keepScreenOn = true,
     this.volumeKeys = false,
-    this.lockScreen = false,
     this.dhikr,
     this.target = 33,
   });
@@ -64,10 +63,6 @@ class TasbihSettings {
   /// Count with the volume buttons while the misbaha is open.
   final bool volumeKeys;
 
-  /// Android only: keep counting with the volume buttons while the screen
-  /// is locked, through a foreground service and its notification.
-  final bool lockScreen;
-
   /// The key of the dhikr being counted; null for the first.
   final String? dhikr;
 
@@ -82,7 +77,6 @@ class TasbihSettings {
     bool? sound,
     bool? keepScreenOn,
     bool? volumeKeys,
-    bool? lockScreen,
     String? dhikr,
     int? Function()? target,
   }) => TasbihSettings(
@@ -93,7 +87,6 @@ class TasbihSettings {
     sound: sound ?? this.sound,
     keepScreenOn: keepScreenOn ?? this.keepScreenOn,
     volumeKeys: volumeKeys ?? this.volumeKeys,
-    lockScreen: lockScreen ?? this.lockScreen,
     dhikr: dhikr ?? this.dhikr,
     target: target != null ? target() : this.target,
   );
@@ -125,7 +118,6 @@ class TasbihSettingsController extends Notifier<TasbihSettings> {
       sound: p.getBool('${_p}sound') ?? d.sound,
       keepScreenOn: p.getBool('${_p}keepScreenOn') ?? d.keepScreenOn,
       volumeKeys: p.getBool('${_p}volumeKeys') ?? d.volumeKeys,
-      lockScreen: p.getBool('${_p}lockScreen') ?? d.lockScreen,
       dhikr: p.getString('${_p}dhikr'),
       // 0 is kept for «no target».
       target: target == null ? d.target : (target <= 0 ? null : target),
@@ -165,11 +157,6 @@ class TasbihSettingsController extends Notifier<TasbihSettings> {
   Future<void> setVolumeKeys(bool v) async {
     state = state.copyWith(volumeKeys: v);
     await _prefs.setBool('${_p}volumeKeys', v);
-  }
-
-  Future<void> setLockScreen(bool v) async {
-    state = state.copyWith(lockScreen: v);
-    await _prefs.setBool('${_p}lockScreen', v);
   }
 
   Future<void> setDhikr(String key) async {

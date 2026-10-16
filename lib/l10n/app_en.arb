@@ -1670,8 +1670,6 @@
   "tasbihKeepScreenOn": "Keep the screen on in the misbaha",
   "tasbihVolumeKeys": "Count with the volume buttons",
   "tasbihVolumeKeysHint": "While the misbaha is open, each press counts and the volume stays",
-  "tasbihLockScreen": "Count with the screen locked",
-  "tasbihLockScreenHint": "Android only. While the misbaha is open, a visible notification keeps the volume buttons counting with the screen locked. Uses a little battery; off by default.",
   "tasbihSourcesTitle": "Misbaha adhkar source",
   "tasbihOpen": "Open the misbaha",
   "tasbihClickNote": "The bead click is synthesized within the project and released under CC0."

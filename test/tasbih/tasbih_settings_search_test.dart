@@ -20,7 +20,6 @@ void main() {
         'tasbihSound',
         'tasbihKeepScreenOn',
         'tasbihVolumeKeys',
-        'tasbihLockScreen',
       ]),
     );
   });
@@ -32,6 +31,5 @@ void main() {
     expect(ids('volume'), contains('tasbihVolumeKeys'));
     expect(ids('كهرمان'), contains('tasbihMaterial'));
     expect(ids('3d'), contains('tasbihRender'));
-    expect(ids('lock screen'), contains('tasbihLockScreen'));
   });
 }

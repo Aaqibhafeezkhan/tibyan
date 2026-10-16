@@ -68,7 +68,6 @@ class _TasbihScreenState extends ConsumerState<TasbihScreen>
     _closingTimer?.cancel();
     _focus.dispose();
     unawaited(_platform.setVolumeKeys(false));
-    unawaited(_platform.setLockScreen(false));
     unawaited(WakelockPlus.disable().catchError((_) {}));
     super.dispose();
   }
@@ -86,18 +85,6 @@ class _TasbihScreenState extends ConsumerState<TasbihScreen>
   void _applyPlatform(TasbihSettings s) {
     final platform = ref.read(tasbihPlatformProvider);
     unawaited(platform.setVolumeKeys(s.volumeKeys));
-    if (s.lockScreen) {
-      final l = AppLocalizations.of(context);
-      unawaited(
-        platform.setLockScreen(
-          true,
-          title: l.tasbihTitle,
-          text: ref.read(currentDhikrProvider)?.text ?? '',
-        ),
-      );
-    } else {
-      unawaited(platform.setLockScreen(false));
-    }
     unawaited(
       (s.keepScreenOn ? WakelockPlus.enable() : WakelockPlus.disable())
           .catchError((_) {}),
@@ -137,7 +124,6 @@ class _TasbihScreenState extends ConsumerState<TasbihScreen>
   Widget build(BuildContext context) {
     ref.listen(tasbihSettingsProvider, (prev, next) {
       if (prev?.volumeKeys != next.volumeKeys ||
-          prev?.lockScreen != next.lockScreen ||
           prev?.keepScreenOn != next.keepScreenOn) {
         _applyPlatform(next);
       }
