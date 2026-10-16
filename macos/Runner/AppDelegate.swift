@@ -21,6 +21,7 @@ class AppDelegate: FlutterAppDelegate {
   }
 
   override func applicationDidFinishLaunching(_ notification: Notification) {
+    BackupExclusion.apply()
     if let controller = NSApplication.shared.windows
       .compactMap({ $0.contentViewController as? FlutterViewController }).first
     {
@@ -174,5 +175,26 @@ enum PictureSaver {
         result(FlutterError(code: "save", message: error.localizedDescription, details: nil))
       }
     }
+  }
+}
+
+/// Keeps what the app can download or copy again out of the device's
+/// backups (iCloud / Finder on iOS, Time Machine on macOS): the content.db
+/// copy, the mushaf packs, the audio, the timing updates and the tasmee
+/// models all live under Application Support (path_provider's
+/// getApplicationSupportDirectory). Excluding the folder excludes all it
+/// will hold. The reader's own data stays backed up: user.sqlite is in
+/// Documents, the settings in UserDefaults.
+enum BackupExclusion {
+  static func apply() {
+    let fm = FileManager.default
+    guard var url = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+    else { return }
+    // path_provider adds the bundle id on macOS.
+    if let id = Bundle.main.bundleIdentifier { url.appendPathComponent(id) }
+    try? fm.createDirectory(at: url, withIntermediateDirectories: true)
+    var values = URLResourceValues()
+    values.isExcludedFromBackup = true
+    try? url.setResourceValues(values)
   }
 }

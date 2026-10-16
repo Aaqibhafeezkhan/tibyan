@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Auto Backup up to Android 11 (API 30). Only the reader's own data is
+     backed up: the user database (drift, in app_flutter/) and the settings
+     (shared_prefs). Everything under files/ (content.db copy, mushaf packs,
+     audio, timing updates, tasmee models) is re-created or downloaded again,
+     and caches are never backed up. With <include> present, nothing else is
+     kept. Keep in step with data_extraction_rules.xml. -->
+<full-backup-content>
+    <include domain="sharedpref" path="." />
+    <include domain="root" path="app_flutter/user.sqlite" />
+    <include domain="root" path="app_flutter/user.sqlite-journal" />
+    <include domain="root" path="app_flutter/user.sqlite-wal" />
+</full-backup-content>

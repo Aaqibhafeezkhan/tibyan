@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Backup and device transfer from Android 12 (API 31). The same rules as
+     backup_rules.xml: the user database and the settings only. -->
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="sharedpref" path="." />
+        <include domain="root" path="app_flutter/user.sqlite" />
+        <include domain="root" path="app_flutter/user.sqlite-journal" />
+        <include domain="root" path="app_flutter/user.sqlite-wal" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="sharedpref" path="." />
+        <include domain="root" path="app_flutter/user.sqlite" />
+        <include domain="root" path="app_flutter/user.sqlite-journal" />
+        <include domain="root" path="app_flutter/user.sqlite-wal" />
+    </device-transfer>
+</data-extraction-rules>

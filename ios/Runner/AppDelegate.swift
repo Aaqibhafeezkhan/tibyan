@@ -11,6 +11,7 @@ import UserNotifications
   ) -> Bool {
     // Pack-download notifications (background_downloader).
     UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
+    BackupExclusion.apply()
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
@@ -115,5 +116,24 @@ enum PhotoSaverChannel {
     }) { ok, _ in
       DispatchQueue.main.async { result(ok) }
     }
+  }
+}
+
+/// Keeps what the app can download or copy again out of the device's
+/// backups (iCloud / Finder on iOS, Time Machine on macOS): the content.db
+/// copy, the mushaf packs, the audio, the timing updates and the tasmee
+/// models all live under Application Support (path_provider's
+/// getApplicationSupportDirectory). Excluding the folder excludes all it
+/// will hold. The reader's own data stays backed up: user.sqlite is in
+/// Documents, the settings in UserDefaults.
+enum BackupExclusion {
+  static func apply() {
+    let fm = FileManager.default
+    guard var url = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+    else { return }
+    try? fm.createDirectory(at: url, withIntermediateDirectories: true)
+    var values = URLResourceValues()
+    values.isExcludedFromBackup = true
+    try? url.setResourceValues(values)
   }
 }
