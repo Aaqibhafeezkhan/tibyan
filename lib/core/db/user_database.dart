@@ -3,9 +3,11 @@ import 'package:drift_flutter/drift_flutter.dart';
 
 import 'habit_tables.dart';
 import 'hifz_tables.dart';
+import 'tasbih_tables.dart';
 
 export 'habit_tables.dart';
 export 'hifz_tables.dart';
+export 'tasbih_tables.dart';
 
 part 'user_database.g.dart';
 
@@ -77,6 +79,8 @@ class ReadingPositions extends Table {
     RecitationVerses,
     RecitationWords,
     HifzGoals,
+    TasbihDhikrs,
+    TasbihDays,
   ],
 )
 class UserDatabase extends _$UserDatabase {
@@ -85,7 +89,7 @@ class UserDatabase extends _$UserDatabase {
   UserDatabase.open() : super(driftDatabase(name: 'user'));
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -113,6 +117,12 @@ class UserDatabase extends _$UserDatabase {
         await m.createTable(recitationVerses);
         await m.createTable(recitationWords);
         await m.createTable(hifzGoals);
+      }
+      if (from < 7) {
+        // «المسبحة»: the reader's own adhkar and the daily log. New
+        // tables only.
+        await m.createTable(tasbihDhikrs);
+        await m.createTable(tasbihDays);
       }
     },
   );

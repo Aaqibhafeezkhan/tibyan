@@ -9,7 +9,8 @@ import '../sync/outbox_writer.dart';
 /// A backup of what the reader made in the app, as one JSON file they keep:
 /// fawasil and marks, the reading position, khatmas and their logs, reading
 /// and listening reports, tadabbur notes, hifz progress, the recitation
-/// record (results only) and hifz goals. It needs no
+/// record (results only), hifz goals, and the misbaha's own adhkar and
+/// daily log. It needs no
 /// account and goes through the system's share sheet; restoring it merges.
 ///
 /// Rows are copied by SQL column name, so the file does not depend on the
@@ -50,6 +51,8 @@ class Backup {
     'recitation_verse',
     'recitation_word',
     'hifz_goal',
+    'tasbih_dhikr',
+    'tasbih_day',
   ];
 
   /// The backup as JSON text.
@@ -249,6 +252,13 @@ class Backup {
           Variable.withString(v['session']! as String),
           Variable.withInt((v['verse']! as num).toInt()),
           Variable.withInt((v['word']! as num).toInt()),
+        ]);
+      // One row a dhikr a day.
+      case 'tasbih_day':
+        if (v['day'] is! String || v['dhikr'] is! String) return null;
+        return _Where('day = ? AND dhikr = ?', [
+          Variable.withString(v['day']! as String),
+          Variable.withString(v['dhikr']! as String),
         ]);
       default:
         final uuid = v['uuid'];

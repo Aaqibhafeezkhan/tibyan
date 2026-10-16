@@ -10894,6 +10894,895 @@ class HifzGoalsCompanion extends UpdateCompanion<HifzGoalRow> {
   }
 }
 
+class $TasbihDhikrsTable extends TasbihDhikrs
+    with TableInfo<$TasbihDhikrsTable, TasbihDhikrRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TasbihDhikrsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+    'uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+    clientDefault: newUuid,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _bodyMeta = const VerificationMeta('body');
+  @override
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
+    'body',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _referenceMeta = const VerificationMeta(
+    'reference',
+  );
+  @override
+  late final GeneratedColumn<String> reference = GeneratedColumn<String>(
+    'reference',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _targetMeta = const VerificationMeta('target');
+  @override
+  late final GeneratedColumn<int> target = GeneratedColumn<int>(
+    'target',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sortOrderMeta = const VerificationMeta(
+    'sortOrder',
+  );
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+    'sort_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    body,
+    reference,
+    target,
+    sortOrder,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'tasbih_dhikr';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<TasbihDhikrRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('uuid')) {
+      context.handle(
+        _uuidMeta,
+        uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('body')) {
+      context.handle(
+        _bodyMeta,
+        body.isAcceptableOrUnknown(data['body']!, _bodyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_bodyMeta);
+    }
+    if (data.containsKey('reference')) {
+      context.handle(
+        _referenceMeta,
+        reference.isAcceptableOrUnknown(data['reference']!, _referenceMeta),
+      );
+    }
+    if (data.containsKey('target')) {
+      context.handle(
+        _targetMeta,
+        target.isAcceptableOrUnknown(data['target']!, _targetMeta),
+      );
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(
+        _sortOrderMeta,
+        sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TasbihDhikrRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TasbihDhikrRow(
+      uuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}uuid'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      body: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}body'],
+      )!,
+      reference: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reference'],
+      ),
+      target: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}target'],
+      ),
+      sortOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sort_order'],
+      )!,
+    );
+  }
+
+  @override
+  $TasbihDhikrsTable createAlias(String alias) {
+    return $TasbihDhikrsTable(attachedDatabase, alias);
+  }
+}
+
+class TasbihDhikrRow extends DataClass implements Insertable<TasbihDhikrRow> {
+  final String uuid;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final int id;
+  final String body;
+
+  /// The reader's own note of where it is from; optional.
+  final String? reference;
+
+  /// The count to a round; null for none.
+  final int? target;
+  final int sortOrder;
+  const TasbihDhikrRow({
+    required this.uuid,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.id,
+    required this.body,
+    this.reference,
+    this.target,
+    required this.sortOrder,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['uuid'] = Variable<String>(uuid);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['id'] = Variable<int>(id);
+    map['body'] = Variable<String>(body);
+    if (!nullToAbsent || reference != null) {
+      map['reference'] = Variable<String>(reference);
+    }
+    if (!nullToAbsent || target != null) {
+      map['target'] = Variable<int>(target);
+    }
+    map['sort_order'] = Variable<int>(sortOrder);
+    return map;
+  }
+
+  TasbihDhikrsCompanion toCompanion(bool nullToAbsent) {
+    return TasbihDhikrsCompanion(
+      uuid: Value(uuid),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      id: Value(id),
+      body: Value(body),
+      reference: reference == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reference),
+      target: target == null && nullToAbsent
+          ? const Value.absent()
+          : Value(target),
+      sortOrder: Value(sortOrder),
+    );
+  }
+
+  factory TasbihDhikrRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TasbihDhikrRow(
+      uuid: serializer.fromJson<String>(json['uuid']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      id: serializer.fromJson<int>(json['id']),
+      body: serializer.fromJson<String>(json['body']),
+      reference: serializer.fromJson<String?>(json['reference']),
+      target: serializer.fromJson<int?>(json['target']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuid': serializer.toJson<String>(uuid),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'id': serializer.toJson<int>(id),
+      'body': serializer.toJson<String>(body),
+      'reference': serializer.toJson<String?>(reference),
+      'target': serializer.toJson<int?>(target),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+    };
+  }
+
+  TasbihDhikrRow copyWith({
+    String? uuid,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    int? id,
+    String? body,
+    Value<String?> reference = const Value.absent(),
+    Value<int?> target = const Value.absent(),
+    int? sortOrder,
+  }) => TasbihDhikrRow(
+    uuid: uuid ?? this.uuid,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    id: id ?? this.id,
+    body: body ?? this.body,
+    reference: reference.present ? reference.value : this.reference,
+    target: target.present ? target.value : this.target,
+    sortOrder: sortOrder ?? this.sortOrder,
+  );
+  TasbihDhikrRow copyWithCompanion(TasbihDhikrsCompanion data) {
+    return TasbihDhikrRow(
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      id: data.id.present ? data.id.value : this.id,
+      body: data.body.present ? data.body.value : this.body,
+      reference: data.reference.present ? data.reference.value : this.reference,
+      target: data.target.present ? data.target.value : this.target,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TasbihDhikrRow(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('body: $body, ')
+          ..write('reference: $reference, ')
+          ..write('target: $target, ')
+          ..write('sortOrder: $sortOrder')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    uuid,
+    updatedAt,
+    deletedAt,
+    id,
+    body,
+    reference,
+    target,
+    sortOrder,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TasbihDhikrRow &&
+          other.uuid == this.uuid &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.id == this.id &&
+          other.body == this.body &&
+          other.reference == this.reference &&
+          other.target == this.target &&
+          other.sortOrder == this.sortOrder);
+}
+
+class TasbihDhikrsCompanion extends UpdateCompanion<TasbihDhikrRow> {
+  final Value<String> uuid;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<int> id;
+  final Value<String> body;
+  final Value<String?> reference;
+  final Value<int?> target;
+  final Value<int> sortOrder;
+  const TasbihDhikrsCompanion({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    this.body = const Value.absent(),
+    this.reference = const Value.absent(),
+    this.target = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+  });
+  TasbihDhikrsCompanion.insert({
+    this.uuid = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    required String body,
+    this.reference = const Value.absent(),
+    this.target = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+  }) : body = Value(body);
+  static Insertable<TasbihDhikrRow> custom({
+    Expression<String>? uuid,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? id,
+    Expression<String>? body,
+    Expression<String>? reference,
+    Expression<int>? target,
+    Expression<int>? sortOrder,
+  }) {
+    return RawValuesInsertable({
+      if (uuid != null) 'uuid': uuid,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (id != null) 'id': id,
+      if (body != null) 'body': body,
+      if (reference != null) 'reference': reference,
+      if (target != null) 'target': target,
+      if (sortOrder != null) 'sort_order': sortOrder,
+    });
+  }
+
+  TasbihDhikrsCompanion copyWith({
+    Value<String>? uuid,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<int>? id,
+    Value<String>? body,
+    Value<String?>? reference,
+    Value<int?>? target,
+    Value<int>? sortOrder,
+  }) {
+    return TasbihDhikrsCompanion(
+      uuid: uuid ?? this.uuid,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      id: id ?? this.id,
+      body: body ?? this.body,
+      reference: reference ?? this.reference,
+      target: target ?? this.target,
+      sortOrder: sortOrder ?? this.sortOrder,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (body.present) {
+      map['body'] = Variable<String>(body.value);
+    }
+    if (reference.present) {
+      map['reference'] = Variable<String>(reference.value);
+    }
+    if (target.present) {
+      map['target'] = Variable<int>(target.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TasbihDhikrsCompanion(')
+          ..write('uuid: $uuid, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('body: $body, ')
+          ..write('reference: $reference, ')
+          ..write('target: $target, ')
+          ..write('sortOrder: $sortOrder')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TasbihDaysTable extends TasbihDays
+    with TableInfo<$TasbihDaysTable, TasbihDayRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TasbihDaysTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _dayMeta = const VerificationMeta('day');
+  @override
+  late final GeneratedColumn<String> day = GeneratedColumn<String>(
+    'day',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _dhikrMeta = const VerificationMeta('dhikr');
+  @override
+  late final GeneratedColumn<String> dhikr = GeneratedColumn<String>(
+    'dhikr',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _countMeta = const VerificationMeta('count');
+  @override
+  late final GeneratedColumn<int> count = GeneratedColumn<int>(
+    'count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _roundsMeta = const VerificationMeta('rounds');
+  @override
+  late final GeneratedColumn<int> rounds = GeneratedColumn<int>(
+    'rounds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    day,
+    dhikr,
+    count,
+    rounds,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'tasbih_day';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<TasbihDayRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('day')) {
+      context.handle(
+        _dayMeta,
+        day.isAcceptableOrUnknown(data['day']!, _dayMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dayMeta);
+    }
+    if (data.containsKey('dhikr')) {
+      context.handle(
+        _dhikrMeta,
+        dhikr.isAcceptableOrUnknown(data['dhikr']!, _dhikrMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dhikrMeta);
+    }
+    if (data.containsKey('count')) {
+      context.handle(
+        _countMeta,
+        count.isAcceptableOrUnknown(data['count']!, _countMeta),
+      );
+    }
+    if (data.containsKey('rounds')) {
+      context.handle(
+        _roundsMeta,
+        rounds.isAcceptableOrUnknown(data['rounds']!, _roundsMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {day, dhikr},
+  ];
+  @override
+  TasbihDayRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TasbihDayRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      day: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}day'],
+      )!,
+      dhikr: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}dhikr'],
+      )!,
+      count: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}count'],
+      )!,
+      rounds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}rounds'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $TasbihDaysTable createAlias(String alias) {
+    return $TasbihDaysTable(attachedDatabase, alias);
+  }
+}
+
+class TasbihDayRow extends DataClass implements Insertable<TasbihDayRow> {
+  final int id;
+  final String day;
+
+  /// `app:<id>` for the app's adhkar, `user:<uuid>` for the reader's.
+  final String dhikr;
+  final int count;
+  final int rounds;
+  final DateTime updatedAt;
+  const TasbihDayRow({
+    required this.id,
+    required this.day,
+    required this.dhikr,
+    required this.count,
+    required this.rounds,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['day'] = Variable<String>(day);
+    map['dhikr'] = Variable<String>(dhikr);
+    map['count'] = Variable<int>(count);
+    map['rounds'] = Variable<int>(rounds);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  TasbihDaysCompanion toCompanion(bool nullToAbsent) {
+    return TasbihDaysCompanion(
+      id: Value(id),
+      day: Value(day),
+      dhikr: Value(dhikr),
+      count: Value(count),
+      rounds: Value(rounds),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory TasbihDayRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TasbihDayRow(
+      id: serializer.fromJson<int>(json['id']),
+      day: serializer.fromJson<String>(json['day']),
+      dhikr: serializer.fromJson<String>(json['dhikr']),
+      count: serializer.fromJson<int>(json['count']),
+      rounds: serializer.fromJson<int>(json['rounds']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'day': serializer.toJson<String>(day),
+      'dhikr': serializer.toJson<String>(dhikr),
+      'count': serializer.toJson<int>(count),
+      'rounds': serializer.toJson<int>(rounds),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  TasbihDayRow copyWith({
+    int? id,
+    String? day,
+    String? dhikr,
+    int? count,
+    int? rounds,
+    DateTime? updatedAt,
+  }) => TasbihDayRow(
+    id: id ?? this.id,
+    day: day ?? this.day,
+    dhikr: dhikr ?? this.dhikr,
+    count: count ?? this.count,
+    rounds: rounds ?? this.rounds,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  TasbihDayRow copyWithCompanion(TasbihDaysCompanion data) {
+    return TasbihDayRow(
+      id: data.id.present ? data.id.value : this.id,
+      day: data.day.present ? data.day.value : this.day,
+      dhikr: data.dhikr.present ? data.dhikr.value : this.dhikr,
+      count: data.count.present ? data.count.value : this.count,
+      rounds: data.rounds.present ? data.rounds.value : this.rounds,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TasbihDayRow(')
+          ..write('id: $id, ')
+          ..write('day: $day, ')
+          ..write('dhikr: $dhikr, ')
+          ..write('count: $count, ')
+          ..write('rounds: $rounds, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, day, dhikr, count, rounds, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TasbihDayRow &&
+          other.id == this.id &&
+          other.day == this.day &&
+          other.dhikr == this.dhikr &&
+          other.count == this.count &&
+          other.rounds == this.rounds &&
+          other.updatedAt == this.updatedAt);
+}
+
+class TasbihDaysCompanion extends UpdateCompanion<TasbihDayRow> {
+  final Value<int> id;
+  final Value<String> day;
+  final Value<String> dhikr;
+  final Value<int> count;
+  final Value<int> rounds;
+  final Value<DateTime> updatedAt;
+  const TasbihDaysCompanion({
+    this.id = const Value.absent(),
+    this.day = const Value.absent(),
+    this.dhikr = const Value.absent(),
+    this.count = const Value.absent(),
+    this.rounds = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  TasbihDaysCompanion.insert({
+    this.id = const Value.absent(),
+    required String day,
+    required String dhikr,
+    this.count = const Value.absent(),
+    this.rounds = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  }) : day = Value(day),
+       dhikr = Value(dhikr);
+  static Insertable<TasbihDayRow> custom({
+    Expression<int>? id,
+    Expression<String>? day,
+    Expression<String>? dhikr,
+    Expression<int>? count,
+    Expression<int>? rounds,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (day != null) 'day': day,
+      if (dhikr != null) 'dhikr': dhikr,
+      if (count != null) 'count': count,
+      if (rounds != null) 'rounds': rounds,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  TasbihDaysCompanion copyWith({
+    Value<int>? id,
+    Value<String>? day,
+    Value<String>? dhikr,
+    Value<int>? count,
+    Value<int>? rounds,
+    Value<DateTime>? updatedAt,
+  }) {
+    return TasbihDaysCompanion(
+      id: id ?? this.id,
+      day: day ?? this.day,
+      dhikr: dhikr ?? this.dhikr,
+      count: count ?? this.count,
+      rounds: rounds ?? this.rounds,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (day.present) {
+      map['day'] = Variable<String>(day.value);
+    }
+    if (dhikr.present) {
+      map['dhikr'] = Variable<String>(dhikr.value);
+    }
+    if (count.present) {
+      map['count'] = Variable<int>(count.value);
+    }
+    if (rounds.present) {
+      map['rounds'] = Variable<int>(rounds.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TasbihDaysCompanion(')
+          ..write('id: $id, ')
+          ..write('day: $day, ')
+          ..write('dhikr: $dhikr, ')
+          ..write('count: $count, ')
+          ..write('rounds: $rounds, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$UserDatabase extends GeneratedDatabase {
   _$UserDatabase(QueryExecutor e) : super(e);
   $UserDatabaseManager get managers => $UserDatabaseManager(this);
@@ -10928,6 +11817,8 @@ abstract class _$UserDatabase extends GeneratedDatabase {
     this,
   );
   late final $HifzGoalsTable hifzGoals = $HifzGoalsTable(this);
+  late final $TasbihDhikrsTable tasbihDhikrs = $TasbihDhikrsTable(this);
+  late final $TasbihDaysTable tasbihDays = $TasbihDaysTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -10951,6 +11842,8 @@ abstract class _$UserDatabase extends GeneratedDatabase {
     recitationVerses,
     recitationWords,
     hifzGoals,
+    tasbihDhikrs,
+    tasbihDays,
   ];
 }
 
@@ -16507,6 +17400,486 @@ typedef $$HifzGoalsTableProcessedTableManager =
       HifzGoalRow,
       PrefetchHooks Function()
     >;
+typedef $$TasbihDhikrsTableCreateCompanionBuilder =
+    TasbihDhikrsCompanion Function({
+      Value<String> uuid,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<int> id,
+      required String body,
+      Value<String?> reference,
+      Value<int?> target,
+      Value<int> sortOrder,
+    });
+typedef $$TasbihDhikrsTableUpdateCompanionBuilder =
+    TasbihDhikrsCompanion Function({
+      Value<String> uuid,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<int> id,
+      Value<String> body,
+      Value<String?> reference,
+      Value<int?> target,
+      Value<int> sortOrder,
+    });
+
+class $$TasbihDhikrsTableFilterComposer
+    extends Composer<_$UserDatabase, $TasbihDhikrsTable> {
+  $$TasbihDhikrsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get body => $composableBuilder(
+    column: $table.body,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reference => $composableBuilder(
+    column: $table.reference,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get target => $composableBuilder(
+    column: $table.target,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TasbihDhikrsTableOrderingComposer
+    extends Composer<_$UserDatabase, $TasbihDhikrsTable> {
+  $$TasbihDhikrsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get body => $composableBuilder(
+    column: $table.body,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reference => $composableBuilder(
+    column: $table.reference,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get target => $composableBuilder(
+    column: $table.target,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TasbihDhikrsTableAnnotationComposer
+    extends Composer<_$UserDatabase, $TasbihDhikrsTable> {
+  $$TasbihDhikrsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get uuid =>
+      $composableBuilder(column: $table.uuid, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get body =>
+      $composableBuilder(column: $table.body, builder: (column) => column);
+
+  GeneratedColumn<String> get reference =>
+      $composableBuilder(column: $table.reference, builder: (column) => column);
+
+  GeneratedColumn<int> get target =>
+      $composableBuilder(column: $table.target, builder: (column) => column);
+
+  GeneratedColumn<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+}
+
+class $$TasbihDhikrsTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $TasbihDhikrsTable,
+          TasbihDhikrRow,
+          $$TasbihDhikrsTableFilterComposer,
+          $$TasbihDhikrsTableOrderingComposer,
+          $$TasbihDhikrsTableAnnotationComposer,
+          $$TasbihDhikrsTableCreateCompanionBuilder,
+          $$TasbihDhikrsTableUpdateCompanionBuilder,
+          (
+            TasbihDhikrRow,
+            BaseReferences<_$UserDatabase, $TasbihDhikrsTable, TasbihDhikrRow>,
+          ),
+          TasbihDhikrRow,
+          PrefetchHooks Function()
+        > {
+  $$TasbihDhikrsTableTableManager(_$UserDatabase db, $TasbihDhikrsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TasbihDhikrsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TasbihDhikrsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TasbihDhikrsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                Value<String> body = const Value.absent(),
+                Value<String?> reference = const Value.absent(),
+                Value<int?> target = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+              }) => TasbihDhikrsCompanion(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                body: body,
+                reference: reference,
+                target: target,
+                sortOrder: sortOrder,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> uuid = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                required String body,
+                Value<String?> reference = const Value.absent(),
+                Value<int?> target = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+              }) => TasbihDhikrsCompanion.insert(
+                uuid: uuid,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                id: id,
+                body: body,
+                reference: reference,
+                target: target,
+                sortOrder: sortOrder,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TasbihDhikrsTable, TasbihDhikrRow>(table),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $TasbihDhikrsTable,
+                    TasbihDhikrRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TasbihDhikrsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $TasbihDhikrsTable,
+      TasbihDhikrRow,
+      $$TasbihDhikrsTableFilterComposer,
+      $$TasbihDhikrsTableOrderingComposer,
+      $$TasbihDhikrsTableAnnotationComposer,
+      $$TasbihDhikrsTableCreateCompanionBuilder,
+      $$TasbihDhikrsTableUpdateCompanionBuilder,
+      (
+        TasbihDhikrRow,
+        BaseReferences<_$UserDatabase, $TasbihDhikrsTable, TasbihDhikrRow>,
+      ),
+      TasbihDhikrRow,
+      PrefetchHooks Function()
+    >;
+typedef $$TasbihDaysTableCreateCompanionBuilder = TasbihDaysCompanion Function({
+  Value<int> id,
+  required String day,
+  required String dhikr,
+  Value<int> count,
+  Value<int> rounds,
+  Value<DateTime> updatedAt,
+});
+typedef $$TasbihDaysTableUpdateCompanionBuilder = TasbihDaysCompanion Function({
+  Value<int> id,
+  Value<String> day,
+  Value<String> dhikr,
+  Value<int> count,
+  Value<int> rounds,
+  Value<DateTime> updatedAt,
+});
+
+class $$TasbihDaysTableFilterComposer
+    extends Composer<_$UserDatabase, $TasbihDaysTable> {
+  $$TasbihDaysTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get day => $composableBuilder(
+    column: $table.day,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dhikr => $composableBuilder(
+    column: $table.dhikr,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get count => $composableBuilder(
+    column: $table.count,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get rounds => $composableBuilder(
+    column: $table.rounds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TasbihDaysTableOrderingComposer
+    extends Composer<_$UserDatabase, $TasbihDaysTable> {
+  $$TasbihDaysTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get day => $composableBuilder(
+    column: $table.day,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dhikr => $composableBuilder(
+    column: $table.dhikr,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get count => $composableBuilder(
+    column: $table.count,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get rounds => $composableBuilder(
+    column: $table.rounds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TasbihDaysTableAnnotationComposer
+    extends Composer<_$UserDatabase, $TasbihDaysTable> {
+  $$TasbihDaysTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get day =>
+      $composableBuilder(column: $table.day, builder: (column) => column);
+
+  GeneratedColumn<String> get dhikr =>
+      $composableBuilder(column: $table.dhikr, builder: (column) => column);
+
+  GeneratedColumn<int> get count =>
+      $composableBuilder(column: $table.count, builder: (column) => column);
+
+  GeneratedColumn<int> get rounds =>
+      $composableBuilder(column: $table.rounds, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$TasbihDaysTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $TasbihDaysTable,
+          TasbihDayRow,
+          $$TasbihDaysTableFilterComposer,
+          $$TasbihDaysTableOrderingComposer,
+          $$TasbihDaysTableAnnotationComposer,
+          $$TasbihDaysTableCreateCompanionBuilder,
+          $$TasbihDaysTableUpdateCompanionBuilder,
+          (
+            TasbihDayRow,
+            BaseReferences<_$UserDatabase, $TasbihDaysTable, TasbihDayRow>,
+          ),
+          TasbihDayRow,
+          PrefetchHooks Function()
+        > {
+  $$TasbihDaysTableTableManager(_$UserDatabase db, $TasbihDaysTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TasbihDaysTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TasbihDaysTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TasbihDaysTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> day = const Value.absent(),
+                Value<String> dhikr = const Value.absent(),
+                Value<int> count = const Value.absent(),
+                Value<int> rounds = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+              }) => TasbihDaysCompanion(
+                id: id,
+                day: day,
+                dhikr: dhikr,
+                count: count,
+                rounds: rounds,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String day,
+                required String dhikr,
+                Value<int> count = const Value.absent(),
+                Value<int> rounds = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+              }) => TasbihDaysCompanion.insert(
+                id: id,
+                day: day,
+                dhikr: dhikr,
+                count: count,
+                rounds: rounds,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TasbihDaysTable, TasbihDayRow>(table),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $TasbihDaysTable,
+                    TasbihDayRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TasbihDaysTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $TasbihDaysTable,
+      TasbihDayRow,
+      $$TasbihDaysTableFilterComposer,
+      $$TasbihDaysTableOrderingComposer,
+      $$TasbihDaysTableAnnotationComposer,
+      $$TasbihDaysTableCreateCompanionBuilder,
+      $$TasbihDaysTableUpdateCompanionBuilder,
+      (
+        TasbihDayRow,
+        BaseReferences<_$UserDatabase, $TasbihDaysTable, TasbihDayRow>,
+      ),
+      TasbihDayRow,
+      PrefetchHooks Function()
+    >;
 
 class $UserDatabaseManager {
   final _$UserDatabase _db;
@@ -16547,4 +17920,8 @@ class $UserDatabaseManager {
       $$RecitationWordsTableTableManager(_db, _db.recitationWords);
   $$HifzGoalsTableTableManager get hifzGoals =>
       $$HifzGoalsTableTableManager(_db, _db.hifzGoals);
+  $$TasbihDhikrsTableTableManager get tasbihDhikrs =>
+      $$TasbihDhikrsTableTableManager(_db, _db.tasbihDhikrs);
+  $$TasbihDaysTableTableManager get tasbihDays =>
+      $$TasbihDaysTableTableManager(_db, _db.tasbihDays);
 }
