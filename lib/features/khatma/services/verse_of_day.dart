@@ -86,3 +86,32 @@ Future<Map<String, String>> verseOfDayEntries({
   out['vod_days'] = keys.join(',');
   return out;
 }
+
+/// The preference that says which month of verses the widgets were last
+/// given: `<language>|<first day>`.
+const verseOfDayStampKey = 'widget.verseOfDay.written';
+
+/// The stamp for entries written in [lang] from [from].
+String verseOfDayStamp(String lang, Day from) => '$lang|${from.key}';
+
+/// Whether the widgets need the verses written again: never written, in
+/// another language, or fewer than [margin] days left ahead of [today]
+/// of the [days] written. Otherwise the ~30 lookups are skipped.
+bool verseOfDayStale(
+  String? stamp, {
+  required String lang,
+  required Day today,
+  int days = 30,
+  int margin = 7,
+}) {
+  final parts = stamp?.split('|');
+  if (parts == null || parts.length != 2 || parts[0] != lang) return true;
+  final Day from;
+  try {
+    from = Day.parse(parts[1]);
+  } catch (_) {
+    return true;
+  }
+  final into = today.difference(from);
+  return into < 0 || into > days - margin;
+}

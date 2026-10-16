@@ -599,6 +599,8 @@ void main() {
       final r = _Listening();
       await start(tester, recitation: r);
       await settle(tester, floating);
+      // The app-wide player bar steps aside on the mushaf a frame later.
+      await tester.pump();
       await tester.tap(button('إيقاف مؤقت'));
       await tester.pump();
       expect(r.toggles, 1);
@@ -622,6 +624,8 @@ void main() {
         prefs: {'settings.playerStyle': 'button'},
       );
       await settle(tester, floating);
+      // The app-wide player bar steps aside on the mushaf a frame later.
+      await tester.pump();
       await tester.tap(floating);
       await tester.pump();
       expect(r.toggles, 1);
@@ -650,6 +654,8 @@ void main() {
     ) async {
       final container = await start(tester, recitation: _Listening());
       await settle(tester, floating);
+      // The app-wide player bar steps aside on the mushaf a frame later.
+      await tester.pump();
       final before = tester.getCenter(floating);
       await tester.drag(floating, const Offset(-60, -300));
       await settle(tester);
@@ -686,6 +692,8 @@ void main() {
         },
       );
       await settle(tester, floating);
+      // The app-wide player bar steps aside on the mushaf a frame later.
+      await tester.pump();
       final r = tester.getRect(floating);
       expect(r.right, lessThanOrEqualTo(375));
       expect(r.bottom, lessThanOrEqualTo(667));

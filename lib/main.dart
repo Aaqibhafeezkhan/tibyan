@@ -191,16 +191,33 @@ void _startKhatma(ProviderContainer container) {
       }
       await service.refresh();
     } catch (_) {}
-    // «آية اليوم»: a month ahead, whether or not there is a khatma.
+    // «آية اليوم»: a month ahead, whether or not there is a khatma. After
+    // the first frame (it is ~30 lookups), and only when what the widgets
+    // hold runs short or is in another language.
     try {
+      await WidgetsBinding.instance.endOfFrame;
       final settings = container.read(settingsProvider);
+      final l = lookupAppLocalizations(settings.locale ?? const Locale('ar'));
+      final prefs = container.read(sharedPreferencesProvider);
+      final today = Day.today();
+      if (!verseOfDayStale(
+        prefs.getString(verseOfDayStampKey),
+        lang: l.localeName,
+        today: today,
+      )) {
+        return;
+      }
       await widget.writeVerses(
         await verseOfDayEntries(
           ayahById: container.read(mushafRepositoryProvider).ayahById,
           surahs: await container.read(surahsProvider.future),
-          l: lookupAppLocalizations(settings.locale ?? const Locale('ar')),
-          from: Day.today(),
+          l: l,
+          from: today,
         ),
+      );
+      await prefs.setString(
+        verseOfDayStampKey,
+        verseOfDayStamp(l.localeName, today),
       );
     } catch (_) {}
   }
@@ -223,13 +240,7 @@ void _startKhatma(ProviderContainer container) {
     final route =
         action?.route ??
         (verse != null
-            ? mushafLocation(
-                await container.read(
-                  versePageProvider((verse.surah, verse.ayah)).future,
-                ),
-                surah: verse.surah,
-                ayah: verse.ayah,
-              )
+            ? await verseLinkLocation(container, verse.surah, verse.ayah)
             : await service.routeFor(uri));
     // After the splash screen (or the first-run setup) has handed over,
     // so its own navigation does not replace the link's. A link of a

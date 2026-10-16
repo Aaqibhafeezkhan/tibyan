@@ -168,16 +168,27 @@ class _PageTurnEffectState extends State<PageTurnEffect> {
 
   int _prepared = 0;
 
+  /// Takes the snapshot after a frame with nothing animating. Frame driven,
+  /// not an idle-priority task: while an animation runs such a task is put
+  /// back on the event loop at once, again and again, which spins forever
+  /// under a test's fake clock. A post-frame callback asks for no frame, so
+  /// it waits for the next one the app draws anyway.
   void _prepare() {
     final ticket = ++_prepared;
-    SchedulerBinding.instance.scheduleTask(() {
+    void attempt(Duration _) {
       if (!mounted || ticket != _prepared || _snapshot != null) return;
       final c = widget.controller;
       if (c == null || !c.hasClients || c.position.isScrollingNotifier.value) {
         return;
       }
+      if (SchedulerBinding.instance.transientCallbackCount > 0) {
+        SchedulerBinding.instance.addPostFrameCallback(attempt);
+        return;
+      }
       _snap();
-    }, Priority.idle);
+    }
+
+    SchedulerBinding.instance.addPostFrameCallback(attempt);
   }
 
   /// The page as it was last painted, or null when it was not (off screen).

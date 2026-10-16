@@ -56,10 +56,13 @@ class _GlobalPlayerState extends ConsumerState<GlobalPlayer> {
   void _changed() {
     final path = _read();
     if (path == _path || !mounted) return;
-    // After this frame: never mark this widget dirty while one builds.
+    // After this frame: never mark this widget dirty while one builds. The
+    // latest location then (two navigations may come in one frame), and a
+    // frame asked for, since a post-frame callback does not ask for one.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) setState(() => _path = path);
+      if (mounted) setState(() => _path = _read());
     });
+    WidgetsBinding.instance.ensureVisualUpdate();
   }
 
   @override
