@@ -62,7 +62,7 @@ void main() {
       NativeDatabase(
         file,
         setup: (raw) {
-          if (raw.select('PRAGMA user_version').first.values.first == 6) {
+          if (raw.select('PRAGMA user_version').first.values.first == 7) {
             for (final t in [
               'recitation_session',
               'recitation_verse',
@@ -82,7 +82,7 @@ void main() {
     expect(await v5.watchRecitations().first, isEmpty);
     expect(await v5.watchHifzGoals().first, isEmpty);
     final v = await v5.customSelect('PRAGMA user_version').getSingle();
-    expect(v.data.values.single, 6);
+    expect(v.data.values.single, 7);
   });
 
   group('the record', () {
