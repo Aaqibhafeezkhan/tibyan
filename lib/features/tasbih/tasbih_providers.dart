@@ -52,13 +52,33 @@ final tasbihLogProvider = StreamProvider<Map<String, TasbihDayTotals>>(
   (ref) => ref.watch(tasbihRepositoryProvider).watchLog(),
 );
 
-/// Today's total of every dhikr (the home tile).
-final tasbihTodayProvider = Provider<int>((ref) {
-  final today = ref
-      .watch(tasbihLogProvider)
-      .value?[tasbihDayKey(DateTime.now())];
-  return today?.values.fold<int>(0, (a, e) => a + e.count) ?? 0;
-});
+/// Today's total of every dhikr (the home tile). Kept in the preferences
+/// beside the log, so the home screen reads no database stream for it; the
+/// misbaha sets it from the log whenever it opens.
+final tasbihTodayProvider = NotifierProvider<TasbihToday, int>(TasbihToday.new);
+
+class TasbihToday extends Notifier<int> {
+  static const _key = 'tasbih.today';
+
+  @override
+  int build() {
+    final saved = ref.read(sharedPreferencesProvider).getString(_key);
+    final today = tasbihDayKey(DateTime.now());
+    if (saved == null || !saved.startsWith('$today:')) return 0;
+    return int.tryParse(saved.substring(today.length + 1)) ?? 0;
+  }
+
+  void set(int total) {
+    state = total;
+    unawaited(
+      ref
+          .read(sharedPreferencesProvider)
+          .setString(_key, '${tasbihDayKey(DateTime.now())}:$total'),
+    );
+  }
+
+  void add(int n) => set(build() + n);
+}
 
 final tasbihCounterProvider = NotifierProvider<TasbihController, TasbihCounter>(
   TasbihController.new,
@@ -134,6 +154,7 @@ class TasbihController extends Notifier<TasbihCounter> {
       await ref
           .read(tasbihRepositoryProvider)
           .record(dhikr.key, count: n, rounds: closed);
+      ref.read(tasbihTodayProvider.notifier).add(n);
     }
     return n;
   }
@@ -157,7 +178,9 @@ class TasbihController extends Notifier<TasbihCounter> {
   Future<void> syncWidget({String label = ''}) async {
     final dhikr = ref.read(currentDhikrProvider);
     if (dhikr == null) return;
-    final today = await ref.read(tasbihRepositoryProvider).dayCount(dhikr.key);
+    final repo = ref.read(tasbihRepositoryProvider);
+    final today = await repo.dayCount(dhikr.key);
+    ref.read(tasbihTodayProvider.notifier).set(await repo.dayTotal());
     await ref
         .read(tasbihPlatformProvider)
         .writeWidget(dhikr: dhikr.text, count: '$today', label: label);

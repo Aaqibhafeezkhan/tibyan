@@ -125,6 +125,15 @@ class TasbihRepository {
     return row?.count ?? 0;
   }
 
+  /// Every dhikr's count together on [at]'s day.
+  Future<int> dayTotal({DateTime? at}) async {
+    final day = tasbihDayKey(at ?? DateTime.now());
+    final rows = await (_db.select(
+      _db.tasbihDays,
+    )..where((t) => t.day.equals(day))).get();
+    return rows.fold<int>(0, (a, r) => a + r.count);
+  }
+
   /// Drops the days older than the log keeps.
   Future<int> prune({DateTime? now}) {
     final first = tasbihDayKey(
