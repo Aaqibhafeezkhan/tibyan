@@ -1544,7 +1544,7 @@
   "reportPhoneInvalid": "Invalid phone number",
   "reportEmail": "Email (optional)",
   "reportEmailInvalid": "Invalid email address",
-  "reportContactNote": "We use your phone and email only to reply to you, if you give them.",
+  "reportContactNote": "Phone and email are optional. We use them only to reply to you, and they are deleted from your device once the report is sent.",
   "reportDeviceTitle": "Attached to the report",
   "reportDeviceVersion": "App version: {version}",
   "reportDeviceSystem": "System: {platform} {os}",

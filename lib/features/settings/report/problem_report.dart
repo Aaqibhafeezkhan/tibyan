@@ -83,6 +83,11 @@ enum ReportOutcome { sent, queued, rateLimited, failed }
 /// queued on the device and sent later. A small limit on the device keeps
 /// a stuck button from flooding the server: at most [maxPerHour] reports
 /// an hour, and [minGap] between two.
+///
+/// The queue holds at most [maxQueued] reports, each for [queueTtl] at
+/// most: a report that could not go in that time is dropped, with the
+/// phone and email it carried. A report leaves the queue (and the device)
+/// as soon as it is sent.
 class ReportService {
   ReportService(
     this._prefs, {
@@ -90,6 +95,8 @@ class ReportService {
     DateTime Function()? now,
     this.maxPerHour = 5,
     this.minGap = const Duration(seconds: 30),
+    this.maxQueued = 10,
+    this.queueTtl = const Duration(days: 14),
   }) : _client = client ?? http.Client(),
        _now = now ?? DateTime.now;
 
@@ -98,11 +105,48 @@ class ReportService {
   final DateTime Function() _now;
   final int maxPerHour;
   final Duration minGap;
+  final int maxQueued;
+  final Duration queueTtl;
 
   static const queueKey = 'reports.queue';
   static const sentKey = 'reports.sentAt';
 
-  List<String> get queue => _prefs.getStringList(queueKey) ?? const [];
+  /// The queued reports' bodies, oldest first, the expired ones left out.
+  List<String> get queue => [for (final e in _entries()) e.body];
+
+  /// The queue as stored: each entry `{"at": queuedAt, "body": json}`
+  /// (when it was queued, and the report's JSON). An entry from before the dates were kept (the bare
+  /// body) counts as queued now.
+  List<({DateTime at, String body})> _entries() {
+    final cutoff = _now().subtract(queueTtl);
+    final out = <({DateTime at, String body})>[];
+    for (final raw in _prefs.getStringList(queueKey) ?? const <String>[]) {
+      DateTime at = _now();
+      var body = raw;
+      try {
+        final v = jsonDecode(raw);
+        if (v is Map && v['body'] is String && v['at'] is String) {
+          at = DateTime.tryParse(v['at'] as String) ?? at;
+          body = v['body'] as String;
+        }
+      } on FormatException {
+        continue;
+      }
+      if (at.isAfter(cutoff)) out.add((at: at, body: body));
+    }
+    return out;
+  }
+
+  Future<void> _store(List<({DateTime at, String body})> entries) {
+    final kept = entries.length > maxQueued
+        ? entries.sublist(entries.length - maxQueued)
+        : entries;
+    if (kept.isEmpty) return _prefs.remove(queueKey);
+    return _prefs.setStringList(queueKey, [
+      for (final e in kept)
+        jsonEncode({'at': e.at.toIso8601String(), 'body': e.body}),
+    ]);
+  }
 
   List<DateTime> _recent() {
     final cutoff = _now().subtract(const Duration(hours: 1));
@@ -132,7 +176,7 @@ class ReportService {
         unawaited(flush());
         return ReportOutcome.sent;
       case _Post.retry:
-        await _prefs.setStringList(queueKey, [...queue, body]);
+        await _store([..._entries(), (at: _now(), body: body)]);
         return ReportOutcome.queued;
       case _Post.rejected:
         return ReportOutcome.failed;
@@ -148,13 +192,17 @@ class ReportService {
     _flushing = true;
     var sent = 0;
     try {
-      while (queue.isNotEmpty) {
-        final body = queue.first;
-        final result = await _post(body);
+      // The expired ones go first, contact details and all.
+      await _store(_entries());
+      while (true) {
+        final entries = _entries();
+        if (entries.isEmpty) break;
+        final first = entries.first;
+        final result = await _post(first.body);
         if (result == _Post.retry) break;
         // Sent, or rejected for good (never retry a report the server
-        // refuses).
-        await _prefs.setStringList(queueKey, queue.skip(1).toList());
+        // refuses): either way it leaves the device.
+        await _store(_entries().where((e) => e != first).toList());
         if (result == _Post.ok) sent++;
       }
     } finally {

@@ -4003,7 +4003,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reportContactNote =>
-      'نستخدم الهاتف والبريد للرد عليك فقط إن كتبتهما.';
+      'الهاتف والبريد اختياريان، نستخدمهما للرد عليك فقط، ويُحذفان من جهازك بعد إرسال البلاغ.';
 
   @override
   String get reportDeviceTitle => 'يُرفق مع البلاغ';

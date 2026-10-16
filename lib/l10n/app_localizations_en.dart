@@ -3929,7 +3929,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportContactNote =>
-      'We use your phone and email only to reply to you, if you give them.';
+      'Phone and email are optional. We use them only to reply to you, and they are deleted from your device once the report is sent.';
 
   @override
   String get reportDeviceTitle => 'Attached to the report';

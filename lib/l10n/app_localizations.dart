@@ -6611,7 +6611,7 @@ abstract class AppLocalizations {
   /// No description provided for @reportContactNote.
   ///
   /// In ar, this message translates to:
-  /// **'نستخدم الهاتف والبريد للرد عليك فقط إن كتبتهما.'**
+  /// **'الهاتف والبريد اختياريان، نستخدمهما للرد عليك فقط، ويُحذفان من جهازك بعد إرسال البلاغ.'**
   String get reportContactNote;
 
   /// No description provided for @reportDeviceTitle.

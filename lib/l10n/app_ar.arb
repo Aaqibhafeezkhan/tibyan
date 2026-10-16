@@ -2676,7 +2676,7 @@
   "reportPhoneInvalid": "رقم الهاتف غير صحيح",
   "reportEmail": "البريد الإلكتروني (اختياري)",
   "reportEmailInvalid": "البريد الإلكتروني غير صحيح",
-  "reportContactNote": "نستخدم الهاتف والبريد للرد عليك فقط إن كتبتهما.",
+  "reportContactNote": "الهاتف والبريد اختياريان، نستخدمهما للرد عليك فقط، ويُحذفان من جهازك بعد إرسال البلاغ.",
   "reportDeviceTitle": "يُرفق مع البلاغ",
   "reportDeviceVersion": "إصدار التطبيق: {version}",
   "@reportDeviceVersion": {"placeholders": {"version": {"type": "String"}}},
