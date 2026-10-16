@@ -13,4 +13,8 @@
     <string name="tile_listen_label">Listen</string>
     <string name="verse_widget_label">Verse of the Day</string>
     <string name="verse_widget_description">A verse of the Quran every day</string>
+    <string name="tasbih_widget_label">Tasbih</string>
+    <string name="tasbih_widget_description">The dhikr being counted, with a button that counts</string>
+    <string name="tasbih_count">Count</string>
+    <string name="tasbih_channel">Tasbih</string>
 </resources>

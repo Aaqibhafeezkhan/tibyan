@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
+import android.view.KeyEvent
 import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -19,9 +20,11 @@ import java.io.File
 // background recitation service.
 class MainActivity : AudioServiceActivity() {
     private var pendingSave: Pair<List<String>, MethodChannel.Result>? = null
+    private var tasbih: TasbihNative? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        tasbih = TasbihNative(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
         // «Save to Photos» for shared verse pictures: Pictures/Tibyan,
         // through MediaStore (no permission from Android 10 on).
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "app.tibyan/photos")
@@ -63,6 +66,26 @@ class MainActivity : AudioServiceActivity() {
                     result.success(false)
                 }
             }
+    }
+
+    // «المسبحة»: while it asks, the volume buttons count and the volume
+    // stays as it is.
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        val t = tasbih
+        if (t != null && t.volumeKeys &&
+            (event.keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
+                event.keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
+        ) {
+            if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) t.volumeKey()
+            return true
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
+    override fun onDestroy() {
+        tasbih?.dispose()
+        tasbih = null
+        super.onDestroy()
     }
 
     override fun onRequestPermissionsResult(

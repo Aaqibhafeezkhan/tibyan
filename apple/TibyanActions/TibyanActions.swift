@@ -161,7 +161,6 @@ private let families: [WidgetFamily] = [.systemSmall, .systemMedium, .accessoryC
 private let families: [WidgetFamily] = [.systemSmall, .systemMedium]
 #endif
 
-@main
 struct TibyanActionsWidget: Widget {
   // Must match PluginHomeWidgetSync.iosActionsKind.
   let kind = "TibyanActionsWidget"
@@ -174,5 +173,123 @@ struct TibyanActionsWidget: Widget {
     .configurationDisplayName("تبيان: اختصارات")
     .description("متابعة القراءة، الاستماع، البحث، وتسجيل ورد اليوم")
     .supportedFamilies(families)
+  }
+}
+
+// «المسبحة» (iOS 17+): the dhikr being counted, today's count of it, and a
+// button whose intent counts without opening the app. The count waits in
+// `tasbih_pending` in the App Group until the app adds it to its log
+// (tasbih_platform.dart, `takePending`); the dhikr opens the misbaha.
+#if os(iOS)
+struct CountTasbihIntent: AppIntent {
+  static var title: LocalizedStringResource = "Count"
+
+  func perform() async throws -> some IntentResult {
+    let d = WidgetStore.defaults
+    d?.set((d?.integer(forKey: "tasbih_pending") ?? 0) + 1, forKey: "tasbih_pending")
+    WidgetCenter.shared.reloadTimelines(ofKind: "TibyanTasbihWidget")
+    return .result()
+  }
+}
+
+struct TasbihEntry: TimelineEntry {
+  let date: Date
+  let dhikr: String
+  let count: Int
+}
+
+private func tasbihEntry() -> TasbihEntry {
+  let d = WidgetStore.defaults
+  let shown = Int(d?.string(forKey: "tasbih_count") ?? "") ?? 0
+  return TasbihEntry(
+    date: Date(),
+    dhikr: d?.string(forKey: "tasbih_dhikr") ?? WidgetStore.text("المسبحة", "Tasbih"),
+    count: shown + (d?.integer(forKey: "tasbih_pending") ?? 0))
+}
+
+struct TasbihProvider: TimelineProvider {
+  func placeholder(in context: Context) -> TasbihEntry {
+    TasbihEntry(date: Date(), dhikr: "", count: 0)
+  }
+
+  func getSnapshot(in context: Context, completion: @escaping (TasbihEntry) -> Void) {
+    completion(tasbihEntry())
+  }
+
+  func getTimeline(in context: Context, completion: @escaping (Timeline<TasbihEntry>) -> Void) {
+    completion(Timeline(entries: [tasbihEntry()], policy: .never))
+  }
+}
+
+private func digits(_ n: Int) -> String {
+  let f = NumberFormatter()
+  f.locale = Locale(identifier: WidgetStore.isArabic ? "ar" : "en")
+  return f.string(from: NSNumber(value: n)) ?? "\(n)"
+}
+
+struct TasbihView: View {
+  var entry: TasbihEntry
+  @Environment(\.widgetFamily) private var family
+
+  private var button: some View {
+    Button(intent: CountTasbihIntent()) {
+      Text(WidgetStore.text("عُدّ", "Count"))
+        .font(.headline)
+        .foregroundColor(Color(red: 0.11, green: 0.16, blue: 0.16))
+        .frame(width: 64, height: 64)
+        .background(gold)
+        .clipShape(Circle())
+    }
+    .buttonStyle(.plain)
+  }
+
+  var body: some View {
+    if family == .accessoryCircular {
+      // Lock screen: the count only.
+      ZStack {
+        AccessoryWidgetBackground()
+        Text(digits(entry.count)).font(.title3.bold()).minimumScaleFactor(0.5)
+      }
+      .containerBackground(.clear, for: .widget)
+    } else {
+      HStack(spacing: 10) {
+        Link(destination: URL(string: "tibyan://action/tasbih?homeWidget")!) {
+          VStack(alignment: .leading, spacing: 4) {
+            Text(entry.dhikr).font(.footnote.bold()).foregroundColor(gold).lineLimit(2)
+            Text(digits(entry.count)).font(.title.weight(.semibold)).foregroundColor(paper)
+          }
+          .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        button
+      }
+      .containerBackground(Color(red: 0.07, green: 0.25, blue: 0.19), for: .widget)
+    }
+  }
+}
+
+struct TibyanTasbihWidget: Widget {
+  // Must match ChannelTasbihPlatform.iosKind.
+  let kind = "TibyanTasbihWidget"
+
+  var body: some WidgetConfiguration {
+    StaticConfiguration(kind: kind, provider: TasbihProvider()) { entry in
+      TasbihView(entry: entry)
+        .environment(\.layoutDirection, WidgetStore.direction)
+    }
+    .configurationDisplayName("تبيان: المسبحة")
+    .description("الذكر الذي تعدّه، وزر يعدّ دون فتح التطبيق")
+    .supportedFamilies([.systemSmall, .systemMedium, .accessoryCircular])
+  }
+}
+#endif
+
+/// The extension's widgets: the actions, and on iOS the misbaha.
+@main
+struct TibyanActionsBundle: WidgetBundle {
+  var body: some Widget {
+    TibyanActionsWidget()
+    #if os(iOS)
+    TibyanTasbihWidget()
+    #endif
   }
 }

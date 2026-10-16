@@ -13,4 +13,8 @@
     <string name="tile_listen_label">استماع</string>
     <string name="verse_widget_label">آية اليوم</string>
     <string name="verse_widget_description">آية من القرآن كل يوم</string>
+    <string name="tasbih_widget_label">المسبحة</string>
+    <string name="tasbih_widget_description">الذكر الذي تعدّه، وزر يعدّ دون فتح التطبيق</string>
+    <string name="tasbih_count">عُدّ</string>
+    <string name="tasbih_channel">المسبحة</string>
 </resources>

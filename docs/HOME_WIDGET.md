@@ -58,3 +58,26 @@ ruby tools/apple/add_widget_targets.rb macos
 2. Bundle IDs: `app.tibyan.tibyan.TibyanWidget` و`app.tibyan.tibyan.TibyanActions` لكل منصة.
 3. الأدوات المكتبية على macOS تُضاف من «تحرير الأدوات» في مركز الإشعارات.
 4. قناة macOS (`app.tibyan/widget` في `macos/Runner/AppDelegate.swift`) تكتب مفاتيح الأداة وتستقبل روابط `tibyan://`، لأن `home_widget` لا يدعم macOS.
+
+## أداة المسبحة
+
+تعرض الذكر الذي يعدّه القارئ وعدد اليوم منه، وزرًا «عُدّ» يعدّ **دون فتح التطبيق**. الضغط على نص الذكر يفتح المسبحة (`tibyan://action/tasbih?homeWidget`).
+
+| المفتاح | المحتوى |
+|---|---|
+| `tasbih_dhikr` | نص الذكر الحالي |
+| `tasbih_count` | عدد اليوم منه، يكتبه التطبيق بعد كل عدّة وعند فتح المسبحة |
+| `tasbih_pending` | عدّات الأداة التي لم يأخذها التطبيق بعد (عدد صحيح) |
+
+- أندرويد: `TasbihWidgetProvider.kt` و`res/layout/tasbih_widget.xml`. الزر بث (`broadcast`) إلى المزود نفسه يزيد `tasbih_pending` ويهتز اهتزازة خفيفة ويعيد رسم الأداة.
+- iOS 17+: `TibyanTasbihWidget` داخل امتداد `TibyanActions` (صار `WidgetBundle` فيه الأداتان، فلا هدف جديد في Xcode ولا Bundle ID جديد). الزر `CountTasbihIntent` يزيد `tasbih_pending` في App Group. وعلى شاشة القفل (`accessoryCircular`) العدد فقط. لا أداة مسبحة على macOS.
+- عند فتح المسبحة أو عودة التطبيق من الخلفية يأخذ `absorbPending` العدّات المعلقة ويضيفها للذكر الحالي كأنها ضغطات (تُغلق الدورات إن بلغت الهدف) وتدخل سجل اليوم.
+
+### العدّ والشاشة مقفلة (أندرويد فقط، مغلق افتراضيًا)
+
+`TasbihService.kt`: خدمة أمامية (`mediaPlayback`) بإشعار ظاهر، تعمل ما دامت المسبحة مفتوحة فقط. تمسك `MediaSession` صوتها «بعيد» (`setPlaybackToRemote`) فتصلها أزرار الصوت والشاشة مقفلة، وكل ضغطة تعدّ بدل تغيير الصوت. في الإشعار زر «عُدّ» والعدد. العدّات تنتظر في `tasbih_service` حتى يأخذها التطبيق. لا يوجد ما يقابلها في iOS (لا يسمح النظام بقراءة أزرار الصوت والشاشة مقفلة).
+
+### أزرار الصوت والتطبيق مفتوح
+
+- أندرويد: `MainActivity.dispatchKeyEvent` يبتلع زري الصوت ما دام الإعداد مفعّلا والمسبحة مفتوحة.
+- iOS: `TasbihChannel` في `AppDelegate.swift` يراقب `outputVolume` ويعيد الصوت لمستواه عبر `MPVolumeView` مخفي، ويبقيه بين ١٠٪ و٩٠٪ حتى تحرّكه كل ضغطة.
