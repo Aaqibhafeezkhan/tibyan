@@ -56,12 +56,14 @@ class BackgroundModelDownload implements DownloadHandler {
   String get group => kGroup;
 
   @override
+  // A model is several files: one notification for all of them, not one
+  // per file with the same title.
   get notifications => (
-    running: TaskNotification('{displayName}', '{progress}'),
-    complete: TaskNotification('{displayName}', ''),
-    error: TaskNotification('{displayName}', ''),
-    paused: TaskNotification('{displayName}', ''),
-    groupNotificationId: '',
+    running: TaskNotification(displayName, '{numFinished}/{numTotal}'),
+    complete: TaskNotification(displayName, ''),
+    error: TaskNotification(displayName, ''),
+    paused: TaskNotification(displayName, '{numFinished}/{numTotal}'),
+    groupNotificationId: kGroup,
   );
 
   static String _key(ModelManifest m) => '${m.id}@${m.version}';

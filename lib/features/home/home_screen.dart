@@ -11,7 +11,6 @@ import '../../core/theme/ornaments.dart';
 import '../../core/ui/look_kit.dart';
 import '../../core/ui/surah_name.dart';
 import '../../l10n/app_localizations.dart';
-import '../assistant/assistant_screen.dart';
 import '../hifz/hifz_providers.dart';
 import '../khatma/domain/khatmah.dart' show EntryPoint;
 import '../khatma/khatma_providers.dart';
@@ -112,12 +111,6 @@ class HomeScreen extends ConsumerWidget {
         label: l.tasmeeTitle,
         note: l.tasmeeSelectRange,
         onTap: () => showTasmeeSetup(context),
-      ),
-      (
-        icon: assistantIcon,
-        label: l.assistantTitle,
-        note: l.assistantTileNote,
-        onTap: () => context.push(assistantLocation),
       ),
     ];
 
@@ -685,18 +678,37 @@ class _SectionsGrid extends StatelessWidget {
             ),
           ),
         ),
-        GridView.count(
-          crossAxisCount: columns,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: context.isExpanded ? 16 : 12,
-          crossAxisSpacing: context.isExpanded ? 16 : 10,
-          // Wide windows draw each section as a card that fills its cell.
-          childAspectRatio: context.isExpanded
-              ? (look.isLayli ? .82 : .9)
-              : (look.isLayli ? .66 : .74),
-          children: [for (final s in sections) _SectionTile(s)],
-        ),
+        if (context.isExpanded)
+          GridView.count(
+            crossAxisCount: columns,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
+            // Wide windows draw each section as a card that fills its cell.
+            childAspectRatio: look.isLayli ? .82 : .9,
+            children: [for (final s in sections) _SectionTile(s)],
+          )
+        else
+          // A phone: rows of equal-width tiles, each row as tall as its
+          // tallest tile, so the labels never overflow a fixed cell on a
+          // small screen or at a larger text size.
+          for (var i = 0; i < sections.length; i += columns) ...[
+            if (i > 0) const SizedBox(height: 12),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (var j = i; j < i + columns; j++) ...[
+                  if (j > i) const SizedBox(width: 10),
+                  Expanded(
+                    child: j < sections.length
+                        ? _SectionTile(sections[j])
+                        : const SizedBox.shrink(),
+                  ),
+                ],
+              ],
+            ),
+          ],
       ],
     );
   }
@@ -849,13 +861,18 @@ class _ElderlyHome extends ConsumerWidget {
             child: ListView(
               padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 20, 32),
               children: [
-                Row(
+                // Wraps the settings button under the wordmark when a small
+                // phone at a large text size has no room for both.
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 12,
+                  runSpacing: 8,
                   children: [
                     TibyanWordmark(
                       color: look.isLayli ? look.goldText : look.ink,
                       height: 52,
                     ),
-                    const Spacer(),
                     OutlinedButton.icon(
                       onPressed: () => context.go('/settings'),
                       icon: const Icon(Icons.tune),

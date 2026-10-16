@@ -360,7 +360,12 @@ class EditionDownload extends Notifier<PackProgress> {
   PackProgress build() {
     final packs = ref.read(backgroundPacksProvider);
     final sub = packs.progress.listen((e) {
-      if (e.$1 == _spec.id) state = e.$2;
+      if (e.$1 != _spec.id) return;
+      // What is on the device changed: choosing this edition reads it.
+      if (e.$2.phase == PackPhase.installed) {
+        ref.read(packInstallsProvider.notifier).changed();
+      }
+      state = e.$2;
     });
     ref.onDispose(sub.cancel);
     if (ref.watch(installedEditionsProvider).contains(edition)) {
