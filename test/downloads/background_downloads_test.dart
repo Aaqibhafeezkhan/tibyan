@@ -32,6 +32,7 @@ class FakeDownloader implements FileDownloader {
   final resumed = <String>[];
   final _updates = StreamController<TaskUpdate>();
   final db = FakeDatabase();
+  final groupNotificationIds = <String, String>{};
 
   void send(TaskUpdate u) => _updates.add(u);
 
@@ -109,7 +110,10 @@ class FakeDownloader implements FileDownloader {
     bool progressBar = false,
     bool tapOpensFile = false,
     String groupNotificationId = '',
-  }) => this;
+  }) {
+    groupNotificationIds[group] = groupNotificationId;
+    return this;
+  }
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -215,6 +219,19 @@ void main() {
       expect(model.installs.value, 1);
     },
   );
+
+  test('the model\'s files share one notification, as recitations do', () {
+    // A model is several files; one notification per file showed the same
+    // title twice in the shade.
+    expect(
+      fake.groupNotificationIds[BackgroundModelDownload.kGroup],
+      BackgroundModelDownload.kGroup,
+    );
+    expect(
+      fake.groupNotificationIds[BackgroundRecitations.kGroup],
+      BackgroundRecitations.kGroup,
+    );
+  });
 
   test('a model file that does not match its checksum is refused', () async {
     final m = _manifest('0' * 64);
