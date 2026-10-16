@@ -246,6 +246,27 @@ void main() {
     expect(c.read(recitationProvider).active, isFalse);
   });
 
+  testWidgets('another riwaya\'s recitation: a tap on the page is not a '
+      'jump, and the reader\'s own reciter is kept', (tester) async {
+    final (c, audio) = await recitation();
+    final ctrl = c.read(recitationProvider.notifier);
+    final warsh = (await FakeRepo().reciters()).firstWhere(
+      (r) => r.riwaya == 'warsh',
+    );
+    final before = c.read(settingsProvider).reciterId;
+    await ctrl.play(2, from: 1, reciter: warsh);
+    final s = c.read(recitationProvider);
+    expect(s.active, isTrue);
+    expect(s.foreign, isTrue);
+    expect(c.read(settingsProvider).reciterId, before);
+    final seeks = audio.seeks.length;
+    // Its verse numbers are the riwaya's, not this mushaf's.
+    expect(await ctrl.jumpTo(2, 3), VerseJump.ignored);
+    expect(await ctrl.jumpTo(4, 1), VerseJump.ignored);
+    expect(audio.seeks, hasLength(seeks));
+    expect(audio.loads, hasLength(1));
+  });
+
   test('where the tap starts is kept for the next time', () async {
     final (c, _) = await recitation();
     expect(c.read(settingsProvider).tapJumpFromWord, isFalse);

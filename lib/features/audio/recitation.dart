@@ -1468,7 +1468,9 @@ class RecitationController extends Notifier<RecitationState> {
   /// own ([VerseJump.ignored]).
   Future<VerseJump> jumpTo(int surah, int ayah, {int? word}) async {
     final s = state;
-    if (!s.active || (s.clip?.standalone ?? false)) return VerseJump.ignored;
+    if (!s.active || (s.clip?.standalone ?? false) || s.foreign) {
+      return VerseJump.ignored;
+    }
     final inRange =
         s.rangeTo != null &&
         s.surah == surah &&
