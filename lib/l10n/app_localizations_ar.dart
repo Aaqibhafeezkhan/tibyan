@@ -2153,8 +2153,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get unknownAuthor => 'مصوّر غير معروف';
 
   @override
-  String get reciterPhotoWithPermission =>
-      'استُخدمت بإذن حصل عليه مالك المشروع';
+  String get reciterPhotoWithPermission => 'صور بترخيص المشاع الإبداعي';
 
   @override
   String get otherRiwayaReciters => 'قرّاء الروايات الأخرى';

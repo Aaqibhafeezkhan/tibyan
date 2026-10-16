@@ -3586,7 +3586,7 @@ abstract class AppLocalizations {
   /// No description provided for @reciterPhotoWithPermission.
   ///
   /// In ar, this message translates to:
-  /// **'استُخدمت بإذن حصل عليه مالك المشروع'**
+  /// **'صور بترخيص المشاع الإبداعي'**
   String get reciterPhotoWithPermission;
 
   /// No description provided for @otherRiwayaReciters.
