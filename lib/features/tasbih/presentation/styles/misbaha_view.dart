@@ -165,28 +165,48 @@ class _MisbahaViewState extends State<MisbahaView>
     );
   }
 
+  /// This pull so far: how far the finger went, in beads, and what it
+  /// counted.
+  double _pulled = 0;
+  int _pullCounts = 0;
+
+  /// The finger's travel at which a pull counts its [n]th bead: one bead
+  /// for a pull to the counted side, and only a long, deliberate drag
+  /// counts more (each further bead once the finger is half a bead past
+  /// it), so one ordinary pull is one count.
+  static double pullThreshold(int n) => n <= 1 ? 1 : n + .5;
+
   void _dragStart() {
     _dragging = true;
+    _pulled = 0;
+    _pullCounts = 0;
     _phase.stop();
     _phase.value = _k.toDouble();
   }
 
   void _dragUpdate(double dy) {
     if (!_dragging) return;
-    _phase.value = (_phase.value + dy / _travel).clamp(_k.toDouble(), _k + 1.0);
-    // A pull all the way goes over without waiting for the release, and a
-    // new pull can start on the next bead.
-    if (_phase.value >= _k + 1) {
+    _pulled = math.max(0, _pulled + dy / _travel);
+    if (_pulled >= pullThreshold(_pullCounts + 1)) {
+      _pullCounts++;
       _advance();
+      return;
     }
+    // The bead follows the finger until it counts; after that the next
+    // bead moves only for a drag long enough to count it too.
+    final from = _pullCounts == 0 ? 0.0 : pullThreshold(_pullCounts + 1) - 1;
+    _phase.value = _k + (_pulled - from).clamp(0.0, 1.0);
   }
 
   void _dragEnd(double velocity) {
     if (!_dragging) return;
     _dragging = false;
     final share = _phase.value - _k;
-    if (share >= misbahaCommitShare || velocity / _travel > 3) {
+    if (_pullCounts == 0 &&
+        (share >= misbahaCommitShare || velocity / _travel > 3)) {
       _advance();
+    } else if (_phase.value == _k) {
+      // Already at rest (or on its way to the bead just counted).
     } else if (widget.animate) {
       unawaited(
         _phase.animateTo(

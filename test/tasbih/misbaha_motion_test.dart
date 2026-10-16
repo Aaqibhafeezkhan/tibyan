@@ -163,6 +163,31 @@ void main() {
         expect(_phase(tester), 1);
       });
 
+      for (final (beads, counts) in [(1.3, 1), (2.2, 1), (3.6, 3)]) {
+        testWidgets('one drag of $beads beads counts $counts', (tester) async {
+          final counted = ValueNotifier(0);
+          await tester.pumpWidget(
+            _Host(render: render, animate: true, counted: counted),
+          );
+          final g = await tester.startGesture(
+            tester.getCenter(find.byType(MisbahaView)) - const Offset(0, 250),
+          );
+          // Past the slop first, then the pull itself, steadily.
+          await g.moveBy(const Offset(0, 20));
+          await tester.pump(const Duration(milliseconds: 16));
+          final steps = (beads * 20).round();
+          for (var i = 0; i < steps; i++) {
+            await g.moveBy(Offset(0, travel() * beads / steps));
+            await tester.pump(const Duration(milliseconds: 16));
+          }
+          await tester.pump(const Duration(milliseconds: 300));
+          await g.up();
+          await _settle(tester);
+          expect(counted.value, counts);
+          expect(_phase(tester), counts);
+        });
+      }
+
       testWidgets('fast taps queue and none is lost', (tester) async {
         final counted = ValueNotifier(0);
         await tester.pumpWidget(
