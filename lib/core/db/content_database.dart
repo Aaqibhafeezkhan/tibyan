@@ -1,11 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:crypto/crypto.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter/services.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -628,37 +627,70 @@ class ContentDatabase extends _$ContentDatabase {
     onUpgrade: (m, from, to) async {},
   );
 
+  /// The bundled database's parts and their manifest
+  /// (tools/build_lean_content.py): the file ships cut in pieces so it can
+  /// be copied out without holding all of it in memory at once.
+  static const partsDir = 'assets/content_db/';
+
   /// Copies the bundled database to app storage when missing or when the
-  /// app changed, then opens it read-only in a background isolate.
+  /// app ships a different one, then opens it read-only in a background
+  /// isolate.
   ///
-  /// The copy is stamped with the app's build number, so a launch that
-  /// already holds this build's copy neither reads nor hashes the 31 MB
-  /// asset again: doing that on every launch cost the app a few hundred
-  /// milliseconds before the first frame, on a phone.
+  /// The copy is stamped with the SHA-256 the manifest gives for the whole
+  /// file, so a launch that already holds this database neither reads nor
+  /// hashes the asset again. A new copy is written part by part (a few MB
+  /// in memory at a time, never the whole file) to a temporary file that
+  /// takes the old one's place only once complete.
   static Future<ContentDatabase> openBundled(AssetBundle bundle) async {
     final dir = await getApplicationSupportDirectory();
     final file = File(p.join(dir.path, 'content.db'));
-    final stamp = File(p.join(dir.path, 'content.db.stamp'));
-    // Under a debug build the asset can change without the build number
-    // changing, so there the copy is checked by its checksum as before.
-    final build = kDebugMode
-        ? null
-        : (await PackageInfo.fromPlatform()).buildNumber;
-    final installed = file.existsSync() && stamp.existsSync();
-    if (installed && build != null && stamp.readAsStringSync() == 'b$build') {
-      return _open(file);
-    }
-    final data = await bundle.load('assets/db/content.db');
-    final bytes = data.buffer.asUint8List(
-      data.offsetInBytes,
-      data.lengthInBytes,
-    );
-    final mark = build == null ? 's${sha256.convert(bytes)}' : 'b$build';
-    if (!installed || stamp.readAsStringSync() != mark) {
-      await file.writeAsBytes(bytes, flush: true);
-      await stamp.writeAsString(mark);
-    }
+    await installBundled(bundle, file);
     return _open(file);
+  }
+
+  /// Puts the bundled database at [file] unless the copy there is this
+  /// build's. Returns whether it copied.
+  @visibleForTesting
+  static Future<bool> installBundled(AssetBundle bundle, File file) async {
+    final stamp = File('${file.path}.stamp');
+    final manifest = jsonDecode(
+      await bundle.loadString('${partsDir}manifest.json'),
+    ) as Map<String, dynamic>;
+    final mark = 's${manifest['sha256']}';
+    if (file.existsSync() &&
+        stamp.existsSync() &&
+        stamp.readAsStringSync() == mark) {
+      return false;
+    }
+    final tmp = File('${file.path}.tmp');
+    file.parent.createSync(recursive: true);
+    final out = await tmp.open(mode: FileMode.write);
+    try {
+      for (final part in manifest['parts'] as List) {
+        final data = await bundle.load('$partsDir$part');
+        await out.writeFrom(Uint8List.sublistView(data));
+      }
+      await out.flush();
+    } finally {
+      await out.close();
+    }
+    if (tmp.lengthSync() != manifest['bytes']) {
+      tmp.deleteSync();
+      throw const FormatException('content.db: incomplete copy');
+    }
+    // The old copy (and its journal) go first: a crash in between leaves
+    // no stamp, so the next launch copies again.
+    if (stamp.existsSync()) stamp.deleteSync();
+    for (final f in [
+      file,
+      File('${file.path}-wal'),
+      File('${file.path}-shm'),
+    ]) {
+      if (f.existsSync()) f.deleteSync();
+    }
+    tmp.renameSync(file.path);
+    stamp.writeAsStringSync(mark);
+    return true;
   }
 
   /// Opens [file] read-only, off the main isolate.
