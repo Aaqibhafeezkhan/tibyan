@@ -428,6 +428,23 @@ const reciterPhotoCredits = [
   ),
 ];
 
+/// Reciters whose photo is used with permission the project owner obtained
+/// (assets/reciters/README.md), not under a public licence.
+// TODO(owner): name who granted the permission, for each photo.
+const reciterPhotosWithPermission = [
+  16,
+  102,
+  103,
+  104,
+  105,
+  112,
+  113,
+  122,
+  123,
+  131,
+  132,
+];
+
 /// The interface text of a source, or null for one not listed here (it is
 /// then shown as stored).
 SourceText? sourceText(String key, String languageCode) =>

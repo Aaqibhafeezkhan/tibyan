@@ -180,6 +180,17 @@ class AboutMushafScreen extends ConsumerWidget {
                             style: TextStyle(color: t.accent),
                           ),
                         ],
+                        for (final id in reciterPhotosWithPermission) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            reciters[id] ?? '$id',
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            l.reciterPhotoWithPermission,
+                            style: TextStyle(color: t.muted),
+                          ),
+                        ],
                       ],
                     ),
                   ),

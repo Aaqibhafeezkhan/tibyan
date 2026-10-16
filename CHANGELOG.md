@@ -7,7 +7,7 @@ All notable changes to Tibyan are recorded here. The format follows
 ## [Unreleased]
 
 ### Added
-- Reciter: Ibrahim al-Akhdar (إبراهيم الأخضر, Hafs, murattal) from mp3quran, with his photo and verse highlighting from mp3quran's published timing; his surah files are on our mirror.
+- Reciter: Ibrahim al-Akhdar (إبراهيم الأخضر, Hafs, murattal) from mp3quran, with his photo and verse and word highlighting timed by Tibyan (forced alignment on his mp3quran surah files); his surah files are on our mirror.
 - The home screen draws its cards, sections and buttons larger on tablets and desktop windows, with each section as a full card.
 
 ### Added (closed testing only — remove before a public release)

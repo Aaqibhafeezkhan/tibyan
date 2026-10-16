@@ -602,7 +602,8 @@ def main():
     db.executemany('INSERT INTO word_timing VALUES (?,?,?,?,?,?)',
                    json.loads(qdc_word_path.read_text(encoding='utf-8')))
     add_qul_timing(db, today)
-    # al-Dosari, al-Sudais, al-Afasy, al-Ghamdi and al-Tablaway: timings
+    # al-Dosari, al-Sudais, al-Afasy, al-Ghamdi, al-Tablaway and al-Akhdar
+    # (16, whose mp3quran ayat_timing rows above are replaced): timings
     # measured by forced alignment on their files (build_aligned_timing.py),
     # in place of the published ones above wherever they were aligned.
     for reciter, (n_ayahs, n_words) in aligned_timing.add_all(db, today).items():

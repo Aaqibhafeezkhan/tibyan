@@ -27,16 +27,23 @@
 | 5 | مصطفى إسماعيل | [Commons](https://commons.wikimedia.org/wiki/File:Mustafa_Ismail_(1).jpg) — صورة الوش |
 | 14 | محمد محمود الطبلاوي | صورة اختارها مالك المشروع |
 | 15 | ماهر المعيقلي | [Commons](https://commons.wikimedia.org/wiki/File:Maher_Al_Mueaqly.png) — وليد أيوب، CC BY-SA 3.0 (`fetch_reciter_photos.py 15`) |
-| 16 | إبراهيم الأخضر | صورة اختارها مالك المشروع (2026-10-14)، مقصوصة على الوجه |
-| 102 | ياسين الجزائري (ورش) | صورة اختارها مالك المشروع (2026-10-14) |
-| 103 | العيون الكوشي (ورش) | صورة اختارها مالك المشروع (2026-10-14) |
-| 104 | عمر القزابري (ورش) | صورة اختارها مالك المشروع (2026-10-14) |
-| 105 | محمد سايد (ورش) | صورة اختارها مالك المشروع (2026-10-14) |
-| 112 | علي الحذيفي (قالون؛ وشعبة 131 بنفس الصورة) | صورة اختارها مالك المشروع (2026-10-14) |
-| 113 | الدوكالي محمد العالم (قالون) | صورة اختارها مالك المشروع (2026-10-14)، مقصوصة على الوجه |
-| 122 | نورين محمد صديق (الدوري) | صورة اختارها مالك المشروع (2026-10-14) |
-| 123 | الفاتح محمد الزبير (الدوري) | صورة اختارها مالك المشروع (2026-10-14)، مقصوصة على الوجه |
-| 132 | أحمد ديبان (شعبة) | صورة اختارها مالك المشروع (2026-10-14) |
+| 16 | إبراهيم الأخضر | استُخدمت بإذن حصل عليه مالك المشروع / used with permission obtained by the project owner — المانح: TODO، مقصوصة على الوجه |
+| 102 | ياسين الجزائري (ورش) | استُخدمت بإذن حصل عليه مالك المشروع / used with permission obtained by the project owner — المانح: TODO |
+| 103 | العيون الكوشي (ورش) | استُخدمت بإذن حصل عليه مالك المشروع / used with permission obtained by the project owner — المانح: TODO |
+| 104 | عمر القزابري (ورش) | استُخدمت بإذن حصل عليه مالك المشروع / used with permission obtained by the project owner — المانح: TODO |
+| 105 | محمد سايد (ورش) | استُخدمت بإذن حصل عليه مالك المشروع / used with permission obtained by the project owner — المانح: TODO |
+| 112 | علي الحذيفي (قالون؛ وشعبة 131 بنفس الصورة) | استُخدمت بإذن حصل عليه مالك المشروع / used with permission obtained by the project owner — المانح: TODO |
+| 113 | الدوكالي محمد العالم (قالون) | استُخدمت بإذن حصل عليه مالك المشروع / used with permission obtained by the project owner — المانح: TODO، مقصوصة على الوجه |
+| 122 | نورين محمد صديق (الدوري) | استُخدمت بإذن حصل عليه مالك المشروع / used with permission obtained by the project owner — المانح: TODO |
+| 123 | الفاتح محمد الزبير (الدوري) | استُخدمت بإذن حصل عليه مالك المشروع / used with permission obtained by the project owner — المانح: TODO، مقصوصة على الوجه |
+| 132 | أحمد ديبان (شعبة) | استُخدمت بإذن حصل عليه مالك المشروع / used with permission obtained by the project owner — المانح: TODO |
+
+**بإذن / With permission:** الصور العشر اللي مكتوب قدامها «بإذن» استُخدمت
+بإذن حصل عليه مالك المشروع (used with permission obtained by the project
+owner). TODO: اسم صاحب الإذن لكل صورة (grantor name). بتظهر كده في
+«عن المصحف» › «صور القرّاء» (`reciterPhotosWithPermission` في
+`source_names.dart`). الأصول الكاملة مش في المستودع: محفوظة محليًا في
+`tools/photos/originals/` (متجاهلة في git).
 
 **تبديل أو إضافة صورة:** حِطّ ملفك في `tools/photos/<رقم القارئ>.jpg`
 وشغّل `python3 tools/build_reciter_photos.py` — مفيش أي تعديل كود.
