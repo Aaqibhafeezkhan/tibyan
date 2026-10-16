@@ -4366,4 +4366,17 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get tasbihClickNote =>
       'صوت نقرة الحبة مُولَّد برمجيًا داخل المشروع، وهو برخصة CC0.';
+
+  @override
+  String tasbihStageLine(String stage, String stages, String count, String of) {
+    return '$stage/$stages · $count/$of';
+  }
+
+  @override
+  String tasbihStageAnnounce(String stage, String stages) {
+    return 'المرحلة $stage من $stages';
+  }
+
+  @override
+  String get tasbihStagesFixed => 'الهدف من مراحل الذكر';
 }

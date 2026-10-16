@@ -4293,4 +4293,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get tasbihClickNote =>
       'The bead click is synthesized within the project and released under CC0.';
+
+  @override
+  String tasbihStageLine(String stage, String stages, String count, String of) {
+    return '$stage/$stages · $count/$of';
+  }
+
+  @override
+  String tasbihStageAnnounce(String stage, String stages) {
+    return 'Stage $stage of $stages';
+  }
+
+  @override
+  String get tasbihStagesFixed => 'The target comes from the dhikr\'s stages';
 }

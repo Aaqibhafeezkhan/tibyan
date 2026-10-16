@@ -48,4 +48,20 @@ void main() {
     expect(stepTarget(1, up: false), 1);
     expect(stepTarget(9999, up: true), 9999);
   });
+
+  test('stages count in turn and the last closes the round', () {
+    var c = const TasbihCounter().withStages([33, 33, 33, 1]);
+    expect(c.target, 100);
+    expect(c.stage, (index: 0, count: 0, of: 33));
+    c = tapTimes(c, 32);
+    final (atStage, e) = c.tap();
+    expect(e, CountEvent.stageChanged);
+    expect(atStage.stage, (index: 1, count: 0, of: 33));
+    c = tapTimes(atStage, 66);
+    expect(c.stage, (index: 3, count: 0, of: 1));
+    final (closed, last) = c.tap();
+    expect(last, CountEvent.roundClosed);
+    expect(closed.rounds, 1);
+    expect(closed.stage, (index: 0, count: 0, of: 33));
+  });
 }

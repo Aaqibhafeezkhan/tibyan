@@ -15,6 +15,7 @@ import 'package:tibyan/core/theme/theme_tokens.dart';
 import 'package:tibyan/core/ui/look_kit.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 import 'package:tibyan/features/tasbih/domain/dhikr.dart';
+import 'package:tibyan/features/tasbih/domain/tasbih_counter.dart';
 import 'package:tibyan/features/tasbih/platform/tasbih_platform.dart';
 import 'package:tibyan/features/tasbih/presentation/styles/counter_styles.dart';
 import 'package:tibyan/features/tasbih/presentation/styles/misbaha_view.dart';
@@ -68,6 +69,8 @@ void main() {
     SharedPreferences.setMockInitialValues({
       'settings.tasbih.style': style.name,
       'settings.tasbih.target': 3,
+      // A dhikr said whole; the staged one has its own test.
+      'settings.tasbih.dhikr': 'app:seen34',
       ...prefs,
     });
     final shared = await SharedPreferences.getInstance();
@@ -239,5 +242,47 @@ void main() {
     expect(find.text('Today'), findsOneWidget);
     expect(find.text('12'), findsOneWidget);
     await done(tester, db);
+  });
+
+  testWidgets('a dhikr in stages: 33, 33, 33, then 1 closes the round', (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    final (c, platform, _) = await pump(
+      tester,
+      TasbihStyle.button,
+      prefs: {'settings.tasbih.dhikr': 'app:muslimdata69'},
+    );
+    final dhikr = c.read(currentDhikrProvider)!;
+    expect(dhikr.stages.map((s) => s.count), [33, 33, 33, 1]);
+    // Each stage is a span of the verbatim text.
+    for (final s in dhikr.stages) {
+      expect(dhikr.text.substring(s.start, s.end).trim(), isNotEmpty);
+    }
+    expect(c.read(tasbihCounterProvider).target, 100);
+    expect(find.text('1/4 · 0/33'), findsOneWidget);
+    final ctrl = c.read(tasbihCounterProvider.notifier);
+    final events = <CountEvent>[];
+    for (var i = 0; i < 33; i++) {
+      events.add((await tester.runAsync(ctrl.tap))!);
+    }
+    expect(events.last, CountEvent.stageChanged);
+    expect(events.where((e) => e == CountEvent.stageChanged), hasLength(1));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('2/4 · 0/33'), findsOneWidget);
+    expect(platform.widget?['stages'], '33,33,33,1');
+    expect(platform.widget?['round'], '33');
+    for (var i = 0; i < 66; i++) {
+      events.add((await tester.runAsync(ctrl.tap))!);
+    }
+    expect(c.read(tasbihCounterProvider).stage?.index, 3);
+    events.add((await tester.runAsync(ctrl.tap))!);
+    expect(events.last, CountEvent.roundClosed);
+    expect(events.where((e) => e == CountEvent.stageChanged), hasLength(3));
+    expect(c.read(tasbihCounterProvider).rounds, 1);
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('1/4 · 0/33'), findsOneWidget);
+    handle.dispose();
+    await done(tester, c.read(userDatabaseProvider));
   });
 }

@@ -226,6 +226,21 @@ void main() {
           log: true,
         );
       }
+      // The after-salam tasbih in its second stage.
+      for (final mode in ['light', 'night']) {
+        for (final style in ['misbaha', 'lcd']) {
+          await shot(
+            'staged_${style}_$mode',
+            '/tasbih',
+            prefs: {
+              'settings.mode': mode,
+              'settings.tasbih.style': style,
+              'settings.tasbih.dhikr': 'app:muslimdata69',
+            },
+            taps: 45,
+          );
+        }
+      }
       for (final look in ['makhtuta', 'layli']) {
         await shot(
           'misbaha_$look',

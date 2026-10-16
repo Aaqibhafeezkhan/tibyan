@@ -5,6 +5,9 @@ enum CountEvent {
   /// One more.
   counted,
 
+  /// A stage of a dhikr said in stages ended and the next began.
+  stageChanged,
+
   /// The target was reached: the round closed and a new one began.
   roundClosed,
 }
@@ -14,11 +17,34 @@ enum CountEvent {
 /// closes the round and starts the next at zero on its own.
 @immutable
 class TasbihCounter {
-  const TasbihCounter({this.count = 0, this.rounds = 0, this.target});
+  const TasbihCounter({
+    this.count = 0,
+    this.rounds = 0,
+    this.target,
+    this.stages,
+  });
 
   final int count;
   final int rounds;
   final int? target;
+
+  /// The counts of the stages of a dhikr said in stages (their sum is the
+  /// target); null otherwise.
+  final List<int>? stages;
+
+  /// The stage the count is in, from 0; and how far into it.
+  ({int index, int count, int of})? get stage {
+    final st = stages;
+    if (st == null || st.isEmpty) return null;
+    var before = 0;
+    for (var i = 0; i < st.length; i++) {
+      if (count < before + st[i]) {
+        return (index: i, count: count - before, of: st[i]);
+      }
+      before += st[i];
+    }
+    return (index: st.length - 1, count: st.last, of: st.last);
+  }
 
   /// Every count of this session: closed rounds and the current one.
   int get total => rounds * (target ?? 0) + count;
@@ -35,26 +61,51 @@ class TasbihCounter {
     final t = target;
     if (t != null && t > 0 && next >= t) {
       return (
-        TasbihCounter(count: 0, rounds: rounds + 1, target: t),
+        TasbihCounter(count: 0, rounds: rounds + 1, target: t, stages: stages),
         CountEvent.roundClosed,
       );
     }
+    final after = TasbihCounter(
+      count: next,
+      rounds: rounds,
+      target: t,
+      stages: stages,
+    );
     return (
-      TasbihCounter(count: next, rounds: rounds, target: t),
-      CountEvent.counted,
+      after,
+      after.stage != null && after.stage!.index != stage!.index
+          ? CountEvent.stageChanged
+          : CountEvent.counted,
     );
   }
 
   /// A new target starts the round again; the rounds closed stay.
-  TasbihCounter withTarget(int? t) =>
-      TasbihCounter(count: count, rounds: rounds, target: t)._fit();
+  TasbihCounter withTarget(int? t) => TasbihCounter(
+    count: count,
+    rounds: rounds,
+    target: t,
+    stages: stages,
+  )._fit();
 
-  TasbihCounter reset() => TasbihCounter(target: target);
+  /// Said in [counts] stages: the target is their sum.
+  TasbihCounter withStages(List<int>? counts) => TasbihCounter(
+    count: count,
+    rounds: rounds,
+    target: counts == null ? target : counts.fold<int>(0, (a, b) => a + b),
+    stages: counts,
+  )._fit();
+
+  TasbihCounter reset() => TasbihCounter(target: target, stages: stages);
 
   TasbihCounter _fit() {
     final t = target;
     if (t != null && t > 0 && count >= t) {
-      return TasbihCounter(count: 0, rounds: rounds + 1, target: t);
+      return TasbihCounter(
+        count: 0,
+        rounds: rounds + 1,
+        target: t,
+        stages: stages,
+      );
     }
     return this;
   }
@@ -64,10 +115,12 @@ class TasbihCounter {
       other is TasbihCounter &&
       other.count == count &&
       other.rounds == rounds &&
-      other.target == target;
+      other.target == target &&
+      listEquals(other.stages, stages);
 
   @override
-  int get hashCode => Object.hash(count, rounds, target);
+  int get hashCode =>
+      Object.hash(count, rounds, target, Object.hashAll(stages ?? const []));
 }
 
 /// Targets offered in one tap; any other is set with the ± buttons.

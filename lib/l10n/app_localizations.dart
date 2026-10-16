@@ -7237,6 +7237,24 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'صوت نقرة الحبة مُولَّد برمجيًا داخل المشروع، وهو برخصة CC0.'**
   String get tasbihClickNote;
+
+  /// No description provided for @tasbihStageLine.
+  ///
+  /// In ar, this message translates to:
+  /// **'{stage}/{stages} · {count}/{of}'**
+  String tasbihStageLine(String stage, String stages, String count, String of);
+
+  /// No description provided for @tasbihStageAnnounce.
+  ///
+  /// In ar, this message translates to:
+  /// **'المرحلة {stage} من {stages}'**
+  String tasbihStageAnnounce(String stage, String stages);
+
+  /// No description provided for @tasbihStagesFixed.
+  ///
+  /// In ar, this message translates to:
+  /// **'الهدف من مراحل الذكر'**
+  String get tasbihStagesFixed;
 }
 
 class _AppLocalizationsDelegate
