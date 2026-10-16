@@ -22,6 +22,8 @@ import 'package:tibyan/features/audio/recitation.dart';
 import 'package:tibyan/features/home/whats_new.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 
+import '../testing/bundled_pages.dart';
+
 /// A recitation under way, for the player styles' previews.
 class _Listening extends RecitationController {
   @override
@@ -104,9 +106,7 @@ void main() {
 
       final newDir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
         ..createSync(recursive: true);
-      final newZip = ZipDecoder().decodeStream(
-        InputFileStream('assets/packs/pages-hafs-1441-v1.zip'),
-      );
+      final newZip = bundledPagesArchive();
       for (final pg in madina) {
         final e = newZip.findFile('${pg.toString().padLeft(3, '0')}.svg.xz')!;
         File(p.join(newDir.path, e.name)).writeAsBytesSync(e.content);

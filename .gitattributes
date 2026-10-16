@@ -13,8 +13,12 @@ assets/db/*.db filter=lfs diff=lfs merge=lfs -text
 # Ornament source files (large vectors)
 tools/ornaments/src/** filter=lfs diff=lfs merge=lfs -text
 
-# The new Madina edition's pages ship with the app.
-assets/packs/*.zip filter=lfs diff=lfs merge=lfs -text
+# The new Madina edition's pages ship with the app, read in place.
+assets/pages/**/*.xz filter=lfs diff=lfs merge=lfs -text
+# content.db as bundled, in parts (tools/build_lean_content.py).
+assets/content_db/*.bin filter=lfs diff=lfs merge=lfs -text
+# Word-timing packs moved out of content.db (uploaded to the mirror).
+data/word_timing_packs/*.gz filter=lfs diff=lfs merge=lfs -text
 
 # Opening-page frames: the owner's source images and the copies the app ships.
 docs/design/fateha-themes/*.png filter=lfs diff=lfs merge=lfs -text

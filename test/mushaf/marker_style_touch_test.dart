@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:archive/archive_io.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +16,8 @@ import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/page_interaction.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
+import '../testing/bundled_pages.dart';
+
 /// Changing the verse-marker shape redraws the page without its printed
 /// markers; a tap must still reach the page afterwards.
 void main() {
@@ -32,9 +33,7 @@ void main() {
     final root = Directory.systemTemp.createTempSync('marker');
     final dir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
       ..createSync(recursive: true);
-    final zip = ZipDecoder().decodeBytes(
-      File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-    );
+    final zip = bundledPagesArchive();
     final entry = zip.findFile('050.svg.xz')!;
     File(p.join(dir.path, entry.name)).writeAsBytesSync(entry.content);
     final registry = await tester.runAsync(

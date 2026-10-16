@@ -118,9 +118,10 @@ final ayahInfoDatabaseProvider = Provider<AyahInfoDatabase?>((ref) {
   return db;
 });
 
-final pageStoreProvider = Provider<PageStore>(
-  (ref) => PageStore(ref.watch(pageInstallerProvider).dir),
-);
+final pageStoreProvider = Provider<PageStore>((ref) {
+  final installer = ref.watch(pageInstallerProvider);
+  return PageStore(installer.dir, assetDir: installer.spec.assetDir);
+});
 
 /// Font family of a riwaya's KFGQPC font, once loaded from its pack.
 String riwayaFontFamily(Riwaya r) => 'KFGQPC_${r.name}';

@@ -114,13 +114,6 @@ Future<void> main() async {
     (_, optIn) => CrashReporting.apply(optIn: optIn),
   );
 
-  // The new Madina edition ships with the app: install it on first launch.
-  try {
-    await installBundledPack(rootBundle, container.read(packsDirProvider));
-  } catch (_) {
-    // It can still be downloaded like the other editions.
-  }
-
   // Pack downloads run in the background; finish any that ended while the
   // app was closed. Notifications speak the interface language.
   final l = lookupAppLocalizations(
@@ -155,8 +148,23 @@ Future<void> main() async {
   // Which audio host is faster for this reader, measured in the background.
   unawaited(measureAudioHosts(container));
   unawaited(_refreshTimings(container, timing));
+  unawaited(_tidyStorage(container));
   _startCarBrowsing(container);
   _startKhatma(container);
+}
+
+/// After the first frame: storage an older build used that this one no
+/// longer needs (the extracted copy of the bundled pages).
+Future<void> _tidyStorage(ProviderContainer container) async {
+  try {
+    await WidgetsBinding.instance.endOfFrame;
+    final packs = container.read(packsDirProvider);
+    if (await removeExtractedBundledPack(rootBundle, packs)) {
+      container.read(packInstallsProvider.notifier).changed();
+    }
+  } catch (_) {
+    // Left for the next launch.
+  }
 }
 
 /// Corrected recitation timings: what content.db was built with, then

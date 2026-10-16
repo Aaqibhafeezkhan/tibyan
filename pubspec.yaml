@@ -109,7 +109,7 @@ flutter:
     - assets/config/
     - assets/db/
     - assets/ornaments/
-    - assets/packs/
+    - assets/pages/hafs-1441/
     - assets/brand/
 
   fonts:

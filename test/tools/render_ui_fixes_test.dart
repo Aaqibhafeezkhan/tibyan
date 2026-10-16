@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:archive/archive_io.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -36,6 +35,8 @@ import 'package:tibyan/features/tasmee/presentation/tasmee_settings_screen.dart'
     show tasmeeModelInfoProvider;
 import 'package:tibyan/l10n/app_localizations.dart';
 
+import '../testing/bundled_pages.dart';
+
 /// Not a test: renders the «فاتح» and «أبيض زاهي» home screens and mushaf
 /// pages side by side in each interface style, and the first-run tasmee
 /// step, into `build/ui_fixes/`. Runs only with RENDER_UI_FIXES=1.
@@ -65,9 +66,7 @@ void main() {
     final root = Directory.systemTemp.createTempSync('render');
     final pages = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
       ..createSync(recursive: true);
-    final zip = ZipDecoder().decodeBytes(
-      File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-    );
+    final zip = bundledPagesArchive();
     final e = zip.findFile('050.svg.xz')!;
     File(p.join(pages.path, e.name)).writeAsBytesSync(e.content);
     File(p.join(pages.path, '.installed')).writeAsStringSync('x');

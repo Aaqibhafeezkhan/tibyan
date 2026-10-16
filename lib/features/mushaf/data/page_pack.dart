@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
-import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 
@@ -46,6 +46,7 @@ class PagePackSpec {
     required this.bytes,
     required this.format,
     this.fallbacks = const [],
+    this.assetDir,
   });
 
   final String id;
@@ -60,10 +61,16 @@ class PagePackSpec {
   final int bytes;
   final PackFormat format;
 
+  /// The asset folder the pack's files ship in, read where they are (never
+  /// copied out); null for a pack that is only downloaded.
+  final String? assetDir;
+
   /// New Madina edition (1441H), Hafs: 604 SVG pages, each xz-compressed.
   /// Built by tools/build_page_pack.py; on Tibyan's mirror and as a GitHub
-  /// release.
+  /// release. Its pages also ship inside the app, as they are in the zip
+  /// ([assetDir]), so the mushaf opens offline right after install.
   static const madina1441 = PagePackSpec(
+    assetDir: 'assets/pages/hafs-1441/',
     id: 'pages-hafs-1441-v1',
     url: 'https://tibyan.ahmedhelal.dev/mirror/packs/pages-hafs-1441-v1.zip',
     sha256: '9013b4c47c96eb36b5c9b7ad2b25b43a5d09c939879d85f8976147fce9d4580e',
@@ -197,7 +204,8 @@ class PagePackInstaller {
   File get _part => File(p.join(root.path, '${spec.id}.zip.part'));
   File get _done => File(p.join(dir.path, '.installed'));
 
-  bool get isInstalled => _done.existsSync();
+  /// A pack that ships inside the app is always installed.
+  bool get isInstalled => spec.assetDir != null || _done.existsSync();
 
   /// Stops the current download; the partial file is kept for resuming.
   void pause() => _cancelled = true;
@@ -449,10 +457,17 @@ const shamarlyPageCount = 522;
 
 /// Reads one installed page as SVG text. Decompression runs off the UI
 /// thread; recent pages are kept in memory for fast page turns.
+///
+/// A pack that ships with the app is read from [assetDir] in [bundle],
+/// never from [dir]: the bundled pages are not copied to disk.
 class PageStore {
-  PageStore(this.dir);
+  PageStore(this.dir, {this.assetDir, this.bundle});
 
   final Directory dir;
+  final String? assetDir;
+
+  /// Where [assetDir] is read from (the app's assets by default).
+  final AssetBundle? bundle;
   final _cache = <int, String>{};
   final _order = <int>[];
 
@@ -466,10 +481,22 @@ class PageStore {
   Future<String> svg(int page) async {
     final hit = _cache[page];
     if (hit != null) return hit;
-    final path = p.join(dir.path, '${page.toString().padLeft(3, '0')}.svg.xz');
-    final text = await Isolate.run(
-      () => utf8.decode(XZDecoder().decodeBytes(File(path).readAsBytesSync())),
-    );
+    final name = '${page.toString().padLeft(3, '0')}.svg.xz';
+    final path = p.join(dir.path, name);
+    final asset = assetDir;
+    final String text;
+    if (asset != null) {
+      final data = await (bundle ?? rootBundle).load('$asset$name');
+      final bytes = Uint8List.sublistView(data);
+      text = await Isolate.run(
+        () => utf8.decode(XZDecoder().decodeBytes(bytes)),
+      );
+    } else {
+      text = await Isolate.run(
+        () =>
+            utf8.decode(XZDecoder().decodeBytes(File(path).readAsBytesSync())),
+      );
+    }
     _cache[page] = text;
     _order.add(page);
     if (_order.length > _capacity) _cache.remove(_order.removeAt(0));

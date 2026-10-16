@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:archive/archive_io.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -20,6 +19,8 @@ import 'package:tibyan/features/audio/recitation.dart';
 import 'package:tibyan/features/home/whats_new.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
+
+import '../testing/bundled_pages.dart';
 
 /// Listening to al-Falaq, playing; records the jumps asked of it and
 /// answers each with [result].
@@ -61,9 +62,7 @@ void main() {
     root = Directory.systemTemp.createTempSync('tapjump');
     final dir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
       ..createSync(recursive: true);
-    final zip = ZipDecoder().decodeBytes(
-      File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-    );
+    final zip = bundledPagesArchive();
     for (final name in ['603.svg.xz', '604.svg.xz']) {
       final entry = zip.findFile(name)!;
       File(p.join(dir.path, entry.name)).writeAsBytesSync(entry.content);

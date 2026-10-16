@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:archive/archive_io.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -28,6 +27,8 @@ import 'package:tibyan/features/settings/settings_section_screen.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 import 'package:tibyan/features/khatma/khatma_providers.dart';
 import 'package:tibyan/features/hifz/hifz_providers.dart';
+
+import '../testing/bundled_pages.dart';
 
 /// TalkBack / VoiceOver: the main screens have every control labelled and
 /// large enough, with readable text, and the mushaf page names its verses.
@@ -199,9 +200,7 @@ void main() {
     final handle = tester.ensureSemantics();
     final dir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
       ..createSync(recursive: true);
-    final zip = ZipDecoder().decodeBytes(
-      File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-    );
+    final zip = bundledPagesArchive();
     final entry = zip.findFile('604.svg.xz')!;
     File(p.join(dir.path, entry.name)).writeAsBytesSync(entry.content);
     VerseKey? selected;

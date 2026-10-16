@@ -23,6 +23,8 @@ import 'package:tibyan/features/mushaf/presentation/widgets/page_interaction.dar
 import 'package:tibyan/features/mushaf/presentation/widgets/shamarly_page.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
+import '../testing/bundled_pages.dart';
+
 /// Not a test: draws real pages of each edition with the tajweed colouring
 /// on (default colours, light paper) and off, through the app's own page
 /// widgets, into `build/tajweed_audit/app_<edition>_p<NNN>_<on|off>.png`,
@@ -59,9 +61,7 @@ void main() {
       // Pack folders as the app keeps them once installed.
       final newDir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
         ..createSync(recursive: true);
-      final newZip = ZipDecoder().decodeBytes(
-        File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-      );
+      final newZip = bundledPagesArchive();
       for (final pg in madina) {
         final e = newZip.findFile('${pg.toString().padLeft(3, '0')}.svg.xz')!;
         File(p.join(newDir.path, e.name)).writeAsBytesSync(e.content);

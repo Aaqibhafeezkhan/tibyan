@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:archive/archive_io.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +20,8 @@ import 'package:tibyan/features/home/whats_new.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
 
+import '../testing/bundled_pages.dart';
+
 /// «المساعد»: the hub of helpers, its tajweed marks, and every way in:
 /// the home grid, the reader's menus (focus mode's window too, and in
 /// elderly mode), and «المزيد» in the tajweed colour key.
@@ -37,9 +38,7 @@ void main() {
     root = Directory.systemTemp.createTempSync('assistant');
     final dir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
       ..createSync(recursive: true);
-    final zip = ZipDecoder().decodeBytes(
-      File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-    );
+    final zip = bundledPagesArchive();
     for (final name in ['049.svg.xz', '050.svg.xz', '051.svg.xz']) {
       final entry = zip.findFile(name)!;
       File(p.join(dir.path, entry.name)).writeAsBytesSync(entry.content);
