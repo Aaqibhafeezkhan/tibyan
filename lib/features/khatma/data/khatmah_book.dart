@@ -52,13 +52,16 @@ class KhatmahBook {
 
   /// Run at start: the khatmas made before v5 are carried over (when
   /// their edition's pages are at hand), exactly one open khatma is
-  /// primary, and the caches are rebuilt.
+  /// primary, and the caches are rebuilt (unless [rebuildCaches] is false:
+  /// the app does that after the first frame, the caches being read by
+  /// nothing on the way to it).
   Future<void> prepare(
-    EditionPageMap? Function(String edition) pagesFor,
-  ) async {
+    EditionPageMap? Function(String edition) pagesFor, {
+    bool rebuildCaches = true,
+  }) async {
     await store.migrateLegacy(index, pagesFor);
     await _ensurePrimary();
-    await store.rebuildAll(index);
+    if (rebuildCaches) await store.rebuildAll(index);
   }
 
   Future<void> _ensurePrimary() async {

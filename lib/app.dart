@@ -16,11 +16,24 @@ class TibyanApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(settingsProvider);
+    // Only what the app's theme and language are made of: changing any
+    // other setting does not build the whole app again.
+    final settings = ref.watch(
+      settingsProvider.select(
+        (s) => (
+          styleId: s.styleId,
+          mode: s.mode,
+          locale: s.locale,
+          uiFont: s.uiFont,
+          elderlyMode: s.elderlyMode,
+          interfaceStyle: s.interfaceStyle,
+        ),
+      ),
+    );
     final registry = ref.watch(themeRegistryProvider);
     final style = registry.byId(settings.styleId);
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
-    final mode = settings.resolveMode(platformBrightness);
+    final mode = ref.read(settingsProvider).resolveMode(platformBrightness);
 
     final router = ref.watch(appRouterProvider);
     return MaterialApp.router(

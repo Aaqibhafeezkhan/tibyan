@@ -108,9 +108,9 @@ flutter:
     - assets/themes/
     - assets/reciters/
     - assets/config/
-    - assets/db/
+    - assets/content_db/
     - assets/ornaments/
-    - assets/packs/
+    - assets/pages/hafs-1441/
     - assets/brand/
     - assets/tasbih/
 

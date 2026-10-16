@@ -2153,8 +2153,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get unknownAuthor => 'مصوّر غير معروف';
 
   @override
-  String get reciterPhotoWithPermission =>
-      'استُخدمت بإذن حصل عليه مالك المشروع';
+  String get reciterPhotoWithPermission => 'صور بترخيص المشاع الإبداعي';
 
   @override
   String get otherRiwayaReciters => 'قرّاء الروايات الأخرى';
@@ -4003,7 +4002,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reportContactNote =>
-      'نستخدم الهاتف والبريد للرد عليك فقط إن كتبتهما.';
+      'الهاتف والبريد اختياريان، نستخدمهما للرد عليك فقط، ويُحذفان من جهازك بعد إرسال البلاغ.';
 
   @override
   String get reportDeviceTitle => 'يُرفق مع البلاغ';

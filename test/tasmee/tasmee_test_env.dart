@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:archive/archive_io.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +19,8 @@ import 'package:tibyan/core/theme/theme_tokens.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
+import '../testing/bundled_pages.dart';
+
 /// The real content database (read only) and the 1441 pages a test needs,
 /// unpacked once into a temporary pack folder.
 class TasmeeTestData {
@@ -38,9 +39,7 @@ class TasmeeTestData {
     final root = Directory.systemTemp.createTempSync('tasmee_test');
     final dir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
       ..createSync(recursive: true);
-    final zip = ZipDecoder().decodeBytes(
-      File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-    );
+    final zip = bundledPagesArchive();
     for (final page in pages) {
       final entry = zip.findFile('${page.toString().padLeft(3, '0')}.svg.xz')!;
       File(p.join(dir.path, entry.name)).writeAsBytesSync(entry.content);

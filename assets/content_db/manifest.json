@@ -1,0 +1,18 @@
+{
+ "bytes": 46960640,
+ "sha256": "810f2dccacb31d34a387c680cb06f56a699f5612676200d5167375b5d8d3122a",
+ "parts": [
+  "part-000.bin",
+  "part-001.bin",
+  "part-002.bin",
+  "part-003.bin",
+  "part-004.bin",
+  "part-005.bin",
+  "part-006.bin",
+  "part-007.bin",
+  "part-008.bin",
+  "part-009.bin",
+  "part-010.bin",
+  "part-011.bin"
+ ]
+}

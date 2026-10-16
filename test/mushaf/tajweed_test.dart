@@ -16,11 +16,11 @@ import 'package:tibyan/features/mushaf/data/mushaf_repository.dart';
 import 'package:tibyan/features/mushaf/data/svg_contours.dart';
 import 'package:tibyan/features/mushaf/data/tajweed.dart';
 
+import '../testing/bundled_pages.dart';
+
 /// A page of the bundled new-edition pack, as SVG text.
 String packPage(int page) {
-  final zip = ZipDecoder().decodeBytes(
-    File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-  );
+  final zip = bundledPagesArchive();
   final entry = zip.findFile('${page.toString().padLeft(3, '0')}.svg.xz')!;
   return utf8.decode(XZDecoder().decodeBytes(entry.content));
 }

@@ -6,25 +6,27 @@ import 'package:path/path.dart' as p;
 import 'page_pack.dart';
 
 /// The new Madina edition ships inside the app, so the mushaf opens on
-/// first launch without a download. The asset is the same zip as the
-/// published pack and passes the same SHA-256 check.
-const bundledPackAsset = 'assets/packs/pages-hafs-1441-v1.zip';
-
-/// Installs the bundled pack under [root] unless it is there already.
-Future<void> installBundledPack(AssetBundle bundle, Directory root) async {
-  final installer = PagePackInstaller(
-    root: root,
-    spec: PagePackSpec.madina1441,
-  );
-  if (installer.isInstalled) return;
-  root.createSync(recursive: true);
-  final data = await bundle.load(bundledPackAsset);
-  final zip = File(
-    p.join(root.path, 'bundled-${PagePackSpec.madina1441.id}.zip'),
-  );
-  await zip.writeAsBytes(
-    data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
-    flush: true,
-  );
-  await installer.installFrom(zip);
+/// first launch without a download: its pages are read straight from the
+/// app's assets ([PagePackSpec.assetDir]), never copied out.
+///
+/// Builds before that copied the bundled zip to disk and extracted it
+/// (65 MB twice over). That copy is now redundant: once a bundled page is
+/// known to read, it is removed. Returns whether anything was removed.
+Future<bool> removeExtractedBundledPack(
+  AssetBundle bundle,
+  Directory root,
+) async {
+  const spec = PagePackSpec.madina1441;
+  final dir = Directory(p.join(root.path, spec.id));
+  final zip = File(p.join(root.path, 'bundled-${spec.id}.zip'));
+  final part = File(p.join(root.path, '${spec.id}.zip.part'));
+  final stale = [dir, zip, part].where((e) => e.existsSync()).toList();
+  if (stale.isEmpty) return false;
+  // Only when the bundled pages are there to read instead.
+  final page = await bundle.load('${spec.assetDir}001.svg.xz');
+  if (page.lengthInBytes == 0) return false;
+  for (final e in stale) {
+    await e.delete(recursive: true);
+  }
+  return true;
 }

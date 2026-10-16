@@ -2114,8 +2114,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unknownAuthor => 'Unknown author';
 
   @override
-  String get reciterPhotoWithPermission =>
-      'Used with permission obtained by the project owner';
+  String get reciterPhotoWithPermission => 'Creative Commons–licensed photos';
 
   @override
   String get otherRiwayaReciters => 'Reciters of other riwayat';
@@ -3929,7 +3928,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportContactNote =>
-      'We use your phone and email only to reply to you, if you give them.';
+      'Phone and email are optional. We use them only to reply to you, and they are deleted from your device once the report is sent.';
 
   @override
   String get reportDeviceTitle => 'Attached to the report';

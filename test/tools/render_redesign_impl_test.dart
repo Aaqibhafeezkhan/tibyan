@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -151,7 +152,7 @@ void main() {
       if (overlay != null) {
         final context = tester.element(find.byType(Scaffold).first);
         // Not awaited: the overlay stays open for the picture.
-        overlay(context);
+        unawaited(overlay(context));
         await settle();
         await tester.pump(const Duration(seconds: 1));
       }

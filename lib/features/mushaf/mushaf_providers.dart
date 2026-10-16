@@ -14,6 +14,7 @@ import '../../core/db/user_database.dart';
 import '../../core/downloads/background_downloads.dart';
 import '../../l10n/app_localizations.dart';
 import '../audio/timing_updates.dart';
+import '../audio/word_timing_packs.dart';
 import 'data/background_packs.dart';
 import 'data/divine_names.dart';
 import 'data/mushaf_repository.dart';
@@ -42,10 +43,15 @@ final timingOverridesProvider = Provider<TimingOverrides>(
   (ref) => const NoTimingOverrides(),
 );
 
+/// Word timings kept out of content.db; overridden in `main()` (null in
+/// tests, whose content.db may still hold them).
+final wordTimingPacksProvider = Provider<WordTimingPacks?>((ref) => null);
+
 final mushafRepositoryProvider = Provider<MushafRepository>(
   (ref) => MushafRepository(
     ref.watch(contentDatabaseProvider),
     ref.watch(timingOverridesProvider),
+    ref.watch(wordTimingPacksProvider),
   ),
 );
 
@@ -118,9 +124,10 @@ final ayahInfoDatabaseProvider = Provider<AyahInfoDatabase?>((ref) {
   return db;
 });
 
-final pageStoreProvider = Provider<PageStore>(
-  (ref) => PageStore(ref.watch(pageInstallerProvider).dir),
-);
+final pageStoreProvider = Provider<PageStore>((ref) {
+  final installer = ref.watch(pageInstallerProvider);
+  return PageStore(installer.dir, assetDir: installer.spec.assetDir);
+});
 
 /// Font family of a riwaya's KFGQPC font, once loaded from its pack.
 String riwayaFontFamily(Riwaya r) => 'KFGQPC_${r.name}';

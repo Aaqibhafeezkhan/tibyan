@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:archive/archive_io.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -28,6 +27,7 @@ import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
 import '../khatma/support.dart';
+import '../testing/bundled_pages.dart';
 
 /// Not a test: draws the khatma screens of phases 6–9 through the app's
 /// router, in Arabic with the bundled fonts, light and night, at a phone
@@ -95,9 +95,7 @@ void main() {
         p.join(root.path, 'packs', 'pages-hafs-1441-v1'),
       )..createSync(recursive: true);
       await tester.runAsync(() async {
-        final zip = ZipDecoder().decodeStream(
-          InputFileStream('assets/packs/pages-hafs-1441-v1.zip'),
-        );
+        final zip = bundledPagesArchive();
         for (final e in zip.files) {
           if (!e.isFile) continue;
           File(p.join(pagesDir.path, e.name)).writeAsBytesSync(e.content);

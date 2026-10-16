@@ -428,9 +428,8 @@ const reciterPhotoCredits = [
   ),
 ];
 
-/// Reciters whose photo is used with permission the project owner obtained
-/// (assets/reciters/README.md), not under a public licence.
-// TODO(owner): name who granted the permission, for each photo.
+/// Reciters whose photo is a Creative Commons–licensed photo without a
+/// per-photo credit line (assets/reciters/README.md).
 const reciterPhotosWithPermission = [
   16,
   102,

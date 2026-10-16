@@ -814,6 +814,18 @@ class RecitationController extends Notifier<RecitationState> {
     _timings = timings;
     _words = words;
     _speech = speech;
+    if (timings.isNotEmpty && words.isEmpty) {
+      // This reciter's words are not on the device yet: fetched now, and
+      // followed from the moment they arrive (the verses meanwhile).
+      final fetched = repo.fetchWordTimings(reciter.id, surah);
+      if (fetched != null) {
+        unawaited(
+          fetched.then((w) {
+            if (load == _loads && w.isNotEmpty) _words = w;
+          }),
+        );
+      }
+    }
     _jumpTo = null;
     _verseDone = null;
     _clipEnd = null;

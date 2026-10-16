@@ -14,6 +14,8 @@ import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/old_mushaf_page.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/shamarly_page.dart';
 
+import '../testing/bundled_pages.dart';
+
 /// A tall phone, whose pages are spread in strips, and a tablet, whose
 /// pages are scaled whole.
 const _sizes = [Size(393, 760), Size(820, 1180)];
@@ -286,9 +288,7 @@ void main() {
   test(
     'Madina 1441: every touch over a line of text selects its verse',
     () async {
-      final pack = ZipDecoder().decodeBytes(
-        File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-      );
+      final pack = bundledPagesArchive();
       var checked = 0;
       final failures = <String>[];
       for (var page = 1; page <= 604; page++) {

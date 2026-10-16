@@ -4,9 +4,12 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tibyan/core/db/content_database.dart';
 import 'package:tibyan/features/audio/recitation.dart';
+import 'package:tibyan/features/audio/timing_updates.dart';
 import 'package:tibyan/features/mushaf/data/mushaf_repository.dart';
 import 'package:flutter/painting.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/page_interaction.dart';
+
+import '../testing/word_timing_fixture.dart';
 
 void main() {
   late ContentDatabase db;
@@ -19,7 +22,12 @@ void main() {
         setup: (raw) => raw.execute('PRAGMA query_only = ON'),
       ),
     );
-    repo = MushafRepository(db);
+    // Most reciters' words are no longer in content.db but in their pack.
+    repo = MushafRepository(
+      db,
+      const NoTimingOverrides(),
+      localWordTimingPacks(),
+    );
   });
   tearDownAll(() => db.close());
 

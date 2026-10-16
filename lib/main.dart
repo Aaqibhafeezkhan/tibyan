@@ -31,6 +31,7 @@ import 'features/audio/car_browser.dart';
 import 'features/audio/car_channel.dart';
 import 'features/audio/recitation.dart';
 import 'features/audio/timing_updates.dart';
+import 'features/audio/word_timing_packs.dart';
 import 'features/khatma/khatma_providers.dart';
 import 'features/khatma/domain/day.dart';
 import 'features/khatma/services/home_widget_sync.dart';
@@ -86,6 +87,9 @@ Future<void> main() async {
   final content = await ContentDatabase.openBundled(rootBundle);
   final packRoot = await getApplicationSupportDirectory();
   final timing = TimingUpdates(Directory(p.join(packRoot.path, 'timing')));
+  final words = WordTimingPacks(
+    Directory(p.join(packRoot.path, 'word-timing')),
+  );
 
   final container = ProviderContainer(
     overrides: [
@@ -96,6 +100,7 @@ Future<void> main() async {
       userDatabaseProvider.overrideWithValue(UserDatabase.open()),
       packRootProvider.overrideWithValue(packRoot),
       timingOverridesProvider.overrideWithValue(timing),
+      wordTimingPacksProvider.overrideWithValue(words),
       reminderSchedulerProvider.overrideWithValue(LocalReminderScheduler()),
       homeWidgetSyncProvider.overrideWithValue(
         defaultTargetPlatform == TargetPlatform.macOS
@@ -113,13 +118,6 @@ Future<void> main() async {
     settingsProvider.select((s) => s.crashReportsOptIn),
     (_, optIn) => CrashReporting.apply(optIn: optIn),
   );
-
-  // The new Madina edition ships with the app: install it on first launch.
-  try {
-    await installBundledPack(rootBundle, container.read(packsDirProvider));
-  } catch (_) {
-    // It can still be downloaded like the other editions.
-  }
 
   // Pack downloads run in the background; finish any that ended while the
   // app was closed. Notifications speak the interface language.
@@ -155,8 +153,33 @@ Future<void> main() async {
   // Which audio host is faster for this reader, measured in the background.
   unawaited(measureAudioHosts(container));
   unawaited(_refreshTimings(container, timing));
+  unawaited(_tidyStorage(container));
   _startCarBrowsing(container);
   _startKhatma(container);
+}
+
+/// After the first frame: storage an older build used that this one no
+/// longer needs (the extracted copy of the bundled pages), and the word
+/// timings of reciters whose audio is already on the device, now that
+/// they are no longer inside the app (fetched quietly; offline, the next
+/// launch tries again).
+Future<void> _tidyStorage(ProviderContainer container) async {
+  try {
+    await WidgetsBinding.instance.endOfFrame;
+    final packs = container.read(packsDirProvider);
+    if (await removeExtractedBundledPack(rootBundle, packs)) {
+      container.read(packInstallsProvider.notifier).changed();
+    }
+  } catch (_) {
+    // Left for the next launch.
+  }
+  final words = container.read(wordTimingPacksProvider);
+  if (words == null) return;
+  final files = container.read(audioFilesProvider);
+  await words.ensureAll([
+    for (final r in words.specs.keys)
+      if (!words.has(r) && files.downloaded(r).isNotEmpty) r,
+  ]);
 }
 
 /// Corrected recitation timings: what content.db was built with, then
@@ -253,7 +276,7 @@ void _startKhatma(ProviderContainer container) {
   // shows them: it never queues anything.
   container.read(backgroundDownloadsProvider).onNotificationTap = () async {
     await container.read(appRouterReadyProvider).future;
-    container.read(appRouterProvider).push('/downloads');
+    unawaited(container.read(appRouterProvider).push('/downloads'));
   };
 
   final reminders = container.read(reminderSchedulerProvider);

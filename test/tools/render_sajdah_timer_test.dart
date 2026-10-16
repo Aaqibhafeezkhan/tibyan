@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:archive/archive_io.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -21,6 +20,8 @@ import 'package:tibyan/core/theme/theme_registry.dart';
 import 'package:tibyan/features/home/whats_new.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 import 'package:tibyan/features/sajdah/sajdah_card.dart';
+
+import '../testing/bundled_pages.dart';
 
 /// Not a test: draws the sajdah card over page 598 (al-Alaq 19, a verse of
 /// prostration) at the phone and laptop sizes, in light and night, plain
@@ -87,9 +88,7 @@ void main() {
       final root = Directory.systemTemp.createTempSync('sajdah_previews');
       final dir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
         ..createSync(recursive: true);
-      final zip = ZipDecoder().decodeStream(
-        InputFileStream('assets/packs/pages-hafs-1441-v1.zip'),
-      );
+      final zip = bundledPagesArchive();
       for (final name in ['597.svg.xz', '598.svg.xz']) {
         File(p.join(dir.path, name))
             .writeAsBytesSync(zip.findFile(name)!.content);

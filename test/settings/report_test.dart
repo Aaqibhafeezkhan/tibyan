@@ -106,6 +106,89 @@ void main() {
       },
     );
 
+    test('the queue keeps the newest ten reports', () async {
+      var now = DateTime(2026, 1, 1, 10);
+      final s = ReportService(
+        prefs,
+        now: () => now,
+        maxPerHour: 100,
+        minGap: Duration.zero,
+        client: MockClient((r) async => http.Response('', 503)),
+      );
+      for (var i = 0; i < 12; i++) {
+        now = now.add(const Duration(minutes: 1));
+        expect(await s.submit(report('بلاغ رقم $i')), ReportOutcome.queued);
+      }
+      expect(s.queue, hasLength(10));
+      expect(jsonDecode(s.queue.first)['description'], 'بلاغ رقم 2');
+      expect(jsonDecode(s.queue.last)['description'], 'بلاغ رقم 11');
+    });
+
+    test('a queued report is dropped after 14 days, contact and all', () async {
+      var now = DateTime(2026, 1, 1, 10);
+      final s = ReportService(
+        prefs,
+        now: () => now,
+        client: MockClient((r) async => http.Response('', 503)),
+      );
+      final withContact = ProblemReport(
+        type: ReportType.bug,
+        description: 'الصوت لا يعمل',
+        phone: '+20 100 123 4567',
+        email: 'a@b.co',
+        device: device,
+      );
+      expect(await s.submit(withContact), ReportOutcome.queued);
+      now = now.add(const Duration(days: 13));
+      expect(s.queue, hasLength(1));
+      now = now.add(const Duration(days: 2));
+      expect(s.queue, isEmpty);
+      await s.flush();
+      expect(prefs.getStringList(ReportService.queueKey), isNull);
+    });
+
+    test('a sent report leaves the device with its phone and email', () async {
+      var online = false;
+      final s = ReportService(
+        prefs,
+        client: MockClient((r) async {
+          if (!online) return http.Response('', 503);
+          return http.Response('{}', 201);
+        }),
+      );
+      final withContact = ProblemReport(
+        type: ReportType.bug,
+        description: 'الصوت لا يعمل',
+        phone: '+20 100 123 4567',
+        email: 'a@b.co',
+        device: device,
+      );
+      expect(await s.submit(withContact), ReportOutcome.queued);
+      expect(
+        prefs.getStringList(ReportService.queueKey).toString(),
+        contains('a@b.co'),
+      );
+      online = true;
+      expect(await s.flush(), 1);
+      final left = prefs.getStringList(ReportService.queueKey);
+      expect(left.toString(), isNot(contains('a@b.co')));
+      expect(left.toString(), isNot(contains('4567')));
+    });
+
+    test('a queue from before the dates were kept still sends', () async {
+      SharedPreferences.setMockInitialValues({
+        ReportService.queueKey: [jsonEncode(report().toJson())],
+      });
+      final old = await SharedPreferences.getInstance();
+      final s = ReportService(
+        old,
+        client: MockClient((r) async => http.Response('{}', 201)),
+      );
+      expect(s.queue, hasLength(1));
+      expect(await s.flush(), 1);
+      expect(s.queue, isEmpty);
+    });
+
     test('email and phone are optional but checked', () {
       expect(isValidReportEmail(''), isTrue);
       expect(isValidReportEmail('a@b.co'), isTrue);

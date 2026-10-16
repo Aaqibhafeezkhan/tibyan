@@ -1516,7 +1516,7 @@
     }
   },
   "unknownAuthor": "مصوّر غير معروف",
-  "reciterPhotoWithPermission": "استُخدمت بإذن حصل عليه مالك المشروع",
+  "reciterPhotoWithPermission": "صور بترخيص المشاع الإبداعي",
   "otherRiwayaReciters": "قرّاء الروايات الأخرى",
   "otherRiwayaHint": "تُختار تلاواتهم من مصحف روايتهم، لأن ترقيم آياتها يختلف.",
   "reciterOfRiwaya": "رواية {riwaya}",
@@ -2700,7 +2700,7 @@
   "reportPhoneInvalid": "رقم الهاتف غير صحيح",
   "reportEmail": "البريد الإلكتروني (اختياري)",
   "reportEmailInvalid": "البريد الإلكتروني غير صحيح",
-  "reportContactNote": "نستخدم الهاتف والبريد للرد عليك فقط إن كتبتهما.",
+  "reportContactNote": "الهاتف والبريد اختياريان، نستخدمهما للرد عليك فقط، ويُحذفان من جهازك بعد إرسال البلاغ.",
   "reportDeviceTitle": "يُرفق مع البلاغ",
   "reportDeviceVersion": "إصدار التطبيق: {version}",
   "@reportDeviceVersion": {

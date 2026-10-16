@@ -242,7 +242,9 @@ class _VerseListState extends ConsumerState<_VerseList> {
     final l = AppLocalizations.of(context);
     final basmala = ref.watch(basmalaProvider).value;
     _tracker.minDwell = Duration(
-      seconds: ref.watch(settingsProvider).readingSpeed.secondsPerPage,
+      seconds: ref
+          .watch(settingsProvider.select((s) => s.readingSpeed))
+          .secondsPerPage,
     );
 
     // The list from its top: the header, the verses, the way on.

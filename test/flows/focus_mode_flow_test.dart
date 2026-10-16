@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:archive/archive_io.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +24,8 @@ import 'package:tibyan/features/mushaf/presentation/widgets/illuminated_frame.da
 import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/ornate_pages.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/reading_bar.dart';
+
+import '../testing/bundled_pages.dart';
 
 /// Listening to al-Baqarah, playing; [toggle] and [stop] change only the
 /// state, and are counted.
@@ -69,9 +70,7 @@ void main() {
     root = Directory.systemTemp.createTempSync('focus');
     final dir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
       ..createSync(recursive: true);
-    final zip = ZipDecoder().decodeBytes(
-      File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-    );
+    final zip = bundledPagesArchive();
     for (final name in [
       '001.svg.xz',
       '002.svg.xz',

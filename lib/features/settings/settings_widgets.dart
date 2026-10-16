@@ -16,11 +16,13 @@ import '../../core/theme/app_theme.dart';
 import '../../core/theme/interface_style.dart';
 import '../../core/theme/ornaments.dart';
 import '../../l10n/app_localizations.dart';
+import '../khatma/khatma_providers.dart';
 import '../mushaf/mushaf_providers.dart';
 import '../mushaf/presentation/widgets/art_frame.dart';
 import '../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
 import '../mushaf/presentation/widgets/theme_art.dart';
+import '../tasmee/data/tasmee_settings.dart';
 import 'theme_picker.dart';
 
 // The settings' own controls, placed by settings_catalog.dart into the
@@ -260,8 +262,20 @@ Future<void> importBackup(BuildContext context, WidgetRef ref) async {
       ref.read(userDatabaseProvider),
       prefs: ref.read(sharedPreferencesProvider),
     ).import(text);
-    // The restored settings take effect now.
-    if (r.settings > 0) ref.invalidate(settingsProvider);
+    // The restored settings take effect now, and the khatmas' and the
+    // hifz's progress is worked out again from the restored record.
+    if (r.settings > 0) {
+      ref
+        ..invalidate(settingsProvider)
+        ..invalidate(tasmeeSettingsProvider)
+        ..invalidate(streakNotesProvider);
+    }
+    try {
+      await ref.read(khatmaServiceProvider).afterRestore();
+    } on Object catch (e) {
+      // The restore itself is done; the caches follow at the next start.
+      debugPrint('after restore: $e');
+    }
     messenger.showSnackBar(
       SnackBar(content: Text(l.backupDone(digits(r.added), digits(r.updated)))),
     );

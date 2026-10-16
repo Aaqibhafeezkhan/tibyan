@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:archive/archive_io.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -22,6 +21,8 @@ import 'package:tibyan/core/theme/theme_registry.dart';
 import 'package:tibyan/features/home/whats_new.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
+
+import '../testing/bundled_pages.dart';
 
 /// Not a test: draws «المساعد» and its tajweed marks through the app's
 /// router: the home grid with the Assistant tile (phone and laptop), the
@@ -78,9 +79,7 @@ void main() {
       // Page 50 of the 1441 pages, for the reader's shots.
       final pack = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
         ..createSync(recursive: true);
-      final zip = ZipDecoder().decodeBytes(
-        File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-      );
+      final zip = bundledPagesArchive();
       for (final name in ['049.svg.xz', '050.svg.xz', '051.svg.xz']) {
         final entry = zip.findFile(name)!;
         File(p.join(pack.path, entry.name)).writeAsBytesSync(entry.content);

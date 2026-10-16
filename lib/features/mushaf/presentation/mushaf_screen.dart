@@ -68,6 +68,7 @@ import 'widgets/illuminated_frame.dart';
 import 'widgets/mushaf_page.dart';
 import 'widgets/ornate_pages.dart';
 import 'widgets/old_mushaf_page.dart';
+import 'mushaf_page_recitation.dart';
 import 'widgets/page_interaction.dart';
 import 'widgets/reading_bar.dart';
 import 'widgets/shamarly_page.dart';
@@ -85,6 +86,11 @@ String surahName(BuildContext context, SurahRow s) =>
 
 /// The page view of the chosen edition.
 class MushafScreen extends ConsumerStatefulWidget {
+  /// How many times the screen was built; tests check that a recitation
+  /// moving word by word does not build it again.
+  @visibleForTesting
+  static int debugBuildCount = 0;
+
   const MushafScreen({
     super.key,
     this.initialPage,
@@ -137,7 +143,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
   /// choice is kept ([AppSettings.focusToolsShown]); «القائمة» has no such
   /// tools.
   bool get _focusTools {
-    // The build watches the settings, so this follows them.
+    // The build watches this setting, so this follows it.
     final s = ref.read(settingsProvider);
     return s.focusToolsShown && s.focusTools == FocusTools.button;
   }
@@ -283,7 +289,15 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     bool labelled = false,
     VoidCallback? before,
   }) {
-    final settings = r.watch(settingsProvider);
+    final settings = r.watch(
+      settingsProvider.select(
+        (s) => (
+          touchReading: s.touchReading,
+          tajweedColors: s.tajweedColors,
+          focusMode: s.focusMode,
+        ),
+      ),
+    );
     VoidCallback act(VoidCallback f) => () {
       before?.call();
       f();
@@ -292,7 +306,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       labelled: labelled,
       touchReading: settings.touchReading,
       onTouchReading: act(_toggleTouchReading),
-      listening: r.watch(recitationProvider).active,
+      listening: r.watch(recitationProvider.select((s) => s.active)),
       onListen: act(_listenFromPage),
       recite: _recite || _testing,
       onRecite: act(
@@ -328,7 +342,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
   /// of the [verse] pressed (none off a verse), the page's tools, and the
   /// reading tools with the page number. A tap outside closes it.
   Future<void> _openFocusMenu(int page, VerseKey? verse) async {
-    HapticFeedback.selectionClick();
+    unawaited(HapticFeedback.selectionClick());
     _setChrome(false);
     setState(() {
       _selA = _selB = null;
@@ -607,10 +621,12 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     ));
     // Screen readers hear where the turn landed: the surah and the page.
     if (mounted && MediaQuery.accessibleNavigationOf(context)) {
-      SemanticsService.sendAnnouncement(
-        View.of(context),
-        _scrubLabel(context, _page, ref.read(surahsProvider).value),
-        Directionality.of(context),
+      unawaited(
+        SemanticsService.sendAnnouncement(
+          View.of(context),
+          _scrubLabel(context, _page, ref.read(surahsProvider).value),
+          Directionality.of(context),
+        ),
       );
     }
     await ref
@@ -678,6 +694,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
 
   @override
   Widget build(BuildContext context) {
+    MushafScreen.debugBuildCount++;
     if (!ref.watch(pagesInstalledProvider)) return const DownloadScreen();
     final l = AppLocalizations.of(context);
     final t = context.tokens.colors;
@@ -701,7 +718,33 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
         editionKeyOf(riwaya, m.surah, m.ayah): Color(m.color),
     };
 
-    final settings = ref.watch(settingsProvider);
+    // Only what the screen shows: a change to any other setting does not
+    // build it again.
+    final settings = ref.watch(
+      settingsProvider.select(
+        (s) => (
+          readingSpeed: s.readingSpeed,
+          focusMode: s.focusMode,
+          sajdahTimer: s.sajdahTimer,
+          markerStyle: s.markerStyle,
+          markerTint: s.markerTint,
+          focusTools: s.focusTools,
+          highlightDivineNames: s.highlightDivineNames,
+          tajweedColors: s.tajweedColors,
+          tajweedHues: s.tajweedHues,
+          pageFill: s.pageFill,
+          effectivePlayerStyle: s.effectivePlayerStyle,
+          splitTranslation: s.splitTranslation,
+          underVerse: s.underVerse,
+          twoPageSpread: s.twoPageSpread,
+          pageTurn: s.pageTurn,
+          // Read through getters in the build (_focusTools, _touchReading).
+          focusToolsShown: s.focusToolsShown,
+          touchReading: s.touchReading,
+          autoScrollSpeed: s.autoScrollSpeed,
+        ),
+      ),
+    );
     // The khatma counts nothing in a hifz test or recitation mode, and
     // follows the reading speed and the view.
     _tracker
@@ -713,7 +756,14 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     // The current page's verses: recitation mode hides them, and after an
     // edition change they arrive later, so the page must rebuild then.
     ref.watch(pageAyahsProvider(_page));
-    final recitation = ref.watch(recitationProvider);
+    // Whether a recitation plays, not where it is: the verse and the word
+    // being recited are drawn by each page's [RecitedPage], so the screen
+    // is not built again for every word.
+    final reciting = ref.watch(
+      recitationProvider.select(
+        (r) => (active: r.active, standalone: r.clip?.standalone ?? false),
+      ),
+    );
     // The verses of prostration, at hand for touch reading.
     if (settings.sajdahTimer) ref.watch(sajdahPositionsProvider);
     ref.listen(recitationProvider.select((r) => (r.surah, r.ayah, r.word)), (
@@ -785,15 +835,14 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       final testCovers = _testing && pg == _page
           ? _test.covers(_pageKeys(pg), testUnits)
           : null;
-      final jumps = _tapJumps(recitation);
+      final jumps = _tapJumps(reciting.active, standalone: reciting.standalone);
       final interaction = PageInteraction(
-        // The reader's selection, or else the verse being recited.
+        // The reader's selection, or else (set by [RecitedPage]) the verse
+        // being recited.
         selection: _selA != null
             ? _selectionOn(pg)
             : _menuVerse != null
             ? {_menuVerse!}
-            : recitation.active && recitation.ayah != null
-            ? {(surah: recitation.surah, ayah: recitation.ayah!)}
             : const {},
         marks: marks,
         onTap: _onPageTap,
@@ -880,15 +929,6 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                   ? const Color(0xFFC62828)
                   : const Color(0xFFFF8A80))
             : null,
-        activeWord: recitation.active && recitation.word != null
-            ? _union(
-                ref.watch(pageWordBoxesProvider(pg)).value?[(
-                  recitation.surah,
-                  recitation.ayah!,
-                  recitation.word!,
-                )],
-              )
-            : null,
         emphasisLines:
             ref.watch(frameInfoProvider(pg)).value?.basmalaLines ?? const {},
         onPick: _pickWord && pg == _page
@@ -917,23 +957,29 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
             : '',
         fill: focus ? settings.pageFill : null,
       );
-      final pageBody = switch (edition) {
-        MushafEdition.madina1405 => OldMushafPage(
-          page: pg,
-          interaction: interaction,
-        ),
-        MushafEdition.shamarly => ShamarlyMushafPage(
-          page: pg,
-          interaction: interaction,
-        ),
-        // The new Madina edition and the riwaya editions: KFGQPC's SVG
-        // page artwork. Keyed by edition so a switch loads the other pages.
-        _ => MushafPage(
-          key: ValueKey('${edition.name}/$pg'),
-          page: pg,
-          interaction: interaction,
-        ),
-      };
+      final pageBody = RecitedPage(
+        page: pg,
+        interaction: interaction,
+        followVerse: _selA == null && _menuVerse == null,
+        builder: (interaction) => switch (edition) {
+          MushafEdition.madina1405 => OldMushafPage(
+            page: pg,
+            interaction: interaction,
+          ),
+          MushafEdition.shamarly => ShamarlyMushafPage(
+            page: pg,
+            interaction: interaction,
+          ),
+          // The new Madina edition and the riwaya editions: KFGQPC's SVG
+          // page artwork. Keyed by edition so a switch loads the other
+          // pages.
+          _ => MushafPage(
+            key: ValueKey('${edition.name}/$pg'),
+            page: pg,
+            interaction: interaction,
+          ),
+        },
+      );
       final pageWidget = pageBody;
       final info = ref.watch(frameInfoProvider(pg)).value;
       void openIndex(String tab) {
@@ -1079,7 +1125,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                       // floating players stay over the page instead.
                       minimum: EdgeInsets.only(
                         bottom:
-                            recitation.active &&
+                            reciting.active &&
                                 !_autoScroll &&
                                 playerStyle == PlayerStyle.normal
                             ? MediaQuery.paddingOf(context).bottom + 80
@@ -1362,7 +1408,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                         touchReading: _touchReading,
                         onTouchReading: _toggleTouchReading,
                         recite: _recite,
-                        listening: recitation.active,
+                        listening: reciting.active,
                       ),
               ),
             ),
@@ -1396,7 +1442,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
               child: Reveal(
                 visible:
                     playerStyle == PlayerStyle.normal &&
-                    recitation.active &&
+                    reciting.active &&
                     range == null &&
                     !_multi &&
                     !_chrome &&
@@ -1411,7 +1457,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
               child: Reveal(
                 visible:
                     playerStyle != PlayerStyle.normal &&
-                    recitation.active &&
+                    reciting.active &&
                     range == null &&
                     !_multi &&
                     !_chrome,
@@ -1510,7 +1556,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                         !_autoScroll &&
                         !_multi &&
                         range == null &&
-                        !recitation.active &&
+                        !reciting.active &&
                         !(focus && _focusTools) &&
                         ref.watch(sajdahCardProvider) == null,
                   ),
@@ -1523,7 +1569,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                         !_autoScroll &&
                         !_multi &&
                         range == null &&
-                        !recitation.active &&
+                        !reciting.active &&
                         !(focus && _focusTools) &&
                         ref.watch(sajdahCardProvider) == null,
                   ),
@@ -1548,7 +1594,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     VoidCallback? before,
     bool embedded = false,
   }) {
-    final settings = r.watch(settingsProvider);
+    final underVerse = r.watch(settingsProvider.select((s) => s.underVerse));
     final surahs = r.watch(surahsProvider).value;
     final edition = r.watch(editionProvider);
     VoidCallback act(VoidCallback f) => () {
@@ -1710,7 +1756,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
           edition.isRiwaya ? null : () => _shareVerseText(range),
         ),
         onShareImage: act(() => _shareVerseImage(range)),
-        preview: settings.underVerse.isEmpty
+        preview: underVerse.isEmpty
             ? null
             : UnderVerseTexts(
                 surah: hafsKeyOf(_riwaya, range.first).surah,
@@ -1875,7 +1921,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
   /// same verse, word and letters); any other word says why it has none.
   Future<void> _pickRiwayaWord(RiwayaData riwaya, (int, int, int) hit) async {
     final (surah, ayah, word) = hit;
-    HapticFeedback.selectionClick();
+    unawaited(HapticFeedback.selectionClick());
     setState(() => _pickWord = false);
     final hafs = riwaya.toHafs(surah, ayah);
     (int, int, int)? target;
@@ -1893,7 +1939,14 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       );
       return;
     }
-    showWordStudy(context, surah: target.$1, ayah: target.$2, word: target.$3);
+    unawaited(
+      showWordStudy(
+        context,
+        surah: target.$1,
+        ayah: target.$2,
+        word: target.$3,
+      ),
+    );
   }
 
   /// How near a word's box a touch counts as on it: page units in the SVG
@@ -1929,9 +1982,9 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
   /// (playing or paused) in plain reading. Selecting, recitation mode, a
   /// hifz test, word picking and a tafsir played on its own keep their
   /// own taps.
-  bool _tapJumps(RecitationState r) =>
-      r.active &&
-      !(r.clip?.standalone ?? false) &&
+  bool _tapJumps(bool active, {required bool standalone}) =>
+      active &&
+      !standalone &&
       !_multi &&
       _selA == null &&
       !_recite &&
@@ -1960,7 +2013,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     if (!mounted) return;
     switch (result) {
       case VerseJump.jumped:
-        HapticFeedback.lightImpact();
+        unawaited(HapticFeedback.lightImpact());
       case VerseJump.noTiming:
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
@@ -1986,9 +2039,6 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     }
     return out;
   }
-
-  static Rect? _union(List<Rect>? pieces) =>
-      pieces?.reduce((a, b) => a.expandToInclude(b));
 
   /// Starts listening from the first verse on the current page.
   void _listenFromPage() {
@@ -2049,7 +2099,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       MarkKind.hifz => l.markHifz,
       MarkKind.tadabbur => l.markTadabbur,
     };
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
     // Marks are kept in Hafs numbers; the message names the verse as read.
     final hafs = hafsKeyOf(_riwaya, v);
     await ref
@@ -2163,7 +2213,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
   /// The reader judged a verse: kept for the unit's grade, and saved to
   /// the verse's strength on the hifz map.
   Future<void> _judge(VerseKey v, VerseResult r) async {
-    HapticFeedback.selectionClick();
+    unawaited(HapticFeedback.selectionClick());
     _testStartedAt ??= DateTime.now();
     setState(() => _test.grade(v, r, _pageKeys(_page), _units));
     await saveVerseResults(ref.read(userDatabaseProvider), {v: r});
@@ -2356,7 +2406,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
         if (editionKeyOf(riwaya, m.surah, m.ayah) == v) m,
     ];
     if (here.isEmpty) return _setMark(MarkKind.reading, v, page, auto: true);
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
     for (final m in here) {
       await db.deleteBookmarkSet(m.id);
     }

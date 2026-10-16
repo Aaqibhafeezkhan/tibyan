@@ -25,6 +25,8 @@ import 'package:tibyan/features/mushaf/presentation/widgets/shamarly_page.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/theme_art.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
+import '../testing/bundled_pages.dart';
+
 /// Not a test: draws real text pages of each edition in the heritage
 /// themes' frames, with the theme's verse markers, at a phone size and a
 /// two-page spread, through the app's own frame and page widgets, into
@@ -90,9 +92,7 @@ void main() {
 
       final newDir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
         ..createSync(recursive: true);
-      final newZip = ZipDecoder().decodeBytes(
-        File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-      );
+      final newZip = bundledPagesArchive();
       for (final pg in madina) {
         final e = newZip.findFile('${pg.toString().padLeft(3, '0')}.svg.xz')!;
         File(p.join(newDir.path, e.name)).writeAsBytesSync(e.content);

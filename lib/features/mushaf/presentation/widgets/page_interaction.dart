@@ -168,6 +168,43 @@ class PageInteraction {
   /// A selection handle was dragged over [VerseKey]; `start` is true for
   /// the handle at the beginning of the selection.
   final void Function(bool start, VerseKey verse) onHandleDrag;
+
+  /// The same, with the recitation's verse and word ([RecitedPage]).
+  PageInteraction recited({
+    required Set<VerseKey> selection,
+    required Rect? activeWord,
+  }) => PageInteraction(
+    selection: selection,
+    marks: marks,
+    onTap: onTap,
+    onVerseLongPress: onVerseLongPress,
+    onMarkerTap: onMarkerTap,
+    onHandleDrag: onHandleDrag,
+    markerLook: markerLook,
+    hidden: hidden,
+    hiddenWords: hiddenWords,
+    revealedWords: revealedWords,
+    onHiddenTap: onHiddenTap,
+    ornateOpening: ornateOpening,
+    showHandles: showHandles,
+    divineNames: divineNames,
+    divineColor: divineColor,
+    emphasisLines: emphasisLines,
+    activeWord: activeWord,
+    onVerseTap: onVerseTap,
+    onListenFrom: onListenFrom,
+    touched: touched,
+    touchColor: touchColor,
+    onPick: onPick,
+    verseLabel: verseLabel,
+    verseText: verseText,
+    tajweedColor: tajweedColor,
+    tajweed: tajweed,
+    fill: fill,
+    onPageLongPress: onPageLongPress,
+    wordTints: wordTints,
+    wordOverlay: wordOverlay,
+  );
 }
 
 /// Screen-reader nodes for a page's verses, one per verse over the area

@@ -21,8 +21,9 @@ import '../sync/outbox_writer.dart';
 /// is switched on.
 ///
 /// With [prefs], the reader's settings (`settings.*`: style, edition,
-/// reciter, speed, what shows under the verse…) are saved too, and a
-/// restore puts them back as they were in the file.
+/// reciter, speed, what shows under the verse…) and the choices listed in
+/// [preferenceKeys] are saved too, and a restore puts them back as they
+/// were in the file.
 class Backup {
   Backup(this._db, {this.prefs});
 
@@ -30,6 +31,34 @@ class Backup {
   final SharedPreferences? prefs;
 
   static const settingsPrefix = 'settings.';
+
+  /// The reader's own choices kept outside `settings.*`, saved and
+  /// restored with them. Every other key stays on its device:
+  /// `window.*` (this computer's window), `sync.lastPull` (this device's
+  /// place in the account's changes), `reports.*` (reports waiting to be
+  /// sent, with contact details), `widget.verseOfDay.written` and
+  /// `pending_actions` (the home widgets' state), `tasmee.model*` (what
+  /// the server last said about the recitation model), `search.history`
+  /// (the searches typed, private and of the moment) and
+  /// `khatma.wirdBannerDismissed` (one day's banner). The fasil, the
+  /// bookmarks and the rest of the reader's record are in the database.
+  static const preferenceKeys = {
+    'app.whatsNewSeen',
+    'habits.streakNotes',
+    'search.mode',
+    'tasmee.autoUpdateModel',
+    'tasmee.firstUseSeen',
+    'tasmee.last',
+    'tasmee.mode',
+    'tasmee.onError',
+    'tasmee.strictness',
+    'tasmee.toastSeconds',
+    'tasmee.vibration',
+  };
+
+  /// Whether a backup carries the preference [key].
+  static bool carries(String key) =>
+      key.startsWith(settingsPrefix) || preferenceKeys.contains(key);
 
   static const app = 'tibyan';
   static const format = 1;
@@ -80,7 +109,7 @@ class Backup {
       if (prefs != null)
         'settings': {
           for (final k in prefs.getKeys())
-            if (k.startsWith(settingsPrefix)) k: prefs.get(k),
+            if (carries(k)) k: prefs.get(k),
         },
     });
   }
@@ -131,14 +160,16 @@ class Backup {
     );
   }
 
-  /// Puts the file's settings back; returns how many. Only `settings.*`
-  /// keys of the types the app stores are taken.
+  /// Puts the file's settings back; returns how many. Only the keys a
+  /// backup carries ([carries]) of the types the app stores are taken, so
+  /// a file made before [preferenceKeys] (settings only) restores as it
+  /// did.
   Future<int> _restoreSettings(Object? saved) async {
     final prefs = this.prefs;
     if (prefs == null || saved is! Map) return 0;
     var n = 0;
     for (final MapEntry(:key, :value) in saved.entries) {
-      if (key is! String || !key.startsWith(settingsPrefix)) continue;
+      if (key is! String || !carries(key)) continue;
       final ok = switch (value) {
         bool v => await prefs.setBool(key, v),
         int v => await prefs.setInt(key, v),

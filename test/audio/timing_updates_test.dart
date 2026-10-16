@@ -10,6 +10,8 @@ import 'package:tibyan/core/db/content_database.dart';
 import 'package:tibyan/features/audio/timing_updates.dart';
 import 'package:tibyan/features/mushaf/data/mushaf_repository.dart';
 
+import '../testing/word_timing_fixture.dart';
+
 const _folder = 'https://server11.mp3quran.net/sds/';
 
 /// A pack for al-Sudais (11) holding al-Fatiha only, with times that
@@ -246,9 +248,11 @@ void main() {
 
     test('a downloaded pack wins over content.db for its reciter and surahs '
         'only', () async {
-      final plain = MushafRepository(db);
+      final words = localWordTimingPacks();
+      final plain = MushafRepository(db, const NoTimingOverrides(), words);
       final dbFatiha = await plain.timings(11, 1);
       final dbWords = await plain.wordTimings(11, 1);
+      expect(dbWords, isNotEmpty, reason: 'from the word pack');
       expect(dbFatiha.first.startMs, isNot(3700));
 
       final pack = _pack();
@@ -257,7 +261,7 @@ void main() {
       u.folders = {for (final r in reciters) r.id: r.folderUrl};
       expect(u.folders[11], _folder, reason: 'the pack is for these files');
       await u.refresh();
-      final repo = MushafRepository(db, u);
+      final repo = MushafRepository(db, u, words);
 
       expect((await repo.timings(11, 1)).first.startMs, 3700);
       expect((await repo.wordTimings(11, 1)).first.endMs, 4000);
@@ -276,6 +280,7 @@ void main() {
         (await repo.timings(11, 1)).map((r) => r.startMs),
         dbFatiha.map((r) => r.startMs),
       );
+      // and the words of the reciter's own pack.
       expect(await repo.wordTimings(11, 1), hasLength(dbWords.length));
     });
 

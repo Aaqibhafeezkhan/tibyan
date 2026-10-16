@@ -100,37 +100,55 @@ Future<void> showSaveToFasil(
   );
 }
 
-Future<String?> _askName(BuildContext context) {
-  final l = AppLocalizations.of(context);
-  final field = TextEditingController();
-  return showDialog<String>(
-    context: context,
-    builder: (_) => LookTheme(
-      child: Builder(
-        builder: (dialog) => AlertDialog(
-          title: Text(l.fasilNew),
-          content: TextField(
-            controller: field,
-            autofocus: true,
-            maxLength: 40,
-            decoration: InputDecoration(
-              labelText: l.fasilName,
-              helperText: l.fasilHint,
-            ),
-            onSubmitted: (v) => Navigator.of(dialog).pop(v.trim()),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialog).pop(),
-              child: Text(l.cancel),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.of(dialog).pop(field.text.trim()),
-              child: Text(l.save),
-            ),
-          ],
+Future<String?> _askName(BuildContext context) => showDialog<String>(
+  context: context,
+  builder: (_) => const LookTheme(child: FasilNameDialog()),
+);
+
+/// Asks a new fasil's name; pops it trimmed, or nothing when cancelled.
+/// Owns its text field's controller, released with the dialog.
+@visibleForTesting
+class FasilNameDialog extends StatefulWidget {
+  const FasilNameDialog({super.key});
+
+  @override
+  State<FasilNameDialog> createState() => _FasilNameDialogState();
+}
+
+class _FasilNameDialogState extends State<FasilNameDialog> {
+  final _field = TextEditingController();
+
+  @override
+  void dispose() {
+    _field.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return AlertDialog(
+      title: Text(l.fasilNew),
+      content: TextField(
+        controller: _field,
+        autofocus: true,
+        maxLength: 40,
+        decoration: InputDecoration(
+          labelText: l.fasilName,
+          helperText: l.fasilHint,
         ),
+        onSubmitted: (v) => Navigator.of(context).pop(v.trim()),
       ),
-    ),
-  );
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l.cancel),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.of(context).pop(_field.text.trim()),
+          child: Text(l.save),
+        ),
+      ],
+    );
+  }
 }

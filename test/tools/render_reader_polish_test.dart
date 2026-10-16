@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:archive/archive_io.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -24,6 +23,8 @@ import 'package:tibyan/features/khatma/data/khatma_repository.dart';
 import 'package:tibyan/features/khatma/domain/day.dart';
 import 'package:tibyan/features/khatma/domain/khatma_plan.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
+
+import '../testing/bundled_pages.dart';
 
 /// Not a test: draws the whole app, through its router, at phone, small
 /// phone, Android and laptop sizes into `$READER_POLISH_OUT/<name>.png`:
@@ -85,9 +86,7 @@ void main() {
       final root = Directory.systemTemp.createTempSync('reader_polish');
       final dir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
         ..createSync(recursive: true);
-      final zip = ZipDecoder().decodeStream(
-        InputFileStream('assets/packs/pages-hafs-1441-v1.zip'),
-      );
+      final zip = bundledPagesArchive();
       for (final pg in [1, 2, 3, 50, 51, 52]) {
         final e = zip.findFile('${pg.toString().padLeft(3, '0')}.svg.xz')!;
         File(p.join(dir.path, e.name)).writeAsBytesSync(e.content);

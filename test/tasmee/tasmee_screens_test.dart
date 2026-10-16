@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -144,7 +146,7 @@ void main() {
       lang: lang,
       elderly: elderly,
     );
-    out.$3.push('/tasmee/session', extra: r);
+    unawaited(out.$3.push('/tasmee/session', extra: r));
     await settle(tester, rounds: 8);
     return out;
   }

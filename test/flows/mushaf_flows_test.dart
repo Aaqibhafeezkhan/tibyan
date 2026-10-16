@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:archive/archive_io.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +16,8 @@ import 'package:tibyan/core/settings/settings_controller.dart';
 import 'package:tibyan/core/theme/theme_registry.dart';
 import 'package:tibyan/features/home/whats_new.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
+
+import '../testing/bundled_pages.dart';
 
 /// Whole flows through the app, from the router down: open the mushaf,
 /// select a verse, copy it; turn pages with the keyboard; open the
@@ -35,9 +36,7 @@ void main() {
     root = Directory.systemTemp.createTempSync('flows');
     final dir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
       ..createSync(recursive: true);
-    final zip = ZipDecoder().decodeBytes(
-      File('assets/packs/pages-hafs-1441-v1.zip').readAsBytesSync(),
-    );
+    final zip = bundledPagesArchive();
     for (final name in ['602.svg.xz', '603.svg.xz', '604.svg.xz']) {
       final entry = zip.findFile(name)!;
       File(p.join(dir.path, entry.name)).writeAsBytesSync(entry.content);
