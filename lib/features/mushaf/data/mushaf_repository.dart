@@ -3,6 +3,7 @@ import 'package:drift/drift.dart';
 import '../../../core/db/content_database.dart';
 import '../../../core/settings/app_settings.dart';
 import '../../audio/timing_updates.dart';
+import '../../audio/word_timing_packs.dart';
 import 'riwaya_data.dart';
 import 'tajweed_index.dart';
 
@@ -17,13 +18,21 @@ class JuzStart {
 /// Read-only access to Quran text and layout. All queries are small
 /// (one page or one surah) and run on the database's background isolate.
 class MushafRepository {
-  MushafRepository(this._db, [this._timing = const NoTimingOverrides()]);
+  MushafRepository(
+    this._db, [
+    this._timing = const NoTimingOverrides(),
+    this.words,
+  ]);
 
   final ContentDatabase _db;
 
   /// Corrected timings downloaded since this content.db was built; they
   /// win over its rows for the reciters and surahs they hold.
   final TimingOverrides _timing;
+
+  /// Word timings kept out of content.db, one pack per reciter; null where
+  /// every reciter's words are in content.db (tests).
+  final WordTimingPacks? words;
 
   Future<List<SurahRow>> surahs() =>
       (_db.select(_db.surah)..orderBy([(t) => OrderingTerm.asc(t.id)])).get();
@@ -438,14 +447,30 @@ class MushafRepository {
             ..orderBy([(t) => OrderingTerm.asc(t.ayah)]))
           .get();
 
-  /// Word timings of one surah file, in order of time.
+  /// Word timings of one surah file, in order of time. Empty for a
+  /// reciter whose word pack is not on the device yet
+  /// ([fetchWordTimings]).
   Future<List<WordTimingRow>> wordTimings(int reciter, int surah) async {
-    final pack = await _timing.packFor(reciter, surah);
+    final pack =
+        await _timing.packFor(reciter, surah) ?? await words?.pack(reciter);
     if (pack != null) return pack.wordRows(surah);
     return (_db.select(_db.wordTiming)
           ..where((t) => t.reciter.equals(reciter) & t.surah.equals(surah))
           ..orderBy([(t) => OrderingTerm.asc(t.startMs)]))
         .get();
+  }
+
+  /// Fetches [reciter]'s word pack when it is missing, then gives the word
+  /// timings of [surah]; null when there is nothing to fetch. Offline or
+  /// failing, the result is empty and the verses alone are followed.
+  Future<List<WordTimingRow>>? fetchWordTimings(int reciter, int surah) {
+    final w = words;
+    if (w == null || !w.packed(reciter) || w.has(reciter)) return null;
+    return w
+        .ensure(reciter)
+        .then(
+          (ok) => ok ? wordTimings(reciter, surah) : const <WordTimingRow>[],
+        );
   }
 
   /// The timing version content.db was built with for each reciter whose

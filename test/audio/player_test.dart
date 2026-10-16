@@ -181,6 +181,9 @@ class FakeRepo extends Fake implements MushafRepository {
   @override
   Future<List<WordTimingRow>> wordTimings(int reciter, int surah) async =>
       const [];
+
+  @override
+  Future<List<WordTimingRow>>? fetchWordTimings(int reciter, int surah) => null;
 }
 
 late ThemeRegistry registry;

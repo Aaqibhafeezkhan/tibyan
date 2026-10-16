@@ -9,7 +9,9 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../core/db/content_database.dart';
 import '../../core/downloads/background_downloads.dart';
+import '../mushaf/mushaf_providers.dart';
 import 'recitation.dart';
+import 'word_timing_packs.dart';
 
 /// A recitation's surahs downloaded by the system, like the edition packs:
 /// a whole mushaf in one reciter's voice goes on when the reader leaves the
@@ -21,6 +23,7 @@ class BackgroundRecitations implements DownloadHandler {
   BackgroundRecitations({
     required BackgroundDownloads downloads,
     required this.files,
+    this.words,
     Future<Directory> Function()? supportDir,
   }) : _downloads = downloads,
        _supportDir = supportDir ?? getApplicationSupportDirectory {
@@ -37,6 +40,9 @@ class BackgroundRecitations implements DownloadHandler {
 
   final BackgroundDownloads _downloads;
   final AudioFiles files;
+
+  /// The reciter's word timings come with the reciter's audio.
+  final WordTimingPacks? words;
   final Future<Directory> Function() _supportDir;
   final _placing = <String>{};
 
@@ -95,6 +101,9 @@ class BackgroundRecitations implements DownloadHandler {
     required List<Uri> urls,
     required String displayName,
   }) async {
+    if (words?.packed(reciter.id) ?? false) {
+      unawaited(words!.ensure(reciter.id));
+    }
     if (files.has(reciter.id, surah)) return;
     final id = taskIdFor(reciter.id, surah);
     if (failed(reciter.id, surah)) await _downloads.forget(id);
@@ -280,5 +289,6 @@ final backgroundRecitationsProvider = Provider<BackgroundRecitations>(
   (ref) => BackgroundRecitations(
     downloads: ref.watch(backgroundDownloadsProvider),
     files: ref.watch(audioFilesProvider),
+    words: ref.watch(wordTimingPacksProvider),
   ),
 );

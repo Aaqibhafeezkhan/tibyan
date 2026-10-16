@@ -42,6 +42,8 @@ Usage:
   python3 tools/build_content_db.py
   python3 tools/build_content_db.py qul   # only the new reciters and the QUL timings,
                                           # into the content.db already built
+  python3 tools/build_lean_content.py     # then always: moves the published reciters'
+                                          # word timings to packs and cuts the bundled parts
 """
 import hashlib
 import json
