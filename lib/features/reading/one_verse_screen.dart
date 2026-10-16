@@ -329,7 +329,9 @@ class _OneVerseScreenState extends ConsumerState<OneVerseScreen> {
 
     final c = _controller;
     _tracker.minDwell = Duration(
-      seconds: ref.watch(settingsProvider).readingSpeed.secondsPerPage,
+      seconds: ref
+          .watch(settingsProvider.select((s) => s.readingSpeed))
+          .secondsPerPage,
     );
     return Listener(
       behavior: HitTestBehavior.translucent,
