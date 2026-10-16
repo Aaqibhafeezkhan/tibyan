@@ -328,7 +328,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
   /// of the [verse] pressed (none off a verse), the page's tools, and the
   /// reading tools with the page number. A tap outside closes it.
   Future<void> _openFocusMenu(int page, VerseKey? verse) async {
-    HapticFeedback.selectionClick();
+    unawaited(HapticFeedback.selectionClick());
     _setChrome(false);
     setState(() {
       _selA = _selB = null;
@@ -607,10 +607,12 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     ));
     // Screen readers hear where the turn landed: the surah and the page.
     if (mounted && MediaQuery.accessibleNavigationOf(context)) {
-      SemanticsService.sendAnnouncement(
-        View.of(context),
-        _scrubLabel(context, _page, ref.read(surahsProvider).value),
-        Directionality.of(context),
+      unawaited(
+        SemanticsService.sendAnnouncement(
+          View.of(context),
+          _scrubLabel(context, _page, ref.read(surahsProvider).value),
+          Directionality.of(context),
+        ),
       );
     }
     await ref
@@ -1875,7 +1877,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
   /// same verse, word and letters); any other word says why it has none.
   Future<void> _pickRiwayaWord(RiwayaData riwaya, (int, int, int) hit) async {
     final (surah, ayah, word) = hit;
-    HapticFeedback.selectionClick();
+    unawaited(HapticFeedback.selectionClick());
     setState(() => _pickWord = false);
     final hafs = riwaya.toHafs(surah, ayah);
     (int, int, int)? target;
@@ -1893,7 +1895,14 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       );
       return;
     }
-    showWordStudy(context, surah: target.$1, ayah: target.$2, word: target.$3);
+    unawaited(
+      showWordStudy(
+        context,
+        surah: target.$1,
+        ayah: target.$2,
+        word: target.$3,
+      ),
+    );
   }
 
   /// How near a word's box a touch counts as on it: page units in the SVG
@@ -1960,7 +1969,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     if (!mounted) return;
     switch (result) {
       case VerseJump.jumped:
-        HapticFeedback.lightImpact();
+        unawaited(HapticFeedback.lightImpact());
       case VerseJump.noTiming:
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
@@ -2049,7 +2058,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       MarkKind.hifz => l.markHifz,
       MarkKind.tadabbur => l.markTadabbur,
     };
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
     // Marks are kept in Hafs numbers; the message names the verse as read.
     final hafs = hafsKeyOf(_riwaya, v);
     await ref
@@ -2163,7 +2172,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
   /// The reader judged a verse: kept for the unit's grade, and saved to
   /// the verse's strength on the hifz map.
   Future<void> _judge(VerseKey v, VerseResult r) async {
-    HapticFeedback.selectionClick();
+    unawaited(HapticFeedback.selectionClick());
     _testStartedAt ??= DateTime.now();
     setState(() => _test.grade(v, r, _pageKeys(_page), _units));
     await saveVerseResults(ref.read(userDatabaseProvider), {v: r});
@@ -2356,7 +2365,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
         if (editionKeyOf(riwaya, m.surah, m.ayah) == v) m,
     ];
     if (here.isEmpty) return _setMark(MarkKind.reading, v, page, auto: true);
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
     for (final m in here) {
       await db.deleteBookmarkSet(m.id);
     }

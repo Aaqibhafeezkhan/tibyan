@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -47,7 +49,7 @@ void main() {
     await tester.pump();
     expect(tester.testTextInput.isVisible, isTrue);
 
-    router.push('/index');
+    unawaited(router.push('/index'));
     await tester.pumpAndSettle();
     expect(find.text('no field here'), findsOneWidget);
     expect(tester.testTextInput.isVisible, isFalse);
@@ -59,7 +61,7 @@ void main() {
     final router = await app(tester);
     await tester.tap(find.byKey(const Key('field')));
     await tester.pump();
-    router.push('/index');
+    unawaited(router.push('/index'));
     await tester.pumpAndSettle();
 
     router.pop();
@@ -74,7 +76,7 @@ void main() {
 
   testWidgets('a screen that focuses its own field keeps it', (tester) async {
     final router = await app(tester);
-    router.push('/find');
+    unawaited(router.push('/find'));
     await tester.pumpAndSettle();
     expect(tester.testTextInput.isVisible, isTrue);
   });

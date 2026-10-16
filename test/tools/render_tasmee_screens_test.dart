@@ -279,13 +279,15 @@ void main() {
           lang: lang,
           elderly: elderly,
         );
-        router.push(
-          '/tasmee/session',
-          extra: TasmeeSessionRequest(
-            range: range,
-            words: words,
-            mode: TasmeeMode.continuous,
-            onError: onError,
+        unawaited(
+          router.push(
+            '/tasmee/session',
+            extra: TasmeeSessionRequest(
+              range: range,
+              words: words,
+              mode: TasmeeMode.continuous,
+              onError: onError,
+            ),
           ),
         );
         await settleLong(8);
@@ -323,13 +325,15 @@ void main() {
         }
         if (wanted('stop_to_correct') && style == defaultInterfaceStyle) {
           final (key, router, b, _) = await app(size: phone);
-          router.push(
-            '/tasmee/session',
-            extra: TasmeeSessionRequest(
-              range: range,
-              words: words,
-              mode: TasmeeMode.continuous,
-              onError: ErrorBehavior.stopToCorrect,
+          unawaited(
+            router.push(
+              '/tasmee/session',
+              extra: TasmeeSessionRequest(
+                range: range,
+                words: words,
+                mode: TasmeeMode.continuous,
+                onError: ErrorBehavior.stopToCorrect,
+              ),
             ),
           );
           await settleLong(8);
@@ -350,12 +354,14 @@ void main() {
             size: phone,
             mode: ThemeModeId.night,
           );
-          router.push(
-            '/tasmee/session',
-            extra: TasmeeSessionRequest(
-              range: range,
-              words: words,
-              mode: TasmeeMode.verseByVerse,
+          unawaited(
+            router.push(
+              '/tasmee/session',
+              extra: TasmeeSessionRequest(
+                range: range,
+                words: words,
+                mode: TasmeeMode.verseByVerse,
+              ),
             ),
           );
           await settleLong(8);
@@ -412,12 +418,14 @@ void main() {
             prefs: prefs,
             mode: mode,
           );
-          router.push(
-            '/tasmee/session',
-            extra: TasmeeSessionRequest(
-              range: range,
-              words: words,
-              mode: TasmeeMode.continuous,
+          unawaited(
+            router.push(
+              '/tasmee/session',
+              extra: TasmeeSessionRequest(
+                range: range,
+                words: words,
+                mode: TasmeeMode.continuous,
+              ),
             ),
           );
           await settleLong(10);

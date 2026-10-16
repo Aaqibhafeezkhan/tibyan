@@ -253,7 +253,7 @@ void _startKhatma(ProviderContainer container) {
   // shows them: it never queues anything.
   container.read(backgroundDownloadsProvider).onNotificationTap = () async {
     await container.read(appRouterReadyProvider).future;
-    container.read(appRouterProvider).push('/downloads');
+    unawaited(container.read(appRouterProvider).push('/downloads'));
   };
 
   final reminders = container.read(reminderSchedulerProvider);

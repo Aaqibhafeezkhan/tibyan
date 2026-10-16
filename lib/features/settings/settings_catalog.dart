@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -635,7 +637,7 @@ class _EditionPicker extends ConsumerWidget {
         await ref.read(settingsProvider.notifier).setEdition(v);
         if (!ref.read(installedEditionsProvider).contains(v) &&
             context.mounted) {
-          context.push('/mushaf/download');
+          unawaited(context.push('/mushaf/download'));
         }
       },
       child: Column(
