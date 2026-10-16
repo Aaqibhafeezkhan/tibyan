@@ -201,6 +201,8 @@ class _Layout extends ConsumerWidget {
         material: s.material,
         render: s.render,
         onCount: onCount,
+        count: c.count,
+        roundSize: c.target,
         animate: !reduce,
       ),
       TasbihStyle.lcd => LcdCounterView(

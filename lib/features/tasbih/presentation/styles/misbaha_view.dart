@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 
 import '../../tasbih_settings.dart';
 
@@ -20,6 +19,10 @@ class BeadLook {
   /// Light passing through the bead (amber, pearl), 0..1.
   final double scatter;
 
+  /// The terminal bead: the same material, deeper.
+  static BeadLook terminalOf(BeadLook l) =>
+      BeadLook(Color.lerp(l.base, Colors.black, .28)!, l.shine, l.scatter * .6);
+
   static BeadLook of(BeadMaterial m) => switch (m) {
     BeadMaterial.amber => const BeadLook(Color(0xFFC77A1C), .9, .75),
     BeadMaterial.wood => const BeadLook(Color(0xFF6E4326), .28, 0),
@@ -27,15 +30,21 @@ class BeadLook {
   };
 }
 
-/// «مسبحة ثلاثية الأبعاد»: beads on a string. One bead is pulled down
-/// along the string to the others (a drag, or a tap that does it for the
-/// reader); when it reaches them it counts. A short pull springs back.
+/// «مسبحة ثلاثية الأبعاد»: beads on a string that runs like a conveyor.
+/// Each count moves the whole string down one bead: the bead at the gap
+/// crosses it to the counted beads below and the next bead comes down into
+/// its place. The beads are an endless loop, with the terminal bead at each
+/// round's end. A drag follows the finger; past 40% of the way the bead
+/// goes over (a short ease-out and a light knock on the bead below), short
+/// of that it eases back. Taps and quick flicks queue: none is lost.
 class MisbahaView extends StatefulWidget {
   const MisbahaView({
     super.key,
     required this.material,
     required this.render,
     required this.onCount,
+    this.count = 0,
+    this.roundSize,
     this.animate = true,
   });
 
@@ -43,19 +52,28 @@ class MisbahaView extends StatefulWidget {
   final MisbahaRender render;
   final VoidCallback onCount;
 
-  /// False under reduce-motion: the bead moves without a spring, and the
-  /// string does not sway.
+  /// The counter's count in the round: counts made elsewhere (the volume
+  /// buttons, the keyboard) move the string too.
+  final int count;
+
+  /// The beads to a round (the target); the terminal bead ends each.
+  final int? roundSize;
+
+  /// False under reduce-motion: each count moves the string at once, and
+  /// it does not sway.
   final bool animate;
 
   @override
   State<MisbahaView> createState() => _MisbahaViewState();
 }
 
+/// Where a pull past this share of the way goes over on release.
+const misbahaCommitShare = .4;
+
 class _MisbahaViewState extends State<MisbahaView>
     with TickerProviderStateMixin {
-  /// How far the bead is along the gap: 0 with the upper beads, 1 with
-  /// the lower.
-  late final _pull = AnimationController.unbounded(vsync: this);
+  /// The string's place, in beads: bead `k` is at the gap when it is `k`.
+  late final _phase = AnimationController.unbounded(vsync: this);
 
   /// The string's slow sway (true 3D only).
   late final _sway = AnimationController(
@@ -63,16 +81,25 @@ class _MisbahaViewState extends State<MisbahaView>
     duration: const Duration(seconds: 7),
   );
 
+  /// Counts the string has been asked to move: where it comes to rest.
+  int _k = 0;
+
+  /// The counter's count when the string's bead 0 was at the gap.
+  late int _count0;
+
   /// The gap's length on screen, for the drag.
   double _travel = 1;
-  bool _landing = false;
+  bool _dragging = false;
 
   static ui.FragmentProgram? _program;
   static bool _loading = false;
 
+  int get _modulus => widget.roundSize ?? (1 << 30);
+
   @override
   void initState() {
     super.initState();
+    _count0 = widget.count;
     _syncSway();
     if (!_loading) {
       _loading = true;
@@ -87,6 +114,19 @@ class _MisbahaViewState extends State<MisbahaView>
   void didUpdateWidget(MisbahaView old) {
     super.didUpdateWidget(old);
     _syncSway();
+    // Counts made elsewhere move the string; anything else (a reset, a
+    // new dhikr or target) only re-numbers the beads.
+    final m = _modulus;
+    final expected = (_count0 + _k) % m;
+    final ahead = (widget.count - expected) % m;
+    if (widget.count == expected % m) return;
+    if (widget.roundSize == old.roundSize && ahead > 0 && ahead <= 8) {
+      for (var i = 0; i < ahead; i++) {
+        _advance(count: false);
+      }
+    } else {
+      _count0 = widget.count - _k;
+    }
   }
 
   void _syncSway() {
@@ -100,43 +140,64 @@ class _MisbahaViewState extends State<MisbahaView>
 
   @override
   void dispose() {
-    _pull.dispose();
+    _phase.dispose();
     _sway.dispose();
     super.dispose();
   }
 
-  Future<void> _land() async {
-    if (_landing) return;
-    _landing = true;
-    if (widget.animate) {
-      await _pull.animateTo(
-        1,
-        duration: Duration(
-          milliseconds: (140 * (1 - _pull.value).clamp(.2, 1)).round(),
-        ),
-        curve: Curves.easeIn,
-      );
-    }
-    widget.onCount();
-    // The bead joins the lower ones and the next takes its place: the
-    // beads look alike, so the string is drawn as before.
-    _pull.value = 0;
-    _landing = false;
-  }
-
-  void _springBack(double velocity) {
+  /// One bead over: the string moves to its next rest. With [count] the
+  /// counter counts too (a pull or a tap here).
+  void _advance({bool count = true}) {
+    _k++;
+    if (count) widget.onCount();
     if (!widget.animate) {
-      _pull.value = 0;
+      _phase.value = _k.toDouble();
       return;
     }
-    _pull.animateWith(
-      SpringSimulation(
-        const SpringDescription(mass: 1, stiffness: 420, damping: 22),
-        _pull.value,
-        0,
-        velocity,
+    // Far behind (fast flicks): catch up to one bead before the last.
+    if (_k - _phase.value > 3) _phase.value = _k - 1.0;
+    unawaited(
+      _phase.animateTo(
+        _k.toDouble(),
+        duration: const Duration(milliseconds: 170),
+        curve: const _KnockCurve(),
       ),
     );
+  }
+
+  void _dragStart() {
+    _dragging = true;
+    _phase.stop();
+    _phase.value = _k.toDouble();
+  }
+
+  void _dragUpdate(double dy) {
+    if (!_dragging) return;
+    _phase.value = (_phase.value + dy / _travel).clamp(_k.toDouble(), _k + 1.0);
+    // A pull all the way goes over without waiting for the release, and a
+    // new pull can start on the next bead.
+    if (_phase.value >= _k + 1) {
+      _advance();
+    }
+  }
+
+  void _dragEnd(double velocity) {
+    if (!_dragging) return;
+    _dragging = false;
+    final share = _phase.value - _k;
+    if (share >= misbahaCommitShare || velocity / _travel > 3) {
+      _advance();
+    } else if (widget.animate) {
+      unawaited(
+        _phase.animateTo(
+          _k.toDouble(),
+          duration: const Duration(milliseconds: 160),
+          curve: Curves.easeOut,
+        ),
+      );
+    } else {
+      _phase.value = _k.toDouble();
+    }
   }
 
   @override
@@ -147,39 +208,36 @@ class _MisbahaViewState extends State<MisbahaView>
         _travel = widget.render == MisbahaRender.real
             ? RealMisbahaPainter.travel(size)
             : SuggestedMisbahaPainter.travel(size);
+        final look = BeadLook.of(widget.material);
+        final string = Theme.of(context).colorScheme.onSurfaceVariant;
+        final m = _modulus;
+        // Bead `i` is counted as the round's last (the terminal bead).
+        bool terminal(int i) =>
+            widget.roundSize != null && (_count0 + i + 1) % m == 0;
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: _land,
-          onVerticalDragStart: (_) => _pull.stop(),
-          onVerticalDragUpdate: (d) {
-            if (_landing) return;
-            _pull.value = (_pull.value + d.delta.dy / _travel).clamp(0, 1);
-            if (_pull.value >= 1) unawaited(_land());
-          },
-          onVerticalDragEnd: (d) {
-            if (_landing) return;
-            final v = d.velocity.pixelsPerSecond.dy / _travel;
-            if (_pull.value > .5 || v > 2.5) {
-              unawaited(_land());
-            } else {
-              _springBack(v);
-            }
-          },
+          onTap: _advance,
+          onVerticalDragStart: (_) => _dragStart(),
+          onVerticalDragUpdate: (d) => _dragUpdate(d.delta.dy),
+          onVerticalDragEnd: (d) => _dragEnd(d.velocity.pixelsPerSecond.dy),
+          onVerticalDragCancel: () => _dragEnd(0),
           child: RepaintBoundary(
             child: CustomPaint(
               size: size,
               painter: widget.render == MisbahaRender.real
                   ? RealMisbahaPainter(
-                      pull: _pull,
+                      phase: _phase,
                       sway: _sway,
-                      look: BeadLook.of(widget.material),
+                      look: look,
                       program: _program,
-                      string: Theme.of(context).colorScheme.onSurfaceVariant,
+                      string: string,
+                      terminal: terminal,
                     )
                   : SuggestedMisbahaPainter(
-                      pull: _pull,
-                      look: BeadLook.of(widget.material),
-                      string: Theme.of(context).colorScheme.onSurfaceVariant,
+                      phase: _phase,
+                      look: look,
+                      string: string,
+                      terminal: terminal,
                     ),
             ),
           ),
@@ -188,6 +246,23 @@ class _MisbahaViewState extends State<MisbahaView>
     );
   }
 }
+
+/// An ease-out that runs a little past the end and settles back: the bead
+/// knocking lightly on the one below.
+class _KnockCurve extends Curve {
+  const _KnockCurve();
+
+  @override
+  double transformInternal(double t) {
+    final out = Curves.easeOutCubic.transform(math.min(1, t / .78));
+    if (t <= .78) return out * 1.04;
+    final back = (t - .78) / .22;
+    return 1.04 - .04 * Curves.easeInOut.transform(back);
+  }
+}
+
+/// Whether bead `i` of the endless string is the terminal bead.
+typedef TerminalBead = bool Function(int i);
 
 /// Draws a bead as a flat disc shaded to look round: a radial gradient lit
 /// from [light] (a direction on screen, y down), a glow through it, a
@@ -265,21 +340,24 @@ void paintShadedBead(
 /// the gap between them that the pulled bead crosses.
 class SuggestedMisbahaPainter extends CustomPainter {
   SuggestedMisbahaPainter({
-    required this.pull,
+    required this.phase,
     required this.look,
     required this.string,
-  }) : super(repaint: pull);
+    required this.terminal,
+  }) : super(repaint: phase);
 
-  final Animation<double> pull;
+  /// The string's place, in beads (see [MisbahaView]).
+  final Animation<double> phase;
   final BeadLook look;
   final Color string;
+  final TerminalBead terminal;
 
   static const upper = 7, lower = 5;
 
   static double radius(Size s) =>
       math.min(s.width * .1, s.height / ((upper + lower) * 2 + 5.5));
 
-  /// Pixels from the pulled bead's place to the lower beads.
+  /// Pixels from the bead's place at the gap to the counted beads.
   static double travel(Size s) {
     final r = radius(s);
     final step = r * 1.96;
@@ -288,20 +366,25 @@ class SuggestedMisbahaPainter extends CustomPainter {
     return math.max(1, bottomTop - step - top);
   }
 
+  /// Where along the string a bead `u` beads past the gap is: the beads
+  /// to come above (u <= 0), across the gap (0..1), the counted below.
+  static double yAt(Size s, double u) {
+    final r = radius(s);
+    final step = r * 1.96;
+    final atGap = s.height * .04 + r + (upper - 1) * step;
+    final g = travel(s);
+    if (u <= 0) return atGap + u * step;
+    if (u < 1) return atGap + u * g;
+    return atGap + g + (u - 1) * step;
+  }
+
   double _x(Size s, double y) =>
       s.width / 2 + s.width * .06 * math.sin(math.pi * y / s.height);
 
   @override
   void paint(Canvas canvas, Size size) {
     final r = radius(size);
-    final step = r * 1.96;
-    final y0 = size.height * .04 + r;
-    final active = y0 + (upper - 1) * step + pull.value * travel(size);
-    final ys = [
-      for (var k = 0; k < upper - 1; k++) y0 + k * step,
-      active,
-      for (var j = lower - 1; j >= 0; j--) size.height * .96 - r - j * step,
-    ];
+    final p = phase.value;
     final path = Path()..moveTo(_x(size, 0), 0);
     for (var y = 0.0; y <= size.height; y += 6) {
       path.lineTo(_x(size, y), y);
@@ -313,14 +396,27 @@ class SuggestedMisbahaPainter extends CustomPainter {
         ..strokeWidth = math.max(1.2, r * .08)
         ..color = string.withValues(alpha: .55),
     );
-    for (final y in ys) {
-      paintShadedBead(canvas, Offset(_x(size, y), y), r, look);
+    final first = p.floor() - lower - 2;
+    final last = p.floor() + upper + 2;
+    for (var i = first; i <= last; i++) {
+      final y = yAt(size, p - i);
+      if (y < -2 * r || y > size.height + 2 * r) continue;
+      final end = terminal(i);
+      paintShadedBead(
+        canvas,
+        Offset(_x(size, y), y),
+        end ? r * 1.22 : r,
+        end ? BeadLook.terminalOf(look) : look,
+      );
     }
   }
 
   @override
   bool shouldRepaint(SuggestedMisbahaPainter old) =>
-      old.look != look || old.string != string || old.pull != pull;
+      old.look != look ||
+      old.string != string ||
+      old.phase != phase ||
+      old.terminal != terminal;
 }
 
 /// «ثلاثي الأبعاد حقيقي»: the beads are spheres on a ring in 3D space,
@@ -331,14 +427,17 @@ class SuggestedMisbahaPainter extends CustomPainter {
 /// its near side.
 class RealMisbahaPainter extends CustomPainter {
   RealMisbahaPainter({
-    required this.pull,
+    required this.phase,
     required this.sway,
     required this.look,
     required this.string,
+    required this.terminal,
     this.program,
-  }) : super(repaint: Listenable.merge([pull, sway]));
+  }) : super(repaint: Listenable.merge([phase, sway]));
 
-  final Animation<double> pull;
+  /// The string's place, in beads (see [MisbahaView]).
+  final Animation<double> phase;
+  final TerminalBead terminal;
   final Animation<double> sway;
   final BeadLook look;
   final Color string;
@@ -378,11 +477,23 @@ class RealMisbahaPainter extends CustomPainter {
     }
 
     final half = math.pi / 2;
-    final thetas = [
-      half - gap / 2 + pull.value * gap,
-      for (var k = 1; k <= _upper; k++) half - gap / 2 - k * _step,
-      for (var j = 0; j < beads - 1 - _upper; j++) half + gap / 2 + j * _step,
-    ];
+    // A bead `u` beads past the gap: the beads to come run up and round
+    // the back (u <= 0), one crosses the gap (0..1), the counted run down
+    // and round. The two ends meet at the back, so the ring of [beads]
+    // beads (u in [-12, 12)) turns without a seam.
+    double thetaAt(double u) {
+      if (u <= 0) return half - gap / 2 + u * _step;
+      if (u < 1) return half - gap / 2 + u * gap;
+      return half + gap / 2 + (u - 1) * _step;
+    }
+
+    final p = phase.value;
+    final shown = <(double, bool)>[];
+    for (var i = p.floor() - _upper - 2; i <= p.floor() + beads; i++) {
+      final u = p - i;
+      if (u < -(beads - 1 - _upper) || u >= _upper + 1) continue;
+      shown.add((thetaAt(u), terminal(i)));
+    }
 
     // The ground shadow under the ring.
     canvas.drawOval(
@@ -411,15 +522,16 @@ class RealMisbahaPainter extends CustomPainter {
       ..color = string.withValues(alpha: .5);
     canvas.drawPath(far, cord);
 
-    final placed = [for (final t in thetas) at(t)]
-      ..sort((a, b) => a.$3.compareTo(b.$3));
+    final placed = [for (final (t, end) in shown) (at(t), end)]
+      ..sort((a, b) => a.$1.$3.compareTo(b.$1.$3));
     final program = this.program;
-    while (program != null && _shaders.length < beads) {
+    while (program != null && _shaders.length < beads + 2) {
       _shaders.add(program.fragmentShader());
     }
     var i = 0;
-    for (final (p, k, z) in placed) {
-      final r = bead * k;
+    for (final ((p, k, z), end) in placed) {
+      final r = bead * k * (end ? 1.22 : 1);
+      final look = end ? BeadLook.terminalOf(this.look) : this.look;
       final fade = ((1 - z) / 2).clamp(0.0, 1.0) * .7;
       // Soft contact shadow, away from the light.
       canvas.drawCircle(
@@ -469,5 +581,6 @@ class RealMisbahaPainter extends CustomPainter {
       old.look != look ||
       old.string != string ||
       old.program != program ||
-      old.pull != pull;
+      old.phase != phase ||
+      old.terminal != terminal;
 }
