@@ -3987,9 +3987,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Recitation checking isn\'t available on this device yet. You can carry on with the rest of the app.';
 
   @override
-  String get assistantTileNote => 'Help and how-to';
-
-  @override
   String get menuGo => 'Go';
 
   @override

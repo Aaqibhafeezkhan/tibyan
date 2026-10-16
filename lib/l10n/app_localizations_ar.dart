@@ -4059,9 +4059,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'التسميع بالصوت غير متاح على هذا الجهاز بعد. تقدر تكمل وتستخدم باقي التطبيق.';
 
   @override
-  String get assistantTileNote => 'دليل الاستخدام';
-
-  @override
   String get menuGo => 'انتقال';
 
   @override

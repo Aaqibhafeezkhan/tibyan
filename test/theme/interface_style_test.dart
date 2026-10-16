@@ -217,15 +217,12 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('home: the assistant tile describes the help centre', (
-    tester,
-  ) async {
+  testWidgets('home: no assistant tile; it lives in settings', (tester) async {
     await pump(tester, const HomeScreen());
-    expect(find.text('دليل الاستخدام'), findsOneWidget);
-    expect(find.text('علامات التجويد'), findsNothing);
+    expect(find.text('الأقسام'), findsOneWidget);
+    expect(find.text('المساعد'), findsNothing);
     await pump(tester, const HomeScreen(), english: true);
-    expect(find.text('Help and how-to'), findsOneWidget);
-    expect(find.text('Tajweed marks'), findsNothing);
+    expect(find.text('Assistant'), findsNothing);
   });
 
   for (final style in InterfaceStyle.values) {

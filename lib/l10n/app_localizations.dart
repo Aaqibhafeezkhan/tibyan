@@ -6704,12 +6704,6 @@ abstract class AppLocalizations {
   /// **'التسميع بالصوت غير متاح على هذا الجهاز بعد. تقدر تكمل وتستخدم باقي التطبيق.'**
   String get onbTasmeeUnsupported;
 
-  /// No description provided for @assistantTileNote.
-  ///
-  /// In ar, this message translates to:
-  /// **'دليل الاستخدام'**
-  String get assistantTileNote;
-
   /// No description provided for @menuGo.
   ///
   /// In ar, this message translates to:

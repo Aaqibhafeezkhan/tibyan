@@ -2740,7 +2740,6 @@
   "onbTasmeeChecking": "نتحقق من حجم النموذج…",
   "onbTasmeeManifestFailed": "تعذّر جلب معلومات النموذج. تأكد من اتصالك بالإنترنت ثم أعد المحاولة.",
   "onbTasmeeUnsupported": "التسميع بالصوت غير متاح على هذا الجهاز بعد. تقدر تكمل وتستخدم باقي التطبيق.",
-  "assistantTileNote": "دليل الاستخدام",
   "menuGo": "انتقال",
   "menuPlayback": "التلاوة",
   "menuView": "عرض",

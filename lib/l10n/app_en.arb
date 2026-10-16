@@ -1584,7 +1584,6 @@
   "onbTasmeeChecking": "Checking the model's size…",
   "onbTasmeeManifestFailed": "Couldn't fetch the model's details. Check your connection and try again.",
   "onbTasmeeUnsupported": "Recitation checking isn't available on this device yet. You can carry on with the rest of the app.",
-  "assistantTileNote": "Help and how-to",
   "menuGo": "Go",
   "menuPlayback": "Playback",
   "menuView": "View",

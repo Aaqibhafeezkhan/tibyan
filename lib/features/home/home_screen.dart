@@ -11,7 +11,6 @@ import '../../core/theme/ornaments.dart';
 import '../../core/ui/look_kit.dart';
 import '../../core/ui/surah_name.dart';
 import '../../l10n/app_localizations.dart';
-import '../assistant/assistant_screen.dart';
 import '../hifz/hifz_providers.dart';
 import '../khatma/domain/khatmah.dart' show EntryPoint;
 import '../khatma/khatma_providers.dart';
@@ -112,12 +111,6 @@ class HomeScreen extends ConsumerWidget {
         label: l.tasmeeTitle,
         note: l.tasmeeSelectRange,
         onTap: () => showTasmeeSetup(context),
-      ),
-      (
-        icon: assistantIcon,
-        label: l.assistantTitle,
-        note: l.assistantTileNote,
-        onTap: () => context.push(assistantLocation),
       ),
     ];
 

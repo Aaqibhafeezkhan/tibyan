@@ -158,21 +158,11 @@ void main() {
     expect(find.text('أحكام التجويد: ألوانها ومواضعها'), findsNothing);
   });
 
-  testWidgets('home: the Assistant is a section of the grid and opens it', (
-    tester,
-  ) async {
+  testWidgets('home has no Assistant tile; Settings keeps it', (tester) async {
     await start(tester, '/');
-    await settle(tester, find.text('المساعد'));
-    expect(
-      find.descendant(
-        of: find.byType(GridView),
-        matching: find.text('المساعد'),
-      ),
-      findsOneWidget,
-    );
-    await tester.tap(find.text('المساعد'));
-    await settle(tester, hub);
-    expect(hub, findsOneWidget);
+    await settle(tester, find.text('الأقسام'));
+    expect(find.text('الأقسام'), findsOneWidget);
+    expect(find.text('المساعد'), findsNothing);
   });
 
   testWidgets('elderly home keeps its three actions, without the Assistant', (
