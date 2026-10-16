@@ -4140,4 +4140,238 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get listenOtherRiwayaNote =>
       'لا يتابعها المصحف المفتوح لاختلاف ترقيم الآيات، ولا تُحتسب في الختمة.';
+
+  @override
+  String get sectionTasbih => 'المسبحة';
+
+  @override
+  String get tasbihTitle => 'المسبحة';
+
+  @override
+  String tasbihTileToday(String count) {
+    return 'اليوم $count';
+  }
+
+  @override
+  String get tasbihTileStart => 'ابدأ العدّ';
+
+  @override
+  String get tasbihCountAction => 'عُدّ';
+
+  @override
+  String tasbihCountOf(String count, String target) {
+    return '$count من $target';
+  }
+
+  @override
+  String tasbihRounds(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count دورة',
+      many: '$count دورة',
+      few: '$count دورات',
+      two: 'دورتان',
+      one: 'دورة واحدة',
+      zero: 'لا دورات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String tasbihRoundLabel(String count) {
+    return 'الدورة $count';
+  }
+
+  @override
+  String tasbihRoundClosed(String count) {
+    return 'اكتملت الدورة $count';
+  }
+
+  @override
+  String tasbihTimes(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count مرة',
+      many: '$count مرة',
+      few: '$count مرات',
+      two: 'مرتان',
+      one: 'مرة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tasbihTarget => 'الهدف';
+
+  @override
+  String get tasbihNoTarget => 'بلا هدف';
+
+  @override
+  String get tasbihTargetMore => 'زيادة الهدف';
+
+  @override
+  String get tasbihTargetLess => 'إنقاص الهدف';
+
+  @override
+  String get tasbihReset => 'ابدأ الدورة من جديد';
+
+  @override
+  String get tasbihChooseDhikr => 'اختر الذكر';
+
+  @override
+  String get tasbihAppAdhkar => 'من المصدر';
+
+  @override
+  String get tasbihMyAdhkar => 'أذكاري';
+
+  @override
+  String get tasbihMine => 'من إضافتك';
+
+  @override
+  String get tasbihAddDhikr => 'أضف ذكرًا خاصًا بك';
+
+  @override
+  String get tasbihEditDhikr => 'تعديل الذكر';
+
+  @override
+  String get tasbihDeleteDhikr => 'حذف الذكر';
+
+  @override
+  String get tasbihDhikrText => 'النص';
+
+  @override
+  String get tasbihDhikrTextHint => 'اكتب الذكر كما تحب أن تراه';
+
+  @override
+  String get tasbihDhikrReference => 'المرجع (اختياري)';
+
+  @override
+  String get tasbihMineNote => 'يظهر بعلامة «من إضافتك» ولا يُنسب لأي مصدر.';
+
+  @override
+  String get tasbihSave => 'احفظ الذكر';
+
+  @override
+  String tasbihSourceLine(String source, String license) {
+    return 'المصدر: $source، برخصة $license';
+  }
+
+  @override
+  String get tasbihEmpty => 'لا أذكار بعد. أضف ذكرًا خاصًا بك لتبدأ.';
+
+  @override
+  String get tasbihLog => 'سجل الأيام';
+
+  @override
+  String get tasbihLogHint => 'مجموع كل ذكر في يومه، لآخر ثلاثين يومًا.';
+
+  @override
+  String get tasbihLogEmpty => 'لم تعدّ شيئًا بعد.';
+
+  @override
+  String get tasbihToday => 'اليوم';
+
+  @override
+  String get tasbihYesterday => 'أمس';
+
+  @override
+  String get tasbihDeletedDhikr => 'ذكر محذوف';
+
+  @override
+  String get tasbihDragHint => 'اسحب الحبة لأسفل، أو اضغط';
+
+  @override
+  String get tasbihScreenHint => 'اضغط في أي مكان للعدّ، واسحب لأسفل للخروج';
+
+  @override
+  String get tasbihLcdHint => 'اضغط مطولًا على R لتصفير الدورة';
+
+  @override
+  String get settingsSectionTasbih => 'المسبحة';
+
+  @override
+  String get settingsSectionTasbihHint => 'الشكل والخامة والاهتزاز والصوت';
+
+  @override
+  String get tasbihStyle => 'شكل المسبحة';
+
+  @override
+  String get tasbihStyleMisbaha => 'مسبحة ثلاثية الأبعاد';
+
+  @override
+  String get tasbihStyleButton => 'زر كبير';
+
+  @override
+  String get tasbihStyleLcd => 'عداد إلكتروني';
+
+  @override
+  String get tasbihStyleScreen => 'الشاشة كلها';
+
+  @override
+  String get tasbihSuggestedElderly => 'مقترح لوضع كبار السن';
+
+  @override
+  String get tasbihRender => 'طريقة رسم الحبات';
+
+  @override
+  String get tasbihRenderSuggested => 'إيحاء ثلاثي الأبعاد';
+
+  @override
+  String get tasbihRenderSuggestedHint => 'حبات مظللة، خفيفة على كل الأجهزة';
+
+  @override
+  String get tasbihRenderReal => 'ثلاثي الأبعاد حقيقي';
+
+  @override
+  String get tasbihRenderRealHint => 'كرات في فراغ ثلاثي بمنظور وإضاءة';
+
+  @override
+  String get tasbihMaterial => 'خامة الحبات';
+
+  @override
+  String get tasbihMaterialAmber => 'كهرمان';
+
+  @override
+  String get tasbihMaterialWood => 'خشب';
+
+  @override
+  String get tasbihMaterialPearl => 'لؤلؤ';
+
+  @override
+  String get tasbihHaptics => 'اهتزاز خفيف مع كل عدّة';
+
+  @override
+  String get tasbihHapticsHint => 'واهتزازة أقوى عند تمام الدورة';
+
+  @override
+  String get tasbihSound => 'صوت نقرة الحبة';
+
+  @override
+  String get tasbihKeepScreenOn => 'إبقاء الشاشة مضاءة في المسبحة';
+
+  @override
+  String get tasbihVolumeKeys => 'العدّ بأزرار الصوت';
+
+  @override
+  String get tasbihVolumeKeysHint =>
+      'والمسبحة مفتوحة، كل ضغطة تعدّ ولا يتغير الصوت';
+
+  @override
+  String get tasbihLockScreen => 'العدّ والشاشة مقفلة';
+
+  @override
+  String get tasbihLockScreenHint =>
+      'أندرويد فقط. يعمل بإشعار ظاهر ما دامت المسبحة مفتوحة، ويعدّ بأزرار الصوت والشاشة مقفلة. يستهلك بطارية قليلة، ومغلق افتراضيًا.';
+
+  @override
+  String get tasbihSourcesTitle => 'مصدر أذكار المسبحة';
+
+  @override
+  String get tasbihOpen => 'فتح المسبحة';
+
+  @override
+  String get tasbihClickNote =>
+      'صوت نقرة الحبة مُولَّد برمجيًا داخل المشروع، وهو برخصة CC0.';
 }

@@ -15,6 +15,9 @@ import '../assistant/assistant_screen.dart';
 import '../hifz/hifz_providers.dart';
 import '../khatma/domain/khatmah.dart' show EntryPoint;
 import '../khatma/khatma_providers.dart';
+import '../tasbih/presentation/tasbih_screen.dart'
+    show tasbihIcon, tasbihLocation;
+import '../tasbih/tasbih_providers.dart' show tasbihTodayProvider;
 import '../mushaf/mushaf_providers.dart';
 import '../mushaf/presentation/mushaf_screen.dart';
 import '../mushaf/presentation/widgets/illuminated_frame.dart';
@@ -53,6 +56,7 @@ class HomeScreen extends ConsumerWidget {
       ref.watch(srsItemsProvider).value ?? const [],
       DateTime.now(),
     ).length;
+    final tasbihToday = ref.watch(tasbihTodayProvider);
 
     final sections = <_Section>[
       (
@@ -94,6 +98,14 @@ class HomeScreen extends ConsumerWidget {
         label: l.sectionHifz,
         note: due > 0 ? '${l.hifzToday} ${digits(due)}' : l.hifzTileNote,
         onTap: () => context.push('/hifz'),
+      ),
+      (
+        icon: tasbihIcon,
+        label: l.sectionTasbih,
+        note: tasbihToday > 0
+            ? l.tasbihTileToday(digits(tasbihToday))
+            : l.tasbihTileStart,
+        onTap: () => context.push(tasbihLocation),
       ),
       (
         icon: Icons.graphic_eq,
@@ -900,6 +912,17 @@ class _ElderlyHome extends ConsumerWidget {
                   label: l.hifzJourney,
                   detail: journeyLine(context, ref.watch(journeyProvider)),
                   onTap: () => context.push('/hifz?tab=progress'),
+                ),
+                const SizedBox(height: 16),
+                _BigAction(
+                  icon: tasbihIcon,
+                  label: l.sectionTasbih,
+                  detail: ref.watch(tasbihTodayProvider) > 0
+                      ? l.tasbihTileToday(
+                          digits(ref.watch(tasbihTodayProvider)),
+                        )
+                      : null,
+                  onTap: () => context.push(tasbihLocation),
                 ),
                 const SizedBox(height: 16),
                 _BigAction(

@@ -10,6 +10,7 @@ import '../../../l10n/app_localizations.dart';
 import '../mushaf_providers.dart';
 import '../../tasmee/data/tasmee_backend.dart';
 import 'source_names.dart';
+import '../../tasbih/tasbih_providers.dart' show appAdhkarProvider;
 import '../../../core/ui/responsive.dart';
 
 /// Where the text and pages come from, their licences, and open review notes.
@@ -22,6 +23,7 @@ class AboutMushafScreen extends ConsumerWidget {
     final t = context.tokens.colors;
     final sources = ref.watch(sourcesProvider).value;
     final reviewCount = ref.watch(reviewNoteCountProvider).value;
+    final adhkar = ref.watch(appAdhkarProvider).value;
     final reciters = {
       for (final r in ref.watch(recitersProvider).value ?? const [])
         r.id: Localizations.localeOf(context).languageCode == 'ar'
@@ -194,6 +196,40 @@ class AboutMushafScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
+                  // «المسبحة»: its adhkar's source and the click's licence.
+                  if (adhkar != null)
+                    Card(
+                      child: ExpansionTile(
+                        title: Text(l.tasbihSourcesTitle),
+                        subtitle: Text(
+                          l.licenseLabel(adhkar.source.license),
+                          style: TextStyle(color: t.muted),
+                        ),
+                        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                        childrenPadding: const EdgeInsets.fromLTRB(
+                          16,
+                          0,
+                          16,
+                          16,
+                        ),
+                        children: [
+                          Text(
+                            l.versionShort(
+                              adhkar.source.commit.substring(0, 7),
+                            ),
+                          ),
+                          SelectableText(
+                            adhkar.source.url,
+                            style: TextStyle(color: t.accent),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            l.tasbihClickNote,
+                            style: TextStyle(color: t.muted),
+                          ),
+                        ],
+                      ),
+                    ),
                   Card(
                     child: ExpansionTile(
                       title: Text(l.digitsFontTitle),

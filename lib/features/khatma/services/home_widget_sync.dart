@@ -46,6 +46,7 @@ enum WidgetAction {
   search('search', '/search'),
   khatma('khatma', '/khatma'),
   hifz('hifz', '/hifz'),
+  tasbih('tasbih', '/tasbih'),
   portionDone('portion_done', '/khatma');
 
   const WidgetAction(this.key, this.route);

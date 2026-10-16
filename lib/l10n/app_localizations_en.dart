@@ -4070,4 +4070,235 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get listenOtherRiwayaNote =>
       'The open mushaf does not follow these (their verses are numbered differently), and they count toward no khatma.';
+
+  @override
+  String get sectionTasbih => 'Tasbih';
+
+  @override
+  String get tasbihTitle => 'Tasbih';
+
+  @override
+  String tasbihTileToday(String count) {
+    return 'Today $count';
+  }
+
+  @override
+  String get tasbihTileStart => 'Start counting';
+
+  @override
+  String get tasbihCountAction => 'Count';
+
+  @override
+  String tasbihCountOf(String count, String target) {
+    return '$count of $target';
+  }
+
+  @override
+  String tasbihRounds(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count rounds',
+      one: '$count round',
+      zero: 'No rounds',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String tasbihRoundLabel(String count) {
+    return 'Round $count';
+  }
+
+  @override
+  String tasbihRoundClosed(String count) {
+    return 'Round $count complete';
+  }
+
+  @override
+  String tasbihTimes(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count times',
+      one: '$count time',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tasbihTarget => 'Target';
+
+  @override
+  String get tasbihNoTarget => 'No target';
+
+  @override
+  String get tasbihTargetMore => 'Raise the target';
+
+  @override
+  String get tasbihTargetLess => 'Lower the target';
+
+  @override
+  String get tasbihReset => 'Start the round again';
+
+  @override
+  String get tasbihChooseDhikr => 'Choose a dhikr';
+
+  @override
+  String get tasbihAppAdhkar => 'From the source';
+
+  @override
+  String get tasbihMyAdhkar => 'My adhkar';
+
+  @override
+  String get tasbihMine => 'Added by you';
+
+  @override
+  String get tasbihAddDhikr => 'Add your own dhikr';
+
+  @override
+  String get tasbihEditDhikr => 'Edit dhikr';
+
+  @override
+  String get tasbihDeleteDhikr => 'Delete dhikr';
+
+  @override
+  String get tasbihDhikrText => 'Text';
+
+  @override
+  String get tasbihDhikrTextHint => 'Write the dhikr as you want to see it';
+
+  @override
+  String get tasbihDhikrReference => 'Reference (optional)';
+
+  @override
+  String get tasbihMineNote =>
+      'Shown as “Added by you” and not attributed to any source.';
+
+  @override
+  String get tasbihSave => 'Save dhikr';
+
+  @override
+  String tasbihSourceLine(String source, String license) {
+    return 'Source: $source, $license licence';
+  }
+
+  @override
+  String get tasbihEmpty => 'No adhkar yet. Add your own to start.';
+
+  @override
+  String get tasbihLog => 'Daily log';
+
+  @override
+  String get tasbihLogHint =>
+      'Each dhikr\'s total for its day, for the last thirty days.';
+
+  @override
+  String get tasbihLogEmpty => 'Nothing counted yet.';
+
+  @override
+  String get tasbihToday => 'Today';
+
+  @override
+  String get tasbihYesterday => 'Yesterday';
+
+  @override
+  String get tasbihDeletedDhikr => 'Deleted dhikr';
+
+  @override
+  String get tasbihDragHint => 'Pull a bead down, or tap';
+
+  @override
+  String get tasbihScreenHint => 'Tap anywhere to count; swipe down to leave';
+
+  @override
+  String get tasbihLcdHint => 'Long-press R to reset the round';
+
+  @override
+  String get settingsSectionTasbih => 'Tasbih';
+
+  @override
+  String get settingsSectionTasbihHint => 'Style, beads, vibration, sound';
+
+  @override
+  String get tasbihStyle => 'Style';
+
+  @override
+  String get tasbihStyleMisbaha => '3D misbaha';
+
+  @override
+  String get tasbihStyleButton => 'Big button';
+
+  @override
+  String get tasbihStyleLcd => 'Electronic counter';
+
+  @override
+  String get tasbihStyleScreen => 'Whole screen';
+
+  @override
+  String get tasbihSuggestedElderly => 'Suggested for elderly mode';
+
+  @override
+  String get tasbihRender => 'Bead rendering';
+
+  @override
+  String get tasbihRenderSuggested => 'Suggested 3D';
+
+  @override
+  String get tasbihRenderSuggestedHint => 'Shaded beads, light on every device';
+
+  @override
+  String get tasbihRenderReal => 'True 3D';
+
+  @override
+  String get tasbihRenderRealHint =>
+      'Spheres in 3D space with perspective and lighting';
+
+  @override
+  String get tasbihMaterial => 'Bead material';
+
+  @override
+  String get tasbihMaterialAmber => 'Amber';
+
+  @override
+  String get tasbihMaterialWood => 'Wood';
+
+  @override
+  String get tasbihMaterialPearl => 'Pearl';
+
+  @override
+  String get tasbihHaptics => 'Light vibration with each count';
+
+  @override
+  String get tasbihHapticsHint => 'And a stronger one when a round completes';
+
+  @override
+  String get tasbihSound => 'Bead click sound';
+
+  @override
+  String get tasbihKeepScreenOn => 'Keep the screen on in the misbaha';
+
+  @override
+  String get tasbihVolumeKeys => 'Count with the volume buttons';
+
+  @override
+  String get tasbihVolumeKeysHint =>
+      'While the misbaha is open, each press counts and the volume stays';
+
+  @override
+  String get tasbihLockScreen => 'Count with the screen locked';
+
+  @override
+  String get tasbihLockScreenHint =>
+      'Android only. While the misbaha is open, a visible notification keeps the volume buttons counting with the screen locked. Uses a little battery; off by default.';
+
+  @override
+  String get tasbihSourcesTitle => 'Misbaha adhkar source';
+
+  @override
+  String get tasbihOpen => 'Open the misbaha';
+
+  @override
+  String get tasbihClickNote =>
+      'The bead click is synthesized within the project and released under CC0.';
 }

@@ -6853,6 +6853,402 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لا يتابعها المصحف المفتوح لاختلاف ترقيم الآيات، ولا تُحتسب في الختمة.'**
   String get listenOtherRiwayaNote;
+
+  /// No description provided for @sectionTasbih.
+  ///
+  /// In ar, this message translates to:
+  /// **'المسبحة'**
+  String get sectionTasbih;
+
+  /// No description provided for @tasbihTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'المسبحة'**
+  String get tasbihTitle;
+
+  /// No description provided for @tasbihTileToday.
+  ///
+  /// In ar, this message translates to:
+  /// **'اليوم {count}'**
+  String tasbihTileToday(String count);
+
+  /// No description provided for @tasbihTileStart.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابدأ العدّ'**
+  String get tasbihTileStart;
+
+  /// No description provided for @tasbihCountAction.
+  ///
+  /// In ar, this message translates to:
+  /// **'عُدّ'**
+  String get tasbihCountAction;
+
+  /// No description provided for @tasbihCountOf.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count} من {target}'**
+  String tasbihCountOf(String count, String target);
+
+  /// No description provided for @tasbihRounds.
+  ///
+  /// In ar, this message translates to:
+  /// **'{n, plural, =0{لا دورات} =1{دورة واحدة} =2{دورتان} few{{count} دورات} many{{count} دورة} other{{count} دورة}}'**
+  String tasbihRounds(int n, String count);
+
+  /// No description provided for @tasbihRoundLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'الدورة {count}'**
+  String tasbihRoundLabel(String count);
+
+  /// No description provided for @tasbihRoundClosed.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتملت الدورة {count}'**
+  String tasbihRoundClosed(String count);
+
+  /// No description provided for @tasbihTimes.
+  ///
+  /// In ar, this message translates to:
+  /// **'{n, plural, =1{مرة واحدة} =2{مرتان} few{{count} مرات} many{{count} مرة} other{{count} مرة}}'**
+  String tasbihTimes(int n, String count);
+
+  /// No description provided for @tasbihTarget.
+  ///
+  /// In ar, this message translates to:
+  /// **'الهدف'**
+  String get tasbihTarget;
+
+  /// No description provided for @tasbihNoTarget.
+  ///
+  /// In ar, this message translates to:
+  /// **'بلا هدف'**
+  String get tasbihNoTarget;
+
+  /// No description provided for @tasbihTargetMore.
+  ///
+  /// In ar, this message translates to:
+  /// **'زيادة الهدف'**
+  String get tasbihTargetMore;
+
+  /// No description provided for @tasbihTargetLess.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنقاص الهدف'**
+  String get tasbihTargetLess;
+
+  /// No description provided for @tasbihReset.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابدأ الدورة من جديد'**
+  String get tasbihReset;
+
+  /// No description provided for @tasbihChooseDhikr.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر الذكر'**
+  String get tasbihChooseDhikr;
+
+  /// No description provided for @tasbihAppAdhkar.
+  ///
+  /// In ar, this message translates to:
+  /// **'من المصدر'**
+  String get tasbihAppAdhkar;
+
+  /// No description provided for @tasbihMyAdhkar.
+  ///
+  /// In ar, this message translates to:
+  /// **'أذكاري'**
+  String get tasbihMyAdhkar;
+
+  /// No description provided for @tasbihMine.
+  ///
+  /// In ar, this message translates to:
+  /// **'من إضافتك'**
+  String get tasbihMine;
+
+  /// No description provided for @tasbihAddDhikr.
+  ///
+  /// In ar, this message translates to:
+  /// **'أضف ذكرًا خاصًا بك'**
+  String get tasbihAddDhikr;
+
+  /// No description provided for @tasbihEditDhikr.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعديل الذكر'**
+  String get tasbihEditDhikr;
+
+  /// No description provided for @tasbihDeleteDhikr.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف الذكر'**
+  String get tasbihDeleteDhikr;
+
+  /// No description provided for @tasbihDhikrText.
+  ///
+  /// In ar, this message translates to:
+  /// **'النص'**
+  String get tasbihDhikrText;
+
+  /// No description provided for @tasbihDhikrTextHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتب الذكر كما تحب أن تراه'**
+  String get tasbihDhikrTextHint;
+
+  /// No description provided for @tasbihDhikrReference.
+  ///
+  /// In ar, this message translates to:
+  /// **'المرجع (اختياري)'**
+  String get tasbihDhikrReference;
+
+  /// No description provided for @tasbihMineNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'يظهر بعلامة «من إضافتك» ولا يُنسب لأي مصدر.'**
+  String get tasbihMineNote;
+
+  /// No description provided for @tasbihSave.
+  ///
+  /// In ar, this message translates to:
+  /// **'احفظ الذكر'**
+  String get tasbihSave;
+
+  /// No description provided for @tasbihSourceLine.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصدر: {source}، برخصة {license}'**
+  String tasbihSourceLine(String source, String license);
+
+  /// No description provided for @tasbihEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا أذكار بعد. أضف ذكرًا خاصًا بك لتبدأ.'**
+  String get tasbihEmpty;
+
+  /// No description provided for @tasbihLog.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجل الأيام'**
+  String get tasbihLog;
+
+  /// No description provided for @tasbihLogHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'مجموع كل ذكر في يومه، لآخر ثلاثين يومًا.'**
+  String get tasbihLogHint;
+
+  /// No description provided for @tasbihLogEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم تعدّ شيئًا بعد.'**
+  String get tasbihLogEmpty;
+
+  /// No description provided for @tasbihToday.
+  ///
+  /// In ar, this message translates to:
+  /// **'اليوم'**
+  String get tasbihToday;
+
+  /// No description provided for @tasbihYesterday.
+  ///
+  /// In ar, this message translates to:
+  /// **'أمس'**
+  String get tasbihYesterday;
+
+  /// No description provided for @tasbihDeletedDhikr.
+  ///
+  /// In ar, this message translates to:
+  /// **'ذكر محذوف'**
+  String get tasbihDeletedDhikr;
+
+  /// No description provided for @tasbihDragHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسحب الحبة لأسفل، أو اضغط'**
+  String get tasbihDragHint;
+
+  /// No description provided for @tasbihScreenHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اضغط في أي مكان للعدّ، واسحب لأسفل للخروج'**
+  String get tasbihScreenHint;
+
+  /// No description provided for @tasbihLcdHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اضغط مطولًا على R لتصفير الدورة'**
+  String get tasbihLcdHint;
+
+  /// No description provided for @settingsSectionTasbih.
+  ///
+  /// In ar, this message translates to:
+  /// **'المسبحة'**
+  String get settingsSectionTasbih;
+
+  /// No description provided for @settingsSectionTasbihHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الشكل والخامة والاهتزاز والصوت'**
+  String get settingsSectionTasbihHint;
+
+  /// No description provided for @tasbihStyle.
+  ///
+  /// In ar, this message translates to:
+  /// **'شكل المسبحة'**
+  String get tasbihStyle;
+
+  /// No description provided for @tasbihStyleMisbaha.
+  ///
+  /// In ar, this message translates to:
+  /// **'مسبحة ثلاثية الأبعاد'**
+  String get tasbihStyleMisbaha;
+
+  /// No description provided for @tasbihStyleButton.
+  ///
+  /// In ar, this message translates to:
+  /// **'زر كبير'**
+  String get tasbihStyleButton;
+
+  /// No description provided for @tasbihStyleLcd.
+  ///
+  /// In ar, this message translates to:
+  /// **'عداد إلكتروني'**
+  String get tasbihStyleLcd;
+
+  /// No description provided for @tasbihStyleScreen.
+  ///
+  /// In ar, this message translates to:
+  /// **'الشاشة كلها'**
+  String get tasbihStyleScreen;
+
+  /// No description provided for @tasbihSuggestedElderly.
+  ///
+  /// In ar, this message translates to:
+  /// **'مقترح لوضع كبار السن'**
+  String get tasbihSuggestedElderly;
+
+  /// No description provided for @tasbihRender.
+  ///
+  /// In ar, this message translates to:
+  /// **'طريقة رسم الحبات'**
+  String get tasbihRender;
+
+  /// No description provided for @tasbihRenderSuggested.
+  ///
+  /// In ar, this message translates to:
+  /// **'إيحاء ثلاثي الأبعاد'**
+  String get tasbihRenderSuggested;
+
+  /// No description provided for @tasbihRenderSuggestedHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'حبات مظللة، خفيفة على كل الأجهزة'**
+  String get tasbihRenderSuggestedHint;
+
+  /// No description provided for @tasbihRenderReal.
+  ///
+  /// In ar, this message translates to:
+  /// **'ثلاثي الأبعاد حقيقي'**
+  String get tasbihRenderReal;
+
+  /// No description provided for @tasbihRenderRealHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'كرات في فراغ ثلاثي بمنظور وإضاءة'**
+  String get tasbihRenderRealHint;
+
+  /// No description provided for @tasbihMaterial.
+  ///
+  /// In ar, this message translates to:
+  /// **'خامة الحبات'**
+  String get tasbihMaterial;
+
+  /// No description provided for @tasbihMaterialAmber.
+  ///
+  /// In ar, this message translates to:
+  /// **'كهرمان'**
+  String get tasbihMaterialAmber;
+
+  /// No description provided for @tasbihMaterialWood.
+  ///
+  /// In ar, this message translates to:
+  /// **'خشب'**
+  String get tasbihMaterialWood;
+
+  /// No description provided for @tasbihMaterialPearl.
+  ///
+  /// In ar, this message translates to:
+  /// **'لؤلؤ'**
+  String get tasbihMaterialPearl;
+
+  /// No description provided for @tasbihHaptics.
+  ///
+  /// In ar, this message translates to:
+  /// **'اهتزاز خفيف مع كل عدّة'**
+  String get tasbihHaptics;
+
+  /// No description provided for @tasbihHapticsHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'واهتزازة أقوى عند تمام الدورة'**
+  String get tasbihHapticsHint;
+
+  /// No description provided for @tasbihSound.
+  ///
+  /// In ar, this message translates to:
+  /// **'صوت نقرة الحبة'**
+  String get tasbihSound;
+
+  /// No description provided for @tasbihKeepScreenOn.
+  ///
+  /// In ar, this message translates to:
+  /// **'إبقاء الشاشة مضاءة في المسبحة'**
+  String get tasbihKeepScreenOn;
+
+  /// No description provided for @tasbihVolumeKeys.
+  ///
+  /// In ar, this message translates to:
+  /// **'العدّ بأزرار الصوت'**
+  String get tasbihVolumeKeys;
+
+  /// No description provided for @tasbihVolumeKeysHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'والمسبحة مفتوحة، كل ضغطة تعدّ ولا يتغير الصوت'**
+  String get tasbihVolumeKeysHint;
+
+  /// No description provided for @tasbihLockScreen.
+  ///
+  /// In ar, this message translates to:
+  /// **'العدّ والشاشة مقفلة'**
+  String get tasbihLockScreen;
+
+  /// No description provided for @tasbihLockScreenHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'أندرويد فقط. يعمل بإشعار ظاهر ما دامت المسبحة مفتوحة، ويعدّ بأزرار الصوت والشاشة مقفلة. يستهلك بطارية قليلة، ومغلق افتراضيًا.'**
+  String get tasbihLockScreenHint;
+
+  /// No description provided for @tasbihSourcesTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'مصدر أذكار المسبحة'**
+  String get tasbihSourcesTitle;
+
+  /// No description provided for @tasbihOpen.
+  ///
+  /// In ar, this message translates to:
+  /// **'فتح المسبحة'**
+  String get tasbihOpen;
+
+  /// No description provided for @tasbihClickNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'صوت نقرة الحبة مُولَّد برمجيًا داخل المشروع، وهو برخصة CC0.'**
+  String get tasbihClickNote;
 }
 
 class _AppLocalizationsDelegate

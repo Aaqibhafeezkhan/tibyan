@@ -207,11 +207,35 @@
   "downloadsSectionRecitations": "Recitations",
   "downloadsSectionResources": "Resources",
   "downloadsOnDevice": "On the device · {size} MB",
-  "@downloadsOnDevice": {"placeholders": {"size": {"type": "String"}}},
+  "@downloadsOnDevice": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "downloadsAvailable": "Available · {size} MB",
-  "@downloadsAvailable": {"placeholders": {"size": {"type": "String"}}},
+  "@downloadsAvailable": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "downloadsReciterOnDevice": "On the device: {done} / {total} · {size} MB",
-  "@downloadsReciterOnDevice": {"placeholders": {"done": {"type": "String"}, "total": {"type": "String"}, "size": {"type": "String"}}},
+  "@downloadsReciterOnDevice": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "downloadsAvailableShort": "Available",
   "downloadsGoesOn": "The download goes on in the background",
   "pause": "Pause",
@@ -1584,5 +1608,71 @@
   "listenNowPlaying": "Now playing",
   "listenChooseReciter": "Choose a reciter",
   "listenSurahs": "Surahs",
-  "listenOtherRiwayaNote": "The open mushaf does not follow these (their verses are numbered differently), and they count toward no khatma."
+  "listenOtherRiwayaNote": "The open mushaf does not follow these (their verses are numbered differently), and they count toward no khatma.",
+  "sectionTasbih": "Tasbih",
+  "tasbihTitle": "Tasbih",
+  "tasbihTileToday": "Today {count}",
+  "tasbihTileStart": "Start counting",
+  "tasbihCountAction": "Count",
+  "tasbihCountOf": "{count} of {target}",
+  "tasbihRounds": "{n, plural, =0{No rounds} =1{{count} round} other{{count} rounds}}",
+  "tasbihRoundLabel": "Round {count}",
+  "tasbihRoundClosed": "Round {count} complete",
+  "tasbihTimes": "{n, plural, =1{{count} time} other{{count} times}}",
+  "tasbihTarget": "Target",
+  "tasbihNoTarget": "No target",
+  "tasbihTargetMore": "Raise the target",
+  "tasbihTargetLess": "Lower the target",
+  "tasbihReset": "Start the round again",
+  "tasbihChooseDhikr": "Choose a dhikr",
+  "tasbihAppAdhkar": "From the source",
+  "tasbihMyAdhkar": "My adhkar",
+  "tasbihMine": "Added by you",
+  "tasbihAddDhikr": "Add your own dhikr",
+  "tasbihEditDhikr": "Edit dhikr",
+  "tasbihDeleteDhikr": "Delete dhikr",
+  "tasbihDhikrText": "Text",
+  "tasbihDhikrTextHint": "Write the dhikr as you want to see it",
+  "tasbihDhikrReference": "Reference (optional)",
+  "tasbihMineNote": "Shown as “Added by you” and not attributed to any source.",
+  "tasbihSave": "Save dhikr",
+  "tasbihSourceLine": "Source: {source}, {license} licence",
+  "tasbihEmpty": "No adhkar yet. Add your own to start.",
+  "tasbihLog": "Daily log",
+  "tasbihLogHint": "Each dhikr's total for its day, for the last thirty days.",
+  "tasbihLogEmpty": "Nothing counted yet.",
+  "tasbihToday": "Today",
+  "tasbihYesterday": "Yesterday",
+  "tasbihDeletedDhikr": "Deleted dhikr",
+  "tasbihDragHint": "Pull a bead down, or tap",
+  "tasbihScreenHint": "Tap anywhere to count; swipe down to leave",
+  "tasbihLcdHint": "Long-press R to reset the round",
+  "settingsSectionTasbih": "Tasbih",
+  "settingsSectionTasbihHint": "Style, beads, vibration, sound",
+  "tasbihStyle": "Style",
+  "tasbihStyleMisbaha": "3D misbaha",
+  "tasbihStyleButton": "Big button",
+  "tasbihStyleLcd": "Electronic counter",
+  "tasbihStyleScreen": "Whole screen",
+  "tasbihSuggestedElderly": "Suggested for elderly mode",
+  "tasbihRender": "Bead rendering",
+  "tasbihRenderSuggested": "Suggested 3D",
+  "tasbihRenderSuggestedHint": "Shaded beads, light on every device",
+  "tasbihRenderReal": "True 3D",
+  "tasbihRenderRealHint": "Spheres in 3D space with perspective and lighting",
+  "tasbihMaterial": "Bead material",
+  "tasbihMaterialAmber": "Amber",
+  "tasbihMaterialWood": "Wood",
+  "tasbihMaterialPearl": "Pearl",
+  "tasbihHaptics": "Light vibration with each count",
+  "tasbihHapticsHint": "And a stronger one when a round completes",
+  "tasbihSound": "Bead click sound",
+  "tasbihKeepScreenOn": "Keep the screen on in the misbaha",
+  "tasbihVolumeKeys": "Count with the volume buttons",
+  "tasbihVolumeKeysHint": "While the misbaha is open, each press counts and the volume stays",
+  "tasbihLockScreen": "Count with the screen locked",
+  "tasbihLockScreenHint": "Android only. While the misbaha is open, a visible notification keeps the volume buttons counting with the screen locked. Uses a little battery; off by default.",
+  "tasbihSourcesTitle": "Misbaha adhkar source",
+  "tasbihOpen": "Open the misbaha",
+  "tasbihClickNote": "The bead click is synthesized within the project and released under CC0."
 }

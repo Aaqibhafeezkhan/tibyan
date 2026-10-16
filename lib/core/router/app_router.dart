@@ -39,6 +39,8 @@ import '../../features/settings/settings_section_screen.dart';
 import '../../features/settings/player_settings_screen.dart';
 import '../../features/splash/splash_screen.dart';
 import '../../features/tafsir/tafsir_screen.dart';
+import '../../features/tasbih/presentation/tasbih_log_screen.dart';
+import '../../features/tasbih/presentation/tasbih_screen.dart';
 import '../../features/reading/continuous_screen.dart';
 import '../../features/reading/one_verse_screen.dart';
 import '../../features/tasmee/domain/tasmee_session_request.dart';
@@ -225,6 +227,17 @@ final appRouterProvider = Provider<GoRouter>(
             path: 'journal',
             builder: (context, state) =>
                 const LookTheme(child: JournalScreen()),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: tasbihLocation,
+        builder: (context, state) => const LookTheme(child: TasbihScreen()),
+        routes: [
+          GoRoute(
+            path: 'log',
+            builder: (context, state) =>
+                const LookTheme(child: TasbihLogScreen()),
           ),
         ],
       ),

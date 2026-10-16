@@ -17,16 +17,20 @@ import '../mushaf/presentation/widgets/download_all_button.dart';
 import '../mushaf/presentation/widgets/edition_badge.dart';
 import '../mushaf/presentation/widgets/tajweed_legend.dart';
 import 'report/report_screen.dart' show reportLocation;
+import '../tasbih/presentation/tasbih_screen.dart'
+    show tasbihIcon, tasbihLocation;
+import '../tasbih/presentation/tasbih_settings_tiles.dart';
 import 'home_widgets_card.dart';
 import 'settings_widgets.dart';
 
-/// The eight tiles of the settings grid, each opening its own screen.
+/// The nine tiles of the settings grid, each opening its own screen.
 enum SettingsSection {
   appearance(Icons.palette_outlined),
   mushaf(Icons.auto_stories_outlined),
   listening(Icons.headphones_outlined),
   hifz(Icons.graphic_eq),
   khatma(Icons.event_repeat_outlined),
+  tasbih(tasbihIcon),
   storage(Icons.inventory_2_outlined),
   assistant(Icons.lightbulb_outline),
   about(Icons.info_outline);
@@ -43,6 +47,7 @@ enum SettingsSection {
     listening => l.settingsSectionListening,
     hifz => l.settingsSectionHifz,
     khatma => l.settingsSectionKhatma,
+    tasbih => l.settingsSectionTasbih,
     storage => l.settingsSectionStorage,
     assistant => l.settingsSectionAssistant,
     about => l.settingsSectionAbout,
@@ -54,6 +59,7 @@ enum SettingsSection {
     listening => l.settingsSectionListeningHint,
     hifz => l.settingsSectionHifzHint,
     khatma => l.settingsSectionKhatmaHint,
+    tasbih => l.settingsSectionTasbihHint,
     storage => l.settingsSectionStorageHint,
     assistant => l.settingsSectionAssistantHint,
     about => l.settingsSectionAboutHint,
@@ -402,6 +408,109 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
           onTap: () => c.push('/khatma/journal'),
         ),
         keywords: 'تدبر ملاحظات journal notes',
+      ),
+    ]),
+  ],
+  SettingsSection.tasbih: [
+    SettingsGroup(tasbihIcon, (l) => l.tasbihStyle, [
+      SettingEntry(
+        'tasbihOpen',
+        (l) => l.tasbihOpen,
+        (c, r) => SettingsNavTile(
+          icon: tasbihIcon,
+          title: AppLocalizations.of(c).tasbihOpen,
+          onTap: () => c.push(tasbihLocation),
+        ),
+        keywords:
+            'مسبحة سبحة تسبيح ذكر أذكار عداد tasbih misbaha dhikr counter',
+      ),
+      SettingEntry(
+        'tasbihStyle',
+        (l) => l.tasbihStyle,
+        (c, r) => const TasbihStylePicker(),
+        keywords:
+            'مسبحة شكل زر عداد إلكتروني الشاشة tasbih style button lcd screen',
+      ),
+      SettingEntry(
+        'tasbihRender',
+        (l) => l.tasbihRender,
+        (c, r) => const TasbihRenderPicker(),
+        keywords: 'ثلاثي الأبعاد حبات رسم 3d render beads',
+      ),
+      SettingEntry(
+        'tasbihMaterial',
+        (l) => l.tasbihMaterial,
+        (c, r) => const BeadMaterialPicker(),
+        keywords: 'خامة كهرمان خشب لؤلؤ material amber wood pearl beads',
+      ),
+    ]),
+    SettingsGroup(Icons.vibration, (l) => l.settingsSectionTasbih, [
+      SettingEntry(
+        'tasbihHaptics',
+        (l) => l.tasbihHaptics,
+        (c, r) => TasbihSwitch(
+          title: (l) => l.tasbihHaptics,
+          hint: (l) => l.tasbihHapticsHint,
+          value: (s) => s.haptics,
+          set: (ctrl, v) => ctrl.setHaptics(v),
+        ),
+        keywords: 'اهتزاز مسبحة haptic vibration tasbih',
+      ),
+      SettingEntry(
+        'tasbihSound',
+        (l) => l.tasbihSound,
+        (c, r) => TasbihSwitch(
+          title: (l) => l.tasbihSound,
+          value: (s) => s.sound,
+          set: (ctrl, v) => ctrl.setSound(v),
+        ),
+        keywords: 'صوت نقرة مسبحة sound click tasbih',
+      ),
+      SettingEntry(
+        'tasbihKeepScreenOn',
+        (l) => l.tasbihKeepScreenOn,
+        (c, r) => TasbihSwitch(
+          title: (l) => l.tasbihKeepScreenOn,
+          value: (s) => s.keepScreenOn,
+          set: (ctrl, v) => ctrl.setKeepScreenOn(v),
+        ),
+        keywords: 'الشاشة مضاءة مسبحة screen on awake tasbih',
+      ),
+      SettingEntry(
+        'tasbihVolumeKeys',
+        (l) => l.tasbihVolumeKeys,
+        (c, r) => TasbihSwitch(
+          title: (l) => l.tasbihVolumeKeys,
+          hint: (l) => l.tasbihVolumeKeysHint,
+          value: (s) => s.volumeKeys,
+          set: (ctrl, v) => ctrl.setVolumeKeys(v),
+        ),
+        keywords: 'أزرار الصوت مسبحة volume buttons keys tasbih',
+      ),
+      SettingEntry(
+        'tasbihLockScreen',
+        (l) => l.tasbihLockScreen,
+        (c, r) => lockScreenCountingAvailable
+            ? TasbihSwitch(
+                title: (l) => l.tasbihLockScreen,
+                hint: (l) => l.tasbihLockScreenHint,
+                value: (s) => s.lockScreen,
+                set: (ctrl, v) => ctrl.setLockScreen(v),
+              )
+            : const SizedBox.shrink(),
+        keywords:
+            'قفل الشاشة مقفلة إشعار مسبحة lock screen notification tasbih',
+      ),
+      SettingEntry(
+        'tasbihLog',
+        (l) => l.tasbihLog,
+        (c, r) => SettingsNavTile(
+          icon: Icons.event_note_outlined,
+          title: AppLocalizations.of(c).tasbihLog,
+          subtitle: AppLocalizations.of(c).tasbihLogHint,
+          onTap: () => c.push('$tasbihLocation/log'),
+        ),
+        keywords: 'سجل الأيام مسبحة log history tasbih',
       ),
     ]),
   ],

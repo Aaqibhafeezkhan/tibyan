@@ -350,11 +350,35 @@
   "downloadsSectionRecitations": "القراءات الصوتية",
   "downloadsSectionResources": "الموارد",
   "downloadsOnDevice": "على الجهاز · {size} ميجا",
-  "@downloadsOnDevice": {"placeholders": {"size": {"type": "String"}}},
+  "@downloadsOnDevice": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "downloadsAvailable": "متاح للتحميل · {size} ميجا",
-  "@downloadsAvailable": {"placeholders": {"size": {"type": "String"}}},
+  "@downloadsAvailable": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "downloadsReciterOnDevice": "على الجهاز: {done} / {total} · {size} ميجا",
-  "@downloadsReciterOnDevice": {"placeholders": {"done": {"type": "String"}, "total": {"type": "String"}, "size": {"type": "String"}}},
+  "@downloadsReciterOnDevice": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "downloadsAvailableShort": "متاح للتحميل",
   "downloadsGoesOn": "يكمل التحميل في الخلفية",
   "pause": "إيقاف مؤقت",
@@ -2679,16 +2703,37 @@
   "reportContactNote": "نستخدم الهاتف والبريد للرد عليك فقط إن كتبتهما.",
   "reportDeviceTitle": "يُرفق مع البلاغ",
   "reportDeviceVersion": "إصدار التطبيق: {version}",
-  "@reportDeviceVersion": {"placeholders": {"version": {"type": "String"}}},
+  "@reportDeviceVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "reportDeviceSystem": "النظام: {platform} {os}",
-  "@reportDeviceSystem": {"placeholders": {"platform": {"type": "String"}, "os": {"type": "String"}}},
+  "@reportDeviceSystem": {
+    "placeholders": {
+      "platform": {
+        "type": "String"
+      },
+      "os": {
+        "type": "String"
+      }
+    }
+  },
   "reportSend": "إرسال البلاغ",
   "reportSent": "وصل بلاغك، شكرا لك.",
   "reportQueued": "لا اتصال الآن. حُفظ البلاغ وسيُرسل وحده حين يعود الاتصال.",
   "reportFailed": "تعذّر إرسال البلاغ. راجع ما كتبت وحاول مرة أخرى.",
   "reportRateLimited": "أرسلت بلاغات كثيرة للتو. حاول بعد قليل.",
   "reportPendingCount": "بلاغات تنتظر الإرسال: {n}",
-  "@reportPendingCount": {"placeholders": {"n": {"type": "int"}}},
+  "@reportPendingCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "helpGroupUsage": "استخدام التطبيق",
   "helpGroupMarks": "التجويد والضبط",
   "helpGroupFaq": "أسئلة شائعة وحلول",
@@ -2719,6 +2764,139 @@
   "listenNowPlaying": "تُتلى الآن",
   "listenChooseReciter": "اختر القارئ",
   "listenSurahs": "السور",
-  "@playSurahNamed": {"placeholders": {"surah": {"type": "String"}}},
-  "listenOtherRiwayaNote": "لا يتابعها المصحف المفتوح لاختلاف ترقيم الآيات، ولا تُحتسب في الختمة."
+  "@playSurahNamed": {
+    "placeholders": {
+      "surah": {
+        "type": "String"
+      }
+    }
+  },
+  "listenOtherRiwayaNote": "لا يتابعها المصحف المفتوح لاختلاف ترقيم الآيات، ولا تُحتسب في الختمة.",
+  "sectionTasbih": "المسبحة",
+  "tasbihTitle": "المسبحة",
+  "tasbihTileToday": "اليوم {count}",
+  "@tasbihTileToday": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tasbihTileStart": "ابدأ العدّ",
+  "tasbihCountAction": "عُدّ",
+  "tasbihCountOf": "{count} من {target}",
+  "@tasbihCountOf": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "tasbihRounds": "{n, plural, =0{لا دورات} =1{دورة واحدة} =2{دورتان} few{{count} دورات} many{{count} دورة} other{{count} دورة}}",
+  "@tasbihRounds": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tasbihRoundLabel": "الدورة {count}",
+  "@tasbihRoundLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tasbihRoundClosed": "اكتملت الدورة {count}",
+  "@tasbihRoundClosed": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tasbihTimes": "{n, plural, =1{مرة واحدة} =2{مرتان} few{{count} مرات} many{{count} مرة} other{{count} مرة}}",
+  "@tasbihTimes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tasbihTarget": "الهدف",
+  "tasbihNoTarget": "بلا هدف",
+  "tasbihTargetMore": "زيادة الهدف",
+  "tasbihTargetLess": "إنقاص الهدف",
+  "tasbihReset": "ابدأ الدورة من جديد",
+  "tasbihChooseDhikr": "اختر الذكر",
+  "tasbihAppAdhkar": "من المصدر",
+  "tasbihMyAdhkar": "أذكاري",
+  "tasbihMine": "من إضافتك",
+  "tasbihAddDhikr": "أضف ذكرًا خاصًا بك",
+  "tasbihEditDhikr": "تعديل الذكر",
+  "tasbihDeleteDhikr": "حذف الذكر",
+  "tasbihDhikrText": "النص",
+  "tasbihDhikrTextHint": "اكتب الذكر كما تحب أن تراه",
+  "tasbihDhikrReference": "المرجع (اختياري)",
+  "tasbihMineNote": "يظهر بعلامة «من إضافتك» ولا يُنسب لأي مصدر.",
+  "tasbihSave": "احفظ الذكر",
+  "tasbihSourceLine": "المصدر: {source}، برخصة {license}",
+  "@tasbihSourceLine": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      },
+      "license": {
+        "type": "String"
+      }
+    }
+  },
+  "tasbihEmpty": "لا أذكار بعد. أضف ذكرًا خاصًا بك لتبدأ.",
+  "tasbihLog": "سجل الأيام",
+  "tasbihLogHint": "مجموع كل ذكر في يومه، لآخر ثلاثين يومًا.",
+  "tasbihLogEmpty": "لم تعدّ شيئًا بعد.",
+  "tasbihToday": "اليوم",
+  "tasbihYesterday": "أمس",
+  "tasbihDeletedDhikr": "ذكر محذوف",
+  "tasbihDragHint": "اسحب الحبة لأسفل، أو اضغط",
+  "tasbihScreenHint": "اضغط في أي مكان للعدّ، واسحب لأسفل للخروج",
+  "tasbihLcdHint": "اضغط مطولًا على R لتصفير الدورة",
+  "settingsSectionTasbih": "المسبحة",
+  "settingsSectionTasbihHint": "الشكل والخامة والاهتزاز والصوت",
+  "tasbihStyle": "شكل المسبحة",
+  "tasbihStyleMisbaha": "مسبحة ثلاثية الأبعاد",
+  "tasbihStyleButton": "زر كبير",
+  "tasbihStyleLcd": "عداد إلكتروني",
+  "tasbihStyleScreen": "الشاشة كلها",
+  "tasbihSuggestedElderly": "مقترح لوضع كبار السن",
+  "tasbihRender": "طريقة رسم الحبات",
+  "tasbihRenderSuggested": "إيحاء ثلاثي الأبعاد",
+  "tasbihRenderSuggestedHint": "حبات مظللة، خفيفة على كل الأجهزة",
+  "tasbihRenderReal": "ثلاثي الأبعاد حقيقي",
+  "tasbihRenderRealHint": "كرات في فراغ ثلاثي بمنظور وإضاءة",
+  "tasbihMaterial": "خامة الحبات",
+  "tasbihMaterialAmber": "كهرمان",
+  "tasbihMaterialWood": "خشب",
+  "tasbihMaterialPearl": "لؤلؤ",
+  "tasbihHaptics": "اهتزاز خفيف مع كل عدّة",
+  "tasbihHapticsHint": "واهتزازة أقوى عند تمام الدورة",
+  "tasbihSound": "صوت نقرة الحبة",
+  "tasbihKeepScreenOn": "إبقاء الشاشة مضاءة في المسبحة",
+  "tasbihVolumeKeys": "العدّ بأزرار الصوت",
+  "tasbihVolumeKeysHint": "والمسبحة مفتوحة، كل ضغطة تعدّ ولا يتغير الصوت",
+  "tasbihLockScreen": "العدّ والشاشة مقفلة",
+  "tasbihLockScreenHint": "أندرويد فقط. يعمل بإشعار ظاهر ما دامت المسبحة مفتوحة، ويعدّ بأزرار الصوت والشاشة مقفلة. يستهلك بطارية قليلة، ومغلق افتراضيًا.",
+  "tasbihSourcesTitle": "مصدر أذكار المسبحة",
+  "tasbihOpen": "فتح المسبحة",
+  "tasbihClickNote": "صوت نقرة الحبة مُولَّد برمجيًا داخل المشروع، وهو برخصة CC0."
 }

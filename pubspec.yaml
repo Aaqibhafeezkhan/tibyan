@@ -102,6 +102,7 @@ flutter:
   shaders:
     - shaders/page_curl.frag
     - shaders/page_curl_spread.frag
+    - shaders/bead.frag
 
   assets:
     - assets/themes/
@@ -111,6 +112,7 @@ flutter:
     - assets/ornaments/
     - assets/packs/
     - assets/brand/
+    - assets/tasbih/
 
   fonts:
     # Interface digits (Western, Arabic-Indic, Persian), named ahead of
