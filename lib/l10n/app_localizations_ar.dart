@@ -1306,14 +1306,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get khatmaCountWirdConfirmSubtitle =>
-      'تأكيد يدوي عند إتمام ورد اليوم لمنع الاحتساب الوهمي';
+      'لا يُحتسب ورد اليوم إلا بعد أن تؤكد إتمامه بنفسك';
 
   @override
-  String get wirdConfirmDone => 'تأكيد إتمام الورد ✓';
+  String get wirdConfirmDone => 'تأكيد إتمام الورد';
 
   @override
-  String get wirdCompletedCelebration =>
-      'مبارك! تم تسجيل إتمام ورد اليوم بنجاح 🌿';
+  String get wirdCompletedCelebration => 'مبارك! سُجِّل إتمام ورد اليوم';
 
   @override
   String get wirdEndOfPortion => 'وصلت لنهاية ورد اليوم';
@@ -1322,7 +1321,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get wirdEndOfPortionQuestion => 'هل أتممت قراءة ورد اليوم؟';
 
   @override
-  String get wirdCompletedToday => 'تم إتمام ورد اليوم ✓';
+  String get wirdCompletedToday => 'تم إتمام ورد اليوم';
 
   @override
   String get wirdLater => 'لاحقاً';
@@ -2152,6 +2151,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get unknownAuthor => 'مصوّر غير معروف';
+
+  @override
+  String get reciterPhotoWithPermission =>
+      'استُخدمت بإذن حصل عليه مالك المشروع';
 
   @override
   String get otherRiwayaReciters => 'قرّاء الروايات الأخرى';

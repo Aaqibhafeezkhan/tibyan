@@ -1285,14 +1285,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get khatmaCountWirdConfirmSubtitle =>
-      'Manual confirmation when finishing today\'s wird to prevent phantom counting';
+      'Today\'s wird counts only once you confirm you finished it';
 
   @override
-  String get wirdConfirmDone => 'Confirm Wird Completion ✓';
+  String get wirdConfirmDone => 'Confirm wird completion';
 
   @override
   String get wirdCompletedCelebration =>
-      'Congratulations! Today\'s wird marked as complete 🌿';
+      'Congratulations! Today\'s wird is marked complete';
 
   @override
   String get wirdEndOfPortion => 'End of today\'s wird reached';
@@ -1301,7 +1301,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wirdEndOfPortionQuestion => 'Have you completed today\'s wird?';
 
   @override
-  String get wirdCompletedToday => 'Today\'s wird completed ✓';
+  String get wirdCompletedToday => 'Today\'s wird completed';
 
   @override
   String get wirdLater => 'Later';
@@ -2112,6 +2112,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unknownAuthor => 'Unknown author';
+
+  @override
+  String get reciterPhotoWithPermission =>
+      'Used with permission obtained by the project owner';
 
   @override
   String get otherRiwayaReciters => 'Reciters of other riwayat';

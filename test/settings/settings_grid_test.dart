@@ -148,24 +148,27 @@ void main() {
     );
   });
 
-  test('tasmee settings draws one entry in hifz; model and train are searchable', () {
-    final tasmeeGroup = SettingsSection.hifz.groups.firstWhere(
-      (g) => g.entries.any((e) => e.id == 'tasmee'),
-    );
-    final drawn = [
-      for (final e in tasmeeGroup.entries)
-        if (e.link == null) e.id,
-    ];
-    expect(drawn, ['tasmee']);
-    expect(
-      searchSettings('نموذج التسميع').map((h) => h.$2.id),
-      contains('tasmeeModel'),
-    );
-    expect(
-      searchSettings('تدريب').map((h) => h.$2.id),
-      contains('tasmeeTrain'),
-    );
-  });
+  test(
+    'tasmee settings draws one entry in hifz; model and train are searchable',
+    () {
+      final tasmeeGroup = SettingsSection.hifz.groups.firstWhere(
+        (g) => g.entries.any((e) => e.id == 'tasmee'),
+      );
+      final drawn = [
+        for (final e in tasmeeGroup.entries)
+          if (e.link == null) e.id,
+      ];
+      expect(drawn, ['tasmee']);
+      expect(
+        searchSettings('نموذج التسميع').map((h) => h.$2.id),
+        contains('tasmeeModel'),
+      );
+      expect(
+        searchSettings('تدريب').map((h) => h.$2.id),
+        contains('tasmeeTrain'),
+      );
+    },
+  );
 
   test('the training card is found by its words', () {
     for (final q in ['تدريب', 'تسجيلات', 'ساهم', 'training']) {

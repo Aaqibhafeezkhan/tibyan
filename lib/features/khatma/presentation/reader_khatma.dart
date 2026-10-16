@@ -9,7 +9,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
-import '../domain/khatmah.dart' show EntryPoint;
+import '../domain/khatmah.dart' show CountingMode, EntryPoint;
 import '../domain/khatmah_engine.dart' show PendingCredit;
 import '../khatma_providers.dart';
 
@@ -143,7 +143,11 @@ class WirdIndicator extends ConsumerWidget {
                             fontSize: context.tokens.elderly ? 17 : 13,
                           ),
                         ),
-                        if (!done) ...[
+                        // Only a khatma counted by confirmation asks for it:
+                        // the others count the reading on their own.
+                        if (!done &&
+                            wird.status.khatmah.counting ==
+                                CountingMode.wirdConfirm) ...[
                           const SizedBox(width: 10),
                           InkWell(
                             onTap: () async {
@@ -153,12 +157,7 @@ class WirdIndicator extends ConsumerWidget {
                                     uuid: wird.status.khatmah.uuid,
                                   );
                               if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(l.wirdCompletedCelebration),
-                                    duration: const Duration(seconds: 3),
-                                  ),
-                                );
+                                showWirdCompleted(context, seconds: 3);
                               }
                             },
                             borderRadius: BorderRadius.circular(16),
@@ -177,15 +176,20 @@ class WirdIndicator extends ConsumerWidget {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.check, size: 14, color: t.goldText),
+                                  Icon(
+                                    Icons.check,
+                                    size: 14,
+                                    color: t.goldText,
+                                  ),
                                   const SizedBox(width: 4),
                                   Text(
                                     l.wirdConfirmDone,
                                     style: TextStyle(
                                       color: t.goldText,
                                       fontWeight: FontWeight.w700,
-                                      fontSize:
-                                          context.tokens.elderly ? 14 : 11,
+                                      fontSize: context.tokens.elderly
+                                          ? 14
+                                          : 11,
                                     ),
                                   ),
                                 ],
@@ -349,7 +353,17 @@ class WirdCompletionBanner extends ConsumerStatefulWidget {
 }
 
 class _WirdCompletionBannerState extends ConsumerState<WirdCompletionBanner> {
-  final Set<String> _dismissed = {};
+  /// The khatma and day the banner was put away for («لاحقاً» or the
+  /// confirmation), kept across launches: it does not come back that day.
+  static const dismissedKey = 'khatma.wirdBannerDismissed';
+
+  bool _isDismissed(String key) =>
+      ref.read(sharedPreferencesProvider).getString(dismissedKey) == key;
+
+  void _dismiss(String key) {
+    setState(() {});
+    unawaited(ref.read(sharedPreferencesProvider).setString(dismissedKey, key));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -366,7 +380,7 @@ class _WirdCompletionBannerState extends ConsumerState<WirdCompletionBanner> {
     }
 
     final key = '${status.khatmah.uuid}_${w.day.key}';
-    if (_dismissed.contains(key)) return const SizedBox.shrink();
+    if (_isDismissed(key)) return const SizedBox.shrink();
 
     final l = AppLocalizations.of(context);
     final t = context.tokens.colors;
@@ -401,32 +415,22 @@ class _WirdCompletionBannerState extends ConsumerState<WirdCompletionBanner> {
                     ),
                     Text(
                       l.wirdEndOfPortionQuestion,
-                      style: TextStyle(
-                        color: t.control,
-                        fontSize: 11,
-                      ),
+                      style: TextStyle(color: t.control, fontSize: 11),
                     ),
                   ],
                 ),
               ),
               TextButton(
-                onPressed: () => setState(() => _dismissed.add(key)),
+                onPressed: () => _dismiss(key),
                 child: Text(l.wirdLater),
               ),
               FilledButton.icon(
                 onPressed: () async {
-                  setState(() => _dismissed.add(key));
+                  _dismiss(key);
                   await ref
                       .read(khatmaServiceProvider)
                       .markTodayRead(uuid: status.khatmah.uuid);
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(l.wirdCompletedCelebration),
-                        duration: const Duration(seconds: 4),
-                      ),
-                    );
-                  }
+                  if (context.mounted) showWirdCompleted(context, seconds: 4);
                 },
                 icon: const Icon(Icons.check, size: 16),
                 label: Text(l.wirdConfirmDone),
@@ -437,4 +441,25 @@ class _WirdCompletionBannerState extends ConsumerState<WirdCompletionBanner> {
       ),
     );
   }
+}
+
+/// «مبارك! سُجِّل إتمام ورد اليوم», with a leaf drawn as an icon.
+void showWirdCompleted(BuildContext context, {int seconds = 3}) {
+  final l = AppLocalizations.of(context);
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Row(
+        children: [
+          Icon(
+            Icons.eco_outlined,
+            size: 20,
+            color: Theme.of(context).colorScheme.onInverseSurface,
+          ),
+          const SizedBox(width: 8),
+          Expanded(child: Text(l.wirdCompletedCelebration)),
+        ],
+      ),
+      duration: Duration(seconds: seconds),
+    ),
+  );
 }

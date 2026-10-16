@@ -688,16 +688,14 @@ class _KhatmaCountingModeTile extends ConsumerWidget {
     return ListTile(
       title: Text(l.khatmaCountingMode),
       subtitle: Text(label, style: TextStyle(color: context.look.sub)),
-      trailing: const Icon(Icons.chevron_left),
+      // chevron_right mirrors itself in Arabic (matchTextDirection), as
+      // every other row's arrow in the settings.
+      trailing: Icon(Icons.chevron_right, color: context.look.sub),
       onTap: () => _pickMode(context, ref, mode),
     );
   }
 
-  void _pickMode(
-    BuildContext context,
-    WidgetRef ref,
-    CountingMode current,
-  ) {
+  void _pickMode(BuildContext context, WidgetRef ref, CountingMode current) {
     final l = AppLocalizations.of(context);
     showModalBottomSheet<void>(
       context: context,
@@ -722,12 +720,11 @@ class _KhatmaCountingModeTile extends ConsumerWidget {
                 await ref
                     .read(settingsProvider.notifier)
                     .setKhatmaCountingMode(v);
-                final primary =
-                    await ref.read(khatmaServiceProvider).status();
+                final primary = await ref.read(khatmaServiceProvider).status();
                 if (primary != null) {
-                  await ref.read(khatmaServiceProvider).updatePlan(
-                    primary.khatmah.copyWith(counting: v),
-                  );
+                  await ref
+                      .read(khatmaServiceProvider)
+                      .updatePlan(primary.khatmah.copyWith(counting: v));
                 }
               },
               child: Column(

@@ -1229,7 +1229,7 @@ class _KhatmaSettingsSheetState extends State<_KhatmaSettingsSheet> {
     _title = TextEditingController(text: widget.plan.title);
     _counting =
         widget.plan.isPrimary && widget.plan.counting == CountingMode.ask
-        ? CountingMode.wirdConfirm
+        ? CountingMode.auto
         : widget.plan.counting;
     _autoRestart = widget.plan.autoRestart;
     _restWeekdays = {...widget.plan.restWeekdays};

@@ -253,8 +253,8 @@ class KhatmahEngine {
           counting: k.counting == CountingMode.manual
               ? CountingMode.manual
               : (k.counting == CountingMode.wirdConfirm
-                  ? CountingMode.wirdConfirm
-                  : CountingMode.auto),
+                    ? CountingMode.wirdConfirm
+                    : CountingMode.auto),
         )
       else if (k.isPrimary)
         k.copyWith(

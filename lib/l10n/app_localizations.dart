@@ -2207,19 +2207,19 @@ abstract class AppLocalizations {
   /// No description provided for @khatmaCountWirdConfirmSubtitle.
   ///
   /// In ar, this message translates to:
-  /// **'تأكيد يدوي عند إتمام ورد اليوم لمنع الاحتساب الوهمي'**
+  /// **'لا يُحتسب ورد اليوم إلا بعد أن تؤكد إتمامه بنفسك'**
   String get khatmaCountWirdConfirmSubtitle;
 
   /// No description provided for @wirdConfirmDone.
   ///
   /// In ar, this message translates to:
-  /// **'تأكيد إتمام الورد ✓'**
+  /// **'تأكيد إتمام الورد'**
   String get wirdConfirmDone;
 
   /// No description provided for @wirdCompletedCelebration.
   ///
   /// In ar, this message translates to:
-  /// **'مبارك! تم تسجيل إتمام ورد اليوم بنجاح 🌿'**
+  /// **'مبارك! سُجِّل إتمام ورد اليوم'**
   String get wirdCompletedCelebration;
 
   /// No description provided for @wirdEndOfPortion.
@@ -2237,7 +2237,7 @@ abstract class AppLocalizations {
   /// No description provided for @wirdCompletedToday.
   ///
   /// In ar, this message translates to:
-  /// **'تم إتمام ورد اليوم ✓'**
+  /// **'تم إتمام ورد اليوم'**
   String get wirdCompletedToday;
 
   /// No description provided for @wirdLater.
@@ -3582,6 +3582,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'مصوّر غير معروف'**
   String get unknownAuthor;
+
+  /// No description provided for @reciterPhotoWithPermission.
+  ///
+  /// In ar, this message translates to:
+  /// **'استُخدمت بإذن حصل عليه مالك المشروع'**
+  String get reciterPhotoWithPermission;
 
   /// No description provided for @otherRiwayaReciters.
   ///
