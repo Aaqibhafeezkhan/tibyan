@@ -71,6 +71,10 @@ Future<void> main() async {
         androidNotificationChannelId: 'app.tibyan.recitation',
         androidNotificationChannelName: 'التلاوة',
         androidNotificationOngoing: true,
+        // A white silhouette, not the full-colour launcher icon (which
+        // Android draws as a blank blob in the status bar).
+        androidNotificationIcon: 'drawable/ic_stat_tibyan',
+        notificationColor: const Color(0xFF0F6660),
       );
   }
 

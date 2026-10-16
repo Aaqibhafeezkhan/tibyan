@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- background_downloader hard-codes these small icons (generic Material glyphs).
+         App resources override library ones, so its notifications carry the تبيان mark. -->
+    <drawable name="outline_file_download_24">@drawable/ic_stat_tibyan</drawable>
+    <drawable name="outline_file_upload_24">@drawable/ic_stat_tibyan</drawable>
+    <drawable name="outline_download_done_24">@drawable/ic_stat_tibyan</drawable>
+    <drawable name="outline_error_outline_24">@drawable/ic_stat_tibyan</drawable>
+    <drawable name="outline_pause_24">@drawable/ic_stat_tibyan</drawable>
+    <drawable name="outline_cancel_24">@drawable/ic_stat_tibyan</drawable>
+    <!-- Brand teal (هندسي accent) for notification accents. -->
+    <color name="notification_accent">#0F6660</color>
+</resources>

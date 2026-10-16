@@ -164,7 +164,7 @@ class LocalReminderScheduler implements ReminderScheduler {
         channel,
         icon: 'ic_stat_tibyan',
         largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-        color: const Color(0xFFC59A44),
+        color: const Color(0xFF0F6660),
         importance: Importance.defaultImportance,
         priority: Priority.defaultPriority,
       ),
