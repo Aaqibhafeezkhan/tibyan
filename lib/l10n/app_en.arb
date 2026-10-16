@@ -1672,5 +1672,8 @@
   "tasbihVolumeKeysHint": "While the misbaha is open, each press counts and the volume stays",
   "tasbihSourcesTitle": "Misbaha adhkar source",
   "tasbihOpen": "Open the misbaha",
-  "tasbihClickNote": "The bead click is synthesized within the project and released under CC0."
+  "tasbihClickNote": "The bead click is synthesized within the project and released under CC0.",
+  "tasbihStageLine": "{stage}/{stages} · {count}/{of}",
+  "tasbihStageAnnounce": "Stage {stage} of {stages}",
+  "tasbihStagesFixed": "The target comes from the dhikr's stages"
 }

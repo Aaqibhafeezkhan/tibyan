@@ -2896,5 +2896,34 @@
   "tasbihVolumeKeysHint": "والمسبحة مفتوحة، كل ضغطة تعدّ ولا يتغير الصوت",
   "tasbihSourcesTitle": "مصدر أذكار المسبحة",
   "tasbihOpen": "فتح المسبحة",
-  "tasbihClickNote": "صوت نقرة الحبة مُولَّد برمجيًا داخل المشروع، وهو برخصة CC0."
+  "tasbihClickNote": "صوت نقرة الحبة مُولَّد برمجيًا داخل المشروع، وهو برخصة CC0.",
+  "tasbihStageLine": "{stage}/{stages} · {count}/{of}",
+  "@tasbihStageLine": {
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      },
+      "stages": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      },
+      "of": {
+        "type": "String"
+      }
+    }
+  },
+  "tasbihStageAnnounce": "المرحلة {stage} من {stages}",
+  "@tasbihStageAnnounce": {
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      },
+      "stages": {
+        "type": "String"
+      }
+    }
+  },
+  "tasbihStagesFixed": "الهدف من مراحل الذكر"
 }

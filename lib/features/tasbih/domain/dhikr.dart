@@ -12,6 +12,7 @@ class Dhikr {
     this.reference,
     this.target,
     this.mine = false,
+    this.stages = const [],
   });
 
   /// `app:<id>` or `user:<uuid>`: what the daily log is kept under.
@@ -25,6 +26,14 @@ class Dhikr {
   /// Added by the reader («من إضافتك»).
   final bool mine;
 
+  /// Said in stages, one span of [text] after another (each its own
+  /// count); empty for a dhikr said whole.
+  final List<DhikrStage> stages;
+
+  /// The counts of the stages, in order; null for a dhikr said whole.
+  List<int>? get stageCounts =>
+      stages.isEmpty ? null : [for (final s in stages) s.count];
+
   /// The uuid of the reader's own dhikr.
   String? get uuid => mine ? key.substring(5) : null;
 
@@ -35,10 +44,33 @@ class Dhikr {
       other.text == text &&
       other.reference == reference &&
       other.target == target &&
-      other.mine == mine;
+      other.mine == mine &&
+      listEquals(other.stages, stages);
 
   @override
-  int get hashCode => Object.hash(key, text, reference, target, mine);
+  int get hashCode =>
+      Object.hash(key, text, reference, target, mine, Object.hashAll(stages));
+}
+
+/// One stage of a dhikr said in stages: the characters [start]..[end] of
+/// its text, said [count] times.
+@immutable
+class DhikrStage {
+  const DhikrStage(this.start, this.end, this.count);
+
+  final int start;
+  final int end;
+  final int count;
+
+  @override
+  bool operator ==(Object other) =>
+      other is DhikrStage &&
+      other.start == start &&
+      other.end == end &&
+      other.count == count;
+
+  @override
+  int get hashCode => Object.hash(start, end, count);
 }
 
 /// Where the app's adhkar come from (assets/tasbih/adhkar.json).
@@ -78,6 +110,16 @@ class DhikrSource {
           text: e['text']! as String,
           reference: e['reference'] as String?,
           target: (e['count'] as num?)?.toInt(),
+          stages: [
+            for (final st
+                in ((e['stages'] as List?) ?? const [])
+                    .cast<Map<String, Object?>>())
+              DhikrStage(
+                (st['start']! as num).toInt(),
+                (st['end']! as num).toInt(),
+                (st['count']! as num).toInt(),
+              ),
+          ],
         ),
     ],
   );

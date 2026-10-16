@@ -93,15 +93,18 @@ class TasbihController extends Notifier<TasbihCounter> {
   @override
   TasbihCounter build() {
     final target = ref.watch(tasbihSettingsProvider.select((s) => s.target));
-    final dhikr = ref.watch(currentDhikrProvider)?.key;
+    final current = ref.watch(currentDhikrProvider);
+    final dhikr = current?.key;
+    // A dhikr said in stages counts its own stages; the target is theirs.
+    final stages = current?.stageCounts;
     final p = ref.read(sharedPreferencesProvider);
     if (dhikr == null || p.getString(_of) != dhikr) {
-      return TasbihCounter(target: target);
+      return TasbihCounter(target: target).withStages(stages);
     }
     return TasbihCounter(
       count: p.getInt(_count) ?? 0,
       rounds: p.getInt(_rounds) ?? 0,
-    ).withTarget(target);
+    ).withTarget(target).withStages(stages);
   }
 
   TasbihSettings get _settings => ref.read(tasbihSettingsProvider);
@@ -118,7 +121,8 @@ class TasbihController extends Notifier<TasbihCounter> {
       await ref
           .read(tasbihRepositoryProvider)
           .record(dhikr.key, rounds: event == CountEvent.roundClosed ? 1 : 0);
-      unawaited(syncWidget());
+      // The widget and today's total (the home tile), from the log.
+      if (ref.mounted) unawaited(syncWidget());
     }
     return event;
   }
@@ -126,11 +130,11 @@ class TasbihController extends Notifier<TasbihCounter> {
   void _feedback(CountEvent event) {
     final s = _settings;
     if (s.haptics) {
-      unawaited(
-        event == CountEvent.roundClosed
-            ? HapticFeedback.heavyImpact()
-            : HapticFeedback.lightImpact(),
-      );
+      unawaited(switch (event) {
+        CountEvent.roundClosed => HapticFeedback.heavyImpact(),
+        CountEvent.stageChanged => HapticFeedback.mediumImpact(),
+        CountEvent.counted => HapticFeedback.lightImpact(),
+      });
     }
     if (s.sound) unawaited(ref.read(tasbihPlatformProvider).click());
   }
@@ -154,6 +158,7 @@ class TasbihController extends Notifier<TasbihCounter> {
       await ref
           .read(tasbihRepositoryProvider)
           .record(dhikr.key, count: n, rounds: closed);
+      if (!ref.mounted) return n;
       ref.read(tasbihTodayProvider.notifier).add(n);
     }
     return n;
@@ -180,10 +185,19 @@ class TasbihController extends Notifier<TasbihCounter> {
     if (dhikr == null) return;
     final repo = ref.read(tasbihRepositoryProvider);
     final today = await repo.dayCount(dhikr.key);
-    ref.read(tasbihTodayProvider.notifier).set(await repo.dayTotal());
+    final total = await repo.dayTotal();
+    // The misbaha may have closed while the log was read.
+    if (!ref.mounted) return;
+    ref.read(tasbihTodayProvider.notifier).set(total);
     await ref
         .read(tasbihPlatformProvider)
-        .writeWidget(dhikr: dhikr.text, count: '$today', label: label);
+        .writeWidget(
+          dhikr: dhikr.text,
+          count: '$today',
+          label: label,
+          stages: dhikr.stageCounts?.join(',') ?? '',
+          round: state.count,
+        );
   }
 }
 

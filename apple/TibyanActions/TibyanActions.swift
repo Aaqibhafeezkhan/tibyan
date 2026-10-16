@@ -196,6 +196,26 @@ struct TasbihEntry: TimelineEntry {
   let date: Date
   let dhikr: String
   let count: Int
+  /// «٢/٤ · ١٢/٣٣» for a dhikr said in stages.
+  var stage: String? = nil
+}
+
+/// For a dhikr said in stages (`tasbih_stages`: `33,33,33,1`), the stage
+/// and the count in it as the widget counts.
+private func stageLabel() -> String? {
+  let d = WidgetStore.defaults
+  let stages = (d?.string(forKey: "tasbih_stages") ?? "")
+    .split(separator: ",").compactMap { Int($0.trimmingCharacters(in: .whitespaces)) }
+  guard !stages.isEmpty else { return nil }
+  let total = stages.reduce(0, +)
+  var at = ((d?.integer(forKey: "tasbih_round") ?? 0)
+    + (d?.integer(forKey: "tasbih_pending") ?? 0)) % total
+  var i = 0
+  while at >= stages[i] {
+    at -= stages[i]
+    i += 1
+  }
+  return "\(digits(i + 1))/\(digits(stages.count)) · \(digits(at))/\(digits(stages[i]))"
 }
 
 private func tasbihEntry() -> TasbihEntry {
@@ -204,7 +224,8 @@ private func tasbihEntry() -> TasbihEntry {
   return TasbihEntry(
     date: Date(),
     dhikr: d?.string(forKey: "tasbih_dhikr") ?? WidgetStore.text("المسبحة", "Tasbih"),
-    count: shown + (d?.integer(forKey: "tasbih_pending") ?? 0))
+    count: shown + (d?.integer(forKey: "tasbih_pending") ?? 0),
+    stage: stageLabel())
 }
 
 struct TasbihProvider: TimelineProvider {
@@ -248,7 +269,7 @@ struct TasbihView: View {
       // Lock screen: the count only.
       ZStack {
         AccessoryWidgetBackground()
-        Text(digits(entry.count)).font(.title3.bold()).minimumScaleFactor(0.5)
+        Text(entry.stage ?? digits(entry.count)).font(.title3.bold()).minimumScaleFactor(0.4)
       }
       .containerBackground(.clear, for: .widget)
     } else {
@@ -256,7 +277,9 @@ struct TasbihView: View {
         Link(destination: URL(string: "tibyan://action/tasbih?homeWidget")!) {
           VStack(alignment: .leading, spacing: 4) {
             Text(entry.dhikr).font(.footnote.bold()).foregroundColor(gold).lineLimit(2)
-            Text(digits(entry.count)).font(.title.weight(.semibold)).foregroundColor(paper)
+            Text(entry.stage ?? digits(entry.count))
+              .font(.title.weight(.semibold)).foregroundColor(paper)
+              .minimumScaleFactor(0.5).lineLimit(1)
           }
           .frame(maxWidth: .infinity, alignment: .leading)
         }

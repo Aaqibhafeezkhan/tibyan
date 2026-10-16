@@ -20,11 +20,15 @@ abstract interface class TasbihPlatform {
   /// counter is emptied.
   Future<int> takePending();
 
-  /// What the home screen widget shows.
+  /// What the home screen widget shows. For a dhikr said in stages,
+  /// [stages] is their counts (`33,33,33,1`) and [round] the count in the
+  /// current round, so the widget shows the stage as it counts.
   Future<void> writeWidget({
     required String dhikr,
     required String count,
     required String label,
+    String stages = '',
+    int round = 0,
   });
 }
 
@@ -58,7 +62,15 @@ class NoTasbihPlatform implements TasbihPlatform {
     required String dhikr,
     required String count,
     required String label,
-  }) async => widget = {'dhikr': dhikr, 'count': count, 'label': label};
+    String stages = '',
+    int round = 0,
+  }) async => widget = {
+    'dhikr': dhikr,
+    'count': count,
+    'label': label,
+    'stages': stages,
+    'round': '$round',
+  };
 }
 
 class ChannelTasbihPlatform implements TasbihPlatform {
@@ -130,6 +142,8 @@ class ChannelTasbihPlatform implements TasbihPlatform {
     required String dhikr,
     required String count,
     required String label,
+    String stages = '',
+    int round = 0,
   }) async {
     if (!_mobile) return;
     try {
@@ -137,6 +151,8 @@ class ChannelTasbihPlatform implements TasbihPlatform {
       await HomeWidget.saveWidgetData<String>('tasbih_dhikr', dhikr);
       await HomeWidget.saveWidgetData<String>('tasbih_count', count);
       await HomeWidget.saveWidgetData<String>('tasbih_label', label);
+      await HomeWidget.saveWidgetData<String>('tasbih_stages', stages);
+      await HomeWidget.saveWidgetData<int>('tasbih_round', round);
       await HomeWidget.updateWidget(
         qualifiedAndroidName: androidProvider,
         iOSName: iosKind,

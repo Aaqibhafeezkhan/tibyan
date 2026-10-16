@@ -104,11 +104,15 @@ class _TasbihScreenState extends ConsumerState<TasbihScreen>
         if (mounted) setState(() => _closing = false);
       });
     }
-    final message = event == CountEvent.roundClosed
-        ? l.tasbihRoundClosed(digits(c.rounds))
-        : announce
-        ? digits(c.count)
-        : null;
+    final stage = c.stage;
+    final message = switch (event) {
+      CountEvent.roundClosed => l.tasbihRoundClosed(digits(c.rounds)),
+      CountEvent.stageChanged when stage != null => l.tasbihStageAnnounce(
+        digits(stage.index + 1),
+        digits(c.stages!.length),
+      ),
+      _ => announce ? digits(c.count) : null,
+    };
     if (message != null) {
       unawaited(
         SemanticsService.sendAnnouncement(
@@ -372,11 +376,8 @@ class DhikrHeader extends ConsumerWidget {
         ? Text(l.tasbihEmpty, style: TextStyle(color: look.sub))
         : Column(
             children: [
-              Text(
-                dhikr.text,
-                textAlign: TextAlign.center,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
+              _DhikrText(
+                dhikr: dhikr,
                 style: TextStyle(
                   fontSize: elderly ? 26 : 22,
                   fontWeight: FontWeight.w600,
@@ -384,6 +385,7 @@ class DhikrHeader extends ConsumerWidget {
                   color: color ?? look.ink,
                 ),
               ),
+              if (dhikr.stages.isNotEmpty) const _StageLine(),
               _DhikrNote(dhikr: dhikr),
             ],
           );
@@ -401,6 +403,81 @@ class DhikrHeader extends ConsumerWidget {
               Icon(Icons.expand_more, color: look.sub),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The dhikr's text as its source has it. For a dhikr said in stages, the
+/// span being said now is drawn in the accent colour and the rest quieter.
+class _DhikrText extends ConsumerWidget {
+  const _DhikrText({required this.dhikr, required this.style});
+
+  final Dhikr dhikr;
+  final TextStyle style;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final text = dhikr.text;
+    final stage = ref.watch(tasbihCounterProvider.select((c) => c.stage));
+    if (dhikr.stages.isEmpty || stage == null) {
+      return Text(
+        text,
+        textAlign: TextAlign.center,
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+        style: style,
+      );
+    }
+    final look = context.look;
+    final on = dhikr.stages[stage.index];
+    final quiet = style.copyWith(color: look.sub, fontWeight: FontWeight.w400);
+    return Text.rich(
+      TextSpan(
+        style: quiet,
+        children: [
+          TextSpan(text: text.substring(0, on.start)),
+          TextSpan(
+            text: text.substring(on.start, on.end),
+            style: style.copyWith(color: look.accent),
+          ),
+          TextSpan(text: text.substring(on.end)),
+        ],
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
+/// «٢/٤ · ١٢/٣٣»: the stage, and the count within it.
+class _StageLine extends ConsumerWidget {
+  const _StageLine();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final c = ref.watch(tasbihCounterProvider);
+    final stage = c.stage;
+    if (stage == null) return const SizedBox.shrink();
+    final l = AppLocalizations.of(context);
+    final digits = NumberFormatter(Localizations.localeOf(context));
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Text(
+        l.tasbihStageLine(
+          digits(stage.index + 1),
+          digits(c.stages!.length),
+          digits(stage.count),
+          digits(stage.of),
+        ),
+        semanticsLabel:
+            '${l.tasbihStageAnnounce(digits(stage.index + 1), digits(c.stages!.length))}، '
+            '${l.tasbihCountOf(digits(stage.count), digits(stage.of))}',
+        style: TextStyle(
+          fontFamily: digitsFamily,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: context.look.accent,
         ),
       ),
     );
@@ -468,6 +545,30 @@ class TargetBar extends ConsumerWidget {
     final ctrl = ref.read(tasbihSettingsProvider.notifier);
     final big = look.elderly;
     final button = big ? 56.0 : 48.0;
+    final staged = ref.watch(currentDhikrProvider)?.stages.isNotEmpty ?? false;
+    if (staged) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(
+            child: Text(
+              l.tasbihStagesFixed,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: look.sub),
+            ),
+          ),
+          const SizedBox(width: 8),
+          SizedBox.square(
+            dimension: button,
+            child: IconButton(
+              icon: const Icon(Icons.restart_alt),
+              tooltip: l.tasbihReset,
+              onPressed: ref.read(tasbihCounterProvider.notifier).reset,
+            ),
+          ),
+        ],
+      );
+    }
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

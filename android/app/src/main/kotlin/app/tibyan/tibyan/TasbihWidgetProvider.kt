@@ -30,6 +30,7 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
     val count = (widgetData.getString("tasbih_count", null)?.toIntOrNull() ?: 0) +
         widgetData.getInt(PENDING, 0)
     val ar = (widgetData.getString("lang", null) ?: "ar").startsWith("ar")
+    val stage = stageLabel(widgetData, ar)
     for (id in appWidgetIds) {
       val views = RemoteViews(context.packageName, R.layout.tasbih_widget)
       views.applyDirection(R.id.tasbih_root, widgetData)
@@ -37,7 +38,10 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
           R.id.tasbih_dhikr,
           widgetData.getString("tasbih_dhikr", null) ?: context.getString(R.string.tasbih_widget_label),
       )
-      views.setTextViewText(R.id.tasbih_count, if (ar) arabicDigits(count) else "$count")
+      views.setTextViewText(
+          R.id.tasbih_count,
+          stage ?: if (ar) arabicDigits(count) else "$count",
+      )
       views.setOnClickPendingIntent(
           R.id.tasbih_dhikr,
           HomeWidgetLaunchIntent.getActivity(
@@ -70,6 +74,26 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
     val manager = AppWidgetManager.getInstance(context)
     val ids = manager.getAppWidgetIds(ComponentName(context, TasbihWidgetProvider::class.java))
     onUpdate(context, manager, ids, prefs)
+  }
+
+  /**
+   * For a dhikr said in stages (`tasbih_stages`: `33,33,33,1`), the stage
+   * and the count in it as the widget counts: «٢/٤ · ١٢/٣٣». The round's
+   * count is what the app last wrote plus the widget's own counts.
+   */
+  private fun stageLabel(data: SharedPreferences, ar: Boolean): String? {
+    val stages = (data.getString("tasbih_stages", null) ?: "")
+        .split(",").mapNotNull { it.trim().toIntOrNull() }
+    if (stages.isEmpty()) return null
+    val total = stages.sum()
+    var at = (data.getInt("tasbih_round", 0) + data.getInt(PENDING, 0)) % total
+    var i = 0
+    while (at >= stages[i]) {
+      at -= stages[i]
+      i++
+    }
+    fun d(n: Int) = if (ar) arabicDigits(n) else "$n"
+    return "${d(i + 1)}/${d(stages.size)} · ${d(at)}/${d(stages[i])}"
   }
 
   private fun arabicDigits(n: Int): String =

@@ -31,6 +31,34 @@ MUSLIM_DATA = {
 }
 # id -> the count to a round (none where the source gives no number).
 MUSLIM_DATA_ITEMS = {69: 100, 53: None}
+# Item 69 is said in stages: each of its three phrases 33 times, then the
+# tahlil once. The stages are spans of the verbatim text, found from its
+# own punctuation (the two commas and the bracketed count); no text is
+# written here.
+STAGE_COUNTS = {69: [33, 33, 33, 1]}
+
+
+def stages(text: str, counts: list) -> list:
+    first = text.index(",")
+    second = text.index(",", first + 1)
+    open_ = text.index("(")
+    close = text.index(")", open_)
+
+    def span(a: int, b: int) -> tuple:
+        while text[a] == " ":
+            a += 1
+        while text[b - 1] == " ":
+            b -= 1
+        return a, b
+
+    spans = [
+        span(0, first),
+        span(first + 1, second),
+        span(second + 1, open_),
+        span(close + 1, len(text)),
+    ]
+    assert len(spans) == len(counts)
+    return [{"start": a, "end": b, "count": c} for (a, b), c in zip(spans, counts)]
 
 SEEN = {
     "id": "seen",
@@ -64,15 +92,17 @@ def muslim_data() -> list:
                 "WHERE r.item_id = ? AND t.language = 'ar'",
                 (item,),
             ).fetchone()
-            out.append(
-                {
-                    "id": f"muslimdata{item}",
-                    "text": text,
-                    "reference": ref,
-                    "count": count,
-                    "source": MUSLIM_DATA["id"],
-                }
-            )
+            entry = {
+                "id": f"muslimdata{item}",
+                "text": text,
+                "reference": ref,
+                "count": count,
+                "source": MUSLIM_DATA["id"],
+            }
+            if item in STAGE_COUNTS:
+                entry["stages"] = stages(text, STAGE_COUNTS[item])
+                assert sum(s["count"] for s in entry["stages"]) == count
+            out.append(entry)
         c.close()
         return out
 
