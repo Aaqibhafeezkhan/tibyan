@@ -23,7 +23,7 @@ final tasbihPlatformProvider = Provider<TasbihPlatform>(
 
 /// The app's adhkar and where they come from.
 final appAdhkarProvider =
-    FutureProvider<({DhikrSource source, List<Dhikr> adhkar})>(
+    FutureProvider<({List<DhikrSource> sources, List<Dhikr> adhkar})>(
       (ref) async => parseAppAdhkar(
         await rootBundle.loadString('assets/tasbih/adhkar.json'),
       ),

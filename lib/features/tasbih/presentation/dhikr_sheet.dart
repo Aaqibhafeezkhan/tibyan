@@ -101,16 +101,17 @@ class DhikrSheet extends ConsumerWidget {
                 onTap: () => showDhikrEditor(context),
               ),
               if (app != null)
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                  child: Text(
-                    l.tasbihSourceLine(
-                      app.source.url.replaceFirst('https://', ''),
-                      app.source.license,
+                for (final s in app.sources)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                    child: Text(
+                      l.tasbihSourceLine(
+                        s.url.replaceFirst('https://', ''),
+                        s.license,
+                      ),
+                      style: TextStyle(color: look.sub, fontSize: 12),
                     ),
-                    style: TextStyle(color: look.sub, fontSize: 12),
                   ),
-                ),
             ],
           ),
         ),

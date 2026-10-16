@@ -323,12 +323,15 @@
 
 | البيانات | المصدر | الإصدار | الترخيص | النسخة المحفوظة | البصمة (SHA-256) |
 |---|---|---|---|---|---|
-| ذكران قصيران يُكرَّران مئة مرة (`order` 34 و33)، بنصهما ومرجعهما كما نُشرا | [Seen-Arabic/Morning-And-Evening-Adhkar-DB](https://github.com/Seen-Arabic/Morning-And-Evening-Adhkar-DB)، يذكر أن نصه من «حصن المسلم» للقحطاني (hisnmuslim.com) | commit `29d7623fede52eca835a789025dfda866e8cfe44` (ملف `ar.json`) | MIT، «Copyright (c) 2024 Seen Arabic» | `licenses/2026-10-16_seen-arabic_adhkar-db_MIT.txt` | المصدر `ar.json`: `9e0dd6a10d26ddc0e2b36b94098c287644996c7f81b707f8ad24f1ce40b8c821`؛ الناتج `assets/tasbih/adhkar.json`: `2079a5f795db091a7f70e133a60997ad0d6d7f9a05d8ad72c6ca52f6161a4c48` |
+| أذكار ما بعد السلام: التسبيح والتحميد والتكبير ثلاثًا وثلاثين مع التهليل تمام المئة، مدخلًا واحدًا كما في المصدر (`azkar_item` رقم 69، مرجعه «مسلم … برقم ٥٩٧»)؛ والصلاة الإبراهيمية بعد التشهد (رقم 53، مرجعه «البخاري … برقم ٣٣٧٠، ومسلم، برقم ٤٠٦»)، بنصهما ومرجعهما العربي كما نُشرا | [my-prayers/muslim-data-android](https://github.com/my-prayers/muslim-data-android) («حصن المسلم» في قاعدة SQLite) | commit `f7968b8765bfa23706751edadc3fed2fa17a9864` (ملف `muslim-data/src/main/assets/database/muslim_db_v2.5.1.db`) | Apache-2.0 | `licenses/2026-10-16_my-prayers_muslim-data-android_Apache-2.0.txt` | المصدر: `527913aaf9813d922f30f33a19cc59cea59d638206e57b2d8e28fb13d519deaa` |
+| ذكران قصيران يُكرَّران مئة مرة (`order` 34 و33)، بنصهما ومرجعهما كما نُشرا | [Seen-Arabic/Morning-And-Evening-Adhkar-DB](https://github.com/Seen-Arabic/Morning-And-Evening-Adhkar-DB)، يذكر أن نصه من «حصن المسلم» للقحطاني (hisnmuslim.com) | commit `29d7623fede52eca835a789025dfda866e8cfe44` (ملف `ar.json`) | MIT، «Copyright (c) 2024 Seen Arabic» | `licenses/2026-10-16_seen-arabic_adhkar-db_MIT.txt` | المصدر `ar.json`: `9e0dd6a10d26ddc0e2b36b94098c287644996c7f81b707f8ad24f1ce40b8c821` |
 | صوت نقرة الحبة `assets/tasbih/click.wav` | مُولَّد داخل المشروع (`tools/make_tasbih_click.py`: موجتان متخامدتان ونبضة ضجيج) | — | CC0 1.0 | — | `f07d666b76260f88da9db72ebf201dbd8120c82ccb45c59303038b68f5d9e054` |
 
-- الاستيراد بسكربت `tools/import_tasbih_adhkar.py`: ينزّل ملف الـ commit المثبت وينسخ المدخلين **حرفيا** بحقلي `content` و`source`، بلا أي تعديل في النص.
+- الاستيراد بسكربت `tools/import_tasbih_adhkar.py`: ينزّل ملفي الـ commit المثبتين وينسخ المدخلات الأربعة **حرفيا** بنصها ومرجعها العربي، بلا أي تعديل. بصمة الناتج `assets/tasbih/adhkar.json`: `0ac9b783df1e81f0b5dabbd4458964fa8464a46ccb7c7a629cbb80e457a7a777`.
 - اقتصرنا على المدخلين لأنهما الذكران القصيران المكرران (مئة مرة) في المجموعة. باقي المجموعة أذكار صباح ومساء طويلة أو مقيدة بوقت، فلم تدخل.
-- استُبعد المدخل 29 (الصلاة على النبي، عشر مرات) لأن مرجعه في المصدر نفسه يحيل إلى «ضعيف الترغيب» و«السلسلة الضعيفة». يحتاج مراجعة شرعية قبل إدخاله.
+- الصلاة على النبي: دخلت من muslim-data بمرجع البخاري ومسلم (الصلاة الإبراهيمية). أما مدخل Seen رقم 29 (عشر مرات) فبقي مستبعدا لأن مرجعه يحيل إلى «ضعيف الترغيب» و«السلسلة الضعيفة».
+- مدخل ما بعد السلام في muslim-data جملة واحدة (التسبيح والتحميد والتكبير «ثلاثاً وثلاثين» ثم التهليل)، فدخل كما هو بهدف ١٠٠، ولم يُقسَّم لأن التقسيم كتابة للنص.
+- فُحصت أيضا: `nawafalqari/azkar-api` (يحول إلى مستودع بلا ترخيص)، و`muslimpack/Al-Azkar` و`AvocadoApps/azkar-ios` (GPL-3.0، خارج الرخص المقبولة).
 - فُحص `fitrahive/dua-dhikr` (MIT): مدخلات التسبيح والتحميد والتكبير (٣٣) فيه بلا مرجع (`source: null`)، ولا يذكر المستودع مصدر نصوصه، فلم يدخل.
 - `rn0x/Adhkar-json` و`osamayy/azkar-db`: بلا ملف ترخيص، فلم يدخلا.
 - أذكار القارئ نفسه («من إضافتك») تُحفظ في `user.db` ولا تُنسب لأي مصدر.

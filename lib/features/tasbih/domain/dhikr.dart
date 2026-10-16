@@ -45,25 +45,32 @@ class Dhikr {
 @immutable
 class DhikrSource {
   const DhikrSource({
+    required this.id,
     required this.url,
     required this.commit,
     required this.license,
   });
 
+  final String id;
   final String url;
   final String commit;
   final String license;
 }
 
-/// Reads `assets/tasbih/adhkar.json`.
-({DhikrSource source, List<Dhikr> adhkar}) parseAppAdhkar(String json) {
+/// Reads `assets/tasbih/adhkar.json`: its sources, and the adhkar copied
+/// from them.
+({List<DhikrSource> sources, List<Dhikr> adhkar}) parseAppAdhkar(String json) {
   final m = jsonDecode(json) as Map<String, Object?>;
   return (
-    source: DhikrSource(
-      url: m['source']! as String,
-      commit: m['commit']! as String,
-      license: m['license']! as String,
-    ),
+    sources: [
+      for (final s in (m['sources']! as List).cast<Map<String, Object?>>())
+        DhikrSource(
+          id: s['id']! as String,
+          url: s['url']! as String,
+          commit: s['commit']! as String,
+          license: s['license']! as String,
+        ),
+    ],
     adhkar: [
       for (final e in (m['items']! as List).cast<Map<String, Object?>>())
         Dhikr(

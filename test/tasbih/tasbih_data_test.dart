@@ -105,8 +105,14 @@ void main() {
   test('the app adhkar file is read with its source and references', () {
     final text = File('assets/tasbih/adhkar.json').readAsStringSync();
     final parsed = parseAppAdhkar(text);
-    expect(parsed.source.license, 'MIT');
-    expect(parsed.source.url, contains('github.com'));
+    expect(
+      parsed.sources.map((s) => s.license),
+      containsAll(['MIT', 'Apache-2.0']),
+    );
+    for (final s in parsed.sources) {
+      expect(s.url, startsWith('https://github.com/'));
+      expect(s.commit, hasLength(40));
+    }
     expect(parsed.adhkar, isNotEmpty);
     for (final d in parsed.adhkar) {
       expect(d.key, startsWith('app:'));

@@ -202,7 +202,7 @@ class AboutMushafScreen extends ConsumerWidget {
                       child: ExpansionTile(
                         title: Text(l.tasbihSourcesTitle),
                         subtitle: Text(
-                          l.licenseLabel(adhkar.source.license),
+                          adhkar.sources.map((s) => s.license).join('، '),
                           style: TextStyle(color: t.muted),
                         ),
                         expandedCrossAxisAlignment: CrossAxisAlignment.start,
@@ -213,15 +213,15 @@ class AboutMushafScreen extends ConsumerWidget {
                           16,
                         ),
                         children: [
-                          Text(
-                            l.versionShort(
-                              adhkar.source.commit.substring(0, 7),
+                          for (final s in adhkar.sources) ...[
+                            const SizedBox(height: 8),
+                            Text(l.licenseLabel(s.license)),
+                            Text(l.versionShort(s.commit.substring(0, 7))),
+                            SelectableText(
+                              s.url,
+                              style: TextStyle(color: t.accent),
                             ),
-                          ),
-                          SelectableText(
-                            adhkar.source.url,
-                            style: TextStyle(color: t.accent),
-                          ),
+                          ],
                           const SizedBox(height: 6),
                           Text(
                             l.tasbihClickNote,
