@@ -135,3 +135,12 @@ to-analyze
 
 # Reciter photo originals: kept locally, not in the repository
 tools/photos/originals/
+
+# Brand work: superseded renders and third-party audio stay local.
+docs/brand/**/*_v1.mp4
+docs/brand/**/*_v1.jpg
+docs/brand/**/*_silent_*.mp4
+docs/brand/**/*_altibyan_root.mp4
+docs/brand/**/*_plex.png
+docs/brand/**/*.mp3
+docs/brand/**/__pycache__/

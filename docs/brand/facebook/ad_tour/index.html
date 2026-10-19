@@ -1,0 +1,25 @@
+<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تبيان — إعلان جولة التطبيق</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700&family=IBM+Plex+Sans+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#0F6660;--deep:#0A3F3B;--cream:#F6F1E8;--gold:#D9B266;--ink:#1d2b29}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:Changa,'IBM Plex Sans Arabic',sans-serif;line-height:1.7}
+header{background:var(--teal);color:var(--cream);padding:28px 16px;text-align:center}header h1{margin:0;font-size:30px}header p{margin:4px 0 0;color:var(--gold)}
+main{max-width:1100px;margin:0 auto;padding:20px 16px 60px}
+.vids{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;align-items:start}
+figure{margin:0;background:#fff;border-radius:16px;padding:12px;box-shadow:0 6px 20px -10px rgba(10,63,59,.35)}
+video{width:100%;border-radius:10px;background:#000;display:block}figcaption{font-size:15px;margin-top:8px}figcaption a{color:var(--teal)}
+#md{background:#fff;border-radius:16px;padding:8px 22px 24px;margin-top:26px;overflow-x:auto}
+#md table{border-collapse:collapse;width:100%;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:15px}#md td,#md th{border:1px solid #e3dccd;padding:6px 8px;vertical-align:top}#md th{background:#f3ecdd}
+#md h2{color:var(--teal);border-bottom:2px solid var(--gold);padding-bottom:4px}#md code{font-family:'IBM Plex Sans Arabic',monospace;background:#f3ecdd;padding:0 4px;border-radius:4px}
+</style></head><body>
+<header><h1>تبيان — إعلان جولة التطبيق</h1><p>تسجيلات حقيقية من محاكي الآيفون وتطبيق الماك · للنسخة التجريبية</p></header>
+<main><div class="vids">
+<figure><video controls playsinline preload="metadata" poster="cover_1080x1920.jpg" src="tibyan_tour_30s_1080x1920.mp4?v=1792407365"></video><figcaption>الأساسي ٣٠ ث · 1080×1920 (Reels/Stories) · <a download href="tibyan_tour_30s_1080x1920.mp4?v=1792407365">تنزيل</a></figcaption></figure>
+<figure><video controls playsinline preload="metadata" src="tibyan_tour_15s_1080x1920.mp4?v=1792407365"></video><figcaption>نسخة ١٥ ث · 1080×1920 · <a download href="tibyan_tour_15s_1080x1920.mp4?v=1792407365">تنزيل</a></figcaption></figure>
+<figure><video controls playsinline preload="metadata" src="tibyan_tour_feed_1080x1350.mp4?v=1792407365"></video><figcaption>نسخة الفيد ٣٠ ث · 1080×1350 · <a download href="tibyan_tour_feed_1080x1350.mp4?v=1792407365">تنزيل</a></figcaption></figure>
+</div>
+<div id="md">جارٍ التحميل…</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script>fetch('ad_copy_and_strategy.md?v=1792407365').then(r=>r.text()).then(t=>{document.getElementById('md').innerHTML=marked.parse(t);document.querySelectorAll('#md a').forEach(a=>a.target='_blank')});</script>
+</body></html>

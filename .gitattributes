@@ -28,3 +28,8 @@ assets/themes/*.webp filter=lfs diff=lfs merge=lfs -text
 # Review databases (drafts and review work) and exported data packs.
 data/review/*.db filter=lfs diff=lfs merge=lfs -text
 data/packs/*.db filter=lfs diff=lfs merge=lfs -text
+
+# Brand and marketing media (docs/brand).
+docs/brand/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+docs/brand/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/brand/**/*.jpg filter=lfs diff=lfs merge=lfs -text
