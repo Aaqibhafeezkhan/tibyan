@@ -292,3 +292,52 @@ table (created at startup), show under **Admin → Requests → App reports**
 (newest first, mark handled), notify admins in-app / by Web Push, and are
 emailed in the background to `ADMIN_REPORT_EMAIL` (falls back to
 `SMTP_TO`) when SMTP is configured; mail errors are only logged.
+
+## Recording player and mistake marking (2026-10)
+
+- **Player** (`/recordings/{id}`): owners from «تسجيلاتي» (each row has a
+  mini waveform and play button) and right after upload (`?new=1` opens
+  marking mode). wavesurfer.js 7.12.12 + regions plugin are vendored in
+  `app/static/vendor/wavesurfer/` with their BSD-3 `LICENSE` (no CDN). The
+  timeline runs right-to-left in Arabic (canvas mirrored, pointer events
+  mirrored back in `player.js`). Peaks: `GET /recordings/{id}/peaks.json`
+  (800 buckets, cached in `media/peaks/`).
+- **Keyboard:** Space play/pause · ←/→ ±5 s (← = forward in RTL) ·
+  M mark at playhead · 1–6 type · L loop · [ ] loop start/end · Enter/Esc
+  in the type picker · Delete removes the selected mark. Off while typing.
+- **Types:** substitution (+ optional «ما قيل», user text), deletion,
+  insertion (slot between words), haraka, repetition/hesitation, tajweed
+  (madd, ghunna, idgham, ikhfa, qalqala, other); note ≤ 500 chars. Words
+  are the verse text from `verses.py` split on spaces.
+- **API:** `GET /recordings/{id}/annotations.json[?version=N&download=1]`
+  (schema `tibyan.mistakes/1`), `POST /recordings/{id}/annotations`
+  (JSON `{base_version, mistakes}`, header `X-CSRF-Token`, 409 on a stale
+  base, 422 invalid, 413 > 128 KB, 429 over `ANNOTATION_SAVES_PER_MINUTE`
+  (default 20) per user). Save: owner (reciter), admin, or a non-owner
+  while the recording is in review; view: also anyone who voted/annotated.
+- **Tables (additive):** `annotation_sets` (one row per saved version,
+  never overwritten), `annotation_mistakes`, `platform_settings`; nullable
+  `recordings` columns `annotation_status`, `has_mistakes`,
+  `alignment_status`, `word_timings`, `aligned_at`
+  (`migrate_annotation_columns`, run at startup).
+- **State machine:** see the docstring of `app/annotations.py`. Audio
+  `status` is unchanged (intentional mistakes are accepted normally).
+  `annotation_status`: reciter save → `pending_review`; reviewer/admin save
+  → `reviewed`; a reciter edit after review → `pending_review` again and the
+  (already accepted) recording returns to `/validate` for a marks-only
+  review. Latest reviewer/admin version is authoritative; all versions kept.
+  `has_mistakes` («فيه أخطاء») = authoritative version has mistakes, or a
+  pending reciter edit claims some.
+- **Export:** `annotations/<id>.json` + `annotation_file`/`has_mistakes` in
+  the manifest line, both in `SHA256SUMS`. Admin setting (on `/admin`,
+  default on): flagged recordings go to `manifest_mistakes.jsonl` and stay
+  out of the clean `manifest.jsonl`.
+- **Word positions (optional):** `ALIGNMENT_ENABLED=true` runs CTC forced
+  alignment with the tasmee model (`model.int8.onnx` + `tokens.txt` from the
+  mirror) in a background task after upload; needs the image built with
+  `--build-arg WITH_ALIGNMENT=1` (`requirements-alignment.txt`, about +180 MB)
+  and the model in `ALIGNMENT_MODEL_DIR` (default
+  `/app/models/nvidia-ar-fastconformer-ctc`). Until done (or on failure) the
+  player uses proportional positions. Backfill: `python -m app.alignment`.
+  Cost measured on an Apple M4, 2 threads: model load ≈ 1.7 s, 5.5 s clip ≈
+  0.3 s, 52 s clip ≈ 2.1 s; ~650 MB RSS per worker once loaded.
