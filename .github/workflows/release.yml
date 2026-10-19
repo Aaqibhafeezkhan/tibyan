@@ -111,7 +111,11 @@ jobs:
           cache: true
       - run: flutter config --enable-macos-desktop
       - run: flutter pub get
-      - run: flutter build macos --release
+      # No certificates on CI: build the app without code signing.
+      - run: |
+          flutter build macos --release --config-only
+          xcodebuild -workspace macos/Runner.xcworkspace -scheme Runner -configuration Release \
+            -derivedDataPath build/macos CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
       - name: Zip and disk image of the app
         run: |
           app=$(ls -d build/macos/Build/Products/Release/*.app | head -1)
