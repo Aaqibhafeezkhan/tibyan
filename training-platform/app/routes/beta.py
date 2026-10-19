@@ -2,12 +2,12 @@
 public Google Play / TestFlight links with illustrated install steps."""
 from __future__ import annotations
 
-from fastapi import APIRouter, BackgroundTasks, Depends, Form, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, Form, HTTPException, Request
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from starlette.responses import RedirectResponse
 
-from .. import ratelimit
+from .. import ratelimit, releases
 from ..deps import get_db
 from ..i18n import get_lang
 from ..launch_mail import (
@@ -43,6 +43,8 @@ def _page(request: Request, status_code: int = 200, **context):
         play_url=PLAY_TEST_URL,
         testflight_url=TESTFLIGHT_URL,
         testflight_app_url=TESTFLIGHT_APP_URL,
+        downloads=releases.downloads(),
+        human_size=releases.human_size,
         **context,
     )
     response.status_code = status_code
@@ -114,3 +116,13 @@ def beta_join(
     request.session["beta"] = "ok"
     request.session["beta_platforms"] = chosen
     return RedirectResponse("/beta#install", status_code=303)
+
+
+@router.get("/download/{platform}")
+def download(platform: str):
+    """302 to the newest release's asset for this platform (no tracking)."""
+    if platform not in releases.PATTERNS:
+        raise HTTPException(status_code=404)
+    response = RedirectResponse(releases.download_url(platform), status_code=302)
+    response.headers["Cache-Control"] = "no-store"
+    return response
