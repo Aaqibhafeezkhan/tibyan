@@ -1,0 +1,5 @@
+# Optional: word timings for the recording player (app/alignment.py).
+# Installed into the image only with --build-arg WITH_ALIGNMENT=1.
+onnxruntime>=1.20,<2
+kaldi-native-fbank>=1.20,<2
+numpy>=1.26
