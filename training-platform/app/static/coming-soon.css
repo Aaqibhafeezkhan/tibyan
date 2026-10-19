@@ -565,3 +565,33 @@ a { color: inherit; }
 
 
 .beta-copy .follow-line { margin-top: 20px; }
+
+/* Privacy note under the notify / beta forms. */
+.privacy-consent { margin: 10px 0 0; color: var(--c-ink-2); font-size: 0.84rem; }
+.privacy-consent a { color: var(--c-accent); text-underline-offset: 3px; }
+
+/* /privacy: long-form policy. */
+.policy { width: min(100%, 780px); margin: 12px auto 48px; }
+.policy-head h1 { margin: 6px 0 4px; color: var(--c-heading); font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.3; }
+.policy-meta { margin: 0 0 22px; color: var(--c-ink-2); font-size: 0.92rem; }
+.policy section, .policy-toc {
+  margin: 0 0 18px;
+  padding: 20px 24px;
+  border: 1px solid var(--c-line);
+  border-radius: 14px;
+  background: var(--c-surface);
+  scroll-margin-top: 16px;
+}
+.policy h2 { margin: 0 0 8px; color: var(--c-heading); font-size: 1.18rem; font-weight: 600; line-height: 1.5; }
+.policy p { margin: 6px 0; }
+.policy ul, .policy ol { margin: 6px 0; padding-inline-start: 1.4em; }
+.policy li { margin: 5px 0; }
+.policy a { color: var(--c-accent); text-underline-offset: 3px; overflow-wrap: anywhere; }
+.policy .policy-summary { border-color: var(--c-gold); background: var(--c-gold-soft); }
+.policy-toc ol { columns: 2 220px; column-gap: 28px; }
+.policy-toc li { break-inside: avoid; }
+.policy-toc a { text-decoration: none; }
+.policy-toc a:hover { text-decoration: underline; }
+@media (max-width: 760px) {
+  .policy section, .policy-toc { padding: 16px 16px; }
+}

@@ -1,0 +1,342 @@
+<!doctype html>
+{% set ar = lang == 'ar' %}
+{% set title = 'سياسة الخصوصية | تبيان' if ar else 'Privacy policy | Tibyan' %}
+{% set desc = 'كيف يتعامل تطبيق تبيان وموقعا altibyan.app وtrain.altibyan.app مع بياناتك: بلا حساب ولا إعلانات ولا تتبّع، وبياناتك على جهازك.' if ar else 'How the Tibyan app, altibyan.app and train.altibyan.app handle your data: no account, no ads, no tracking, and your data stays on your device.' %}
+{% set url = 'https://altibyan.app/privacy' if ar else 'https://altibyan.app/privacy/en' %}
+<html lang="{{ lang }}" dir="{{ dir }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ desc }}">
+  <link rel="canonical" href="{{ url }}">
+  <link rel="alternate" hreflang="ar" href="https://altibyan.app/privacy">
+  <link rel="alternate" hreflang="en" href="https://altibyan.app/privacy/en">
+  <link rel="alternate" hreflang="x-default" href="https://altibyan.app/privacy">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="تبيان">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ desc }}">
+  <meta property="og:url" content="{{ url }}">
+  <meta property="og:image" content="https://altibyan.app/static/coming-soon-share.png?v=2">
+  <meta name="twitter:card" content="summary_large_image">
+  {% include "_launch_head.html" %}
+</head>
+<body>
+  <main class="launch-page privacy-page">
+{% include "_launch_header.html" %}
+      <nav class="launch-nav" aria-label="{{ 'روابط الموقع' if ar else 'Site links' }}">
+        <a href="/">{{ 'الصفحة الرئيسية' if ar else 'Home' }}</a>
+        <a href="https://train.altibyan.app/">{{ 'منصة التدريب' if ar else 'Training platform' }}</a>
+        <a class="language-link" href="{{ '/privacy/en' if ar else '/privacy' }}" lang="{{ 'en' if ar else 'ar' }}" hreflang="{{ 'en' if ar else 'ar' }}">{{ 'English' if ar else 'العربية' }}</a>
+      </nav>
+    </header>
+
+    <article class="policy" aria-labelledby="policy-title">
+      <header class="policy-head">
+        <p class="coming-label">{{ 'الخصوصية' if ar else 'Privacy' }}</p>
+        <h1 id="policy-title">{{ 'سياسة الخصوصية' if ar else 'Privacy policy' }}</h1>
+        <p class="policy-meta">{{ 'آخر تحديث:' if ar else 'Last updated:' }} <time datetime="{{ updated_iso }}">{{ updated_ar if ar else updated_en }}</time></p>
+      </header>
+
+{% if ar %}
+      <section class="policy-summary" aria-labelledby="summary-title">
+        <h2 id="summary-title">الخلاصة</h2>
+        <ul>
+          <li>تطبيق تبيان لا يحتاج إلى حساب، ولا يعرض إعلانات، ولا يحوي أدوات تحليلات أو تتبّع.</li>
+          <li>كل ما تصنعه في التطبيق (الإعدادات، والفواصل، والتدبّرات، والختمات، والحفظ، والتسبيح) يُحفظ على جهازك فقط.</li>
+          <li>التسميع يعمل على جهازك: صوتك لا يُسجَّل ولا يُرسَل إلى أي خادم.</li>
+          <li>لا يصلنا منك إلا ما ترسله بنفسك: بلاغ «الإبلاغ عن مشكلة»، أو تقارير الأعطال إن فعّلتها، أو بريدك في نماذج الموقع، أو تسجيلاتك في منصة التدريب.</li>
+          <li>لا نبيع بياناتك ولا نشاركها لأغراض تسويقية. للتواصل: <a href="mailto:info@altibyan.app">info@altibyan.app</a>.</li>
+        </ul>
+      </section>
+
+      <nav class="policy-toc" aria-label="محتويات الصفحة">
+        <ol>
+          <li><a href="#who">من نحن</a></li>
+          <li><a href="#device">ما يُحفظ على جهازك</a></li>
+          <li><a href="#backup">النسخ الاحتياطي</a></li>
+          <li><a href="#mic">الميكروفون والتسميع</a></li>
+          <li><a href="#net">الاتصال بالإنترنت والتحميلات</a></li>
+          <li><a href="#crash">تقارير الأعطال</a></li>
+          <li><a href="#report">الإبلاغ عن مشكلة</a></li>
+          <li><a href="#perms">الإشعارات والأذونات الأخرى</a></li>
+          <li><a href="#site">موقع altibyan.app</a></li>
+          <li><a href="#train">منصة التدريب train.altibyan.app</a></li>
+          <li><a href="#share">المشاركة مع الغير</a></li>
+          <li><a href="#rights">حقوقك</a></li>
+          <li><a href="#children">الأطفال</a></li>
+          <li><a href="#changes">تغييرات هذه السياسة</a></li>
+          <li><a href="#contact">التواصل</a></li>
+        </ol>
+      </nav>
+
+      <section id="who">
+        <h2>١. من نحن</h2>
+        <p>«تبيان» مشروع غير ربحي لخدمة القرآن الكريم، يشمل تطبيق تبيان، وموقع <span dir="ltr">altibyan.app</span>، ومنصة تدريب نموذج التسميع <span dir="ltr">train.altibyan.app</span>. المسؤول عن البيانات الموصوفة هنا هو صاحب المشروع (تبيان)، ويمكن التواصل معه على <a href="mailto:info@altibyan.app">info@altibyan.app</a>.</p>
+      </section>
+
+      <section id="device">
+        <h2>٢. ما يُحفظ على جهازك</h2>
+        <p>يعمل التطبيق دون حساب. ما يلي يُحفظ على جهازك وحده، ولا يُرسَل إلينا:</p>
+        <ul>
+          <li>إعداداتك: اللغة، والمظهر، والمصحف والرواية، والقارئ وإعدادات المشغّل، وما يظهر تحت الآية.</li>
+          <li>موضع القراءة، والفواصل والعلامات.</li>
+          <li>ملاحظات التدبّر.</li>
+          <li>الختمات وسجلّها وتذكيراتها، وتقارير القراءة والاستماع.</li>
+          <li>تقدّم الحفظ والمراجعة، ونتائج التسميع نصًّا فقط (الآيات والكلمات والأخطاء)، دون أي صوت.</li>
+          <li>عدّادات المسبحة والأذكار التي تضيفها.</li>
+          <li>سجلّ البحث.</li>
+          <li>ما تحمّله من صفحات المصاحف والتلاوات والتفاسير ونماذج التسميع.</li>
+        </ul>
+        <p>تُحذف هذه البيانات بحذف التطبيق أو بمسح بياناته من إعدادات الجهاز.</p>
+      </section>
+
+      <section id="backup">
+        <h2>٣. النسخ الاحتياطي</h2>
+        <ul>
+          <li><strong>النسخة اليدوية:</strong> من الإعدادات يمكنك تصدير ملف واحد فيه بياناتك وإعداداتك، تحفظه أو تشاركه بنفسك عبر قائمة المشاركة في جهازك. لا يمرّ الملف بخوادمنا.</li>
+          <li><strong>أندرويد:</strong> إن كان النسخ الاحتياطي التلقائي من Google مفعّلًا في جهازك، فإنه يشمل قاعدة بياناتك وإعداداتك فقط، ولا يشمل المحتوى الذي يمكن تحميله من جديد. هذا النسخ تديره Google وفق إعدادات حسابك.</li>
+          <li><strong>آيفون وآيباد وماك:</strong> يدخل في نسخة iCloud أو نسخة الجهاز قاعدةُ بياناتك وإعداداتك، أما المصاحف والتلاوات ونماذج التسميع فمستثناة لأنها تُحمَّل من جديد.</li>
+        </ul>
+      </section>
+
+      <section id="mic">
+        <h2>٤. الميكروفون والتسميع</h2>
+        <p>يطلب التطبيق إذن الميكروفون فقط عند استخدام «التسميع». يُحوَّل صوتك إلى نص على جهازك بنموذج التعرّف الذي حمّلته، ولا يُحفظ الصوت في ملف ولا يُرسل إلى أي خادم. ما يبقى هو نتيجة التسميع نصًّا على جهازك. يمكنك سحب الإذن في أي وقت من إعدادات الجهاز.</p>
+      </section>
+
+      <section id="net">
+        <h2>٥. الاتصال بالإنترنت والتحميلات</h2>
+        <p>يتصل التطبيق بالإنترنت لتحميل المحتوى عند طلبك أو عند تفعيلك التحديث التلقائي: صفحات المصاحف، والتلاوات، وملفات التوقيت، ونماذج التسميع، وحِزم المحتوى. تأتي هذه الملفات من خادم المشروع (<span dir="ltr">tibyan.ahmedhelal.dev</span>) ومن مصادرها الأصلية، مثل <span dir="ltr">mp3quran.net</span> وGitHub وملفات Quran.com.</p>
+        <p>كأي اتصال بالإنترنت، يرى الخادم الذي يرسل الملف عنوان IP الخاص بجهازك. لا نستخدمه لتتبّعك، ولا نربطه بأي هوية، ولا يرسل التطبيق معرّفًا للجهاز أو الحساب مع هذه الطلبات.</p>
+      </section>
+
+      <section id="crash">
+        <h2>٦. تقارير الأعطال (اختيارية)</h2>
+        <p>تقارير الأعطال <strong>مغلقة افتراضيًّا</strong>. إن فعّلتها من الإعدادات، يرسل التطبيق عند حدوث عطل تقريرًا تقنيًّا (تفاصيل الخطأ، ونسخة التطبيق، ونوع الجهاز ونظامه) عبر خدمة Sentry. أُعدّ التطبيق بحيث لا يرسل بيانات شخصية: لا هوية مستخدم، ولا لقطات شاشة، ولا سجلّ تنقّل، ولا بيانات طلبات. يمكنك إيقافها في أي وقت فيتوقف الإرسال فورًا.</p>
+      </section>
+
+      <section id="report">
+        <h2>٧. «الإبلاغ عن مشكلة»</h2>
+        <p>إذا أرسلت بلاغًا أو اقتراحًا من داخل التطبيق، يصل إلى <span dir="ltr">altibyan.app</span>: نوع البلاغ، ووصفك، ورقم هاتفك وبريدك إن كتبتهما (اختياريان)، ونسخة التطبيق، ونوع النظام ونسخته. يُعرض لك ذلك قبل الإرسال.</p>
+        <ul>
+          <li>نستخدمه فقط لفهم المشكلة والرد عليك.</li>
+          <li>إن تعذّر الإرسال (مثلًا دون إنترنت) يُحفظ البلاغ على جهازك ويُرسل لاحقًا، ويُحذف من الجهاز فور إرساله أو بعد ١٤ يومًا إن لم يُرسل.</li>
+          <li>نحفظ على الخادم بصمة مشفّرة غير قابلة للعكس لعنوان IP، لمنع الإرسال المتكرر فقط.</li>
+          <li>نحتفظ بالبلاغ حتى معالجته، ثم نحذفه خلال مدة أقصاها ١٢ شهرًا من استلامه. ويمكنك طلب حذفه قبل ذلك.</li>
+        </ul>
+      </section>
+
+      <section id="perms">
+        <h2>٨. الإشعارات والأذونات الأخرى</h2>
+        <ul>
+          <li><strong>الإشعارات:</strong> لإظهار تقدّم التحميل، والتحكم في التلاوة أثناء التشغيل، وتذكيرات الختمة التي تضبطها. كلها تُنشأ على جهازك، ولا نرسل إشعارات من خوادمنا إلى التطبيق.</li>
+          <li><strong>ودجات الشاشة الرئيسية:</strong> تعرض آية اليوم والختمة والمسبحة من البيانات المحفوظة على جهازك.</li>
+          <li><strong>أزرار الصوت:</strong> إن فعّلت العدّ بها، تُستخدم للعدّ في المسبحة وهي مفتوحة فقط.</li>
+          <li><strong>الصور:</strong> عند حفظ صورة آية، يطلب التطبيق إذن الإضافة إلى معرض الصور لحفظها فقط.</li>
+        </ul>
+      </section>
+
+      <section id="site">
+        <h2>٩. موقع altibyan.app</h2>
+        <p>نموذجا «أبلغني عند الإطلاق» و«انضم لاختبار النسخة التجريبية» يجمعان بريدك الإلكتروني، والأجهزة التي اخترتها في نموذج النسخة التجريبية، ولغة الصفحة. نرسل إليك رسالة تأكيد، ويصل إلى فريق المشروع تنبيه بالتسجيل.</p>
+        <ul>
+          <li>نستخدم بريدك فقط لإبلاغك بالإطلاق، أو لإضافتك مختبِرًا في Google Play أو TestFlight من Apple (وهذا يتطلب مشاركة بريدك معهما لهذا الغرض وحده).</li>
+          <li>لإلغاء الاشتراك أو حذف بريدك، راسلنا على <a href="mailto:info@altibyan.app">info@altibyan.app</a> فنحذفه.</li>
+          <li>يستخدم الموقع ملفات تعريف ارتباط ضرورية فقط: ملف الجلسة (للحماية من الطلبات المزوّرة)، وملف تفضيل اللغة. لا ملفات إعلانية ولا تحليلية، والخطوط مستضافة على خوادمنا.</li>
+          <li>تحفظ خوادمنا سجلات تقنية مؤقتة (منها عنوان IP) لأغراض الأمان وتشغيل الخدمة فقط.</li>
+        </ul>
+      </section>
+
+      <section id="train">
+        <h2>١٠. منصة التدريب train.altibyan.app</h2>
+        <p>المنصة مستقلة عن التطبيق، وتجمع تلاوات المتطوعين لتدريب نموذج التسميع. المشاركة فيها اختيارية، وتتطلب حسابًا.</p>
+        <ul>
+          <li><strong>ما نجمعه:</strong> بريدك الإلكتروني، وكلمة المرور مشفّرة، وسنة الميلاد فقط للتحقق من العمر، وموافقتك على الرخصة. ومع كل تسجيل: السورة والآيات والمدة، وبيانات اختيارية تحسّن التدريب (الجنس، والفئة العمرية، واللهجة، واللغة الأم، وبيئة التسجيل، والسرعة).</li>
+          <li><strong>من هم دون ١٨:</strong> يلزمهم موافقة ولي الأمر عند التسجيل.</li>
+          <li><strong>استخدام التسجيلات:</strong> يراجع متطوعون كل تسجيل، والمقبول منها يُتاح بعد معالجته لتدريب نماذج التعرّف على التلاوة برخصة <span dir="ltr">CC BY 4.0</span>، التي تسمح بإعادة الاستخدام مع ذكر النسبة. الملفات الخام تُحفظ خارج الموقع العام ولا تُتاح للتحميل العام.</li>
+          <li><strong>الحذف:</strong> تستطيع مسح أي تسجيل من حسابك فيُحذف فورًا، أو طلب حذف تسجيلاتك أو حسابك كله من صفحة <a href="https://train.altibyan.app/voice">«كيف نستخدم صوتك»</a>. ما أُتيح قبل الحذف يُزال من الإصدارات التالية لبيانات التدريب، لكن لا يمكن استرجاع نسخ حصل عليها آخرون من قبل.</li>
+          <li><strong>ملفات تعريف الارتباط:</strong> ملف الجلسة (لتسجيل الدخول والحماية من الطلبات المزوّرة) وملف تفضيل اللغة فقط. وإن فعّلت إشعارات المتصفح، نحفظ عنوان الاشتراك الذي يعطيه متصفحك لإرسالها، وتستطيع إيقافها في أي وقت.</li>
+          <li><strong>رسائل التواصل:</strong> ما ترسله من صفحة التواصل (الاسم والبريد والرسالة) نستخدمه للرد فقط، ونحذفه خلال ١٢ شهرًا.</li>
+        </ul>
+      </section>
+
+      <section id="share">
+        <h2>١١. المشاركة مع الغير</h2>
+        <p>لا نبيع بياناتك، ولا نشاركها لأغراض إعلانية أو تسويقية. نستعين فقط بما يلزم لتشغيل الخدمة: مزوّد الاستضافة، ومزوّد البريد الإلكتروني لإرسال الرسائل، وSentry لتقارير الأعطال إن فعّلتها، وGoogle Play وTestFlight لإضافة المختبِرين. وقد نفصح عن بيانات إن ألزمنا القانون بذلك.</p>
+      </section>
+
+      <section id="rights">
+        <h2>١٢. حقوقك</h2>
+        <p>بيانات التطبيق على جهازك وتحت تصرّفك الكامل. وبالنسبة لما وصلنا منك (بلاغ، أو بريد، أو حساب في منصة التدريب)، يمكنك أن تطلب الاطلاع عليه أو تصحيحه أو حذفه بمراسلة <a href="mailto:info@altibyan.app">info@altibyan.app</a> من البريد نفسه، وسنرد خلال ٣٠ يومًا.</p>
+      </section>
+
+      <section id="children">
+        <h2>١٣. الأطفال</h2>
+        <p>التطبيق مناسب لكل الأعمار، ولا يطلب حسابًا ولا يجمع بيانات شخصية من أي مستخدم. أما منصة التدريب فتشترط موافقة ولي الأمر لمن هم دون ١٨. إن علمتَ أن طفلًا أرسل إلينا بيانات دون موافقة، راسلنا لنحذفها.</p>
+      </section>
+
+      <section id="changes">
+        <h2>١٤. تغييرات هذه السياسة</h2>
+        <p>قد نحدّث هذه السياسة مع تطوّر المشروع، وسنحدّث تاريخ «آخر تحديث» أعلى الصفحة. وأي ميزة جديدة تُرسل بيانات من التطبيق (مثل مزامنة اختيارية بحساب) لن تُفعَّل قبل تحديث هذه السياسة لوصفها.</p>
+      </section>
+
+      <section id="contact">
+        <h2>١٥. التواصل</h2>
+        <p>لأي سؤال أو طلب يتعلق بالخصوصية: <a href="mailto:info@altibyan.app">info@altibyan.app</a>.</p>
+      </section>
+{% else %}
+      <section class="policy-summary" aria-labelledby="summary-title">
+        <h2 id="summary-title">In short</h2>
+        <ul>
+          <li>The Tibyan app needs no account, shows no ads and contains no analytics or tracking tools.</li>
+          <li>Everything you make in the app (settings, bookmarks, reflections, khatmas, memorisation, tasbih) is stored on your device only.</li>
+          <li>Recitation checking runs on your device: your voice is never recorded or sent to any server.</li>
+          <li>We only receive what you send yourself: a «Report a problem» message, crash reports if you turn them on, your email in the site's forms, or your recordings on the training platform.</li>
+          <li>We never sell your data or share it for marketing. Contact: <a href="mailto:info@altibyan.app">info@altibyan.app</a>.</li>
+        </ul>
+      </section>
+
+      <nav class="policy-toc" aria-label="On this page">
+        <ol>
+          <li><a href="#who">Who we are</a></li>
+          <li><a href="#device">What stays on your device</a></li>
+          <li><a href="#backup">Backups</a></li>
+          <li><a href="#mic">Microphone and recitation checking</a></li>
+          <li><a href="#net">Internet use and downloads</a></li>
+          <li><a href="#crash">Crash reports</a></li>
+          <li><a href="#report">Report a problem</a></li>
+          <li><a href="#perms">Notifications and other permissions</a></li>
+          <li><a href="#site">The altibyan.app website</a></li>
+          <li><a href="#train">The training platform, train.altibyan.app</a></li>
+          <li><a href="#share">Sharing with others</a></li>
+          <li><a href="#rights">Your rights</a></li>
+          <li><a href="#children">Children</a></li>
+          <li><a href="#changes">Changes to this policy</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ol>
+      </nav>
+
+      <section id="who">
+        <h2>1. Who we are</h2>
+        <p>Tibyan is a non-profit project in service of the Holy Quran. It covers the Tibyan app, the altibyan.app website and the recitation model training platform, train.altibyan.app. The data described here is controlled by the project's owner (Tibyan), who can be reached at <a href="mailto:info@altibyan.app">info@altibyan.app</a>.</p>
+      </section>
+
+      <section id="device">
+        <h2>2. What stays on your device</h2>
+        <p>The app works without an account. The following is stored on your device only and is never sent to us:</p>
+        <ul>
+          <li>Your settings: language, appearance, mushaf and riwaya, reciter and player settings, what shows under the verse.</li>
+          <li>Your reading position, bookmarks and marks.</li>
+          <li>Your reflection (tadabbur) notes.</li>
+          <li>Khatmas, their log and reminders, and your reading and listening reports.</li>
+          <li>Memorisation and review progress, and recitation checking results as text only (verses, words, mistakes), never audio.</li>
+          <li>Tasbih counts and the adhkar you add.</li>
+          <li>Your search history.</li>
+          <li>The mushaf pages, recitations, tafsir and recitation models you download.</li>
+        </ul>
+        <p>This data is removed when you delete the app or clear its data in your device settings.</p>
+      </section>
+
+      <section id="backup">
+        <h2>3. Backups</h2>
+        <ul>
+          <li><strong>Manual backup:</strong> from the settings you can export one file with your data and settings, which you save or share yourself through your device's share sheet. The file never passes through our servers.</li>
+          <li><strong>Android:</strong> if Google's automatic backup is on for your device, it covers your database and settings only, not content that can be downloaded again. That backup is run by Google under your account settings.</li>
+          <li><strong>iPhone, iPad and Mac:</strong> your database and settings are part of your iCloud or device backup; mushaf pages, recitations and recitation models are excluded because they can be downloaded again.</li>
+        </ul>
+      </section>
+
+      <section id="mic">
+        <h2>4. Microphone and recitation checking</h2>
+        <p>The app asks for the microphone only when you use recitation checking. Your voice is turned into text on your device by the recognition model you downloaded; the audio is not saved to a file and is not sent to any server. Only the result, as text, stays on your device. You can withdraw the permission at any time in your device settings.</p>
+      </section>
+
+      <section id="net">
+        <h2>5. Internet use and downloads</h2>
+        <p>The app goes online to download content when you ask for it or when you turn on automatic updates: mushaf pages, recitations, timing files, recitation models and content packs. These files come from the project's server (tibyan.ahmedhelal.dev) and from their original sources, such as mp3quran.net, GitHub and Quran.com's files.</p>
+        <p>As with any internet connection, the server sending a file sees your device's IP address. We do not use it to track you or tie it to any identity, and the app sends no device or account identifier with these requests.</p>
+      </section>
+
+      <section id="crash">
+        <h2>6. Crash reports (optional)</h2>
+        <p>Crash reports are <strong>off by default</strong>. If you turn them on in the settings, the app sends a technical report when it crashes (error details, app version, device type and OS) through Sentry. The app is set up to send no personal data: no user identity, no screenshots, no navigation trail and no request data. You can turn them off at any time and sending stops at once.</p>
+      </section>
+
+      <section id="report">
+        <h2>7. Report a problem</h2>
+        <p>If you send a report or suggestion from inside the app, it goes to altibyan.app with: the report type, your description, your phone number and email if you enter them (both optional), the app version, and your OS and its version. You see this before sending.</p>
+        <ul>
+          <li>We use it only to understand the problem and reply to you.</li>
+          <li>If it cannot be sent (for example while offline) it waits on your device and is sent later; it is removed from the device as soon as it is sent, or after 14 days if it never could be.</li>
+          <li>On the server we keep a one-way, keyed hash of your IP address, only to stop repeated submissions.</li>
+          <li>We keep a report until it is handled, and delete it within 12 months of receiving it at most. You can ask us to delete it sooner.</li>
+        </ul>
+      </section>
+
+      <section id="perms">
+        <h2>8. Notifications and other permissions</h2>
+        <ul>
+          <li><strong>Notifications:</strong> to show download progress, control playback and deliver the khatma reminders you set. All are created on your device; we send no notifications from our servers to the app.</li>
+          <li><strong>Home-screen widgets:</strong> show the verse of the day, your khatma and the tasbih counter from data stored on your device.</li>
+          <li><strong>Volume buttons:</strong> if you turn on counting with them, they count tasbih only while the counter is open.</li>
+          <li><strong>Photos:</strong> when you save a verse image, the app asks to add it to your photo library, for that purpose only.</li>
+        </ul>
+      </section>
+
+      <section id="site">
+        <h2>9. The altibyan.app website</h2>
+        <p>The «Notify me at launch» and «Join the beta test» forms collect your email address, the devices you choose in the beta form, and the page language. We send you a confirmation email, and the project team gets an alert about the sign-up.</p>
+        <ul>
+          <li>We use your email only to tell you about the launch, or to add you as a tester on Google Play or Apple's TestFlight (which means sharing your email with them for that purpose only).</li>
+          <li>To unsubscribe or have your email deleted, write to <a href="mailto:info@altibyan.app">info@altibyan.app</a> and we will delete it.</li>
+          <li>The site uses strictly necessary cookies only: a session cookie (to protect forms against forged requests) and a language preference. No advertising or analytics cookies, and fonts are served from our own servers.</li>
+          <li>Our servers keep temporary technical logs (including IP addresses) for security and operation only.</li>
+        </ul>
+      </section>
+
+      <section id="train">
+        <h2>10. The training platform, train.altibyan.app</h2>
+        <p>The platform is separate from the app and collects volunteers' recitations to train the recitation model. Taking part is optional and needs an account.</p>
+        <ul>
+          <li><strong>What we collect:</strong> your email, your password (hashed), your birth year only to verify age, and your licence consent. With each recording: the surah, verses and duration, plus optional details that improve training (gender, age bracket, dialect, native language, recording environment, pace).</li>
+          <li><strong>Under 18:</strong> a parent or guardian's consent is required at sign-up.</li>
+          <li><strong>How recordings are used:</strong> volunteers review every recording; accepted ones, after processing, are made available to train recitation recognition models under <span dir="ltr">CC BY 4.0</span>, which allows reuse with attribution. Raw files are kept outside the public site and are never offered for public download.</li>
+          <li><strong>Deletion:</strong> you can delete any recording from your account and it is removed at once, or ask for your recordings or your whole account to be deleted on the <a href="https://train.altibyan.app/voice">«How we use your voice»</a> page. Anything released before deletion is removed from later releases of the training data, but copies others obtained earlier cannot be recalled.</li>
+          <li><strong>Cookies:</strong> a session cookie (for signing in and protection against forged requests) and a language preference only. If you turn on browser notifications, we store the subscription address your browser gives us to send them; you can turn them off at any time.</li>
+          <li><strong>Contact messages:</strong> what you send from the contact page (name, email, message) is used only to reply, and deleted within 12 months.</li>
+        </ul>
+      </section>
+
+      <section id="share">
+        <h2>11. Sharing with others</h2>
+        <p>We never sell your data or share it for advertising or marketing. We only rely on what running the service needs: our hosting provider, an email provider to send messages, Sentry for crash reports if you turn them on, and Google Play and TestFlight to add testers. We may disclose data if the law requires us to.</p>
+      </section>
+
+      <section id="rights">
+        <h2>12. Your rights</h2>
+        <p>The app's data is on your device and fully under your control. For anything we received from you (a report, an email address, a training platform account), you can ask to see, correct or delete it by writing to <a href="mailto:info@altibyan.app">info@altibyan.app</a> from the same address; we will reply within 30 days.</p>
+      </section>
+
+      <section id="children">
+        <h2>13. Children</h2>
+        <p>The app is suitable for all ages; it needs no account and collects no personal data from anyone. The training platform requires a parent or guardian's consent for anyone under 18. If you learn that a child sent us data without consent, write to us and we will delete it.</p>
+      </section>
+
+      <section id="changes">
+        <h2>14. Changes to this policy</h2>
+        <p>We may update this policy as the project grows, and will change the «Last updated» date at the top. No new feature that sends data from the app (such as optional account sync) will be switched on before this policy is updated to describe it.</p>
+      </section>
+
+      <section id="contact">
+        <h2>15. Contact</h2>
+        <p>For any privacy question or request: <a href="mailto:info@altibyan.app">info@altibyan.app</a>.</p>
+      </section>
+{% endif %}
+    </article>
+
+{% include "_launch_footer.html" %}
+  </main>
+</body>
+</html>

@@ -112,6 +112,7 @@
                    {% if notify in ('invalid', 'busy') %}aria-invalid="true" aria-describedby="notify-error"{% endif %}>
             <button type="submit">{{ 'أبلغني' if ar else 'Notify me' }}</button>
           </div>
+          {% include "_privacy_consent.html" %}
         </form>
       {% endif %}
         <a class="beta-button" href="/beta">

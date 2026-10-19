@@ -116,7 +116,8 @@
             </fieldset>
 
             <button type="submit" class="beta-submit">{{ 'سجّلني مختبِرًا' if ar else 'Sign me up as a tester' }}</button>
-            <p class="hint">{{ 'لن نشارك بريدك مع أي جهة، ولن نراسلك إلا بما يخص الاختبار.' if ar else 'We never share your address and only write to you about the test.' }}</p>
+            <p class="hint">{{ 'لا نشارك بريدك إلا مع Google Play أو TestFlight لإضافتك مختبِرًا، ولن نراسلك إلا بما يخص الاختبار.' if ar else 'We share your address only with Google Play or TestFlight to add you as a tester, and only write to you about the test.' }}</p>
+            {% include "_privacy_consent.html" %}
           </form>
         {% endif %}
       </div>

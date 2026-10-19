@@ -60,6 +60,37 @@ def voice(request: Request, db: Session = Depends(get_db)):
     )
 
 
+PRIVACY_UPDATED = ("2026-10-19", "١٩ أكتوبر ٢٠٢٦", "19 October 2026")
+
+
+def _privacy(request: Request, lang: str):
+    if not is_root_host(request):
+        suffix = "/en" if lang == "en" else ""
+        return RedirectResponse(f"{ROOT_ORIGIN}/privacy{suffix}", status_code=301)
+    iso, ar, en = PRIVACY_UPDATED
+    return render(
+        request,
+        "privacy.html",
+        lang=lang,
+        dir="rtl" if lang == "ar" else "ltr",
+        updated_iso=iso,
+        updated_ar=ar,
+        updated_en=en,
+    )
+
+
+@router.get("/privacy")
+def privacy(request: Request):
+    """The privacy policy (app, altibyan.app and the training platform):
+    Arabic here, English at /privacy/en."""
+    return _privacy(request, "ar")
+
+
+@router.get("/privacy/en")
+def privacy_en(request: Request):
+    return _privacy(request, "en")
+
+
 @router.post("/voice/delete-request")
 def deletion_request(
     request: Request,
@@ -119,7 +150,12 @@ def robots(request: Request):
 @router.get("/sitemap.xml")
 def sitemap(request: Request):
     if is_root_host(request):
-        urls = [f"{ROOT_ORIGIN}/", f"{ROOT_ORIGIN}/beta"]
+        urls = [
+            f"{ROOT_ORIGIN}/",
+            f"{ROOT_ORIGIN}/beta",
+            f"{ROOT_ORIGIN}/privacy",
+            f"{ROOT_ORIGIN}/privacy/en",
+        ]
     else:
         urls = [f"{TRAIN_ORIGIN}{path}" for path in TRAIN_PUBLIC_PATHS]
     entries = "".join(f"  <url><loc>{url}</loc></url>\n" for url in urls)

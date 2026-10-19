@@ -23,4 +23,4 @@ templates.env.globals["tiktok_url"] = TIKTOK_URL
 YOUTUBE_URL = "https://www.youtube.com/@altibyanApp"
 templates.env.globals["youtube_url"] = YOUTUBE_URL
 # Bump when CSS/JS/brand assets change so browsers refetch them.
-templates.env.globals["asset_v"] = "brand1"
+templates.env.globals["asset_v"] = "brand2"
