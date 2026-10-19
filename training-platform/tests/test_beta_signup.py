@@ -160,6 +160,10 @@ class BetaFormTests(LaunchFormsBase):
         self.assertIn("أصبح مختبِرًا", html)
         self.assertIn("الإبلاغ عن مشكلة", html)
 
+    def test_nginx_429_redirect_shows_message(self):
+        with self.client() as c:
+            self.assertIn("محاولات كثيرة", c.get("/beta?n=busy").text)
+
     def test_english_page(self):
         with self.client() as c:
             c.cookies.set("lang", "en")

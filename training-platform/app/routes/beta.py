@@ -52,6 +52,8 @@ def _page(request: Request, status_code: int = 200, **context):
 @router.get("/beta")
 def beta_page(request: Request):
     state = request.session.pop("beta", None)
+    if state is None and request.query_params.get("n") == "busy":
+        state = "busy"  # nginx's 429 redirect lands here
     chosen = request.session.pop("beta_platforms", None) or []
     return _page(request, state=state, chosen=chosen, errors={}, old={})
 
