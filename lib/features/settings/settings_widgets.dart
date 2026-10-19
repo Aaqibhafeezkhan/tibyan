@@ -19,6 +19,8 @@ import '../../l10n/app_localizations.dart';
 import '../khatma/khatma_providers.dart';
 import '../mushaf/mushaf_providers.dart';
 import '../mushaf/presentation/widgets/art_frame.dart';
+import '../mushaf/presentation/widgets/fasil_bookmarks.dart';
+import '../mushaf/presentation/widgets/fasil_sheet.dart' show FasilPreview;
 import '../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
 import '../mushaf/presentation/widgets/theme_art.dart';
@@ -422,6 +424,105 @@ class SajdahTimerCard extends ConsumerWidget {
 
 /// «شكل المشغل»: how the player over the mushaf looks, with focus mode on
 /// or off.
+/// «شكل الفاصلة»: the look of named fawasil on the page (tinted verse,
+/// fabric ribbon, card tab), the ribbon's cloth and tassel, and where
+/// ribbons and tabs sit, with a live preview.
+class FasilStyleCard extends ConsumerWidget {
+  const FasilStyleCard({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
+    final s = ref.watch(settingsProvider);
+    final ctrl = ref.read(settingsProvider.notifier);
+    final style = s.effectiveFasilStyle;
+    final muted = TextStyle(color: context.look.sub);
+    Widget label(String text) => Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 6),
+      child: Text(text, style: muted),
+    );
+    Widget seg<T>(T value, List<(T, String)> options, void Function(T) set) =>
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SegmentedButton<T>(
+            showSelectedIcon: false,
+            segments: [
+              for (final (v, name) in options)
+                ButtonSegment(value: v, label: Text(name)),
+            ],
+            selected: {value},
+            onSelectionChanged: (v) => set(v.first),
+          ),
+        );
+    final hint = switch (style) {
+      FasilStyle.tint => l.fasilStyleTintHint,
+      FasilStyle.ribbon => l.fasilStyleRibbonHint,
+      FasilStyle.tab => l.fasilStyleTabHint,
+    };
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+          child: Text(
+            l.fasilStyleLabel,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 2, 16, 8),
+          child: Text(l.fasilStyleHint, style: muted),
+        ),
+        seg(style, [
+          (FasilStyle.tint, l.fasilStyleTint),
+          (FasilStyle.ribbon, l.fasilStyleRibbon),
+          (FasilStyle.tab, l.fasilStyleTab),
+        ], ctrl.setFasilStyle),
+        Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 6, 16, 0),
+          child: Text(hint, style: muted),
+        ),
+        if (style == FasilStyle.ribbon) ...[
+          label(l.fasilMaterialLabel),
+          seg(s.fasilMaterial, [
+            (FasilMaterial.silk, l.fasilSilk),
+            (FasilMaterial.linen, l.fasilLinen),
+            (FasilMaterial.velvet, l.fasilVelvet),
+          ], ctrl.setFasilMaterial),
+          SwitchListTile(
+            title: Text(l.fasilTassel),
+            value: s.fasilTassel,
+            onChanged: ctrl.setFasilTassel,
+          ),
+        ],
+        if (style != FasilStyle.tint) ...[
+          label(l.fasilPlaceLabel),
+          seg(s.fasilPlace, [
+            (FasilPlace.top, l.fasilPlaceTop),
+            (FasilPlace.side, l.fasilPlaceSide),
+          ], ctrl.setFasilPlace),
+        ],
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+          child: Semantics(
+            label: l.fasilPreview,
+            child: Center(
+              child: SizedBox(
+                width: 180,
+                child: FasilPreview(
+                  key: ValueKey('fasil-preview-${style.name}'),
+                  look: FasilLook.of(context, s),
+                  height: 170,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 /// «تأثير قلب الصفحة»: how the mushaf turns a page.
 class PageTurnCard extends ConsumerWidget {
   const PageTurnCard({super.key});

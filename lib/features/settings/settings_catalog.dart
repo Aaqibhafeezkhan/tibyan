@@ -194,6 +194,12 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         keywords: 'فاصلة علامة نهاية الآية لون marker verse end tint',
       ),
       SettingEntry(
+        'fasilStyle',
+        (l) => l.fasilStyleLabel,
+        (c, r) => const FasilStyleCard(),
+        keywords: 'شكل الفاصلة فاصل فواصل شريطة شريط قماش لسان كرت حرير كتان قطيفة شرابة bookmark ribbon tab card silk linen velvet tassel',
+      ),
+      SettingEntry(
         'tajweed',
         (l) => l.tajweedColors,
         (c, r) => const TajweedSettings(),

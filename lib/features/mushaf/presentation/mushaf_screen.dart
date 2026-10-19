@@ -62,6 +62,7 @@ import 'download_screen.dart';
 import 'page_spreads.dart';
 import 'widgets/page_turn_effect.dart';
 import 'widgets/art_frame.dart';
+import 'widgets/fasil_bookmarks.dart';
 import 'widgets/fasil_sheet.dart';
 import 'widgets/go_to_page.dart';
 import 'widgets/illuminated_frame.dart';
@@ -712,11 +713,41 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     // Bookmarks are kept in Hafs numbers; a riwaya page shows each on the
     // riwaya verse that holds it.
     final riwaya = ref.watch(riwayaDataProvider).value;
+    // Only the fawasil's own settings rebuild the screen.
+    ref.watch(
+      settingsProvider.select(
+        (s) => (s.fasilStyle, s.fasilPlace, s.fasilMaterial, s.fasilTassel),
+      ),
+    );
+    final fasilLook = FasilLook.of(context, ref.read(settingsProvider));
+    final allMarks =
+        ref.watch(bookmarkSetsProvider).value ?? const <BookmarkSetRow>[];
+    // Ribbons and tabs stand for the named fawasil; the four fixed marks
+    // keep their tinted verse.
     final marks = <VerseKey, Color>{
-      for (final m
-          in ref.watch(bookmarkSetsProvider).value ?? const <BookmarkSetRow>[])
-        editionKeyOf(riwaya, m.surah, m.ayah): Color(m.color),
+      for (final m in allMarks)
+        if (!fasilLook.drawn || m.kind != null)
+          editionKeyOf(riwaya, m.surah, m.ayah): Color(m.color),
     };
+    final fawasil = !fasilLook.drawn
+        ? const <FasilMark>[]
+        : [
+            for (final m in allMarks)
+              if (m.kind == null)
+                FasilMark(
+                  id: m.id,
+                  name: m.name,
+                  color: Color(m.color),
+                  page:
+                      ref.watch(versePageProvider((m.surah, m.ayah))).value ??
+                      m.page,
+                  placedAt: m.updatedAt,
+                ),
+          ];
+    List<FasilMark> fawasilOn(int pg) => [
+      for (final f in fawasil)
+        if (f.page == pg) f,
+    ];
 
     // Only what the screen shows: a change to any other setting does not
     // build it again.
@@ -818,8 +849,11 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     // with every tool.
     final menu = focus && settings.focusTools == FocusTools.menu;
 
-    Widget pageOf(int pg) {
-      if (pg == 0 || (edition == MushafEdition.shamarly && pg == 1)) {
+    bool isCoverPage(int pg) =>
+        pg == 0 || (edition == MushafEdition.shamarly && pg == 1);
+
+    Widget bareOf(int pg) {
+      if (isCoverPage(pg)) {
         return CoverPage(onTap: _onPageTap);
       }
       // The first two pages of the text (al-Fatiha, the opening of
@@ -1035,6 +1069,21 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       );
     }
 
+    // A page with its fawasil over it, inside the page turn's boundary, so
+    // they turn with it. In a spread they lie in the spine instead.
+    Widget pageOf(int pg, {bool bookmarks = true}) {
+      final page = bareOf(pg);
+      if (!bookmarks || isCoverPage(pg)) return page;
+      return FasilPageLayer(
+        marks: fawasilOn(pg),
+        look: fasilLook,
+        outerRight: pg.isOdd,
+        focus: focus,
+        onLongPress: _fasilActions,
+        child: page,
+      );
+    }
+
     Widget pageAt(int i) => pageOf(i + _first);
 
     bool isCover(int pg) =>
@@ -1162,116 +1211,181 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                                 : Column(
                                     children: [
                                       Expanded(
-                                        child: NotificationListener<ScrollNotification>(
-                                          onNotification: _onPagerScroll,
-                                          child:
-                                              // The mushaf opens from the right in every interface language.
-                                              Directionality(
-                                                textDirection:
-                                                    TextDirection.rtl,
-                                                child: LayoutBuilder(
-                                                  builder: (context, box) {
-                                                    // A wide screen held sideways shows two
-                                                    // pages; not in a hifz test, which is one
-                                                    // page at a time.
-                                                    final spread =
-                                                        settings
-                                                            .twoPageSpread &&
-                                                        !_testing &&
-                                                        box.maxWidth >
-                                                            box.maxHeight &&
-                                                        box.maxWidth >= 800;
-                                                    if (spread != _spread) {
-                                                      WidgetsBinding.instance
-                                                          .addPostFrameCallback(
-                                                            (_) => _setSpread(
-                                                              spread,
+                                        child: Stack(
+                                          children: [
+                                            Positioned.fill(
+                                              child: NotificationListener<ScrollNotification>(
+                                                onNotification: _onPagerScroll,
+                                                child:
+                                                    // The mushaf opens from the right in every interface language.
+                                                    Directionality(
+                                                      textDirection:
+                                                          TextDirection.rtl,
+                                                      child: LayoutBuilder(
+                                                        builder: (context, box) {
+                                                          // A wide screen held sideways shows two
+                                                          // pages; not in a hifz test, which is one
+                                                          // page at a time.
+                                                          final spread =
+                                                              settings
+                                                                  .twoPageSpread &&
+                                                              !_testing &&
+                                                              box.maxWidth >
+                                                                  box.maxHeight &&
+                                                              box.maxWidth >=
+                                                                  800;
+                                                          if (spread !=
+                                                              _spread) {
+                                                            WidgetsBinding
+                                                                .instance
+                                                                .addPostFrameCallback(
+                                                                  (_) =>
+                                                                      _setSpread(
+                                                                        spread,
+                                                                      ),
+                                                                );
+                                                          }
+                                                          // A mouse and a trackpad drag the pages
+                                                          // like a finger; the wheel turns them.
+                                                          return Listener(
+                                                            onPointerSignal:
+                                                                _onWheel,
+                                                            child: ScrollConfiguration(
+                                                              behavior:
+                                                                  ScrollConfiguration.of(
+                                                                    context,
+                                                                  ).copyWith(
+                                                                    dragDevices:
+                                                                        PointerDeviceKind
+                                                                            .values
+                                                                            .toSet(),
+                                                                  ),
+                                                              child: PageView.builder(
+                                                                // A new controller (spreads turned on or off, another
+                                                                // edition) starts a new pager: the old one would keep its
+                                                                // place, now another page.
+                                                                key: ObjectKey(
+                                                                  _controller,
+                                                                ),
+                                                                controller:
+                                                                    _controller,
+                                                                itemCount:
+                                                                    _spreads
+                                                                        .count,
+                                                                // The pages either side are built and their images
+                                                                // decoded before they are turned to, so a page turn
+                                                                // does not stop on a spinner.
+                                                                allowImplicitScrolling:
+                                                                    true,
+                                                                onPageChanged:
+                                                                    _onPageChanged,
+                                                                itemBuilder: (context, i) => PageTurnEffect(
+                                                                  controller:
+                                                                      _controller,
+                                                                  index: i,
+                                                                  effect: settings
+                                                                      .pageTurn,
+                                                                  isSpread: (j) =>
+                                                                      _spread &&
+                                                                      j >= 0 &&
+                                                                      j <
+                                                                          _spreads
+                                                                              .count &&
+                                                                      _pagesAt(
+                                                                            j,
+                                                                          ).length ==
+                                                                          2,
+                                                                  child: () {
+                                                                    final pages =
+                                                                        _pagesAt(
+                                                                          i,
+                                                                        );
+                                                                    if (pages
+                                                                            .length ==
+                                                                        1) {
+                                                                      return pageOf(
+                                                                        pages
+                                                                            .single,
+                                                                      );
+                                                                    }
+                                                                    // Right page first: the mushaf opens
+                                                                    // from the right.
+                                                                    return FasilSpineLayer(
+                                                                      right: fawasilOn(
+                                                                        pages
+                                                                            .first,
+                                                                      ),
+                                                                      left: fawasilOn(
+                                                                        pages
+                                                                            .last,
+                                                                      ),
+                                                                      look:
+                                                                          fasilLook,
+                                                                      onLongPress:
+                                                                          _fasilActions,
+                                                                      child: Row(
+                                                                        textDirection:
+                                                                            TextDirection.rtl,
+                                                                        children: [
+                                                                          for (final pg
+                                                                              in pages)
+                                                                            Expanded(
+                                                                              child: pageOf(
+                                                                                pg,
+                                                                                bookmarks: false,
+                                                                              ),
+                                                                            ),
+                                                                        ],
+                                                                      ),
+                                                                    );
+                                                                  }(),
+                                                                ),
+                                                              ),
                                                             ),
                                                           );
-                                                    }
-                                                    // A mouse and a trackpad drag the pages
-                                                    // like a finger; the wheel turns them.
-                                                    return Listener(
-                                                      onPointerSignal: _onWheel,
-                                                      child: ScrollConfiguration(
-                                                        behavior:
-                                                            ScrollConfiguration.of(
-                                                              context,
-                                                            ).copyWith(
-                                                              dragDevices:
-                                                                  PointerDeviceKind
-                                                                      .values
-                                                                      .toSet(),
-                                                            ),
-                                                        child: PageView.builder(
-                                                          // A new controller (spreads turned on or off, another
-                                                          // edition) starts a new pager: the old one would keep its
-                                                          // place, now another page.
-                                                          key: ObjectKey(
-                                                            _controller,
-                                                          ),
-                                                          controller:
-                                                              _controller,
-                                                          itemCount:
-                                                              _spreads.count,
-                                                          // The pages either side are built and their images
-                                                          // decoded before they are turned to, so a page turn
-                                                          // does not stop on a spinner.
-                                                          allowImplicitScrolling:
-                                                              true,
-                                                          onPageChanged:
-                                                              _onPageChanged,
-                                                          itemBuilder: (context, i) => PageTurnEffect(
-                                                            controller:
-                                                                _controller,
-                                                            index: i,
-                                                            effect: settings
-                                                                .pageTurn,
-                                                            isSpread: (j) =>
-                                                                _spread &&
-                                                                j >= 0 &&
-                                                                j <
-                                                                    _spreads
-                                                                        .count &&
-                                                                _pagesAt(
-                                                                      j,
-                                                                    ).length ==
-                                                                    2,
-                                                            child: () {
-                                                              final pages =
-                                                                  _pagesAt(i);
-                                                              if (pages
-                                                                      .length ==
-                                                                  1) {
-                                                                return pageOf(
-                                                                  pages.single,
-                                                                );
-                                                              }
-                                                              // Right page first: the mushaf opens
-                                                              // from the right.
-                                                              return Row(
-                                                                textDirection:
-                                                                    TextDirection
-                                                                        .rtl,
-                                                                children: [
-                                                                  for (final pg
-                                                                      in pages)
-                                                                    Expanded(
-                                                                      child:
-                                                                          pageOf(
-                                                                            pg,
-                                                                          ),
-                                                                    ),
-                                                                ],
-                                                              );
-                                                            }(),
-                                                          ),
-                                                        ),
+                                                        },
                                                       ),
-                                                    );
-                                                  },
+                                                    ),
+                                              ),
+                                            ),
+                                            // The fawasil kept on other
+                                            // pages, folded at the top edge
+                                            // on the inner side.
+                                            if (fawasil.isNotEmpty)
+                                              Positioned(
+                                                top: 0,
+                                                left: shownPages.first.isOdd
+                                                    ? 4
+                                                    : null,
+                                                right: shownPages.first.isOdd
+                                                    ? null
+                                                    : 4,
+                                                child: FoldedFawasil(
+                                                  marks: [
+                                                    for (final f in fawasil)
+                                                      if (!shownPages.contains(
+                                                        f.page,
+                                                      ))
+                                                        f,
+                                                  ],
+                                                  look: fasilLook,
+                                                  onTap: (f) =>
+                                                      _controller?.jumpToPage(
+                                                        _indexOf(f.page),
+                                                      ),
+                                                  onLongPress: _fasilActions,
+                                                  semanticLabel: (f) =>
+                                                      l.fasilOnPage(
+                                                        f.name,
+                                                        NumberFormatter(
+                                                          Localizations.localeOf(
+                                                            context,
+                                                          ),
+                                                        )(f.page),
+                                                      ),
                                                 ),
                                               ),
+                                          ],
                                         ),
                                       ),
                                       if (!_autoScroll && !focus) readingBar(),
@@ -2393,6 +2507,37 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       _controller?.dispose();
       _controller = PageController(initialPage: _indexOf(page));
     });
+  }
+
+  /// A long press on a fasil's bookmark: rename, recolour, move here,
+  /// delete.
+  void _fasilActions(FasilMark mark) {
+    final row = ref
+        .read(bookmarkSetsProvider)
+        .value
+        ?.where((m) => m.id == mark.id)
+        .firstOrNull;
+    if (row == null) return;
+    HapticFeedback.selectionClick();
+    final first = ref.read(pageAyahsProvider(_page)).value?.firstOrNull;
+    final digits = NumberFormatter(Localizations.localeOf(context));
+    unawaited(
+      showFasilActions(
+        context,
+        ref,
+        fasil: row,
+        pageLabel: digits(mark.page),
+        here: first == null || mark.page == _page
+            ? null
+            : () {
+                final h = hafsKeyOf(_riwaya, (
+                  surah: first.surah,
+                  ayah: first.number,
+                ));
+                return (surah: h.surah, ayah: h.ayah, page: _page);
+              }(),
+      ),
+    );
   }
 
   /// Tapping a verse marker sets the reading mark there, or removes the
