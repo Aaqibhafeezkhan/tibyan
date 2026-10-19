@@ -722,28 +722,16 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     final fasilLook = FasilLook.of(context, ref.read(settingsProvider));
     final allMarks =
         ref.watch(bookmarkSetsProvider).value ?? const <BookmarkSetRow>[];
-    // Ribbons and tabs stand for the named fawasil; the four fixed marks
-    // keep their tinted verse.
-    final marks = <VerseKey, Color>{
-      for (final m in allMarks)
-        if (!fasilLook.drawn || m.kind != null)
-          editionKeyOf(riwaya, m.surah, m.ayah): Color(m.color),
-    };
-    final fawasil = !fasilLook.drawn
-        ? const <FasilMark>[]
-        : [
-            for (final m in allMarks)
-              if (m.kind == null)
-                FasilMark(
-                  id: m.id,
-                  name: m.name,
-                  color: Color(m.color),
-                  page:
-                      ref.watch(versePageProvider((m.surah, m.ayah))).value ??
-                      m.page,
-                  placedAt: m.updatedAt,
-                ),
-          ];
+    // One path for every fasil, the four fixed ones and the named alike:
+    // the tinted verse, or ribbons and tabs in the chosen look.
+    final marks = fasilTints(allMarks, fasilLook, (m) {
+      return editionKeyOf(riwaya, m.surah, m.ayah);
+    });
+    final fawasil = fasilMarksOf(
+      allMarks,
+      fasilLook,
+      (m) => ref.watch(versePageProvider((m.surah, m.ayah))).value ?? m.page,
+    );
     List<FasilMark> fawasilOn(int pg) => [
       for (final f in fawasil)
         if (f.page == pg) f,
@@ -2213,18 +2201,20 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       MarkKind.hifz => l.markHifz,
       MarkKind.tadabbur => l.markTadabbur,
     };
-    unawaited(HapticFeedback.lightImpact());
     // Marks are kept in Hafs numbers; the message names the verse as read.
+    // Every fasil follows the reader's look; the first one asks it.
     final hafs = hafsKeyOf(_riwaya, v);
-    await ref
-        .read(userDatabaseProvider)
-        .setMark(
-          kind,
-          name: name,
-          surah: hafs.surah,
-          ayah: hafs.ayah,
-          page: page,
-        );
+    final placed = await placeFixedFasil(
+      context,
+      ProviderScope.containerOf(context, listen: false),
+      kind,
+      name: name,
+      surah: hafs.surah,
+      ayah: hafs.ayah,
+      page: page,
+    );
+    if (!placed) return;
+    unawaited(HapticFeedback.lightImpact());
     if (!mounted) return;
     final surahs = ref.read(surahsProvider).value;
     final sName = surahs == null ? '' : surahName(context, surahs[v.surah - 1]);

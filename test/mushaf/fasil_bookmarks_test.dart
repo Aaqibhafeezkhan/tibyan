@@ -48,6 +48,14 @@ void main() {
     ),
   );
 
+  /// Lets the database answer, then settles.
+  Future<void> idle(WidgetTester tester) async {
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 50)),
+    );
+    await tester.pumpAndSettle();
+  }
+
   Rect rectOf(WidgetTester tester, Finder f) => tester.getRect(f);
 
   group('on the page', () {
@@ -462,15 +470,160 @@ void main() {
       expect(c.read(settingsProvider).fasilStyle, FasilStyle.ribbon);
     });
 
-    testWidgets('a reader with fawasil is not asked', (tester) async {
+    testWidgets('a reader with fawasil is asked on their next fasil; '
+        'closing keeps the tint', (tester) async {
       final c = await containerWith(tester, {});
       final ctx = await themed(tester, c);
       final ref = ProviderScope.containerOf(ctx);
-      final got = await ensureFasilStyleFor(ctx, ref, hasFawasil: true);
-      await tester.pump();
+      FasilStyle? got;
+      final done = ensureFasilStyleFor(
+        ctx,
+        ref,
+        hasFawasil: true,
+      ).then((s) => got = s);
+      await tester.pumpAndSettle();
+      expect(find.byType(FasilStyleChooser), findsOneWidget);
+      Navigator.of(tester.element(find.byType(FasilStyleChooser))).pop();
+      await tester.pumpAndSettle();
+      await done;
       expect(got, FasilStyle.tint);
+      expect(c.read(settingsProvider).fasilStyle, FasilStyle.tint);
+    });
+
+    testWidgets('a tap on a verse number places the reading fasil in the '
+        'look chosen then', (tester) async {
+      final c = await containerWith(tester, {});
+      final ctx = await themed(tester, c);
+      final ref = ProviderScope.containerOf(ctx);
+      bool? placed;
+      final done = placeFixedFasil(
+        ctx,
+        ref,
+        MarkKind.reading,
+        name: 'قراءة',
+        surah: 2,
+        ayah: 255,
+        page: 42,
+      ).then((p) => placed = p);
+      await idle(tester);
+      expect(find.byType(FasilStyleChooser), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('fasil-choose-tab')));
+      await tester.pumpAndSettle();
+      await tester.runAsync(() => done);
+      expect(placed, isTrue);
+      expect(c.read(settingsProvider).fasilStyle, FasilStyle.tab);
+      final db = c.read(userDatabaseProvider);
+      final rows = (await tester.runAsync(() => db.watchBookmarkSets().first))!;
+      expect(rows.single.kind, 'reading');
+      expect(rows.single.color, MarkKind.reading.color);
+
+      // Placed again (a look chosen now): moved, not asked, still one.
+      final again = placeFixedFasil(
+        ctx,
+        ref,
+        MarkKind.reading,
+        name: 'قراءة',
+        surah: 3,
+        ayah: 1,
+        page: 50,
+      );
+      await idle(tester);
       expect(find.byType(FasilStyleChooser), findsNothing);
+      expect(await tester.runAsync(() => again), isTrue);
+      final moved = (await tester.runAsync(
+        () => db.watchBookmarkSets().first,
+      ))!;
+      expect(moved.single.ayah, 1);
+      expect(moved.single.page, 50);
+    });
+
+    testWidgets('closing the first chooser places nothing', (tester) async {
+      final c = await containerWith(tester, {});
+      final ctx = await themed(tester, c);
+      final ref = ProviderScope.containerOf(ctx);
+      final done = placeFixedFasil(
+        ctx,
+        ref,
+        MarkKind.hifz,
+        name: 'حفظ',
+        surah: 2,
+        ayah: 1,
+        page: 2,
+      );
+      await idle(tester);
+      Navigator.of(tester.element(find.byType(FasilStyleChooser))).pop();
+      await tester.pumpAndSettle();
+      expect(await tester.runAsync(() => done), isFalse);
+      final rows = (await tester.runAsync(
+        () => c.read(userDatabaseProvider).watchBookmarkSets().first,
+      ))!;
+      expect(rows, isEmpty);
       expect(c.read(settingsProvider).fasilStyle, isNull);
+    });
+
+    testWidgets('fixed and named fawasil share one rendering path', (
+      tester,
+    ) async {
+      final c = await containerWith(tester, {});
+      final db = c.read(userDatabaseProvider);
+      final rows = (await tester.runAsync(() async {
+        for (final (k, n) in [
+          (MarkKind.reading, 'قراءة'),
+          (MarkKind.review, 'مراجعة'),
+          (MarkKind.hifz, 'حفظ'),
+          (MarkKind.tadabbur, 'تدبر'),
+        ]) {
+          await db.setMark(k, name: n, surah: 3, ayah: 1, page: 50);
+        }
+        await db.addBookmarkSet(
+          name: 'ورد',
+          color: 0xFF1D2F55,
+          surah: 3,
+          ayah: 2,
+          page: 50,
+        );
+        return db.watchBookmarkSets().first;
+      }))!;
+      // Tinted: every fasil tints its verse, none is drawn.
+      expect(
+        fasilTints(rows, const FasilLook(style: FasilStyle.tint), (m) => m.id),
+        hasLength(5),
+      );
+      expect(
+        fasilMarksOf(rows, const FasilLook(style: FasilStyle.tint), (m) => 0),
+        isEmpty,
+      );
+      for (final look in [ribbon, tab]) {
+        expect(fasilTints(rows, look, (m) => m.id), isEmpty);
+        final marks = fasilMarksOf(rows, look, (m) => m.page);
+        expect(marks, hasLength(5));
+        // The fixed ones keep their colours.
+        expect(
+          marks.map((m) => m.color.toARGB32()),
+          containsAll([for (final k in MarkKind.values) k.color]),
+        );
+        await tester.pumpWidget(
+          app(
+            FasilPageLayer(
+              key: ValueKey(look.style),
+              marks: marks.take(3).toList(),
+              look: look,
+              outerRight: true,
+              child: const SizedBox.expand(),
+            ),
+            size: const Size(800, 900),
+          ),
+        );
+        if (look == tab) {
+          expect(find.byType(FasilTab), findsNWidgets(3));
+        } else {
+          expect(find.byType(FasilRibbon), findsNWidgets(3));
+        }
+        // Each one carries its name.
+        for (final n in ['قراءة', 'مراجعة', 'حفظ']) {
+          expect(find.text(n), findsOneWidget);
+        }
+      }
     });
   });
 
