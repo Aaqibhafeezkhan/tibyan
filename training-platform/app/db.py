@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+from contextlib import contextmanager
+
 from sqlalchemy import create_engine, inspect, text
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
@@ -82,7 +85,12 @@ def migrate_request_columns(bind: Engine = engine) -> None:
     add_missing_columns(
         bind,
         "notify_signups",
-        {"play_added_at": "DATETIME NULL", "testflight_added_at": "DATETIME NULL"},
+        {
+            "play_added_at": "DATETIME NULL",
+            "testflight_added_at": "DATETIME NULL",
+            "beta_platforms": "VARCHAR(32) NULL",
+            "beta_requested_at": "DATETIME NULL",
+        },
     )
 
 
@@ -105,3 +113,55 @@ def migrate_annotation_columns(bind: Engine = engine) -> None:
 
 class Base(DeclarativeBase):
     pass
+
+
+MIGRATION_LOCK = "tibyan_training_migrations"
+
+
+@contextmanager
+def migration_lock(bind: Engine, timeout: int = 120):
+    """Serialise start-up migrations across uvicorn workers. MySQL uses a
+    named server lock (GET_LOCK); other databases run unlocked."""
+    if bind.dialect.name != "mysql":
+        yield
+        return
+    with bind.connect() as conn:
+        got = conn.execute(
+            text("SELECT GET_LOCK(:name, :timeout)"),
+            {"name": MIGRATION_LOCK, "timeout": timeout},
+        ).scalar()
+        if got != 1:
+            raise RuntimeError("Could not take the migration lock.")
+        try:
+            yield
+        finally:
+            conn.execute(text("SELECT RELEASE_LOCK(:name)"), {"name": MIGRATION_LOCK})
+
+
+def _table_exists_error(exc: OperationalError) -> bool:
+    code = (getattr(exc.orig, "args", None) or [None])[0]
+    return code == 1050 or "already exists" in str(exc.orig).lower()
+
+
+def create_tables(bind: Engine, attempts: int = 5) -> None:
+    """create_all that tolerates tables created concurrently (MySQL 1050):
+    retry, and checkfirst skips whatever now exists."""
+    for attempt in range(attempts):
+        try:
+            Base.metadata.create_all(bind=bind)
+            return
+        except OperationalError as exc:
+            if not _table_exists_error(exc) or attempt == attempts - 1:
+                raise
+
+
+def run_migrations(bind: Engine = engine) -> None:
+    """Idempotent, serialised schema setup: safe with several workers."""
+    from . import models  # noqa: F401  (register the tables)
+
+    with migration_lock(bind):
+        create_tables(bind)
+        migrate_recording_ayah_end(bind)
+        migrate_user_birth_year(bind)
+        migrate_request_columns(bind)
+        migrate_annotation_columns(bind)

@@ -6,20 +6,14 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from . import models  # noqa: F401  (register the tables)
 from .config import settings
-from .db import (
-    Base,
-    engine,
-    migrate_annotation_columns,
-    migrate_recording_ayah_end,
-    migrate_request_columns,
-    migrate_user_birth_year,
-)
+from .db import engine, run_migrations
 from .routes import (
     admin,
     admin_requests,
     admin_training,
     annotations,
     auth,
+    beta,
     contact,
     notifications,
     notify,
@@ -31,11 +25,7 @@ from .routes import (
 )
 from .templating import STATIC_DIR
 
-Base.metadata.create_all(bind=engine)
-migrate_recording_ayah_end(engine)
-migrate_user_birth_year(engine)
-migrate_request_columns(engine)
-migrate_annotation_columns(engine)
+run_migrations(engine)
 
 app = FastAPI(title="Tibyan Recitation Training")
 
@@ -55,6 +45,7 @@ app.include_router(validate.router)
 app.include_router(admin.router)
 app.include_router(contact.router)
 app.include_router(notify.router)
+app.include_router(beta.router)
 app.include_router(admin_requests.router)
 app.include_router(admin_training.router)
 app.include_router(notifications.router)
