@@ -133,6 +133,14 @@ class ElderlyPageTransitionsBuilder extends PageTransitionsBuilder {
   );
 }
 
+/// Elderly mode's button label: the theme's labelLarge (the interface
+/// face and its fallbacks), larger and bolder.
+TextStyle elderlyButtonLabel(ThemeData theme) =>
+    (theme.textTheme.labelLarge ?? const TextStyle()).copyWith(
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+    );
+
 /// Builds Material [ThemeData] from one style and one mode. [elderly]
 /// gives elderly mode's stronger colours and larger targets.
 ThemeData buildTheme({
@@ -279,6 +287,9 @@ ThemeData buildTheme({
   );
   if (!elderly) return look.overlays(themed);
   const transitions = ElderlyPageTransitionsBuilder();
+  // Button labels keep the interface face (family, fallbacks incl. the
+  // digits face): a bare TextStyle here would drop them for the system font.
+  final label = elderlyButtonLabel(themed);
   return look
       .overlays(themed)
       .copyWith(
@@ -292,20 +303,14 @@ ThemeData buildTheme({
             backgroundColor: t.control,
             foregroundColor: t.onControl,
             minimumSize: wide,
-            textStyle: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
+            textStyle: label,
           ),
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             foregroundColor: t.control,
             minimumSize: wide,
-            textStyle: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
+            textStyle: label,
           ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
@@ -313,6 +318,7 @@ ThemeData buildTheme({
             foregroundColor: t.control,
             minimumSize: wide,
             side: BorderSide(color: t.control, width: 1.5),
+            textStyle: label,
           ),
         ),
         segmentedButtonTheme: SegmentedButtonThemeData(

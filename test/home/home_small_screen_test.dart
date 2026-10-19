@@ -55,8 +55,12 @@ void main() {
     final sp = await SharedPreferences.getInstance();
     final user = UserDatabase(NativeDatabase.memory());
     addTearDown(() => tester.runAsync(user.close));
-    await tester.binding.setSurfaceSize(size);
-    addTearDown(() => tester.binding.setSurfaceSize(null));
+    // The view's size (what MediaQuery reports), not just the surface's:
+    // the screen picks its layout from MediaQuery.
+    tester.view
+      ..physicalSize = size
+      ..devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
     await tester.pumpWidget(
       ProviderScope(
         overrides: [

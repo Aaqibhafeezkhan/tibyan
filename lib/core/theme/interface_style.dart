@@ -455,6 +455,13 @@ class UiLook extends ThemeExtension<UiLook> {
       outline: line,
       outlineVariant: line,
     );
+    // Elderly button labels, in the interface face.
+    final label = elderly
+        ? (base.textTheme.labelLarge ?? const TextStyle()).copyWith(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          )
+        : null;
     return overlays(base).copyWith(
       colorScheme: scheme,
       scaffoldBackgroundColor: bg,
@@ -531,7 +538,7 @@ class UiLook extends ThemeExtension<UiLook> {
         filled: true,
         fillColor: surface,
         prefixIconColor: sub,
-        hintStyle: TextStyle(color: sub),
+        hintStyle: f(TextStyle(color: sub)),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(isMakhtuta ? 4 : 14),
           borderSide: BorderSide(color: line),
@@ -550,6 +557,7 @@ class UiLook extends ThemeExtension<UiLook> {
           backgroundColor: control,
           foregroundColor: onControl,
           minimumSize: Size(48, target),
+          textStyle: label,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(isMakhtuta ? 4 : 12),
           ),
@@ -560,6 +568,7 @@ class UiLook extends ThemeExtension<UiLook> {
           foregroundColor: isLayli && night ? goldText : control,
           minimumSize: Size(48, target),
           side: BorderSide(color: isLayli && night ? gold : control),
+          textStyle: label,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(isMakhtuta ? 4 : 12),
           ),
@@ -569,6 +578,7 @@ class UiLook extends ThemeExtension<UiLook> {
         style: TextButton.styleFrom(
           foregroundColor: isLayli && night ? goldText : control,
           minimumSize: Size(48, target),
+          textStyle: label,
         ),
       ),
     );
