@@ -1,0 +1,37 @@
+name: مشكلة · Bug report
+description: Something in the app does not work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        خطأ في نص قرآني أو تفسير؟ اختر «خطأ في المحتوى». For an error in Quran or tafsir text, use "Content error".
+  - type: textarea
+    id: what
+    attributes:
+      label: ماذا حدث؟ · What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: خطوات الإعادة · Steps to reproduce
+      placeholder: "1. ...\n2. ..."
+  - type: input
+    id: version
+    attributes:
+      label: الإصدار · App version
+      description: الإعدادات ← عن التطبيق · Settings → About
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: المنصة · Platform
+      options: [Android, iPhone / iPad, macOS, Windows, Linux]
+    validations:
+      required: true
+  - type: textarea
+    id: shots
+    attributes:
+      label: صور · Screenshots
