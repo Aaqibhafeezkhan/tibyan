@@ -1,0 +1,29 @@
+name: خطأ في المحتوى · Content error
+description: A mistake in Quran text, tafsir, translation, timing or a source credit
+labels: [content]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        نراجع كل بلاغ على المصدر الأصلي، ولا نغير النص إلا بما في المصدر. Every report is checked against the original source.
+  - type: input
+    id: where
+    attributes:
+      label: الموضع · Location
+      placeholder: "سورة / آية / صفحة / طبعة · surah, verse, page, edition"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: النوع · Kind
+      options: [نص المصحف · Mushaf text, تفسير أو ترجمة · Tafsir or translation, توقيت التلاوة · Recitation timing, معنى كلمة · Word meaning, التجويد · Tajweed, ذكر المصدر · Source credit, أخرى · Other]
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: التفاصيل والمرجع · Details and reference
+      description: ما الخطأ، وما المرجع الذي يبين الصواب؟ · What is wrong, and which reference shows it?
+    validations:
+      required: true

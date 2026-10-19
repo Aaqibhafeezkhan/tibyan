@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ثغرة أمنية · Security vulnerability
+    url: https://github.com/helalrules7/tibyan/security/advisories/new
+    about: أبلغ بشكل خاص · Report privately
+  - name: انضم للاختبار · Join the beta
+    url: https://altibyan.app/beta
+    about: سجّل لتصلك دعوة الاختبار · Sign up for the testing invite

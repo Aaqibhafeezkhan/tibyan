@@ -1,5 +1,7 @@
 # Tibyan — recitation-model training platform
 
+Live at **[train.altibyan.app](https://train.altibyan.app)**. Donated recordings are published under **CC BY 4.0**; see the [privacy policy](https://altibyan.app/privacy). Part of [Tibyan](../README.md).
+
 Public contribution site for training the on-device Quran recitation model
 (`nvidia-ar-fastconformer-ctc`, CC-BY-4.0). Volunteers read verses from
 memory and donate their recording under CC BY 4.0.
