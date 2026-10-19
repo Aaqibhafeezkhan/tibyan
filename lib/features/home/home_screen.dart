@@ -663,7 +663,6 @@ class _SectionsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final look = context.look;
     final l = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -678,28 +677,28 @@ class _SectionsGrid extends StatelessWidget {
             ),
           ),
         ),
-        if (context.isExpanded)
-          GridView.count(
-            crossAxisCount: columns,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            // Wide windows draw each section as a card that fills its cell.
-            childAspectRatio: look.isLayli ? .82 : .9,
-            children: [for (final s in sections) _SectionTile(s)],
-          )
-        else
-          // A phone: rows of equal-width tiles, each row as tall as its
-          // tallest tile, so the labels never overflow a fixed cell on a
-          // small screen or at a larger text size.
-          for (var i = 0; i < sections.length; i += columns) ...[
-            if (i > 0) const SizedBox(height: 12),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        // Rows of equal-width tiles, each row as tall as its tallest tile,
+        // so a label never overflows a fixed cell: not on a small phone,
+        // not in a tablet's narrow side column, not at a larger text size.
+        // Wide windows draw each section as a card; a row's cards share
+        // its height, and fewer columns are used when a tile would be
+        // narrower than its icon and label need.
+        LayoutBuilder(
+          builder: (context, box) {
+            final card = context.isExpanded;
+            final gap = card ? 16.0 : 10.0;
+            final minTile = card ? 132.0 * _scale(context) : 0.0;
+            final fit = minTile <= 0
+                ? columns
+                : ((box.maxWidth + gap) / (minTile + gap)).floor();
+            final n = fit.clamp(2, columns);
+            Widget row(int i) => Row(
+              crossAxisAlignment: card
+                  ? CrossAxisAlignment.stretch
+                  : CrossAxisAlignment.start,
               children: [
-                for (var j = i; j < i + columns; j++) ...[
-                  if (j > i) const SizedBox(width: 10),
+                for (var j = i; j < i + n; j++) ...[
+                  if (j > i) SizedBox(width: gap),
                   Expanded(
                     child: j < sections.length
                         ? _SectionTile(sections[j])
@@ -707,8 +706,17 @@ class _SectionsGrid extends StatelessWidget {
                   ),
                 ],
               ],
-            ),
-          ],
+            );
+            return Column(
+              children: [
+                for (var i = 0; i < sections.length; i += n) ...[
+                  if (i > 0) SizedBox(height: card ? 16 : 12),
+                  card ? IntrinsicHeight(child: row(i)) : row(i),
+                ],
+              ],
+            );
+          },
+        ),
       ],
     );
   }
@@ -778,6 +786,7 @@ class _SectionTile extends StatelessWidget {
       ),
     };
     final content = Column(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: card
           ? MainAxisAlignment.center
           : MainAxisAlignment.start,
@@ -821,8 +830,11 @@ class _SectionTile extends StatelessWidget {
               child: InkWell(
                 onTap: s.onTap,
                 child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: content,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 16,
+                  ),
+                  child: Center(child: content),
                 ),
               ),
             )
