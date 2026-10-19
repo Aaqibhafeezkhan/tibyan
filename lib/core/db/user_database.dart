@@ -293,6 +293,16 @@ class UserDatabase extends _$UserDatabase {
     ),
   );
 
+  /// Renames or recolours a fasil, where it is.
+  Future<void> updateBookmarkSet(int id, {String? name, int? color}) =>
+      (update(bookmarkSets)..where((t) => t.id.equals(id))).write(
+        BookmarkSetsCompanion(
+          name: name == null ? const Value.absent() : Value(name),
+          color: color == null ? const Value.absent() : Value(color),
+          updatedAt: Value(DateTime.now()),
+        ),
+      );
+
   Future<void> deleteBookmarkSet(int id) =>
       (delete(bookmarkSets)..where((t) => t.id.equals(id))).go();
 }

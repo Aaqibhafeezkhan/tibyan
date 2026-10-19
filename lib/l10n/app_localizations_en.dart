@@ -4303,4 +4303,99 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tasbihStagesFixed => 'The target comes from the dhikr\'s stages';
+
+  @override
+  String get fasilStyleLabel => 'Bookmark look';
+
+  @override
+  String get fasilStyleHint => 'How your named bookmarks show on the page';
+
+  @override
+  String get fasilStyleTint => 'Tinted verse';
+
+  @override
+  String get fasilStyleTintHint =>
+      'The verse takes the bookmark\'s colour; the lightest look';
+
+  @override
+  String get fasilStyleRibbon => 'Fabric ribbon';
+
+  @override
+  String get fasilStyleRibbonHint =>
+      'A ribbon hangs over the page, as in a printed mushaf';
+
+  @override
+  String get fasilStyleTab => 'Card tab';
+
+  @override
+  String get fasilStyleTabHint =>
+      'A card with an ornamented dome rises over the page';
+
+  @override
+  String get fasilChooserTitle => 'Choose how your bookmarks look';
+
+  @override
+  String get fasilChooserHint =>
+      'You can change it any time in Settings › Mushaf';
+
+  @override
+  String get fasilPlaceLabel => 'Position on the page';
+
+  @override
+  String get fasilPlaceTop => 'Top edge';
+
+  @override
+  String get fasilPlaceSide => 'Side edge';
+
+  @override
+  String get fasilMaterialLabel => 'Cloth';
+
+  @override
+  String get fasilSilk => 'Silk';
+
+  @override
+  String get fasilLinen => 'Linen';
+
+  @override
+  String get fasilVelvet => 'Velvet';
+
+  @override
+  String get fasilTassel => 'Tassel at the ribbon\'s end';
+
+  @override
+  String get fasilSuggestHifz => 'Memorize';
+
+  @override
+  String get fasilSuggestTilawa => 'Recitation';
+
+  @override
+  String get fasilSuggestReview => 'Review';
+
+  @override
+  String get fasilRename => 'Rename';
+
+  @override
+  String get fasilColor => 'Colour';
+
+  @override
+  String get fasilMoveHere => 'Move to this page';
+
+  @override
+  String get fasilDeleted => 'Bookmark deleted';
+
+  @override
+  String get fasilUndo => 'Undo';
+
+  @override
+  String get fasilPreview => 'Preview';
+
+  @override
+  String fasilDeleteConfirm(String name) {
+    return 'Delete the bookmark “$name”?';
+  }
+
+  @override
+  String fasilOnPage(String name, String page) {
+    return 'Bookmark $name, page $page';
+  }
 }

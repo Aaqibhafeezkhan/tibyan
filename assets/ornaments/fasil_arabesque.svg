@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Tibyan's own medallion for the fasil tab: an eight-point star of two
+       squares, eight petals between its points, and two rings. Drawn in
+       white; the app tints it to each card's colour. -->
+  <g fill="none" stroke="#ffffff" stroke-linejoin="round">
+    <circle cx="50" cy="50" r="46" stroke-width="1.6" stroke-opacity="0.7"/>
+    <circle cx="50" cy="50" r="42" stroke-width="0.8" stroke-opacity="0.55" stroke-dasharray="2 2.4"/>
+    <rect x="22" y="22" width="56" height="56" stroke-width="1.8"/>
+    <rect x="22" y="22" width="56" height="56" stroke-width="1.8" transform="rotate(45 50 50)"/>
+    <circle cx="50" cy="50" r="17" stroke-width="1.4"/>
+    <circle cx="50" cy="50" r="7" stroke-width="1.2" stroke-opacity="0.8"/>
+    <g stroke-width="1.1" stroke-opacity="0.85">
+      <path d="M50 33 Q56 41 50 50 Q44 41 50 33Z"/>
+      <path d="M50 33 Q56 41 50 50 Q44 41 50 33Z" transform="rotate(45 50 50)"/>
+      <path d="M50 33 Q56 41 50 50 Q44 41 50 33Z" transform="rotate(90 50 50)"/>
+      <path d="M50 33 Q56 41 50 50 Q44 41 50 33Z" transform="rotate(135 50 50)"/>
+      <path d="M50 33 Q56 41 50 50 Q44 41 50 33Z" transform="rotate(180 50 50)"/>
+      <path d="M50 33 Q56 41 50 50 Q44 41 50 33Z" transform="rotate(225 50 50)"/>
+      <path d="M50 33 Q56 41 50 50 Q44 41 50 33Z" transform="rotate(270 50 50)"/>
+      <path d="M50 33 Q56 41 50 50 Q44 41 50 33Z" transform="rotate(315 50 50)"/>
+    </g>
+    <g stroke-width="1" stroke-opacity="0.6">
+      <path d="M50 4 Q58 12 50 20 Q42 12 50 4Z"/>
+      <path d="M50 4 Q58 12 50 20 Q42 12 50 4Z" transform="rotate(90 50 50)"/>
+      <path d="M50 4 Q58 12 50 20 Q42 12 50 4Z" transform="rotate(180 50 50)"/>
+      <path d="M50 4 Q58 12 50 20 Q42 12 50 4Z" transform="rotate(270 50 50)"/>
+    </g>
+  </g>
+  <circle cx="50" cy="50" r="2.4" fill="#ffffff"/>
+</svg>

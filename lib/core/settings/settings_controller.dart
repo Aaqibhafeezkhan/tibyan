@@ -73,6 +73,10 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kWirdIndicator = 'settings.khatma.showWirdIndicator';
   static const _kCountingMode = 'settings.khatma.countingMode';
   static const _kInterfaceStyle = 'settings.interfaceStyle';
+  static const _kFasilStyle = 'settings.fasilStyle';
+  static const _kFasilPlace = 'settings.fasilPlace';
+  static const _kFasilMaterial = 'settings.fasilMaterial';
+  static const _kFasilTassel = 'settings.fasilTassel';
 
   SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
 
@@ -193,6 +197,20 @@ class SettingsController extends Notifier<AppSettings> {
             _prefs.getString(_kInterfaceStyle),
           ) ??
           defaultInterfaceStyle,
+      fasilStyle: _enumByName(
+        FasilStyle.values,
+        _prefs.getString(_kFasilStyle),
+      ),
+      fasilPlace:
+          _enumByName(FasilPlace.values, _prefs.getString(_kFasilPlace)) ??
+          FasilPlace.top,
+      fasilMaterial:
+          _enumByName(
+            FasilMaterial.values,
+            _prefs.getString(_kFasilMaterial),
+          ) ??
+          FasilMaterial.silk,
+      fasilTassel: _prefs.getBool(_kFasilTassel) ?? true,
     );
   }
 
@@ -515,6 +533,27 @@ class SettingsController extends Notifier<AppSettings> {
   Future<void> setInterfaceStyle(InterfaceStyle value) async {
     state = state.copyWith(interfaceStyle: value);
     await _prefs.setString(_kInterfaceStyle, value.name);
+  }
+
+  /// «شكل الفاصلة».
+  Future<void> setFasilStyle(FasilStyle value) async {
+    state = state.copyWith(fasilStyle: value);
+    await _prefs.setString(_kFasilStyle, value.name);
+  }
+
+  Future<void> setFasilPlace(FasilPlace value) async {
+    state = state.copyWith(fasilPlace: value);
+    await _prefs.setString(_kFasilPlace, value.name);
+  }
+
+  Future<void> setFasilMaterial(FasilMaterial value) async {
+    state = state.copyWith(fasilMaterial: value);
+    await _prefs.setString(_kFasilMaterial, value.name);
+  }
+
+  Future<void> setFasilTassel(bool value) async {
+    state = state.copyWith(fasilTassel: value);
+    await _prefs.setBool(_kFasilTassel, value);
   }
 
   static T? _enumByName<T extends Enum>(List<T> values, String? name) {

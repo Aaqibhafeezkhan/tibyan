@@ -7249,6 +7249,180 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'الهدف من مراحل الذكر'**
   String get tasbihStagesFixed;
+
+  /// No description provided for @fasilStyleLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'شكل الفاصلة'**
+  String get fasilStyleLabel;
+
+  /// No description provided for @fasilStyleHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'كيف تظهر فواصلك المسمّاة على الصفحة'**
+  String get fasilStyleHint;
+
+  /// No description provided for @fasilStyleTint.
+  ///
+  /// In ar, this message translates to:
+  /// **'صفحة ملوّنة'**
+  String get fasilStyleTint;
+
+  /// No description provided for @fasilStyleTintHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تتلوّن الآية بلون الفاصلة، أخفّ الأشكال'**
+  String get fasilStyleTintHint;
+
+  /// No description provided for @fasilStyleRibbon.
+  ///
+  /// In ar, this message translates to:
+  /// **'شريطة قماش'**
+  String get fasilStyleRibbon;
+
+  /// No description provided for @fasilStyleRibbonHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'شريطة تتدلّى على الصفحة كالمصحف المطبوع'**
+  String get fasilStyleRibbonHint;
+
+  /// No description provided for @fasilStyleTab.
+  ///
+  /// In ar, this message translates to:
+  /// **'لسان مقوّى'**
+  String get fasilStyleTab;
+
+  /// No description provided for @fasilStyleTabHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'كرت بقبّة مزخرفة يطلّ من أعلى الصفحة'**
+  String get fasilStyleTabHint;
+
+  /// No description provided for @fasilChooserTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر شكل فواصلك'**
+  String get fasilChooserTitle;
+
+  /// No description provided for @fasilChooserHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تقدر تغيّره في أي وقت من الإعدادات › المصحف'**
+  String get fasilChooserHint;
+
+  /// No description provided for @fasilPlaceLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'مكانها على الصفحة'**
+  String get fasilPlaceLabel;
+
+  /// No description provided for @fasilPlaceTop.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحافة العليا'**
+  String get fasilPlaceTop;
+
+  /// No description provided for @fasilPlaceSide.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحافة الجانبية'**
+  String get fasilPlaceSide;
+
+  /// No description provided for @fasilMaterialLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخامة'**
+  String get fasilMaterialLabel;
+
+  /// No description provided for @fasilSilk.
+  ///
+  /// In ar, this message translates to:
+  /// **'حرير'**
+  String get fasilSilk;
+
+  /// No description provided for @fasilLinen.
+  ///
+  /// In ar, this message translates to:
+  /// **'كتّان'**
+  String get fasilLinen;
+
+  /// No description provided for @fasilVelvet.
+  ///
+  /// In ar, this message translates to:
+  /// **'قطيفة'**
+  String get fasilVelvet;
+
+  /// No description provided for @fasilTassel.
+  ///
+  /// In ar, this message translates to:
+  /// **'شُرّابة في طرف الشريطة'**
+  String get fasilTassel;
+
+  /// No description provided for @fasilSuggestHifz.
+  ///
+  /// In ar, this message translates to:
+  /// **'حفظ'**
+  String get fasilSuggestHifz;
+
+  /// No description provided for @fasilSuggestTilawa.
+  ///
+  /// In ar, this message translates to:
+  /// **'تلاوة'**
+  String get fasilSuggestTilawa;
+
+  /// No description provided for @fasilSuggestReview.
+  ///
+  /// In ar, this message translates to:
+  /// **'مراجعة'**
+  String get fasilSuggestReview;
+
+  /// No description provided for @fasilRename.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعادة تسمية'**
+  String get fasilRename;
+
+  /// No description provided for @fasilColor.
+  ///
+  /// In ar, this message translates to:
+  /// **'اللون'**
+  String get fasilColor;
+
+  /// No description provided for @fasilMoveHere.
+  ///
+  /// In ar, this message translates to:
+  /// **'نقل للصفحة الحالية'**
+  String get fasilMoveHere;
+
+  /// No description provided for @fasilDeleted.
+  ///
+  /// In ar, this message translates to:
+  /// **'حُذفت الفاصلة'**
+  String get fasilDeleted;
+
+  /// No description provided for @fasilUndo.
+  ///
+  /// In ar, this message translates to:
+  /// **'تراجع'**
+  String get fasilUndo;
+
+  /// No description provided for @fasilPreview.
+  ///
+  /// In ar, this message translates to:
+  /// **'معاينة'**
+  String get fasilPreview;
+
+  /// No description provided for @fasilDeleteConfirm.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف الفاصلة «{name}»؟'**
+  String fasilDeleteConfirm(String name);
+
+  /// No description provided for @fasilOnPage.
+  ///
+  /// In ar, this message translates to:
+  /// **'فاصلة {name}، الصفحة {page}'**
+  String fasilOnPage(String name, String page);
 }
 
 class _AppLocalizationsDelegate

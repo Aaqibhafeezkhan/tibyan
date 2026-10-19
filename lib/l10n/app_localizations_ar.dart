@@ -4376,4 +4376,95 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get tasbihStagesFixed => 'الهدف من مراحل الذكر';
+
+  @override
+  String get fasilStyleLabel => 'شكل الفاصلة';
+
+  @override
+  String get fasilStyleHint => 'كيف تظهر فواصلك المسمّاة على الصفحة';
+
+  @override
+  String get fasilStyleTint => 'صفحة ملوّنة';
+
+  @override
+  String get fasilStyleTintHint => 'تتلوّن الآية بلون الفاصلة، أخفّ الأشكال';
+
+  @override
+  String get fasilStyleRibbon => 'شريطة قماش';
+
+  @override
+  String get fasilStyleRibbonHint => 'شريطة تتدلّى على الصفحة كالمصحف المطبوع';
+
+  @override
+  String get fasilStyleTab => 'لسان مقوّى';
+
+  @override
+  String get fasilStyleTabHint => 'كرت بقبّة مزخرفة يطلّ من أعلى الصفحة';
+
+  @override
+  String get fasilChooserTitle => 'اختر شكل فواصلك';
+
+  @override
+  String get fasilChooserHint => 'تقدر تغيّره في أي وقت من الإعدادات › المصحف';
+
+  @override
+  String get fasilPlaceLabel => 'مكانها على الصفحة';
+
+  @override
+  String get fasilPlaceTop => 'الحافة العليا';
+
+  @override
+  String get fasilPlaceSide => 'الحافة الجانبية';
+
+  @override
+  String get fasilMaterialLabel => 'الخامة';
+
+  @override
+  String get fasilSilk => 'حرير';
+
+  @override
+  String get fasilLinen => 'كتّان';
+
+  @override
+  String get fasilVelvet => 'قطيفة';
+
+  @override
+  String get fasilTassel => 'شُرّابة في طرف الشريطة';
+
+  @override
+  String get fasilSuggestHifz => 'حفظ';
+
+  @override
+  String get fasilSuggestTilawa => 'تلاوة';
+
+  @override
+  String get fasilSuggestReview => 'مراجعة';
+
+  @override
+  String get fasilRename => 'إعادة تسمية';
+
+  @override
+  String get fasilColor => 'اللون';
+
+  @override
+  String get fasilMoveHere => 'نقل للصفحة الحالية';
+
+  @override
+  String get fasilDeleted => 'حُذفت الفاصلة';
+
+  @override
+  String get fasilUndo => 'تراجع';
+
+  @override
+  String get fasilPreview => 'معاينة';
+
+  @override
+  String fasilDeleteConfirm(String name) {
+    return 'حذف الفاصلة «$name»؟';
+  }
+
+  @override
+  String fasilOnPage(String name, String page) {
+    return 'فاصلة $name، الصفحة $page';
+  }
 }

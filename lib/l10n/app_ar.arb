@@ -2924,5 +2924,51 @@
       }
     }
   },
-  "tasbihStagesFixed": "الهدف من مراحل الذكر"
+  "tasbihStagesFixed": "الهدف من مراحل الذكر",
+  "fasilStyleLabel": "شكل الفاصلة",
+  "fasilStyleHint": "كيف تظهر فواصلك المسمّاة على الصفحة",
+  "fasilStyleTint": "صفحة ملوّنة",
+  "fasilStyleTintHint": "تتلوّن الآية بلون الفاصلة، أخفّ الأشكال",
+  "fasilStyleRibbon": "شريطة قماش",
+  "fasilStyleRibbonHint": "شريطة تتدلّى على الصفحة كالمصحف المطبوع",
+  "fasilStyleTab": "لسان مقوّى",
+  "fasilStyleTabHint": "كرت بقبّة مزخرفة يطلّ من أعلى الصفحة",
+  "fasilChooserTitle": "اختر شكل فواصلك",
+  "fasilChooserHint": "تقدر تغيّره في أي وقت من الإعدادات › المصحف",
+  "fasilPlaceLabel": "مكانها على الصفحة",
+  "fasilPlaceTop": "الحافة العليا",
+  "fasilPlaceSide": "الحافة الجانبية",
+  "fasilMaterialLabel": "الخامة",
+  "fasilSilk": "حرير",
+  "fasilLinen": "كتّان",
+  "fasilVelvet": "قطيفة",
+  "fasilTassel": "شُرّابة في طرف الشريطة",
+  "fasilSuggestHifz": "حفظ",
+  "fasilSuggestTilawa": "تلاوة",
+  "fasilSuggestReview": "مراجعة",
+  "fasilRename": "إعادة تسمية",
+  "fasilColor": "اللون",
+  "fasilMoveHere": "نقل للصفحة الحالية",
+  "fasilDeleted": "حُذفت الفاصلة",
+  "fasilUndo": "تراجع",
+  "fasilPreview": "معاينة",
+  "fasilDeleteConfirm": "حذف الفاصلة «{name}»؟",
+  "@fasilDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "fasilOnPage": "فاصلة {name}، الصفحة {page}",
+  "@fasilOnPage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "page": {
+        "type": "String"
+      }
+    }
+  }
 }
