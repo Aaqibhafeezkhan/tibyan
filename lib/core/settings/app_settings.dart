@@ -79,6 +79,20 @@ enum PageFill { lines, stretch, full }
 /// [fade]: the next page fades in over the last.
 enum PageTurn { normal, curl, bend, fold, fade }
 
+/// «شكل الفاصلة»: how a named fasil shows on its page. [tint]: its verse
+/// tinted in its colour (the first look, kept by readers who already had
+/// fawasil); [ribbon]: a fabric ribbon laid over the page; [tab]: a die-cut
+/// card with a domed, ornamented top rising over the page.
+enum FasilStyle { tint, ribbon, tab }
+
+/// Where a ribbon or a tab sits on a phone's single page: [top], at the
+/// top edge on the page's outer side, as in a printed mushaf; [side],
+/// along the outer edge.
+enum FasilPlace { top, side }
+
+/// The ribbon's cloth.
+enum FasilMaterial { silk, linen, velvet }
+
 /// «شكل المشغل»: the player over the mushaf. [auto]: the normal bar, and
 /// the pill in focus mode; [normal]: the bar everywhere; [pill]: the small
 /// floating pill everywhere; [button]: one small round button everywhere.
@@ -183,6 +197,10 @@ class AppSettings {
     this.showWirdIndicator = true,
     this.khatmaCountingMode = CountingMode.wirdConfirm,
     this.interfaceStyle = defaultInterfaceStyle,
+    this.fasilStyle,
+    this.fasilPlace = FasilPlace.top,
+    this.fasilMaterial = FasilMaterial.silk,
+    this.fasilTassel = true,
   });
 
   final String styleId;
@@ -355,6 +373,22 @@ class AppSettings {
   /// dialogs and sheets («هندسي» by default).
   final InterfaceStyle interfaceStyle;
 
+  /// «شكل الفاصلة» as chosen; null until the reader chooses (asked as the
+  /// first fasil is made). See [effectiveFasilStyle].
+  final FasilStyle? fasilStyle;
+
+  /// The look in use: a reader who never chose keeps the tinted verse.
+  FasilStyle get effectiveFasilStyle => fasilStyle ?? FasilStyle.tint;
+
+  /// Where ribbons and tabs sit on a phone's page.
+  final FasilPlace fasilPlace;
+
+  /// The ribbon's cloth.
+  final FasilMaterial fasilMaterial;
+
+  /// A tassel at the ribbon's end.
+  final bool fasilTassel;
+
   /// The player style in effect: [PlayerStyle.auto] is the normal bar, or
   /// the pill while focus mode is on.
   PlayerStyle get effectivePlayerStyle => playerStyle != PlayerStyle.auto
@@ -414,6 +448,10 @@ class AppSettings {
     bool? showWirdIndicator,
     CountingMode? khatmaCountingMode,
     InterfaceStyle? interfaceStyle,
+    FasilStyle? fasilStyle,
+    FasilPlace? fasilPlace,
+    FasilMaterial? fasilMaterial,
+    bool? fasilTassel,
   }) => AppSettings(
     styleId: styleId ?? this.styleId,
     mode: mode ?? this.mode,
@@ -468,6 +506,10 @@ class AppSettings {
     showWirdIndicator: showWirdIndicator ?? this.showWirdIndicator,
     khatmaCountingMode: khatmaCountingMode ?? this.khatmaCountingMode,
     interfaceStyle: interfaceStyle ?? this.interfaceStyle,
+    fasilStyle: fasilStyle ?? this.fasilStyle,
+    fasilPlace: fasilPlace ?? this.fasilPlace,
+    fasilMaterial: fasilMaterial ?? this.fasilMaterial,
+    fasilTassel: fasilTassel ?? this.fasilTassel,
   );
 
   /// Resolves the colour mode. A dark device maps to Night (never pure
