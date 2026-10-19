@@ -509,8 +509,20 @@ const _desaturate = <double>[
 // The tab
 // ---------------------------------------------------------------------------
 
-/// The die-cut card: straight sides and a dome, in a 100 × 160 box.
-Path tabPath(Size s) {
+/// The die-cut card as it hangs in the book: the straight cut edge at the
+/// top (tucked under the page's edge), the dome hanging down.
+Path tabPath(Size s) => _hanging(_tabUp(s), s);
+
+/// Turns a dome-up outline over, top to bottom.
+Path _hanging(Path p, Size s) => p.transform(
+  (Matrix4.identity()
+        ..translateByDouble(0, s.height, 0, 1)
+        ..scaleByDouble(1, -1, 1, 1))
+      .storage,
+);
+
+/// The die-cut card dome up: straight sides and a dome, in a 100 × 160 box.
+Path _tabUp(Size s) {
   final x = s.width / 100, y = s.height / 160;
   return Path()
     ..moveTo(4 * x, 160 * y)
@@ -557,7 +569,7 @@ class _TabPainter extends CustomPainter {
     canvas.drawPath(path, Paint()..color = color);
     final light = color.computeLuminance() > .55;
     canvas.drawPath(
-      _tabInline(s),
+      _hanging(_tabInline(s), s),
       Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.4
@@ -597,7 +609,8 @@ class _TabShadePainter extends CustomPainter {
   bool shouldRepaint(_TabShadePainter old) => old.night != night;
 }
 
-/// A die-cut card tab with an ornamented dome and the fasil's name.
+/// A die-cut card tab slipped into the book: cut edge at the top, the
+/// ornamented dome hanging down, the fasil's name upright on the card.
 class FasilTab extends StatelessWidget {
   const FasilTab({
     super.key,
@@ -631,7 +644,7 @@ class FasilTab extends StatelessWidget {
           // colour, kept to the dome.
           Positioned(
             left: w * .14,
-            top: h * .1,
+            bottom: h * .1,
             width: w * .72,
             height: w * .72,
             child: SvgPicture.asset(
@@ -651,7 +664,7 @@ class FasilTab extends StatelessWidget {
             Positioned(
               left: w * .1,
               right: w * .1,
-              top: h * .55,
+              top: h * .2,
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
@@ -695,7 +708,7 @@ class FasilTab extends StatelessWidget {
 // The entrance
 // ---------------------------------------------------------------------------
 
-/// Drops a ribbon into place with a soft settle, or slides a tab up, the
+/// Drops a ribbon into place with a soft settle, or slides a tab down, the
 /// first time a just-placed fasil is shown. Still with less motion.
 class FasilEntrance extends StatefulWidget {
   const FasilEntrance({
@@ -762,12 +775,16 @@ class _FasilEntranceState extends State<FasilEntrance>
             ),
           );
         }
+        // A card slipped in from under the top edge: it slides down.
         final y = Curves.easeOutBack.transform(t);
-        return Opacity(
-          opacity: Curves.easeOut.transform(math.min(1, t * 2)),
-          child: FractionalTranslation(
-            translation: Offset(0, (1 - y) * .6),
-            child: child,
+        return ClipRect(
+          clipper: const _BelowTop(),
+          child: Opacity(
+            opacity: Curves.easeOut.transform(math.min(1, t * 2)),
+            child: FractionalTranslation(
+              translation: Offset(0, -(1 - y) * .6),
+              child: child,
+            ),
           ),
         );
       },
@@ -828,7 +845,7 @@ class _Touchable extends StatelessWidget {
 }
 
 /// The fawasil on one page, over it: a ribbon hanging from the top on the
-/// page's outer side (or down its outer edge), or a tab rising from it. In
+/// page's outer side (or down its outer edge), or a tab hanging from it. In
 /// focus mode a short ribbon from the top edge, for either look. Part of
 /// the page, so it turns with it.
 class FasilPageLayer extends StatelessWidget {
@@ -886,7 +903,7 @@ class FasilPageLayer extends StatelessWidget {
               // Only the dome shows past the edge, over the frame.
               child: ClipRect(
                 child: Align(
-                  alignment: Alignment.topCenter,
+                  alignment: Alignment.bottomCenter,
                   heightFactor: .72,
                   child: FasilTab(
                     mark: m,
@@ -930,7 +947,7 @@ class FasilPageLayer extends StatelessWidget {
 }
 
 /// A spread's fawasil in its spine: ribbons lying in the gutter, fanned a
-/// little, their tails hanging to the foot; tabs rising from its head on
+/// little, their tails hanging to the foot; tabs hanging from its head on
 /// their own page's side.
 class FasilSpineLayer extends StatelessWidget {
   const FasilSpineLayer({
@@ -1061,7 +1078,7 @@ class FoldedFawasil extends StatelessWidget {
                         )
                       : ClipRect(
                           child: Align(
-                            alignment: Alignment.topCenter,
+                            alignment: Alignment.bottomCenter,
                             heightFactor: .55,
                             child: FasilTab(
                               mark: m,

@@ -82,7 +82,7 @@ enum PageTurn { normal, curl, bend, fold, fade }
 /// «شكل الفاصلة»: how a named fasil shows on its page. [tint]: its verse
 /// tinted in its colour (the first look, kept by readers who already had
 /// fawasil); [ribbon]: a fabric ribbon laid over the page; [tab]: a die-cut
-/// card with a domed, ornamented top rising over the page.
+/// card slipped into the book, its ornamented dome hanging down.
 enum FasilStyle { tint, ribbon, tab }
 
 /// Where a ribbon or a tab sits on a phone's single page: [top], at the

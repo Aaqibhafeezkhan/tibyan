@@ -29,6 +29,64 @@ int nextFasilColor(FasilStyle style, int count) {
   return palette[count % palette.length];
 }
 
+/// The verses tinted for [rows]: every fasil (the four fixed ones and the
+/// named alike) in the tinted look, none when they are drawn.
+Map<K, Color> fasilTints<K>(
+  List<BookmarkSetRow> rows,
+  FasilLook look,
+  K Function(BookmarkSetRow) keyOf,
+) => look.drawn
+    ? <K, Color>{}
+    : {for (final m in rows) keyOf(m): Color(m.color)};
+
+/// The bookmarks drawn for [rows] in a ribbon or tab look: every fasil,
+/// fixed (قراءة، مراجعة، حفظ، تدبر, in their own colours and names) or
+/// named. [pageOf] gives each one's page in the edition being read.
+List<FasilMark> fasilMarksOf(
+  List<BookmarkSetRow> rows,
+  FasilLook look,
+  int Function(BookmarkSetRow) pageOf,
+) => !look.drawn
+    ? const <FasilMark>[]
+    : [
+        for (final m in rows)
+          FasilMark(
+            id: m.id,
+            name: m.name,
+            color: Color(m.color),
+            page: pageOf(m),
+            placedAt: m.updatedAt,
+          ),
+      ];
+
+/// Places a fixed fasil ([kind]: قراءة، مراجعة، حفظ، تدبر) at a verse, from
+/// the ayah tools or a tap on the verse's number, in the reader's look:
+/// the first fasil asks it (see [ensureFasilStyleFor]). The fasil keeps
+/// its meaning: there is one of each kind, moved where it is set. False
+/// when the chooser was closed and nothing was placed.
+Future<bool> placeFixedFasil(
+  BuildContext context,
+  ProviderContainer ref,
+  MarkKind kind, {
+  required String name,
+  required int surah,
+  required int ayah,
+  required int page,
+}) async {
+  final db = ref.read(userDatabaseProvider);
+  final sets = await db.watchBookmarkSets().first;
+  if (!context.mounted) return false;
+  final style = await ensureFasilStyleFor(
+    context,
+    ref,
+    hasFawasil: sets.isNotEmpty,
+  );
+  if (style == null) return false;
+  armFasilEntrance();
+  await db.setMark(kind, name: name, surah: surah, ayah: ayah, page: page);
+  return true;
+}
+
 /// Moves an existing fasil to [verse], or creates a new one there.
 Future<void> showSaveToFasil(
   BuildContext context,
@@ -93,7 +151,7 @@ Future<void> showSaveToFasil(
                       final style = await ensureFasilStyle(
                         context,
                         ref,
-                        hasFawasil: named > 0,
+                        hasFawasil: sets.isNotEmpty,
                       );
                       if (style == null || !context.mounted) return;
                       final name = await _askName(context);
@@ -120,10 +178,11 @@ Future<void> showSaveToFasil(
   );
 }
 
-/// The look to make a fasil in. A reader who never chose and has no
-/// fawasil yet is asked once (see [FasilStyleChooser]); one who already
-/// had fawasil keeps the tinted verse until they change it. Null when the
-/// chooser was closed without a choice.
+/// The look to make a fasil in (any fasil: named, fixed, or set by a tap
+/// on a verse's number). A reader who never chose is asked once (see
+/// [FasilStyleChooser]); until then their fawasil keep the tinted verse.
+/// One who already had fawasil and closes the chooser keeps the tint;
+/// otherwise null when it was closed without a choice.
 Future<FasilStyle?> ensureFasilStyle(
   BuildContext context,
   WidgetRef ref, {
@@ -142,13 +201,15 @@ Future<FasilStyle?> ensureFasilStyleFor(
 }) async {
   final chosen = ref.read(settingsProvider).fasilStyle;
   if (chosen != null) return chosen;
-  if (hasFawasil) return FasilStyle.tint;
-  final style = await showModalBottomSheet<FasilStyle>(
+  final picked = await showModalBottomSheet<FasilStyle>(
     context: context,
     showDragHandle: true,
     isScrollControlled: true,
     builder: (_) => const LookTheme(child: FasilStyleChooser()),
   );
+  // A reader who already had fawasil and closes the chooser keeps the
+  // tinted verse they know, and is not asked again.
+  final style = picked ?? (hasFawasil ? FasilStyle.tint : null);
   if (style != null) {
     await ref.read(settingsProvider.notifier).setFasilStyle(style);
   }
@@ -438,16 +499,18 @@ Future<void> showFasilActions(
                     ),
                   ),
                 ),
-                ListTile(
-                  leading: const Icon(Icons.edit_outlined),
-                  title: Text(l.fasilRename),
-                  onTap: () async {
-                    final name = await _askName(sheet, initial: fasil.name);
-                    if (name == null || name.isEmpty) return;
-                    await db.updateBookmarkSet(fasil.id, name: name);
-                    if (sheet.mounted) Navigator.of(sheet).pop();
-                  },
-                ),
+                // The four fixed fawasil keep their names.
+                if (fasil.kind == null)
+                  ListTile(
+                    leading: const Icon(Icons.edit_outlined),
+                    title: Text(l.fasilRename),
+                    onTap: () async {
+                      final name = await _askName(sheet, initial: fasil.name);
+                      if (name == null || name.isEmpty) return;
+                      await db.updateBookmarkSet(fasil.id, name: name);
+                      if (sheet.mounted) Navigator.of(sheet).pop();
+                    },
+                  ),
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 4),
                   child: Semantics(
@@ -543,13 +606,7 @@ Future<void> showFasilActions(
                         content: Text(l.fasilDeleted),
                         action: SnackBarAction(
                           label: l.fasilUndo,
-                          onPressed: () => db.addBookmarkSet(
-                            name: fasil.name,
-                            color: fasil.color,
-                            surah: fasil.surah,
-                            ayah: fasil.ayah,
-                            page: fasil.page,
-                          ),
+                          onPressed: () => _restore(db, fasil),
                         ),
                       ),
                     );
@@ -562,4 +619,32 @@ Future<void> showFasilActions(
       ),
     ),
   );
+}
+
+/// Puts a deleted fasil back as it was: a fixed one stays fixed.
+Future<void> _restore(UserDatabase db, BookmarkSetRow f) async {
+  final kind = MarkKind.values.where((k) => k.name == f.kind).firstOrNull;
+  if (kind == null) {
+    await db.addBookmarkSet(
+      name: f.name,
+      color: f.color,
+      surah: f.surah,
+      ayah: f.ayah,
+      page: f.page,
+    );
+    return;
+  }
+  await db.setMark(
+    kind,
+    name: f.name,
+    surah: f.surah,
+    ayah: f.ayah,
+    page: f.page,
+  );
+  if (f.color != kind.color) {
+    final back = (await db.watchBookmarkSets().first)
+        .where((r) => r.kind == f.kind)
+        .firstOrNull;
+    if (back != null) await db.updateBookmarkSet(back.id, color: f.color);
+  }
 }
