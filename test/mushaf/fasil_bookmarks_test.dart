@@ -103,7 +103,64 @@ void main() {
       }
     });
 
-    testWidgets('a tab rises from the top; on the side it is turned', (
+    test('a tab hangs: cut edge at the top, dome at the bottom', () {
+      const s = Size(100, 160);
+      final path = tabPath(s);
+      // The square top corners are card; the bottom corners are cut away
+      // by the dome.
+      expect(path.contains(const Offset(6, 2)), isTrue);
+      expect(path.contains(const Offset(94, 2)), isTrue);
+      expect(path.contains(const Offset(6, 158)), isFalse);
+      expect(path.contains(const Offset(94, 158)), isFalse);
+      expect(path.contains(const Offset(50, 150)), isTrue);
+    });
+
+    testWidgets('its label stays upright, on the card above the dome', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        app(
+          const Center(
+            child: FasilTab(mark: hifz, look: tab),
+          ),
+        ),
+      );
+      final card = tester.getRect(find.byType(FasilTab));
+      final label = tester.getRect(find.text('حفظ'));
+      expect(label.center.dy, lessThan(card.center.dy));
+      expect(
+        find.ancestor(of: find.text('حفظ'), matching: find.byType(RotatedBox)),
+        findsNothing,
+      );
+    });
+
+    testWidgets('a just-placed tab slides down into place', (tester) async {
+      final mark = FasilMark(
+        id: 7,
+        name: 'قراءة',
+        color: const Color(0xFF2F6FD0),
+        page: 50,
+        placedAt: DateTime.now(),
+      );
+      armFasilEntrance();
+      await tester.pumpWidget(
+        app(
+          FasilPageLayer(
+            marks: [mark],
+            look: const FasilLook(style: FasilStyle.tab),
+            outerRight: true,
+            child: const SizedBox.expand(),
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 60));
+      final start = tester.getRect(find.byType(FasilTab));
+      await tester.pump(const Duration(milliseconds: 600));
+      final end = tester.getRect(find.byType(FasilTab));
+      expect(start.top, lessThan(end.top));
+    });
+
+    testWidgets('a tab hangs from the top; on the side it is turned', (
       tester,
     ) async {
       await tester.pumpWidget(

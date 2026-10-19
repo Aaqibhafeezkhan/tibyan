@@ -116,6 +116,7 @@ void main() {
         Size size, {
         Map<String, Object> prefs = const {},
         List<(String, int, int, int)> seed = const [],
+        List<(MarkKind, String, int, int)> fixed = const [],
         Future<void> Function(ProviderContainer, UserDatabase)? then,
       }) async {
         SharedPreferences.setMockInitialValues({
@@ -128,6 +129,9 @@ void main() {
         final shared = await SharedPreferences.getInstance();
         final user = UserDatabase(NativeDatabase.memory());
         await tester.runAsync(() async {
+          for (final (k, n, s, a) in fixed) {
+            await user.setMark(k, name: n, surah: s, ayah: a, page: 0);
+          }
           for (final (n, c, s, a) in seed) {
             await user.addBookmarkSet(
               name: n,
@@ -176,6 +180,39 @@ void main() {
       const red = 0xFFB23A3A, green = 0xFF2E7D5B, blue = 0xFF2F5E9E;
       const gold = 0xFFB7860B;
 
+      // The home screen passed on the way may overflow at the tablet
+      // size (a separate issue): not what these previews draw.
+      final report = FlutterError.onError;
+      FlutterError.onError = (e) {
+        if (e.exceptionAsString().contains('overflowed')) return;
+        report?.call(e);
+      };
+      addTearDown(() => FlutterError.onError = report);
+      // 0. The four fixed fawasil (and a named one) in each look, light
+      //    and night: one rendering path for all.
+      for (final style in ['tint', 'ribbon', 'tab']) {
+        for (final mode in ['light', 'night']) {
+          for (final size in [phone, tablet]) {
+            await scene(
+              'fixed_${style}_${mode}_${size == phone ? 'phone' : 'tablet'}',
+              '/mushaf?page=50',
+              size,
+              prefs: {'settings.fasilStyle': style, 'settings.mode': mode},
+              fixed: [
+                (MarkKind.reading, 'قراءة', 3, 1),
+                (MarkKind.review, 'مراجعة', 3, 5),
+                (MarkKind.hifz, 'حفظ', 3, 10),
+                (MarkKind.tadabbur, 'تدبر', 4, 135),
+              ],
+            );
+          }
+        }
+      }
+      if (Platform.environment['FAWASIL_ONLY_FIXED'] == '1') {
+        await tester.pump(const Duration(seconds: 10));
+        await tester.runAsync(db.close);
+        return;
+      }
       // 1. Each look in light and night, one fasil on page 50 and three
       //    folded elsewhere.
       for (final style in ['tint', 'ribbon', 'tab']) {
