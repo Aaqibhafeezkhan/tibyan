@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ t('job_title')|replace('{id}', job.id) }} · {{ t('app_name') }}{% endblock %}
 {% block page_class %} page-admin{% endblock %}
-{% block head_extra %}<script src="/static/admin.js?v=1" defer></script>{% endblock %}
+{% block head_extra %}<script src="/static/admin.js?v={{ asset_v }}" defer></script>{% endblock %}
 {% block content %}
 <section class="panel admin">
   <h1>{{ t('job_title')|replace('{id}', job.id) }}</h1>

@@ -1,0 +1,48 @@
+<!doctype html>
+{% set ar = lang == 'ar' %}
+<html lang="{{ lang }}" dir="{{ dir }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>{{ t('err_%d_title' % code) }} | {{ 'تبيان' if ar else 'Tibyan' }}</title>
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#0F6660" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0A1314" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg?v={{ asset_v }}">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png?v={{ asset_v }}">
+  <link rel="stylesheet" href="/static/tokens.css?v={{ asset_v }}">
+  <link rel="stylesheet" href="/static/style.css?v={{ asset_v }}">
+</head>
+<body class="error-page">
+  <header class="topbar has-pattern">
+    <a class="brand" href="/">
+      <span class="logo-mark" role="img" aria-label="{{ 'تبيان' if ar else 'Tibyan' }}"></span>
+    </a>
+    <nav class="nav"><a class="lang" href="/lang/{{ 'en' if ar else 'ar' }}" lang="{{ 'en' if ar else 'ar' }}">{{ t('lang_name') }}</a></nav>
+  </header>
+  <main class="page" id="main">
+    <section class="error-card" aria-labelledby="err-title">
+      <div class="error-emblem" aria-hidden="true">
+        <span class="error-code">{{ code }}</span>
+      </div>
+      <h1 id="err-title">{{ t('err_%d_title' % code) }}</h1>
+      <p>{{ t('err_%d_body' % code) }}</p>
+      <div class="actions">
+        <a class="btn primary" href="/">{{ t('err_home') }}</a>
+        {% if code == 500 %}<a class="btn" href="/contact">{{ t('nav_contact') }}</a>{% endif %}
+      </div>
+      <p class="muted small">{{ t('err_code') }}: <span dir="ltr">{{ code }}</span></p>
+    </section>
+  </main>
+  <footer class="foot has-pattern">
+    <div class="foot-links">
+      <a href="https://altibyan.app/">altibyan.app</a>
+      <a class="fb-link" href="{{ facebook_url }}" target="_blank" rel="noopener" aria-label="{{ t('follow_fb_label') }}">
+        <span class="fb-glyph" aria-hidden="true">f</span><span>{{ t('follow_fb') }}</span>
+      </a>
+    </div>
+  </footer>
+</body>
+</html>

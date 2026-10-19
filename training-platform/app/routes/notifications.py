@@ -223,12 +223,13 @@ def web_manifest(request: Request):
         "start_url": "/dashboard",
         "scope": "/",
         "display": "standalone",
-        "background_color": "#F7EDDE",
-        "theme_color": "#3A2B20",
+        "background_color": "#F6F1E8",
+        "theme_color": "#0F6660",
         "icons": [
             {"src": "/static/icon-192.png", "sizes": "192x192", "type": "image/png"},
             {"src": "/static/icon-512.png", "sizes": "512x512", "type": "image/png"},
-            {"src": "/static/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+            {"src": "/static/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+            {"src": "/static/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
         ],
     }
     return JSONResponse(data, media_type="application/manifest+json",

@@ -5,10 +5,21 @@
 
   var TYPES = ['substitution', 'deletion', 'insertion', 'haraka', 'repetition', 'tajweed'];
   var SUBS = ['madd', 'ghunna', 'idgham', 'ikhfa', 'qalqala', 'other'];
-  var COLORS = {
-    substitution: '#C0392B', deletion: '#7D3C98', insertion: '#1F6FA8',
-    haraka: '#B9770E', repetition: '#566573', tajweed: '#117A65'
-  };
+  // Mistake-type colours come from tokens.css (--t-*), per light/dark theme.
+  var TOKEN = { substitution: '--t-sub', deletion: '--t-del', insertion: '--t-ins',
+                haraka: '--t-har', repetition: '--t-rep', tajweed: '--t-taj' };
+  var COLORS = {};
+  function token(name, fallback) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+  }
+  function readColors() {
+    TYPES.forEach(function (t) { COLORS[t] = token(TOKEN[t], '#566573'); });
+  }
+  readColors();
+  if (window.matchMedia) {
+    var scheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (scheme.addEventListener) scheme.addEventListener('change', readColors);
+  }
   var LETTER = /[ء-يٱ-ۓ]/;
 
   function $(sel, root) { return (root || document).querySelector(sel); }
@@ -156,9 +167,9 @@
     this.ws = WaveSurfer.create({
       container: this.waveEl,
       height: window.matchMedia('(max-width: 640px)').matches ? 84 : 110,
-      waveColor: (css.getPropertyValue('--gold').trim() || '#B0855A') + '99',
-      progressColor: css.getPropertyValue('--bronze').trim() || '#7A4A26',
-      cursorColor: css.getPropertyValue('--brown').trim() || '#3A2B20',
+      waveColor: (css.getPropertyValue('--c-ink-2').trim() || '#5E5A52') + '80',
+      progressColor: css.getPropertyValue('--c-accent').trim() || '#0F6660',
+      cursorColor: css.getPropertyValue('--c-heading').trim() || '#0B4F4A',
       cursorWidth: 2,
       barWidth: 2, barGap: 1, barRadius: 2,
       url: this.d.audio,
@@ -219,7 +230,7 @@
       });
     });
     if (this.loop) {
-      this.regions.addRegion({ id: 'loop', start: this.loop[0], end: this.loop[1], color: 'rgba(58,43,32,.12)', drag: true, resize: true });
+      this.regions.addRegion({ id: 'loop', start: this.loop[0], end: this.loop[1], color: token('--c-ink-2', '#5E5A52') + '22', drag: true, resize: true });
     }
   };
 
@@ -675,7 +686,7 @@
     for (var i = 0; i < bars; i++) {
       var v = peaks[Math.floor(i / bars * peaks.length)] || 0;
       var h = Math.max(2, v * r.height * 0.9);
-      c.fillStyle = (i / bars) < progress ? css.getPropertyValue('--bronze') : css.getPropertyValue('--gold') + '99';
+      c.fillStyle = (i / bars) < progress ? css.getPropertyValue('--c-accent').trim() : css.getPropertyValue('--c-ink-2').trim() + '80';
       c.fillRect(i * 3, (r.height - h) / 2, 2, h);
     }
   }

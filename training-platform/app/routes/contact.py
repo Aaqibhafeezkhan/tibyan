@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from starlette.responses import RedirectResponse
 
 from ..deps import get_db
+from ..email_brand import branded
 from ..mail import send_mail, valid_email
 from ..models import ContactMessage
 from ..notifications import notify_admins
@@ -68,9 +69,14 @@ def contact_submit(
 
     # Keep the saved message even if notification delivery is unavailable.
     try:
+        text, html = branded(
+            "en", f"Contact: {subject or 'message'}",
+            f"From: {name} <{email}>\n\n{message}\n\nAdmin: https://train.altibyan.app/admin/requests?tab=contact",
+        )
         sent = send_mail(
             subject=f"[Tibyan Training] {subject or 'Contact'} — {name}",
-            body=f"From: {name} <{email}>\n\n{message}",
+            body=text,
+            html=html,
         )
         if not sent:
             logger.warning("SMTP is not configured; contact message %s was saved only.", db_message.id)

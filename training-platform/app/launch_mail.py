@@ -6,6 +6,7 @@ import logging
 import smtplib
 
 from .config import settings
+from .email_brand import branded
 from .mail import send_mail
 from .push import utcnow
 
@@ -17,9 +18,10 @@ TESTFLIGHT_APP_URL = "https://apps.apple.com/app/testflight/id899247664"
 BETA_PAGE_URL = "https://altibyan.app/beta"
 
 
-def _send(subject: str, body: str, to: str) -> None:
+def _send(subject: str, body: str, to: str, lang: str = "en", title: str | None = None) -> None:
+    text, html = branded(lang, title or subject, body)
     try:
-        if not send_mail(subject=subject, body=body, to=to):
+        if not send_mail(subject=subject, body=text, to=to, html=html):
             logger.info("SMTP not configured; confirmation to a signup was skipped.")
     except (OSError, smtplib.SMTPException, ValueError):
         logger.exception("Failed to send a launch-form confirmation email.")
@@ -44,7 +46,7 @@ def send_notify_confirmation(email: str, lang: str) -> None:
             f"Want to try the beta before launch? {BETA_PAGE_URL}\n\n"
             "If you did not ask for this, ignore this message.\n\nThe Tibyan team\nhttps://altibyan.app"
         )
-    _send(subject, body, email)
+    _send(subject, body, email, lang, "سجّلنا بريدك" if lang == "ar" else "You are on the list")
 
 
 def send_beta_confirmation(email: str, lang: str, platforms: list[str]) -> None:
@@ -87,7 +89,7 @@ def send_beta_confirmation(email: str, lang: str, platforms: list[str]) -> None:
             "launch; please send feedback from inside the app with «Report a problem».\n\n"
             f"{steps}\n\nIllustrated steps: {BETA_PAGE_URL}\n\nThe Tibyan team"
         )
-    _send(subject, body, email)
+    _send(subject, body, email, lang, "خطوات تثبيت النسخة التجريبية" if ar else "How to install the beta")
 
 
 def signup_alert_recipients() -> list[str]:
@@ -109,4 +111,4 @@ def send_signup_alert(kind: str, email: str, lang: str, platforms: list[str] | N
         f"Time:      {utcnow():%Y-%m-%d %H:%M} UTC\n\n"
         f"Admin: https://train.altibyan.app/admin/requests?tab={tab}\n"
     )
-    _send(f"[Tibyan] {label}: {email}", body, ", ".join(to))
+    _send(f"[Tibyan] {label}: {email}", body, ", ".join(to), "en", label)

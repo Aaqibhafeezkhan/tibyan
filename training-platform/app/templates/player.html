@@ -2,10 +2,10 @@
 {% block title %}{{ t('pl_title') }} · {{ t('app_name') }}{% endblock %}
 {% block head_extra %}
   <meta name="csrf-token" content="{{ csrf }}">
-  <link rel="stylesheet" href="/static/player.css?v=1">
+  <link rel="stylesheet" href="/static/player.css?v={{ asset_v }}">
   <script src="/static/vendor/wavesurfer/wavesurfer.min.js?v=7.12.12" defer></script>
   <script src="/static/vendor/wavesurfer/regions.min.js?v=7.12.12" defer></script>
-  <script src="/static/player.js?v=1" defer></script>
+  <script src="/static/player.js?v={{ asset_v }}" defer></script>
 {% endblock %}
 {% block content %}
 <section class="panel player">

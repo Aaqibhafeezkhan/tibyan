@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ t('app_name') }}{% endblock %}</title>
   <meta name="description" content="{{ t('meta_description') }}">
-  <meta name="theme-color" content="#3A2B20">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#0F6660" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0A1314" media="(prefers-color-scheme: dark)">
   <link rel="canonical" href="{{ site_url }}/">
 
   <!-- Open Graph -->
@@ -14,40 +16,55 @@
   <meta property="og:title" content="{% block og_title %}{{ t('hero_title') }}{% endblock %}">
   <meta property="og:description" content="{{ t('meta_description') }}">
   <meta property="og:url" content="{{ site_url }}/">
-  <meta property="og:image" content="{{ site_url }}/static/share.png?v=3">
-  <meta property="og:image:secure_url" content="{{ site_url }}/static/share.png?v=3">
+  <meta property="og:image" content="{{ site_url }}/static/share.png?v=4">
+  <meta property="og:image:secure_url" content="{{ site_url }}/static/share.png?v=4">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="{{ t('hero_title') }}، {{ t('share_action') }}">
   <meta property="og:locale" content="ar_EG">
   <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:see_also" content="{{ facebook_url }}">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{% block tw_title %}{{ t('hero_title') }}{% endblock %}">
   <meta name="twitter:description" content="{{ t('meta_description') }}">
-  <meta name="twitter:image" content="{{ site_url }}/static/share.png?v=3">
+  <meta name="twitter:image" content="{{ site_url }}/static/share.png?v=4">
   <meta name="twitter:image:alt" content="{{ t('hero_title') }}، {{ t('share_action') }}">
 
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "Organization", "name": "Tibyan", "alternateName": "تبيان",
+   "url": "https://altibyan.app/", "logo": "https://altibyan.app/static/icon-512.png",
+   "sameAs": ["{{ facebook_url }}"]}
+  </script>
+
   <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
-  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg?v={{ asset_v }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png?v={{ asset_v }}">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png?v={{ asset_v }}">
   <link rel="manifest" href="/manifest.webmanifest">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="{{ t('app_short') }}">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="stylesheet" href="/static/style.css?v=9">
-  <script src="/static/site.js?v=2" defer></script>
+  <link rel="preload" href="/static/fonts/Changa.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/static/tokens.css?v={{ asset_v }}">
+  <link rel="stylesheet" href="/static/style.css?v={{ asset_v }}">
+  <script src="/static/site.js?v={{ asset_v }}" defer></script>
   {% block head_extra %}{% endblock %}
 </head>
 <body>
-  <header class="topbar">
+  {% set path = request.url.path %}
+  {% macro nav_link(href, label, cls='') -%}
+    <a {% if cls %}class="{{ cls }}" {% endif %}href="{{ href }}"{% if path == href %} aria-current="page"{% endif %}>{{ label }}</a>
+  {%- endmacro %}
+  <a class="skip-link" href="#main">{{ 'تخطَّ إلى المحتوى' if lang == 'ar' else 'Skip to content' }}</a>
+  <header class="topbar has-pattern">
     <a class="brand" href="/">
-      <img class="brand-logo" src="/static/logo-gold.png" alt="Tibyan">
-      <span class="brand-full">{{ t('app_name') }}</span>
-      <span class="brand-short">{{ t('app_short') }}</span>
+      <span class="logo-mark" role="img" aria-label="{{ 'تبيان' if lang == 'ar' else 'Tibyan' }}"></span>
+      <span class="brand-name brand-full">{{ t('app_name').split('—')[-1].strip() }}</span>
+      <span class="brand-name brand-short">{{ t('app_short') }}</span>
     </a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" hidden>
       <span class="menu-icon" aria-hidden="true"></span>
@@ -55,37 +72,43 @@
     </button>
     <nav class="nav" id="site-nav">
       <a class="home-site" href="https://altibyan.app/">{{ t('nav_tibyan') }} <span aria-hidden="true">↗</span></a>
-      <a href="/">{{ t('nav_home') }}</a>
-      <a href="/voice">{{ t('nav_voice') }}</a>
-      <a href="/contact">{{ t('nav_contact') }}</a>
+      {{ nav_link('/', t('nav_home')) }}
+      {{ nav_link('/voice', t('nav_voice')) }}
+      {{ nav_link('/contact', t('nav_contact')) }}
       {% if not request.session.get('user_id') %}
-        <a href="/register">{{ t('nav_register') }}</a>
-        <a href="/login">{{ t('nav_login') }}</a>
+        {{ nav_link('/register', t('nav_register')) }}
+        {{ nav_link('/login', t('nav_login')) }}
       {% else %}
-        <a href="/record">{{ t('record_title') }}</a>
-        <a href="/validate">{{ t('nav_validate') }}</a>
-        <a href="/dashboard">{{ t('nav_dashboard') }}</a>
-        <a class="nav-admin" href="/admin" hidden>{{ t('nav_admin') }}</a>
-        <a class="bell" href="/notifications" aria-label="{{ t('nav_notifications') }}" title="{{ t('nav_notifications') }}">
+        {{ nav_link('/record', t('record_title')) }}
+        {{ nav_link('/validate', t('nav_validate')) }}
+        {{ nav_link('/dashboard', t('nav_dashboard')) }}
+        <a class="nav-admin" href="/admin"{% if path.startswith('/admin') %} aria-current="page"{% endif %} hidden>{{ t('nav_admin') }}</a>
+        <a class="bell" href="/notifications" aria-label="{{ t('nav_notifications') }}" title="{{ t('nav_notifications') }}"{% if path == '/notifications' %} aria-current="page"{% endif %}>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2Z"/></svg>
           <span class="bell-label">{{ t('nav_notifications') }}</span>
           <span class="bell-count" hidden></span>
         </a>
-        <a href="/logout">{{ t('nav_logout') }}</a>
+        {{ nav_link('/logout', t('nav_logout')) }}
       {% endif %}
-      <a class="lang" href="/lang/{{ 'en' if lang == 'ar' else 'ar' }}">{{ t('lang_name') }}</a>
+      <a class="lang" href="/lang/{{ 'en' if lang == 'ar' else 'ar' }}" lang="{{ 'en' if lang == 'ar' else 'ar' }}">{{ t('lang_name') }}</a>
     </nav>
   </header>
-  <main class="page{% block page_class %}{% endblock %}">
+  <main class="page{% block page_class %}{% endblock %}" id="main" tabindex="-1">
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="foot">
-    <img class="foot-logo" src="/static/logo-gold.png" alt="Tibyan"> {{ t('app_name') }} — {{ t('footer_note') }}
+  <footer class="foot has-pattern">
+    <div class="foot-brand">
+      <span class="logo-mark" role="img" aria-label="{{ 'تبيان' if lang == 'ar' else 'Tibyan' }}"></span>
+      <span>{{ t('app_name') }} — {{ t('footer_note') }}</span>
+    </div>
     <div class="foot-links">
       <a href="https://altibyan.app/">altibyan.app</a>
       <a href="/voice">{{ t('nav_voice') }}</a>
       <a href="/contact">{{ t('nav_contact') }}</a>
+      <a class="fb-link" href="{{ facebook_url }}" target="_blank" rel="noopener" aria-label="{{ t('follow_fb_label') }}">
+        <span class="fb-glyph" aria-hidden="true">f</span><span>{{ t('follow_fb') }}</span>
+      </a>
     </div>
   </footer>
 </body>

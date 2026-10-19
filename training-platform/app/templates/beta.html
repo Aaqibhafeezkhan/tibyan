@@ -8,19 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title }}</title>
   <meta name="description" content="{{ desc }}">
-  <meta name="theme-color" content="#171610">
   <link rel="canonical" href="https://altibyan.app/beta">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="تبيان">
   <meta property="og:title" content="{{ title }}">
   <meta property="og:description" content="{{ desc }}">
   <meta property="og:url" content="https://altibyan.app/beta">
-  <meta property="og:image" content="https://altibyan.app/static/coming-soon-share.png?v=1">
+  <meta property="og:image" content="https://altibyan.app/static/coming-soon-share.png?v=2">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
-  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
-  <link rel="stylesheet" href="/static/coming-soon.css?v=3">
+  {% include "_launch_head.html" %}
 </head>
 <body>
 {# ---------- mockup building blocks ---------- #}
@@ -45,11 +41,7 @@
 {%- endmacro %}
 
   <main class="launch-page beta-page">
-    <header class="launch-header">
-      <a class="wordmark" href="/" aria-label="{{ 'تبيان، الصفحة الرئيسية' if ar else 'Tibyan home' }}">
-        <img class="wordmark-logo" src="/static/logo-gold.png" alt="">
-        <span class="wordmark-en">TIBYAN</span>
-      </a>
+{% include "_launch_header.html" %}
       <nav class="launch-nav" aria-label="{{ 'روابط الموقع' if ar else 'Site links' }}">
         <a href="/">{{ 'الصفحة الرئيسية' if ar else 'Home' }}</a>
         <a href="#install">{{ 'طريقة التثبيت' if ar else 'How to install' }}</a>
@@ -69,6 +61,7 @@
           <li>{{ 'ملاحظاتك تصل إلى الفريق مباشرة من داخل التطبيق.' if ar else 'Your feedback reaches the team straight from the app.' }}</li>
           <li>{{ 'يمكنك ترك الاختبار في أي وقت بحذف النسخة التجريبية.' if ar else 'Leave the test any time by removing the beta version.' }}</li>
         </ul>
+        {% include "_follow_line.html" %}
       </div>
 
       <div class="notify-card beta-form-card" id="join">
@@ -226,11 +219,7 @@
       </div>
     </section>
 
-    <footer class="launch-footer">
-      <span>{{ 'تبيان لخدمة القرآن الكريم' if ar else 'Tibyan, tools in service of the Quran' }}</span>
-      <span class="footer-rule" aria-hidden="true"></span>
-      <a href="/">altibyan.app</a>
-    </footer>
+{% include "_launch_footer.html" %}
   </main>
 </body>
 </html>

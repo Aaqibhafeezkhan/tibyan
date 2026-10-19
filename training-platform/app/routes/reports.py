@@ -21,6 +21,7 @@ from sqlalchemy.orm import Session
 
 from ..config import settings
 from ..deps import get_db
+from ..email_brand import branded
 from ..mail import send_mail, valid_email
 from ..models import AppReport
 from ..notifications import notify_admins
@@ -119,9 +120,11 @@ def deliver_report(report: dict) -> None:
     """Background: email the report; on no SMTP, log. Never raises."""
     to = settings.admin_report_email or settings.smtp_to
     try:
+        text, html = branded("en", f"App report: {report['type']} #{report['id']}", report["body"])
         sent = send_mail(
             subject=f"[Tibyan report] {report['type']} #{report['id']}",
-            body=report["body"],
+            body=text,
+            html=html,
             to=to or None,
             reply_to=report.get("email"),
         )

@@ -1,0 +1,254 @@
+/* ============================================================
+   Tibyan design tokens — the single place for brand values.
+   Shared by altibyan.app (coming-soon.css) and train.altibyan.app
+   (style.css, player.css). Palette = the app's «هندسي» UiLook
+   (lib/core/theme/interface_style.dart); motifs = Facebook cover C
+   (docs/brand/facebook/src/gen.py). Change a value here only.
+   ============================================================ */
+
+/* ---------- type ----------
+   Changa for the interface. Digits never render in Changa: the
+   'TibyanDigits' family (IBM Plex Sans Arabic) covers only the digit
+   code points and is listed first in every stack. Changa sits in its
+   own family because mixing a variable face with static faces in one
+   family makes Chromium skip the variable face. */
+@font-face {
+  font-family: 'Tibyan';
+  src: url('/static/fonts/Changa.ttf') format('truetype');
+  font-weight: 200 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TibyanDigits';
+  src: url('/static/fonts/IBMPlexSansArabic-Regular.ttf') format('truetype');
+  font-weight: 100 449;
+  font-display: swap;
+  unicode-range: U+0030-0039, U+0660-0669, U+06F0-06F9;
+}
+@font-face {
+  font-family: 'TibyanDigits';
+  src: url('/static/fonts/IBMPlexSansArabic-Medium.ttf') format('truetype');
+  font-weight: 450 549;
+  font-display: swap;
+  unicode-range: U+0030-0039, U+0660-0669, U+06F0-06F9;
+}
+@font-face {
+  font-family: 'TibyanDigits';
+  src: url('/static/fonts/IBMPlexSansArabic-SemiBold.ttf') format('truetype');
+  font-weight: 550 649;
+  font-display: swap;
+  unicode-range: U+0030-0039, U+0660-0669, U+06F0-06F9;
+}
+@font-face {
+  font-family: 'TibyanDigits';
+  src: url('/static/fonts/IBMPlexSansArabic-Bold.ttf') format('truetype');
+  font-weight: 650 900;
+  font-display: swap;
+  unicode-range: U+0030-0039, U+0660-0669, U+06F0-06F9;
+}
+/* Quran verse text: the app's approved mushaf font (KFGQPC Hafs 2.0,
+   shipped unmodified). Used ONLY for verse text. */
+@font-face {
+  font-family: 'UthmanicHafs';
+  src: url('/static/fonts/uthmanic_hafs_v20.ttf') format('truetype');
+  font-weight: 400;
+  font-display: block;
+}
+
+:root {
+  color-scheme: light dark;
+
+  /* fonts */
+  --font-ui: 'TibyanDigits', 'Tibyan', system-ui, sans-serif;
+  --font-quran: 'UthmanicHafs', 'Tibyan', serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* brand constants (same in both themes) */
+  --brand-teal: #0F6660;
+  --brand-teal-hi: #11706A;
+  --brand-teal-lo: #0A4F4A;
+  --brand-cream: #F6F1E8;
+  --brand-gold: #D9B266;
+  --brand-mint: #55BDB2;
+
+  /* light theme («هندسي» day) */
+  --c-bg: #F6F1E8;
+  --c-surface: #FFFCF6;
+  --c-sunken: #EFE9DD;
+  --c-ink: #1E1915;
+  --c-ink-2: #5E5A52;
+  --c-heading: #0B4F4A;
+  --c-line: #E2D9C8;
+  --c-line-strong: #CFC3AD;
+  --c-accent: #0F6660;
+  --c-accent-hover: #0A4F4A;
+  --c-on-accent: #FFFCF6;
+  --c-accent-soft: rgb(15 102 96 / 9%);
+  --c-gold: #9A7428;          /* ornament / borders */
+  --c-gold-ink: #7A5A1C;      /* gold as text, ≥ 4.5:1 */
+  --c-gold-soft: rgb(217 178 102 / 18%);
+  --c-copper: #B4561F;
+  --c-danger: #A3321F;
+  --c-danger-bg: #FBEAE5;
+  --c-ok: #2F6B3A;
+  --c-ok-bg: #E8F1E6;
+  --c-focus: #B4561F;
+
+  /* frame = header / footer band (cover C teal field) */
+  --c-frame-1: #11706A;
+  --c-frame-2: #0A4F4A;
+  --c-on-frame: #F6F1E8;
+  --c-on-frame-2: #CFE3DF;
+  --c-frame-rule: #D9B266;
+  --c-pattern: #0F6660;
+  --pattern-opacity: 0.06;
+  --c-pattern-frame: #F6F1E8;
+
+  /* mistake types (player): distinct hues, each ≥ 4.5:1 on surface */
+  --t-sub: #C0392B;
+  --t-del: #7D3C98;
+  --t-ins: #1F6FA8;
+  --t-har: #9A5B00;
+  --t-rep: #566573;
+  --t-taj: #2E7D32;
+
+  /* shape, space, depth, motion */
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-pill: 999px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px;
+  --shadow-1: 0 1px 2px rgb(10 40 38 / 6%), 0 4px 14px rgb(10 40 38 / 6%);
+  --shadow-2: 0 12px 32px -12px rgb(10 40 38 / 22%);
+  --focus-ring: 0 0 0 3px var(--c-focus);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur: 160ms;
+
+  --pattern-url: url('/static/brand/pattern.svg');
+  --logo-url: url('/static/brand/tibyan-logo.svg');
+}
+
+/* dark theme («هندسي» night) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-bg: #0E1A1B;
+    --c-surface: #152627;
+    --c-sunken: #112122;
+    --c-ink: #E7EFEC;
+    --c-ink-2: #9DB6B1;
+    --c-heading: #E7EFEC;
+    --c-line: #24393A;
+    --c-line-strong: #34504F;
+    --c-accent: #55BDB2;
+    --c-accent-hover: #7ACFC5;
+    --c-on-accent: #0A1314;
+    --c-accent-soft: rgb(85 189 178 / 12%);
+    --c-gold: #D9B266;
+    --c-gold-ink: #D9B266;
+    --c-gold-soft: rgb(217 178 102 / 14%);
+    --c-copper: #E59A62;
+    --c-danger: #F0A58F;
+    --c-danger-bg: #3A201B;
+    --c-ok: #8ACF9A;
+    --c-ok-bg: #17302A;
+    --c-focus: #E59A62;
+
+    --c-frame-1: #0F3F3C;
+    --c-frame-2: #0A1314;
+    --c-pattern: #55BDB2;
+    --pattern-opacity: 0.05;
+
+    --t-sub: #F2867A;
+    --t-del: #C9A2DC;
+    --t-ins: #74B9EC;
+    --t-har: #E5B25D;
+    --t-rep: #AEBCC6;
+    --t-taj: #86CF8B;
+
+    --shadow-1: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 14px rgb(0 0 0 / 22%);
+    --shadow-2: 0 12px 32px -12px rgb(0 0 0 / 55%);
+  }
+}
+
+/* ---------- shared primitives ---------- */
+
+/* The logo, unchanged, painted in currentColor through a mask. */
+.logo-mark {
+  display: inline-block;
+  aspect-ratio: 1392 / 1019;
+  height: 32px;
+  background-color: currentColor;
+  -webkit-mask: var(--logo-url) center / contain no-repeat;
+          mask: var(--logo-url) center / contain no-repeat;
+  flex: 0 0 auto;
+}
+
+/* Khatam lattice layer: put .has-pattern on a positioned element. */
+.has-pattern { position: relative; isolation: isolate; }
+.has-pattern::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--pattern-color, var(--c-pattern));
+  opacity: var(--pattern-alpha, var(--pattern-opacity));
+  -webkit-mask: var(--pattern-url) 0 0 / 104px 104px repeat;
+          mask: var(--pattern-url) 0 0 / 104px 104px repeat;
+}
+
+/* Small 8-point star used as a gold ornament. */
+.star {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--c-gold);
+  clip-path: polygon(50% 0%, 61.7% 21.7%, 85.4% 14.6%, 78.3% 38.3%, 100% 50%, 78.3% 61.7%, 85.4% 85.4%, 61.7% 78.3%, 50% 100%, 38.3% 78.3%, 14.6% 85.4%, 21.7% 61.7%, 0% 50%, 21.7% 38.3%, 14.6% 14.6%, 38.3% 21.7%);
+  flex: 0 0 auto;
+}
+
+/* Follow-on-Facebook link (generic "f" glyph, not the Meta logo). */
+.fb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+}
+.fb-glyph {
+  display: inline-grid;
+  place-items: center;
+  width: 1.35em;
+  height: 1.35em;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  font: 700 0.8em/1 system-ui, sans-serif;
+  flex: 0 0 auto;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: 3px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .logo-mark { background-color: CanvasText; }
+  .has-pattern::before { display: none; }
+}

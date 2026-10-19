@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block title %}{{ t('nav_dashboard') }} · {{ t('app_name') }}{% endblock %}
 {% block head_extra %}
-  <link rel="stylesheet" href="/static/player.css?v=1">
-  <script src="/static/player.js?v=1" defer></script>
+  <link rel="stylesheet" href="/static/player.css?v={{ asset_v }}">
+  <script src="/static/player.js?v={{ asset_v }}" defer></script>
 {% endblock %}
 {% block content %}
 <section class="panel">

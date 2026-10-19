@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{ t('notif_title') }} · {{ t('app_name') }}{% endblock %}
-{% block head_extra %}<script src="/static/push.js?v=1" defer></script>{% endblock %}
+{% block head_extra %}<script src="/static/push.js?v={{ asset_v }}" defer></script>{% endblock %}
 {% block content %}
 <section class="panel wide">
   <h1>{{ t('notif_title') }}</h1>

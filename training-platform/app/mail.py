@@ -14,8 +14,15 @@ def valid_email(value: str) -> bool:
     return bool(_EMAIL_RE.match(value))
 
 
-def send_mail(subject: str, body: str, to: str | None = None, reply_to: str | None = None) -> bool:
-    """Send via the configured SMTP; return False when it is not set up."""
+def send_mail(
+    subject: str,
+    body: str,
+    to: str | None = None,
+    reply_to: str | None = None,
+    html: str | None = None,
+) -> bool:
+    """Send via the configured SMTP; return False when it is not set up.
+    `html` (optional) is added as the text/html alternative of `body`."""
     if not settings.smtp_host:
         return False
     to = to or settings.smtp_to
@@ -31,6 +38,8 @@ def send_mail(subject: str, body: str, to: str | None = None, reply_to: str | No
     if reply_to:
         msg["Reply-To"] = reply_to
     msg.set_content(body)
+    if html:
+        msg.add_alternative(html, subtype="html")
 
     if settings.smtp_port == 465:
         with smtplib.SMTP_SSL(
