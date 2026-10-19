@@ -45,7 +45,7 @@
 | أندرويد | [اختبار Google Play](https://play.google.com/apps/internaltest/4701465992904267136)، أو APK من [GitHub Releases](https://github.com/helalrules7/tibyan/releases) |
 | آيفون وآيباد | [TestFlight](https://testflight.apple.com/join/gxJ4rrdd) |
 | ماك | من [GitHub Releases](https://github.com/helalrules7/tibyan/releases) |
-| ويندوز ولينكس | من [GitHub Releases](https://github.com/helalrules7/tibyan/releases) (غير موقّعة) |
+| ويندوز ولينكس | من [GitHub Releases](https://github.com/helalrules7/tibyan/releases) (غير موقّعة، **ونحتاج مختبرين**) |
 
 لتصلك الدعوة عند فتح الاختبار: [altibyan.app/beta](https://altibyan.app/beta)
 
@@ -61,6 +61,7 @@
 
 - **صحّح توقيت التلاوة** بأذنك من المتصفح: [المحرر](https://helalrules7.github.io/tibyan/) و[الدليل](docs/TIMING_GUIDE.md). لا تحتاج خبرة برمجية.
 - **علّم المواضع في صوت القراءات** إن كنت تعرفها: [الدليل](docs/QIRAAT_AUDIO.md).
+- **مطلوب بشدة: مختبرون على ويندوز ولينكس.** نسختا ويندوز ولينكس تُبنيان تلقائيًا مع كل إصدار ولم تُجرَّبا بعد على أجهزة حقيقية. نزّل النسخة من [GitHub Releases](https://github.com/helalrules7/tibyan/releases)، وجرّب القراءة والاستماع والتحميل والتسميع، وأبلغنا بما يحدث في [issue](https://github.com/helalrules7/tibyan/issues/new/choose) مع اسم النظام وإصداره.
 - **سجّل تلاوتك لتدريب نموذج التسميع** على [train.altibyan.app](https://train.altibyan.app). التسجيلات تُنشر بترخيص CC BY 4.0.
 - **الكود:** اقرأ [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
@@ -86,7 +87,7 @@ Tibyan is in beta:
 | Android | [Google Play testing](https://play.google.com/apps/internaltest/4701465992904267136), or the APK on [GitHub Releases](https://github.com/helalrules7/tibyan/releases) |
 | iPhone and iPad | [TestFlight](https://testflight.apple.com/join/gxJ4rrdd) |
 | macOS | [GitHub Releases](https://github.com/helalrules7/tibyan/releases) |
-| Windows and Linux | [GitHub Releases](https://github.com/helalrules7/tibyan/releases) (unsigned) |
+| Windows and Linux | [GitHub Releases](https://github.com/helalrules7/tibyan/releases) (unsigned, **testers wanted**) |
 
 Get an invite when testing opens: [altibyan.app/beta](https://altibyan.app/beta)
 
@@ -102,6 +103,7 @@ Get an invite when testing opens: [altibyan.app/beta](https://altibyan.app/beta)
 
 - **Fix recitation timings** by ear in your browser: [the editor](https://helalrules7.github.io/tibyan/) and [the guide](docs/TIMING_GUIDE.md). No programming needed.
 - **Mark qiraat audio** if you know the qiraat: [the guide (Arabic)](docs/QIRAAT_AUDIO.md).
+- **Wanted: Windows and Linux testers.** The Windows and Linux builds are produced automatically with every release and have not been tried on real machines yet. Download them from [GitHub Releases](https://github.com/helalrules7/tibyan/releases), try reading, listening, downloads and tasmee, and tell us what happens in an [issue](https://github.com/helalrules7/tibyan/issues/new/choose) with your OS name and version.
 - **Record your recitation** to train the tasmee model at [train.altibyan.app](https://train.altibyan.app). Recordings are published under CC BY 4.0.
 - **Code:** see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 

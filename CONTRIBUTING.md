@@ -7,6 +7,7 @@
 - **Recitation timings:** fix a word that lights up early or late in the [timing editor](https://helalrules7.github.io/tibyan/) ([guide](docs/TIMING_GUIDE.md)).
 - **Qiraat audio:** mark the differing word in a verse clip ([guide, Arabic](docs/QIRAAT_AUDIO.md)).
 - **Voice data:** record your recitation at [train.altibyan.app](https://train.altibyan.app) (published under CC BY 4.0).
+- **Windows and Linux testing — wanted · مطلوب بشدة:** the Windows and Linux builds on [Releases](https://github.com/helalrules7/tibyan/releases) are built automatically and untested on real machines. Install one, try reading, listening, downloads, tasmee (microphone), notifications and backup, and open an issue with your OS version, what worked and what didn't, plus screenshots. Windows may show a SmartScreen warning because the build is unsigned: choose "More info" then "Run anyway". / نسختا ويندوز ولينكس تُبنيان تلقائيًا ولم تُجرَّبا بعد؛ جرّبهما وأبلغنا بإصدار نظامك وما نجح وما لم ينجح.
 - **Bugs and ideas:** open an [issue](https://github.com/helalrules7/tibyan/issues/new/choose).
 
 ## Rules for content · قواعد المحتوى
