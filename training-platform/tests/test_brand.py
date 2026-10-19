@@ -13,7 +13,7 @@ from fastapi.testclient import TestClient
 from app import mail
 from app.email_brand import branded
 from app.main import app
-from app.templating import FACEBOOK_URL, INSTAGRAM_URL
+from app.templating import FACEBOOK_URL, INSTAGRAM_URL, TIKTOK_URL
 
 STATIC = Path(__file__).resolve().parent.parent / "app" / "static"
 REPO = STATIC.parent.parent.parent
@@ -79,8 +79,10 @@ class PageTests(unittest.TestCase):
         self.assertIn('class="logo-mark"', body)
         self.assertIn(f'href="{FACEBOOK_URL}" target="_blank" rel="noopener"', body)
         self.assertIn(f'href="{INSTAGRAM_URL}" target="_blank" rel="noopener"', body)
+        self.assertIn(f'href="{TIKTOK_URL}" target="_blank" rel="noopener"', body)
         self.assertIn('"sameAs": ["https://www.facebook.com/tibyanapp/", '
-                      '"https://www.instagram.com/tibyanapp/"]', body)
+                      '"https://www.instagram.com/tibyanapp/", '
+                      '"https://www.tiktok.com/@altibyanapp"]', body)
 
     def test_root_site_has_follow_line_and_footer_link(self):
         root = TestClient(app, base_url="https://altibyan.app")
@@ -89,7 +91,9 @@ class PageTests(unittest.TestCase):
             self.assertIn('class="follow-line"', body, path)
             self.assertEqual(body.count(f'href="{FACEBOOK_URL}"'), 2, path)
             self.assertEqual(body.count(f'href="{INSTAGRAM_URL}"'), 2, path)
-            self.assertIn(INSTAGRAM_URL + '"]', body, path)
+            self.assertEqual(body.count(f'href="{TIKTOK_URL}"'), 2, path)
+            self.assertIn(TIKTOK_URL + '"]', body, path)
+            self.assertIn(f'<meta property="og:see_also" content="{TIKTOK_URL}">', body, path)
             self.assertIn("sameAs", body, path)
 
     def test_manifest_has_maskable_icons_and_brand_colours(self):
@@ -125,6 +129,8 @@ class EmailTests(unittest.TestCase):
         self.assertIn(FACEBOOK_URL, html)
         self.assertIn(INSTAGRAM_URL, text)
         self.assertIn(INSTAGRAM_URL, html)
+        self.assertIn(TIKTOK_URL, text)
+        self.assertIn(TIKTOK_URL, html)
         self.assertIn("&lt;b&gt;", html)
         self.assertIn('href="https://example.com/x"', html)
 

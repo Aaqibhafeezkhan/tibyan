@@ -207,7 +207,7 @@
   flex: 0 0 auto;
 }
 
-/* Social links (generic "f" and camera-outline glyphs, no official logos). */
+/* Social links (generic "f", camera-outline and musical-note glyphs, no official logos). */
 .social-link {
   display: inline-flex;
   align-items: center;
@@ -224,7 +224,7 @@
   font: 700 0.8em/1 system-ui, sans-serif;
   flex: 0 0 auto;
 }
-.ig-glyph { flex: 0 0 auto; display: block; }
+.ig-glyph, .tt-glyph { flex: 0 0 auto; display: block; }
 
 .sr-only {
   position: absolute;

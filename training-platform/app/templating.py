@@ -16,5 +16,8 @@ templates.env.globals["facebook_url"] = FACEBOOK_URL
 # Official Instagram page (same places as Facebook).
 INSTAGRAM_URL = "https://www.instagram.com/tibyanapp/"
 templates.env.globals["instagram_url"] = INSTAGRAM_URL
+# Official TikTok account (same places as Facebook).
+TIKTOK_URL = "https://www.tiktok.com/@altibyanapp"
+templates.env.globals["tiktok_url"] = TIKTOK_URL
 # Bump when CSS/JS/brand assets change so browsers refetch them.
 templates.env.globals["asset_v"] = "brand1"
