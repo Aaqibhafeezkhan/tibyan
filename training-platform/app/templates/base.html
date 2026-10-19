@@ -25,6 +25,7 @@
   <meta property="og:locale" content="ar_EG">
   <meta property="og:locale:alternate" content="en_US">
   <meta property="og:see_also" content="{{ facebook_url }}">
+  <meta property="og:see_also" content="{{ instagram_url }}">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
@@ -36,7 +37,7 @@
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "Organization", "name": "Tibyan", "alternateName": "تبيان",
    "url": "https://altibyan.app/", "logo": "https://altibyan.app/static/icon-512.png",
-   "sameAs": ["{{ facebook_url }}"]}
+   "sameAs": ["{{ facebook_url }}", "{{ instagram_url }}"]}
   </script>
 
   <link rel="icon" href="/favicon.ico" sizes="any">
@@ -106,8 +107,11 @@
       <a href="https://altibyan.app/">altibyan.app</a>
       <a href="/voice">{{ t('nav_voice') }}</a>
       <a href="/contact">{{ t('nav_contact') }}</a>
-      <a class="fb-link" href="{{ facebook_url }}" target="_blank" rel="noopener" aria-label="{{ t('follow_fb_label') }}">
+      <a class="social-link" href="{{ facebook_url }}" target="_blank" rel="noopener" aria-label="{{ t('follow_fb_label') }}">
         <span class="fb-glyph" aria-hidden="true">f</span><span>{{ t('follow_fb') }}</span>
+      </a>
+      <a class="social-link" href="{{ instagram_url }}" target="_blank" rel="noopener" aria-label="{{ t('follow_ig_label') }}">
+        <svg class="ig-glyph" aria-hidden="true" viewBox="0 0 24 24" width="1.35em" height="1.35em" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"/></svg><span>{{ t('follow_ig') }}</span>
       </a>
     </div>
   </footer>

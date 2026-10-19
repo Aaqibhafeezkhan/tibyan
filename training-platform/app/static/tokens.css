@@ -207,8 +207,8 @@
   flex: 0 0 auto;
 }
 
-/* Follow-on-Facebook link (generic "f" glyph, not the Meta logo). */
-.fb-link {
+/* Social links (generic "f" and camera-outline glyphs, no official logos). */
+.social-link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -224,6 +224,7 @@
   font: 700 0.8em/1 system-ui, sans-serif;
   flex: 0 0 auto;
 }
+.ig-glyph { flex: 0 0 auto; display: block; }
 
 .sr-only {
   position: absolute;

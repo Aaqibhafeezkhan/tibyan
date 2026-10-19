@@ -10,7 +10,7 @@ from __future__ import annotations
 import html
 import re
 
-from .templating import FACEBOOK_URL
+from .templating import FACEBOOK_URL, INSTAGRAM_URL
 
 LOGO_URL = "https://altibyan.app/static/brand/logo-cream.png"
 SITE_URL = "https://altibyan.app"
@@ -29,6 +29,7 @@ _URL = re.compile(r"https?://[^\s<>«»()]+[^\s<>«»().,:;!?،]")
 _STEP = re.compile(r"^(\d+)\.\s+(.*)$")
 
 FOLLOW = {"ar": "تابعنا على فيسبوك", "en": "Follow us on Facebook"}
+FOLLOW_IG = {"ar": "تابعنا على إنستجرام", "en": "Follow us on Instagram"}
 
 
 def _inline(text: str) -> str:
@@ -81,13 +82,15 @@ def _blocks(body: str, rtl: bool) -> str:
 
 
 def branded(lang: str, title: str, body: str) -> tuple[str, str]:
-    """Return (plain text, HTML) for `body`; both carry the Facebook footer."""
+    """Return (plain text, HTML) for `body`; both carry the Facebook + Instagram footer."""
     lang = "ar" if lang == "ar" else "en"
     rtl = lang == "ar"
     d = "rtl" if rtl else "ltr"
     align = "right" if rtl else "left"
     follow = FOLLOW[lang]
-    text = f"{body.rstrip()}\n\n—\n{follow}: {FACEBOOK_URL}\n{SITE_URL}\n"
+    follow_ig = FOLLOW_IG[lang]
+    text = (f"{body.rstrip()}\n\n—\n{follow}: {FACEBOOK_URL}\n"
+            f"{follow_ig}: {INSTAGRAM_URL}\n{SITE_URL}\n")
     page = f"""<!doctype html>
 <html lang="{lang}" dir="{d}">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -106,7 +109,8 @@ def branded(lang: str, title: str, body: str) -> tuple[str, str]:
 </td></tr>
 <tr><td style="padding:16px 28px 24px;border-top:1px solid {LINE};text-align:{align};color:{INK_2};font-size:13px;line-height:1.8">
 <a href="{SITE_URL}" style="color:{TEAL}">altibyan.app</a> ·
-<a href="{FACEBOOK_URL}" style="color:{TEAL}">{follow}</a>
+<a href="{FACEBOOK_URL}" style="color:{TEAL}">{follow}</a> ·
+<a href="{INSTAGRAM_URL}" style="color:{TEAL}">{follow_ig}</a>
 </td></tr>
 </table>
 </td></tr></table>
