@@ -27,6 +27,7 @@
   <meta property="og:see_also" content="{{ facebook_url }}">
   <meta property="og:see_also" content="{{ instagram_url }}">
   <meta property="og:see_also" content="{{ tiktok_url }}">
+  <meta property="og:see_also" content="{{ youtube_url }}">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
@@ -38,7 +39,7 @@
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "Organization", "name": "Tibyan", "alternateName": "تبيان",
    "url": "https://altibyan.app/", "logo": "https://altibyan.app/static/icon-512.png",
-   "sameAs": ["{{ facebook_url }}", "{{ instagram_url }}", "{{ tiktok_url }}"]}
+   "sameAs": ["{{ facebook_url }}", "{{ instagram_url }}", "{{ tiktok_url }}", "{{ youtube_url }}"]}
   </script>
 
   <link rel="icon" href="/favicon.ico" sizes="any">
@@ -116,6 +117,9 @@
       </a>
       <a class="social-link" href="{{ tiktok_url }}" target="_blank" rel="noopener" aria-label="{{ t('follow_tt_label') }}">
         <svg class="tt-glyph" aria-hidden="true" viewBox="0 0 24 24" width="1.35em" height="1.35em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="17.5" r="3.5"/><path d="M11.5 17.5V3.5c1.2 2.8 3.6 4.5 6.5 4.5"/></svg><span>{{ t('follow_tt') }}</span>
+      </a>
+      <a class="social-link" href="{{ youtube_url }}" target="_blank" rel="noopener" aria-label="{{ t('follow_yt_label') }}">
+        <svg class="yt-glyph" aria-hidden="true" viewBox="0 0 24 24" width="1.35em" height="1.35em" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="4"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/></svg><span>{{ t('follow_yt') }}</span>
       </a>
     </div>
   </footer>

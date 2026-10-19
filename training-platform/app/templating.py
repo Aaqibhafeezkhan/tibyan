@@ -19,5 +19,8 @@ templates.env.globals["instagram_url"] = INSTAGRAM_URL
 # Official TikTok account (same places as Facebook).
 TIKTOK_URL = "https://www.tiktok.com/@altibyanapp"
 templates.env.globals["tiktok_url"] = TIKTOK_URL
+# Official YouTube channel (same places as Facebook).
+YOUTUBE_URL = "https://www.youtube.com/@altibyanApp"
+templates.env.globals["youtube_url"] = YOUTUBE_URL
 # Bump when CSS/JS/brand assets change so browsers refetch them.
 templates.env.globals["asset_v"] = "brand1"

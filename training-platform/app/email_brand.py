@@ -10,7 +10,7 @@ from __future__ import annotations
 import html
 import re
 
-from .templating import FACEBOOK_URL, INSTAGRAM_URL, TIKTOK_URL
+from .templating import FACEBOOK_URL, INSTAGRAM_URL, TIKTOK_URL, YOUTUBE_URL
 
 LOGO_URL = "https://altibyan.app/static/brand/logo-cream.png"
 SITE_URL = "https://altibyan.app"
@@ -31,6 +31,7 @@ _STEP = re.compile(r"^(\d+)\.\s+(.*)$")
 FOLLOW = {"ar": "تابعنا على فيسبوك", "en": "Follow us on Facebook"}
 FOLLOW_IG = {"ar": "تابعنا على إنستجرام", "en": "Follow us on Instagram"}
 FOLLOW_TT = {"ar": "تابعنا على تيك توك", "en": "Follow us on TikTok"}
+FOLLOW_YT = {"ar": "تابعنا على يوتيوب", "en": "Follow us on YouTube"}
 
 
 def _inline(text: str) -> str:
@@ -83,7 +84,7 @@ def _blocks(body: str, rtl: bool) -> str:
 
 
 def branded(lang: str, title: str, body: str) -> tuple[str, str]:
-    """Return (plain text, HTML) for `body`; both carry the Facebook + Instagram + TikTok footer."""
+    """Return (plain text, HTML) for `body`; both carry the Facebook + Instagram + TikTok + YouTube footer."""
     lang = "ar" if lang == "ar" else "en"
     rtl = lang == "ar"
     d = "rtl" if rtl else "ltr"
@@ -91,9 +92,11 @@ def branded(lang: str, title: str, body: str) -> tuple[str, str]:
     follow = FOLLOW[lang]
     follow_ig = FOLLOW_IG[lang]
     follow_tt = FOLLOW_TT[lang]
+    follow_yt = FOLLOW_YT[lang]
     text = (f"{body.rstrip()}\n\n—\n{follow}: {FACEBOOK_URL}\n"
             f"{follow_ig}: {INSTAGRAM_URL}\n"
-            f"{follow_tt}: {TIKTOK_URL}\n{SITE_URL}\n")
+            f"{follow_tt}: {TIKTOK_URL}\n"
+            f"{follow_yt}: {YOUTUBE_URL}\n{SITE_URL}\n")
     page = f"""<!doctype html>
 <html lang="{lang}" dir="{d}">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -114,7 +117,8 @@ def branded(lang: str, title: str, body: str) -> tuple[str, str]:
 <a href="{SITE_URL}" style="color:{TEAL}">altibyan.app</a> ·
 <a href="{FACEBOOK_URL}" style="color:{TEAL}">{follow}</a> ·
 <a href="{INSTAGRAM_URL}" style="color:{TEAL}">{follow_ig}</a> ·
-<a href="{TIKTOK_URL}" style="color:{TEAL}">{follow_tt}</a>
+<a href="{TIKTOK_URL}" style="color:{TEAL}">{follow_tt}</a> ·
+<a href="{YOUTUBE_URL}" style="color:{TEAL}">{follow_yt}</a>
 </td></tr>
 </table>
 </td></tr></table>
