@@ -479,6 +479,9 @@ void main() {
       await tester.tap(inMenu(find.text('قراءة')));
       await settle(tester);
       expect(menu, findsNothing);
+      // The first fasil asks the look.
+      await tester.tap(find.byKey(const ValueKey('fasil-choose-ribbon')));
+      await settle(tester);
       final marks = await tester.runAsync(
         () => container.read(userDatabaseProvider).watchBookmarkSets().first,
       );
