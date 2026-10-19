@@ -111,3 +111,11 @@ class DownloadsTest(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertIn('href="/download/android"', r.text)
         self.assertNotIn("dl-meta", r.text)
+
+
+class HeadTest(DownloadsTest):
+    def test_head_redirects(self):
+        with patch.object(releases, "_fetch", return_value=RELEASES):
+            r = self.client.head("/download/macos", follow_redirects=False)
+        self.assertEqual(r.status_code, 302)
+        self.assertTrue(r.headers["location"].endswith("tibyan-0.5.0-macos.zip"))

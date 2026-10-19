@@ -118,7 +118,7 @@ def beta_join(
     return RedirectResponse("/beta#install", status_code=303)
 
 
-@router.get("/download/{platform}")
+@router.api_route("/download/{platform}", methods=["GET", "HEAD"])
 def download(platform: str):
     """302 to the newest release's asset for this platform (no tracking)."""
     if platform not in releases.PATTERNS:
