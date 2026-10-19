@@ -196,9 +196,10 @@ jobs:
       - uses: softprops/action-gh-release@e598afbe1493e6b1bafb1f389cabb956eab91231 # v3.0.3
         with:
           body_path: notes.md
+          # The Android APK is signed with the upload key on the maintainer's
+          # machine (tools/make_github_release.sh) and attached afterwards;
+          # CI has no keystore, so its debug-signed build is not published.
           files: |
-            app-release.apk
-            app-release.aab
             tibyan-ios-unsigned.zip
             tibyan-macos-unsigned.zip
             tibyan-macos-unsigned.dmg
