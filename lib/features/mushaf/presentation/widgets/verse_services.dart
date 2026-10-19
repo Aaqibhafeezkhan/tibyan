@@ -393,19 +393,25 @@ class _ShareButton extends StatelessWidget {
     child: OutlinedButton(
       onPressed: onTap,
       style: OutlinedButton.styleFrom(
+        // A minimum, never a fixed height: the label's line (taller in
+        // Arabic, with a larger text size or elderly mode) has room below.
         minimumSize: const Size.fromHeight(56),
-        padding: const EdgeInsets.symmetric(horizontal: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        // Desktop's compact density took the padding (and the room under
+        // the label) away on macOS.
+        visualDensity: VisualDensity.standard,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 20),
-          const SizedBox(height: 2),
+          const SizedBox(height: 4),
           Text(
             label,
-            maxLines: 1,
+            maxLines: 2,
+            textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 12),
+            style: const TextStyle(fontSize: 12, height: 1.5),
           ),
         ],
       ),
@@ -435,13 +441,21 @@ class _MarkButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 64),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.bookmark, color: color, size: 26),
-              const SizedBox(height: 2),
-              Text(label, style: TextStyle(fontSize: 12, color: t.ink)),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.bookmark, color: color, size: 26),
+                const SizedBox(height: 4),
+                Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12, height: 1.5, color: t.ink),
+                ),
+              ],
+            ),
           ),
         ),
       ),
