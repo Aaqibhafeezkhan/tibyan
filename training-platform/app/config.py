@@ -78,6 +78,17 @@ class Settings(BaseSettings):
     eval_fraction: float = 0.1
     eval_min_recordings: int = 5
 
+    # Word positions on the player waveform: CTC forced alignment with the
+    # tasmee model, run in a background task after upload. Off by default;
+    # needs requirements-alignment.txt and the model files in
+    # alignment_model_dir (model.int8.onnx + tokens.txt from the mirror).
+    alignment_enabled: bool = False
+    alignment_model_dir: str = "./models/nvidia-ar-fastconformer-ctc"
+    alignment_threads: int = 2
+
+    # Annotation API: saves per user per minute.
+    annotation_saves_per_minute: int = 20
+
     class Config:
         env_file = ".env"
 

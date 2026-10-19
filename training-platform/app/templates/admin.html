@@ -75,6 +75,15 @@
       </button>
     </form>
     <p class="muted">{% if exported %}{{ t('admin_export_done') | replace('{n}', exported) }} · <a href="/admin/manifest.jsonl">{{ t('admin_download_manifest') }}</a>{% endif %}</p>
+    <form method="post" action="/admin/settings/mistakes-split" class="split-setting">
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+      <label class="check">
+        <input type="checkbox" name="enabled" value="1" {% if mistakes_split %}checked{% endif %}>
+        <span>{{ t('admin_split_label') }}</span>
+      </label>
+      <p class="muted">{{ t('admin_split_help') }}</p>
+      <button type="submit" class="btn">{{ t('admin_split_save') }}</button>
+    </form>
   </div>
 
   <h2 class="section-title" id="recordings">{{ t('admin_recordings') }}</h2>
@@ -111,6 +120,9 @@
                   {% if rec.speed %}<span>{{ t('speed_' ~ rec.speed) }}</span>{% endif %}
                   {% if rec.environment %}<span>{{ t('env_' ~ rec.environment) }}</span>{% endif %}
                   <span>{{ t('admin_votes') }}: ✓{{ v.get('accept', 0) }} ✗{{ v.get('reject', 0) }}</span>
+                  {% if rec.has_mistakes %}<span class="badge mk">{{ t('pl_has_mistakes') }}</span>{% endif %}
+                  {% if rec.annotation_status == 'pending_review' %}<span>{{ t('pl_marks_pending') }}</span>{% endif %}
+                  <a href="/recordings/{{ rec.id }}">{{ t('pl_open') }}</a>
                   {% if owners.get(rec.user_id) %}<span class="ltr">{{ owners[rec.user_id].email or owners[rec.user_id].phone }}</span>{% endif %}
                 </div>
               </td>

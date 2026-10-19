@@ -72,9 +72,73 @@ class Recording(Base):
 
     # pending -> accepted | rejected | flagged (phase 3/4).
     status: Mapped[str] = mapped_column(String(16), default="pending")
+
+    # Mistake annotations (see app/annotations.py for the state machine).
+    # none | pending_review | reviewed. Nullable: older rows mean "none".
+    annotation_status: Mapped[Optional[str]] = mapped_column(String(16), nullable=True)
+    # True when the authoritative annotation version lists >= 1 mistake.
+    has_mistakes: Mapped[Optional[bool]] = mapped_column(Boolean, nullable=True)
+    # Word timings for the player (app/alignment.py): off | pending |
+    # running | done | failed, and the JSON {"source", "words": [...]}.
+    alignment_status: Mapped[Optional[str]] = mapped_column(String(16), nullable=True)
+    word_timings: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    aligned_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.current_timestamp()
     )
+
+
+class AnnotationSet(Base):
+    """One saved version of a recording's mistake marks. Every save is a new
+    row (history is never overwritten); the latest reviewer/admin version is
+    authoritative, else the latest reciter version."""
+
+    __tablename__ = "annotation_sets"
+    __table_args__ = (
+        UniqueConstraint("recording_id", "version", name="uq_annotation_version"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    recording_id: Mapped[int] = mapped_column(ForeignKey("recordings.id"), index=True)
+    version: Mapped[int] = mapped_column(Integer)
+    author_id: Mapped[int] = mapped_column(ForeignKey("users.id"), index=True)
+    # reciter | reviewer | admin
+    author_role: Mapped[str] = mapped_column(String(16))
+    mistake_count: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(DateTime, index=True)
+
+
+class AnnotationMistake(Base):
+    __tablename__ = "annotation_mistakes"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    set_id: Mapped[int] = mapped_column(ForeignKey("annotation_sets.id"), index=True)
+    # Word index in the verse text split on spaces. For an insertion it is
+    # the slot *before* that word (== word count: after the last word).
+    word_index: Mapped[int] = mapped_column(Integer)
+    # substitution | deletion | insertion | haraka | repetition | tajweed
+    type: Mapped[str] = mapped_column(String(16))
+    # tajweed only: madd | ghunna | idgham | ikhfa | qalqala | other
+    subtype: Mapped[Optional[str]] = mapped_column(String(16), nullable=True)
+    start_ms: Mapped[int] = mapped_column(Integer)
+    end_ms: Mapped[int] = mapped_column(Integer)
+    # substitution only: what the reciter actually said (user's own text).
+    said: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    note: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    # Reviewer verdict on a reciter mark: confirmed | changed | not_mistake |
+    # added (new from the reviewer). Null in reciter versions.
+    review: Mapped[Optional[str]] = mapped_column(String(16), nullable=True)
+    # reciter | reviewer | admin — who first marked it.
+    marked_by: Mapped[str] = mapped_column(String(16), default="reciter")
+
+
+class PlatformSetting(Base):
+    """Small admin-editable key/value settings."""
+
+    __tablename__ = "platform_settings"
+
+    key: Mapped[str] = mapped_column(String(64), primary_key=True)
+    value: Mapped[str] = mapped_column(String(255))
 
 
 class RecordingVote(Base):

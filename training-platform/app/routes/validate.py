@@ -8,7 +8,9 @@ from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from starlette.responses import RedirectResponse
 
+from .. import annotations as ann
 from .. import verses
+from ..i18n import get_lang
 from ..config import settings
 from ..deps import current_user, get_db
 from ..models import ClipReport, Recording, RecordingVote
@@ -29,6 +31,10 @@ def _status_label(request: Request, status: str) -> str:
 
 
 def _pick_for_review(db: Session, user_id: int) -> Recording | None:
+    """A pending recording this user has not voted on, or — when none is
+    left — an already accepted recording whose marks the reciter edited
+    after review (annotation_status == pending_review) and this user has
+    not reviewed since."""
     voted_ids = [
         row[0]
         for row in db.query(RecordingVote.recording_id)
@@ -43,8 +49,27 @@ def _pick_for_review(db: Session, user_id: int) -> Recording | None:
         query = query.filter(~Recording.id.in_(voted_ids))
     candidates = query.order_by(Recording.id.desc()).limit(50).all()
     if not candidates:
+        candidates = [
+            rec
+            for rec in db.query(Recording)
+            .filter(
+                Recording.status == "accepted",
+                Recording.annotation_status == "pending_review",
+                Recording.user_id != user_id,
+            )
+            .order_by(Recording.id.desc())
+            .limit(50)
+            .all()
+            if not _reviewed_latest(db, rec.id, user_id)
+        ]
+    if not candidates:
         return None
     return random.choice(candidates)
+
+
+def _reviewed_latest(db: Session, recording_id: int, user_id: int) -> bool:
+    latest = ann.latest_set(db, recording_id)
+    return latest is not None and latest.author_id == user_id
 
 
 @router.get("/validate")
@@ -56,10 +81,14 @@ def validate_form(request: Request, db: Session = Depends(get_db)):
     if clip is None:
         return render(request, "validate.html", clip=None)
     flash = request.session.pop("flash", None)
+    from .annotations import player_context
+
     return render(
         request,
         "validate.html",
         clip=clip,
+        marks_only=clip.status != "pending",
+        player=player_context(db, clip, user, "reviewer", get_lang(request)),
         text=verses.ayah_range_text(
             clip.surah, clip.ayah, clip.ayah_end or clip.ayah
         ) or "",

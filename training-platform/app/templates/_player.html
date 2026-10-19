@@ -1,0 +1,99 @@
+{# Shared player + marking UI. Needs `player` (routes/annotations.player_context). #}
+<div class="player-root" data-start-mode="{{ start_mode or 'listen' }}" data-context="{{ player_context_name or 'player' }}">
+  <script type="application/json" id="player-data">{{ player | tojson }}</script>
+  {% if player.role %}
+  <div class="pl-head" style="margin-top:8px">
+    <div class="vers">
+      {% if player.shown_version %}
+        <span class="badge">{{ t('pl_version_badge') | replace('{v}', player.shown_version) | replace('{role}', t('pl_role_' ~ player.shown_role)) }}</span>
+      {% endif %}
+      {% if player.authoritative_version and player.authoritative_version != player.shown_version %}
+        <span class="badge acc">{{ t('pl_authoritative') | replace('{v}', player.authoritative_version) }}</span>
+      {% endif %}
+    </div>
+    <div class="seg" role="group" aria-label="{{ t('pl_mode') }}">
+      <button type="button" aria-pressed="false" data-mode="listen">{{ t('pl_mode_listen') }}</button>
+      <button type="button" aria-pressed="false" data-mode="mark">{{ t('pl_mode_mark') }}</button>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="wave-wrap">
+    <div class="pl-loading" aria-busy="true"><span class="sr-only">{{ t('pl_loading') }}</span><div class="skel"></div></div>
+    <div class="pl-error errbox" role="alert" hidden>
+      <b>{{ t('pl_err_audio') }}</b><br>{{ t('pl_err_audio_body') }}
+      <div><button type="button" class="btn sm pl-retry" style="margin-top:8px">{{ t('pl_retry') }}</button></div>
+    </div>
+    <div class="wave" tabindex="0" role="slider" aria-label="{{ t('pl_position') }}" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+  </div>
+  <div class="pl-time num"><span class="pl-cur">0:00.0</span><span>{{ '%d:%04.1f' | format(player.duration_ms // 60000, (player.duration_ms % 60000) / 1000) }}</span></div>
+
+  <div class="pl-ctrls">
+    <button type="button" class="ic pl-back" aria-label="{{ t('pl_back5') }}" title="{{ t('pl_back5') }}">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/></svg>
+    </button>
+    <button type="button" class="ic play" aria-label="{{ t('pl_play') }}" title="{{ t('pl_play') }} (Space)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <button type="button" class="ic pl-fwd" aria-label="{{ t('pl_fwd5') }}" title="{{ t('pl_fwd5') }}">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2l5 4-5 4V7a6 6 0 1 0 6 6h2a8 8 0 1 1-8-8Z"/></svg>
+    </button>
+    <div class="seg num" role="group" aria-label="{{ t('pl_speed') }}">
+      <button type="button" aria-pressed="false" data-rate="0.75">0.75×</button>
+      <button type="button" aria-pressed="true" data-rate="1">1×</button>
+      <button type="button" aria-pressed="false" data-rate="1.25">1.25×</button>
+    </div>
+    <button type="button" class="btn sm pl-loop" aria-pressed="false">↻ {{ t('pl_loop') }} <span class="kbd">L</span></button>
+    <span class="spacer"></span>
+    {% if player.role %}
+      <button type="button" class="btn sm primary pl-mark">+ {{ t('pl_mark') }} <span class="kbd">M</span></button>
+    {% endif %}
+  </div>
+
+  <div class="words" role="list" aria-label="{{ t('pl_words') }}"></div>
+  <p class="pl-note">
+    {% if player.timing.source == 'ctc' %}{{ t('pl_timing_ctc') }}{% elif player.timing.status in ('pending', 'running') %}{{ t('pl_timing_pending') }}{% else %}{{ t('pl_timing_prop') }}{% endif %}
+    {% if player.role %}<span class="mark-only"> {{ t('pl_gap_hint') }}</span>{% endif %}
+  </p>
+  <div class="legend">
+    <span class="c-substitution">{{ t('pl_type_substitution') }} <span class="kbd">1</span></span>
+    <span class="c-deletion">{{ t('pl_type_deletion') }} <span class="kbd">2</span></span>
+    <span class="c-insertion">{{ t('pl_type_insertion') }} <span class="kbd">3</span></span>
+    <span class="c-haraka">{{ t('pl_type_haraka') }} <span class="kbd">4</span></span>
+    <span class="c-repetition">{{ t('pl_type_repetition') }} <span class="kbd">5</span></span>
+    <span class="c-tajweed">{{ t('pl_type_tajweed') }} <span class="kbd">6</span></span>
+  </div>
+
+  {% if player.role %}
+  <div class="editor" hidden role="dialog" aria-modal="false" aria-labelledby="ed-title">
+    <b class="ed-title" id="ed-title"></b>
+    <div class="types" role="radiogroup" aria-label="{{ t('pl_type_title') }}"></div>
+    <div class="subs" role="group" aria-label="{{ t('pl_type_tajweed') }}" hidden></div>
+    <div class="ed-time num">
+      <span>{{ t('pl_time') }}:</span> <span class="ed-range"></span>
+      <button type="button" class="btn sm" data-nudge="s:-100" aria-label="{{ t('pl_start_earlier') }}">⇤ −0.1</button>
+      <button type="button" class="btn sm" data-nudge="s:100" aria-label="{{ t('pl_start_later') }}">+0.1</button>
+      <button type="button" class="btn sm" data-nudge="e:-100" aria-label="{{ t('pl_end_earlier') }}">−0.1</button>
+      <button type="button" class="btn sm" data-nudge="e:100" aria-label="{{ t('pl_end_later') }}">+0.1 ⇥</button>
+    </div>
+    <label class="f said">{{ t('pl_said_label') }}<input maxlength="200" autocomplete="off" placeholder="{{ t('pl_said_ph') }}"></label>
+    <label class="f">{{ t('pl_note_label') }}<textarea rows="2" maxlength="500" placeholder="{{ t('pl_note_ph') }}"></textarea></label>
+    <div class="ed-acts">
+      <button type="button" class="btn primary ed-save">{{ t('pl_save_mark') }} <span class="kbd">Enter</span></button>
+      <button type="button" class="btn ed-cancel">{{ t('cancel') }} <span class="kbd">Esc</span></button>
+      <button type="button" class="btn no ed-delete">{{ t('pl_delete') }}</button>
+    </div>
+  </div>
+  {% endif %}
+
+  <h2 class="section-title">{{ t('pl_marked') }} <span class="num pl-count"></span></h2>
+  <ul class="ml"></ul>
+
+  <div class="savebar">
+    {% if player.role %}
+      <button type="button" class="btn primary pl-save">{{ t(save_label or 'pl_save') }}</button>
+    {% endif %}
+    <a class="btn pl-download" href="{{ player.download }}?download=1" download {% if not player.shown_version %}aria-disabled="true"{% endif %}>⬇ {{ t('pl_download') }}</a>
+    <span class="saved" aria-live="polite"></span>
+  </div>
+</div>

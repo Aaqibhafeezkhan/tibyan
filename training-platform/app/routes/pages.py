@@ -147,9 +147,12 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
         .all()
     )
     status_label = lambda status: msg(request, f"status_{status}")
+    from .. import annotations
+
     return render(
         request,
         "dashboard.html",
+        mistake_counts=annotations.mistake_counts(db, [r.id for r in recordings]),
         user=user,
         flash=flash,
         recordings=recordings,

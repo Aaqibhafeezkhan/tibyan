@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ t('pl_title') }} · {{ t('app_name') }}{% endblock %}
+{% block head_extra %}
+  <meta name="csrf-token" content="{{ csrf }}">
+  <link rel="stylesheet" href="/static/player.css?v=1">
+  <script src="/static/vendor/wavesurfer/wavesurfer.min.js?v=7.12.12" defer></script>
+  <script src="/static/vendor/wavesurfer/regions.min.js?v=7.12.12" defer></script>
+  <script src="/static/player.js?v=1" defer></script>
+{% endblock %}
+{% block content %}
+<section class="panel player">
+  {% if flash %}<div class="success">{{ flash }}</div>{% endif %}
+  <div class="pl-head">
+    <h1>{{ surah_name }} — <span class="num">{{ rec.ayah }}{% if rec.ayah_end and rec.ayah_end > rec.ayah %}–{{ rec.ayah_end }}{% endif %}</span></h1>
+    <div>
+      <span class="badge {{ {'accepted': 'acc', 'rejected': 'rej'}.get(rec.status, 'pen') }}">{{ status_label }}</span>
+      <span class="badge mk pl-has-mistakes" {% if not rec.has_mistakes %}hidden{% endif %}>{{ t('pl_has_mistakes') }}</span>
+      {% if rec.annotation_status == 'pending_review' %}<span class="badge pen">{{ t('pl_marks_pending') }}</span>{% endif %}
+    </div>
+  </div>
+  {% if is_new and player.role == 'reciter' %}
+    <p class="muted">{{ t('pl_new_intro') }}</p>
+  {% elif player.role == 'reciter' %}
+    <p class="muted">{{ t('pl_reciter_intro') }}</p>
+  {% endif %}
+  {% set start_mode = 'mark' if (is_new and player.role) else 'listen' %}
+  {% include "_player.html" %}
+  <p class="pl-note"><a href="/dashboard">← {{ t('my_recordings') }}</a></p>
+</section>
+{% endblock %}

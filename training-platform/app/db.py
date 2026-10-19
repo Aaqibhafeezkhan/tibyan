@@ -86,5 +86,22 @@ def migrate_request_columns(bind: Engine = engine) -> None:
     )
 
 
+def migrate_annotation_columns(bind: Engine = engine) -> None:
+    """Player + mistake annotations: nullable recording columns. The new
+    annotation_sets / annotation_mistakes / platform_settings tables come
+    from create_all. Existing rows are never changed."""
+    add_missing_columns(
+        bind,
+        "recordings",
+        {
+            "annotation_status": "VARCHAR(16) NULL",
+            "has_mistakes": "BOOLEAN NULL",
+            "alignment_status": "VARCHAR(16) NULL",
+            "word_timings": "TEXT NULL",
+            "aligned_at": "DATETIME NULL",
+        },
+    )
+
+
 class Base(DeclarativeBase):
     pass

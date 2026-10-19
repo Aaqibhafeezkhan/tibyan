@@ -3,12 +3,13 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, File, Form, Request, UploadFile
+from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, Request, UploadFile
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from starlette.responses import RedirectResponse
 
-from .. import verses
+from .. import alignment, verses
+from .. import annotations as ann
 from ..audio import convert_to_wav, validate_clip
 from ..config import settings
 from ..deps import current_user, get_db
@@ -72,6 +73,7 @@ def api_surah(number: int):
 @router.post("/record")
 def record_submit(
     request: Request,
+    background: BackgroundTasks,
     db: Session = Depends(get_db),
     surah: str = Form(""),
     ayah: str = Form(""),
@@ -164,12 +166,17 @@ def record_submit(
     tmp.unlink(missing_ok=True)
     rec.audio_path = f"recordings/{rec.id}.wav"
     rec.audio_duration_ms = duration_ms
+    if alignment.enabled():
+        rec.alignment_status = "pending"
     db.commit()
+    if alignment.enabled():
+        background.add_task(alignment.run_for_recording, rec.id)
     ref = f"{rec.surah}:{rec.ayah}" + (f"-{rec.ayah_end}" if rec.ayah_end and rec.ayah_end > rec.ayah else "")
     notify_admins(db, "new_recording", {"id": rec.id, "ref": ref}, "/admin?status=pending")
 
     request.session["flash"] = msg(request, "success_recorded")
-    return RedirectResponse("/record", status_code=303)
+    # Straight to the player, where the reciter can listen and mark mistakes.
+    return RedirectResponse(f"/recordings/{rec.id}?new=1", status_code=303)
 
 
 @router.post("/recordings/{recording_id}/delete")
@@ -194,6 +201,7 @@ def delete_recording(
     db.query(ClipReport).filter(
         ClipReport.recording_id == recording_id
     ).delete()
+    ann.delete_for_recording(db, recording_id)
     path = media_root() / rec.audio_path
     db.delete(rec)
     db.commit()
@@ -201,6 +209,8 @@ def delete_recording(
     path.unlink(missing_ok=True)
     # Also drop any copy left in the training export from an earlier run.
     (media_root() / "export" / "wavs" / f"{recording_id}.wav").unlink(missing_ok=True)
+    (media_root() / "export" / "annotations" / f"{recording_id}.json").unlink(missing_ok=True)
+    (media_root() / "peaks" / f"{recording_id}.json").unlink(missing_ok=True)
 
     request.session["flash"] = msg(request, "rec_deleted")
     return RedirectResponse("/dashboard", status_code=303)

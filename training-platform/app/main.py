@@ -9,6 +9,7 @@ from .config import settings
 from .db import (
     Base,
     engine,
+    migrate_annotation_columns,
     migrate_recording_ayah_end,
     migrate_request_columns,
     migrate_user_birth_year,
@@ -17,6 +18,7 @@ from .routes import (
     admin,
     admin_requests,
     admin_training,
+    annotations,
     auth,
     contact,
     notifications,
@@ -33,6 +35,7 @@ Base.metadata.create_all(bind=engine)
 migrate_recording_ayah_end(engine)
 migrate_user_birth_year(engine)
 migrate_request_columns(engine)
+migrate_annotation_columns(engine)
 
 app = FastAPI(title="Tibyan Recitation Training")
 
@@ -57,3 +60,4 @@ app.include_router(admin_training.router)
 app.include_router(notifications.router)
 app.include_router(runner.router)
 app.include_router(reports.router)
+app.include_router(annotations.router)

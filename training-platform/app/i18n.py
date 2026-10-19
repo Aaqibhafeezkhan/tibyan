@@ -410,3 +410,14 @@ def _merge_admin_strings() -> None:
 
 
 _merge_admin_strings()
+
+
+def _merge_player_strings() -> None:
+    from .i18n_player import PLAYER_STRINGS
+
+    for lang, strings in PLAYER_STRINGS.items():
+        for key, value in strings.items():
+            STRINGS[lang].setdefault(key, value)
+
+
+_merge_player_strings()

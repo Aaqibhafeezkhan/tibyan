@@ -12,7 +12,7 @@ from ..deps import current_user, get_db
 from ..export import build_export
 from sqlalchemy import func
 
-from .. import training
+from .. import annotations, training
 from ..models import (
     ContactMessage,
     DeletionRequest,
@@ -151,6 +151,7 @@ def admin_dashboard(
         group_of=training.voice_group,
         stats=dashboard_stats(db),
         exported=exported,
+        mistakes_split=annotations.mistakes_split(db),
         flash=flash,
         admin_section="dashboard",
     )

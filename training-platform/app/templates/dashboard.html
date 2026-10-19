@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block title %}{{ t('nav_dashboard') }} · {{ t('app_name') }}{% endblock %}
+{% block head_extra %}
+  <link rel="stylesheet" href="/static/player.css?v=1">
+  <script src="/static/player.js?v=1" defer></script>
+{% endblock %}
 {% block content %}
 <section class="panel">
   <h1>{{ t('welcome') }}</h1>
@@ -26,26 +30,39 @@
 
   <h2 class="section-title">{{ t('my_recordings') }}</h2>
   {% if recordings %}
-    <table class="recordings">
-      <tbody>
-        {% for rec in recordings %}
-          <tr>
-            <td>{{ rec.surah }}:{{ rec.ayah }}{% if rec.ayah_end and rec.ayah_end > rec.ayah %}–{{ rec.ayah_end }}{% endif %}</td>
-            <td>{{ (rec.audio_duration_ms / 1000) | round(1) }}s</td>
-            <td>{{ status_label(rec.status) }}</td>
-            <td class="delete-cell">
-              <form method="post" action="/recordings/{{ rec.id }}/delete"
-                    onsubmit="return confirm('{{ t('rec_delete_confirm') }}')">
-                <input type="hidden" name="csrf" value="{{ csrf }}">
-                <button type="submit" class="link-btn">{{ t('rec_delete') }}</button>
-              </form>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <div class="recs">
+      {% for rec in recordings %}
+        {% set n = mistake_counts.get(rec.id, 0) %}
+        <div class="rec" data-id="{{ rec.id }}">
+          <button type="button" class="ic play" aria-pressed="false"
+                  aria-label="{{ t('pl_play') }} {{ rec.surah }}:{{ rec.ayah }}">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <audio preload="none" src="/recordings/{{ rec.id }}/audio"></audio>
+          <div>
+            <div class="ref num">{{ rec.surah }}:{{ rec.ayah }}{% if rec.ayah_end and rec.ayah_end > rec.ayah %}–{{ rec.ayah_end }}{% endif %}</div>
+            <canvas class="mini" aria-hidden="true"></canvas>
+            <div class="meta num">
+              <span>{{ (rec.audio_duration_ms / 1000) | round(1) }}s</span>
+              {% if n %}<span class="badge mk">{{ t('pl_n_mistakes') | replace('{n}', n) }}</span>{% elif rec.has_mistakes %}<span class="badge mk">{{ t('pl_has_mistakes') }}</span>{% endif %}
+              {% if rec.annotation_status == 'pending_review' %}<span>{{ t('pl_marks_pending') }}</span>{% endif %}
+            </div>
+          </div>
+          <div class="side">
+            <span class="badge {{ {'accepted': 'acc', 'rejected': 'rej'}.get(rec.status, 'pen') }}">{{ status_label(rec.status) }}</span>
+            <a class="btn sm" href="/recordings/{{ rec.id }}">{{ t('pl_open') }}</a>
+            <form method="post" action="/recordings/{{ rec.id }}/delete"
+                  onsubmit="return confirm('{{ t('rec_delete_confirm') }}')">
+              <input type="hidden" name="csrf" value="{{ csrf }}">
+              <button type="submit" class="link-btn">{{ t('rec_delete') }}</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
   {% else %}
-    <p class="muted">{{ t('validate_none') }}</p>
+    <p><b>{{ t('pl_empty_title') }}</b></p>
+    <p class="muted">{{ t('pl_empty_body') }}</p>
   {% endif %}
 </section>
 {% endblock %}

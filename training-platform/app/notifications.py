@@ -3,7 +3,8 @@ each of their subscribed browsers.
 
 Events (kind -> recipients):
   admins:     new_recording, beta_request, contact_message, app_report,
-              deletion_request, training_done, training_failed
+              deletion_request, training_done, training_failed,
+              marks_review (reciter edited marks after review)
   volunteers: recording_accepted, recording_rejected (the owner only)
 """
 from __future__ import annotations
@@ -27,6 +28,7 @@ ADMIN_KINDS = {
     "deletion_request",
     "training_done",
     "training_failed",
+    "marks_review",
 }
 VOLUNTEER_KINDS = {"recording_accepted", "recording_rejected"}
 KINDS = ADMIN_KINDS | VOLUNTEER_KINDS | {"test"}

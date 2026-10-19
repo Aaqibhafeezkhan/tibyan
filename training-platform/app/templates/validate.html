@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 {% block title %}{{ t('validate_title') }} · {{ t('app_name') }}{% endblock %}
+{% block head_extra %}
+  {% if clip %}
+  <meta name="csrf-token" content="{{ csrf }}">
+  <link rel="stylesheet" href="/static/player.css?v=1">
+  <script src="/static/vendor/wavesurfer/wavesurfer.min.js?v=7.12.12" defer></script>
+  <script src="/static/vendor/wavesurfer/regions.min.js?v=7.12.12" defer></script>
+  <script src="/static/player.js?v=1" defer></script>
+  {% endif %}
+{% endblock %}
 {% block content %}
 <section class="panel wide">
   <h1>{{ t('validate_title') }}</h1>
@@ -24,11 +33,17 @@
 
     <div class="preview-box">
       <span class="block-label">{{ t('validate_listen') }}</span>
-      <audio controls src="/recordings/{{ clip.id }}/audio" preload="metadata"></audio>
+      <noscript><audio controls src="/recordings/{{ clip.id }}/audio" preload="metadata"></audio></noscript>
+      <p class="muted">{{ t('pl_review_intro_marks_only') if marks_only else t('pl_review_intro') }}</p>
+      {% set start_mode = 'mark' %}
+      {% set player_context_name = 'validate' %}
+      {% set save_label = 'pl_save_review' %}
+      {% include "_player.html" %}
     </div>
 
+    {% if not marks_only %}
     <div class="review-actions">
-      <form method="post" action="/validate/{{ clip.id }}">
+      <form method="post" action="/validate/{{ clip.id }}" data-save-marks>
         <input type="hidden" name="csrf" value="{{ csrf }}">
         <input type="hidden" name="verdict" value="reject">
         <button type="submit" class="btn icon danger">
@@ -37,7 +52,7 @@
         </button>
       </form>
 
-      <form method="post" action="/validate/{{ clip.id }}">
+      <form method="post" action="/validate/{{ clip.id }}" data-save-marks>
         <input type="hidden" name="csrf" value="{{ csrf }}">
         <input type="hidden" name="verdict" value="accept">
         <button type="submit" class="btn primary icon">
@@ -46,6 +61,9 @@
         </button>
       </form>
     </div>
+    {% else %}
+    <p><a class="btn" href="/validate">{{ t('validate_review_again') }}</a></p>
+    {% endif %}
 
     <details class="report">
       <summary>{{ t('validate_report') }}</summary>
