@@ -34,7 +34,14 @@ def is_root_host(request: Request) -> bool:
 def index(request: Request, db: Session = Depends(get_db)):
     if is_root_host(request):
         notify = request.session.pop("notify", None)
-        return render(request, "coming-soon.html", notify=notify)
+        if notify is None and request.query_params.get("n") == "busy":
+            notify = "busy"  # nginx's 429 redirect lands here
+        return render(
+            request,
+            "coming-soon.html",
+            notify=notify,
+            notify_email=request.session.pop("notify_email", ""),
+        )
 
     user = current_user(request, db)
     return render(request, "index.html", user=user, progress=public_progress(db))
@@ -112,7 +119,7 @@ def robots(request: Request):
 @router.get("/sitemap.xml")
 def sitemap(request: Request):
     if is_root_host(request):
-        urls = [f"{ROOT_ORIGIN}/"]
+        urls = [f"{ROOT_ORIGIN}/", f"{ROOT_ORIGIN}/beta"]
     else:
         urls = [f"{TRAIN_ORIGIN}{path}" for path in TRAIN_PUBLIC_PATHS]
     entries = "".join(f"  <url><loc>{url}</loc></url>\n" for url in urls)

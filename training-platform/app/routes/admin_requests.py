@@ -8,6 +8,7 @@ import io
 
 from fastapi import APIRouter, Depends, Form, Query, Request
 from fastapi.responses import Response
+from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 from starlette.responses import RedirectResponse
 
@@ -28,7 +29,11 @@ def _back(tab: str) -> RedirectResponse:
 
 @router.get("/admin/requests")
 def requests_page(
-    request: Request, db: Session = Depends(get_db), tab: str = Query("contact")
+    request: Request,
+    db: Session = Depends(get_db),
+    tab: str = Query("contact"),
+    platform: str = Query(""),
+    status: str = Query(""),
 ):
     blocked = require_admin(request, db)
     if blocked is not None:
@@ -58,13 +63,15 @@ def requests_page(
             db.query(AppReport).order_by(AppReport.id.desc()).limit(LIMIT).all()
         )
     elif tab == "beta":
+        platform, status = _beta_filters(platform, status)
         context["signups"] = (
-            db.query(NotifySignup)
-            .filter(NotifySignup.wants_beta.is_(True))
-            .order_by(NotifySignup.id.desc())
-            .limit(LIMIT)
-            .all()
+            _beta_query(db, platform, status).order_by(NotifySignup.id.desc()).limit(LIMIT).all()
         )
+        context["platform"] = platform
+        context["status"] = status
+        context["platform_counts"] = {
+            p: _beta_query(db, p, "").count() for p in BETA_PLATFORMS
+        }
     elif tab == "notify":
         context["signups"] = (
             db.query(NotifySignup).order_by(NotifySignup.id.desc()).limit(LIMIT).all()
@@ -167,6 +174,35 @@ def deletion_state(
     return _back("deletion")
 
 
+BETA_PLATFORMS = ("ios", "android", "mac")
+BETA_STATUSES = ("pending", "added")
+
+
+def _beta_filters(platform: str, status: str) -> tuple[str, str]:
+    return (
+        platform if platform in BETA_PLATFORMS else "",
+        status if status in BETA_STATUSES else "",
+    )
+
+
+def _beta_query(db: Session, platform: str, status: str):
+    """Beta requests, optionally for one platform and pending/added state."""
+    query = db.query(NotifySignup).filter(NotifySignup.wants_beta.is_(True))
+    if platform:
+        # Stored as a comma list of fixed keys, so a padded LIKE is exact.
+        query = query.filter(
+            ("," + func.coalesce(NotifySignup.beta_platforms, "") + ",").like(f"%,{platform},%")
+        )
+    added = or_(
+        NotifySignup.play_added_at.isnot(None), NotifySignup.testflight_added_at.isnot(None)
+    )
+    if status == "pending":
+        query = query.filter(~added)
+    elif status == "added":
+        query = query.filter(added)
+    return query
+
+
 def _cell(value) -> str:
     """CSV cell safe to open in a spreadsheet (no formula injection)."""
     text = "" if value is None else str(value)
@@ -174,19 +210,30 @@ def _cell(value) -> str:
 
 
 @router.get("/admin/requests/notify.csv")
-def notify_csv(request: Request, db: Session = Depends(get_db), beta: int = Query(0)):
+def notify_csv(
+    request: Request,
+    db: Session = Depends(get_db),
+    beta: int = Query(0),
+    platform: str = Query(""),
+    status: str = Query(""),
+):
     blocked = require_admin(request, db)
     if blocked is not None:
         return blocked
-    query = db.query(NotifySignup).order_by(NotifySignup.id)
     if beta:
-        query = query.filter(NotifySignup.wants_beta.is_(True))
+        query = _beta_query(db, *_beta_filters(platform, status)).order_by(NotifySignup.id)
+    else:
+        query = db.query(NotifySignup).order_by(NotifySignup.id)
     out = io.StringIO()
     writer = csv.writer(out)
-    writer.writerow(["email", "lang", "wants_beta", "created_at", "play_added_at", "testflight_added_at"])
+    writer.writerow([
+        "email", "lang", "wants_beta", "beta_platforms", "created_at",
+        "beta_requested_at", "play_added_at", "testflight_added_at",
+    ])
     for row in query.all():
         writer.writerow([
-            _cell(row.email), row.lang, int(bool(row.wants_beta)), row.created_at,
+            _cell(row.email), row.lang, int(bool(row.wants_beta)), " ".join(row.platforms),
+            row.created_at, row.beta_requested_at or "",
             row.play_added_at or "", row.testflight_added_at or "",
         ])
     name = "tibyan-beta-requests.csv" if beta else "tibyan-notify-signups.csv"

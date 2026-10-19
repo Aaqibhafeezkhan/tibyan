@@ -72,14 +72,28 @@
     </ul>
 
   {% elif tab == 'beta' %}
-    <p class="muted">{{ t('req_beta_help') }} <a href="/admin/requests/notify.csv?beta=1">{{ t('req_csv_beta') }}</a></p>
+    <p class="muted">{{ t('req_beta_help') }} <a class="btn small" href="/admin/requests/notify.csv?beta=1&platform={{ platform }}&status={{ status }}">{{ t('req_csv_beta') }}</a></p>
+    <nav class="admin-actions wrap beta-filters" aria-label="{{ t('req_filter') }}">
+      <a class="btn small{% if not platform %} primary{% endif %}" href="?tab=beta&status={{ status }}">{{ t('req_all') }}</a>
+      {% for p in ['ios', 'android', 'mac'] %}
+        <a class="btn small{% if platform == p %} primary{% endif %}" href="?tab=beta&platform={{ p }}&status={{ status }}">{{ t('req_pf_' ~ p) }} ({{ platform_counts[p] }})</a>
+      {% endfor %}
+      <span class="muted">|</span>
+      {% for st in ['', 'pending', 'added'] %}
+        <a class="btn small{% if status == st %} primary{% endif %}" href="?tab=beta&platform={{ platform }}&status={{ st }}">{{ t('req_st_' ~ (st or 'all')) }}</a>
+      {% endfor %}
+    </nav>
     {% if not signups %}<p class="muted">{{ t('req_none') }}</p>{% endif %}
     <ul class="req-cards">
       {% for s in signups %}
         <li class="req-card">
           <div class="req-head">
             <strong class="ltr">{{ s.email }}</strong>
-            <span class="muted small">{{ s.lang }} · {{ s.created_at.strftime('%Y-%m-%d') if s.created_at else '' }}</span>
+            <span class="muted small">{{ s.lang }} · {{ (s.beta_requested_at or s.created_at).strftime('%Y-%m-%d') if (s.beta_requested_at or s.created_at) else '' }}</span>
+          </div>
+          <div class="admin-actions wrap">
+            {% for p in s.platforms %}<span class="pill">{{ t('req_pf_' ~ p) }}</span>{% endfor %}
+            {% if not s.platforms %}<span class="muted small">{{ t('req_pf_unknown') }}</span>{% endif %}
           </div>
           <div class="admin-actions wrap">
             {% for p, label, stamp in [('play', t('req_play'), s.play_added_at), ('testflight', t('req_testflight'), s.testflight_added_at)] %}

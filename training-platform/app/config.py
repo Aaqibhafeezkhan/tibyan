@@ -42,6 +42,9 @@ class Settings(BaseSettings):
     smtp_to: str = ""
     # Recipient of in-app reports (POST /api/reports). Empty = SMTP_TO.
     admin_report_email: str = ""
+    # Comma-separated addresses told about every altibyan.app signup
+    # (notify-me and beta). Empty = no signup alert emails.
+    signup_notify_emails: str = ""
 
     # Web Push (VAPID). Generate once with tools/gen_vapid.py and keep the
     # private key only in the server's .env. Empty = push disabled; the

@@ -28,7 +28,7 @@
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
   <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
-  <link rel="stylesheet" href="/static/coming-soon.css?v=2">
+  <link rel="stylesheet" href="/static/coming-soon.css?v=3">
 </head>
 <body>
   {% set ar = lang == 'ar' %}
@@ -95,11 +95,14 @@
         <h2 id="notify-title">{{ 'أبلغني عند الإطلاق' if ar else 'Tell me when it launches' }}</h2>
         <p>{{ 'اترك بريدك وسنرسل لك رسالة واحدة عند الإطلاق. لن نشارك بريدك مع أي جهة.' if ar else 'Leave your email and we will send one message at launch. We never share your address.' }}</p>
       </div>
+      <div class="notify-side">
       {% if notify == 'ok' %}
-        <p class="notify-status ok" role="status">{{ 'تم التسجيل، شكرًا لك.' if ar else 'You are on the list, thank you.' }}</p>
+        <p class="notify-status ok" role="status">{{ 'تم تسجيل بريدك. شكرًا لك.' if ar else 'You are on the list. Thank you.' }}</p>
       {% else %}
         {% if notify == 'invalid' %}
-          <p class="notify-status error" role="alert">{{ 'أدخل بريدًا إلكترونيًا صحيحًا.' if ar else 'Enter a valid email address.' }}</p>
+          <p class="notify-status error" role="alert" id="notify-error">{{ 'أدخل بريدًا إلكترونيًا صحيحًا، مثل name@example.com.' if ar else 'Enter a valid email address, like name@example.com.' }}</p>
+        {% elif notify == 'busy' %}
+          <p class="notify-status error" role="alert" id="notify-error">{{ 'محاولات كثيرة في وقت قصير. انتظر بضع دقائق ثم أعد المحاولة.' if ar else 'Too many attempts in a short time. Wait a few minutes, then try again.' }}</p>
         {% endif %}
         <form class="notify-form" method="post" action="/notify">
           <input type="hidden" name="csrf" value="{{ csrf }}">
@@ -108,16 +111,18 @@
           </div>
           <label class="sr-only" for="notify-email">{{ 'البريد الإلكتروني' if ar else 'Email address' }}</label>
           <div class="notify-row">
-            <input id="notify-email" type="email" name="email" required maxlength="255"
-                   autocomplete="email" placeholder="{{ 'بريدك الإلكتروني' if ar else 'you@example.com' }}" dir="ltr">
+            <input id="notify-email" type="email" name="email" required maxlength="255" value="{{ notify_email or '' }}"
+                   autocomplete="email" placeholder="{{ 'بريدك الإلكتروني' if ar else 'you@example.com' }}" dir="ltr"
+                   {% if notify in ('invalid', 'busy') %}aria-invalid="true" aria-describedby="notify-error"{% endif %}>
             <button type="submit">{{ 'أبلغني' if ar else 'Notify me' }}</button>
           </div>
-          <label class="beta-check">
-            <input type="checkbox" name="beta" value="1">
-            <span>{{ 'أريد أيضًا الانضمام لاختبار النسخة التجريبية (أندرويد أو آيفون).' if ar else 'I also want to join the beta test (Android or iPhone).' }}</span>
-          </label>
         </form>
       {% endif %}
+        <a class="beta-button" href="/beta">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>
+          <span>{{ 'انضم لاختبار النسخة التجريبية' if ar else 'Join the beta test' }}</span>
+        </a>
+      </div>
     </section>
 
     <section class="training-note" aria-labelledby="training-title">

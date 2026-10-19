@@ -1,0 +1,236 @@
+<!doctype html>
+{% set ar = lang == 'ar' %}
+{% set title = 'انضم لاختبار النسخة التجريبية | تبيان' if ar else 'Join the beta test | Tibyan' %}
+{% set desc = 'جرّب تبيان قبل إطلاقه على آيفون أو أندرويد أو ماك، وأرسل ملاحظاتك من داخل التطبيق.' if ar else 'Try Tibyan before launch on iPhone, Android or Mac, and send feedback from inside the app.' %}
+<html lang="{{ lang }}" dir="{{ dir }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ desc }}">
+  <meta name="theme-color" content="#171610">
+  <link rel="canonical" href="https://altibyan.app/beta">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="تبيان">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ desc }}">
+  <meta property="og:url" content="https://altibyan.app/beta">
+  <meta property="og:image" content="https://altibyan.app/static/coming-soon-share.png?v=1">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+  <link rel="stylesheet" href="/static/coming-soon.css?v=3">
+</head>
+<body>
+{# ---------- mockup building blocks ---------- #}
+{% macro tap(label) -%}
+  <span class="mk-tap">{{ label }}</span>
+{%- endmacro %}
+
+{% macro phone(kind) -%}
+  <div class="device phone {{ kind }}" aria-hidden="true"><div class="screen">{{ caller() }}</div></div>
+{%- endmacro %}
+
+{% macro laptop() -%}
+  <div class="device laptop" aria-hidden="true"><div class="screen">{{ caller() }}</div><div class="base"></div></div>
+{%- endmacro %}
+
+{% macro urlbar(text) -%}
+  <div class="mk-url" dir="ltr">{{ text }}</div>
+{%- endmacro %}
+
+{% macro appicon(name, cls='') -%}
+  <div class="mk-app"><span class="mk-icon {{ cls }}"></span><span class="mk-name" dir="ltr">{{ name }}</span></div>
+{%- endmacro %}
+
+  <main class="launch-page beta-page">
+    <header class="launch-header">
+      <a class="wordmark" href="/" aria-label="{{ 'تبيان، الصفحة الرئيسية' if ar else 'Tibyan home' }}">
+        <img class="wordmark-logo" src="/static/logo-gold.png" alt="">
+        <span class="wordmark-en">TIBYAN</span>
+      </a>
+      <nav class="launch-nav" aria-label="{{ 'روابط الموقع' if ar else 'Site links' }}">
+        <a href="/">{{ 'الصفحة الرئيسية' if ar else 'Home' }}</a>
+        <a href="#install">{{ 'طريقة التثبيت' if ar else 'How to install' }}</a>
+        <a class="language-link" href="/lang/{{ 'en' if ar else 'ar' }}">{{ 'English' if ar else 'العربية' }}</a>
+      </nav>
+    </header>
+
+    <section class="beta-intro" aria-labelledby="beta-title">
+      <div class="beta-copy">
+        <p class="coming-label">{{ 'النسخة التجريبية' if ar else 'Beta test' }}</p>
+        <h1 id="beta-title">{{ 'انضم لاختبار النسخة التجريبية' if ar else 'Join the beta test' }}</h1>
+        <p class="hero-description">
+          {{ 'جرّب تبيان قبل إطلاقه. يحصل المختبِر على الإصدارات الأولى قبل غيره، ويرسل ملاحظاته من داخل التطبيق عبر «الإبلاغ عن مشكلة»، فتُسهم ملاحظاته في إصلاح الأخطاء قبل الإطلاق.' if ar else 'Try Tibyan before it launches. Testers get early versions first and send feedback from inside the app with «Report a problem», so issues are fixed before launch.' }}
+        </p>
+        <ul class="beta-points">
+          <li>{{ 'إصدارات مبكرة على آيفون وآيباد وأندرويد وماك.' if ar else 'Early versions on iPhone, iPad, Android and Mac.' }}</li>
+          <li>{{ 'ملاحظاتك تصل إلى الفريق مباشرة من داخل التطبيق.' if ar else 'Your feedback reaches the team straight from the app.' }}</li>
+          <li>{{ 'يمكنك ترك الاختبار في أي وقت بحذف النسخة التجريبية.' if ar else 'Leave the test any time by removing the beta version.' }}</li>
+        </ul>
+      </div>
+
+      <div class="notify-card beta-form-card" id="join">
+        {% if state == 'ok' %}
+          <div class="beta-done" role="status">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16 9.8"/></svg>
+            <div>
+              <h2>{{ 'تم تسجيل طلبك' if ar else 'Your request is in' }}</h2>
+              <p>{{ 'ثبّت النسخة التجريبية باتباع الخطوات أدناه. أرسلنا الخطوات نفسها إلى بريدك.' if ar else 'Install the beta with the steps below. We also emailed you the same steps.' }}</p>
+              <a class="cta" href="#install">{{ 'اعرض خطوات التثبيت' if ar else 'Show the install steps' }}</a>
+            </div>
+          </div>
+        {% else %}
+          <h2>{{ 'سجّل بريدك وأجهزتك' if ar else 'Register your email and devices' }}</h2>
+          {% if state == 'busy' %}
+            <p class="notify-status error" role="alert">{{ 'محاولات كثيرة في وقت قصير. انتظر بضع دقائق ثم أعد المحاولة.' if ar else 'Too many attempts in a short time. Wait a few minutes, then try again.' }}</p>
+          {% endif %}
+          <form class="beta-form" method="post" action="/beta/join" novalidate>
+            <input type="hidden" name="csrf" value="{{ csrf }}">
+            <div class="hp" aria-hidden="true">
+              <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+            </div>
+
+            <div class="field">
+              <label for="beta-email">{{ 'البريد الإلكتروني' if ar else 'Email address' }}</label>
+              <input id="beta-email" type="email" name="email" required maxlength="255" dir="ltr"
+                     autocomplete="email" placeholder="you@example.com" value="{{ old.email or '' }}"
+                     aria-describedby="beta-email-hint{% if errors.email %} beta-email-error{% endif %}"
+                     {% if errors.email %}aria-invalid="true"{% endif %}>
+              <p class="hint" id="beta-email-hint">{{ 'لأندرويد: استخدم البريد المرتبط بحساب Google على هاتفك.' if ar else 'For Android: use the address of the Google account on your phone.' }}</p>
+              {% if errors.email %}<p class="field-error" id="beta-email-error" role="alert">{{ 'أدخل بريدًا إلكترونيًا صحيحًا، مثل name@example.com.' if ar else 'Enter a valid email address, like name@example.com.' }}</p>{% endif %}
+            </div>
+
+            <fieldset class="field" {% if errors.platform %}aria-describedby="beta-platform-error"{% endif %}>
+              <legend>{{ 'على أي جهاز ستختبر التطبيق؟ اختر جهازًا أو أكثر.' if ar else 'Which device will you test on? Choose one or more.' }}</legend>
+              <div class="platform-grid">
+                {% for key, label_ar, label_en in [('ios', 'آيفون', 'iPhone'), ('android', 'أندرويد', 'Android'), ('mac', 'ماك', 'Mac')] %}
+                  <label class="platform-option">
+                    <input type="checkbox" name="platform" value="{{ key }}" {% if key in (old.platforms or []) %}checked{% endif %}>
+                    <span class="platform-face">
+                      {% if key == 'mac' %}
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="11" rx="1.5"/><path d="M2 19h20"/></svg>
+                      {% else %}
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>
+                      {% endif %}
+                      <span>{{ label_ar if ar else label_en }}</span>
+                    </span>
+                  </label>
+                {% endfor %}
+              </div>
+              {% if errors.platform %}<p class="field-error" id="beta-platform-error" role="alert">{{ 'اختر جهازًا واحدًا على الأقل.' if ar else 'Choose at least one device.' }}</p>{% endif %}
+            </fieldset>
+
+            <button type="submit" class="beta-submit">{{ 'سجّلني مختبِرًا' if ar else 'Sign me up as a tester' }}</button>
+            <p class="hint">{{ 'لن نشارك بريدك مع أي جهة، ولن نراسلك إلا بما يخص الاختبار.' if ar else 'We never share your address and only write to you about the test.' }}</p>
+          </form>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="install" id="install" aria-labelledby="install-title">
+      <h2 id="install-title">{{ 'طريقة التثبيت' if ar else 'How to install' }}</h2>
+      <p class="install-lead">{{ 'الروابط عامة، فاختر جهازك واتبع خطواته بالترتيب.' if ar else 'The links are public. Pick your device and follow its steps in order.' }}</p>
+
+      <div class="platform-guides">
+      {% for p in guide_order %}
+        {% if p == 'android' %}
+        <article class="guide" id="guide-android" aria-labelledby="g-android">
+          <header class="guide-head">
+            <h3 id="g-android">{{ 'أندرويد' if ar else 'Android' }}</h3>
+            {% if p in chosen %}<span class="chosen-pill">{{ 'من اختيارك' if ar else 'You chose this' }}</span>{% endif %}
+            <a class="guide-link" href="{{ play_url }}" rel="noopener">{{ 'افتح رابط الاختبار' if ar else 'Open the test link' }}</a>
+          </header>
+          <ol class="steps">
+            <li>
+              {% call phone('android') %}{{ urlbar('play.google.com/apps/internaltest') }}<div class="mk-line w70"></div><div class="mk-line w50"></div><div class="mk-hl">Tibyan</div>{% endcall %}
+              <h4>{{ 'افتح رابط الاختبار على هاتفك' if ar else 'Open the test link on your phone' }}</h4>
+              <p>{{ 'افتحه وأنت مسجّل الدخول بحساب Google نفسه الذي أدخلت بريده هنا.' if ar else 'Open it while signed in with the same Google account whose address you entered here.' }}</p>
+            </li>
+            <li>
+              {% call phone('android') %}{{ urlbar('play.google.com') }}<div class="mk-title">{{ 'كن مختبِرًا لتطبيق Tibyan' if ar else 'Become a tester for Tibyan' }}</div><div class="mk-line w80"></div><div class="mk-line w60"></div>{{ tap('أصبح مختبِرًا' if ar else 'Become a tester') }}{% endcall %}
+              <h4>{{ 'اضغط «أصبح مختبِرًا»' if ar else 'Tap «Become a tester»' }}</h4>
+              <p>{{ 'يظهر هذا الزر مرة واحدة، وبعدها يصبح حسابك ضمن المختبِرين.' if ar else 'You only need to do this once; your account then joins the testers.' }}</p>
+            </li>
+            <li>
+              {% call phone('android') %}{{ urlbar('play.google.com') }}<div class="mk-title">{{ 'أنت الآن مختبِر' if ar else 'You are now a tester' }}</div><div class="mk-line w70"></div>{{ tap('تنزيل من Google Play' if ar else 'Download it on Google Play') }}{% endcall %}
+              <h4>{{ 'اضغط «تنزيل من Google Play»' if ar else 'Tap «Download it on Google Play»' }}</h4>
+              <p>{{ 'يفتح هذا صفحة تبيان في متجر Google Play.' if ar else 'This opens Tibyan’s page in the Google Play store.' }}</p>
+            </li>
+            <li>
+              {% call phone('android') %}{{ appicon('Tibyan', 'tibyan') }}<div class="mk-line w60"></div>{{ tap('تثبيت' if ar else 'Install') }}<div class="mk-line w80"></div><div class="mk-line w50"></div>{% endcall %}
+              <h4>{{ 'ثبّت التطبيق أو حدّثه' if ar else 'Install or update the app' }}</h4>
+              <p>{{ 'إن كان تبيان مثبّتًا فسيظهر زر «تحديث» بدل «تثبيت».' if ar else 'If Tibyan is already installed you will see «Update» instead of «Install».' }}</p>
+            </li>
+          </ol>
+          <p class="guide-note">{{ 'إن ظهر أن الرابط غير متاح لحسابك، فانتظر حتى نضيف بريدك إلى قائمة المختبِرين، ثم أعد فتح الرابط.' if ar else 'If the link says it is not available for your account, wait until we add your address to the testers list, then open the link again.' }}</p>
+        </article>
+        {% elif p == 'ios' %}
+        <article class="guide" id="guide-ios" aria-labelledby="g-ios">
+          <header class="guide-head">
+            <h3 id="g-ios">{{ 'آيفون وآيباد' if ar else 'iPhone and iPad' }}</h3>
+            {% if p in chosen %}<span class="chosen-pill">{{ 'من اختيارك' if ar else 'You chose this' }}</span>{% endif %}
+            <a class="guide-link" href="{{ testflight_url }}" rel="noopener">{{ 'افتح رابط الدعوة' if ar else 'Open the invite link' }}</a>
+          </header>
+          <ol class="steps">
+            <li>
+              {% call phone('ios') %}{{ appicon('TestFlight', 'tf') }}<div class="mk-line w60"></div>{{ tap('احصل' if ar else 'Get') }}<div class="mk-line w80"></div>{% endcall %}
+              <h4>{{ 'ثبّت تطبيق TestFlight من App Store' if ar else 'Install TestFlight from the App Store' }}</h4>
+              <p>{{ 'TestFlight تطبيق مجاني من Apple لتشغيل النسخ التجريبية.' if ar else 'TestFlight is Apple’s free app for running beta versions.' }} <a href="{{ testflight_app_url }}" rel="noopener">{{ 'صفحة TestFlight في المتجر' if ar else 'TestFlight on the App Store' }}</a></p>
+            </li>
+            <li>
+              {% call phone('ios') %}{{ urlbar('testflight.apple.com/join') }}<div class="mk-title">Tibyan</div><div class="mk-line w70"></div>{{ tap('عرض في TestFlight' if ar else 'View in TestFlight') }}{% endcall %}
+              <h4>{{ 'افتح رابط الدعوة على الجهاز نفسه' if ar else 'Open the invite link on the same device' }}</h4>
+              <p>{{ 'يفتح الرابط تبيان داخل تطبيق TestFlight.' if ar else 'The link opens Tibyan inside the TestFlight app.' }}</p>
+            </li>
+            <li>
+              {% call phone('ios') %}{{ appicon('Tibyan', 'tibyan') }}{{ tap('قبول' if ar else 'Accept') }}<div class="mk-then">{{ 'ثم' if ar else 'then' }}</div><div class="mk-btn">{{ 'تثبيت' if ar else 'Install' }}</div>{% endcall %}
+              <h4>{{ 'اضغط «قبول» ثم «تثبيت»' if ar else 'Tap «Accept», then «Install»' }}</h4>
+              <p>{{ 'تظهر الأزرار بالإنجليزية «Accept» و«Install» إن كانت لغة جهازك الإنجليزية.' if ar else 'On a device set to Arabic the buttons read «قبول» and «تثبيت».' }}</p>
+            </li>
+          </ol>
+        </article>
+        {% else %}
+        <article class="guide" id="guide-mac" aria-labelledby="g-mac">
+          <header class="guide-head">
+            <h3 id="g-mac">{{ 'ماك' if ar else 'Mac' }}</h3>
+            {% if p in chosen %}<span class="chosen-pill">{{ 'من اختيارك' if ar else 'You chose this' }}</span>{% endif %}
+            <a class="guide-link" href="{{ testflight_url }}" rel="noopener">{{ 'افتح رابط الدعوة' if ar else 'Open the invite link' }}</a>
+          </header>
+          <ol class="steps">
+            <li>
+              {% call laptop() %}{{ appicon('TestFlight', 'tf') }}{{ tap('احصل' if ar else 'Get') }}{% endcall %}
+              <h4>{{ 'ثبّت TestFlight من Mac App Store' if ar else 'Install TestFlight from the Mac App Store' }}</h4>
+              <p><a href="{{ testflight_app_url }}" rel="noopener">{{ 'صفحة TestFlight في المتجر' if ar else 'TestFlight on the App Store' }}</a></p>
+            </li>
+            <li>
+              {% call laptop() %}{{ urlbar('testflight.apple.com/join') }}{{ tap('عرض في TestFlight' if ar else 'View in TestFlight') }}{% endcall %}
+              <h4>{{ 'افتح رابط الدعوة على الماك' if ar else 'Open the invite link on your Mac' }}</h4>
+              <p>{{ 'افتحه في Safari على الماك نفسه الذي ثبّت عليه TestFlight.' if ar else 'Open it in Safari on the Mac where you installed TestFlight.' }}</p>
+            </li>
+            <li>
+              {% call laptop() %}{{ appicon('Tibyan', 'tibyan') }}{{ tap('قبول' if ar else 'Accept') }}<div class="mk-btn">{{ 'تثبيت' if ar else 'Install' }}</div>{% endcall %}
+              <h4>{{ 'اضغط «قبول» ثم «تثبيت»' if ar else 'Click «Accept», then «Install»' }}</h4>
+              <p>{{ 'بعد التثبيت تجد تبيان في مجلد التطبيقات.' if ar else 'After installing, Tibyan is in your Applications folder.' }}</p>
+            </li>
+          </ol>
+        </article>
+        {% endif %}
+      {% endfor %}
+      </div>
+
+      <div class="feedback-note">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M12 8v4m0 2.5v.01"/></svg>
+        <p>{{ 'وجدت خطأ أو لديك اقتراح؟ اختر «الإبلاغ عن مشكلة» من داخل تبيان. تصل رسالتك إلى الفريق مع رقم الإصدار، فيسهل إصلاحها.' if ar else 'Found a bug or have a suggestion? Choose «Report a problem» inside Tibyan. Your message reaches the team with the version number, so it is easy to fix.' }}</p>
+      </div>
+    </section>
+
+    <footer class="launch-footer">
+      <span>{{ 'تبيان لخدمة القرآن الكريم' if ar else 'Tibyan, tools in service of the Quran' }}</span>
+      <span class="footer-rule" aria-hidden="true"></span>
+      <a href="/">altibyan.app</a>
+    </footer>
+  </main>
+</body>
+</html>

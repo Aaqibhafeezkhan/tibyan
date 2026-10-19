@@ -205,6 +205,14 @@ class NotifySignup(Base):
     # added by migrate_request_columns).
     play_added_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     testflight_added_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    # From the /beta form: comma list of ios / android / mac, and when it was
+    # (last) asked for. Nullable, added by migrate_request_columns.
+    beta_platforms: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)
+    beta_requested_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+    @property
+    def platforms(self) -> list[str]:
+        return [p for p in (self.beta_platforms or "").split(",") if p]
 
 
 class DeletionRequest(Base):
