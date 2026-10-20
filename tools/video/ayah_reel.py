@@ -38,7 +38,7 @@ MIRROR = "https://tibyan.ahmedhelal.dev/mirror/sources/recitations"
 PACKS = "https://tibyan.ahmedhelal.dev/mirror/packs/timing/"
 FPS = 30
 INTRO, OUTRO, LEAD, TAIL = 2.0, 3.5, 0.25, 0.8  # seconds
-MAX_LEN = 32.0
+MAX_LEN = 90.0  # Instagram/Facebook Reels limit
 
 
 def content_db(cache: Path) -> Path:
