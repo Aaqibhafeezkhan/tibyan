@@ -2773,8 +2773,12 @@
   "listenOtherRiwayaNote": "لا يتابعها المصحف المفتوح لاختلاف ترقيم الآيات، ولا تُحتسب في الختمة.",
   "sectionTasbih": "المسبحة",
   "tasbihTitle": "المسبحة",
+  "@tasbihTitle": {
+    "description": "Title of the Tasbih counter screen."
+  },
   "tasbihTileToday": "اليوم {count}",
   "@tasbihTileToday": {
+    "description": "Daily count shown on the Tasbih home tile.",
     "placeholders": {
       "count": {
         "type": "String"
@@ -2782,9 +2786,16 @@
     }
   },
   "tasbihTileStart": "ابدأ العدّ",
+  "@tasbihTileStart": {
+    "description": "Prompt on the Tasbih home tile before any counts today."
+  },
   "tasbihCountAction": "عُدّ",
+  "@tasbihCountAction": {
+    "description": "Count button label and accessibility label for the counting area."
+  },
   "tasbihCountOf": "{count} من {target}",
   "@tasbihCountOf": {
+    "description": "Current count and target displayed or announced by the counter.",
     "placeholders": {
       "count": {
         "type": "String"
@@ -2796,6 +2807,7 @@
   },
   "tasbihRounds": "{n, plural, =0{لا دورات} =1{دورة واحدة} =2{دورتان} few{{count} دورات} many{{count} دورة} other{{count} دورة}}",
   "@tasbihRounds": {
+    "description": "Completed round total on the counter and in the daily log.",
     "placeholders": {
       "n": {
         "type": "int"
@@ -2807,6 +2819,7 @@
   },
   "tasbihRoundLabel": "الدورة {count}",
   "@tasbihRoundLabel": {
+    "description": "Label for a round number in the Tasbih counter.",
     "placeholders": {
       "count": {
         "type": "String"
@@ -2815,6 +2828,7 @@
   },
   "tasbihRoundClosed": "اكتملت الدورة {count}",
   "@tasbihRoundClosed": {
+    "description": "Accessibility announcement when a counter round is completed.",
     "placeholders": {
       "count": {
         "type": "String"
@@ -2823,6 +2837,7 @@
   },
   "tasbihTimes": "{n, plural, =1{مرة واحدة} =2{مرتان} few{{count} مرات} many{{count} مرة} other{{count} مرة}}",
   "@tasbihTimes": {
+    "description": "Accessibility label for an entry count in the daily log.",
     "placeholders": {
       "n": {
         "type": "int"
@@ -2833,24 +2848,76 @@
     }
   },
   "tasbihTarget": "الهدف",
+  "@tasbihTarget": {
+    "description": "Target label beside the counter and in the entry editor."
+  },
   "tasbihNoTarget": "بلا هدف",
+  "@tasbihNoTarget": {
+    "description": "Label for the unlimited counting option in target controls."
+  },
   "tasbihTargetMore": "زيادة الهدف",
+  "@tasbihTargetMore": {
+    "description": "Tooltip for the button that increases the counting target."
+  },
   "tasbihTargetLess": "إنقاص الهدف",
+  "@tasbihTargetLess": {
+    "description": "Tooltip for the button that decreases the counting target."
+  },
   "tasbihReset": "ابدأ الدورة من جديد",
+  "@tasbihReset": {
+    "description": "Tooltip and accessibility label for restarting the current round."
+  },
   "tasbihChooseDhikr": "اختر الذكر",
+  "@tasbihChooseDhikr": {
+    "description": "Selection sheet title and accessibility hint for the entry selector."
+  },
   "tasbihAppAdhkar": "من المصدر",
+  "@tasbihAppAdhkar": {
+    "description": "Heading for bundled entries in the selection sheet."
+  },
   "tasbihMyAdhkar": "أذكاري",
+  "@tasbihMyAdhkar": {
+    "description": "Heading for user-created entries in the selection sheet."
+  },
   "tasbihMine": "من إضافتك",
+  "@tasbihMine": {
+    "description": "Badge identifying user-created entries on the counter and selection sheet."
+  },
   "tasbihAddDhikr": "أضف ذكرًا خاصًا بك",
+  "@tasbihAddDhikr": {
+    "description": "Add-entry action and title of the new-entry editor."
+  },
   "tasbihEditDhikr": "تعديل الذكر",
+  "@tasbihEditDhikr": {
+    "description": "Edit action in the entry menu and title of the entry editor."
+  },
   "tasbihDeleteDhikr": "حذف الذكر",
+  "@tasbihDeleteDhikr": {
+    "description": "Delete action in the menu for a user-created entry."
+  },
   "tasbihDhikrText": "النص",
+  "@tasbihDhikrText": {
+    "description": "Label for the text field in the entry editor."
+  },
   "tasbihDhikrTextHint": "اكتب الذكر كما تحب أن تراه",
+  "@tasbihDhikrTextHint": {
+    "description": "Placeholder in the text field of the entry editor."
+  },
   "tasbihDhikrReference": "المرجع (اختياري)",
+  "@tasbihDhikrReference": {
+    "description": "Label for the optional reference field in the entry editor."
+  },
   "tasbihMineNote": "يظهر بعلامة «من إضافتك» ولا يُنسب لأي مصدر.",
+  "@tasbihMineNote": {
+    "description": "Helper text below the text field in the entry editor."
+  },
   "tasbihSave": "احفظ الذكر",
+  "@tasbihSave": {
+    "description": "Save button in the entry editor."
+  },
   "tasbihSourceLine": "المصدر: {source}، برخصة {license}",
   "@tasbihSourceLine": {
+    "description": "Source and license attribution at the bottom of the selection sheet.",
     "placeholders": {
       "source": {
         "type": "String"
@@ -2861,43 +2928,146 @@
     }
   },
   "tasbihEmpty": "لا أذكار بعد. أضف ذكرًا خاصًا بك لتبدأ.",
+  "@tasbihEmpty": {
+    "description": "Empty-state message in the counter entry selector."
+  },
   "tasbihLog": "سجل الأيام",
+  "@tasbihLog": {
+    "description": "Daily log screen title and tooltip for opening it from the counter."
+  },
   "tasbihLogHint": "مجموع كل ذكر في يومه، لآخر ثلاثين يومًا.",
+  "@tasbihLogHint": {
+    "description": "Introductory helper text at the top of the daily log."
+  },
   "tasbihLogEmpty": "لم تعدّ شيئًا بعد.",
+  "@tasbihLogEmpty": {
+    "description": "Empty-state message in the daily log."
+  },
   "tasbihToday": "اليوم",
+  "@tasbihToday": {
+    "description": "Heading for the current day in the daily log."
+  },
   "tasbihYesterday": "أمس",
+  "@tasbihYesterday": {
+    "description": "Heading for the previous day in the daily log."
+  },
   "tasbihDeletedDhikr": "ذكر محذوف",
+  "@tasbihDeletedDhikr": {
+    "description": "Fallback entry title in the daily log after an entry is deleted."
+  },
   "tasbihDragHint": "اسحب الحبة لأسفل، أو اضغط",
+  "@tasbihDragHint": {
+    "description": "Gesture hint beneath the bead counter."
+  },
   "tasbihScreenHint": "اضغط في أي مكان للعدّ، واسحب لأسفل للخروج",
+  "@tasbihScreenHint": {
+    "description": "Gesture hint at the bottom of the full-screen counter."
+  },
   "tasbihLcdHint": "اضغط مطولًا على R لتصفير الدورة",
+  "@tasbihLcdHint": {
+    "description": "Tooltip on the electronic counter reset control."
+  },
   "settingsSectionTasbih": "المسبحة",
   "settingsSectionTasbihHint": "الشكل والخامة والاهتزاز والصوت",
   "tasbihStyle": "شكل المسبحة",
+  "@tasbihStyle": {
+    "description": "Heading and setting label for the counter style options."
+  },
   "tasbihStyleMisbaha": "مسبحة ثلاثية الأبعاد",
+  "@tasbihStyleMisbaha": {
+    "description": "Bead counter option in the style picker."
+  },
   "tasbihStyleButton": "زر كبير",
+  "@tasbihStyleButton": {
+    "description": "Large button counter option in the style picker."
+  },
   "tasbihStyleLcd": "عداد إلكتروني",
+  "@tasbihStyleLcd": {
+    "description": "Electronic counter option in the style picker."
+  },
   "tasbihStyleScreen": "الشاشة كلها",
+  "@tasbihStyleScreen": {
+    "description": "Full-screen counter option in the style picker."
+  },
   "tasbihSuggestedElderly": "مقترح لوضع كبار السن",
+  "@tasbihSuggestedElderly": {
+    "description": "Subtitle on the large button option when elderly mode is enabled."
+  },
   "tasbihRender": "طريقة رسم الحبات",
+  "@tasbihRender": {
+    "description": "Heading for bead rendering options in Tasbih settings."
+  },
   "tasbihRenderSuggested": "إيحاء ثلاثي الأبعاد",
+  "@tasbihRenderSuggested": {
+    "description": "Shaded bead rendering option in Tasbih settings."
+  },
   "tasbihRenderSuggestedHint": "حبات مظللة، خفيفة على كل الأجهزة",
+  "@tasbihRenderSuggestedHint": {
+    "description": "Subtitle for the shaded bead rendering option."
+  },
   "tasbihRenderReal": "ثلاثي الأبعاد حقيقي",
+  "@tasbihRenderReal": {
+    "description": "True 3D bead rendering option in Tasbih settings."
+  },
   "tasbihRenderRealHint": "كرات في فراغ ثلاثي بمنظور وإضاءة",
+  "@tasbihRenderRealHint": {
+    "description": "Subtitle for the true 3D bead rendering option."
+  },
   "tasbihMaterial": "خامة الحبات",
+  "@tasbihMaterial": {
+    "description": "Label for the bead material picker in Tasbih settings."
+  },
   "tasbihMaterialAmber": "كهرمان",
+  "@tasbihMaterialAmber": {
+    "description": "Amber option in the bead material picker."
+  },
   "tasbihMaterialWood": "خشب",
+  "@tasbihMaterialWood": {
+    "description": "Wood option in the bead material picker."
+  },
   "tasbihMaterialPearl": "لؤلؤ",
+  "@tasbihMaterialPearl": {
+    "description": "Pearl option in the bead material picker."
+  },
   "tasbihHaptics": "اهتزاز خفيف مع كل عدّة",
+  "@tasbihHaptics": {
+    "description": "Label for the counter vibration switch in Tasbih settings."
+  },
   "tasbihHapticsHint": "واهتزازة أقوى عند تمام الدورة",
+  "@tasbihHapticsHint": {
+    "description": "Subtitle for the counter vibration switch."
+  },
   "tasbihSound": "صوت نقرة الحبة",
+  "@tasbihSound": {
+    "description": "Label for the bead click sound switch in Tasbih settings."
+  },
   "tasbihKeepScreenOn": "إبقاء الشاشة مضاءة في المسبحة",
+  "@tasbihKeepScreenOn": {
+    "description": "Label for the switch to keep the screen awake while counting."
+  },
   "tasbihVolumeKeys": "العدّ بأزرار الصوت",
+  "@tasbihVolumeKeys": {
+    "description": "Label for the volume-button counting switch in Tasbih settings."
+  },
   "tasbihVolumeKeysHint": "والمسبحة مفتوحة، كل ضغطة تعدّ ولا يتغير الصوت",
+  "@tasbihVolumeKeysHint": {
+    "description": "Subtitle for the volume-button counting switch."
+  },
   "tasbihSourcesTitle": "مصدر أذكار المسبحة",
+  "@tasbihSourcesTitle": {
+    "description": "Heading of the Tasbih source credits section on the About screen."
+  },
   "tasbihOpen": "فتح المسبحة",
+  "@tasbihOpen": {
+    "description": "Navigation action that opens the counter from Tasbih settings."
+  },
   "tasbihClickNote": "صوت نقرة الحبة مُولَّد برمجيًا داخل المشروع، وهو برخصة CC0.",
+  "@tasbihClickNote": {
+    "description": "Bead click sound credit in the About screen source section."
+  },
   "tasbihStageLine": "{stage}/{stages} · {count}/{of}",
   "@tasbihStageLine": {
+    "description": "Compact stage and count progress line beneath the selected entry.",
     "placeholders": {
       "stage": {
         "type": "String"
@@ -2915,6 +3085,7 @@
   },
   "tasbihStageAnnounce": "المرحلة {stage} من {stages}",
   "@tasbihStageAnnounce": {
+    "description": "Accessibility announcement and label for the current counter stage.",
     "placeholders": {
       "stage": {
         "type": "String"
@@ -2925,6 +3096,9 @@
     }
   },
   "tasbihStagesFixed": "الهدف من مراحل الذكر",
+  "@tasbihStagesFixed": {
+    "description": "Message in the target controls when an entry uses fixed stages."
+  },
   "fasilStyleLabel": "شكل الفاصلة",
   "fasilStyleHint": "كيف تظهر فواصلك المسمّاة على الصفحة",
   "fasilStyleTint": "صفحة ملوّنة",

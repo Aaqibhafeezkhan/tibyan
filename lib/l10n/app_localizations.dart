@@ -6854,223 +6854,223 @@ abstract class AppLocalizations {
   /// **'المسبحة'**
   String get sectionTasbih;
 
-  /// No description provided for @tasbihTitle.
+  /// Title of the Tasbih counter screen.
   ///
   /// In ar, this message translates to:
   /// **'المسبحة'**
   String get tasbihTitle;
 
-  /// No description provided for @tasbihTileToday.
+  /// Daily count shown on the Tasbih home tile.
   ///
   /// In ar, this message translates to:
   /// **'اليوم {count}'**
   String tasbihTileToday(String count);
 
-  /// No description provided for @tasbihTileStart.
+  /// Prompt on the Tasbih home tile before any counts today.
   ///
   /// In ar, this message translates to:
   /// **'ابدأ العدّ'**
   String get tasbihTileStart;
 
-  /// No description provided for @tasbihCountAction.
+  /// Count button label and accessibility label for the counting area.
   ///
   /// In ar, this message translates to:
   /// **'عُدّ'**
   String get tasbihCountAction;
 
-  /// No description provided for @tasbihCountOf.
+  /// Current count and target displayed or announced by the counter.
   ///
   /// In ar, this message translates to:
   /// **'{count} من {target}'**
   String tasbihCountOf(String count, String target);
 
-  /// No description provided for @tasbihRounds.
+  /// Completed round total on the counter and in the daily log.
   ///
   /// In ar, this message translates to:
   /// **'{n, plural, =0{لا دورات} =1{دورة واحدة} =2{دورتان} few{{count} دورات} many{{count} دورة} other{{count} دورة}}'**
   String tasbihRounds(int n, String count);
 
-  /// No description provided for @tasbihRoundLabel.
+  /// Label for a round number in the Tasbih counter.
   ///
   /// In ar, this message translates to:
   /// **'الدورة {count}'**
   String tasbihRoundLabel(String count);
 
-  /// No description provided for @tasbihRoundClosed.
+  /// Accessibility announcement when a counter round is completed.
   ///
   /// In ar, this message translates to:
   /// **'اكتملت الدورة {count}'**
   String tasbihRoundClosed(String count);
 
-  /// No description provided for @tasbihTimes.
+  /// Accessibility label for an entry count in the daily log.
   ///
   /// In ar, this message translates to:
   /// **'{n, plural, =1{مرة واحدة} =2{مرتان} few{{count} مرات} many{{count} مرة} other{{count} مرة}}'**
   String tasbihTimes(int n, String count);
 
-  /// No description provided for @tasbihTarget.
+  /// Target label beside the counter and in the entry editor.
   ///
   /// In ar, this message translates to:
   /// **'الهدف'**
   String get tasbihTarget;
 
-  /// No description provided for @tasbihNoTarget.
+  /// Label for the unlimited counting option in target controls.
   ///
   /// In ar, this message translates to:
   /// **'بلا هدف'**
   String get tasbihNoTarget;
 
-  /// No description provided for @tasbihTargetMore.
+  /// Tooltip for the button that increases the counting target.
   ///
   /// In ar, this message translates to:
   /// **'زيادة الهدف'**
   String get tasbihTargetMore;
 
-  /// No description provided for @tasbihTargetLess.
+  /// Tooltip for the button that decreases the counting target.
   ///
   /// In ar, this message translates to:
   /// **'إنقاص الهدف'**
   String get tasbihTargetLess;
 
-  /// No description provided for @tasbihReset.
+  /// Tooltip and accessibility label for restarting the current round.
   ///
   /// In ar, this message translates to:
   /// **'ابدأ الدورة من جديد'**
   String get tasbihReset;
 
-  /// No description provided for @tasbihChooseDhikr.
+  /// Selection sheet title and accessibility hint for the entry selector.
   ///
   /// In ar, this message translates to:
   /// **'اختر الذكر'**
   String get tasbihChooseDhikr;
 
-  /// No description provided for @tasbihAppAdhkar.
+  /// Heading for bundled entries in the selection sheet.
   ///
   /// In ar, this message translates to:
   /// **'من المصدر'**
   String get tasbihAppAdhkar;
 
-  /// No description provided for @tasbihMyAdhkar.
+  /// Heading for user-created entries in the selection sheet.
   ///
   /// In ar, this message translates to:
   /// **'أذكاري'**
   String get tasbihMyAdhkar;
 
-  /// No description provided for @tasbihMine.
+  /// Badge identifying user-created entries on the counter and selection sheet.
   ///
   /// In ar, this message translates to:
   /// **'من إضافتك'**
   String get tasbihMine;
 
-  /// No description provided for @tasbihAddDhikr.
+  /// Add-entry action and title of the new-entry editor.
   ///
   /// In ar, this message translates to:
   /// **'أضف ذكرًا خاصًا بك'**
   String get tasbihAddDhikr;
 
-  /// No description provided for @tasbihEditDhikr.
+  /// Edit action in the entry menu and title of the entry editor.
   ///
   /// In ar, this message translates to:
   /// **'تعديل الذكر'**
   String get tasbihEditDhikr;
 
-  /// No description provided for @tasbihDeleteDhikr.
+  /// Delete action in the menu for a user-created entry.
   ///
   /// In ar, this message translates to:
   /// **'حذف الذكر'**
   String get tasbihDeleteDhikr;
 
-  /// No description provided for @tasbihDhikrText.
+  /// Label for the text field in the entry editor.
   ///
   /// In ar, this message translates to:
   /// **'النص'**
   String get tasbihDhikrText;
 
-  /// No description provided for @tasbihDhikrTextHint.
+  /// Placeholder in the text field of the entry editor.
   ///
   /// In ar, this message translates to:
   /// **'اكتب الذكر كما تحب أن تراه'**
   String get tasbihDhikrTextHint;
 
-  /// No description provided for @tasbihDhikrReference.
+  /// Label for the optional reference field in the entry editor.
   ///
   /// In ar, this message translates to:
   /// **'المرجع (اختياري)'**
   String get tasbihDhikrReference;
 
-  /// No description provided for @tasbihMineNote.
+  /// Helper text below the text field in the entry editor.
   ///
   /// In ar, this message translates to:
   /// **'يظهر بعلامة «من إضافتك» ولا يُنسب لأي مصدر.'**
   String get tasbihMineNote;
 
-  /// No description provided for @tasbihSave.
+  /// Save button in the entry editor.
   ///
   /// In ar, this message translates to:
   /// **'احفظ الذكر'**
   String get tasbihSave;
 
-  /// No description provided for @tasbihSourceLine.
+  /// Source and license attribution at the bottom of the selection sheet.
   ///
   /// In ar, this message translates to:
   /// **'المصدر: {source}، برخصة {license}'**
   String tasbihSourceLine(String source, String license);
 
-  /// No description provided for @tasbihEmpty.
+  /// Empty-state message in the counter entry selector.
   ///
   /// In ar, this message translates to:
   /// **'لا أذكار بعد. أضف ذكرًا خاصًا بك لتبدأ.'**
   String get tasbihEmpty;
 
-  /// No description provided for @tasbihLog.
+  /// Daily log screen title and tooltip for opening it from the counter.
   ///
   /// In ar, this message translates to:
   /// **'سجل الأيام'**
   String get tasbihLog;
 
-  /// No description provided for @tasbihLogHint.
+  /// Introductory helper text at the top of the daily log.
   ///
   /// In ar, this message translates to:
   /// **'مجموع كل ذكر في يومه، لآخر ثلاثين يومًا.'**
   String get tasbihLogHint;
 
-  /// No description provided for @tasbihLogEmpty.
+  /// Empty-state message in the daily log.
   ///
   /// In ar, this message translates to:
   /// **'لم تعدّ شيئًا بعد.'**
   String get tasbihLogEmpty;
 
-  /// No description provided for @tasbihToday.
+  /// Heading for the current day in the daily log.
   ///
   /// In ar, this message translates to:
   /// **'اليوم'**
   String get tasbihToday;
 
-  /// No description provided for @tasbihYesterday.
+  /// Heading for the previous day in the daily log.
   ///
   /// In ar, this message translates to:
   /// **'أمس'**
   String get tasbihYesterday;
 
-  /// No description provided for @tasbihDeletedDhikr.
+  /// Fallback entry title in the daily log after an entry is deleted.
   ///
   /// In ar, this message translates to:
   /// **'ذكر محذوف'**
   String get tasbihDeletedDhikr;
 
-  /// No description provided for @tasbihDragHint.
+  /// Gesture hint beneath the bead counter.
   ///
   /// In ar, this message translates to:
   /// **'اسحب الحبة لأسفل، أو اضغط'**
   String get tasbihDragHint;
 
-  /// No description provided for @tasbihScreenHint.
+  /// Gesture hint at the bottom of the full-screen counter.
   ///
   /// In ar, this message translates to:
   /// **'اضغط في أي مكان للعدّ، واسحب لأسفل للخروج'**
   String get tasbihScreenHint;
 
-  /// No description provided for @tasbihLcdHint.
+  /// Tooltip on the electronic counter reset control.
   ///
   /// In ar, this message translates to:
   /// **'اضغط مطولًا على R لتصفير الدورة'**
@@ -7088,163 +7088,163 @@ abstract class AppLocalizations {
   /// **'الشكل والخامة والاهتزاز والصوت'**
   String get settingsSectionTasbihHint;
 
-  /// No description provided for @tasbihStyle.
+  /// Heading and setting label for the counter style options.
   ///
   /// In ar, this message translates to:
   /// **'شكل المسبحة'**
   String get tasbihStyle;
 
-  /// No description provided for @tasbihStyleMisbaha.
+  /// Bead counter option in the style picker.
   ///
   /// In ar, this message translates to:
   /// **'مسبحة ثلاثية الأبعاد'**
   String get tasbihStyleMisbaha;
 
-  /// No description provided for @tasbihStyleButton.
+  /// Large button counter option in the style picker.
   ///
   /// In ar, this message translates to:
   /// **'زر كبير'**
   String get tasbihStyleButton;
 
-  /// No description provided for @tasbihStyleLcd.
+  /// Electronic counter option in the style picker.
   ///
   /// In ar, this message translates to:
   /// **'عداد إلكتروني'**
   String get tasbihStyleLcd;
 
-  /// No description provided for @tasbihStyleScreen.
+  /// Full-screen counter option in the style picker.
   ///
   /// In ar, this message translates to:
   /// **'الشاشة كلها'**
   String get tasbihStyleScreen;
 
-  /// No description provided for @tasbihSuggestedElderly.
+  /// Subtitle on the large button option when elderly mode is enabled.
   ///
   /// In ar, this message translates to:
   /// **'مقترح لوضع كبار السن'**
   String get tasbihSuggestedElderly;
 
-  /// No description provided for @tasbihRender.
+  /// Heading for bead rendering options in Tasbih settings.
   ///
   /// In ar, this message translates to:
   /// **'طريقة رسم الحبات'**
   String get tasbihRender;
 
-  /// No description provided for @tasbihRenderSuggested.
+  /// Shaded bead rendering option in Tasbih settings.
   ///
   /// In ar, this message translates to:
   /// **'إيحاء ثلاثي الأبعاد'**
   String get tasbihRenderSuggested;
 
-  /// No description provided for @tasbihRenderSuggestedHint.
+  /// Subtitle for the shaded bead rendering option.
   ///
   /// In ar, this message translates to:
   /// **'حبات مظللة، خفيفة على كل الأجهزة'**
   String get tasbihRenderSuggestedHint;
 
-  /// No description provided for @tasbihRenderReal.
+  /// True 3D bead rendering option in Tasbih settings.
   ///
   /// In ar, this message translates to:
   /// **'ثلاثي الأبعاد حقيقي'**
   String get tasbihRenderReal;
 
-  /// No description provided for @tasbihRenderRealHint.
+  /// Subtitle for the true 3D bead rendering option.
   ///
   /// In ar, this message translates to:
   /// **'كرات في فراغ ثلاثي بمنظور وإضاءة'**
   String get tasbihRenderRealHint;
 
-  /// No description provided for @tasbihMaterial.
+  /// Label for the bead material picker in Tasbih settings.
   ///
   /// In ar, this message translates to:
   /// **'خامة الحبات'**
   String get tasbihMaterial;
 
-  /// No description provided for @tasbihMaterialAmber.
+  /// Amber option in the bead material picker.
   ///
   /// In ar, this message translates to:
   /// **'كهرمان'**
   String get tasbihMaterialAmber;
 
-  /// No description provided for @tasbihMaterialWood.
+  /// Wood option in the bead material picker.
   ///
   /// In ar, this message translates to:
   /// **'خشب'**
   String get tasbihMaterialWood;
 
-  /// No description provided for @tasbihMaterialPearl.
+  /// Pearl option in the bead material picker.
   ///
   /// In ar, this message translates to:
   /// **'لؤلؤ'**
   String get tasbihMaterialPearl;
 
-  /// No description provided for @tasbihHaptics.
+  /// Label for the counter vibration switch in Tasbih settings.
   ///
   /// In ar, this message translates to:
   /// **'اهتزاز خفيف مع كل عدّة'**
   String get tasbihHaptics;
 
-  /// No description provided for @tasbihHapticsHint.
+  /// Subtitle for the counter vibration switch.
   ///
   /// In ar, this message translates to:
   /// **'واهتزازة أقوى عند تمام الدورة'**
   String get tasbihHapticsHint;
 
-  /// No description provided for @tasbihSound.
+  /// Label for the bead click sound switch in Tasbih settings.
   ///
   /// In ar, this message translates to:
   /// **'صوت نقرة الحبة'**
   String get tasbihSound;
 
-  /// No description provided for @tasbihKeepScreenOn.
+  /// Label for the switch to keep the screen awake while counting.
   ///
   /// In ar, this message translates to:
   /// **'إبقاء الشاشة مضاءة في المسبحة'**
   String get tasbihKeepScreenOn;
 
-  /// No description provided for @tasbihVolumeKeys.
+  /// Label for the volume-button counting switch in Tasbih settings.
   ///
   /// In ar, this message translates to:
   /// **'العدّ بأزرار الصوت'**
   String get tasbihVolumeKeys;
 
-  /// No description provided for @tasbihVolumeKeysHint.
+  /// Subtitle for the volume-button counting switch.
   ///
   /// In ar, this message translates to:
   /// **'والمسبحة مفتوحة، كل ضغطة تعدّ ولا يتغير الصوت'**
   String get tasbihVolumeKeysHint;
 
-  /// No description provided for @tasbihSourcesTitle.
+  /// Heading of the Tasbih source credits section on the About screen.
   ///
   /// In ar, this message translates to:
   /// **'مصدر أذكار المسبحة'**
   String get tasbihSourcesTitle;
 
-  /// No description provided for @tasbihOpen.
+  /// Navigation action that opens the counter from Tasbih settings.
   ///
   /// In ar, this message translates to:
   /// **'فتح المسبحة'**
   String get tasbihOpen;
 
-  /// No description provided for @tasbihClickNote.
+  /// Bead click sound credit in the About screen source section.
   ///
   /// In ar, this message translates to:
   /// **'صوت نقرة الحبة مُولَّد برمجيًا داخل المشروع، وهو برخصة CC0.'**
   String get tasbihClickNote;
 
-  /// No description provided for @tasbihStageLine.
+  /// Compact stage and count progress line beneath the selected entry.
   ///
   /// In ar, this message translates to:
   /// **'{stage}/{stages} · {count}/{of}'**
   String tasbihStageLine(String stage, String stages, String count, String of);
 
-  /// No description provided for @tasbihStageAnnounce.
+  /// Accessibility announcement and label for the current counter stage.
   ///
   /// In ar, this message translates to:
   /// **'المرحلة {stage} من {stages}'**
   String tasbihStageAnnounce(String stage, String stages);
 
-  /// No description provided for @tasbihStagesFixed.
+  /// Message in the target controls when an entry uses fixed stages.
   ///
   /// In ar, this message translates to:
   /// **'الهدف من مراحل الذكر'**
