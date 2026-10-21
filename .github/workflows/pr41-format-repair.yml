@@ -1,0 +1,51 @@
+name: Temporary PR 41 formatting repair
+
+on:
+  push:
+    branches:
+      - test/issue-35-reciter-avatar-initials
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: test/issue-35-reciter-avatar-initials
+          persist-credentials: true
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2
+        with:
+          flutter-version: 3.47.5
+          channel: stable
+          cache: true
+      - name: Format the four files flagged by CI
+        run: |
+          dart format \
+            lib/features/settings/home_widgets_card.dart \
+            lib/features/tasbih/presentation/tasbih_screen.dart \
+            test/audio/reciter_avatar_test.dart \
+            test/tasbih/tasbih_screen_test.dart
+      - name: Verify repository format
+        run: dart format --output=none --set-exit-if-changed lib test
+      - name: Commit and push formatter changes
+        shell: bash
+        run: |
+          files=(
+            lib/features/settings/home_widgets_card.dart
+            lib/features/tasbih/presentation/tasbih_screen.dart
+            test/audio/reciter_avatar_test.dart
+            test/tasbih/tasbih_screen_test.dart
+          )
+          if git diff --quiet -- "${files[@]}"; then
+            echo "The four files are already formatted."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "${files[@]}"
+          git commit -m "style: format Dart files for CI"
+          git push origin HEAD:test/issue-35-reciter-avatar-initials
