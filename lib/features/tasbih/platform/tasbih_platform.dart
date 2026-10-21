@@ -104,10 +104,8 @@ class ChannelTasbihPlatform implements TasbihPlatform {
     if (!_mobile) return;
     try {
       await _channel.invokeMethod<void>(method, args);
-    } on MissingPluginException {
-      // A platform without the channel: nothing to do.
-    } on PlatformException {
-      // The sound or the service could not start; counting goes on.
+    } catch (_) {
+      // The sound or the service could not start; counting goes on without crash.
     }
   }
 

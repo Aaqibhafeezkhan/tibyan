@@ -6875,7 +6875,7 @@ abstract class AppLocalizations {
   /// No description provided for @tasbihCountAction.
   ///
   /// In ar, this message translates to:
-  /// **'عُدّ'**
+  /// **'عد'**
   String get tasbihCountAction;
 
   /// No description provided for @tasbihCountOf.

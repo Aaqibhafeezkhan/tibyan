@@ -4152,7 +4152,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tasbihTileStart => 'ابدأ العدّ';
 
   @override
-  String get tasbihCountAction => 'عُدّ';
+  String get tasbihCountAction => 'عد';
 
   @override
   String tasbihCountOf(String count, String target) {

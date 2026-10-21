@@ -2782,7 +2782,7 @@
     }
   },
   "tasbihTileStart": "ابدأ العدّ",
-  "tasbihCountAction": "عُدّ",
+  "tasbihCountAction": "عد",
   "tasbihCountOf": "{count} من {target}",
   "@tasbihCountOf": {
     "placeholders": {

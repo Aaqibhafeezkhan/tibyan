@@ -45,6 +45,12 @@ async function draw(o) {
     h = ground + `<div class="card"><img class="logo" src="${LOGO}" style="width:360px">
       <div class="rule" style="margin-top:56px"></div>
       <div style="font-size:100px;font-weight:700;line-height:1.3;max-width:900px;margin-top:56px;color:var(--gold)">${o.text}</div></div>`;
+  } else if (o.kind === 'card') {  // full-screen typographic card: optional badge, title, sub line
+    h = ground + `<div class="card"><img class="logo" src="${LOGO}" style="width:260px">
+      <div class="rule" style="margin-top:48px"></div>
+      ${o.badge ? `<div style="margin-top:64px;font-size:84px;font-weight:700;direction:ltr;color:var(--teal-deep);background:linear-gradient(135deg,#E6C680,var(--gold));border-radius:28px;padding:10px 54px 18px">${o.badge}</div>` : ''}
+      <div style="font-size:104px;font-weight:700;line-height:1.3;max-width:920px;margin-top:56px">${o.text}</div>
+      ${o.sub ? `<div style="font-size:52px;color:var(--gold);margin-top:28px;direction:ltr;font-weight:500">${o.sub}</div>` : ''}</div>`;
   } else if (o.kind === 'end') {
     h = ground + `<div class="card"><img class="logo" src="${LOGO}" style="width:360px">
       <div style="font-size:120px;font-weight:700;margin-top:70px">${o.text}</div>

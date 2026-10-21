@@ -26,26 +26,36 @@ class TasbihNative(private val context: Context, messenger: BinaryMessenger) {
 
   init {
     channel.setMethodCallHandler { call, result ->
-      when (call.method) {
-        "click" -> {
-          click()
-          result.success(null)
+      try {
+        when (call.method) {
+          "click" -> {
+            click()
+            result.success(null)
+          }
+          "setVolumeKeys" -> {
+            volumeKeys = call.arguments as? Boolean ?: false
+            result.success(null)
+          }
+          else -> result.notImplemented()
         }
-        "setVolumeKeys" -> {
-          volumeKeys = call.arguments as? Boolean ?: false
-          result.success(null)
-        }
-        else -> result.notImplemented()
+      } catch (e: Throwable) {
+        result.success(null)
       }
     }
   }
 
   /** A volume button press, while [volumeKeys] is on. */
-  fun volumeKey() = channel.invokeMethod("volumeKey", null)
+  fun volumeKey() {
+    try {
+      channel.invokeMethod("volumeKey", null)
+    } catch (e: Throwable) {}
+  }
 
   private fun click() {
-    val p = pool ?: load() ?: return
-    if (loaded) p.play(clickId, 1f, 1f, 1, 0, 1f)
+    try {
+      val p = pool ?: load() ?: return
+      if (loaded) p.play(clickId, 1f, 1f, 1, 0, 1f)
+    } catch (e: Throwable) {}
   }
 
   private fun load(): SoundPool? =
@@ -70,20 +80,24 @@ class TasbihNative(private val context: Context, messenger: BinaryMessenger) {
             )
             .build()
         p.setOnLoadCompleteListener { pool, id, status ->
-          if (status == 0) {
-            loaded = true
-            pool.play(id, 1f, 1f, 1, 0, 1f)
-          }
+          try {
+            if (status == 0) {
+              loaded = true
+              pool.play(id, 1f, 1f, 1, 0, 1f)
+            }
+          } catch (e: Throwable) {}
         }
         clickId = p.load(file.path, 1)
         pool = p
         p
-      } catch (e: Exception) {
+      } catch (e: Throwable) {
         null
       }
 
   fun dispose() {
-    pool?.release()
+    try {
+      pool?.release()
+    } catch (e: Throwable) {}
     pool = null
   }
 }

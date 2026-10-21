@@ -78,18 +78,20 @@ final class TasbihChannel: NSObject {
   }
 
   private func click() {
-    if players.isEmpty {
-      let key = FlutterDartProject.lookupKey(forAsset: "assets/tasbih/click.wav")
-      guard let path = Bundle.main.path(forResource: key, ofType: nil) else { return }
-      let url = URL(fileURLWithPath: path)
-      players = (0..<3).compactMap { _ in try? AVAudioPlayer(contentsOf: url) }
-      players.forEach { $0.prepareToPlay() }
-    }
-    guard !players.isEmpty else { return }
-    let p = players[next % players.count]
-    next += 1
-    p.currentTime = 0
-    p.play()
+    do {
+      if players.isEmpty {
+        let key = FlutterDartProject.lookupKey(forAsset: "assets/tasbih/click.wav")
+        guard let path = Bundle.main.path(forResource: key, ofType: nil) else { return }
+        let url = URL(fileURLWithPath: path)
+        players = (0..<3).compactMap { _ in try? AVAudioPlayer(contentsOf: url) }
+        players.forEach { $0.prepareToPlay() }
+      }
+      guard !players.isEmpty else { return }
+      let p = players[next % players.count]
+      next += 1
+      p.currentTime = 0
+      p.play()
+    } catch {}
   }
 
   private var slider: UISlider? {

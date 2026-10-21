@@ -285,4 +285,103 @@ void main() {
     handle.dispose();
     await done(tester, c.read(userDatabaseProvider));
   });
+
+  testWidgets('lcd: tapping or long-pressing R resets the counter', (
+    tester,
+  ) async {
+    final (c, _, db) = await pump(tester, TasbihStyle.lcd);
+    final countKey = find.byKey(lcdKey);
+    final resetKey = find.byKey(lcdResetKey);
+    expect(countKey, findsOneWidget);
+    expect(resetKey, findsOneWidget);
+
+    // Tap to count 3 times.
+    for (var i = 0; i < 3; i++) {
+      await tester.tap(countKey);
+      await settle(tester);
+    }
+    expect(c.read(tasbihCounterProvider).count, 0); // target is 3, so count closed to 0, rounds = 1
+    expect(c.read(tasbihCounterProvider).rounds, 1);
+
+    // Tap once more so count is 1.
+    await tester.tap(countKey);
+    await settle(tester);
+    expect(c.read(tasbihCounterProvider).count, 1);
+
+    // Tap R button -> resets count & rounds.
+    await tester.tap(resetKey);
+    await settle(tester);
+    expect(c.read(tasbihCounterProvider).count, 0);
+    expect(c.read(tasbihCounterProvider).rounds, 0);
+
+    // Tap count twice -> count is 2.
+    await tester.tap(countKey);
+    await settle(tester);
+    await tester.tap(countKey);
+    await settle(tester);
+    expect(c.read(tasbihCounterProvider).count, 2);
+
+    // Long press R button -> resets count & rounds.
+    await tester.longPress(resetKey);
+    await settle(tester);
+    expect(c.read(tasbihCounterProvider).count, 0);
+    expect(c.read(tasbihCounterProvider).rounds, 0);
+
+    await done(tester, db);
+  });
+
+  testWidgets('TargetBar reset button resets count in all styles', (
+    tester,
+  ) async {
+    for (final style in [TasbihStyle.misbaha, TasbihStyle.button, TasbihStyle.lcd]) {
+      final (c, _, db) = await pump(tester, style);
+      final target = switch (style) {
+        TasbihStyle.lcd => find.byKey(lcdKey),
+        _ => counters[style]!,
+      };
+      await tester.tap(target, warnIfMissed: false);
+      await settle(tester);
+      expect(c.read(tasbihCounterProvider).count, 1);
+
+      final resetBtn = find.byKey(const ValueKey('tasbih-reset-button'));
+      expect(resetBtn, findsOneWidget);
+      await tester.tap(resetBtn);
+      await settle(tester);
+      expect(c.read(tasbihCounterProvider).count, 0);
+      expect(c.read(tasbihCounterProvider).rounds, 0);
+
+      await done(tester, db);
+    }
+  });
+
+  testWidgets('screen: long pressing screen resets the counter', (
+    tester,
+  ) async {
+    final (c, _, db) = await pump(tester, TasbihStyle.screen);
+    final screen = find.byType(TasbihScreen);
+    await tester.tap(screen);
+    await settle(tester);
+    expect(c.read(tasbihCounterProvider).count, 1);
+
+    await tester.longPress(screen);
+    await settle(tester);
+    expect(c.read(tasbihCounterProvider).count, 0);
+    expect(c.read(tasbihCounterProvider).rounds, 0);
+
+    await done(tester, db);
+  });
+
+  testWidgets('keyboard R key resets the counter', (tester) async {
+    final (c, _, db) = await pump(tester, TasbihStyle.button);
+    await tester.sendKeyEvent(LogicalKeyboardKey.space);
+    await settle(tester);
+    expect(c.read(tasbihCounterProvider).count, 1);
+
+    await tester.sendKeyEvent(LogicalKeyboardKey.keyR);
+    await settle(tester);
+    expect(c.read(tasbihCounterProvider).count, 0);
+    expect(c.read(tasbihCounterProvider).rounds, 0);
+
+    await done(tester, db);
+  });
 }

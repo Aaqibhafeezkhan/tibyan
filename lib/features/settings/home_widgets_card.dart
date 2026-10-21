@@ -92,7 +92,7 @@ class _HomeWidgetsCardState extends ConsumerState<HomeWidgetsCard> {
       children: [
         for (final (icon, name, hint, android) in widgets)
           ListTile(
-            contentPadding: EdgeInsets.zero,
+            contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
             leading: Icon(icon),
             title: Text(name),
             subtitle: Text(hint, style: muted),
@@ -107,31 +107,34 @@ class _HomeWidgetsCardState extends ConsumerState<HomeWidgetsCard> {
           ),
         if (howTo != null)
           Padding(
-            padding: const EdgeInsets.only(top: 4, bottom: 8),
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 8),
             child: Text(howTo, style: muted),
           ),
-        Align(
-          alignment: AlignmentDirectional.centerStart,
-          child: OutlinedButton.icon(
-            onPressed: _busy
-                ? null
-                : () async {
-                    setState(() => _busy = true);
-                    final messenger = ScaffoldMessenger.maybeOf(context);
-                    await refreshHomeWidgets(ref);
-                    if (!mounted) return;
-                    setState(() => _busy = false);
-                    messenger?.showSnackBar(
-                      SnackBar(content: Text(l.widgetRefreshed)),
-                    );
-                  },
-            icon: _busy
-                ? const SizedBox.square(
-                    dimension: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : const Icon(Icons.refresh),
-            label: Text(l.widgetRefresh),
+        Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 12),
+          child: Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: OutlinedButton.icon(
+              onPressed: _busy
+                  ? null
+                  : () async {
+                      setState(() => _busy = true);
+                      final messenger = ScaffoldMessenger.maybeOf(context);
+                      await refreshHomeWidgets(ref);
+                      if (!mounted) return;
+                      setState(() => _busy = false);
+                      messenger?.showSnackBar(
+                        SnackBar(content: Text(l.widgetRefreshed)),
+                      );
+                    },
+              icon: _busy
+                  ? const SizedBox.square(
+                      dimension: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.refresh),
+              label: Text(l.widgetRefresh),
+            ),
           ),
         ),
       ],

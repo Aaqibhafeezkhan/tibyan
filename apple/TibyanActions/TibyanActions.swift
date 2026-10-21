@@ -254,7 +254,7 @@ struct TasbihView: View {
 
   private var button: some View {
     Button(intent: CountTasbihIntent()) {
-      Text(WidgetStore.text("عُدّ", "Count"))
+      Text(WidgetStore.text("عد", "Count"))
         .font(.headline)
         .foregroundColor(Color(red: 0.11, green: 0.16, blue: 0.16))
         .frame(width: 64, height: 64)

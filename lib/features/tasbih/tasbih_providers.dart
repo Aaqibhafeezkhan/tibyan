@@ -130,13 +130,17 @@ class TasbihController extends Notifier<TasbihCounter> {
   void _feedback(CountEvent event) {
     final s = _settings;
     if (s.haptics) {
-      unawaited(switch (event) {
-        CountEvent.roundClosed => HapticFeedback.heavyImpact(),
-        CountEvent.stageChanged => HapticFeedback.mediumImpact(),
-        CountEvent.counted => HapticFeedback.lightImpact(),
-      });
+      unawaited(
+        switch (event) {
+          CountEvent.roundClosed => HapticFeedback.heavyImpact(),
+          CountEvent.stageChanged => HapticFeedback.mediumImpact(),
+          CountEvent.counted => HapticFeedback.lightImpact(),
+        }.catchError((_) {}),
+      );
     }
-    if (s.sound) unawaited(ref.read(tasbihPlatformProvider).click());
+    if (s.sound) {
+      unawaited(ref.read(tasbihPlatformProvider).click().catchError((_) {}));
+    }
   }
 
   /// Counts made by the widget or the lock-screen service, added to the
@@ -168,6 +172,9 @@ class TasbihController extends Notifier<TasbihCounter> {
   void reset() {
     state = state.reset();
     _save();
+    if (_settings.haptics) {
+      unawaited(HapticFeedback.mediumImpact().catchError((_) {}));
+    }
   }
 
   void _save() {

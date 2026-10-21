@@ -165,9 +165,12 @@ class ProgressRingPainter extends CustomPainter {
 /// The electronic counter's large key.
 const lcdKey = ValueKey('tasbih-lcd-key');
 
+/// The electronic counter's small reset (R) key.
+const lcdResetKey = ValueKey('tasbih-lcd-reset-key');
+
 /// «عداد إلكتروني»: a hand counter. A seven-segment display (Latin digits
 /// on purpose, as on the device), a large metal key that counts, and a
-/// small R key that resets the round on a long press.
+/// small R key that resets the round on a tap or long press.
 class LcdCounterView extends StatefulWidget {
   const LcdCounterView({
     super.key,
@@ -190,6 +193,7 @@ class LcdCounterView extends StatefulWidget {
 
 class _LcdCounterViewState extends State<LcdCounterView> {
   bool _down = false;
+  bool _rDown = false;
 
   @override
   Widget build(BuildContext context) {
@@ -260,11 +264,27 @@ class _LcdCounterViewState extends State<LcdCounterView> {
                       child: Semantics(
                         button: true,
                         label: l.tasbihReset,
+                        onTap: widget.onReset,
                         onLongPress: widget.onReset,
                         excludeSemantics: true,
                         child: GestureDetector(
+                          key: lcdResetKey,
+                          behavior: HitTestBehavior.opaque,
+                          onTapDown: (_) => setState(() => _rDown = true),
+                          onTapCancel: () => setState(() => _rDown = false),
+                          onTapUp: (_) => setState(() => _rDown = false),
+                          onTap: widget.onReset,
+                          onLongPressDown: (_) => setState(() => _rDown = true),
+                          onLongPressCancel: () =>
+                              setState(() => _rDown = false),
+                          onLongPressEnd: (_) => setState(() => _rDown = false),
                           onLongPress: widget.onReset,
-                          child: _SmallKey(label: 'R', size: key * .32),
+                          child: _SmallKey(
+                            label: 'R',
+                            size: key * .32,
+                            pressed: _rDown,
+                            animate: widget.animate,
+                          ),
                         ),
                       ),
                     ),
@@ -324,29 +344,54 @@ class _LcdCounterViewState extends State<LcdCounterView> {
 }
 
 class _SmallKey extends StatelessWidget {
-  const _SmallKey({required this.label, required this.size});
+  const _SmallKey({
+    required this.label,
+    required this.size,
+    this.pressed = false,
+    this.animate = true,
+  });
 
   final String label;
   final double size;
+  final bool pressed;
+  final bool animate;
 
   @override
-  Widget build(BuildContext context) => Container(
-    width: math.max(size, 44),
-    height: math.max(size, 44),
-    alignment: Alignment.center,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: const Color(0xFF1B1E21),
-      border: Border.all(color: const Color(0xFF6B7178)),
-    ),
-    child: Text(
-      label,
-      style: const TextStyle(
-        color: Color(0xFFD5D9DC),
-        fontWeight: FontWeight.w700,
+  Widget build(BuildContext context) {
+    final s = math.max(size, 44.0);
+    final travel = animate ? 3.0 : 0.0;
+    return AnimatedContainer(
+      duration: Duration(milliseconds: animate ? (pressed ? 50 : 150) : 0),
+      curve: pressed ? Curves.easeOut : Curves.easeIn,
+      transform: Matrix4.translationValues(0, pressed ? travel : 0, 0),
+      width: s,
+      height: s,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: pressed ? const Color(0xFF14171A) : const Color(0xFF1B1E21),
+        border: Border.all(
+          color: pressed ? const Color(0xFF4E545A) : const Color(0xFF6B7178),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0x66000000),
+            blurRadius: pressed ? 2 : 4,
+            offset: Offset(0, pressed ? 1 : 2),
+          ),
+        ],
       ),
-    ),
-  );
+      child: Text(
+        label,
+        style: TextStyle(
+          color: pressed ? const Color(0xFFA6ABB0) : const Color(0xFFD5D9DC),
+          fontWeight: FontWeight.w700,
+          fontSize: math.max(13.0, s * 0.38),
+        ),
+      ),
+    );
+  }
 }
 
 /// Four seven-segment digits (unlit segments show faintly), and the

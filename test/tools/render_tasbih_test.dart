@@ -353,7 +353,7 @@ class _WidgetLayout extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   child: const Text(
-                    'عُدّ',
+                    'عد',
                     style: TextStyle(
                       color: Color(0xFF1B2A2A),
                       fontSize: 15,

@@ -202,19 +202,39 @@ class PlayerBar extends ConsumerWidget {
   }
 }
 
+BuildContext? _activePlayerSheetContext;
+bool _isPlayerSheetOpening = false;
+
 Future<void> showPlayerSheet(BuildContext context) {
+  if (_activePlayerSheetContext != null && _activePlayerSheetContext!.mounted) {
+    Navigator.of(_activePlayerSheetContext!).pop();
+    _activePlayerSheetContext = null;
+    return Future.value();
+  }
+  if (_isPlayerSheetOpening) {
+    return Future.value();
+  }
+
+  _isPlayerSheetOpening = true;
   final t = context.tokens.colors;
   final panel = playerPanelTheme(Theme.of(context), t);
   return showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
     backgroundColor: t.player,
-    builder: (_) => LookTheme(
-      child: Builder(
-        builder: (_) => Theme(data: panel, child: const _PlayerSheet()),
-      ),
-    ),
-  );
+    builder: (sheetContext) {
+      _activePlayerSheetContext = sheetContext;
+      _isPlayerSheetOpening = false;
+      return LookTheme(
+        child: Builder(
+          builder: (_) => Theme(data: panel, child: const _PlayerSheet()),
+        ),
+      );
+    },
+  ).whenComplete(() {
+    _activePlayerSheetContext = null;
+    _isPlayerSheetOpening = false;
+  });
 }
 
 /// The player sheet wears the player bar's colours, which each theme sets
