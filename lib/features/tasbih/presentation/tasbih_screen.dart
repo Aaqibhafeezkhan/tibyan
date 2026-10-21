@@ -140,6 +140,8 @@ class _TasbihScreenState extends ConsumerState<TasbihScreen>
         const SingleActivator(LogicalKeyboardKey.space): _count,
         const SingleActivator(LogicalKeyboardKey.enter): _count,
         const SingleActivator(LogicalKeyboardKey.numpadEnter): _count,
+        const SingleActivator(LogicalKeyboardKey.keyR):
+            ref.read(tasbihCounterProvider.notifier).reset,
       },
       child: Focus(
         focusNode: _focus,
@@ -563,6 +565,7 @@ class TargetBar extends ConsumerWidget {
           SizedBox.square(
             dimension: button,
             child: IconButton(
+              key: const ValueKey('tasbih-reset-button'),
               icon: const Icon(Icons.restart_alt),
               tooltip: l.tasbihReset,
               onPressed: ref.read(tasbihCounterProvider.notifier).reset,
@@ -626,6 +629,7 @@ class TargetBar extends ConsumerWidget {
             SizedBox.square(
               dimension: button,
               child: IconButton(
+                key: const ValueKey('tasbih-reset-button'),
                 icon: const Icon(Icons.restart_alt),
                 tooltip: l.tasbihReset,
                 onPressed: ref.read(tasbihCounterProvider.notifier).reset,
@@ -664,6 +668,7 @@ class _WholeScreen extends ConsumerWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: onCount,
+        onLongPress: ref.read(tasbihCounterProvider.notifier).reset,
         onVerticalDragStart: (_) => drag = 0,
         onVerticalDragUpdate: (d) => drag += d.delta.dy,
         onVerticalDragEnd: (_) {

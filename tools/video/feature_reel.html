@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<!-- Layers of a feature-promo reel (tools/video/feature_reel.py), drawn one by one as transparent PNGs.
+     Same family look as ayah_reel_mushaf.html: teal ground, the app's GirihPainter lattice, gold, Changa.
+     Adapted from the hclinic reels-kit reel.html (bg + mask + hook + end + text pills). -->
+<style>
+@font-face { font-family: Changa; src: url("../../assets/fonts/ofl/changa/Changa[wght].ttf"); font-weight: 200 800; }
+:root { --teal: #0F6660; --teal-lo: #0A4F4A; --teal-deep: #083F3B; --gold: #D9B266; --cream: #F6F1E8; }
+* { margin: 0; box-sizing: border-box; }
+html, body { background: transparent; overflow: hidden; font-family: Changa, sans-serif; }
+#s { position: absolute; left: 0; top: 0; overflow: hidden; }
+.ground { position: absolute; inset: 0; background: radial-gradient(120% 70% at 50% 42%, var(--teal) 0%, var(--teal-lo) 62%, var(--teal-deep) 100%); }
+canvas { position: absolute; inset: 0; }
+.border { position: absolute; inset: 56px; border: 2px solid rgba(217,178,102,.35); border-radius: 28px; }
+.border::after { content: ""; position: absolute; inset: 12px; border: 1px solid rgba(217,178,102,.18); border-radius: 20px; }
+.logo { display: block; filter: invert(95%) sepia(9%) saturate(290%) hue-rotate(337deg) brightness(102%); }
+.card { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--cream); }
+.rule { width: 260px; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.phone { position: absolute; background: linear-gradient(160deg, #1d2a29, #0b1312); box-shadow: 0 34px 80px rgba(0,0,0,.5), inset 0 0 0 2px rgba(217,178,102,.45); }
+.hole { position: absolute; background: #000; }
+.pill { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+.pill span { color: var(--teal-deep); background: linear-gradient(135deg, #E6C680, var(--gold)); border-radius: 999px; font-weight: 700; line-height: 1.35;
+  box-shadow: 0 16px 36px rgba(0,0,0,.4), inset 0 -5px 0 rgba(0,0,0,.12); white-space: nowrap; }
+</style></head><body><div id="s"></div>
+<script>
+// GirihPainter + starPath of lib/core/theme/ornaments.dart (same as ayah_reel_mushaf.html)
+function star(g, cx, cy, r, points, inner) { g.beginPath(); for (let i = 0; i < points * 2; i++) { const rr = i % 2 ? r * inner : r, a = -Math.PI / 2 + i * Math.PI / points;
+  const x = cx + Math.cos(a) * rr, y = cy + Math.sin(a) * rr; i ? g.lineTo(x, y) : g.moveTo(x, y); } g.closePath(); g.stroke(); }
+function girih(c) { const g = c.getContext('2d'), cell = 118; g.strokeStyle = 'rgba(246,241,232,.075)'; g.lineWidth = 2;
+  for (let y = 0; y < c.height + cell; y += cell) for (let x = 0; x < c.width + cell; x += cell) { star(g, x, y, cell * .5, 8, .72); star(g, x + cell / 2, y + cell / 2, cell * .22, 4, .45); } }
+const LOGO = '../../assets/brand/tibyan_logo.svg';
+async function draw(o) {
+  const s = document.getElementById('s'); s.style.width = o.W + 'px'; s.style.height = o.H + 'px';
+  const ground = `<div class="ground"></div><canvas width="${o.W}" height="${o.H}"></canvas><div class="border"></div>`;
+  let h = '';
+  if (o.kind === 'bg') { const f = o.frame, p = o.pad;
+    h = ground + `<img class="logo" src="${LOGO}" style="position:absolute;width:190px;left:${(o.W - 190) / 2}px;top:${o.logoY}px">
+      <div class="phone" style="left:${f.x - p}px;top:${f.y - p}px;width:${f.w + 2 * p}px;height:${f.h + 2 * p}px;border-radius:${o.r + p}px"></div>
+      <div class="hole" style="left:${f.x}px;top:${f.y}px;width:${f.w}px;height:${f.h}px;border-radius:${o.r}px"></div>`;
+  } else if (o.kind === 'mask') { const f = o.frame;
+    h = `<div style="position:absolute;inset:0;background:#000"></div><div style="position:absolute;left:0;top:0;width:${f.w}px;height:${f.h}px;border-radius:${o.r}px;background:#fff"></div>`;
+  } else if (o.kind === 'pill') {
+    h = `<div class="pill" style="top:${o.y}px"><span style="font-size:${o.fs}px;padding:${o.fs * .18}px ${o.fs * .75}px ${o.fs * .3}px">${o.text}</span></div>`;
+  } else if (o.kind === 'hook') {
+    h = ground + `<div class="card"><img class="logo" src="${LOGO}" style="width:360px">
+      <div class="rule" style="margin-top:56px"></div>
+      <div style="font-size:100px;font-weight:700;line-height:1.3;max-width:900px;margin-top:56px;color:var(--gold)">${o.text}</div></div>`;
+  } else if (o.kind === 'card') {  // full-screen typographic card: optional badge, title, sub line
+    h = ground + `<div class="card"><img class="logo" src="${LOGO}" style="width:260px">
+      <div class="rule" style="margin-top:48px"></div>
+      ${o.badge ? `<div style="margin-top:64px;font-size:84px;font-weight:700;direction:ltr;color:var(--teal-deep);background:linear-gradient(135deg,#E6C680,var(--gold));border-radius:28px;padding:10px 54px 18px">${o.badge}</div>` : ''}
+      <div style="font-size:104px;font-weight:700;line-height:1.3;max-width:920px;margin-top:56px">${o.text}</div>
+      ${o.sub ? `<div style="font-size:52px;color:var(--gold);margin-top:28px;direction:ltr;font-weight:500">${o.sub}</div>` : ''}</div>`;
+  } else if (o.kind === 'end') {
+    h = ground + `<div class="card"><img class="logo" src="${LOGO}" style="width:360px">
+      <div style="font-size:120px;font-weight:700;margin-top:70px">${o.text}</div>
+      <div style="font-size:64px;color:var(--gold);margin-top:10px;direction:ltr;font-weight:500">altibyan.app</div>
+      <div class="rule" style="margin-top:40px"></div>
+      <div style="font-size:36px;margin-top:56px;opacity:.85;direction:ltr">Google Play  ·  App Store  ·  Mac</div></div>`;
+  }
+  s.innerHTML = h;
+  const c = s.querySelector('canvas'); if (c) girih(c);
+  await document.fonts.load('700 60px Changa', 'تبيان'); await document.fonts.ready;
+  await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
+  return document.fonts.check('700 60px Changa');
+}
+</script></body></html>

@@ -545,7 +545,7 @@ class RealMisbahaPainter extends CustomPainter {
     final placed = [for (final (t, end) in shown) (at(t), end)]
       ..sort((a, b) => a.$1.$3.compareTo(b.$1.$3));
     final program = this.program;
-    while (program != null && _shaders.length < beads + 2) {
+    while (program != null && _shaders.length < placed.length) {
       _shaders.add(program.fragmentShader());
     }
     var i = 0;
@@ -561,7 +561,7 @@ class RealMisbahaPainter extends CustomPainter {
           ..color = Colors.black.withValues(alpha: .22 * (1 - fade))
           ..maskFilter = MaskFilter.blur(BlurStyle.normal, r * .4),
       );
-      if (program == null) {
+      if (program == null || i >= _shaders.length) {
         paintShadedBead(
           canvas,
           p,

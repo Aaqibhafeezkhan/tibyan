@@ -2789,7 +2789,7 @@
   "@tasbihTileStart": {
     "description": "Prompt on the Tasbih home tile before any counts today."
   },
-  "tasbihCountAction": "عُدّ",
+  "tasbihCountAction": "عد",
   "@tasbihCountAction": {
     "description": "Count button label and accessibility label for the counting area."
   },

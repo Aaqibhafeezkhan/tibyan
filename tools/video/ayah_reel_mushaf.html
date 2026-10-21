@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<!-- Mushaf-frame variant of ayah_reel.html: page frame and surah banner are images captured from the app (spec.frameImg / spec.bannerImg); divine-name colouring follows lib/features/mushaf/data/divine_names.dart. Frame template for tools/video/ayah_reel.py. All Quran text arrives in the spec from content.db; none is written here. -->
+<style>
+@font-face { font-family: UthmanicHafs; src: url(../../assets/fonts/kfgqpc/uthmanic_hafs_v20.ttf); }
+@font-face { font-family: QCF4_QBSML; src: url(../../assets/fonts/kfgqpc/QCF4_QBSML.ttf); }
+@font-face { font-family: TibyanDigits; src: url(../../assets/fonts/ofl/tibyandigits/TibyanDigits-SemiBold.ttf); }
+@font-face { font-family: Changa; src: url("../../assets/fonts/ofl/changa/Changa[wght].ttf"); font-weight: 200 800; }
+:root { --teal: #0F6660; --teal-lo: #0A4F4A; --teal-deep: #083F3B; --gold: #D9B266; --cream: #F6F1E8; --mint: #55BDB2; }
+* { margin: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--teal-lo); }
+#stage { position: absolute; inset: 0; color: var(--cream); font-family: TibyanDigits, Changa, sans-serif;
+  background: radial-gradient(120% 70% at 50% 42%, var(--teal) 0%, var(--teal-lo) 62%, var(--teal-deep) 100%); }
+/* the app's GirihPainter lattice (lib/core/theme/ornaments.dart), drawn in setup() */
+#girih { position: absolute; inset: 0; }
+.frame { position: absolute; inset: 56px; border: 2px solid rgba(217,178,102,.35); border-radius: 28px; }
+.frame::after { content: ""; position: absolute; inset: 12px; border: 1px solid rgba(217,178,102,.18); border-radius: 20px; }
+.logo { display: block; filter: invert(95%) sepia(9%) saturate(290%) hue-rotate(337deg) brightness(102%); }
+.layer { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+#intro .logo { width: 420px; }
+.title { font-family: Changa; font-weight: 700; color: var(--gold); }
+#intro .title { font-size: 104px; margin-top: 50px; }
+.sname { font-family: QCF4_QBSML; line-height: 1.6; direction: rtl; }
+#intro .surah { font-size: 120px; margin-top: 10px; color: var(--cream); }
+#intro .range { font-size: 46px; color: var(--gold); margin-top: 6px; }
+#intro .reciter { font-size: 44px; margin-top: 54px; opacity: .9; }
+#intro .rule, #outro .rule { width: 260px; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin-top: 40px; }
+#head { position: absolute; top: 92px; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; }
+#head .logo { width: 110px; }
+#head .title { font-size: 68px; line-height: 1.15; margin-top: 4px; }
+#head .surah { font-size: 40px; font-weight: 600; margin-top: -6px; display: flex; align-items: center; gap: 14px; }
+#head .surah .sname { font-size: 62px; font-weight: 400; color: var(--cream); }
+#head .surah span { color: var(--gold); font-weight: 400; }
+#page { position: absolute; left: 136px; top: 384px; width: 808px; height: 1350px; border-radius: 32px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+#page > img { position: absolute; inset: 0; width: 100%; height: 100%; }
+#inner { position: absolute; left: 78px; right: 78px; top: 62px; bottom: 66px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+#banner { width: 684px; display: block; margin-bottom: 18px; }
+#text { position: relative; width: 648px; height: 1000px; flex: none; }
+.page { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.ayat { font-family: UthmanicHafs; text-align: center; line-height: 1.9; direction: rtl; color: #211C19; }
+.line { display: inline-block; padding: 0 10px; border: 2px solid transparent; border-radius: 12px; }
+.line.cur { background: #EFE6D8; border-color: #C4A885; }
+.w { border-radius: 9px; padding: 0 4px; border: 2px solid transparent; }
+.w.divine { color: #C62828; }
+.w.now { background: #DEC9B3; border-color: #B79069; }
+.num { color: #211C19; }
+#credit { position: absolute; bottom: 120px; left: 0; right: 0; text-align: center; font-size: 30px; opacity: .72; }
+#outro .cta { font-size: 120px; font-weight: 700; margin-top: 70px; }
+#outro .url { font-size: 64px; color: var(--gold); margin-top: 10px; letter-spacing: .5px; direction: ltr; font-weight: 500; }
+#outro .stores { font-size: 36px; margin-top: 56px; opacity: .85; direction: ltr; }
+#outro .logo { width: 360px; }
+</style></head>
+<body><div id="stage"><canvas id="girih" width="1080" height="1920"></canvas><div class="frame"></div>
+<div id="intro" class="layer"><img class="logo" src="../../assets/brand/tibyan_logo.svg"><div class="title">ورد اليوم</div><div class="surah"></div><div class="range"></div><div class="rule"></div><div class="reciter"></div></div>
+<div id="body" class="layer" style="opacity:0">
+  <div id="head"><img class="logo" src="../../assets/brand/tibyan_logo.svg"><div class="title">ورد اليوم</div><div class="surah"></div></div>
+  <div id="page"><img id="frameimg"><div id="inner"><img id="banner"><div id="text"></div></div></div>
+  <div id="credit"></div>
+</div>
+<div id="outro" class="layer" style="opacity:0"><img class="logo" src="../../assets/brand/tibyan_logo.svg"><div class="cta">انضم الآن</div><div class="url">altibyan.app</div><div class="rule"></div><div class="stores">Google Play  ·  App Store  ·  Mac</div></div>
+</div>
+<script>
+const ltr = x => '\u2066' + x + '\u2069';
+let S, W = [], N = [], pages = [];
+const $ = q => document.querySelector(q);
+const clamp = x => Math.max(0, Math.min(1, x));
+const ease = x => x * x * (3 - 2 * x);
+
+function build(ayat, size) {
+  const d = document.createElement('div'); d.className = 'ayat'; d.style.fontSize = size + 'px';
+  for (const a of ayat) { // each ayah starts on its own line; a long one wraps within its block
+    const l = document.createElement('span'); l.className = 'line';
+    const tail = document.createElement('span'); tail.style.whiteSpace = 'nowrap'; // last word never parts from its marker
+    a.words.forEach((w, i) => { const s = document.createElement('span'); s.className = 'w'; s.textContent = w.t; s._w = w; s._line = l; s._cls = isDivine(w.t) ? ' divine' : ''; (i === a.words.length - 1 ? tail : l).append(s, ' '); });
+    const n = document.createElement('span'); n.className = 'num'; n.textContent = a.glyph; n._end = a.words.at(-1).s; tail.append(n); l.append(tail);
+    d.append(l, document.createElement('br'));
+  }
+  return d;
+}
+// isDivineName() of the app: letters only, alef wasla as alef
+function isDivine(w) { const b = w.replace(/\u0671/g, '\u0627').replace(/\u06D2/g, '\u064A').replace(/[^\u0621-\u063A\u0641-\u064A]/g, '');
+  return /^[\u0648\u0641]?[\u0628\u062A\u0644]?\u0627?\u0644\u0644\u0647(\u0645)?$/.test(b) || /^[\u0648\u0641]?\u0631\u0628(\u0646\u0627)?$/.test(b); }
+// GirihPainter + starPath of lib/core/theme/ornaments.dart: 8-point star (inner .72) per cell, 4-point star (r .22, inner .45) between
+function star(g, cx, cy, r, points, inner) { g.beginPath(); for (let i = 0; i < points * 2; i++) { const rr = i % 2 ? r * inner : r, a = -Math.PI / 2 + i * Math.PI / points;
+  const x = cx + Math.cos(a) * rr, y = cy + Math.sin(a) * rr; i ? g.lineTo(x, y) : g.moveTo(x, y); } g.closePath(); g.stroke(); }
+function drawGirih() { const c = $('#girih'), g = c.getContext('2d'), cell = 118; // handasi: cell 44 logical px at ~2.7x
+  g.strokeStyle = 'rgba(246,241,232,.075)'; g.lineWidth = 2;
+  for (let y = 0; y < c.height + cell; y += cell) for (let x = 0; x < c.width + cell; x += cell) { star(g, x, y, cell * .5, 8, .72); star(g, x + cell / 2, y + cell / 2, cell * .22, 4, .45); } }
+function fits(el, box) { return el.scrollHeight <= box.clientHeight && el.scrollWidth <= box.clientWidth; }
+
+async function setup(spec) {
+  S = spec;
+  // surah title as the index screen draws it (lib/core/ui/surah_name.dart): one QCF4_QBSML glyph per surah
+  const glyph = String.fromCharCode(0xF100 + S.surahId - 1), sname = () => { const e = document.createElement('span'); e.className = 'sname'; e.textContent = glyph; return e; };
+  const ind = x => x.replace(/[0-9]/g, d => String.fromCharCode(0x0660 + +d)); // NumberFormatter.decimal for ar
+  $('#intro .surah').innerHTML = ''; $('#intro .surah').append(sname());
+  $('#intro .range').textContent = (S.range.includes(' ') ? 'الآيات ' : 'الآية ') + ind(S.range);
+  drawGirih();
+  $('#intro .reciter').textContent = 'بصوت الشيخ ' + S.reciter;
+  $('#head .surah').innerHTML = ''; $('#head .surah').append(sname());
+  const sp = document.createElement('span'); sp.textContent = (S.range.includes(' ') ? 'الآيات ' : 'الآية ') + ind(S.range); $('#head .surah').append(sp); // no «·»: TibyanDigits draws it like ٠
+  $('#credit').textContent = 'تلاوة الشيخ ' + S.reciter + ' · mp3quran.net';
+  await document.fonts.load('80px UthmanicHafs', S.ayat[0].words[0].t);
+  await document.fonts.load('600 40px Changa', 'سورة'); await document.fonts.load('60px QCF4_QBSML', glyph); await document.fonts.load('40px TibyanDigits', '٠'); await document.fonts.ready;
+  if (!document.fonts.check('80px UthmanicHafs')) return 'mushaf font not loaded';
+  $('#frameimg').src = S.frameImg; if (S.bannerImg) $('#banner').src = S.bannerImg; else { $('#banner').remove(); $('#text').style.height = '1200px'; } // mid-surah: the app shows no banner; the text takes its room
+  await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
+  const box = $('#text');
+  if (S.inner) { // {x, y, w, h} in frame-image pixels (1182 wide): the text box of a page drawn its own way
+    const k = 808 / 1182, i = $('#inner').style;
+    i.left = S.inner.x * k + 'px'; i.top = S.inner.y * k + 'px'; i.right = 'auto'; i.bottom = 'auto'; i.width = S.inner.w * k + 'px'; i.height = S.inner.h * k + 'px';
+    box.style.width = S.inner.w * k + 'px'; box.style.height = S.inner.h * k + 'px';
+  }
+  // one page with every ayah at the biggest size that fits; else pages of whole ayat at a fixed size
+  let size = 110, el;
+  for (; size >= 70; size -= 2) { box.innerHTML = ''; el = build(S.ayat, size); box.append(el); if (fits(el, box)) break; }
+  box.innerHTML = '';
+  if (size >= 70) pages = [S.ayat];
+  else { // pages of whole ayat; a single ayah too long for one page at 84px brings every page down until it fits
+    for (size = 84; size >= 44; size -= 2) {
+      pages = []; let cur = [], ok = true;
+      for (const a of S.ayat) {
+        const tryA = [...cur, a]; box.innerHTML = ''; const e = build(tryA, size); box.append(e);
+        if (fits(e, box)) cur = tryA;
+        else if (!cur.length) { ok = false; break; }
+        else { pages.push(cur); cur = [a]; box.innerHTML = ''; const e1 = build(cur, size); box.append(e1); if (!fits(e1, box)) { ok = false; break; } }
+      }
+      if (ok) { pages.push(cur); break; }
+    }
+    box.innerHTML = '';
+    if (size < 44) return 'ayah text does not fit the page';
+  }
+  pages = pages.map(p => { const pg = document.createElement('div'); pg.className = 'page'; pg.append(build(p, size)); box.append(pg);
+    return { el: pg, start: p[0].words[0].s, words: [...pg.querySelectorAll('.w')], nums: [...pg.querySelectorAll('.num')] }; });
+  W = pages.flatMap(p => p.words);
+  box.style.height = Math.max(...pages.map(p => p.el.firstChild.scrollHeight)) + 'px';
+  return true;
+}
+
+function frame(t) {
+  const iOut = 1 - ease(clamp((t - (S.intro - 0.45)) / 0.45));
+  const iIn = ease(clamp(t / 0.35));
+  $('#intro').style.opacity = Math.min(iIn, iOut);
+  const bIn = ease(clamp((t - (S.intro - 0.3)) / 0.4)), bOut = 1 - ease(clamp((t - S.bodyEnd) / 0.4));
+  $('#body').style.opacity = Math.min(bIn, bOut);
+  $('#outro').style.opacity = ease(clamp((t - S.bodyEnd - 0.25) / 0.45));
+  // current word: last one whose start has passed (stays lit through the reciter's pause)
+  let now = -1; for (let i = 0; i < W.length; i++) if (W[i]._w.s <= t) now = i;
+  W.forEach((w, i) => { w.className = 'w' + w._cls + (i === now ? ' now' : ''); });
+  if (now === W.length - 1 && t > W[now]._w.e + 0.15) { W[now].className = 'w' + W[now]._cls; now = -1; }
+  document.querySelectorAll('.line').forEach(l => l.classList.toggle('cur', now >= 0 && W[now]._line === l));
+  // ayah marker lights once its last word has been reached
+  pages.forEach(p => p.nums.forEach(n => n.className = 'num' + (t >= n._end ? ' done' : '')));
+  // page switch: a page shows from its first word (first page from the start), crossfading 0.3s
+  pages.forEach((p, k) => {
+    const from = k === 0 ? -1 : p.start - 0.15, to = k + 1 < pages.length ? pages[k + 1].start - 0.15 : 1e9;
+    p.el.style.opacity = Math.min(clamp((t - from) / 0.3), 1 - clamp((t - to) / 0.3));
+  });
+  return true;
+}
+</script></body></html>

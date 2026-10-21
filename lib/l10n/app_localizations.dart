@@ -6875,7 +6875,7 @@ abstract class AppLocalizations {
   /// Count button label and accessibility label for the counting area.
   ///
   /// In ar, this message translates to:
-  /// **'عُدّ'**
+  /// **'عد'**
   String get tasbihCountAction;
 
   /// Current count and target displayed or announced by the counter.

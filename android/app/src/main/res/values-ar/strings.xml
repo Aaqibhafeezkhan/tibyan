@@ -15,5 +15,5 @@
     <string name="verse_widget_description">آية من القرآن كل يوم</string>
     <string name="tasbih_widget_label">المسبحة</string>
     <string name="tasbih_widget_description">الذكر الذي تعدّه، وزر يعدّ دون فتح التطبيق</string>
-    <string name="tasbih_count">عُدّ</string>
+    <string name="tasbih_count">عد</string>
 </resources>

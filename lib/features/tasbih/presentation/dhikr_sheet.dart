@@ -35,7 +35,9 @@ class DhikrSheet extends ConsumerWidget {
       final ctrl = ref.read(tasbihSettingsProvider.notifier);
       ctrl.setDhikr(d.key);
       if (d.target != null) ctrl.setTarget(d.target);
-      Navigator.of(context).pop();
+      if (Navigator.of(context).canPop()) {
+        Navigator.of(context).pop();
+      }
     }
 
     Widget tile(Dhikr d) => RadioListTile<String>(
