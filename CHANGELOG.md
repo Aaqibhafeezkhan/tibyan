@@ -6,6 +6,20 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-10-21
+
+### Fixed
+- Digital Misbaha: fixed counter reset button (`R`) responsiveness, long-press handling, touch feedback, and pressed states across all styles.
+- Digital Misbaha: fixed TargetBar reset button callback propagation across all styles.
+- Audio player: fixed player bottom sheet toggle gesture and adjusted settings screen bottom padding.
+- Reciter avatar: fixed fallback initials when photo is missing.
+
+### Added
+- Tasbih: added localized descriptions for all 64 predefined tasbih items in Arabic and English.
+- Contributing: documentation for adding and managing localized strings.
+- Audio tests: unit test coverage for reciter avatar initials fallback.
+
+
 ## [0.5.0] - 2026-10-19
 
 ## تبيان 0.5.0 — نسخة تجريبية
@@ -336,7 +350,8 @@ Phase 0: foundation. No Quran or religious text appears in this release.
 4. Switch the language to English and back to Arabic; the layout should flip direction.
 5. Close and reopen the app: every choice should be kept.
 
-[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/helalrules7/tibyan/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/helalrules7/tibyan/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/helalrules7/tibyan/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/helalrules7/tibyan/compare/v0.2.0...v0.3.0
