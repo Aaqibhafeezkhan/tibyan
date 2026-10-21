@@ -1,4 +1,4 @@
-name: Temporary PR 41 formatting repair
+name: PR 41 formatting repair
 
 on:
   push:
