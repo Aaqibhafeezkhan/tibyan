@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, Depends, Form, Request
 from sqlalchemy.orm import Session
 from starlette.responses import FileResponse, PlainTextResponse, RedirectResponse, Response
@@ -9,7 +11,8 @@ from ..mail import valid_email
 from ..models import DeletionRequest, Recording
 from ..notifications import notify_admins
 from ..stats import public_progress
-from ..templating import STATIC_DIR
+from ..launch_mail import TESTFLIGHT_URL
+from ..templating import STATIC_DIR, launch_at
 from ..web import check_csrf, msg, render
 
 router = APIRouter()
@@ -30,6 +33,14 @@ def is_root_host(request: Request) -> bool:
     return (request.url.hostname or "").rstrip(".").lower() in ROOT_HOSTS
 
 
+def launch_state(now: datetime | None = None) -> dict:
+    """Countdown state at render time: before / last24 / live."""
+    target = launch_at()
+    left = (target - (now or datetime.now(timezone.utc))).total_seconds()
+    phase = "live" if left <= 0 else ("last24" if left < 86400 else "before")
+    return {"launch_iso": target.isoformat(), "launch_phase": phase}
+
+
 @router.get("/")
 def index(request: Request, db: Session = Depends(get_db)):
     if is_root_host(request):
@@ -41,6 +52,8 @@ def index(request: Request, db: Session = Depends(get_db)):
             "coming-soon.html",
             notify=notify,
             notify_email=request.session.pop("notify_email", ""),
+            testflight_url=TESTFLIGHT_URL,
+            **launch_state(),
         )
 
     user = current_user(request, db)

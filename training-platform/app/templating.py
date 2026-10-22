@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+from datetime import datetime
 from pathlib import Path
 
 from fastapi.templating import Jinja2Templates
@@ -23,4 +25,12 @@ templates.env.globals["tiktok_url"] = TIKTOK_URL
 YOUTUBE_URL = "https://www.youtube.com/@altibyanApp"
 templates.env.globals["youtube_url"] = YOUTUBE_URL
 # Bump when CSS/JS/brand assets change so browsers refetch them.
-templates.env.globals["asset_v"] = "brand2"
+templates.env.globals["asset_v"] = "launch1"
+
+# Public launch moment (Cairo, after Maghrib, night of 27 Rajab 1448).
+# The one place it lives; LAUNCH_AT (ISO 8601 with offset) overrides it.
+LAUNCH_AT_DEFAULT = "2027-01-04T18:00:00+02:00"
+
+
+def launch_at() -> datetime:
+    return datetime.fromisoformat(os.environ.get("LAUNCH_AT") or LAUNCH_AT_DEFAULT)

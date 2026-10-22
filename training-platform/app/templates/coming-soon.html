@@ -39,14 +39,33 @@
 
     <section class="hero has-pattern" aria-labelledby="launch-title">
       <div class="hero-copy">
-        <p class="coming-label"><span class="star" aria-hidden="true"></span>{{ 'قريبًا' if ar else 'Coming soon' }}</p>
+        {% set live = launch_phase == 'live' %}
+        <p class="coming-label launch-date">
+          <span class="star" aria-hidden="true"></span>
+          {% if ar %}<span class="date-long">الإطلاق ليلة ٢٧ رجب ١٤٤٨ · <b>٤ يناير ٢٠٢٧</b></span><span class="date-short">ليلة ٢٧ رجب · <b>٤ يناير</b></span>
+          {% else %}<span class="date-long">Launching on the night of 27 Rajab 1448 · <b>4 January 2027</b></span><span class="date-short">Night of 27 Rajab · <b>4 January</b></span>{% endif %}
+        </p>
         <h1 id="launch-title">
           {{ 'تجربة جديدة من تبيان' if ar else 'A new experience from Tibyan' }}
         </h1>
         <p class="hero-description">
           {{ 'تبيان تطبيق قرآن غير ربحي بلا إعلانات، للقراءة والتفسير والتسميع من الحفظ.' if ar else 'Tibyan is a non-profit, ad-free Quran app for reading, tafsir and reciting from memory.' }}
         </p>
-        <a class="cta" href="#notify">{{ 'أبلغني عند الإطلاق' if ar else 'Notify me at launch' }}</a>
+        {% set star_svg %}<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><g class="s-main"><rect x="17" y="17" width="66" height="66"/><rect x="17" y="17" width="66" height="66" transform="rotate(45 50 50)"/></g><g class="s-inner"><rect x="23" y="23" width="54" height="54"/><rect x="23" y="23" width="54" height="54" transform="rotate(45 50 50)"/></g></svg>{% endset %}
+        <div class="countdown{% if launch_phase == 'last24' %} last24{% endif %}" data-launch="{{ launch_iso }}" role="timer"
+             aria-label="{{ 'الوقت الباقي على الإطلاق' if ar else 'Time left until launch' }}" hidden>
+          {% for key, l_ar, l_en in [('d', 'يوم', 'days'), ('h', 'ساعة', 'hours'), ('m', 'دقيقة', 'minutes'), ('s', 'ثانية', 'seconds')] %}
+          <div class="unit unit-{{ key }}"><div class="cd-star">{{ star_svg }}<span class="n" data-u="{{ key }}"></span></div><span class="cd-label">{{ l_ar if ar else l_en }}</span></div>
+          {% endfor %}
+        </div>
+        <p class="launched" data-launched{% if not live %} hidden{% endif %}>{{ 'انطلق تبيان، الحمد لله' if ar else 'Tibyan is live, alhamdulillah' }}</p>
+        <a class="cta" href="#notify" data-prelaunch{% if live %} hidden{% endif %}>{{ 'أبلغني عند الإطلاق' if ar else 'Notify me at launch' }}</a>
+        <nav class="hero-downloads" data-launched aria-label="{{ 'تحميل تبيان' if ar else 'Download Tibyan' }}"{% if not live %} hidden{% endif %}>
+          <a class="cta" href="/download/android">{{ 'أندرويد' if ar else 'Android' }}</a>
+          <a class="cta" href="{{ testflight_url }}" rel="noopener">{{ 'آيفون' if ar else 'iPhone' }}</a>
+          <a class="cta" href="/download/macos">{{ 'ماك' if ar else 'Mac' }}</a>
+          <a class="cta" href="/download/windows">{{ 'ويندوز' if ar else 'Windows' }}</a>
+        </nav>
       </div>
 
       <div class="logo-stage" aria-hidden="true">
@@ -140,5 +159,36 @@
 
 {% include "_launch_footer.html" %}
   </main>
+  <script>
+  (function () {
+    var c = document.querySelector('[data-launch]');
+    if (!c) return;
+    var target = Date.parse(c.getAttribute('data-launch'));
+    var arabic = document.documentElement.lang === 'ar';
+    var fmt = function (n) {
+      var t = String(n).padStart(2, '0');
+      return arabic ? t.replace(/\d/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'[d]; }) : t;
+    };
+    var cells = {};
+    c.querySelectorAll('[data-u]').forEach(function (e) { cells[e.getAttribute('data-u')] = e; });
+    var timer;
+    function tick() {
+      var s = Math.floor((target - Date.now()) / 1000);
+      if (!(s > 0)) {
+        clearInterval(timer);
+        c.hidden = true;
+        document.querySelectorAll('[data-prelaunch]').forEach(function (e) { e.hidden = true; });
+        document.querySelectorAll('[data-launched]').forEach(function (e) { e.hidden = false; });
+        return;
+      }
+      c.classList.toggle('last24', s < 86400);
+      var v = { d: Math.floor(s / 86400), h: Math.floor(s % 86400 / 3600), m: Math.floor(s % 3600 / 60), s: s % 60 };
+      for (var k in cells) cells[k].textContent = fmt(v[k]);
+      c.hidden = false;
+    }
+    tick();
+    timer = setInterval(tick, 1000);
+  })();
+  </script>
 </body>
 </html>

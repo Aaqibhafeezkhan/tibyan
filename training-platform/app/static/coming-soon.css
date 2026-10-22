@@ -619,3 +619,49 @@ a { color: inherit; }
 @media (max-width: 760px) {
   .policy section, .policy-toc { padding: 16px 16px; }
 }
+
+/* ---------- launch countdown (hero) ---------- */
+.launch-date b { font-weight: 600; }
+.launch-date .date-short { display: none; }
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(8px, 1.6vw, 18px);
+  max-width: 520px;
+  margin-top: 26px;
+  font-family: var(--font-ui);
+}
+.countdown[hidden], .launched[hidden], .hero-downloads[hidden], .cta[hidden] { display: none; }
+.countdown.last24 { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 390px; }
+.countdown.last24 .unit-d { display: none; }
+.countdown .unit { display: grid; justify-items: center; gap: 8px; }
+.cd-star { position: relative; width: 100%; max-width: 118px; aspect-ratio: 1; }
+.cd-star svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cd-star .s-main { fill: rgb(10 30 29 / 28%); stroke: var(--brand-gold); stroke-width: 1.6; }
+.cd-star .s-inner { fill: none; stroke: rgb(217 178 102 / 55%); stroke-width: 0.8; }
+.cd-star .n {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--brand-cream);
+  font-size: clamp(1.4rem, 2.8vw, 2.3rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.countdown .unit-s .n { color: var(--brand-gold); }
+.cd-label { color: #CFE3DF; font-size: clamp(0.8rem, 1.2vw, 0.95rem); }
+.launched { margin: 24px 0 0; color: var(--brand-gold); font-size: clamp(1.3rem, 2.4vw, 1.8rem); font-weight: 600; }
+.hero-downloads { display: flex; flex-wrap: wrap; gap: 10px; }
+.hero-downloads .cta { margin-top: 18px; }
+.countdown + .launched + .cta { margin-top: 22px; }
+
+@media (max-width: 760px) {
+  .launch-date .date-long { display: none; }
+  .launch-date .date-short { display: inline; }
+  .countdown { margin-inline: auto; gap: 6px; margin-top: 20px; }
+  .cd-star .n { font-size: clamp(1.2rem, 6vw, 1.6rem); }
+  .cd-label { font-size: 0.78rem; }
+  .hero-downloads { justify-content: center; }
+}
