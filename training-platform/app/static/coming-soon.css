@@ -287,7 +287,8 @@ a { color: inherit; }
 
 /* Follow on Facebook & Instagram line (home + /beta). */
 .follow-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0; color: var(--c-ink-2); font-size: 0.92rem; }
-.follow-line a { color: var(--c-accent); font-weight: 600; text-underline-offset: 4px; }
+.follow-line a { color: var(--c-accent); font-weight: 600; text-underline-offset: 4px;  text-decoration: none; }
+.follow-line a:hover span:not([class]), .follow-line a:focus-visible span:not([class]) { text-decoration: underline; }
 
 .training-note {
   display: flex;
