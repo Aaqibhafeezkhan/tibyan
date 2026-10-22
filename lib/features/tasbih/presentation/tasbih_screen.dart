@@ -140,8 +140,9 @@ class _TasbihScreenState extends ConsumerState<TasbihScreen>
         const SingleActivator(LogicalKeyboardKey.space): _count,
         const SingleActivator(LogicalKeyboardKey.enter): _count,
         const SingleActivator(LogicalKeyboardKey.numpadEnter): _count,
-        const SingleActivator(LogicalKeyboardKey.keyR):
-            ref.read(tasbihCounterProvider.notifier).reset,
+        const SingleActivator(LogicalKeyboardKey.keyR): ref
+            .read(tasbihCounterProvider.notifier)
+            .reset,
       },
       child: Focus(
         focusNode: _focus,

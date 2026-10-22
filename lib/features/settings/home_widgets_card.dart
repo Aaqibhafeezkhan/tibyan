@@ -92,7 +92,9 @@ class _HomeWidgetsCardState extends ConsumerState<HomeWidgetsCard> {
       children: [
         for (final (icon, name, hint, android) in widgets)
           ListTile(
-            contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+            contentPadding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 16,
+            ),
             leading: Icon(icon),
             title: Text(name),
             subtitle: Text(hint, style: muted),

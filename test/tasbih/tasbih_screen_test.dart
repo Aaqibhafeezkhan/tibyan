@@ -300,7 +300,10 @@ void main() {
       await tester.tap(countKey);
       await settle(tester);
     }
-    expect(c.read(tasbihCounterProvider).count, 0); // target is 3, so count closed to 0, rounds = 1
+    expect(
+      c.read(tasbihCounterProvider).count,
+      0,
+    ); // target is 3, so count closed to 0, rounds = 1
     expect(c.read(tasbihCounterProvider).rounds, 1);
 
     // Tap once more so count is 1.
@@ -333,7 +336,11 @@ void main() {
   testWidgets('TargetBar reset button resets count in all styles', (
     tester,
   ) async {
-    for (final style in [TasbihStyle.misbaha, TasbihStyle.button, TasbihStyle.lcd]) {
+    for (final style in [
+      TasbihStyle.misbaha,
+      TasbihStyle.button,
+      TasbihStyle.lcd,
+    ]) {
       final (c, _, db) = await pump(tester, style);
       final target = switch (style) {
         TasbihStyle.lcd => find.byKey(lcdKey),
