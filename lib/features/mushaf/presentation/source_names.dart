@@ -66,7 +66,7 @@ const _ar = <String, SourceText>{
     title: 'الترجمة الإنجليزية: صحيح إنترناشونال',
     publisher: 'صحيح إنترناشونال',
     license: 'شروط موسوعة القرآن الكريم (QuranEnc): دون تعديل أو إضافة أو حذف، مع ذكر المترجم والموقع ورقم الإصدار',
-    credit: 'صحيح إنترناشونال، عبر موقع QuranEnc.com',
+    credit: 'صحيح إنترناشونال، الإصدار 1.1.2، عبر موقع QuranEnc.com',
   ),
   'tanzil-en-pickthall': (
     title: 'الترجمة الإنجليزية: بكثال',
@@ -232,7 +232,7 @@ const _en = <String, SourceText>{
     title: 'English translation: Saheeh International',
     publisher: 'Saheeh International',
     license: 'QuranEnc terms: no change, addition or removal; credit the translator, QuranEnc.com and the version',
-    credit: 'Saheeh International, via QuranEnc.com',
+    credit: 'Saheeh International (version 1.1.2), via QuranEnc.com',
   ),
   'tanzil-en-pickthall': (
     title: 'English translation: Pickthall',
