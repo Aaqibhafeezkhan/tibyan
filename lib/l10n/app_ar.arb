@@ -2615,6 +2615,7 @@
   "onbSkipAll": "تخطَّ الكل",
   "onbSkip": "تخطَّ",
   "onbInterfaceTitle": "اختر شكل الواجهة وإضاءتها",
+  "onbPageTurnTitle": "اختر كيف تُقلب صفحات المصحف",
   "onbPageTitle": "اختر شكل صفحة المصحف",
   "onbReciterTitle": "اسمع المصحف بصوت من تحب",
   "onbReciterSuggest": "نزّل المصحف كاملًا بصوت الشيخ {name}",

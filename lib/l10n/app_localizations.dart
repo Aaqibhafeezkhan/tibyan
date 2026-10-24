@@ -6284,6 +6284,12 @@ abstract class AppLocalizations {
   /// **'اختر شكل الواجهة وإضاءتها'**
   String get onbInterfaceTitle;
 
+  /// No description provided for @onbPageTurnTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر كيف تُقلب صفحات المصحف'**
+  String get onbPageTurnTitle;
+
   /// No description provided for @onbPageTitle.
   ///
   /// In ar, this message translates to:

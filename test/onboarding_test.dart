@@ -82,7 +82,7 @@ void main() {
 
   String location(WidgetTester tester) => GoRouterLocation.of(tester);
 
-  testWidgets('fresh install: six steps, then the app', (tester) async {
+  testWidgets('fresh install: seven steps, then the app', (tester) async {
     final container = await launch(tester);
 
     // Defaults: the «هندسي» interface, the plain page, light, new edition.
@@ -95,7 +95,7 @@ void main() {
     // Step 1: language, titled in both languages.
     expect(location(tester), OnboardingStep.language.location);
     expect(find.textContaining('Choose your language'), findsOneWidget);
-    expect(find.bySemanticsLabel('الخطوة ١ من ٦'), findsOneWidget);
+    expect(find.bySemanticsLabel('الخطوة ١ من ٧'), findsOneWidget);
     await tester.tap(find.text('English'));
     await settle(tester);
     expect(container.read(settingsProvider).language, LanguageSetting.en);
@@ -119,7 +119,20 @@ void main() {
     expect(location(tester), OnboardingStep.page.location);
     await next(tester);
 
-    // Step 4: the edition.
+    // Step 4: the page turn, a light fade unless another is chosen.
+    expect(location(tester), OnboardingStep.pageTurn.location);
+    expect(container.read(settingsProvider).pageTurn, PageTurn.fade);
+    for (final effect in PageTurn.values) {
+      expect(find.byKey(ValueKey('onb-page-turn-${effect.name}')), findsOne);
+    }
+    final curl = find.byKey(const ValueKey('onb-page-turn-curl'));
+    await tester.ensureVisible(curl);
+    await tester.tap(curl);
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(container.read(settingsProvider).pageTurn, PageTurn.curl);
+    await next(tester);
+
+    // Step 5: the edition.
     expect(location(tester), OnboardingStep.edition.location);
     final old = find.text('مصحف المدينة: الطبعة القديمة');
     await tester.ensureVisible(old);
@@ -129,13 +142,13 @@ void main() {
     expect(container.read(settingsProvider).edition, MushafEdition.madina1405);
     await next(tester);
 
-    // Step 5: a reciter, skipped; streaming needs no download.
+    // Step 6: a reciter, skipped; streaming needs no download.
     expect(location(tester), OnboardingStep.reciter.location);
     expect(find.text('تقدر تسمع أي شيخ أونلاين من غير تحميل'), findsOneWidget);
     await tester.tap(find.byKey(const ValueKey('onboarding-skip-step')));
     await settle(tester);
 
-    // Step 6: the recitation model, skipped: the first run is over.
+    // Step 7: the recitation model, skipped: the first run is over.
     expect(location(tester), OnboardingStep.tasmee.location);
     expect(
       find.text('المصدر والرخصة في «عن المصحف» › المصادر'),

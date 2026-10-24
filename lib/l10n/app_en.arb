@@ -1514,6 +1514,7 @@
   "onbSkipAll": "Skip all",
   "onbSkip": "Skip",
   "onbInterfaceTitle": "Choose the interface style and its light",
+  "onbPageTurnTitle": "Choose how the mushaf turns its pages",
   "onbPageTitle": "Choose how the mushaf page looks",
   "onbReciterTitle": "Listen to the mushaf in a voice you love",
   "onbReciterSuggest": "Download the whole mushaf recited by {name}",

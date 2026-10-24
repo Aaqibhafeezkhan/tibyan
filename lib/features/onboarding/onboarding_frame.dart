@@ -17,6 +17,7 @@ enum OnboardingStep {
   language,
   style,
   page,
+  pageTurn,
   edition,
   reciter,
   tasmee;
@@ -41,7 +42,7 @@ Future<void> finishOnboarding(BuildContext context, WidgetRef ref) async {
   markAppRouterReady(ref.read(appRouterReadyProvider));
 }
 
-/// The frame of a first-run step: where the reader is (a bar of six
+/// The frame of a first-run step: where the reader is (a bar of seven
 /// marks), «تخطَّ الكل», the title, the step's body, and the next button
 /// held at the bottom within the thumb's reach.
 class OnboardingFrame extends ConsumerWidget {
@@ -197,7 +198,7 @@ class OnboardingFrame extends ConsumerWidget {
   }
 }
 
-/// Six short bars: the steps done in gold, this one in the control colour
+/// Seven short bars: the steps done in gold, this one in the control colour
 /// and longer, the rest as hairlines.
 class _StepMarks extends StatelessWidget {
   const _StepMarks({required this.current, required this.total});

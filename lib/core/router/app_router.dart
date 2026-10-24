@@ -31,6 +31,7 @@ import '../../features/onboarding/onboarding_edition_screen.dart';
 import '../../features/onboarding/onboarding_frame.dart';
 import '../../features/onboarding/onboarding_language_screen.dart';
 import '../../features/onboarding/onboarding_page_screen.dart';
+import '../../features/onboarding/onboarding_page_turn_screen.dart';
 import '../../features/onboarding/onboarding_reciter_screen.dart';
 import '../../features/onboarding/onboarding_style_screen.dart';
 import '../../features/onboarding/onboarding_tasmee_screen.dart';
@@ -71,7 +72,7 @@ final appRouterProvider = Provider<GoRouter>(
     initialLocation: '/splash',
     // A screen left or returned to never keeps the keyboard up.
     observers: [KeyboardDismissObserver(), coverObserver],
-    // First launch: six short steps, from the language to the recitation
+    // First launch: seven short steps, from the language to the recitation
     // model. A reader who has been through them never sees them again.
     redirect: (context, state) {
       final done = ref.read(settingsProvider).onboardingDone;
@@ -117,6 +118,7 @@ final appRouterProvider = Provider<GoRouter>(
         (OnboardingStep.language, OnboardingLanguageScreen()),
         (OnboardingStep.style, OnboardingStyleScreen()),
         (OnboardingStep.page, OnboardingPageScreen()),
+        (OnboardingStep.pageTurn, OnboardingPageTurnScreen()),
         (OnboardingStep.edition, OnboardingEditionScreen()),
         (OnboardingStep.reciter, OnboardingReciterScreen()),
         (OnboardingStep.tasmee, OnboardingTasmeeScreen()),

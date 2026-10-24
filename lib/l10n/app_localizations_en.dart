@@ -3749,6 +3749,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onbInterfaceTitle => 'Choose the interface style and its light';
 
   @override
+  String get onbPageTurnTitle => 'Choose how the mushaf turns its pages';
+
+  @override
   String get onbPageTitle => 'Choose how the mushaf page looks';
 
   @override

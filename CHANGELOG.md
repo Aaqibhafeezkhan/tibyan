@@ -15,6 +15,9 @@ All notable changes to Tibyan are recorded here. The format follows
 - Mushaf: new installs turn pages with a light fade by default; readers who installed before keep the fold they were reading with, and any page-turn effect already chosen is kept.
 - Mushaf: new installs start with the plain page (no ornamented frame); readers who installed before keep the Zakhrafa frame, and a chosen frame is never changed. The first-run page step still offers every frame.
 
+### Added
+- First run: a new step to choose the page-turn effect, each shown as a small book turning its page in a loop (still when animations are off).
+
 ## [0.5.1] - 2026-10-21
 
 ### Fixed

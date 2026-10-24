@@ -3825,6 +3825,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get onbInterfaceTitle => 'اختر شكل الواجهة وإضاءتها';
 
   @override
+  String get onbPageTurnTitle => 'اختر كيف تُقلب صفحات المصحف';
+
+  @override
   String get onbPageTitle => 'اختر شكل صفحة المصحف';
 
   @override
