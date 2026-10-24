@@ -22,6 +22,15 @@ void main() {
     expect(withoutMarkers('<svg></svg>'), '<svg></svg>');
   });
 
+  test('a crossing mark keeps its curves, so it holds all of its ink', () {
+    // A bulge drawn by one cubic: its chord (the old outline) misses it.
+    final path = parseOutline('M 0 0 C 0 10 10 10 10 0 Z');
+    expect(path.contains(const Offset(5, 6)), isTrue);
+    expect(path.contains(const Offset(5, 9)), isFalse);
+    final quad = parseOutline('M 0 0 Q 5 10 10 0 Z');
+    expect(quad.contains(const Offset(5, 4)), isTrue);
+  });
+
   test('outlines stored as point lists (pages 1 and 2) are read', () {
     const d = '181.08,18.31 57.54,18.31 57.54,48.94 181.08,48.94';
     final path = parseOutline(d);

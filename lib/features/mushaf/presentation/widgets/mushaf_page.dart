@@ -60,7 +60,8 @@ List<Path> pageLineClips(
       : (hasCuts ? cuts[j] : centre(j) + pitch / 2);
   final marks = <(int, Path, Rect)>[
     for (final e in overflow.entries)
-      for (final p in e.value) (e.key, p, p.getBounds()),
+      for (final p in e.value)
+        if (_grown(p) case final g) (e.key, g, g.getBounds()),
   ];
   return [
     for (var j = 0; j < _lineCount; j++)
@@ -89,6 +90,43 @@ List<Path> pageLineClips(
         return clip;
       }(),
   ];
+}
+
+/// How far (page units) a crossing mark's outline is grown before it is
+/// cut from a neighbour's band and added to its own.
+///
+/// The outlines are the marks' curves flattened to straight chords, and
+/// rounded to 0.1: a chord runs inside the curve, so the drawn mark reaches
+/// a little past its outline. Cut exactly, that rim stayed in the
+/// neighbour's band and was drawn there again at the neighbour's place in
+/// the spread-out lines: a thin ghost of the mark between two lines (the
+/// "comma" above «كَفَّيْهِ» on page 298, under the kasra of «تَسْتَطِيعَ»).
+/// How far (page units, about a screen pixel) a crossing mark's outline is
+/// grown before it is cut from a neighbour's band and added to its own.
+///
+/// A clip's edge is antialiased: cut exactly at the mark's edge, the
+/// neighbour's band kept a faint rim of the mark, drawn again at the
+/// neighbour's place in the spread-out lines.
+const _markMargin = 0.4;
+
+/// [path] grown by about [_markMargin] all round: its union with copies of
+/// itself moved that far in eight directions.
+Path _grown(Path path) {
+  const k = 0.70710678;
+  var out = path;
+  for (final o in const [
+    Offset(1, 0),
+    Offset(-1, 0),
+    Offset(0, 1),
+    Offset(0, -1),
+    Offset(k, k),
+    Offset(k, -k),
+    Offset(-k, k),
+    Offset(-k, -k),
+  ]) {
+    out = Path.combine(PathOperation.union, out, path.shift(o * _markMargin));
+  }
+  return out;
 }
 
 /// The line grid of a page in the image editions' terms (page units), so a
@@ -1280,8 +1318,9 @@ String markersOnly(String svg) {
   return '${svg.substring(0, end)}</svg>';
 }
 
-/// Parses the outline format of the verse polygons: "M x y L x y ... Z",
-/// possibly several sub-paths.
+/// Parses the outline format of the verse polygons and the crossing marks:
+/// "M x y L x y ... Z", possibly several sub-paths, the marks with their
+/// curves ("Q" and "C", absolute) so an outline holds all of its mark.
 Path parseOutline(String d) {
   final pairs = _pointPairs(d);
   if (pairs != null) return Path()..addPolygon(pairs, true);
@@ -1290,11 +1329,16 @@ Path parseOutline(String d) {
   var i = 0;
   while (i < tokens.length) {
     final t = tokens[i];
+    double at(int k) => double.parse(tokens[i + k]);
     if (t == 'M' || t == 'L') {
-      final x = double.parse(tokens[i + 1]);
-      final y = double.parse(tokens[i + 2]);
-      t == 'M' ? path.moveTo(x, y) : path.lineTo(x, y);
+      t == 'M' ? path.moveTo(at(1), at(2)) : path.lineTo(at(1), at(2));
       i += 3;
+    } else if (t == 'Q') {
+      path.quadraticBezierTo(at(1), at(2), at(3), at(4));
+      i += 5;
+    } else if (t == 'C') {
+      path.cubicTo(at(1), at(2), at(3), at(4), at(5), at(6));
+      i += 7;
     } else if (t == 'Z') {
       path.close();
       i += 1;

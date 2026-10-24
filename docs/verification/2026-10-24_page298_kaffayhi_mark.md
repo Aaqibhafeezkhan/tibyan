@@ -58,3 +58,36 @@ No asset change and no renderer change: nothing in the artwork escapes the
 ink, and the mark could not be reproduced. To go further we need the
 owner's exact settings when it shows (style, mode, tajweed, divine names,
 focus mode, a fasil tint, tasmee, or mid page turn) or the device.
+
+## Update: found and fixed (reproduced on Android, then on the host)
+
+The mark is not in the artwork and not Android-specific: it shows on any
+screen taller than the page (20:9 phones), where the 15 lines are spread
+over the height and each line is drawn in its own band, clipped by
+`pageLineClips`. The owner's phone is such a screen; the 700x1100 renders
+above are not, so the page was drawn whole there.
+
+- The Android emulator (Pixel, 1080x2400, 2.625) showed it at once, with no
+  setting changed; `RENDER_PAGE298=1 PAGE298_TALL=1` shows it on the host.
+- It is the bottom of the «ع» of «تَسْتَطِيعَ» (18:41, the line above),
+  drawn a second time in the band of «فَأَصْبَحَ يُقَلِّبُ كَفَّيْهِ» and so
+  moved down with that line: a small dark stroke in the gap, over «كَفَّيْهِ».
+- Cause: a mark that crosses a cut is cut out of the neighbour's band by
+  its outline (`line_overflow`). The outlines were polygons through the
+  curves' on-curve and control points (`B.contours`), which do not hold the
+  curves: this «ع» reaches 1.77 units past its outline, below the cut. On
+  page 298 every crossing mark passes its outline by 0.01 to 1.77 units;
+  the smaller rims gave fainter ghosts on other lines too.
+
+Fix (no artwork change):
+
+- `tools/build_line_cuts.py` records each crossing mark with its real
+  curves (`C`/`Q`, S and T written out); `line_overflow` rebuilt from the
+  bundled pages: the same 2487 marks on the same lines on all 602 pages,
+  only their outlines changed (`assets/db/content.db`, `assets/content_db/`).
+- `parseOutline` reads `C` and `Q`.
+- `pageLineClips` grows each outline by 0.4 units (about a pixel), so the
+  antialiased clip edge does not leave a faint rim in the neighbour's band.
+
+The riwaya packs' outlines come from the same tool: they keep the old
+polygons until the packs are built again (`tools/build_riwaya_packs.py`).

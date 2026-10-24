@@ -34,10 +34,13 @@ import '../testing/bundled_pages.dart';
 
 /// Not a test: renders Madina 1441 page 298 (Al-Kahf 18:42, «كَفَّيْهِ»)
 /// in every theme mode, with and without tajweed and divine-name colours,
-/// into `build/page298/`. Runs only with RENDER_PAGE298=1.
+/// into `build/page298/`. Runs only with RENDER_PAGE298=1. PAGE298_TALL=1
+/// renders at a 20:9 phone (1080x2400 at 2.625), where the lines are
+/// spread apart and each is drawn in its own band.
 void main() {
   final run = Platform.environment['RENDER_PAGE298'] == '1';
-  const phone = Size(700, 1100);
+  final tall = Platform.environment['PAGE298_TALL'] == '1';
+  final phone = tall ? const Size(1080, 2400) : const Size(700, 1100);
 
   testWidgets('render page 298', (tester) async {
     await tester.runAsync(() async {
@@ -87,7 +90,7 @@ void main() {
     }) async {
       tester.view
         ..physicalSize = phone
-        ..devicePixelRatio = 1;
+        ..devicePixelRatio = tall ? 2.625 : 1;
       SharedPreferences.setMockInitialValues({
         'settings.interfaceStyle': style.name,
         'settings.onboardingDone': true,

@@ -28,8 +28,104 @@ FIRST, PITCH, LINES = 26.2, 35.75, 15          # new edition line grid
 OLD_TOP, OLD_PITCH = 8, 1594 / 15              # old edition line grid (px)
 
 
-def _d(points):
-    return 'M ' + ' L '.join(f'{x:.1f} {y:.1f}' for x, y in points) + ' Z'
+def _segments(d):
+    """Subpaths of a path: [[start], segment...], each segment its points
+    after the current one ([end] for a line, [control, end] for a quadratic,
+    [control, control, end] for a cubic). S and T are written out with their
+    implied first control point."""
+    toks = B.TOKENS.findall(d)
+    i, cmd = 0, None
+    x = y = sx = sy = 0.0
+    out, cur = [], []
+
+    def num():
+        nonlocal i
+        i += 1
+        return float(toks[i - 1])
+
+    while i < len(toks):
+        if toks[i].isalpha():
+            cmd = toks[i]
+            i += 1
+            if cmd in 'Zz':
+                x, y = sx, sy
+                continue
+        rel, c = cmd.islower(), cmd.upper()
+        if c == 'M':
+            dx, dy = num(), num()
+            x, y = (x + dx, y + dy) if rel else (dx, dy)
+            if cur:
+                out.append(cur)
+            cur, sx, sy = [[(x, y)]], x, y
+            cmd = 'l' if rel else 'L'
+            continue
+        if c == 'L':
+            dx, dy = num(), num()
+            nx, ny = (x + dx, y + dy) if rel else (dx, dy)
+            pts = [(nx, ny)]
+        elif c == 'H':
+            dx = num()
+            pts = [(x + dx if rel else dx, y)]
+        elif c == 'V':
+            dy = num()
+            pts = [(x, y + dy if rel else dy)]
+        elif c in 'CQST':
+            pts = []
+            for _ in range(3 if c == 'C' else 1 if c == 'T' else 2):
+                dx, dy = num(), num()
+                pts.append((x + dx, y + dy) if rel else (dx, dy))
+            if c in 'ST':
+                # The first control point is the previous curve's last one
+                # reflected about the current point (or the current point).
+                prev = cur[-1] if cur else []
+                kind = {'S': 4, 'T': 3}[c]
+                if len(prev) == kind - 1 and len(cur) > 1:
+                    px, py = prev[-2]
+                    pts.insert(0, (2 * x - px, 2 * y - py))
+                else:
+                    pts.insert(0, (x, y))
+        else:
+            raise ValueError(f'unsupported path command {cmd}')
+        cur.append(pts)
+        x, y = pts[-1]
+    if cur:
+        out.append(cur)
+    return out
+
+
+def _outline(m, contour):
+    """One contour as path data in page units, its curves kept as curves.
+
+    The outline must hold all of the mark's ink: the app cuts it out of the
+    neighbouring line's band. A polygon through the curves' control points
+    does not (a curve can bulge past it, by up to 1.8 units on page 298),
+    and the ink outside it was drawn again with the neighbouring line."""
+    def p(pt):
+        x, y = B.apply(m, pt)
+        return f'{x:.2f} {y:.2f}'
+    parts = ['M ' + p(contour[0][0])]
+    for seg in contour[1:]:
+        op = 'L' if len(seg) == 1 else 'Q' if len(seg) == 2 else 'C'
+        parts.append(op + ' ' + ' '.join(p(q) for q in seg))
+    return ' '.join(parts) + ' Z'
+
+
+def _outlines(svg, group, skip_class=None):
+    """The outline of each contour of the paths in the element with id
+    [group], in document order: the order of [B.read_page] and
+    [marker_items]."""
+    out = []
+
+    def walk(el, m, inside):
+        m = B.compose(m, B.parse_transform(el.get('transform')))
+        inside = inside or el.get('id') == group
+        if (el.tag == B.SVG_NS + 'path' and inside
+                and (skip_class is None or el.get('class') != skip_class)):
+            out.extend(_outline(m, c) for c in _segments(el.get('d')))
+        for child in el:
+            walk(child, m, inside)
+    walk(ET.fromstring(svg), (1, 0, 0, 1, 0, 0), False)
+    return out
 
 
 def marker_items(svg):
@@ -56,6 +152,9 @@ def svg_page_cuts(svg, first=FIRST, pitch=PITCH):
     are centred at first + j * pitch."""
     items, _ = B.read_page(svg)
     items = items + marker_items(svg)
+    outlines = (_outlines(svg, 'content', skip_class='ayahPolygon')
+                + _outlines(svg, 'ayah_markers'))
+    assert len(outlines) == len(items), (len(outlines), len(items))
     cuts, overflow = [], []
     for j in range(LINES - 1):
         lo, hi = first + j * pitch + 6, first + (j + 1) * pitch - 6
@@ -67,11 +166,11 @@ def svg_page_cuts(svg, first=FIRST, pitch=PITCH):
             y += 0.25
         cut = best[1]
         cuts.append(cut)
-        for b, pts in items:
+        for (b, _), outline in zip(items, outlines):
             if b[1] < cut < b[3]:
                 cy = (b[1] + b[3]) / 2
                 line = min(range(LINES), key=lambda k: abs(first + k * pitch - cy))
-                overflow.append((line, _d(pts)))
+                overflow.append((line, outline))
     return cuts, overflow
 
 
