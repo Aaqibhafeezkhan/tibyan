@@ -10,6 +10,7 @@ import '../../../../core/settings/app_settings.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/theme/duotone.dart';
+import '../../../hifz/domain/memorize_session.dart' show maskBox, maskLine;
 import '../../data/tajweed.dart';
 import 'mushaf_page.dart';
 import 'theme_art.dart';
@@ -66,7 +67,19 @@ class PageInteraction {
     this.onPageLongPress,
     this.wordTints = const {},
     this.wordOverlay,
+    this.wordMasks = const [],
+    this.onPickDrag,
   });
+
+  /// Memorization mode: boxes (edition units) covered in the page's own
+  /// colour, each with a faint line where its words sit. They are word
+  /// boxes, so verse markers and surah headers are never under them.
+  final List<Rect> wordMasks;
+
+  /// Memorization mode: a long press, then a drag across words; the
+  /// points where it began and where it is now, in edition units as for
+  /// [onPick]. While null a long press does what it always does.
+  final void Function(Offset start, Offset end)? onPickDrag;
 
   /// Words whose letters are drawn in another colour than the ink, by
   /// colour (boxes in edition units). The new edition only.
@@ -204,7 +217,37 @@ class PageInteraction {
     onPageLongPress: onPageLongPress,
     wordTints: wordTints,
     wordOverlay: wordOverlay,
+    wordMasks: wordMasks,
+    onPickDrag: onPickDrag,
   );
+}
+
+/// Paints memorization masks: [boxes] are word boxes on screen. Each is
+/// covered in [ground] (the page's own colour) a little beyond the
+/// letters ([maskBox]), with a faint [line] where the words sit, so the
+/// page keeps its lines.
+void paintWordMasks(
+  Canvas canvas,
+  Iterable<Rect> boxes, {
+  required Color ground,
+  required Color line,
+}) {
+  final fill = Paint()..color = ground;
+  final stroke = Paint()
+    ..color = line
+    ..strokeWidth = 1
+    ..strokeCap = StrokeCap.round;
+  for (final b in boxes) {
+    final m = maskBox(b);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(m, const Radius.circular(2)),
+      fill,
+    );
+    if (m.width > 6) {
+      final (a, z) = maskLine(m);
+      canvas.drawLine(a, z, stroke);
+    }
+  }
 }
 
 /// Screen-reader nodes for a page's verses, one per verse over the area

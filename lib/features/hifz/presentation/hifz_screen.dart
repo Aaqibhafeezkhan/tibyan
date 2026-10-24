@@ -43,6 +43,25 @@ Future<void> openHifzTest(
   );
 }
 
+/// Opens the mushaf on a unit's first page in memorization mode (hidden
+/// words) over that unit's verses.
+Future<void> openMemorize(
+  BuildContext context,
+  WidgetRef ref, {
+  required String fromRef,
+  required String toRef,
+}) async {
+  final verses = await ref
+      .read(hifzRepositoryProvider)
+      .versesOf(fromRef, toRef);
+  if (verses.isEmpty || !context.mounted) return;
+  final page = verses.first.pageIn(ref.read(editionProvider));
+  await context.push(
+    '/mushaf?page=$page&memorize=1&from=$fromRef&to=$toRef'
+    '&entry=memorization',
+  );
+}
+
 /// The name of a unit: «صفحة ٥٠», «الربع ١٢» or «سورة الملك».
 String unitTitle(
   BuildContext context,
@@ -167,6 +186,17 @@ class _TodayTab extends ConsumerWidget {
       );
     }
 
+    Future<void> memorize() async {
+      final unit = await showStartTestSheet(context);
+      if (unit == null || !context.mounted) return;
+      await openMemorize(
+        context,
+        ref,
+        fromRef: unit.fromRef,
+        toRef: unit.toRef,
+      );
+    }
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
       children: [
@@ -175,6 +205,15 @@ class _TodayTab extends ConsumerWidget {
           icon: const Icon(Icons.visibility_off_outlined),
           label: Text(l.hifzStartTest),
           style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(52)),
+        ),
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          onPressed: memorize,
+          icon: const Icon(Icons.psychology_outlined),
+          label: Text(l.memorizeStart),
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size.fromHeight(52),
+          ),
         ),
         const SizedBox(height: 20),
         _Heading(l.hifzToday),

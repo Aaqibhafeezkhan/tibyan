@@ -4408,4 +4408,93 @@ class AppLocalizationsEn extends AppLocalizations {
   String fasilOnPage(String name, String page) {
     return 'Bookmark $name, page $page';
   }
+
+  @override
+  String get memorizeMode => 'Memorize';
+
+  @override
+  String get memorizeVerses => 'Memorize these verses';
+
+  @override
+  String get memorizeStart => 'Memorize with hidden words';
+
+  @override
+  String get memorizeStyleTitle => 'Hiding style';
+
+  @override
+  String get memorizeStyleAll => 'Hide all words';
+
+  @override
+  String get memorizeStyleFirstLetter => 'Show the first letter of each verse';
+
+  @override
+  String get memorizeStyleFirstWord => 'Show the first word of each verse';
+
+  @override
+  String get memorizeStyleAlternate => 'Hide every other word';
+
+  @override
+  String get memorizeStyleProgressive => 'Hide more with each repetition';
+
+  @override
+  String get memorizeRevealVerse => 'Reveal verse';
+
+  @override
+  String get memorizeRevealAll => 'Reveal all';
+
+  @override
+  String get memorizeHideAll => 'Hide all';
+
+  @override
+  String get memorizeRepeat => 'Repeat';
+
+  @override
+  String get memorizeMastered => 'Mastered';
+
+  @override
+  String get memorizeMissed => 'Missed';
+
+  @override
+  String get memorizeClose => 'End memorizing';
+
+  @override
+  String get memorizeHint =>
+      'Tap a word to reveal it, or long-press and drag to reveal several.';
+
+  @override
+  String get memorizeProgressiveHint =>
+      'Read the page, then tap Repeat to hide more.';
+
+  @override
+  String memorizeLevel(String level, String total) {
+    return 'Step $level of $total';
+  }
+
+  @override
+  String get memorizeByVoice => 'Reveal by reciting';
+
+  @override
+  String get memorizeByVoiceHint => 'Words appear as you recite them aloud.';
+
+  @override
+  String get memorizeVoiceNeedsModel =>
+      'Download the tasmee model in tasmee settings to reveal words by reciting.';
+
+  @override
+  String get memorizeVoiceEdition =>
+      'Reveal by reciting works in the Hafs editions.';
+
+  @override
+  String get memorizeListening => 'Listening…';
+
+  @override
+  String get memorizeNoWords =>
+      'This edition has no word positions on this page, so verses are hidden whole and revealed verse by verse.';
+
+  @override
+  String get memorizeSomeVerses =>
+      'Some verses have no word positions in this edition, so they are hidden whole.';
+
+  @override
+  String get memorizeOutOfScope => 'The chosen verses are not on this page.';
 }

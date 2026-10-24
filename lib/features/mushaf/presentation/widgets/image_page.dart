@@ -807,17 +807,46 @@ class _ImageMushafPageState extends ConsumerState<ImageMushafPage> {
                           : x.onTap();
                     },
                     onLongPressStart: (d) {
+                      if (x.onPickDrag case final drag?) {
+                        final p = layout.toImage(d.localPosition);
+                        return drag(p, p);
+                      }
                       final v = verseAt(d.localPosition);
                       v != null
                           ? x.onVerseLongPress(v)
                           : x.onPageLongPress?.call();
                     },
+                    onLongPressMoveUpdate: x.onPickDrag == null
+                        ? null
+                        : (d) => x.onPickDrag!(
+                            layout.toImage(
+                              d.localPosition - d.localOffsetFromOrigin,
+                            ),
+                            layout.toImage(d.localPosition),
+                          ),
                     child: Semantics(
                       label: l.pageOf('${widget.page}'),
                       image: true,
                       sortKey: const OrdinalSortKey(0),
                       child: CustomPaint(
                         size: box.biggest,
+                        // Memorization mode: the hidden words, covered,
+                        // and anything drawn over the words.
+                        foregroundPainter:
+                            x.wordMasks.isEmpty && x.wordOverlay == null
+                            ? null
+                            : _WordOverlayPainter(
+                                masks: [
+                                  for (final r in x.wordMasks)
+                                    layout.toScreenRect(r),
+                                ],
+                                ground: PageGround.of(context),
+                                line: tokens.colors.border.withValues(
+                                  alpha: 0.7,
+                                ),
+                                overlay: x.wordOverlay,
+                                toScreen: layout.toScreenRect,
+                              ),
                         painter: _ImagePagePainter(
                           image: data.image,
                           alphaInk: data.alphaInk,
@@ -898,6 +927,37 @@ List<(Rect, Color)> tajweedOf(PageInteraction x) {
     for (final (rule, r) in tajweedRectsOf(x.tajweed))
       if (colour(rule) case final c?) (r, c),
   ];
+}
+
+/// Memorization masks (screen boxes) and the page's word overlay, over
+/// the page.
+class _WordOverlayPainter extends CustomPainter {
+  _WordOverlayPainter({
+    required this.masks,
+    required this.ground,
+    required this.line,
+    required this.overlay,
+    required this.toScreen,
+  });
+
+  final List<Rect> masks;
+  final Color ground;
+  final Color line;
+  final void Function(Canvas canvas, Rect Function(Rect box) toScreen)? overlay;
+  final Rect Function(Rect box) toScreen;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    paintWordMasks(canvas, masks, ground: ground, line: line);
+    overlay?.call(canvas, toScreen);
+  }
+
+  @override
+  bool shouldRepaint(_WordOverlayPainter old) =>
+      !listEquals(old.masks, masks) ||
+      old.ground != ground ||
+      old.line != line ||
+      old.overlay != overlay;
 }
 
 class _ImagePagePainter extends CustomPainter {

@@ -33,6 +33,7 @@ class VerseServicesPanel extends StatelessWidget {
     this.preview,
     this.similarCount = 0,
     this.onSimilar,
+    this.onMemorize,
     this.asbabCount = 0,
     this.onAsbab,
     this.onTafsirAudio,
@@ -64,6 +65,9 @@ class VerseServicesPanel extends StatelessWidget {
   /// shows only when there are some.
   final int similarCount;
   final VoidCallback? onSimilar;
+
+  /// «احفظ هذه الآيات»: memorization mode over the selected verses.
+  final VoidCallback? onMemorize;
 
   final List<VerseKey> verses;
   final List<SurahRow>? surahs;
@@ -257,6 +261,17 @@ class VerseServicesPanel extends StatelessWidget {
             onPressed: onMunasabat,
             icon: const Icon(Icons.link),
             label: Text(l.munasabatCount(digits(munasabatCount))),
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(44),
+            ),
+          ),
+        ],
+        if (onMemorize != null) ...[
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            onPressed: onMemorize,
+            icon: const Icon(Icons.psychology_outlined),
+            label: Text(l.memorizeVerses),
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(44),
             ),

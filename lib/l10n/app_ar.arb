@@ -3147,5 +3147,42 @@
         "type": "String"
       }
     }
-  }
+  },
+  "memorizeMode": "وضع الحفظ",
+  "memorizeVerses": "احفظ هذه الآيات",
+  "memorizeStart": "الحفظ بإخفاء الكلمات",
+  "memorizeStyleTitle": "طريقة الإخفاء",
+  "memorizeStyleAll": "إخفاء كل الكلمات",
+  "memorizeStyleFirstLetter": "إظهار أول حرف من كل آية",
+  "memorizeStyleFirstWord": "إظهار أول كلمة من كل آية",
+  "memorizeStyleAlternate": "إخفاء كلمة وإظهار كلمة",
+  "memorizeStyleProgressive": "إخفاء متدرج مع كل تكرار",
+  "memorizeRevealVerse": "اكشف الآية",
+  "memorizeRevealAll": "اكشف الكل",
+  "memorizeHideAll": "أخفِ الكل",
+  "memorizeRepeat": "كرّر",
+  "memorizeMastered": "أتقنتها",
+  "memorizeMissed": "أخطأت",
+  "memorizeClose": "إنهاء الحفظ",
+  "memorizeHint": "المس كلمة لكشفها، أو اضغط مطولًا واسحب لكشف عدة كلمات.",
+  "memorizeProgressiveHint": "اقرأ الصفحة، ثم اضغط «كرّر» ليُخفى المزيد.",
+  "memorizeLevel": "المرحلة {level} من {total}",
+  "@memorizeLevel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "memorizeByVoice": "الكشف بالتسميع",
+  "memorizeByVoiceHint": "تظهر الكلمات كلما قرأتها بصوتك.",
+  "memorizeVoiceNeedsModel": "حمّل نموذج التسميع من إعدادات التسميع لتكشف الكلمات بصوتك.",
+  "memorizeVoiceEdition": "الكشف بالتسميع متاح في طبعات رواية حفص.",
+  "memorizeListening": "يستمع…",
+  "memorizeNoWords": "لا تتوفر مواضع الكلمات في هذه الصفحة من هذه الطبعة، فتُخفى الآيات كاملة وتُكشف آيةً آية.",
+  "memorizeSomeVerses": "بعض الآيات بلا مواضع للكلمات في هذه الطبعة، فتُخفى كاملة.",
+  "memorizeOutOfScope": "الآيات المختارة ليست في هذه الصفحة."
 }

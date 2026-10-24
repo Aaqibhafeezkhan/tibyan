@@ -33,6 +33,12 @@ import '../../audio/floating_player.dart';
 import '../../audio/player_bar.dart';
 import '../../audio/recitation.dart';
 import '../../hifz/data/hifz_repository.dart';
+import '../../hifz/data/memorize_prefs.dart';
+import '../../hifz/domain/memorize_session.dart';
+import '../../hifz/presentation/memorize_voice.dart';
+import '../../tasmee/data/tasmee_backend.dart';
+import '../../tasmee/data/tasmee_settings.dart';
+import '../../tasmee/domain/recitation_range.dart';
 import '../../hifz/data/recitation_service.dart';
 import '../../hifz/domain/recitation_record.dart';
 import '../../hifz/presentation/mastery_line.dart';
@@ -81,6 +87,7 @@ import 'widgets/verse_services.dart';
 part 'mushaf_screen_controls.dart';
 part 'mushaf_screen_focus.dart';
 part 'mushaf_screen_hifz.dart';
+part 'mushaf_screen_memorize.dart';
 part 'mushaf_screen_panes.dart';
 
 /// Name of a surah in the interface language (names from Tanzil metadata).
@@ -103,8 +110,13 @@ class MushafScreen extends ConsumerStatefulWidget {
     this.hifzFrom,
     this.hifzTo,
     this.listen = false,
+    this.memorize = false,
     this.entry = EntryPoint.other,
   });
+
+  /// Open in memorization mode (hidden words), over [hifzFrom]..[hifzTo]
+  /// when both are given (`surah:ayah`), else over the pages.
+  final bool memorize;
 
   /// Where the reading was opened from: from a search, a tafsir or the
   /// hifz, the khatma counts only the pages after the one it landed on.
@@ -190,6 +202,16 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
   late bool _testing = _hifzKind != null && widget.hifzFrom != null;
   final RecitationTest _test = RecitationTest();
 
+  /// Memorization mode (hidden words); null while off. It goes on across
+  /// pages until it is closed.
+  MemorizeSession? _memo;
+
+  /// Memorization mode: reveal by reciting, while listening.
+  MemorizeVoice? _voice;
+
+  /// Something on the page is covered (recitation or memorization mode).
+  bool get _hiding => _recite || _memo != null;
+
   HifzUnitKind? get _hifzKind =>
       HifzUnitKind.values.asNameMap()[widget.hifzUnit ?? ''];
 
@@ -266,6 +288,11 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       _selA = _selB = (surah: widget.selectSurah!, ayah: widget.selectAyah!);
     }
     _open();
+    if (widget.memorize && !_testing) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _startMemorize(scope: _routeScope());
+      });
+    }
     if (ref.read(settingsProvider).keepScreenOn) WakelockPlus.enable();
     _applySystemBars();
   }
@@ -456,7 +483,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                           child: ReadingBar.of(
                             [info],
                             page: page,
-                            showCatchword: !_recite && !_testing,
+                            showCatchword: !_hiding && !_testing,
                           ),
                         ),
                   tools: _readingTools(
@@ -574,6 +601,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
 
   @override
   void dispose() {
+    unawaited(_voice?.close());
     _jumpFade.dispose();
     if (_testing) _muteSajdah(false);
     _lifecycle.dispose();
@@ -634,6 +662,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       _test.newPage();
     });
     _trackPage();
+    unawaited(_memoPageTurned());
     if (_page < 1) return;
     final ayahs = await ref.read(pageAyahsProvider(_page).future);
     if (ayahs.isEmpty) return;
@@ -789,7 +818,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     // The khatma counts nothing in a hifz test or recitation mode, and
     // follows the reading speed and the view.
     _tracker
-      ..suspend(_recite || _testing)
+      ..suspend(_hiding || _testing)
       ..mode = _autoScroll ? 'scroll' : 'page'
       ..minDwell = Duration(seconds: settings.readingSpeed.secondsPerPage);
     // Focus mode: the page alone, with no frame and nothing under it.
@@ -880,6 +909,12 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
           ? _test.covers(_pageKeys(pg), testUnits)
           : null;
       final jumps = _tapJumps(reciting.active, standalone: reciting.standalone);
+      final memo = _testing ? null : _memo;
+      final memoBoxes = memo == null
+          ? const <MemoWord, List<Rect>>{}
+          : ref.watch(pageWordBoxesProvider(pg)).value ??
+                const <MemoWord, List<Rect>>{};
+      final memoWhole = memo?.wholeVersesOn(_pageKeys(pg), memoBoxes);
       final interaction = PageInteraction(
         // The reader's selection, or else (set by [RecitedPage]) the verse
         // being recited.
@@ -945,6 +980,8 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
             ? testCovers?.hidden
             : _recite
             ? _hiddenOn(pg)
+            : memoWhole != null && memoWhole.isNotEmpty
+            ? memoWhole
             : null,
         hiddenWords: _testing
             ? testCovers?.pieces ?? const {}
@@ -957,7 +994,9 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
         // A tap shows a covered verse, or covers it again; in a hifz test
         // it shows the verse's next word.
         onHiddenTap: (v) => setState(
-          () => _testing
+          () => memo != null
+              ? memo.revealVerse(v)
+              : _testing
               ? _test.revealPiece(v, testUnits[v])
               : _revealed.contains(v)
               ? _revealed.remove(v)
@@ -977,7 +1016,13 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
             ref.watch(frameInfoProvider(pg)).value?.basmalaLines ?? const {},
         onPick: _pickWord && pg == _page
             ? (point, verse) => _pickAt(pg, point, verse)
+            : memo != null
+            ? (point, verse) => _memoTap(pg, point, verse)
             : null,
+        wordMasks: memo?.masksOn(memoBoxes) ?? const [],
+        onPickDrag: memo == null || _pickWord
+            ? null
+            : (a, b) => _memoDrag(pg, a, b),
         // Screen readers: each verse by its surah and number, then its
         // text as stored (Tanzil's plain text, which reads aloud well).
         verseLabel: (v) => l.verseLabel(
@@ -1118,7 +1163,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
             key: const ValueKey('reading-bar'),
             page: pages.last,
             // Recitation mode: the next page's first word would give it away.
-            showCatchword: !_recite && !_testing,
+            showCatchword: !_hiding && !_testing,
             coverCatchword: cover
                 ? (ref.watch(basmalaProvider).value ?? '')
                       .split(' ')
@@ -1521,6 +1566,8 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                           _controller?.jumpToPage(_indexOf(p));
                         },
                         onRecite: _startRecite,
+                        onMemorize: _toggleMemorize,
+                        memorize: _memo != null,
                         onListen: _listenFromPage,
                         onGoTo: _goToPage,
                         onAutoScroll: _startAutoScroll,
@@ -1629,6 +1676,18 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
               ),
             ),
             Positioned(
+              left: 12,
+              right: 12,
+              bottom: 12,
+              child: Reveal(
+                visible: _memo != null && !_testing && !_chrome,
+                from: const Offset(0, 0.4),
+                child: _memo == null || _testing
+                    ? null
+                    : SafeArea(top: false, child: _memoBar(context, surahs)),
+              ),
+            ),
+            Positioned(
               top: 0,
               left: 16,
               right: 16,
@@ -1673,7 +1732,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                     allowed:
                         !_chrome &&
                         !_testing &&
-                        !_recite &&
+                        !_hiding &&
                         !_autoScroll &&
                         !_multi &&
                         range == null &&
@@ -1686,7 +1745,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                     allowed:
                         !_chrome &&
                         !_testing &&
-                        !_recite &&
+                        !_hiding &&
                         !_autoScroll &&
                         !_multi &&
                         range == null &&
@@ -1811,6 +1870,13 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
           final h = hafsKeyOf(_riwaya, range.first);
           showSimilarSheet(context, surah: h.surah, ayah: h.ayah);
         }),
+        onMemorize: _testing
+            ? null
+            : act(
+                () => _startMemorize(
+                  scope: MemorizeScope.verses(range.first, range.last),
+                ),
+              ),
         // Occasions of revelation are kept by Hafs verse.
         asbabCount: range.length == 1
             ? r
@@ -2108,7 +2174,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       !standalone &&
       !_multi &&
       _selA == null &&
-      !_recite &&
+      !_hiding &&
       !_testing &&
       !_pickWord;
 
@@ -2464,11 +2530,372 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     if (context.canPop()) context.pop();
   }
 
+  // -- memorization mode (hidden words) -------------------------------------
+
+  /// The verses a route opened in memorization mode is over.
+  MemorizeScope _routeScope() {
+    VerseKey? parse(String? r) {
+      final parts = r?.split(':');
+      if (parts == null || parts.length != 2) return null;
+      final s = int.tryParse(parts[0]), a = int.tryParse(parts[1]);
+      return s == null || a == null ? null : (surah: s, ayah: a);
+    }
+
+    final from = parse(widget.hifzFrom), to = parse(widget.hifzTo);
+    return from == null || to == null
+        ? const MemorizeScope.pages()
+        : MemorizeScope.verses(from, to);
+  }
+
+  /// When the memorization session began (for the recitation record).
+  DateTime? _memoStartedAt;
+
+  /// Turns memorization mode on over [scope] (the pages by default), in
+  /// the reader's hiding style.
+  void _startMemorize({MemorizeScope scope = const MemorizeScope.pages()}) {
+    if (_testing) return;
+    unawaited(HapticFeedback.selectionClick());
+    _setChrome(false);
+    final prefs = ref.read(memorizePrefsProvider);
+    setState(() {
+      _recite = false;
+      _revealed.clear();
+      _selA = _selB = null;
+      _multi = false;
+      _pickWord = false;
+      _memo = MemorizeSession(style: prefs.style, scope: scope);
+    });
+    _memoStartedAt = DateTime.now();
+    if (prefs.byVoice && _voiceState() == _VoiceState.available) {
+      unawaited(_startVoice());
+    }
+  }
+
+  void _toggleMemorize() => _memo == null ? _startMemorize() : _endMemorize();
+
+  void _endMemorize() {
+    final memo = _memo;
+    if (memo == null) return;
+    unawaited(_saveMemoRecord(memo));
+    unawaited(_voice?.close());
+    setState(() {
+      _voice = null;
+      _memo = null;
+    });
+  }
+
+  /// The pages on screen: two side by side in a spread, else one.
+  List<int> get _shownPagesNow => _spread ? _pagesAt(_indexOf(_page)) : [_page];
+
+  Map<MemoWord, List<Rect>> _boxesOn(int page) =>
+      ref.read(pageWordBoxesProvider(page)).value ?? const {};
+
+  /// A little room around the words for a touch between two of them: a
+  /// third of a word's height.
+  static double _slop(Map<MemoWord, List<Rect>> boxes) {
+    if (boxes.isEmpty) return 0;
+    final heights = [
+      for (final rs in boxes.values)
+        for (final r in rs) r.height,
+    ]..sort();
+    return heights[heights.length ~/ 2] / 3;
+  }
+
+  /// A tap in memorization mode: a hidden word is revealed; a verse
+  /// covered whole (no word boxes) is revealed whole; anything else is a
+  /// tap on the page.
+  void _memoTap(int page, Offset point, VerseKey? verse) {
+    final memo = _memo;
+    if (memo == null) return;
+    final boxes = _boxesOn(page);
+    final w = memoWordAt(point, boxes, slop: _slop(boxes));
+    if (w != null && memo.isHidden(w)) {
+      unawaited(HapticFeedback.selectionClick());
+      setState(() => memo.reveal(w));
+      return;
+    }
+    if (w == null &&
+        verse != null &&
+        memo.wholeVersesOn([verse], boxes).isNotEmpty) {
+      setState(() => memo.revealVerse(verse));
+      return;
+    }
+    if (w == null && verse != null && memo.inScope(verse.surah, verse.ayah)) {
+      // A screen reader's double tap on a verse (no word under it).
+      final words = [
+        for (final k in boxes.keys)
+          if (k.$1 == verse.surah && k.$2 == verse.ayah && memo.isHidden(k)) k,
+      ];
+      if (words.isNotEmpty) {
+        setState(() => memo.revealVerse(verse));
+        return;
+      }
+    }
+    _onPageTap();
+  }
+
+  /// The word a long press began on (memorization mode).
+  MemoWord? _dragFrom;
+
+  /// A long press dragged across words: every word from the first to the
+  /// one under the finger is revealed.
+  void _memoDrag(int page, Offset start, Offset end) {
+    final memo = _memo;
+    if (memo == null) return;
+    final boxes = _boxesOn(page);
+    final slop = _slop(boxes);
+    final a = memoWordAt(start, boxes, slop: slop);
+    if (a == null) return;
+    if (a != _dragFrom && start == end) {
+      _dragFrom = a;
+      unawaited(HapticFeedback.selectionClick());
+    }
+    final b = memoWordAt(end, boxes, slop: slop) ?? a;
+    final words = wordsBetween(a, b, boxes.keys);
+    if (words.every((w) => !memo.isHidden(w))) return;
+    setState(() {
+      memo.revealAll(words);
+      memo.current = (surah: b.$1, ayah: b.$2);
+    });
+  }
+
+  /// The verses on screen in scope, in reading order.
+  List<VerseKey> _memoVerses() => [
+    for (final pg in _shownPagesNow)
+      for (final v in _pageKeys(pg))
+        if (_memo?.inScope(v.surah, v.ayah) ?? false) v,
+  ];
+
+  /// Whether anything of [v] is still covered on screen.
+  bool _memoHides(VerseKey v) {
+    final memo = _memo;
+    if (memo == null) return false;
+    for (final pg in _shownPagesNow) {
+      final boxes = _boxesOn(pg);
+      if (memo.wholeVersesOn([v], boxes).isNotEmpty) return true;
+      for (final w in boxes.keys) {
+        if (w.$1 == v.surah && w.$2 == v.ayah && memo.isHidden(w)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /// «اكشف الآية»: the verse being memorized, if anything of it is still
+  /// covered, else the first verse on screen with words covered.
+  void _memoRevealVerse() {
+    final memo = _memo;
+    if (memo == null) return;
+    final current = memo.current;
+    final target = current != null && _memoHides(current)
+        ? current
+        : _memoVerses().where(_memoHides).firstOrNull;
+    if (target == null) return;
+    setState(() => memo.revealVerse(target));
+  }
+
+  /// The reader judged a verse: kept for the record and saved to the
+  /// verse's strength on the hifz map (by its Hafs number, which the map
+  /// uses, from a riwaya too).
+  Future<void> _memoJudge(VerseKey v, VerseResult r) async {
+    final memo = _memo;
+    if (memo == null) return;
+    unawaited(HapticFeedback.selectionClick());
+    setState(() {
+      memo.grade(v, r);
+      // On to the next verse in scope, if any.
+      final order = _memoVerses();
+      final i = order.indexOf(v);
+      memo.current = i >= 0 && i + 1 < order.length ? order[i + 1] : v;
+    });
+    await saveVerseResults(ref.read(userDatabaseProvider), {
+      hafsKeyOf(_riwaya, v): r,
+    });
+  }
+
+  /// Puts the verses judged in the recitation record, once, as a touch
+  /// recitation; the strengths were set as each was judged.
+  Future<void> _saveMemoRecord(MemorizeSession memo) async {
+    final started = _memoStartedAt;
+    _memoStartedAt = null;
+    if (memo.results.isEmpty || started == null) return;
+    try {
+      final index = await ref.read(quranIndexProvider.future);
+      await recordRecitation(
+        ref.read(userDatabaseProvider),
+        index,
+        RecitationRecord(
+          kind: RecitationKind.touch,
+          startedAt: started,
+          endedAt: DateTime.now(),
+          verses: [
+            for (final MapEntry(key: v, value: r) in memo.results.entries)
+              VerseResultRecord(
+                verse: index.idOf(
+                  hafsKeyOf(_riwaya, v).surah,
+                  hafsKeyOf(_riwaya, v).ayah,
+                ),
+                accuracy: r == VerseResult.remembered ? 1 : 0,
+              ),
+          ],
+        ),
+        applyMemory: false,
+      );
+    } catch (_) {}
+  }
+
+  /// What reveal by reciting can do in this edition, on this device.
+  _VoiceState _voiceState() {
+    if (ref.read(editionProvider).isRiwaya) return _VoiceState.edition;
+    return ref.read(installedRecitationModelProvider).value != null
+        ? _VoiceState.available
+        : _VoiceState.needsModel;
+  }
+
+  /// Reveal by reciting over the verses in scope on screen.
+  Future<void> _startVoice() async {
+    final verses = _memoVerses();
+    if (verses.isEmpty) return;
+    final voice = await MemorizeVoice.open(
+      backend: ref.read(tasmeeBackendProvider),
+      db: ref.read(contentDatabaseProvider),
+      settings: ref.read(tasmeeSettingsProvider),
+      range: VerseRange(
+        fromSurah: verses.first.surah,
+        fromAyah: verses.first.ayah,
+        toSurah: verses.last.surah,
+        toAyah: verses.last.ayah,
+      ),
+      onWord: (w) {
+        final memo = _memo;
+        if (!mounted || memo == null || !memo.isHidden(w)) return;
+        setState(() => memo.reveal(w));
+      },
+    );
+    if (!mounted || _memo == null) {
+      unawaited(voice?.close());
+      return;
+    }
+    setState(() => _voice = voice?..addListener(_voiceChanged));
+  }
+
+  void _voiceChanged() {
+    if (mounted) setState(() {});
+  }
+
+  Future<void> _toggleVoice() async {
+    final voice = _voice;
+    if (voice != null) {
+      setState(() => _voice = null);
+      await voice.close();
+      return;
+    }
+    await _startVoice();
+  }
+
+  /// Turning the page with reveal by reciting on (over the pages): it
+  /// listens over the new page's verses.
+  Future<void> _memoPageTurned() async {
+    final voice = _voice;
+    if (voice == null || !(_memo?.scope.wholePage ?? false)) return;
+    _voice = null;
+    await voice.close();
+    // The new page's verses must be known first.
+    await ref.read(pageAyahsProvider(_page).future);
+    if (mounted && _memo != null) await _startVoice();
+  }
+
+  Future<void> _openMemoStyles() async {
+    final voice = _voiceState();
+    final before = ref.read(memorizePrefsProvider).byVoice;
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (_) => LookTheme(
+        child: _MemorizeStylesSheet(
+          voice: voice,
+          onStyle: (s) => setState(() => _memo?.style = s),
+        ),
+      ),
+    );
+    if (!mounted || _memo == null) return;
+    final after = ref.read(memorizePrefsProvider).byVoice;
+    if (after != before && voice == _VoiceState.available) {
+      if (after && _voice == null) {
+        await _startVoice();
+      } else if (!after && _voice != null) {
+        await _toggleVoice();
+      }
+    }
+  }
+
+  Widget _memoBar(BuildContext context, List<SurahRow>? surahs) {
+    final memo = _memo!;
+    final l = AppLocalizations.of(context);
+    final digits = NumberFormatter(Localizations.localeOf(context));
+    // Watched, so the bar follows the model and the pages' words.
+    ref.watch(installedRecitationModelProvider);
+    final pages = _shownPagesNow;
+    final boxes = {for (final pg in pages) pg: _watchBoxes(pg)};
+    final verses = _memoVerses();
+    final whole = {
+      for (final pg in pages)
+        ...memo.wholeVersesOn([
+          for (final v in _pageKeys(pg))
+            if (memo.inScope(v.surah, v.ayah)) v,
+        ], boxes[pg]!),
+    };
+    final hasWords = boxes.values.any((b) => b.isNotEmpty);
+    final note = verses.isEmpty
+        ? l.memorizeOutOfScope
+        : !hasWords && whole.isNotEmpty
+        ? l.memorizeNoWords
+        : whole.isNotEmpty
+        ? l.memorizeSomeVerses
+        : memo.style == MaskStyle.progressive
+        ? '${l.memorizeLevel(digits(memo.level), digits(MemorizeSession.maxLevel))} · ${memo.level == 0 ? l.memorizeProgressiveHint : l.memorizeHint}'
+        : l.memorizeHint;
+    final current = memo.current;
+    final voiceState = _voiceState();
+    final voice = _voice;
+    return _MemorizeBar(
+      verse: current == null || surahs == null
+          ? null
+          : '${surahName(context, surahs[current.surah - 1])} ${digits(current.ayah)}'
+                '${voice != null && voice.listening ? ' · ${l.memorizeListening}' : ''}',
+      result: current == null ? null : memo.results[current],
+      note: note,
+      style: memo.style,
+      listening: voiceState == _VoiceState.available
+          ? voice != null && voice.listening
+          : null,
+      onRevealVerse: _memoRevealVerse,
+      onRevealAll: () => setState(() => memo.revealVerses(verses)),
+      onHideAll: () => setState(memo.hideAll),
+      onRepeat: () => setState(memo.nextRound),
+      onMastered: current == null
+          ? null
+          : () => _memoJudge(current, VerseResult.remembered),
+      onMissed: current == null
+          ? null
+          : () => _memoJudge(current, VerseResult.missed),
+      onStyles: _openMemoStyles,
+      onVoice: _toggleVoice,
+      onClose: _endMemorize,
+    );
+  }
+
+  Map<MemoWord, List<Rect>> _watchBoxes(int page) =>
+      ref.watch(pageWordBoxesProvider(page)).value ?? const {};
+
   Map<VerseKey, RevealUnits> get _units =>
       ref.read(pageRevealUnitsProvider(_page)).value ?? const {};
 
   void _startRecite() {
     _setChrome(false);
+    _endMemorize();
     setState(() {
       _recite = true;
       _revealed.clear();

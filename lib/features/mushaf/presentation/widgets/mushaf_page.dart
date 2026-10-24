@@ -912,11 +912,23 @@ class _MushafPageState extends ConsumerState<MushafPage> {
                       v != null ? x.onVerseTap!(v, point) : x.onTap();
                     },
                     onLongPressStart: (d) {
+                      if (x.onPickDrag case final drag?) {
+                        final p = touch.toImage(d.localPosition);
+                        return drag(p, p);
+                      }
                       final v = verseAt(d.localPosition);
                       v != null
                           ? x.onVerseLongPress(v)
                           : x.onPageLongPress?.call();
                     },
+                    onLongPressMoveUpdate: x.onPickDrag == null
+                        ? null
+                        : (d) => x.onPickDrag!(
+                            touch.toImage(
+                              d.localPosition - d.localOffsetFromOrigin,
+                            ),
+                            touch.toImage(d.localPosition),
+                          ),
                     child: Semantics(
                       label: l.pageOf('${widget.page}'),
                       image: true,
@@ -1187,7 +1199,9 @@ class _MushafPageState extends ConsumerState<MushafPage> {
                             }
                           }
                           drawEach(overItems);
-                          if (x.wordTints.isEmpty && x.wordOverlay == null) {
+                          if (x.wordTints.isEmpty &&
+                              x.wordOverlay == null &&
+                              x.wordMasks.isEmpty) {
                             return;
                           }
                           Rect toScreen(Rect r) {
@@ -1222,6 +1236,13 @@ class _MushafPageState extends ConsumerState<MushafPage> {
                               }
                             }
                           }
+                          // Memorization mode: the hidden words, covered.
+                          paintWordMasks(
+                            canvas,
+                            x.wordMasks.map(toScreen),
+                            ground: ground,
+                            line: tokens.colors.border.withValues(alpha: 0.7),
+                          );
                           x.wordOverlay?.call(canvas, toScreen);
                         }),
                       ),

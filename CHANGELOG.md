@@ -16,6 +16,7 @@ All notable changes to Tibyan are recorded here. The format follows
 - Share as images: a passage longer than one picture is shared as the mushaf's own pages (1441, 1405, Shamarly and the riwaya editions), one picture per page in the share frame, cut at line boundaries where the passage starts or ends mid-page; a switch goes back to the verses set as text.
 
 ### Added
+- Memorization mode («وضع الحفظ»): the mushaf hides words for memorizing, from the bottom bar, a verse's services («احفظ هذه الآيات», the selected verses only) or the hifz screen (a page, quarter or surah). Five hiding styles, remembered: all words, the first letter or first word of each verse as a cue, every other word, or progressively more with each repetition. Hidden words are covered in the page's own colour with a faint line, exactly over each word's box, so verse markers and surah headers stay. Tap a word to reveal it, long-press and drag to reveal several, or reveal the verse, all, or hide all again. «أتقنتها / أخطأت» after each verse updates the verse's strength on the hifz map. With the tasmee model downloaded (Hafs editions), words can also reveal themselves as you recite. Works in 1441, 1405, Shamarly and the riwaya editions; where an edition has no word positions for a verse, that verse is hidden and revealed whole, and the bar says so.
 - First run: a new step to choose the page-turn effect, each shown as a small book turning its page in a loop (still when animations are off).
 
 ## [0.5.1] - 2026-10-21

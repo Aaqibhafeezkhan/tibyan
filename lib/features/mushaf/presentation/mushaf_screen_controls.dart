@@ -245,6 +245,8 @@ class _BottomControls extends StatelessWidget {
     required this.onChanged,
     required this.onChangeEnd,
     required this.onRecite,
+    required this.onMemorize,
+    required this.memorize,
     required this.onListen,
     required this.onGoTo,
     required this.onAutoScroll,
@@ -260,6 +262,11 @@ class _BottomControls extends StatelessWidget {
   final bool listening;
   final bool touchReading;
   final VoidCallback onTouchReading;
+
+  /// Memorization mode (hidden words): on, and the button that turns it
+  /// on or off.
+  final bool memorize;
+  final VoidCallback onMemorize;
   final int page;
   final int pageCount;
   final String label;
@@ -325,6 +332,14 @@ class _BottomControls extends StatelessWidget {
                       ),
                     ),
                     Semantics(
+                      toggled: memorize,
+                      child: FilledButton.tonalIcon(
+                        onPressed: onMemorize,
+                        icon: const Icon(Icons.psychology_outlined),
+                        label: Text(l.memorizeMode),
+                      ),
+                    ),
+                    Semantics(
                       toggled: touchReading,
                       child: FilledButton.tonalIcon(
                         onPressed: onTouchReading,
@@ -356,6 +371,13 @@ class _BottomControls extends StatelessWidget {
                       isSelected: recite,
                       onPressed: onRecite,
                       icon: const Icon(Icons.visibility_outlined),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton.filledTonal(
+                      tooltip: l.memorizeMode,
+                      isSelected: memorize,
+                      onPressed: onMemorize,
+                      icon: const Icon(Icons.psychology_outlined),
                     ),
                     const SizedBox(width: 8),
                     IconButton.filledTonal(

@@ -7441,6 +7441,168 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'فاصلة {name}، الصفحة {page}'**
   String fasilOnPage(String name, String page);
+
+  /// No description provided for @memorizeMode.
+  ///
+  /// In ar, this message translates to:
+  /// **'وضع الحفظ'**
+  String get memorizeMode;
+
+  /// No description provided for @memorizeVerses.
+  ///
+  /// In ar, this message translates to:
+  /// **'احفظ هذه الآيات'**
+  String get memorizeVerses;
+
+  /// No description provided for @memorizeStart.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحفظ بإخفاء الكلمات'**
+  String get memorizeStart;
+
+  /// No description provided for @memorizeStyleTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'طريقة الإخفاء'**
+  String get memorizeStyleTitle;
+
+  /// No description provided for @memorizeStyleAll.
+  ///
+  /// In ar, this message translates to:
+  /// **'إخفاء كل الكلمات'**
+  String get memorizeStyleAll;
+
+  /// No description provided for @memorizeStyleFirstLetter.
+  ///
+  /// In ar, this message translates to:
+  /// **'إظهار أول حرف من كل آية'**
+  String get memorizeStyleFirstLetter;
+
+  /// No description provided for @memorizeStyleFirstWord.
+  ///
+  /// In ar, this message translates to:
+  /// **'إظهار أول كلمة من كل آية'**
+  String get memorizeStyleFirstWord;
+
+  /// No description provided for @memorizeStyleAlternate.
+  ///
+  /// In ar, this message translates to:
+  /// **'إخفاء كلمة وإظهار كلمة'**
+  String get memorizeStyleAlternate;
+
+  /// No description provided for @memorizeStyleProgressive.
+  ///
+  /// In ar, this message translates to:
+  /// **'إخفاء متدرج مع كل تكرار'**
+  String get memorizeStyleProgressive;
+
+  /// No description provided for @memorizeRevealVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكشف الآية'**
+  String get memorizeRevealVerse;
+
+  /// No description provided for @memorizeRevealAll.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكشف الكل'**
+  String get memorizeRevealAll;
+
+  /// No description provided for @memorizeHideAll.
+  ///
+  /// In ar, this message translates to:
+  /// **'أخفِ الكل'**
+  String get memorizeHideAll;
+
+  /// No description provided for @memorizeRepeat.
+  ///
+  /// In ar, this message translates to:
+  /// **'كرّر'**
+  String get memorizeRepeat;
+
+  /// No description provided for @memorizeMastered.
+  ///
+  /// In ar, this message translates to:
+  /// **'أتقنتها'**
+  String get memorizeMastered;
+
+  /// No description provided for @memorizeMissed.
+  ///
+  /// In ar, this message translates to:
+  /// **'أخطأت'**
+  String get memorizeMissed;
+
+  /// No description provided for @memorizeClose.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنهاء الحفظ'**
+  String get memorizeClose;
+
+  /// No description provided for @memorizeHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'المس كلمة لكشفها، أو اضغط مطولًا واسحب لكشف عدة كلمات.'**
+  String get memorizeHint;
+
+  /// No description provided for @memorizeProgressiveHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اقرأ الصفحة، ثم اضغط «كرّر» ليُخفى المزيد.'**
+  String get memorizeProgressiveHint;
+
+  /// No description provided for @memorizeLevel.
+  ///
+  /// In ar, this message translates to:
+  /// **'المرحلة {level} من {total}'**
+  String memorizeLevel(String level, String total);
+
+  /// No description provided for @memorizeByVoice.
+  ///
+  /// In ar, this message translates to:
+  /// **'الكشف بالتسميع'**
+  String get memorizeByVoice;
+
+  /// No description provided for @memorizeByVoiceHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تظهر الكلمات كلما قرأتها بصوتك.'**
+  String get memorizeByVoiceHint;
+
+  /// No description provided for @memorizeVoiceNeedsModel.
+  ///
+  /// In ar, this message translates to:
+  /// **'حمّل نموذج التسميع من إعدادات التسميع لتكشف الكلمات بصوتك.'**
+  String get memorizeVoiceNeedsModel;
+
+  /// No description provided for @memorizeVoiceEdition.
+  ///
+  /// In ar, this message translates to:
+  /// **'الكشف بالتسميع متاح في طبعات رواية حفص.'**
+  String get memorizeVoiceEdition;
+
+  /// No description provided for @memorizeListening.
+  ///
+  /// In ar, this message translates to:
+  /// **'يستمع…'**
+  String get memorizeListening;
+
+  /// No description provided for @memorizeNoWords.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا تتوفر مواضع الكلمات في هذه الصفحة من هذه الطبعة، فتُخفى الآيات كاملة وتُكشف آيةً آية.'**
+  String get memorizeNoWords;
+
+  /// No description provided for @memorizeSomeVerses.
+  ///
+  /// In ar, this message translates to:
+  /// **'بعض الآيات بلا مواضع للكلمات في هذه الطبعة، فتُخفى كاملة.'**
+  String get memorizeSomeVerses;
+
+  /// No description provided for @memorizeOutOfScope.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآيات المختارة ليست في هذه الصفحة.'**
+  String get memorizeOutOfScope;
 }
 
 class _AppLocalizationsDelegate

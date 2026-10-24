@@ -322,6 +322,7 @@ final appRouterProvider = Provider<GoRouter>(
           hifzFrom: state.uri.queryParameters['from'],
           hifzTo: state.uri.queryParameters['to'],
           listen: state.uri.queryParameters['listen'] == '1',
+          memorize: state.uri.queryParameters['memorize'] == '1',
           // `entry=`: where the reading was opened from (the reading
           // tracker counts only past the landing page for some).
           entry:

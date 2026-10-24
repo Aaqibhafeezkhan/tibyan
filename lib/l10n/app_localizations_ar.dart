@@ -4477,4 +4477,92 @@ class AppLocalizationsAr extends AppLocalizations {
   String fasilOnPage(String name, String page) {
     return 'فاصلة $name، الصفحة $page';
   }
+
+  @override
+  String get memorizeMode => 'وضع الحفظ';
+
+  @override
+  String get memorizeVerses => 'احفظ هذه الآيات';
+
+  @override
+  String get memorizeStart => 'الحفظ بإخفاء الكلمات';
+
+  @override
+  String get memorizeStyleTitle => 'طريقة الإخفاء';
+
+  @override
+  String get memorizeStyleAll => 'إخفاء كل الكلمات';
+
+  @override
+  String get memorizeStyleFirstLetter => 'إظهار أول حرف من كل آية';
+
+  @override
+  String get memorizeStyleFirstWord => 'إظهار أول كلمة من كل آية';
+
+  @override
+  String get memorizeStyleAlternate => 'إخفاء كلمة وإظهار كلمة';
+
+  @override
+  String get memorizeStyleProgressive => 'إخفاء متدرج مع كل تكرار';
+
+  @override
+  String get memorizeRevealVerse => 'اكشف الآية';
+
+  @override
+  String get memorizeRevealAll => 'اكشف الكل';
+
+  @override
+  String get memorizeHideAll => 'أخفِ الكل';
+
+  @override
+  String get memorizeRepeat => 'كرّر';
+
+  @override
+  String get memorizeMastered => 'أتقنتها';
+
+  @override
+  String get memorizeMissed => 'أخطأت';
+
+  @override
+  String get memorizeClose => 'إنهاء الحفظ';
+
+  @override
+  String get memorizeHint =>
+      'المس كلمة لكشفها، أو اضغط مطولًا واسحب لكشف عدة كلمات.';
+
+  @override
+  String get memorizeProgressiveHint =>
+      'اقرأ الصفحة، ثم اضغط «كرّر» ليُخفى المزيد.';
+
+  @override
+  String memorizeLevel(String level, String total) {
+    return 'المرحلة $level من $total';
+  }
+
+  @override
+  String get memorizeByVoice => 'الكشف بالتسميع';
+
+  @override
+  String get memorizeByVoiceHint => 'تظهر الكلمات كلما قرأتها بصوتك.';
+
+  @override
+  String get memorizeVoiceNeedsModel =>
+      'حمّل نموذج التسميع من إعدادات التسميع لتكشف الكلمات بصوتك.';
+
+  @override
+  String get memorizeVoiceEdition => 'الكشف بالتسميع متاح في طبعات رواية حفص.';
+
+  @override
+  String get memorizeListening => 'يستمع…';
+
+  @override
+  String get memorizeNoWords =>
+      'لا تتوفر مواضع الكلمات في هذه الصفحة من هذه الطبعة، فتُخفى الآيات كاملة وتُكشف آيةً آية.';
+
+  @override
+  String get memorizeSomeVerses =>
+      'بعض الآيات بلا مواضع للكلمات في هذه الطبعة، فتُخفى كاملة.';
+
+  @override
+  String get memorizeOutOfScope => 'الآيات المختارة ليست في هذه الصفحة.';
 }
