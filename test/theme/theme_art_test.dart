@@ -36,14 +36,17 @@ void main() {
   setUpAll(() async => registry = await ThemeRegistry.load(rootBundle));
 
   group('theme files', () {
-    test('Zakhrafa first and default, then the plain and heritage themes', () {
-      expect(registry.defaultStyleId, 'zakhrafa');
-      expect(registry.styles.map((s) => s.id), [
-        'zakhrafa',
-        'simple',
-        ...heritage,
-      ]);
-    });
+    test(
+      'Zakhrafa first, the plain theme the default, then the heritage themes',
+      () {
+        expect(registry.defaultStyleId, 'simple');
+        expect(registry.styles.map((s) => s.id), [
+          'zakhrafa',
+          'simple',
+          ...heritage,
+        ]);
+      },
+    );
 
     test('every style has four modes; only the heritage themes have art', () {
       for (final style in registry.styles) {

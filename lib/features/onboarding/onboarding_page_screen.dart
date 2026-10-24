@@ -8,8 +8,8 @@ import '../settings/theme_picker.dart';
 import 'onboarding_frame.dart';
 import 'page_preview.dart';
 
-/// First launch, step 3: how the mushaf page looks («تبيان» unless chosen
-/// otherwise), with a real page in the chosen look and light.
+/// First launch, step 3: how the mushaf page looks (plain, without a frame,
+/// unless chosen otherwise), with a real page in the chosen look and light.
 class OnboardingPageScreen extends ConsumerWidget {
   const OnboardingPageScreen({super.key});
 

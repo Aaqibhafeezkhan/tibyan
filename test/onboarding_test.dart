@@ -85,10 +85,10 @@ void main() {
   testWidgets('fresh install: six steps, then the app', (tester) async {
     final container = await launch(tester);
 
-    // Defaults: the «هندسي» interface, the «تبيان» page, light, new edition.
+    // Defaults: the «هندسي» interface, the plain page, light, new edition.
     final settings = container.read(settingsProvider);
     expect(settings.interfaceStyle, InterfaceStyle.handasi);
-    expect(settings.styleId, 'zakhrafa');
+    expect(settings.styleId, 'simple');
     expect(settings.mode, ModeSetting.light);
     expect(settings.edition, MushafEdition.madina1441);
 
@@ -162,7 +162,7 @@ void main() {
     final s = container.read(settingsProvider);
     expect(s.onboardingDone, isTrue);
     expect(s.interfaceStyle, InterfaceStyle.handasi);
-    expect(s.styleId, 'zakhrafa');
+    expect(s.styleId, 'simple');
     expect(s.edition, MushafEdition.madina1441);
     expect(location(tester), isNot(startsWith('/onboarding')));
   });

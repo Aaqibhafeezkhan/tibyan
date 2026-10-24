@@ -25,10 +25,10 @@ void main() {
     );
   }
 
-  test('defaults: Arabic, Zakhrafa, Light, Changa, 16-point rosette, crash reports off', () async {
+  test('defaults: Arabic, Simple (no frame), Light, Changa, 16-point rosette, crash reports off', () async {
     final c = await containerWith({});
     final s = c.read(settingsProvider);
-    expect(s.styleId, 'zakhrafa');
+    expect(s.styleId, 'simple');
     expect(s.mode, ModeSetting.light);
     expect(s.uiFont, UiFont.changa);
     expect(s.markerStyle, MarkerStyle.rosette16);
@@ -38,6 +38,19 @@ void main() {
     expect(s.language, LanguageSetting.ar);
     expect(s.locale, const Locale('ar'));
   });
+
+  test(
+    'an existing reader keeps the Zakhrafa frame; a choice is kept',
+    () async {
+      final old = await containerWith({'settings.onboardingDone': true});
+      expect(old.read(settingsProvider).styleId, 'zakhrafa');
+      final chose = await containerWith({
+        'settings.onboardingDone': true,
+        'settings.style': 'seljuk',
+      });
+      expect(chose.read(settingsProvider).styleId, 'seljuk');
+    },
+  );
 
   group('page turn default', () {
     test('a new install turns pages with a fade', () async {
@@ -245,7 +258,7 @@ void main() {
 
   test('unknown stored style falls back to the default', () async {
     final c = await containerWith({'settings.style': 'removed-style'});
-    expect(c.read(settingsProvider).styleId, 'zakhrafa');
+    expect(c.read(settingsProvider).styleId, 'simple');
   });
 
   test('a removed style and frame from an older version load safely', () async {
@@ -255,9 +268,9 @@ void main() {
       'settings.mode': 'no-such-mode',
     });
     final s = c.read(settingsProvider);
-    expect(s.styleId, 'zakhrafa');
+    expect(s.styleId, 'simple');
     expect(s.mode, ModeSetting.light);
-    expect(c.read(themeRegistryProvider).byId('royal').id, 'zakhrafa');
+    expect(c.read(themeRegistryProvider).byId('royal').id, 'simple');
   });
 
   test('bright white: resolves, counts as light, pure white', () async {

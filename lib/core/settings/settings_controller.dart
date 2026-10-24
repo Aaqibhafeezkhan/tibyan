@@ -72,8 +72,9 @@ class SettingsController extends Notifier<AppSettings> {
   /// stored is never touched.
   static const _defaultsRev = 1;
 
-  /// The defaults before [_defaultsRev] 1: the page turned with a fold.
-  static const _oldDefaults = {_kPageTurn: 'fold'};
+  /// The defaults before [_defaultsRev] 1: the page turned with a fold,
+  /// inside the «تبيان» (zakhrafa) ornamented frame.
+  static const _oldDefaults = {_kPageTurn: 'fold', _kStyle: 'zakhrafa'};
   static const _kPlayerStyle = 'settings.playerStyle';
   static const _kPlayerX = 'settings.playerX';
   static const _kPlayerY = 'settings.playerY';
