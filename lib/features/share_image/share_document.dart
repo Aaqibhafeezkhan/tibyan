@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'dart:ui' show Canvas, Color, Offset, Paint, Rect, Size;
 
+import 'share_art.dart';
 import 'share_layout.dart';
 import 'share_text_runs.dart';
 
@@ -135,7 +136,65 @@ class ShareDocument {
     required this.byMushaf,
     this.palette = SharePalette.brand,
     double? linePitch,
+    this.art,
   }) : _linePitch = linePitch ?? fontSize * _pitch;
+
+  /// The passage as its mushaf's own pages ([ShareDocument.art]): one
+  /// picture for each, the page's artwork under the surah's header; null
+  /// when the text is laid out instead.
+  final List<ShareArtPage>? art;
+
+  /// The drawn pages of [art], by picture, while they are near the one
+  /// shown ([prepare]).
+  final _artImages = <int, ui.Image>{};
+  final _artLoading = <int, Future<void>>{};
+
+  /// Lays [passage] out as [pages], its mushaf's own artwork: no text is
+  /// set again.
+  factory ShareDocument.art(
+    SharePassage passage,
+    List<ShareArtPage> pages, {
+    ui.Image? logo,
+    SharePalette palette = SharePalette.brand,
+  }) => ShareDocument._(
+    passage,
+    fontSizes.last,
+    const [],
+    const [],
+    const [],
+    const [],
+    logo,
+    byMushaf: true,
+    palette: palette,
+    art: pages,
+  );
+
+  /// How wide a page's artwork is drawn on its picture, at most.
+  static const artWidth = width - 2 * 96.0;
+
+  /// Makes picture [page] ready to [paint]: its artwork drawn (a picture
+  /// of text is always ready). Only the pictures near it are kept.
+  Future<void> prepare(int page) {
+    final pages = art;
+    if (pages == null || _artImages.containsKey(page)) return Future.value();
+    for (final k in [..._artImages.keys]) {
+      if ((k - page).abs() > 2) _artImages.remove(k)?.dispose();
+    }
+    return _artLoading[page] ??= () async {
+      try {
+        final image = await pages[page].render(artWidth, palette.paper);
+        if (_disposed) {
+          image.dispose();
+        } else {
+          _artImages[page] = image;
+        }
+      } finally {
+        _artLoading.removeWhere((k, _) => k == page);
+      }
+    }();
+  }
+
+  bool _disposed = false;
 
   static const width = 1536.0;
   static const height = 2048.0;
@@ -196,13 +255,13 @@ class ShareDocument {
   /// From one line's middle to the next one's.
   final double _linePitch;
 
-  int get pageCount => pages.length;
+  int get pageCount => art?.length ?? pages.length;
 
   /// The size of image [page]: a passage on one picture is only as tall as
   /// its header, basmala, text and footer need; a passage on several keeps
   /// the full 3:4 size on every one.
   Size sizeOf(int page) {
-    if (pages.length > 1 || byMushaf) return size;
+    if (pages.length > 1 || byMushaf || art != null) return size;
     final layout = pages[page];
     final basmala = layout.firstOfSurah && passage.hasBasmala(layout.surah);
     final h =
@@ -522,11 +581,13 @@ class ShareDocument {
 
   /// The text drawn on image [page]: its tokens, joined as they stand in
   /// the verses.
-  String textOf(int page) =>
-      joinTokens(tokens.sublist(pages[page].from, pages[page].to));
+  String textOf(int page) => art != null
+      ? ''
+      : joinTokens(tokens.sublist(pages[page].from, pages[page].to));
 
   /// Draws image [page] at [sizeOf] it.
   void paint(Canvas canvas, int page) {
+    if (art != null) return _paintArt(canvas, page);
     final layout = pages[page];
     final pictureSize = sizeOf(page);
     // The footer keeps its place from the bottom edge.
@@ -576,6 +637,37 @@ class ShareDocument {
       top += pitch;
     }
     _paintFooter(canvas, page, footerTop);
+  }
+
+  /// Picture [page] of [art]: the page's artwork, as large as the room
+  /// between the header and the footer allows, in the middle of it.
+  void _paintArt(Canvas canvas, int page) {
+    final a = art![page];
+    canvas.drawRect(Offset.zero & size, Paint()..color = palette.paper);
+    _paintHeader(canvas, passage.headers[a.surah]);
+    final room = Rect.fromLTRB(
+      (width - artWidth) / 2,
+      _headerTop + _headerHeight + _gapAfterHeader,
+      (width + artWidth) / 2,
+      _textBottom,
+    );
+    final aspect = a.crop.width / a.crop.height;
+    var w = room.width, h = w / aspect;
+    if (h > room.height) {
+      h = room.height;
+      w = h * aspect;
+    }
+    final dst = Rect.fromCenter(center: room.center, width: w, height: h);
+    final image = _artImages[page];
+    if (image != null) {
+      canvas.drawImageRect(
+        image,
+        Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()),
+        dst,
+        Paint()..filterQuality = ui.FilterQuality.high,
+      );
+    }
+    _paintFooter(canvas, page, _footerTop);
   }
 
   void _paintHeader(Canvas canvas, ShareSurahHeader? header) {
@@ -664,9 +756,9 @@ class ShareDocument {
       ref,
       Offset(width - margin - 620, mid - ref.height / 2),
     );
-    if (pages.length > 1) {
+    if (pageCount > 1) {
       final n = _label(
-        passage.pageLabel(page, pages.length),
+        passage.pageLabel(page, pageCount),
         family: _uiFont,
         size: 38,
         color: palette.label,
@@ -692,7 +784,8 @@ class ShareDocument {
   }
 
   /// Image [page] as a picture.
-  Future<ui.Image> image(int page) {
+  Future<ui.Image> image(int page) async {
+    await prepare(page);
     final recorder = ui.PictureRecorder();
     paint(Canvas(recorder), page);
     final picture = recorder.endRecording();
@@ -714,6 +807,11 @@ class ShareDocument {
   }
 
   void dispose() {
+    _disposed = true;
+    for (final i in _artImages.values) {
+      i.dispose();
+    }
+    _artImages.clear();
     for (final p in _words) {
       p.dispose();
     }

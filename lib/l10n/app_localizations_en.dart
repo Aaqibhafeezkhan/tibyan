@@ -627,6 +627,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noMarks => 'No marks yet. Tap a verse marker to mark it.';
 
   @override
+  String get shareAsMushafPages => 'The mushaf\'s own pages';
+
+  @override
+  String get shareAsMushafPagesHint =>
+      'Each picture is a page of your mushaf as you read it, instead of the verses set again';
+
+  @override
   String get shareBrandColours => 'Tibyan\'s original colours';
 
   @override

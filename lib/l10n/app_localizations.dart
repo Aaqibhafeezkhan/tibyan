@@ -1118,6 +1118,18 @@ abstract class AppLocalizations {
   /// **'لا توجد فواصل بعد. اضغط على فاصل أي آية لتعليمها.'**
   String get noMarks;
 
+  /// No description provided for @shareAsMushafPages.
+  ///
+  /// In ar, this message translates to:
+  /// **'صفحات المصحف كما هي'**
+  String get shareAsMushafPages;
+
+  /// No description provided for @shareAsMushafPagesHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'كل صورة صفحة من مصحفك كما تقرؤها، بدل كتابة الآيات من جديد'**
+  String get shareAsMushafPagesHint;
+
   /// No description provided for @shareBrandColours.
   ///
   /// In ar, this message translates to:

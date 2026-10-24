@@ -355,6 +355,8 @@
   "markRemoved": "Mark removed",
   "tabMarks": "Reading marks",
   "noMarks": "No marks yet. Tap a verse marker to mark it.",
+  "shareAsMushafPages": "The mushaf's own pages",
+  "shareAsMushafPagesHint": "Each picture is a page of your mushaf as you read it, instead of the verses set again",
   "shareBrandColours": "Tibyan's original colours",
   "shareBrandColoursHint": "Instead of the current interface and mushaf colours",
   "highlightDivineNames": "Highlight the divine name",

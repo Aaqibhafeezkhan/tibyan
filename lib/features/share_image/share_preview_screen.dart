@@ -26,6 +26,7 @@ import '../mushaf/mushaf_providers.dart';
 import '../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
 import 'photo_saver.dart';
+import 'share_art.dart';
 import 'share_carousel.dart';
 import 'share_document.dart';
 import 'share_palette.dart';
@@ -68,6 +69,13 @@ class _SharePreviewState extends ConsumerState<SharePreviewScreen> {
   ui.Image? _logo;
   int _page = 0;
   bool _busy = false;
+
+  /// A passage longer than one picture is shared as its mushaf's own pages
+  /// (when they are on the device), unless the reader turns it off.
+  bool _asPages = true;
+
+  /// The passage takes more than one picture as text.
+  bool _long = false;
 
   /// The riwaya's text or font is not on the device: nothing is drawn.
   bool _unavailable = false;
@@ -139,13 +147,32 @@ class _SharePreviewState extends ConsumerState<SharePreviewScreen> {
       setState(() => _unavailable = true);
       return;
     }
-    final doc = ShareDocument.build(passage, logo: _logo, palette: palette);
+    var doc = ShareDocument.build(passage, logo: _logo, palette: palette);
+    final long = doc.pageCount > 1;
+    if (long && _asPages) {
+      final art = await shareArtPages(ref, widget.range);
+      if (!mounted || build != _build) {
+        doc.dispose();
+        return;
+      }
+      if (art != null) {
+        doc.dispose();
+        // The pages as they are printed: on light paper.
+        doc = ShareDocument.art(
+          passage,
+          art,
+          logo: _logo,
+          palette: palette.dark ? SharePalette.brand : palette,
+        );
+      }
+    }
     final old = _doc;
     // The old pictures' text is freed once nothing draws it any more.
     if (old != null) {
       SchedulerBinding.instance.addPostFrameCallback((_) => old.dispose());
     }
     setState(() {
+      _long = long;
       _doc = doc;
       if (_page >= doc.pageCount) _page = doc.pageCount - 1;
     });
@@ -260,27 +287,45 @@ class _SharePreviewState extends ConsumerState<SharePreviewScreen> {
                                           aspectRatio:
                                               doc.sizeOf(i).width /
                                               doc.sizeOf(i).height,
-                                          child: DecoratedBox(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: context.look.line,
-                                              ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: context.look.frame
-                                                      .withValues(alpha: .22),
-                                                  blurRadius: 10,
-                                                ),
-                                              ],
-                                            ),
-                                            child: FittedBox(
-                                              child: SizedBox.fromSize(
-                                                size: doc.sizeOf(i),
-                                                child: CustomPaint(
-                                                  painter: _PagePainter(doc, i),
-                                                ),
-                                              ),
-                                            ),
+                                          child: FutureBuilder<void>(
+                                            future: doc.prepare(i),
+                                            builder: (context, ready) =>
+                                                ready.connectionState !=
+                                                    ConnectionState.done
+                                                ? const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  )
+                                                : DecoratedBox(
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        color:
+                                                            context.look.line,
+                                                      ),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: context
+                                                              .look
+                                                              .frame
+                                                              .withValues(
+                                                                alpha: .22,
+                                                              ),
+                                                          blurRadius: 10,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: FittedBox(
+                                                      child: SizedBox.fromSize(
+                                                        size: doc.sizeOf(i),
+                                                        child: CustomPaint(
+                                                          painter: _PagePainter(
+                                                            doc,
+                                                            i,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
                                           ),
                                         ),
                                       ),
@@ -295,19 +340,31 @@ class _SharePreviewState extends ConsumerState<SharePreviewScreen> {
                                 digits(doc.pageCount),
                               ),
                             ),
-                          if (editionHasTajweed(edition))
+                          if (_long)
+                            SwitchListTile(
+                              key: const ValueKey('share-as-pages'),
+                              title: Text(l.shareAsMushafPages),
+                              subtitle: Text(l.shareAsMushafPagesHint),
+                              value: _asPages,
+                              onChanged: (v) {
+                                setState(() => _asPages = v);
+                                unawaited(_rebuild());
+                              },
+                            ),
+                          if (doc?.art == null && editionHasTajweed(edition))
                             SwitchListTile(
                               title: Text(l.tajweedColors),
                               value: _options.tajweed,
                               onChanged: (v) =>
                                   _set(_options.copyWith(tajweed: v)),
                             ),
-                          SwitchListTile(
-                            title: Text(l.highlightDivineNames),
-                            value: _options.divineNames,
-                            onChanged: (v) =>
-                                _set(_options.copyWith(divineNames: v)),
-                          ),
+                          if (doc?.art == null)
+                            SwitchListTile(
+                              title: Text(l.highlightDivineNames),
+                              value: _options.divineNames,
+                              onChanged: (v) =>
+                                  _set(_options.copyWith(divineNames: v)),
+                            ),
                           SwitchListTile(
                             key: const ValueKey('share-brand-colours'),
                             title: Text(l.shareBrandColours),

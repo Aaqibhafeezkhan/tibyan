@@ -14,6 +14,7 @@ All notable changes to Tibyan are recorded here. The format follows
 - Mushaf: tapping a folded fasil from another page now jumps there with a light, quick fade instead of the chosen page-turn effect, in every edition.
 - Mushaf: new installs turn pages with a light fade by default; readers who installed before keep the fold they were reading with, and any page-turn effect already chosen is kept.
 - Mushaf: new installs start with the plain page (no ornamented frame); readers who installed before keep the Zakhrafa frame, and a chosen frame is never changed. The first-run page step still offers every frame.
+- Share as images: a passage longer than one picture is shared as the mushaf's own pages (1441, 1405, Shamarly and the riwaya editions), one picture per page in the share frame, cut at line boundaries where the passage starts or ends mid-page; a switch goes back to the verses set as text.
 
 ### Added
 - First run: a new step to choose the page-turn effect, each shown as a small book turning its page in a loop (still when animations are off).

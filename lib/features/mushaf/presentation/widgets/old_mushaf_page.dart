@@ -88,7 +88,7 @@ class OldMushafPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      ImageMushafPage(page: page, interaction: interaction, load: _loadOldPage);
+      ImageMushafPage(page: page, interaction: interaction, load: loadOldPage);
 }
 
 /// Each page's own ink (tools/measure_old_page_ink.py), read once.
@@ -115,7 +115,7 @@ Future<Map<int, Rect>> _readOwnInk() async {
   }
 }
 
-Future<ImagePageData> _loadOldPage(WidgetRef ref, int page) async {
+Future<ImagePageData> loadOldPage(WidgetRef ref, int page) async {
   final ownInk = (_ownInk ??= _readOwnInk());
   final dir = ref.read(pageInstallerProvider).dir;
   final file = File(

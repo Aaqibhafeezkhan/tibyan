@@ -110,14 +110,14 @@ class ShamarlyMushafPage extends StatelessWidget {
   Widget build(BuildContext context) => ImageMushafPage(
     page: page,
     interaction: interaction,
-    load: _loadShamarlyPage,
+    load: loadShamarlyPage,
   );
 }
 
 Rect _rect(int x0, int y0, int x1, int y1) =>
     Rect.fromLTRB(x0.toDouble(), y0.toDouble(), x1.toDouble(), y1.toDouble());
 
-Future<ImagePageData> _loadShamarlyPage(WidgetRef ref, int page) async {
+Future<ImagePageData> loadShamarlyPage(WidgetRef ref, int page) async {
   final dir = ref.read(pageInstallerProvider).dir;
   final file = File(p.join(dir.path, '${page.toString().padLeft(3, '0')}.png'));
   final repo = ref.read(mushafRepositoryProvider);

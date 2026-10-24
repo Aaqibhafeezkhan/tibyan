@@ -638,6 +638,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noMarks => 'لا توجد فواصل بعد. اضغط على فاصل أي آية لتعليمها.';
 
   @override
+  String get shareAsMushafPages => 'صفحات المصحف كما هي';
+
+  @override
+  String get shareAsMushafPagesHint =>
+      'كل صورة صفحة من مصحفك كما تقرؤها، بدل كتابة الآيات من جديد';
+
+  @override
   String get shareBrandColours => 'ألوان تبيان الأصلية';
 
   @override

@@ -498,6 +498,8 @@
   "markRemoved": "أُزيل الفاصل",
   "tabMarks": "فواصل القراءة",
   "noMarks": "لا توجد فواصل بعد. اضغط على فاصل أي آية لتعليمها.",
+  "shareAsMushafPages": "صفحات المصحف كما هي",
+  "shareAsMushafPagesHint": "كل صورة صفحة من مصحفك كما تقرؤها، بدل كتابة الآيات من جديد",
   "shareBrandColours": "ألوان تبيان الأصلية",
   "shareBrandColoursHint": "بدلًا من ألوان الواجهة والمصحف الحالية",
   "highlightDivineNames": "تمييز لفظ الجلالة",
