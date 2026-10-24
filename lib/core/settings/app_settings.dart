@@ -72,11 +72,11 @@ enum FocusTools { button, menu }
 enum PageFill { lines, stretch, full }
 
 /// «تأثير قلب الصفحة»: how the mushaf turns a page. [normal]: the page
-/// slides (the default); [curl]: the page folds over in 3D like paper;
+/// slides; [curl]: the page folds over in 3D like paper;
 /// [bend]: the page wraps round a cylinder that follows the finger, its
 /// print bending with it and its back showing (a fragment shader);
 /// [fold]: a lighter bend, the edge folded back flat along a line;
-/// [fade]: the next page fades in over the last.
+/// [fade]: the next page fades in over the last (the default).
 enum PageTurn { normal, curl, bend, fold, fade }
 
 /// «شكل الفاصلة»: how a named fasil shows on its page. [tint]: its verse
@@ -186,7 +186,7 @@ class AppSettings {
     this.focusToolsShown = false,
     this.autoScrollSpeed = 3,
     this.pageFill = PageFill.lines,
-    this.pageTurn = PageTurn.fold,
+    this.pageTurn = PageTurn.fade,
     this.playerStyle = PlayerStyle.auto,
     this.playerPosition,
     this.sajdahTimer = false,

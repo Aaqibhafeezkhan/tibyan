@@ -39,6 +39,35 @@ void main() {
     expect(s.locale, const Locale('ar'));
   });
 
+  group('page turn default', () {
+    test('a new install turns pages with a fade', () async {
+      final c = await containerWith({});
+      expect(c.read(settingsProvider).pageTurn, PageTurn.fade);
+      // Finishing the first run later does not bring the old default back.
+      final sp = await SharedPreferences.getInstance();
+      await sp.setBool('settings.onboardingDone', true);
+      final again = await containerWith({
+        for (final k in sp.getKeys()) k: sp.get(k)!,
+      });
+      expect(again.read(settingsProvider).pageTurn, PageTurn.fade);
+    });
+
+    test('an existing reader keeps the fold they were reading with', () async {
+      final c = await containerWith({'settings.onboardingDone': true});
+      expect(c.read(settingsProvider).pageTurn, PageTurn.fold);
+    });
+
+    test('a stored choice is never overridden', () async {
+      for (final turn in PageTurn.values) {
+        final c = await containerWith({
+          'settings.onboardingDone': true,
+          'settings.pageTurn': turn.name,
+        });
+        expect(c.read(settingsProvider).pageTurn, turn);
+      }
+    });
+  });
+
   test('changes are saved and restored', () async {
     final c = await containerWith({});
     final ctrl = c.read(settingsProvider.notifier);

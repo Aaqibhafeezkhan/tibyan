@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart' show Offset;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,6 +64,16 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kAutoScrollSpeed = 'settings.autoScrollSpeed';
   static const _kPageFill = 'settings.pageFill';
   static const _kPageTurn = 'settings.pageTurn';
+  static const _kDefaultsRev = 'settings.defaultsRev';
+
+  /// Bumped whenever a default changes. Readers who installed before it
+  /// keep what they have been reading with: the old default is written down
+  /// for them once, so only new installs get the new one. A choice already
+  /// stored is never touched.
+  static const _defaultsRev = 1;
+
+  /// The defaults before [_defaultsRev] 1: the page turned with a fold.
+  static const _oldDefaults = {_kPageTurn: 'fold'};
   static const _kPlayerStyle = 'settings.playerStyle';
   static const _kPlayerX = 'settings.playerX';
   static const _kPlayerY = 'settings.playerY';
@@ -82,6 +94,7 @@ class SettingsController extends Notifier<AppSettings> {
 
   @override
   AppSettings build() {
+    _keepOldDefaults();
     final registry = ref.read(themeRegistryProvider);
     final storedStyle = _prefs.getString(_kStyle);
     final styleIds = registry.styles.map((s) => s.id).toSet();
@@ -169,7 +182,7 @@ class SettingsController extends Notifier<AppSettings> {
           PageFill.lines,
       pageTurn:
           _enumByName(PageTurn.values, _prefs.getString(_kPageTurn)) ??
-          PageTurn.fold,
+          PageTurn.fade,
       playerStyle:
           _enumByName(PlayerStyle.values, _prefs.getString(_kPlayerStyle)) ??
           PlayerStyle.auto,
@@ -220,6 +233,20 @@ class SettingsController extends Notifier<AppSettings> {
 
   /// Until the reader picks a marker shape, a heritage theme draws its own
   /// marker and Zakhrafa its 16-point rosette.
+  void _keepOldDefaults() {
+    if ((_prefs.getInt(_kDefaultsRev) ?? 0) >= _defaultsRev) return;
+    // Someone who already went through the first run (or saw a «what's new»)
+    // was reading with the old defaults; a fresh install was not.
+    final existing =
+        _prefs.getBool(_kOnboarding) ?? _prefs.containsKey(whatsNewSeenKey);
+    if (existing) {
+      for (final MapEntry(:key, :value) in _oldDefaults.entries) {
+        if (!_prefs.containsKey(key)) unawaited(_prefs.setString(key, value));
+      }
+    }
+    unawaited(_prefs.setInt(_kDefaultsRev, _defaultsRev));
+  }
+
   MarkerStyle _defaultMarker(String styleId) =>
       ref.read(themeRegistryProvider).byId(styleId).art != null
       ? MarkerStyle.theme

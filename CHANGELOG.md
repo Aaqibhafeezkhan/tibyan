@@ -12,6 +12,7 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ### Changed
 - Mushaf: tapping a folded fasil from another page now jumps there with a light, quick fade instead of the chosen page-turn effect, in every edition.
+- Mushaf: new installs turn pages with a light fade by default; readers who installed before keep the fold they were reading with, and any page-turn effect already chosen is kept.
 
 ## [0.5.1] - 2026-10-21
 
