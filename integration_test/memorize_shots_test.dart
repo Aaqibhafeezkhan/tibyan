@@ -41,7 +41,8 @@ Future<void> snap(WidgetTester t, String name) async {
   await pumpFor(t, const Duration(seconds: 2));
   final view = t.binding.renderViews.first;
   final layer = view.debugLayer! as OffsetLayer;
-  final image = await layer.toImage(Offset.zero & view.size, pixelRatio: 1.5);
+  final px = view.flutterView.physicalSize;
+  final image = await layer.toImage(Offset.zero & px, pixelRatio: 1);
   final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
   image.dispose();
   final b64 = base64Encode(bytes!.buffer.asUint8List());

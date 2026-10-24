@@ -245,12 +245,12 @@ List<MemoWord> wordsBetween(MemoWord a, MemoWord b, Iterable<MemoWord> words) {
 
 /// A mask's box on screen from a word's box on screen: a little taller
 /// than the letters (their marks reach above and below the box) and
-/// half a pixel wider, so no edge of a letter shows.
+/// a pixel wider, so no edge of a letter shows.
 Rect maskBox(Rect word) => Rect.fromLTRB(
-  word.left - 0.5,
-  word.top - word.height * 0.12,
-  word.right + 0.5,
-  word.bottom + word.height * 0.12,
+  word.left - 1,
+  word.top - word.height * 0.2,
+  word.right + 1,
+  word.bottom + word.height * 0.2,
 );
 
 /// The faint line drawn in a mask, where the hidden words sit: from 15 %
