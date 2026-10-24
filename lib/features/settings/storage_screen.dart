@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/ui/app_toast.dart';
+
 import '../../core/ui/look_kit.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -119,7 +121,7 @@ class StorageScreen extends ConsumerWidget {
       ref.read(packInstallsProvider.notifier).changed();
       ref.invalidate(_storageProvider);
       messenger.showSnackBar(
-        SnackBar(content: Text(l.storageFreed(size(freed)))),
+        appToast(content: Text(l.storageFreed(size(freed)))),
       );
     }
 

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import '../../../core/ui/app_toast.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -255,7 +257,7 @@ class _TasmeeSessionScreenState extends ConsumerState<TasmeeSessionScreen> {
     final ok = await ref.read(tasmeeBackendProvider).openDeviceSettings();
     if (ok || !mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(AppLocalizations.of(context).tasmeeAllowMicHint)),
+      appToast(content: Text(AppLocalizations.of(context).tasmeeAllowMicHint)),
     );
   }
 

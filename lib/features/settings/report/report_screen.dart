@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/app_toast.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/settings/settings_controller.dart';
@@ -72,7 +75,7 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
     if (!mounted) return;
     setState(() => _sending = false);
     messenger.showSnackBar(
-      SnackBar(
+      appToast(
         content: Text(switch (outcome) {
           ReportOutcome.sent => l.reportSent,
           ReportOutcome.queued => l.reportQueued,

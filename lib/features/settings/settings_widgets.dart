@@ -1,4 +1,7 @@
 import 'dart:convert';
+
+import '../../core/ui/app_toast.dart';
+
 import 'dart:io';
 
 import 'package:file_selector/file_selector.dart';
@@ -244,7 +247,7 @@ Future<void> exportBackup(BuildContext context, WidgetRef ref) async {
     await file.writeAsString(text, flush: true);
     await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
   } catch (_) {
-    messenger.showSnackBar(SnackBar(content: Text(l.backupFailed)));
+    messenger.showSnackBar(appToast(content: Text(l.backupFailed)));
   }
 }
 
@@ -279,12 +282,12 @@ Future<void> importBackup(BuildContext context, WidgetRef ref) async {
       debugPrint('after restore: $e');
     }
     messenger.showSnackBar(
-      SnackBar(content: Text(l.backupDone(digits(r.added), digits(r.updated)))),
+      appToast(content: Text(l.backupDone(digits(r.added), digits(r.updated)))),
     );
   } on BackupException {
-    messenger.showSnackBar(SnackBar(content: Text(l.backupInvalid)));
+    messenger.showSnackBar(appToast(content: Text(l.backupInvalid)));
   } catch (_) {
-    messenger.showSnackBar(SnackBar(content: Text(l.backupFailed)));
+    messenger.showSnackBar(appToast(content: Text(l.backupFailed)));
   }
 }
 

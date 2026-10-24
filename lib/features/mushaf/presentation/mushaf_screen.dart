@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import '../../../core/ui/app_toast.dart';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -2037,7 +2039,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     if (!mounted) return;
     if (target == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).riwayaWordNoStudy)),
+        appToast(content: Text(AppLocalizations.of(context).riwayaWordNoStudy)),
       );
       return;
     }
@@ -2120,7 +2122,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(
-            SnackBar(
+            appToast(
               behavior: SnackBarBehavior.floating,
               duration: const Duration(milliseconds: 1800),
               content: Text(AppLocalizations.of(context).tapJumpNoTiming),
@@ -2222,7 +2224,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        SnackBar(
+        appToast(
           behavior: SnackBarBehavior.floating,
           duration: const Duration(milliseconds: 1600),
           content: Text(
@@ -2256,7 +2258,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(
-          SnackBar(
+          appToast(
             behavior: SnackBarBehavior.floating,
             duration: const Duration(milliseconds: 1800),
             content: Text(l.touchReadingOn),
@@ -2381,7 +2383,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        SnackBar(
+        appToast(
           behavior: SnackBarBehavior.floating,
           content: Text(
             [l.gradeSaved(reviewDate(context, review.due)), ?saved].join('\n'),
@@ -2550,7 +2552,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        SnackBar(
+        appToast(
           behavior: SnackBarBehavior.floating,
           duration: const Duration(milliseconds: 1400),
           content: Text(l.markRemoved),
@@ -2583,7 +2585,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     final l = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     await Clipboard.setData(ClipboardData(text: text));
-    messenger.showSnackBar(SnackBar(content: Text(l.copied)));
+    messenger.showSnackBar(appToast(content: Text(l.copied)));
   }
 
   Rect? _shareOrigin() {

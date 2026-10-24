@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import '../../../core/ui/app_toast.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -447,7 +449,7 @@ class _WirdCompletionBannerState extends ConsumerState<WirdCompletionBanner> {
 void showWirdCompleted(BuildContext context, {int seconds = 3}) {
   final l = AppLocalizations.of(context);
   ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
+    appToast(
       content: Row(
         children: [
           Icon(

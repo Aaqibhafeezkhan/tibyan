@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/ui/app_toast.dart';
+
 import '../../../core/ui/look_kit.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -175,7 +177,7 @@ class _KhatmaScreenState extends ConsumerState<KhatmaScreen> {
     } catch (error) {
       if (!mounted) rethrow;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l.khatmaCreateFailed(error.toString()))),
+        appToast(content: Text(l.khatmaCreateFailed(error.toString()))),
       );
     }
   }
@@ -1178,7 +1180,7 @@ Future<void> _chooseRecovery(
   } catch (error) {
     if (!context.mounted) rethrow;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l.khatmaSaveFailed(error.toString()))),
+      appToast(content: Text(l.khatmaSaveFailed(error.toString()))),
     );
   }
 }
@@ -1203,7 +1205,7 @@ Future<void> _editSettings(
   } catch (error) {
     if (!context.mounted) rethrow;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l.khatmaSaveFailed(error.toString()))),
+      appToast(content: Text(l.khatmaSaveFailed(error.toString()))),
     );
   }
 }
@@ -1381,7 +1383,7 @@ Future<void> _pickReminder(
       if (!context.mounted) rethrow;
       final l = AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l.khatmaSaveFailed(error.toString()))),
+        appToast(content: Text(l.khatmaSaveFailed(error.toString()))),
       );
     }
   }

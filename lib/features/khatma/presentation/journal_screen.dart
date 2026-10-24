@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/ui/app_toast.dart';
+
 import '../../../core/ui/look_kit.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -300,7 +302,7 @@ class _ReflectionSheetState extends ConsumerState<_ReflectionSheet> {
               if (!context.mounted) return;
               Navigator.of(context).pop();
               ScaffoldMessenger.maybeOf(context)
-                  ?.showSnackBar(SnackBar(content: Text(l.journalSaved)));
+                  ?.showSnackBar(appToast(content: Text(l.journalSaved)));
             },
             style: FilledButton.styleFrom(
               minimumSize: const Size.fromHeight(48),

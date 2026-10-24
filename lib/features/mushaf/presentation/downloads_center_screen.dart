@@ -1,4 +1,7 @@
 import 'dart:async';
+
+import '../../../core/ui/app_toast.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -57,7 +60,7 @@ class DownloadsCenterScreen extends ConsumerWidget {
     final messenger = ScaffoldMessenger.maybeOf(context);
     void leaving() {
       if (_busy(ref)) {
-        messenger?.showSnackBar(SnackBar(content: Text(l.downloadsGoesOn)));
+        messenger?.showSnackBar(appToast(content: Text(l.downloadsGoesOn)));
       }
     }
 

@@ -1,4 +1,7 @@
 import 'dart:async';
+
+import '../../core/ui/app_toast.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -262,7 +265,7 @@ class EnglishTafsirSection extends ConsumerWidget {
                   );
                   if (!context.mounted) return;
                   ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(l.copied)));
+                      .showSnackBar(appToast(content: Text(l.copied)));
                 },
               ),
             ],

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import '../../../core/ui/app_toast.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../mushaf/presentation/widgets/illuminated_frame.dart'
@@ -147,7 +149,7 @@ class _TasmeeSetupSheetState extends ConsumerState<TasmeeSetupSheet> {
       if (version == null || !mounted) return;
       final n = int.tryParse(version);
       ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-        SnackBar(
+        appToast(
           content: Text(
             AppLocalizations.of(context)
                 .tasmeeModelUpdated(n == null ? version : context.digits(n)),

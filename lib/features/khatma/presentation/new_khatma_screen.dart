@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/ui/app_toast.dart';
+
 import '../../../core/ui/look_kit.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -873,7 +875,7 @@ class _NewKhatmaScreenState extends ConsumerState<NewKhatmaScreen> {
       if (!mounted) rethrow;
       setState(() => _saving = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l.khatmaCreateFailed(error.toString()))),
+        appToast(content: Text(l.khatmaCreateFailed(error.toString()))),
       );
     }
   }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../../core/ui/app_toast.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -108,7 +111,7 @@ Future<void> showSaveToFasil(
             void done() {
               Navigator.of(sheet).pop();
               ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(l.saved)));
+                  .showSnackBar(appToast(content: Text(l.saved)));
             }
 
             return SafeArea(
@@ -602,7 +605,7 @@ Future<void> showFasilActions(
                     await db.deleteBookmarkSet(fasil.id);
                     if (sheet.mounted) Navigator.of(sheet).pop();
                     messenger.showSnackBar(
-                      SnackBar(
+                      appToast(
                         content: Text(l.fasilDeleted),
                         action: SnackBarAction(
                           label: l.fasilUndo,

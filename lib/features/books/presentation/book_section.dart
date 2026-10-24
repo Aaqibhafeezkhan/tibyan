@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/ui/app_toast.dart';
+
 import '../../../core/ui/look_kit.dart';
 
 import 'package:flutter/services.dart';
@@ -249,7 +251,7 @@ class BookEntryCard extends ConsumerWidget {
                   await Clipboard.setData(ClipboardData(text: copy));
                   if (!context.mounted) return;
                   ScaffoldMessenger.maybeOf(context)
-                      ?.showSnackBar(SnackBar(content: Text(l.copied)));
+                      ?.showSnackBar(appToast(content: Text(l.copied)));
                 },
               ),
             ],

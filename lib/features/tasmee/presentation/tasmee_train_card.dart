@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/ui/app_toast.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/theme/app_theme.dart';
@@ -32,7 +35,7 @@ class TasmeeTrainCard extends StatelessWidget {
     final messenger = ScaffoldMessenger.maybeOf(context);
     final failed = AppLocalizations.of(context).tasmeeTrainOpenFailed;
     if (!await open(trainingPlatformUrl)) {
-      messenger?.showSnackBar(SnackBar(content: Text(failed)));
+      messenger?.showSnackBar(appToast(content: Text(failed)));
     }
   }
 

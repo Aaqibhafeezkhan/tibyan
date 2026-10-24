@@ -1,4 +1,7 @@
 import 'dart:async';
+
+import '../../core/ui/app_toast.dart';
+
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -186,7 +189,7 @@ class _SharePreviewState extends ConsumerState<SharePreviewScreen> {
         ),
       );
     } on Exception {
-      messenger.showSnackBar(SnackBar(content: Text(l.shareImageFailed)));
+      messenger.showSnackBar(appToast(content: Text(l.shareImageFailed)));
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -202,14 +205,14 @@ class _SharePreviewState extends ConsumerState<SharePreviewScreen> {
       final (:saved, :folder) = await PhotoSaver.save(await _files(doc));
       if (!saved) return;
       messenger.showSnackBar(
-        SnackBar(
+        appToast(
           content: Text(
             folder == null ? l.savedToPhotos : l.savedToFolder(folder),
           ),
         ),
       );
     } on Exception {
-      messenger.showSnackBar(SnackBar(content: Text(l.saveToPhotosFailed)));
+      messenger.showSnackBar(appToast(content: Text(l.saveToPhotosFailed)));
     } finally {
       if (mounted) setState(() => _busy = false);
     }

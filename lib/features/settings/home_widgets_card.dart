@@ -3,6 +3,9 @@
 // (Android 8 and later), how to add one elsewhere (iOS, macOS), and a
 // button that rewrites their data now.
 import 'package:flutter/foundation.dart';
+
+import '../../core/ui/app_toast.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
@@ -126,7 +129,7 @@ class _HomeWidgetsCardState extends ConsumerState<HomeWidgetsCard> {
                       if (!mounted) return;
                       setState(() => _busy = false);
                       messenger?.showSnackBar(
-                        SnackBar(content: Text(l.widgetRefreshed)),
+                        appToast(content: Text(l.widgetRefreshed)),
                       );
                     },
               icon: _busy

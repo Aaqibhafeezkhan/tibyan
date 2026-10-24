@@ -6,6 +6,10 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+
+### Fixed
+- Toasts: every toast now dismisses itself (about 4 s, 6 s when it offers Undo), has a close (×) button and can be swiped away; all toasts go through one shared helper.
+
 ## [0.5.1] - 2026-10-21
 
 ### Fixed
