@@ -130,7 +130,7 @@ class MushafScreen extends ConsumerStatefulWidget {
 }
 
 class _MushafScreenState extends ConsumerState<MushafScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   PageController? _controller;
   int _page = 1;
 
@@ -209,6 +209,25 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
   int get _speed => ref.read(settingsProvider).autoScrollSpeed;
   ScrollController? _vertical;
   Ticker? _ticker;
+
+  /// Fades the pager out and back in around a jump to a faraway page (a
+  /// folded fasil on another page): a light, quick fade whatever the
+  /// reader's page-turn effect, never a curl through every page between.
+  late final AnimationController _jumpFade = AnimationController(
+    vsync: this,
+    value: 1,
+    duration: const Duration(milliseconds: 140),
+    reverseDuration: const Duration(milliseconds: 110),
+  );
+
+  Future<void> _fadeJumpTo(int page) async {
+    if (_controller == null) return;
+    await _jumpFade.reverse();
+    if (!mounted) return;
+    _controller?.jumpToPage(_indexOf(page));
+    await _jumpFade.forward();
+  }
+
   Duration _lastTick = Duration.zero;
   double _pageExtent = 1;
 
@@ -555,6 +574,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
 
   @override
   void dispose() {
+    _jumpFade.dispose();
     if (_testing) _muteSajdah(false);
     _lifecycle.dispose();
     if (_route != null) coverObserver.unsubscribe(_route!);
@@ -1240,95 +1260,94 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                                                           return Listener(
                                                             onPointerSignal:
                                                                 _onWheel,
-                                                            child: ScrollConfiguration(
-                                                              behavior:
-                                                                  ScrollConfiguration.of(
-                                                                    context,
-                                                                  ).copyWith(
-                                                                    dragDevices:
-                                                                        PointerDeviceKind
-                                                                            .values
-                                                                            .toSet(),
-                                                                  ),
-                                                              child: PageView.builder(
-                                                                // A new controller (spreads turned on or off, another
-                                                                // edition) starts a new pager: the old one would keep its
-                                                                // place, now another page.
-                                                                key: ObjectKey(
-                                                                  _controller,
-                                                                ),
-                                                                controller:
+                                                            child: FadeTransition(
+                                                              opacity:
+                                                                  _jumpFade,
+                                                              child: ScrollConfiguration(
+                                                                behavior:
+                                                                    ScrollConfiguration.of(
+                                                                      context,
+                                                                    ).copyWith(
+                                                                      dragDevices: PointerDeviceKind
+                                                                          .values
+                                                                          .toSet(),
+                                                                    ),
+                                                                child: PageView.builder(
+                                                                  // A new controller (spreads turned on or off, another
+                                                                  // edition) starts a new pager: the old one would keep its
+                                                                  // place, now another page.
+                                                                  key: ObjectKey(
                                                                     _controller,
-                                                                itemCount:
-                                                                    _spreads
-                                                                        .count,
-                                                                // The pages either side are built and their images
-                                                                // decoded before they are turned to, so a page turn
-                                                                // does not stop on a spinner.
-                                                                allowImplicitScrolling:
-                                                                    true,
-                                                                onPageChanged:
-                                                                    _onPageChanged,
-                                                                itemBuilder: (context, i) => PageTurnEffect(
+                                                                  ),
                                                                   controller:
                                                                       _controller,
-                                                                  index: i,
-                                                                  effect: settings
-                                                                      .pageTurn,
-                                                                  isSpread: (j) =>
-                                                                      _spread &&
-                                                                      j >= 0 &&
-                                                                      j <
-                                                                          _spreads
-                                                                              .count &&
-                                                                      _pagesAt(
-                                                                            j,
-                                                                          ).length ==
-                                                                          2,
-                                                                  child: () {
-                                                                    final pages =
+                                                                  itemCount:
+                                                                      _spreads
+                                                                          .count,
+                                                                  // The pages either side are built and their images
+                                                                  // decoded before they are turned to, so a page turn
+                                                                  // does not stop on a spinner.
+                                                                  allowImplicitScrolling:
+                                                                      true,
+                                                                  onPageChanged:
+                                                                      _onPageChanged,
+                                                                  itemBuilder: (context, i) => PageTurnEffect(
+                                                                    controller:
+                                                                        _controller,
+                                                                    index: i,
+                                                                    effect: settings
+                                                                        .pageTurn,
+                                                                    isSpread: (j) =>
+                                                                        _spread &&
+                                                                        j >=
+                                                                            0 &&
+                                                                        j < _spreads.count &&
                                                                         _pagesAt(
-                                                                          i,
+                                                                              j,
+                                                                            ).length ==
+                                                                            2,
+                                                                    child: () {
+                                                                      final pages =
+                                                                          _pagesAt(
+                                                                            i,
+                                                                          );
+                                                                      if (pages
+                                                                              .length ==
+                                                                          1) {
+                                                                        return pageOf(
+                                                                          pages
+                                                                              .single,
                                                                         );
-                                                                    if (pages
-                                                                            .length ==
-                                                                        1) {
-                                                                      return pageOf(
-                                                                        pages
-                                                                            .single,
-                                                                      );
-                                                                    }
-                                                                    // Right page first: the mushaf opens
-                                                                    // from the right.
-                                                                    return FasilSpineLayer(
-                                                                      right: fawasilOn(
-                                                                        pages
-                                                                            .first,
-                                                                      ),
-                                                                      left: fawasilOn(
-                                                                        pages
-                                                                            .last,
-                                                                      ),
-                                                                      look:
-                                                                          fasilLook,
-                                                                      onLongPress:
-                                                                          _fasilActions,
-                                                                      child: Row(
-                                                                        textDirection:
-                                                                            TextDirection.rtl,
-                                                                        children: [
-                                                                          for (final pg
-                                                                              in pages)
-                                                                            Expanded(
-                                                                              child: pageOf(
-                                                                                pg,
-                                                                                bookmarks: false,
+                                                                      }
+                                                                      // Right page first: the mushaf opens
+                                                                      // from the right.
+                                                                      return FasilSpineLayer(
+                                                                        right: fawasilOn(
+                                                                          pages
+                                                                              .first,
+                                                                        ),
+                                                                        left: fawasilOn(
+                                                                          pages
+                                                                              .last,
+                                                                        ),
+                                                                        look:
+                                                                            fasilLook,
+                                                                        onLongPress:
+                                                                            _fasilActions,
+                                                                        child: Row(
+                                                                          textDirection:
+                                                                              TextDirection.rtl,
+                                                                          children: [
+                                                                            for (final pg
+                                                                                in pages)
+                                                                              Expanded(
+                                                                                child: pageOf(pg, bookmarks: false),
                                                                               ),
-                                                                            ),
-                                                                        ],
-                                                                      ),
-                                                                    );
-                                                                  }(),
+                                                                          ],
+                                                                        ),
+                                                                      );
+                                                                    }(),
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
@@ -1360,9 +1379,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                                                   ],
                                                   look: fasilLook,
                                                   onTap: (f) =>
-                                                      _controller?.jumpToPage(
-                                                        _indexOf(f.page),
-                                                      ),
+                                                      _fadeJumpTo(f.page),
                                                   onLongPress: _fasilActions,
                                                   semanticLabel: (f) =>
                                                       l.fasilOnPage(

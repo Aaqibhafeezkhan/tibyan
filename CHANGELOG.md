@@ -10,6 +10,9 @@ All notable changes to Tibyan are recorded here. The format follows
 ### Fixed
 - Toasts: every toast now dismisses itself (about 4 s, 6 s when it offers Undo), has a close (×) button and can be swiped away; all toasts go through one shared helper.
 
+### Changed
+- Mushaf: tapping a folded fasil from another page now jumps there with a light, quick fade instead of the chosen page-turn effect, in every edition.
+
 ## [0.5.1] - 2026-10-21
 
 ### Fixed
