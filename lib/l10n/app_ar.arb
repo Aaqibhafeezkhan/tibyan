@@ -3184,5 +3184,122 @@
   "memorizeListening": "يستمع…",
   "memorizeNoWords": "لا تتوفر مواضع الكلمات في هذه الصفحة من هذه الطبعة، فتُخفى الآيات كاملة وتُكشف آيةً آية.",
   "memorizeSomeVerses": "بعض الآيات بلا مواضع للكلمات في هذه الطبعة، فتُخفى كاملة.",
-  "memorizeOutOfScope": "الآيات المختارة ليست في هذه الصفحة."
+  "memorizeOutOfScope": "الآيات المختارة ليست في هذه الصفحة.",
+  "gkTitle": "ختمة جماعية",
+  "gkSubtitle": "وزّع الأجزاء على أهلك وأصحابك برابط، بلا حساب.",
+  "gkCreate": "إنشاء ختمة جماعية",
+  "gkJoin": "الانضمام برابط",
+  "gkMine": "ختماتي الجماعية",
+  "gkNone": "لم تنضمّ إلى ختمة جماعية بعد.",
+  "gkKhatmaName": "اسم الختمة (اختياري)",
+  "gkOrganizerName": "اسمك منظّمًا (اختياري)",
+  "gkUnitJuz": "٣٠ جزءًا",
+  "gkUnitHizb": "٦٠ حزبًا",
+  "gkTargetDate": "موعد الختم (اختياري)",
+  "gkNoDate": "بلا موعد",
+  "gkCreateAction": "إنشاء",
+  "gkLinkHint": "الصق رابط الختمة",
+  "gkLinkInvalid": "هذا ليس رابط ختمة جماعية.",
+  "gkOpen": "فتح",
+  "gkProgress": "محجوز {taken} من {total} · تمّ {done}",
+  "@gkProgress": {
+    "placeholders": {
+      "taken": {
+        "type": "int"
+      },
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "gkJuzN": "الجزء {n}",
+  "@gkJuzN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "gkHizbN": "الحزب {n}",
+  "@gkHizbN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "gkOpenPart": "متاح",
+  "gkTakenPart": "محجوز",
+  "gkDonePart": "تمّ",
+  "gkClaim": "احجز",
+  "gkYourName": "اسمك كما سيظهر للمشاركين",
+  "gkMarkDone": "تمّت قراءته",
+  "gkUndoDone": "لم أُتمّه بعد",
+  "gkRelease": "تراجع عن الحجز",
+  "gkReleaseOther": "تحرير الجزء",
+  "gkShare": "مشاركة الرابط",
+  "gkShareText": "شارك معنا في «{title}»: اختر جزءًا واكتب اسمك.\n{link}",
+  "@gkShareText": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "link": {
+        "type": "String"
+      }
+    }
+  },
+  "gkRename": "إعادة التسمية",
+  "gkDelete": "حذف الختمة",
+  "gkDeleteConfirm": "ستُحذف الختمة عند جميع المشاركين.",
+  "gkForget": "إزالة من قائمتي",
+  "gkCancel": "إلغاء",
+  "gkSave": "حفظ",
+  "gkOfflineCached": "لا اتصال بالإنترنت. هذه آخر حالة محفوظة.",
+  "gkErrOffline": "تعذّر الاتصال. حاول مرة أخرى.",
+  "gkErrNotFound": "هذه الختمة غير موجودة؛ ربما حُذفت.",
+  "gkErrTaken": "سبقك أحد إلى هذا الجزء.",
+  "gkErrForbidden": "لا يمكنك تعديل هذا الجزء من هذا الجهاز.",
+  "gkErrBusy": "محاولات كثيرة، حاول بعد قليل.",
+  "gkErrInvalid": "تحقّق ممّا كتبت.",
+  "gkOrganizer": "ينظّمها {name}",
+  "@gkOrganizer": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gkTarget": "الموعد {date}",
+  "@gkTarget": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "gkYou": "أنت",
+  "gkCompleted": "اكتملت الختمة.",
+  "gkRemind": "ذكّرني بجزئي",
+  "gkReminderSet": "تذكير: {date}",
+  "@gkReminderSet": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "gkReminderCancel": "إلغاء التذكير",
+  "gkReminderBody": "حان وقت قراءة {part} في الختمة الجماعية.",
+  "@gkReminderBody": {
+    "placeholders": {
+      "part": {
+        "type": "String"
+      }
+    }
+  },
+  "gkPrivacyNote": "يحفظ خادم تبيان اسم الختمة والأسماء المكتوبة وحالة الأجزاء فقط، ويحذفها تلقائيًا بعد انتهاء الختمة."
 }

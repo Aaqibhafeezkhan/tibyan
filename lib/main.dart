@@ -16,6 +16,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
+import 'features/group_khatma/data/group_khatma_api.dart';
 import 'features/settings/report/problem_report.dart';
 import 'core/crash/crash_reporting.dart';
 import 'core/db/content_database.dart';
@@ -250,6 +251,19 @@ void _startKhatma(ProviderContainer container) {
 
   Future<void> open(Uri? uri) async {
     if (uri == null) return;
+    // A group khatma link: https://altibyan.app/k/<id> (universal / app
+    // link) or tibyan://group?id=<id> (the web page's button, reminders).
+    final groupId = groupKhatmaIdOf(uri.toString());
+    if (groupId != null) {
+      if (!container.read(featureFlagsProvider).isOn(Feature.groupKhatma)) {
+        return;
+      }
+      await container.read(appRouterReadyProvider).future;
+      unawaited(
+        container.read(appRouterProvider).push('/khatma/group/$groupId'),
+      );
+      return;
+    }
     final action = widgetActionOf(uri);
     final verse = verseOfLink(uri);
     final khatmaLink = const {

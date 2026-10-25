@@ -4565,4 +4565,177 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get memorizeOutOfScope => 'الآيات المختارة ليست في هذه الصفحة.';
+
+  @override
+  String get gkTitle => 'ختمة جماعية';
+
+  @override
+  String get gkSubtitle => 'وزّع الأجزاء على أهلك وأصحابك برابط، بلا حساب.';
+
+  @override
+  String get gkCreate => 'إنشاء ختمة جماعية';
+
+  @override
+  String get gkJoin => 'الانضمام برابط';
+
+  @override
+  String get gkMine => 'ختماتي الجماعية';
+
+  @override
+  String get gkNone => 'لم تنضمّ إلى ختمة جماعية بعد.';
+
+  @override
+  String get gkKhatmaName => 'اسم الختمة (اختياري)';
+
+  @override
+  String get gkOrganizerName => 'اسمك منظّمًا (اختياري)';
+
+  @override
+  String get gkUnitJuz => '٣٠ جزءًا';
+
+  @override
+  String get gkUnitHizb => '٦٠ حزبًا';
+
+  @override
+  String get gkTargetDate => 'موعد الختم (اختياري)';
+
+  @override
+  String get gkNoDate => 'بلا موعد';
+
+  @override
+  String get gkCreateAction => 'إنشاء';
+
+  @override
+  String get gkLinkHint => 'الصق رابط الختمة';
+
+  @override
+  String get gkLinkInvalid => 'هذا ليس رابط ختمة جماعية.';
+
+  @override
+  String get gkOpen => 'فتح';
+
+  @override
+  String gkProgress(int taken, int done, int total) {
+    return 'محجوز $taken من $total · تمّ $done';
+  }
+
+  @override
+  String gkJuzN(int n) {
+    return 'الجزء $n';
+  }
+
+  @override
+  String gkHizbN(int n) {
+    return 'الحزب $n';
+  }
+
+  @override
+  String get gkOpenPart => 'متاح';
+
+  @override
+  String get gkTakenPart => 'محجوز';
+
+  @override
+  String get gkDonePart => 'تمّ';
+
+  @override
+  String get gkClaim => 'احجز';
+
+  @override
+  String get gkYourName => 'اسمك كما سيظهر للمشاركين';
+
+  @override
+  String get gkMarkDone => 'تمّت قراءته';
+
+  @override
+  String get gkUndoDone => 'لم أُتمّه بعد';
+
+  @override
+  String get gkRelease => 'تراجع عن الحجز';
+
+  @override
+  String get gkReleaseOther => 'تحرير الجزء';
+
+  @override
+  String get gkShare => 'مشاركة الرابط';
+
+  @override
+  String gkShareText(String title, String link) {
+    return 'شارك معنا في «$title»: اختر جزءًا واكتب اسمك.\n$link';
+  }
+
+  @override
+  String get gkRename => 'إعادة التسمية';
+
+  @override
+  String get gkDelete => 'حذف الختمة';
+
+  @override
+  String get gkDeleteConfirm => 'ستُحذف الختمة عند جميع المشاركين.';
+
+  @override
+  String get gkForget => 'إزالة من قائمتي';
+
+  @override
+  String get gkCancel => 'إلغاء';
+
+  @override
+  String get gkSave => 'حفظ';
+
+  @override
+  String get gkOfflineCached => 'لا اتصال بالإنترنت. هذه آخر حالة محفوظة.';
+
+  @override
+  String get gkErrOffline => 'تعذّر الاتصال. حاول مرة أخرى.';
+
+  @override
+  String get gkErrNotFound => 'هذه الختمة غير موجودة؛ ربما حُذفت.';
+
+  @override
+  String get gkErrTaken => 'سبقك أحد إلى هذا الجزء.';
+
+  @override
+  String get gkErrForbidden => 'لا يمكنك تعديل هذا الجزء من هذا الجهاز.';
+
+  @override
+  String get gkErrBusy => 'محاولات كثيرة، حاول بعد قليل.';
+
+  @override
+  String get gkErrInvalid => 'تحقّق ممّا كتبت.';
+
+  @override
+  String gkOrganizer(String name) {
+    return 'ينظّمها $name';
+  }
+
+  @override
+  String gkTarget(String date) {
+    return 'الموعد $date';
+  }
+
+  @override
+  String get gkYou => 'أنت';
+
+  @override
+  String get gkCompleted => 'اكتملت الختمة.';
+
+  @override
+  String get gkRemind => 'ذكّرني بجزئي';
+
+  @override
+  String gkReminderSet(String date) {
+    return 'تذكير: $date';
+  }
+
+  @override
+  String get gkReminderCancel => 'إلغاء التذكير';
+
+  @override
+  String gkReminderBody(String part) {
+    return 'حان وقت قراءة $part في الختمة الجماعية.';
+  }
+
+  @override
+  String get gkPrivacyNote =>
+      'يحفظ خادم تبيان اسم الختمة والأسماء المكتوبة وحالة الأجزاء فقط، ويحذفها تلقائيًا بعد انتهاء الختمة.';
 }

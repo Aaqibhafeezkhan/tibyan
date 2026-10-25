@@ -4497,4 +4497,179 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get memorizeOutOfScope => 'The chosen verses are not on this page.';
+
+  @override
+  String get gkTitle => 'Group khatma';
+
+  @override
+  String get gkSubtitle =>
+      'Share the parts with family and friends by a link, no account.';
+
+  @override
+  String get gkCreate => 'Create a group khatma';
+
+  @override
+  String get gkJoin => 'Join by link';
+
+  @override
+  String get gkMine => 'My group khatmas';
+
+  @override
+  String get gkNone => 'You haven\'t joined a group khatma yet.';
+
+  @override
+  String get gkKhatmaName => 'Khatma name (optional)';
+
+  @override
+  String get gkOrganizerName => 'Your name as organizer (optional)';
+
+  @override
+  String get gkUnitJuz => '30 juz';
+
+  @override
+  String get gkUnitHizb => '60 hizb';
+
+  @override
+  String get gkTargetDate => 'Target date (optional)';
+
+  @override
+  String get gkNoDate => 'No date';
+
+  @override
+  String get gkCreateAction => 'Create';
+
+  @override
+  String get gkLinkHint => 'Paste the khatma link';
+
+  @override
+  String get gkLinkInvalid => 'That isn\'t a group khatma link.';
+
+  @override
+  String get gkOpen => 'Open';
+
+  @override
+  String gkProgress(int taken, int done, int total) {
+    return '$taken of $total taken · $done done';
+  }
+
+  @override
+  String gkJuzN(int n) {
+    return 'Juz $n';
+  }
+
+  @override
+  String gkHizbN(int n) {
+    return 'Hizb $n';
+  }
+
+  @override
+  String get gkOpenPart => 'Open';
+
+  @override
+  String get gkTakenPart => 'Taken';
+
+  @override
+  String get gkDonePart => 'Done';
+
+  @override
+  String get gkClaim => 'Claim';
+
+  @override
+  String get gkYourName => 'Your name, as others will see it';
+
+  @override
+  String get gkMarkDone => 'Mark done';
+
+  @override
+  String get gkUndoDone => 'Not done yet';
+
+  @override
+  String get gkRelease => 'Release';
+
+  @override
+  String get gkReleaseOther => 'Free this part';
+
+  @override
+  String get gkShare => 'Share link';
+
+  @override
+  String gkShareText(String title, String link) {
+    return 'Join «$title»: pick a part and type your name.\n$link';
+  }
+
+  @override
+  String get gkRename => 'Rename';
+
+  @override
+  String get gkDelete => 'Delete khatma';
+
+  @override
+  String get gkDeleteConfirm => 'The khatma will be deleted for everyone.';
+
+  @override
+  String get gkForget => 'Remove from my list';
+
+  @override
+  String get gkCancel => 'Cancel';
+
+  @override
+  String get gkSave => 'Save';
+
+  @override
+  String get gkOfflineCached => 'No connection. This is the last saved state.';
+
+  @override
+  String get gkErrOffline => 'Couldn\'t connect. Try again.';
+
+  @override
+  String get gkErrNotFound =>
+      'This khatma doesn\'t exist; it may have been deleted.';
+
+  @override
+  String get gkErrTaken => 'Someone took this part first.';
+
+  @override
+  String get gkErrForbidden => 'You can\'t change this part from this device.';
+
+  @override
+  String get gkErrBusy => 'Too many tries. Please wait a little.';
+
+  @override
+  String get gkErrInvalid => 'Check what you typed.';
+
+  @override
+  String gkOrganizer(String name) {
+    return 'Organized by $name';
+  }
+
+  @override
+  String gkTarget(String date) {
+    return 'Target $date';
+  }
+
+  @override
+  String get gkYou => 'You';
+
+  @override
+  String get gkCompleted => 'The khatma is complete.';
+
+  @override
+  String get gkRemind => 'Remind me of my part';
+
+  @override
+  String gkReminderSet(String date) {
+    return 'Reminder: $date';
+  }
+
+  @override
+  String get gkReminderCancel => 'Cancel reminder';
+
+  @override
+  String gkReminderBody(String part) {
+    return 'Time to read $part for the group khatma.';
+  }
+
+  @override
+  String get gkPrivacyNote =>
+      'Tibyan\'s server keeps only the khatma name, the typed names and part states, and deletes them automatically after the khatma ends.';
 }

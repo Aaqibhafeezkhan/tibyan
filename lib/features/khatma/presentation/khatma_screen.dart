@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/ui/app_toast.dart';
 
+import '../../../core/flags/feature_flags.dart';
 import '../../../core/ui/look_kit.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,6 +64,13 @@ class _KhatmaScreenState extends ConsumerState<KhatmaScreen> {
             LookTopBar(
               title: l.khatmaTitle,
               actions: [
+                if (ref.watch(featureFlagsProvider).isOn(Feature.groupKhatma))
+                  IconButton(
+                    key: const Key('group-khatma-entry'),
+                    tooltip: l.gkTitle,
+                    icon: const Icon(Icons.groups_outlined),
+                    onPressed: () => context.push('/khatma/group'),
+                  ),
                 IconButton(
                   tooltip: l.reportsTitle,
                   icon: const Icon(Icons.insights_outlined),

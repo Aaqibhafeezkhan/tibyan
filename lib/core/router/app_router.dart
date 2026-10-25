@@ -1,3 +1,6 @@
+import '../../features/group_khatma/presentation/group_khatma_list_screen.dart';
+import '../../features/group_khatma/presentation/group_khatma_screen.dart';
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -229,6 +232,19 @@ final appRouterProvider = Provider<GoRouter>(
             path: 'journal',
             builder: (context, state) =>
                 const LookTheme(child: JournalScreen()),
+          ),
+          GoRoute(
+            path: 'group',
+            builder: (context, state) =>
+                const LookTheme(child: GroupKhatmaListScreen()),
+            routes: [
+              GoRoute(
+                path: ':id',
+                builder: (context, state) => LookTheme(
+                  child: GroupKhatmaScreen(id: state.pathParameters['id']!),
+                ),
+              ),
+            ],
           ),
         ],
       ),

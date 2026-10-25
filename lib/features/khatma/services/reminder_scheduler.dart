@@ -25,6 +25,19 @@ abstract interface class ReminderScheduler {
   /// Asks for permission to notify; false when refused.
   Future<bool> requestPermission();
 
+  /// One reminder at [at] (a group khatma part); replaces one with [id].
+  Future<void> scheduleOnce({
+    required int id,
+    required DateTime at,
+    required String title,
+    required String body,
+    required String payload,
+    required String channel,
+  });
+
+  /// Cancels the one-off reminder [id].
+  Future<void> cancelOnce(int id);
+
   /// The payload of the reminder that opened the app, if one did.
   Future<String?> launchPayload();
 
@@ -42,8 +55,23 @@ class NoReminders implements ReminderScheduler {
     required String channel,
   }) async => replaced.add(notices);
 
+  final once = <int, DateTime>{};
+
   @override
   Future<bool> requestPermission() async => true;
+
+  @override
+  Future<void> scheduleOnce({
+    required int id,
+    required DateTime at,
+    required String title,
+    required String body,
+    required String payload,
+    required String channel,
+  }) async => once[id] = at;
+
+  @override
+  Future<void> cancelOnce(int id) async => once.remove(id);
 
   @override
   Future<String?> launchPayload() async => null;
@@ -182,5 +210,44 @@ class LocalReminderScheduler implements ReminderScheduler {
         payload: n.payload,
       );
     }
+  }
+
+  @override
+  Future<void> scheduleOnce({
+    required int id,
+    required DateTime at,
+    required String title,
+    required String body,
+    required String payload,
+    required String channel,
+  }) async {
+    if (!_supported) return;
+    await _init();
+    await _plugin.cancel(id: id);
+    await _plugin.zonedSchedule(
+      id: id,
+      scheduledDate: tz.TZDateTime.from(at, tz.local),
+      notificationDetails: NotificationDetails(
+        android: AndroidNotificationDetails(
+          'app.tibyan.khatma',
+          channel,
+          icon: 'ic_stat_tibyan',
+          color: const Color(0xFF0F6660),
+        ),
+        iOS: const DarwinNotificationDetails(),
+        macOS: const DarwinNotificationDetails(),
+      ),
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      title: title,
+      body: body,
+      payload: payload,
+    );
+  }
+
+  @override
+  Future<void> cancelOnce(int id) async {
+    if (!_supported) return;
+    await _init();
+    await _plugin.cancel(id: id);
   }
 }

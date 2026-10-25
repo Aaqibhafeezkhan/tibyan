@@ -7603,6 +7603,318 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'الآيات المختارة ليست في هذه الصفحة.'**
   String get memorizeOutOfScope;
+
+  /// No description provided for @gkTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'ختمة جماعية'**
+  String get gkTitle;
+
+  /// No description provided for @gkSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'وزّع الأجزاء على أهلك وأصحابك برابط، بلا حساب.'**
+  String get gkSubtitle;
+
+  /// No description provided for @gkCreate.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنشاء ختمة جماعية'**
+  String get gkCreate;
+
+  /// No description provided for @gkJoin.
+  ///
+  /// In ar, this message translates to:
+  /// **'الانضمام برابط'**
+  String get gkJoin;
+
+  /// No description provided for @gkMine.
+  ///
+  /// In ar, this message translates to:
+  /// **'ختماتي الجماعية'**
+  String get gkMine;
+
+  /// No description provided for @gkNone.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم تنضمّ إلى ختمة جماعية بعد.'**
+  String get gkNone;
+
+  /// No description provided for @gkKhatmaName.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم الختمة (اختياري)'**
+  String get gkKhatmaName;
+
+  /// No description provided for @gkOrganizerName.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسمك منظّمًا (اختياري)'**
+  String get gkOrganizerName;
+
+  /// No description provided for @gkUnitJuz.
+  ///
+  /// In ar, this message translates to:
+  /// **'٣٠ جزءًا'**
+  String get gkUnitJuz;
+
+  /// No description provided for @gkUnitHizb.
+  ///
+  /// In ar, this message translates to:
+  /// **'٦٠ حزبًا'**
+  String get gkUnitHizb;
+
+  /// No description provided for @gkTargetDate.
+  ///
+  /// In ar, this message translates to:
+  /// **'موعد الختم (اختياري)'**
+  String get gkTargetDate;
+
+  /// No description provided for @gkNoDate.
+  ///
+  /// In ar, this message translates to:
+  /// **'بلا موعد'**
+  String get gkNoDate;
+
+  /// No description provided for @gkCreateAction.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنشاء'**
+  String get gkCreateAction;
+
+  /// No description provided for @gkLinkHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصق رابط الختمة'**
+  String get gkLinkHint;
+
+  /// No description provided for @gkLinkInvalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا ليس رابط ختمة جماعية.'**
+  String get gkLinkInvalid;
+
+  /// No description provided for @gkOpen.
+  ///
+  /// In ar, this message translates to:
+  /// **'فتح'**
+  String get gkOpen;
+
+  /// No description provided for @gkProgress.
+  ///
+  /// In ar, this message translates to:
+  /// **'محجوز {taken} من {total} · تمّ {done}'**
+  String gkProgress(int taken, int done, int total);
+
+  /// No description provided for @gkJuzN.
+  ///
+  /// In ar, this message translates to:
+  /// **'الجزء {n}'**
+  String gkJuzN(int n);
+
+  /// No description provided for @gkHizbN.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحزب {n}'**
+  String gkHizbN(int n);
+
+  /// No description provided for @gkOpenPart.
+  ///
+  /// In ar, this message translates to:
+  /// **'متاح'**
+  String get gkOpenPart;
+
+  /// No description provided for @gkTakenPart.
+  ///
+  /// In ar, this message translates to:
+  /// **'محجوز'**
+  String get gkTakenPart;
+
+  /// No description provided for @gkDonePart.
+  ///
+  /// In ar, this message translates to:
+  /// **'تمّ'**
+  String get gkDonePart;
+
+  /// No description provided for @gkClaim.
+  ///
+  /// In ar, this message translates to:
+  /// **'احجز'**
+  String get gkClaim;
+
+  /// No description provided for @gkYourName.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسمك كما سيظهر للمشاركين'**
+  String get gkYourName;
+
+  /// No description provided for @gkMarkDone.
+  ///
+  /// In ar, this message translates to:
+  /// **'تمّت قراءته'**
+  String get gkMarkDone;
+
+  /// No description provided for @gkUndoDone.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم أُتمّه بعد'**
+  String get gkUndoDone;
+
+  /// No description provided for @gkRelease.
+  ///
+  /// In ar, this message translates to:
+  /// **'تراجع عن الحجز'**
+  String get gkRelease;
+
+  /// No description provided for @gkReleaseOther.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحرير الجزء'**
+  String get gkReleaseOther;
+
+  /// No description provided for @gkShare.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشاركة الرابط'**
+  String get gkShare;
+
+  /// No description provided for @gkShareText.
+  ///
+  /// In ar, this message translates to:
+  /// **'شارك معنا في «{title}»: اختر جزءًا واكتب اسمك.\n{link}'**
+  String gkShareText(String title, String link);
+
+  /// No description provided for @gkRename.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعادة التسمية'**
+  String get gkRename;
+
+  /// No description provided for @gkDelete.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف الختمة'**
+  String get gkDelete;
+
+  /// No description provided for @gkDeleteConfirm.
+  ///
+  /// In ar, this message translates to:
+  /// **'ستُحذف الختمة عند جميع المشاركين.'**
+  String get gkDeleteConfirm;
+
+  /// No description provided for @gkForget.
+  ///
+  /// In ar, this message translates to:
+  /// **'إزالة من قائمتي'**
+  String get gkForget;
+
+  /// No description provided for @gkCancel.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء'**
+  String get gkCancel;
+
+  /// No description provided for @gkSave.
+  ///
+  /// In ar, this message translates to:
+  /// **'حفظ'**
+  String get gkSave;
+
+  /// No description provided for @gkOfflineCached.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا اتصال بالإنترنت. هذه آخر حالة محفوظة.'**
+  String get gkOfflineCached;
+
+  /// No description provided for @gkErrOffline.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر الاتصال. حاول مرة أخرى.'**
+  String get gkErrOffline;
+
+  /// No description provided for @gkErrNotFound.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذه الختمة غير موجودة؛ ربما حُذفت.'**
+  String get gkErrNotFound;
+
+  /// No description provided for @gkErrTaken.
+  ///
+  /// In ar, this message translates to:
+  /// **'سبقك أحد إلى هذا الجزء.'**
+  String get gkErrTaken;
+
+  /// No description provided for @gkErrForbidden.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يمكنك تعديل هذا الجزء من هذا الجهاز.'**
+  String get gkErrForbidden;
+
+  /// No description provided for @gkErrBusy.
+  ///
+  /// In ar, this message translates to:
+  /// **'محاولات كثيرة، حاول بعد قليل.'**
+  String get gkErrBusy;
+
+  /// No description provided for @gkErrInvalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحقّق ممّا كتبت.'**
+  String get gkErrInvalid;
+
+  /// No description provided for @gkOrganizer.
+  ///
+  /// In ar, this message translates to:
+  /// **'ينظّمها {name}'**
+  String gkOrganizer(String name);
+
+  /// No description provided for @gkTarget.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموعد {date}'**
+  String gkTarget(String date);
+
+  /// No description provided for @gkYou.
+  ///
+  /// In ar, this message translates to:
+  /// **'أنت'**
+  String get gkYou;
+
+  /// No description provided for @gkCompleted.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتملت الختمة.'**
+  String get gkCompleted;
+
+  /// No description provided for @gkRemind.
+  ///
+  /// In ar, this message translates to:
+  /// **'ذكّرني بجزئي'**
+  String get gkRemind;
+
+  /// No description provided for @gkReminderSet.
+  ///
+  /// In ar, this message translates to:
+  /// **'تذكير: {date}'**
+  String gkReminderSet(String date);
+
+  /// No description provided for @gkReminderCancel.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء التذكير'**
+  String get gkReminderCancel;
+
+  /// No description provided for @gkReminderBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'حان وقت قراءة {part} في الختمة الجماعية.'**
+  String gkReminderBody(String part);
+
+  /// No description provided for @gkPrivacyNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'يحفظ خادم تبيان اسم الختمة والأسماء المكتوبة وحالة الأجزاء فقط، ويحذفها تلقائيًا بعد انتهاء الختمة.'**
+  String get gkPrivacyNote;
 }
 
 class _AppLocalizationsDelegate
