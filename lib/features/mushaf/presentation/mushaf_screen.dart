@@ -67,6 +67,7 @@ import '../../sajdah/sajdah_card.dart';
 import '../../sajdah/sajdah_positions.dart';
 import '../mushaf_providers.dart';
 import 'download_screen.dart';
+import '../../../core/ui/responsive.dart';
 import 'page_spreads.dart';
 import 'widgets/page_turn_effect.dart';
 import 'widgets/art_frame.dart';
@@ -1132,7 +1133,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       return FasilPageLayer(
         marks: fawasilOn(pg),
         look: fasilLook,
-        outerRight: pg.isOdd,
+        outerRight: _spreads.isRightPage(pg),
         focus: focus,
         onLongPress: _fasilActions,
         child: page,
@@ -1285,10 +1286,11 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                                                               settings
                                                                   .twoPageSpread &&
                                                               !_testing &&
-                                                              box.maxWidth >
-                                                                  box.maxHeight &&
-                                                              box.maxWidth >=
-                                                                  800;
+                                                              showsSpread(
+                                                                box.biggest,
+                                                                largeDevice: context
+                                                                    .isLargeDevice,
+                                                              );
                                                           if (spread !=
                                                               _spread) {
                                                             WidgetsBinding
@@ -1359,9 +1361,32 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                                                                       if (pages
                                                                               .length ==
                                                                           1) {
-                                                                        return pageOf(
-                                                                          pages
-                                                                              .single,
+                                                                        final one =
+                                                                            pageOf(
+                                                                              pages.single,
+                                                                            );
+                                                                        final fit = fitWidthHeight(
+                                                                          box.biggest,
+                                                                          largeDevice:
+                                                                              context.isLargeDevice,
+                                                                        );
+                                                                        if (fit ==
+                                                                            null) {
+                                                                          return one;
+                                                                        }
+                                                                        // A phone held sideways: the page
+                                                                        // as wide as the screen, read by
+                                                                        // scrolling down.
+                                                                        return SingleChildScrollView(
+                                                                          key: PageStorageKey(
+                                                                            'fit-width-${pages.single}',
+                                                                          ),
+                                                                          child: SizedBox(
+                                                                            height:
+                                                                                fit,
+                                                                            child:
+                                                                                one,
+                                                                          ),
                                                                         );
                                                                       }
                                                                       // Right page first: the mushaf opens
@@ -1408,10 +1433,16 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                                             if (fawasil.isNotEmpty)
                                               Positioned(
                                                 top: 0,
-                                                left: shownPages.first.isOdd
+                                                left:
+                                                    _spreads.isRightPage(
+                                                      shownPages.first,
+                                                    )
                                                     ? 4
                                                     : null,
-                                                right: shownPages.first.isOdd
+                                                right:
+                                                    _spreads.isRightPage(
+                                                      shownPages.first,
+                                                    )
                                                     ? null
                                                     : 4,
                                                 child: FoldedFawasil(
