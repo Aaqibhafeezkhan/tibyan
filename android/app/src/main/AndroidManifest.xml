@@ -84,6 +84,23 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data android:scheme="tibyan" android:host="action"/>
             </intent-filter>
+            <!-- Group khatma: tibyan://group?id=… (the web page's button). -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="tibyan" android:host="group"/>
+            </intent-filter>
+            <!-- Group khatma share links, verified by
+                 https://altibyan.app/.well-known/assetlinks.json. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https"/>
+                <data android:host="altibyan.app"/>
+                <data android:pathPrefix="/k/"/>
+            </intent-filter>
             <!-- Links are handled by the app (main.dart), not the router. -->
             <meta-data
                 android:name="flutter_deeplinking_enabled"
