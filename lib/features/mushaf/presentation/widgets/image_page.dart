@@ -907,6 +907,7 @@ class _ImageMushafPageState extends ConsumerState<ImageMushafPage> {
                   ]),
                   markAction: l.markThisVerse,
                   listenAction: l.listenFromVerse,
+                  tafsirAction: l.tafsirTitle,
                 ),
                 ...handles,
               ],

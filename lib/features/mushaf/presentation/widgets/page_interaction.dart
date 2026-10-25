@@ -56,6 +56,7 @@ class PageInteraction {
     this.activeWord,
     this.onVerseTap,
     this.onListenFrom,
+    this.onTafsir,
     this.touched,
     this.touchColor,
     this.onPick,
@@ -125,6 +126,9 @@ class PageInteraction {
   /// While listening: screen readers' action that moves the recitation to
   /// a verse.
   final ValueChanged<VerseKey>? onListenFrom;
+
+  /// Screen readers' action that opens a verse's tafsir.
+  final ValueChanged<VerseKey>? onTafsir;
   final VerseKey? touched;
   final Color? touchColor;
 
@@ -206,6 +210,7 @@ class PageInteraction {
     activeWord: activeWord,
     onVerseTap: onVerseTap,
     onListenFrom: onListenFrom,
+    onTafsir: onTafsir,
     touched: touched,
     touchColor: touchColor,
     onPick: onPick,
@@ -263,7 +268,9 @@ List<Widget> verseSemanticNodes(
   List<(VerseKey, Rect)> areas, {
   required String markAction,
   String? listenAction,
+  String? tafsirAction,
 }) {
+  final tafsir = x.onTafsir;
   final listen = x.onListenFrom;
   final label = x.verseLabel;
   if (label == null) return const [];
@@ -287,6 +294,8 @@ List<Widget> verseSemanticNodes(
             CustomSemanticsAction(label: markAction): () => x.onMarkerTap(v),
             if (listen != null && listenAction != null)
               CustomSemanticsAction(label: listenAction): () => listen(v),
+            if (tafsir != null && tafsirAction != null)
+              CustomSemanticsAction(label: tafsirAction): () => tafsir(v),
           },
           child: const SizedBox.expand(),
         ),

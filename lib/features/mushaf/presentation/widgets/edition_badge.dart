@@ -41,9 +41,11 @@ class EditionBadge extends ConsumerWidget {
               color: color,
             ),
             const SizedBox(width: 4),
-            Text(
-              here ? l.editionOnDevice : l.editionNotDownloaded(digits(size)),
-              style: TextStyle(fontSize: 11, color: color),
+            Flexible(
+              child: Text(
+                here ? l.editionOnDevice : l.editionNotDownloaded(digits(size)),
+                style: TextStyle(fontSize: 11, color: color),
+              ),
             ),
           ],
         ),

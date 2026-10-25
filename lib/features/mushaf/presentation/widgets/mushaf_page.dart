@@ -1270,6 +1270,7 @@ class _MushafPageState extends ConsumerState<MushafPage> {
                   ]),
                   markAction: l.markThisVerse,
                   listenAction: l.listenFromVerse,
+                  tafsirAction: l.tafsirTitle,
                 ),
                 ...handles,
               ],

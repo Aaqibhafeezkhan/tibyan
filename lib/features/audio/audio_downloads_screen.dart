@@ -125,54 +125,61 @@ class _AudioDownloadsScreenState extends ConsumerState<AudioDownloadsScreen> {
                 }
               },
             ),
+            // The reciter's line scrolls with the surahs, so large text
+            // keeps the list on the screen.
             Expanded(
               child: Column(
                 children: [
-                  ListTile(
-                    leading: ReciterAvatar(
-                      id: reciter.id,
-                      name: reciterLabel(context, reciter),
-                      size: 38,
-                    ),
-                    title: Text(reciterLabel(context, reciter)),
-                    subtitle: Text(
-                      '${l.audioDownloaded}: ${digits(have.length)} / ${digits(114)}',
-                    ),
-                    trailing: queued
-                        ? Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              TextButton(
-                                key: const ValueKey('audio-all-toggle'),
-                                onPressed: () => paused
-                                    ? bg.resumeReciter(reciter.id)
-                                    : bg.pauseReciter(reciter.id),
-                                child: Text(
-                                  paused ? l.audioDownloadResume : l.pause,
-                                ),
-                              ),
-                              IconButton(
-                                tooltip: l.cancel,
-                                onPressed: () => bg.cancelReciter(reciter.id),
-                                icon: const Icon(Icons.close),
-                              ),
-                            ],
-                          )
-                        : FilledButton.tonal(
-                            onPressed: have.length == 114
-                                ? null
-                                : () => _downloadAll(reciter),
-                            child: Text(l.downloadAll),
-                          ),
-                  ),
-                  const Divider(height: 1),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: 114,
+                      itemCount: 116,
                       itemBuilder: (context, i) {
-                        final n = i + 1;
+                        if (i == 0) {
+                          return ListTile(
+                            leading: ReciterAvatar(
+                              id: reciter.id,
+                              name: reciterLabel(context, reciter),
+                              size: 38,
+                            ),
+                            title: Text(reciterLabel(context, reciter)),
+                            subtitle: Text(
+                              '${l.audioDownloaded}: ${digits(have.length)} / ${digits(114)}',
+                            ),
+                            trailing: queued
+                                ? Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      TextButton(
+                                        key: const ValueKey('audio-all-toggle'),
+                                        onPressed: () => paused
+                                            ? bg.resumeReciter(reciter.id)
+                                            : bg.pauseReciter(reciter.id),
+                                        child: Text(
+                                          paused
+                                              ? l.audioDownloadResume
+                                              : l.pause,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        tooltip: l.cancel,
+                                        onPressed: () =>
+                                            bg.cancelReciter(reciter.id),
+                                        icon: const Icon(Icons.close),
+                                      ),
+                                    ],
+                                  )
+                                : FilledButton.tonal(
+                                    onPressed: have.length == 114
+                                        ? null
+                                        : () => _downloadAll(reciter),
+                                    child: Text(l.downloadAll),
+                                  ),
+                          );
+                        }
+                        if (i == 1) return const Divider(height: 1);
+                        final n = i - 1;
                         final done = have.contains(n);
-                        final name = surahName(context, surahs[i]);
+                        final name = surahName(context, surahs[n - 1]);
                         final current =
                             playing.active &&
                             playing.clip == null &&
@@ -362,7 +369,8 @@ class _ReciterPicker extends ConsumerWidget {
                 child: Text(l.listenOtherRiwayaNote, style: muted),
               ),
             SizedBox(
-              height: 104,
+              // The avatar, and two lines of the name at the text size.
+              height: 72 + MediaQuery.textScalerOf(context).scale(32),
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(

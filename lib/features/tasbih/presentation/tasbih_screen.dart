@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -265,21 +266,43 @@ class _Layout extends ConsumerWidget {
         ),
       );
     }
+    final hint = [
+      if (s.style == TasbihStyle.misbaha)
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Text(
+            l.tasbihDragHint,
+            style: TextStyle(color: context.look.sub, fontSize: 13),
+          ),
+        ),
+      const TargetBar(),
+    ];
+    // Large text: the screen scrolls, and the counter keeps a large,
+    // fixed area to tap.
+    if (MediaQuery.textScalerOf(context).scale(10) > 13) {
+      return LayoutBuilder(
+        builder: (context, box) => SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+          child: Column(
+            children: [
+              ...info,
+              SizedBox(
+                height: math.max(280, box.maxHeight * 0.55),
+                child: area,
+              ),
+              ...hint,
+            ],
+          ),
+        ),
+      );
+    }
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       child: Column(
         children: [
           ...info,
           Expanded(child: area),
-          if (s.style == TasbihStyle.misbaha)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Text(
-                l.tasbihDragHint,
-                style: TextStyle(color: context.look.sub, fontSize: 13),
-              ),
-            ),
-          const TargetBar(),
+          ...hint,
         ],
       ),
     );
@@ -333,14 +356,21 @@ class _RoundLine extends ConsumerWidget {
       children: [
         Row(
           children: [
-            Text(
-              c.target == null
-                  ? l.tasbihNoTarget
-                  : '${l.tasbihTarget} ${digits(c.target!)}',
-              style: sub,
+            Expanded(
+              child: Text(
+                c.target == null
+                    ? l.tasbihNoTarget
+                    : '${l.tasbihTarget} ${digits(c.target!)}',
+                style: sub,
+              ),
             ),
-            const Spacer(),
-            Text(l.tasbihRounds(c.rounds, digits(c.rounds)), style: sub),
+            Flexible(
+              child: Text(
+                l.tasbihRounds(c.rounds, digits(c.rounds)),
+                style: sub,
+                textAlign: TextAlign.end,
+              ),
+            ),
           ],
         ),
         if (c.target != null) ...[

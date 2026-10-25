@@ -257,7 +257,6 @@ class EnglishTafsirSection extends ConsumerWidget {
               ),
               IconButton(
                 tooltip: l.copyText,
-                visualDensity: VisualDensity.compact,
                 icon: Icon(Icons.copy, size: 18, color: t.muted),
                 onPressed: () async {
                   await Clipboard.setData(

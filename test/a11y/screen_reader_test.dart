@@ -205,6 +205,8 @@ void main() {
     File(p.join(dir.path, entry.name)).writeAsBytesSync(entry.content);
     VerseKey? selected;
     VerseKey? marked;
+    VerseKey? played;
+    VerseKey? explained;
     var taps = 0;
     await pump(
       tester,
@@ -216,6 +218,8 @@ void main() {
           onTap: () => taps++,
           onVerseLongPress: (v) => selected = v,
           onMarkerTap: (v) => marked = v,
+          onListenFrom: (v) => played = v,
+          onTafsir: (v) => explained = v,
           onHandleDrag: (_, _) {},
           verseLabel: (v) => 'سورة ${v.surah}، الآية ${v.ayah}',
           verseText: (v) => 'نص ${v.ayah}',
@@ -245,17 +249,28 @@ void main() {
       ),
     );
     expect(selected, (surah: 113, ayah: 1));
-    // The custom action sets the reading mark.
-    final action = node.getSemanticsData().customSemanticsActionIds!.single;
-    tester.binding.performSemanticsAction(
-      SemanticsActionEvent(
-        type: SemanticsAction.customAction,
-        viewId: tester.view.viewId,
-        nodeId: node.id,
-        arguments: action,
-      ),
-    );
+    // Custom actions: the reading mark, listening from the verse, and its
+    // tafsir.
+    void act(String label) {
+      final id = node.getSemanticsData().customSemanticsActionIds!.firstWhere(
+        (id) => CustomSemanticsAction.getAction(id)!.label == label,
+      );
+      tester.binding.performSemanticsAction(
+        SemanticsActionEvent(
+          type: SemanticsAction.customAction,
+          viewId: tester.view.viewId,
+          nodeId: node.id,
+          arguments: id,
+        ),
+      );
+    }
+
+    act('ضع علامة القراءة عند هذه الآية أو أزلها');
     expect(marked, (surah: 113, ayah: 1));
+    act('استمع من هذه الآية');
+    expect(played, (surah: 113, ayah: 1));
+    act('التفسير والترجمة');
+    expect(explained, (surah: 113, ayah: 1));
     // The nodes take no touches: a tap still reaches the page.
     await tester.tapAt(const Offset(5, 5));
     await tester.pump();

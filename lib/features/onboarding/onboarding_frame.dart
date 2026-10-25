@@ -209,25 +209,30 @@ class _StepMarks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final look = context.look;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        for (var i = 0; i < total; i++)
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 220),
-            margin: const EdgeInsets.symmetric(horizontal: 3),
-            width: i == current ? 26 : 12,
-            height: 6,
-            decoration: BoxDecoration(
-              color: i == current
-                  ? look.control
-                  : i < current
-                  ? look.gold
-                  : look.line,
-              borderRadius: BorderRadius.circular(3),
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (var i = 0; i < total; i++)
+            AnimatedContainer(
+              duration: MediaQuery.disableAnimationsOf(context)
+                  ? Duration.zero
+                  : const Duration(milliseconds: 220),
+              margin: const EdgeInsets.symmetric(horizontal: 3),
+              width: i == current ? 26 : 12,
+              height: 6,
+              decoration: BoxDecoration(
+                color: i == current
+                    ? look.control
+                    : i < current
+                    ? look.gold
+                    : look.line,
+                borderRadius: BorderRadius.circular(3),
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }

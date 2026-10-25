@@ -518,13 +518,15 @@ class LookGroup extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            Text(
-              title,
-              style: TextStyle(
-                fontFamily: arabic ? 'ArefRuqaa' : null,
-                fontWeight: arabic ? null : FontWeight.w700,
-                fontSize: arabic ? 19 : 16,
-                color: l.onFrame,
+            Flexible(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontFamily: arabic ? 'ArefRuqaa' : null,
+                  fontWeight: arabic ? null : FontWeight.w700,
+                  fontSize: arabic ? 19 : 16,
+                  color: l.onFrame,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -549,13 +551,15 @@ class LookGroup extends StatelessWidget {
               child: Icon(icon, size: 18, color: l.onControl),
             ),
             const SizedBox(width: 10),
-            Text(
-              title,
-              style: TextStyle(
-                fontFamily: arabic ? l.headFont : null,
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
-                color: l.ink,
+            Flexible(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontFamily: arabic ? l.headFont : null,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  color: l.ink,
+                ),
               ),
             ),
           ],
@@ -575,13 +579,15 @@ class LookGroup extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            Text(
-              title,
-              style: TextStyle(
-                fontFamily: arabic ? 'ArefRuqaa' : null,
-                fontWeight: arabic ? null : FontWeight.w700,
-                fontSize: arabic ? 21 : 17,
-                color: l.goldText,
+            Flexible(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontFamily: arabic ? 'ArefRuqaa' : null,
+                  fontWeight: arabic ? null : FontWeight.w700,
+                  fontSize: arabic ? 21 : 17,
+                  color: l.goldText,
+                ),
               ),
             ),
           ],

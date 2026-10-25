@@ -957,7 +957,21 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
             : _touchReading
             ? (v, _) => _touch(v)
             : null,
-        onListenFrom: jumps ? (v) => _listenFrom(v, pg, null) : null,
+        // Screen readers: while listening, the action moves the
+        // recitation to the verse; otherwise it starts it there.
+        onListenFrom: jumps
+            ? (v) => _listenFrom(v, pg, null)
+            : (v) => ref
+                  .read(recitationProvider.notifier)
+                  .play(v.surah, from: v.ayah),
+        onTafsir: (v) {
+          final h = hafsKeyOf(_riwaya, v);
+          final riwaya = edition.riwaya;
+          context.push(
+            '/mushaf/tafsir?s=${h.surah}&a=${h.ayah}'
+            '${riwaya == Riwaya.hafs ? '' : '&r=${riwaya.name}&ra=${v.ayah}'}',
+          );
+        },
         touched: _touchReading ? _touched : null,
         touchColor: _touchReading
             ? (context.tokens.mode.isLight

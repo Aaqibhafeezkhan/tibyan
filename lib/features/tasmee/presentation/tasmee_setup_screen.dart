@@ -843,13 +843,11 @@ class _NumberFieldState extends State<_NumberField> {
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                visualDensity: VisualDensity.compact,
                 tooltip: l.tasmeeLess,
                 onPressed: widget.value > 1 ? () => _step(-1) : null,
                 icon: Icon(Icons.remove, size: 18, color: t.goldText),
               ),
               IconButton(
-                visualDensity: VisualDensity.compact,
                 tooltip: l.tasmeeMore,
                 onPressed: widget.value < widget.max ? () => _step(1) : null,
                 icon: Icon(Icons.add, size: 18, color: t.goldText),

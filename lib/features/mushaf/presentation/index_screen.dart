@@ -588,28 +588,33 @@ class _SurahRowTile extends StatelessWidget {
               ),
             ],
           )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SurahNameText(
-                surah: surah.id,
-                name: surah.nameAr,
-                size: nameSize,
-                color: l.ink,
-                height: l.isMakhtuta ? 1.8 : 1.6,
-              ),
-              if (!l.isMakhtuta)
-                Text(
-                  '$ayahs · $kind',
-                  textScaler: TextScaler.noScaling,
-                  style: TextStyle(
-                    fontSize: l.elderly ? 15 : 12,
-                    color: l.sub,
-                    height: 1.1,
-                  ),
+        // A row of fixed height: large text shrinks to fit it.
+        : FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: AlignmentDirectional.centerStart,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SurahNameText(
+                  surah: surah.id,
+                  name: surah.nameAr,
+                  size: nameSize,
+                  color: l.ink,
+                  height: l.isMakhtuta ? 1.8 : 1.6,
                 ),
-            ],
+                if (!l.isMakhtuta)
+                  Text(
+                    '$ayahs · $kind',
+                    textScaler: TextScaler.noScaling,
+                    style: TextStyle(
+                      fontSize: l.elderly ? 15 : 12,
+                      color: l.sub,
+                      height: 1.1,
+                    ),
+                  ),
+              ],
+            ),
           );
     final number = digits(surah.id);
     final Widget row = switch (l.style) {
