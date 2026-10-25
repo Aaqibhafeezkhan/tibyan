@@ -147,3 +147,6 @@ docs/brand/**/__pycache__/
 
 # User-reported bug evidence (screenshots, videos)
 issues-found/
+
+# Agent handoff notes (contain server access details; never commit)
+handoff/
