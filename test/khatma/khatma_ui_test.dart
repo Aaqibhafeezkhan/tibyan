@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:drift/native.dart';
+import 'package:tibyan/core/flags/feature_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -234,6 +235,7 @@ Widget _statusApp(
   Key? boundaryKey,
 }) => ProviderScope(
   overrides: [
+    featureFlagsProvider.overrideWithValue(const FeatureFlags({})),
     khatmaStatusesProvider.overrideWith(
       (ref) async => active == null ? [] : [active],
     ),
@@ -262,6 +264,7 @@ Widget _materialApp(Widget home, {Key? boundaryKey}) => RepaintBoundary(
 Widget _routerApp(GoRouter router, {required KhatmaStatus completed}) =>
     ProviderScope(
       overrides: [
+        featureFlagsProvider.overrideWithValue(const FeatureFlags({})),
         khatmaStatusesProvider.overrideWith((ref) async => []),
         completedKhatmasProvider.overrideWith(
           (ref) => Stream.value([completed.row]),
