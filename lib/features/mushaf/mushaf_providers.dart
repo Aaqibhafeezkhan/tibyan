@@ -570,7 +570,8 @@ Future<FrameInfo?> _shamarlyFrameInfo(Ref ref, int page) async {
       for (final l in lines)
         if (l.kind == 'basmala') l.line,
     },
-    outerRight: page.isOdd,
+    // The Shamarly pairs 2–3, 4–5 …: its even pages stand on the right.
+    outerRight: page.isEven,
   );
 }
 
