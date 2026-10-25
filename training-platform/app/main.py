@@ -17,6 +17,7 @@ from .routes import (
     auth,
     beta,
     contact,
+    khatma,
     notifications,
     notify,
     pages,
@@ -55,6 +56,36 @@ app.include_router(notifications.router)
 app.include_router(runner.router)
 app.include_router(reports.router)
 app.include_router(annotations.router)
+app.include_router(khatma.router)
+
+
+@app.on_event("startup")
+async def _group_khatma_cleanup() -> None:
+    """Delete expired group khatmas every 6 hours (and lazily on requests)."""
+    import asyncio
+    import logging
+
+    from starlette.concurrency import run_in_threadpool
+
+    from . import group_khatma
+    from .db import SessionLocal
+
+    def sweep() -> None:
+        db = SessionLocal()
+        try:
+            group_khatma.cleanup(db)
+        finally:
+            db.close()
+
+    async def loop() -> None:
+        while True:
+            try:
+                await run_in_threadpool(sweep)
+            except Exception:  # keep the loop alive
+                logging.getLogger(__name__).exception("group khatma cleanup")
+            await asyncio.sleep(6 * 3600)
+
+    app.state.group_khatma_cleanup = asyncio.create_task(loop())
 
 
 # ---------- branded error pages (HTML clients only; APIs keep JSON) ----------

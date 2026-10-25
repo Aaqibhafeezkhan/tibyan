@@ -369,3 +369,43 @@ class AppReport(Base):
     ip_hash: Mapped[str] = mapped_column(String(64), index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, index=True)
     handled_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+
+class GroupKhatma(Base):
+    """«الختمة الجماعية»: shared by link, no accounts. Holds only what the
+    feature needs; secrets are stored as SHA-256 hashes. Deleted 30 days
+    after completion or 180 days after the last activity (group_khatma.py)."""
+
+    __tablename__ = "group_khatmas"
+
+    # secrets.token_urlsafe(16): 128 random bits, URL-safe, 22 chars.
+    id: Mapped[str] = mapped_column(String(32), primary_key=True)
+    title: Mapped[Optional[str]] = mapped_column(String(80), nullable=True)
+    organizer: Mapped[Optional[str]] = mapped_column(String(40), nullable=True)
+    # juz (30 parts) | hizb (60 parts)
+    unit: Mapped[str] = mapped_column(String(8))
+    parts: Mapped[int] = mapped_column(Integer)
+    target_date: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
+    organizer_hash: Mapped[str] = mapped_column(String(64))
+    created_at: Mapped[datetime] = mapped_column(DateTime)
+    last_activity_at: Mapped[datetime] = mapped_column(DateTime, index=True)
+    completed_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime, nullable=True, index=True
+    )
+
+
+class GroupKhatmaPart(Base):
+    __tablename__ = "group_khatma_parts"
+    __table_args__ = (UniqueConstraint("khatma_id", "number"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    khatma_id: Mapped[str] = mapped_column(
+        ForeignKey("group_khatmas.id", ondelete="CASCADE"), index=True
+    )
+    number: Mapped[int] = mapped_column(Integer)
+    # open | taken | done
+    state: Mapped[str] = mapped_column(String(8), default="open")
+    name: Mapped[Optional[str]] = mapped_column(String(40), nullable=True)
+    secret_hash: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    claimed_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    done_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
