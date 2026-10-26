@@ -59,6 +59,9 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kElderly = 'settings.elderlyMode';
   static const _kReduceMotion = 'settings.forceReduceMotion';
   static const _kAnnounceVerse = 'settings.announceVerseNumber';
+  static const _kWeeklyReminder = 'settings.weeklyReminder';
+  static const _kWeeklyDay = 'settings.weeklyReminderWeekday';
+  static const _kWeeklyMinutes = 'settings.weeklyReminderMinutes';
   static const _kTajweed = 'settings.tajweedColors';
   static const _kTajweedHues = 'settings.tajweedHues';
   static const _kFocus = 'settings.focusMode';
@@ -174,6 +177,13 @@ class SettingsController extends Notifier<AppSettings> {
       elderlyMode: _prefs.getBool(_kElderly) ?? false,
       forceReduceMotion: _prefs.getBool(_kReduceMotion) ?? false,
       announceVerseNumber: _prefs.getBool(_kAnnounceVerse) ?? true,
+      weeklyReminder: _prefs.getBool(_kWeeklyReminder) ?? false,
+      weeklyReminderWeekday: (_prefs.getInt(_kWeeklyDay) ?? DateTime.friday)
+          .clamp(DateTime.monday, DateTime.sunday),
+      weeklyReminderMinutes: (_prefs.getInt(_kWeeklyMinutes) ?? 20 * 60).clamp(
+        0,
+        24 * 60 - 1,
+      ),
       tajweedColors: _prefs.getBool(_kTajweed) ?? false,
       tajweedHues: {
         for (final e in _prefs.getStringList(_kTajweedHues) ?? const <String>[])
@@ -471,6 +481,23 @@ class SettingsController extends Notifier<AppSettings> {
   Future<void> setAnnounceVerseNumber(bool value) async {
     state = state.copyWith(announceVerseNumber: value);
     await _prefs.setBool(_kAnnounceVerse, value);
+  }
+
+  Future<void> setWeeklyReminder(bool value) async {
+    state = state.copyWith(weeklyReminder: value);
+    await _prefs.setBool(_kWeeklyReminder, value);
+  }
+
+  Future<void> setWeeklyReminderTime({
+    required int weekday,
+    required int minutes,
+  }) async {
+    state = state.copyWith(
+      weeklyReminderWeekday: weekday,
+      weeklyReminderMinutes: minutes,
+    );
+    await _prefs.setInt(_kWeeklyDay, weekday);
+    await _prefs.setInt(_kWeeklyMinutes, minutes);
   }
 
   Future<void> setTajweedColors(bool value) async {

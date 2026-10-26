@@ -63,6 +63,24 @@ extension RecitationStore on UserDatabase {
     });
   }
 
+  /// Sessions begun since [since] (not deleted): when, and their uuid; for
+  /// the weekly report.
+  Stream<List<(DateTime, String)>> watchRecitationStartsSince(DateTime since) =>
+      (select(recitationSessions)..where(
+            (t) =>
+                t.startedAt.isBiggerOrEqualValue(since) & t.deletedAt.isNull(),
+          ))
+          .watch()
+          .map((rows) => [for (final r in rows) (r.startedAt, r.uuid)]);
+
+  /// Verses recited since [since]: when, `ayah.id` and the session's uuid.
+  Stream<List<(DateTime, int, String)>> watchRecitedVersesSince(
+    DateTime since,
+  ) =>
+      (select(recitationVerses)..where((t) => t.at.isBiggerOrEqualValue(since)))
+          .watch()
+          .map((rows) => [for (final r in rows) (r.at, r.verse, r.session)]);
+
   /// Sessions, newest first (not deleted).
   Stream<List<RecitationSessionRow>> watchRecitations() =>
       (select(recitationSessions)

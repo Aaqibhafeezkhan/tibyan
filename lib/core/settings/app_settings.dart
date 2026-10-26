@@ -187,6 +187,9 @@ class AppSettings {
     this.elderlyMode = false,
     this.forceReduceMotion = false,
     this.announceVerseNumber = true,
+    this.weeklyReminder = false,
+    this.weeklyReminderWeekday = DateTime.friday,
+    this.weeklyReminderMinutes = 20 * 60,
     this.tajweedColors = false,
     this.tajweedHues = const {},
     this.focusMode = false,
@@ -330,6 +333,13 @@ class AppSettings {
   /// text (on by default).
   final bool announceVerseNumber;
 
+  /// «تذكير أسبوعي بالتقرير»: a local notification once a week (off by
+  /// default) on [weeklyReminderWeekday] (`DateTime.monday` … `sunday`) at
+  /// [weeklyReminderMinutes] after midnight.
+  final bool weeklyReminder;
+  final int weeklyReminderWeekday;
+  final int weeklyReminderMinutes;
+
   /// Colour the letters that tajweed rules apply to (off by default).
   final bool tajweedColors;
 
@@ -452,6 +462,9 @@ class AppSettings {
     bool? elderlyMode,
     bool? forceReduceMotion,
     bool? announceVerseNumber,
+    bool? weeklyReminder,
+    int? weeklyReminderWeekday,
+    int? weeklyReminderMinutes,
     bool? tajweedColors,
     Map<String, String>? tajweedHues,
     bool? focusMode,
@@ -511,6 +524,9 @@ class AppSettings {
     elderlyMode: elderlyMode ?? this.elderlyMode,
     forceReduceMotion: forceReduceMotion ?? this.forceReduceMotion,
     announceVerseNumber: announceVerseNumber ?? this.announceVerseNumber,
+    weeklyReminder: weeklyReminder ?? this.weeklyReminder,
+    weeklyReminderWeekday: weeklyReminderWeekday ?? this.weeklyReminderWeekday,
+    weeklyReminderMinutes: weeklyReminderMinutes ?? this.weeklyReminderMinutes,
     tajweedColors: tajweedColors ?? this.tajweedColors,
     tajweedHues: tajweedHues ?? this.tajweedHues,
     focusMode: focusMode ?? this.focusMode,
