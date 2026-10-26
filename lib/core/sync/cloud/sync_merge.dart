@@ -28,6 +28,16 @@ class SyncEntry {
 
   String get id => recordId(entity, key);
 
+  /// This entry stamped at [t] instead.
+  SyncEntry at(int t) => SyncEntry(
+    entity: entity,
+    key: key,
+    updatedAt: t,
+    deviceId: deviceId,
+    deleted: deleted,
+    row: row,
+  );
+
   Map<String, Object?> toJson() => {
     'e': entity,
     'k': key,

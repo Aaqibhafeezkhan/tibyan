@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 
 import '../../db/user_database.dart';
@@ -43,7 +45,7 @@ class CloudSyncEngine {
     required this.deviceId,
     DateTime Function()? clock,
   }) : _clock = clock ?? DateTime.now,
-       records = SyncRecords(db, prefs);
+       records = SyncRecords(db, prefs, deviceId: deviceId);
 
   final UserDatabase db;
   final SyncPrefs prefs;
@@ -54,19 +56,58 @@ class CloudSyncEngine {
 
   static const uploadedHashKey = 'sync.cloud.uploadedHash';
 
+  /// When changes stamped too far ahead arrived, by change.
+  static const arrivalsKey = 'sync.cloud.arrivals';
+
+  Map<String, int> _arrivals() {
+    final text = prefs.get(arrivalsKey);
+    if (text is! String) return {};
+    try {
+      final j = jsonDecode(text);
+      return j is Map
+          ? {
+              for (final MapEntry(:key, :value) in j.entries)
+                if (key is String && value is int) key: value,
+            }
+          : {};
+    } on FormatException {
+      return {};
+    }
+  }
+
+  /// A change stamped further ahead than this is from a wrong clock: it
+  /// counts as made when it arrived (or, here, when it was noted).
+  static const maxAhead = Duration(days: 1);
+
   static List<String> get entities => [...syncedEntities.keys, prefEntity];
 
   Future<SyncReport> sync() async {
     final remote = await store.readAll();
+    final now = _clock().millisecondsSinceEpoch;
     final incoming = <SyncEntry>[];
+    final before = _arrivals();
+    final arrivals = <String, int>{};
     for (final MapEntry(:key, :value) in remote.entries) {
       if (!key.startsWith(SyncFile.prefix)) continue;
       final f = SyncFile.decode(value);
-      if (f != null) incoming.addAll(f.entries);
+      if (f == null) continue;
+      for (final e in f.entries) {
+        // The misbaha's log from before it kept devices.
+        if (e.entity == 'tasbih_day' && !e.key.contains('"device"')) continue;
+        if (e.updatedAt > now + maxAhead.inMilliseconds) {
+          // The same change keeps the time it first arrived.
+          final k = '${e.id}\u0001${e.deviceId}\u0001${e.updatedAt}';
+          final t = arrivals[k] = before[k] ?? now;
+          incoming.add(e.at(t));
+        } else {
+          incoming.add(e);
+        }
+      }
     }
     await journalLocalChanges(
       cloudHasPrefs: incoming.any((e) => e.entity == prefEntity),
     );
+    await prefs.set(arrivalsKey, jsonEncode(arrivals));
     final changed = await applyRemote(newestOf(incoming).values);
     final uploaded = await upload();
     return SyncReport(
@@ -101,6 +142,7 @@ class CloudSyncEngine {
           final hash = rec.hash;
           if (j != null && !j.deleted && j.hash == hash) continue;
           var t = rec.updatedAt ?? (firstPrefs ? 0 : now);
+          if (t > now + maxAhead.inMilliseconds) t = now;
           if (j != null && t <= j.updatedAt) t = j.updatedAt + 1;
           await _note(entity, key, hash, t, deviceId, deleted: false);
         }
@@ -242,5 +284,6 @@ class CloudSyncEngine {
   Future<void> forget() async {
     await db.delete(db.syncJournal).go();
     await prefs.remove(uploadedHashKey);
+    await prefs.remove(arrivalsKey);
   }
 }

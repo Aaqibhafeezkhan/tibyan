@@ -9,6 +9,7 @@ import 'package:tibyan/core/sync/cloud/cloud_store.dart';
 import 'package:tibyan/core/sync/cloud/cloud_sync_engine.dart';
 import 'package:tibyan/core/sync/cloud/sync_merge.dart';
 import 'package:tibyan/core/sync/cloud/sync_records.dart';
+import 'package:tibyan/features/tasbih/data/tasbih_repository.dart';
 
 /// One device: its database, preferences and clock.
 class _Device {
@@ -212,7 +213,7 @@ void main() {
     expect((marksA.single.surah, (await b.fawasil()).single.surah), (3, 3));
   });
 
-  test('khatmas, tasbih and hifz records sync with their keys', () async {
+  test('khatmas and hifz records sync with their keys', () async {
     await a.db
         .into(a.db.khatmas)
         .insert(
@@ -221,16 +222,6 @@ void main() {
             edition: 'madina1441',
             startDate: '2026-10-01',
             targetDate: '2026-10-30',
-            updatedAt: Value(a.now),
-          ),
-        );
-    await a.db
-        .into(a.db.tasbihDays)
-        .insert(
-          TasbihDaysCompanion.insert(
-            day: '2026-10-01',
-            dhikr: 'app:seen34',
-            count: const Value(33),
             updatedAt: Value(a.now),
           ),
         );
@@ -246,16 +237,89 @@ void main() {
         );
     await a.sync();
     final r = await b.sync();
-    expect(r.changedEntities, {'khatma', 'tasbih_day', 'memorization'});
-    expect((await b.db.select(b.db.tasbihDays).getSingle()).count, 33);
-    // A later count on b replaces the day's row on a.
-    b.later();
-    await (b.db.update(b.db.tasbihDays)).write(
-      TasbihDaysCompanion(count: const Value(40), updatedAt: Value(b.now)),
-    );
+    expect(r.changedEntities, {'khatma', 'memorization'});
+  });
+
+  test('the same dhikr on the same day adds up across devices', () async {
+    final day = DateTime(2026, 10, 1, 9);
+    final ra = TasbihRepository(a.db), rb = TasbihRepository(b.db);
+    await ra.record('app:seen34', count: 33, rounds: 1, at: day);
+    // b counts too, part of it from the watch (absorbed as a record).
+    await rb.record('app:seen34', count: 10, at: day);
+    await rb.record('app:seen34', count: 5, at: day);
+    await a.sync();
     await b.sync();
     await a.sync();
-    expect((await a.db.select(a.db.tasbihDays).getSingle()).count, 40);
+    expect(await ra.dayCount('app:seen34', at: day), 48);
+    expect(await rb.dayCount('app:seen34', at: day), 48);
+    expect(await rb.dayTotal(at: day), 48);
+    final log = await ra.watchLog().first;
+    expect(log['2026-10-01']!['app:seen34'], (count: 48, rounds: 1));
+    // Each device's own counter keeps growing on its own row.
+    a.later();
+    await ra.record('app:seen34', count: 2, at: day);
+    await a.sync();
+    await b.sync();
+    expect(await rb.dayCount('app:seen34', at: day), 50);
+    expect(await b.db.select(b.db.tasbihDays).get(), hasLength(2));
+    // Syncing again changes nothing.
+    final again = await b.sync();
+    expect(again.applied, 0);
+    expect(again.uploaded, isFalse);
+  });
+
+  test('tadabbur notes and the reading position sync', () async {
+    await a.db
+        .into(a.db.reflections)
+        .insert(
+          ReflectionsCompanion.insert(
+            surah: 2,
+            ayah: 255,
+            body: 'ملاحظة',
+            updatedAt: Value(a.now),
+          ),
+        );
+    await a.db.savePosition(
+      edition: 'madina1441',
+      view: 'page',
+      surah: 18,
+      ayah: 10,
+      page: 294,
+    );
+    await a.sync();
+    final r = await b.sync();
+    expect(r.changedEntities, {'reflection', 'reading_positions'});
+    expect((await b.db.select(b.db.reflections).getSingle()).body, 'ملاحظة');
+    final pos = (await b.db.position())!;
+    expect((pos.surah, pos.ayah, pos.page), (18, 10, 294));
+  });
+
+  test('a stamp more than a day ahead counts as when it arrived', () async {
+    await a.addFasil('الكهف');
+    await a.sync();
+    await b.sync();
+    // b's clock is three days fast.
+    b.now = a.now.add(const Duration(days: 3));
+    await (b.db.update(b.db.bookmarkSets)).write(
+      BookmarkSetsCompanion(name: const Value('ب'), updatedAt: Value(b.now)),
+    );
+    await b.sync();
+    a.later();
+    expect((await a.sync()).applied, 1);
+    expect((await a.fawasil()).single.name, 'ب');
+    // Arriving again does not apply it again.
+    a.later();
+    final again = await a.sync();
+    expect((again.applied, again.uploaded), (0, false));
+    // A later edit on a (right clock) wins over b's skewed stamp.
+    a.later();
+    await (a.db.update(a.db.bookmarkSets)).write(
+      BookmarkSetsCompanion(name: const Value('أ'), updatedAt: Value(a.now)),
+    );
+    await a.sync();
+    a.later();
+    await a.sync();
+    expect((await a.fawasil()).single.name, 'أ');
   });
 
   test(
@@ -350,6 +414,42 @@ void main() {
     expect(rows.map((r) => r.uuid).toSet(), hasLength(2));
     expect(await db.select(db.syncJournal).get(), isEmpty);
     final v = await db.customSelect('PRAGMA user_version').get();
-    expect(v.single.data.values.single, 8);
+    expect(v.single.data.values.single, db.schemaVersion);
+  });
+
+  test('a version 8 database keeps its misbaha log as its own', () async {
+    final dir = Directory.systemTemp.createTempSync('sync_migration_9');
+    addTearDown(() => dir.deleteSync(recursive: true));
+    final file = File('${dir.path}/user.db');
+    final fresh = UserDatabase(NativeDatabase(file));
+    await fresh.customSelect('SELECT 1').get();
+    await fresh.close();
+    final raw = sqlite3.open(file.path)
+      ..execute('DROP TABLE tasbih_day')
+      ..execute(
+        'CREATE TABLE tasbih_day (id INTEGER PRIMARY KEY AUTOINCREMENT, '
+        'day TEXT NOT NULL, dhikr TEXT NOT NULL, count INTEGER NOT NULL '
+        'DEFAULT 0, rounds INTEGER NOT NULL DEFAULT 0, updated_at INTEGER '
+        'NOT NULL, UNIQUE (day, dhikr))',
+      )
+      ..execute(
+        'INSERT INTO tasbih_day (day, dhikr, count, rounds, updated_at) '
+        "VALUES ('2026-10-01', 'app:seen34', 33, 1, 1)",
+      )
+      ..execute(
+        'INSERT INTO sync_journal (entity, record_key, hash, updated_at, '
+        "device_id, deleted) VALUES ('tasbih_day', 'k', 'h', 1, 'd', 0), "
+        "('khatma', 'k', 'h', 1, 'd', 0)",
+      )
+      ..execute('PRAGMA user_version = 8');
+    raw.close();
+    final db = UserDatabase(NativeDatabase(file));
+    addTearDown(db.close);
+    final row = await db.select(db.tasbihDays).getSingle();
+    expect((row.count, row.rounds, row.device), (33, 1, ''));
+    final journal = await db.select(db.syncJournal).get();
+    expect(journal.map((j) => j.entity), ['khatma']);
+    await TasbihRepository(db).record('app:seen34', at: DateTime(2026, 10, 1));
+    expect((await db.select(db.tasbihDays).getSingle()).count, 34);
   });
 }

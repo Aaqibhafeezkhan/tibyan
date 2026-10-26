@@ -85,8 +85,10 @@ String hashRow(Map<String, Object?> row) {
 /// What syncs («المزامنة»): the fawasil and fixed marks, the khatmas with
 /// their record (sessions, attributions, pauses, the old log), the hifz
 /// (spaced review, memorization strength — the memorize mode's self-checks
-/// land there —, goals and the recitation record) and the misbaha (the
-/// reader's own adhkar and the daily log). The khatmas' caches
+/// land there —, goals and the recitation record), the misbaha (the
+/// reader's own adhkar and the daily log, one row a device so a day's
+/// counts add up), the tadabbur notes and the last reading position (by
+/// surah and ayah, so it holds in any edition). The khatmas' caches
 /// (khatma_coverage, daily_stat) are rebuilt from the record instead.
 const syncedEntities = <String, List<String>>{
   'bookmark_sets': ['uuid'],
@@ -103,7 +105,9 @@ const syncedEntities = <String, List<String>>{
   'recitation_verse': ['session', 'verse'],
   'recitation_word': ['session', 'verse', 'word'],
   'tasbih_dhikr': ['uuid'],
-  'tasbih_day': ['day', 'dhikr'],
+  'tasbih_day': ['day', 'dhikr', 'device'],
+  'reflection': ['uuid'],
+  'reading_positions': ['id'],
 };
 
 /// The entity of synced settings.
@@ -142,10 +146,14 @@ const khatmaEntities = {
 
 /// Reads and writes synced records on this device.
 class SyncRecords {
-  SyncRecords(this.db, this.prefs);
+  SyncRecords(this.db, this.prefs, {this.deviceId = ''});
 
   final UserDatabase db;
   final SyncPrefs prefs;
+
+  /// This device's sync id. The misbaha's log keeps this device's counts
+  /// under an empty device; in sync files they carry this id.
+  final String deviceId;
 
   /// The key columns of [entity]'s [row]: the four fixed marks are one
   /// record each by their kind on every device.
@@ -180,7 +188,11 @@ class SyncRecords {
     final rows = await db.customSelect('SELECT * FROM "$entity"').get();
     final out = <String, LocalRecord>{};
     for (final r in rows) {
-      final row = {...r.data}..remove('id');
+      final row = {...r.data};
+      if (!syncedEntities[entity]!.contains('id')) row.remove('id');
+      if (entity == 'tasbih_day' && row['device'] == '') {
+        row['device'] = deviceId;
+      }
       final key = keyOf(entity, row);
       if (key == null) continue;
       final t = row['updated_at'];
@@ -193,8 +205,18 @@ class SyncRecords {
   /// Writes [row] as the record [key] of [entity]. Returns false when the
   /// row lacks a value this device's table needs (a file from another
   /// version), leaving the device as it was.
-  Future<bool> put(String entity, String key, Map<String, Object?> row) async {
+  Future<bool> put(String entity, String key, Map<String, Object?> row) {
     if (entity == prefEntity) return _putPref(key, row['value']);
+    if (entity != 'tasbih_day') return _put(entity, key, row);
+    // A file from before the log kept devices: not this version's record.
+    if (row['device'] is! String) return Future.value(false);
+    return _put(entity, _localKey(key), {
+      ...row,
+      if (row['device'] == deviceId) 'device': '',
+    });
+  }
+
+  Future<bool> _put(String entity, String key, Map<String, Object?> row) async {
     final columns = await _columns(entity);
     final values = <String, Object?>{
       for (final e in row.entries)
@@ -240,13 +262,22 @@ class SyncRecords {
       await prefs.remove(key);
       return;
     }
-    final where = _where(key);
+    final where = _where(entity == 'tasbih_day' ? _localKey(key) : key);
     await db.customUpdate(
       'DELETE FROM "$entity" WHERE ${where.sql}',
       variables: where.args,
       updates: _tables(entity),
       updateKind: UpdateKind.delete,
     );
+  }
+
+  /// A misbaha log key as this device's table has it.
+  String _localKey(String key) {
+    final parts = (jsonDecode(key) as List).cast<List>();
+    return jsonEncode([
+      for (final p in parts)
+        p[0] == 'device' && p[1] == deviceId ? ['device', ''] : p,
+    ]);
   }
 
   Future<bool> _putPref(String key, Object? value) async =>
