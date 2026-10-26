@@ -25,6 +25,10 @@ class MainActivity : AudioServiceActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         tasbih = TasbihNative(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
+        // «الساعة»: today's portion and the dhikr to the Wear OS app; its
+        // counts are announced to the misbaha while the app runs.
+        WatchBridge(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
+        WatchBridge.onPending = { tasbih?.channel?.invokeMethod("pendingAdded", null) }
         // «Save to Photos» for shared verse pictures: Pictures/Tibyan,
         // through MediaStore (no permission from Android 10 on).
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "app.tibyan/photos")
@@ -87,6 +91,7 @@ class MainActivity : AudioServiceActivity() {
     }
 
     override fun onDestroy() {
+        WatchBridge.onPending = null
         tasbih?.dispose()
         tasbih = null
         super.onDestroy()
