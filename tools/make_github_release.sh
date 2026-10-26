@@ -66,12 +66,17 @@ if [ "$SKIP_BUILD" -eq 0 ]; then
   rm -rf "$OUT"; mkdir -p "$OUT"
   flutter pub get
 
+  ENV_ARG=()
+  if [ -f "$HOME/.config/tibyan/google.env" ]; then
+    ENV_ARG=(--dart-define-from-file="$HOME/.config/tibyan/google.env")
+  fi
+
   # Android: per-ABI APKs, then the universal one (the second build replaces the first's outputs).
-  flutter build apk --release --split-per-abi --build-number="$BUILD"
+  flutter build apk --release --split-per-abi --build-number="$BUILD" "${ENV_ARG[@]}"
   for abi in arm64-v8a armeabi-v7a x86_64; do
     cp "build/app/outputs/flutter-apk/app-$abi-release.apk" "$OUT/$NAME-android-$abi.apk"
   done
-  flutter build apk --release --build-number="$BUILD"
+  flutter build apk --release --build-number="$BUILD" "${ENV_ARG[@]}"
   cp build/app/outputs/flutter-apk/app-release.apk "$OUT/$NAME-android-universal.apk"
 
   # Check the APK is signed with the upload key, not the debug key.
@@ -83,7 +88,7 @@ if [ "$SKIP_BUILD" -eq 0 ]; then
   fi
 
   # macOS
-  flutter build macos --release --build-number="$BUILD"
+  flutter build macos --release --build-number="$BUILD" "${ENV_ARG[@]}"
   APP="$(ls -d build/macos/Build/Products/Release/*.app | head -1)"
   MAC_STATE="unsigned"
   if [ -n "${TIBYAN_DEVELOPER_ID:-}" ] && [ -n "${TIBYAN_NOTARY_PROFILE:-}" ]; then
