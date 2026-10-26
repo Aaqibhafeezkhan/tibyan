@@ -20,7 +20,7 @@
 
 ### الوصف الكامل بالعربية (Full Description - Arabic)
 ```text
-«تبيان» مصحف رقمي متكامل، مجاني تمامًا وغير ربحي وبلا أي إعلانات، صُمم ليكون رفيقك اليومي في تلاوة كتاب الله وتدبره وحفظه.
+«تبيان» مصحف رقمي متكامل، غير ربحي وبلا أي إعلانات، صُمم ليكون رفيقك اليومي في تلاوة كتاب الله وتدبره وحفظه.
 
 يجمع التطبيق بين جمال الخط القرآني الأصيل وأحدث التقنيات التفاعلية، مع الحفاظ على هدوء التجربة وخلوها من أي مشتتات.
 
@@ -59,7 +59,7 @@
 
 ### الوصف الكامل بالإنجليزية (Full Description - English)
 ```text
-Tibyan is a comprehensive, completely free, non-profit, and ad-free Quran app designed to be your serene daily companion for reciting, understanding, and memorizing the Holy Quran.
+Tibyan is a comprehensive, non-profit, and ad-free Quran app designed to be your serene daily companion for reciting, understanding, and memorizing the Holy Quran.
 
 Tibyan combines traditional Quranic calligraphy with modern interactive technology, maintaining an elegant, quiet experience free from ads or distractions.
 
