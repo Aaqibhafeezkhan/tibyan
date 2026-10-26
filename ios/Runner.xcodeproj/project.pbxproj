@@ -959,8 +959,9 @@
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = T958VWM76Z;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "الختمة";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "../apple/Extension-Info.plist";
+				TIBYAN_WIDGET_NAME = "الختمة";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -989,8 +990,9 @@
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = T958VWM76Z;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "الختمة";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "../apple/Extension-Info.plist";
+				TIBYAN_WIDGET_NAME = "الختمة";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1018,8 +1020,9 @@
 				CODE_SIGN_ENTITLEMENTS = ../apple/TibyanWatch/TibyanWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = T958VWM76Z;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "الختمة";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "../apple/Extension-Info.plist";
+				TIBYAN_WIDGET_NAME = "الختمة";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
