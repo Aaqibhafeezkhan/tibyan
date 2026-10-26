@@ -14,10 +14,12 @@
 		3BDBA187D556D7403694703C /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF630D919A0D4630FDCF759 /* AppIntents.framework */; };
 		4F0C98C481D19BA6E2C484E2 /* TibyanActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F06D2079F7027187E78722 /* TibyanActions.swift */; };
 		5091867B69375D18323D65FE /* TibyanWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4CB4CFC4A6CC084D956EFE89 /* TibyanWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5289326F61B16D35DD7B09D9 /* WatchConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 213E142C5B73187223ABD3FF /* WatchConnectivity.framework */; };
 		5AE294F754E5AD56F6E3CAF3 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1FDD5F468BDB412A9057B04 /* SwiftUI.framework */; };
 		5B624BB0F7F63BFB563D748F /* WidgetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85040AE8A0E0E7DE3F495F98 /* WidgetStore.swift */; };
+		72D8A5BF7A1284B2A45BCA51 /* TibyanWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C55590CA125EC6E4D60E0D /* TibyanWatchApp.swift */; };
+		7323F38C6F6C9C9678A2B4C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC4C2E2BDD7E14378460A66 /* Foundation.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
-		D5A7A11E2F00000100000001 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D5A7A11E2F00000100000002 /* PrivacyInfo.xcprivacy */; };
 		7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */; };
 		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
 		7AED21D454FCD855C2081D78 /* CarPlaySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB09B15ABDE72A8C2D1A5C4 /* CarPlaySceneDelegate.swift */; };
@@ -26,11 +28,15 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		A217ACC3FC4E2FF65544964B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 373A34BB71DBFB805129B4C0 /* Foundation.framework */; };
+		A8DDA6C198C138F1DC500ECD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 995968C981614F3555181908 /* Localizable.strings */; };
 		B16D4F6A472F082461FA7611 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1FDD5F468BDB412A9057B04 /* SwiftUI.framework */; };
 		B8FFA3BFE0B404B983065FDC /* WidgetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85040AE8A0E0E7DE3F495F98 /* WidgetStore.swift */; };
 		C1F6BA8C22C69BD3B4E34F52 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 373A34BB71DBFB805129B4C0 /* Foundation.framework */; };
 		CD4816D0F99491E7160B79AC /* TibyanWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07AE7E1ABA1160CBF1B89F7 /* TibyanWidget.swift */; };
+		D5A7A11E2F00000100000001 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D5A7A11E2F00000100000002 /* PrivacyInfo.xcprivacy */; };
 		D7247A9032DDA0A1F0EAC1A0 /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF630D919A0D4630FDCF759 /* AppIntents.framework */; };
+		DE9E3E4A1B5082C86466D5BC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9CF23FC44CCC0A4D869185 /* SwiftUI.framework */; };
+		F3F82FDE4413309FDABECA1F /* WatchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52076B7979BA37ECD05D6F55 /* WatchStore.swift */; };
 		F68C29322ED37F8557B38023 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13824F0867040AB486B86E68 /* WidgetKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -89,15 +95,18 @@
 		13B6D073A35F916204CDFEA0 /* CarPlay.entitlements.disabled */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = CarPlay.entitlements.disabled; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
+		213E142C5B73187223ABD3FF /* WatchConnectivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchConnectivity.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/WatchConnectivity.framework; sourceTree = DEVELOPER_DIR; };
 		22F06D2079F7027187E78722 /* TibyanActions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TibyanActions.swift; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		373A34BB71DBFB805129B4C0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+		45B4FF3CD634AE5ED094ABFE /* ar */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4CB4CFC4A6CC084D956EFE89 /* TibyanWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TibyanWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		52076B7979BA37ECD05D6F55 /* WatchStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchStore.swift; sourceTree = "<group>"; };
+		5E9CF23FC44CCC0A4D869185 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D5A7A11E2F00000100000002 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
@@ -111,10 +120,15 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98C55590CA125EC6E4D60E0D /* TibyanWatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TibyanWatchApp.swift; sourceTree = "<group>"; };
+		A59EA9ABF748BB98075127F4 /* TibyanWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TibyanWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0A98497B216B9179AE3AC8F /* Widget-ios.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = "Widget-ios.entitlements"; sourceTree = "<group>"; };
+		B5AA1FCC2C61A24018F6B1EF /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C8EE5BC516288244E69F4C69 /* Widget-ios.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Widget-ios.xcconfig"; sourceTree = "<group>"; };
 		CEB09B15ABDE72A8C2D1A5C4 /* CarPlaySceneDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CarPlaySceneDelegate.swift; sourceTree = "<group>"; };
 		D07AE7E1ABA1160CBF1B89F7 /* TibyanWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TibyanWidget.swift; sourceTree = "<group>"; };
+		D5A7A11E2F00000100000002 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		DDC4C2E2BDD7E14378460A66 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		E0FBA031405A896DBB55CC1F /* Runner.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		E1FDD5F468BDB412A9057B04 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -128,6 +142,16 @@
 				F68C29322ED37F8557B38023 /* WidgetKit.framework in Frameworks */,
 				B16D4F6A472F082461FA7611 /* SwiftUI.framework in Frameworks */,
 				D7247A9032DDA0A1F0EAC1A0 /* AppIntents.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4B5CE12B3A6E71EE7F4E9CBD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7323F38C6F6C9C9678A2B4C7 /* Foundation.framework in Frameworks */,
+				5289326F61B16D35DD7B09D9 /* WatchConnectivity.framework in Frameworks */,
+				DE9E3E4A1B5082C86466D5BC /* SwiftUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				5C9134B7EC7392BE918BAC68 /* iOS */,
+				E748F8C0F4448302695EC941 /* watchOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -216,6 +241,7 @@
 				7D66178CD3466430EC45D15F /* Extension-Info.plist */,
 				83AAC4FA87662936753CAB76 /* TibyanWidget */,
 				2E0748160D9AC4213951DEFC /* TibyanActions */,
+				D72326EB52A938613AE2AACC /* TibyanWatch */,
 			);
 			name = Apple;
 			path = ../apple;
@@ -252,6 +278,7 @@
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
 				4CB4CFC4A6CC084D956EFE89 /* TibyanWidget.appex */,
 				8CA00C4737B18EA119837B36 /* TibyanActions.appex */,
+				A59EA9ABF748BB98075127F4 /* TibyanWatch.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -274,6 +301,27 @@
 				13B6D073A35F916204CDFEA0 /* CarPlay.entitlements.disabled */,
 			);
 			path = Runner;
+			sourceTree = "<group>";
+		};
+		D72326EB52A938613AE2AACC /* TibyanWatch */ = {
+			isa = PBXGroup;
+			children = (
+				98C55590CA125EC6E4D60E0D /* TibyanWatchApp.swift */,
+				52076B7979BA37ECD05D6F55 /* WatchStore.swift */,
+				995968C981614F3555181908 /* Localizable.strings */,
+			);
+			name = TibyanWatch;
+			path = TibyanWatch;
+			sourceTree = "<group>";
+		};
+		E748F8C0F4448302695EC941 /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				DDC4C2E2BDD7E14378460A66 /* Foundation.framework */,
+				213E142C5B73187223ABD3FF /* WatchConnectivity.framework */,
+				5E9CF23FC44CCC0A4D869185 /* SwiftUI.framework */,
+			);
+			name = watchOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -312,6 +360,23 @@
 			productName = RunnerTests;
 			productReference = 331C8081294A63A400263BE5 /* RunnerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4F19F2256E6532C9C5C2058B /* TibyanWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 880B29C46301BF5E2993DF9A /* Build configuration list for PBXNativeTarget "TibyanWatch" */;
+			buildPhases = (
+				0FF2CFE785F3828CE29A7FE2 /* Sources */,
+				4B5CE12B3A6E71EE7F4E9CBD /* Frameworks */,
+				BAF857A78538218445503263 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TibyanWatch;
+			productName = TibyanWatch;
+			productReference = A59EA9ABF748BB98075127F4 /* TibyanWatch.app */;
+			productType = "com.apple.product-type.application";
 		};
 		97C146ED1CF9000F007C117D /* Runner */ = {
 			isa = PBXNativeTarget;
@@ -382,6 +447,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				ar,
 				Base,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
@@ -396,6 +462,7 @@
 				331C8080294A63A400263BE5 /* RunnerTests */,
 				D473E17FAC7E32AD595B680E /* TibyanWidget */,
 				0FC9D756799A1F12FF410D36 /* TibyanActions */,
+				4F19F2256E6532C9C5C2058B /* TibyanWatch */,
 			);
 		};
 /* End PBXProject section */
@@ -424,6 +491,14 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAF857A78538218445503263 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A8DDA6C198C138F1DC500ECD /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,6 +546,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0FF2CFE785F3828CE29A7FE2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72D8A5BF7A1284B2A45BCA51 /* TibyanWatchApp.swift in Sources */,
+				F3F82FDE4413309FDABECA1F /* WatchStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		331C807D294A63A400263BE5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -547,6 +631,15 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		995968C981614F3555181908 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				45B4FF3CD634AE5ED094ABFE /* ar */,
+				B5AA1FCC2C61A24018F6B1EF /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -558,8 +651,8 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = "../apple/Widget-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T958VWM76Z;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T958VWM76Z;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "../apple/Extension-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -637,8 +730,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = T958VWM76Z;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = T958VWM76Z;
@@ -704,6 +797,35 @@
 			};
 			name = Profile;
 		};
+		33EFAAF70A962FA52B6DC49F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "تبيان";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = NO;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.tibyan.tibyan.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
 		7E1C80739F94130617258D06 /* Profile */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C8EE5BC516288244E69F4C69 /* Widget-ios.xcconfig */;
@@ -712,8 +834,8 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = "../apple/Widget-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T958VWM76Z;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T958VWM76Z;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "../apple/Extension-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -732,6 +854,36 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Profile;
+		};
+		8B7E26F58583064CC6951566 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "تبيان";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = NO;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.tibyan.tibyan.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
 		};
 		97C147031CF9000F007C117D /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -852,8 +1004,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = T958VWM76Z;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = T958VWM76Z;
@@ -879,10 +1031,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = T958VWM76Z;
 				ENABLE_BITCODE = NO;
@@ -908,8 +1060,8 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = "../apple/Widget-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T958VWM76Z;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T958VWM76Z;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "../apple/Extension-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -928,6 +1080,36 @@
 			};
 			name = Debug;
 		};
+		C6B477352CD8FA50EAA873E8 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "تبيان";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = NO;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.tibyan.tibyan.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Profile;
+		};
 		C9368DAD65EB3D0AD003767B /* Profile */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C8EE5BC516288244E69F4C69 /* Widget-ios.xcconfig */;
@@ -936,8 +1118,8 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = "../apple/Widget-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T958VWM76Z;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T958VWM76Z;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "../apple/Extension-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -967,8 +1149,8 @@
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = T958VWM76Z;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T958VWM76Z;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "../apple/Extension-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -999,8 +1181,8 @@
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = T958VWM76Z;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T958VWM76Z;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "../apple/Extension-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -1040,6 +1222,16 @@
 				CB0DF06CC51EA4D3F014C4F0 /* Release */,
 				B8CB74D05C58FFFAB67680EE /* Debug */,
 				7E1C80739F94130617258D06 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		880B29C46301BF5E2993DF9A /* Build configuration list for PBXNativeTarget "TibyanWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B7E26F58583064CC6951566 /* Release */,
+				33EFAAF70A962FA52B6DC49F /* Debug */,
+				C6B477352CD8FA50EAA873E8 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

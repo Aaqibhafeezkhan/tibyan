@@ -1,0 +1,98 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Adds the Apple Watch app (apple/TibyanWatch) to ios/Runner.xcodeproj as
+# its own watchOS target. It is NOT embedded in Runner yet: the watch App ID
+# (app.tibyan.tibyan.watchkitapp) must exist first (docs/WATCH.md), and
+# until then `flutter build ios` stays as it was. Running it again does
+# nothing.
+#
+#   gem install xcodeproj
+#   ruby tools/apple/add_watch_target.rb          # add the target
+#   ruby tools/apple/add_watch_target.rb --embed  # also embed it in Runner
+#
+# Check it builds:
+#   xcodebuild -project ios/Runner.xcodeproj -target TibyanWatch \
+#     -sdk watchsimulator CODE_SIGNING_ALLOWED=NO build
+
+require 'xcodeproj'
+
+Encoding.default_external = Encoding::UTF_8
+
+NAME = 'TibyanWatch'
+BUNDLE = 'app.tibyan.tibyan.watchkitapp'
+DEPLOYMENT = '10.0'
+
+root = File.expand_path('../..', __dir__)
+project = Xcodeproj::Project.open(File.join(root, 'ios', 'Runner.xcodeproj'))
+runner = project.targets.find { |t| t.name == 'Runner' } or abort 'no Runner target'
+
+target = project.targets.find { |t| t.name == NAME }
+unless target
+  apple = project.main_group['Apple'] || project.main_group.new_group('Apple', '../apple')
+  group = apple[NAME] || apple.new_group(NAME, NAME)
+  target = project.new_target(:application, NAME, :watchos, DEPLOYMENT, nil, :swift)
+  sources = %w[TibyanWatchApp.swift WatchStore.swift].map { |f| group.new_reference(f) }
+  target.add_file_references(sources)
+  strings = group.new_variant_group('Localizable.strings')
+  %w[ar en].each do |lang|
+    ref = strings.new_reference("#{lang}.lproj/Localizable.strings")
+    ref.name = lang
+    ref.last_known_file_type = 'text.plist.strings'
+  end
+  target.add_resources([strings])
+  target.add_system_framework(%w[WatchConnectivity SwiftUI])
+
+  target.build_configurations.each do |config|
+    s = config.build_settings
+    s['PRODUCT_BUNDLE_IDENTIFIER'] = BUNDLE
+    s['PRODUCT_NAME'] = '$(TARGET_NAME)'
+    s['SDKROOT'] = 'watchos'
+    s['WATCHOS_DEPLOYMENT_TARGET'] = DEPLOYMENT
+    s['TARGETED_DEVICE_FAMILY'] = '4'
+    s['SWIFT_VERSION'] = '5.0'
+    s['CODE_SIGN_STYLE'] = 'Automatic'
+    s['GENERATE_INFOPLIST_FILE'] = 'YES'
+    s['INFOPLIST_KEY_CFBundleDisplayName'] = 'تبيان'
+    s['INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp'] = 'NO'
+    s['INFOPLIST_KEY_UISupportedInterfaceOrientations'] = 'UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown'
+    # Generated.xcconfig (the Flutter version) is not read here; match the
+    # app's version by hand before a release (docs/WATCH.md).
+    s['MARKETING_VERSION'] = '1.0'
+    s['CURRENT_PROJECT_VERSION'] = '1'
+    s['SKIP_INSTALL'] = 'YES'
+    s['DEVELOPMENT_ASSET_PATHS'] = ''
+    s['LOCALIZATION_PREFERS_STRING_CATALOGS'] = 'NO'
+    s['LD_RUNPATH_SEARCH_PATHS'] = ['$(inherited)', '@executable_path/Frameworks']
+  end
+end
+
+if ARGV.include?('--embed')
+  # Only now does it name its companion: Flutter treats a project with a
+  # watch companion differently (simulator builds then need `-d <id>`).
+  target.build_configurations.each do |config|
+    config.build_settings['INFOPLIST_KEY_WKCompanionAppBundleIdentifier'] = 'app.tibyan.tibyan'
+  end
+  embed = runner.copy_files_build_phases.find { |p| p.name == 'Embed Watch Content' } ||
+          runner.new_copy_files_build_phase('Embed Watch Content')
+  embed.dst_path = '$(CONTENTS_FOLDER_PATH)/Watch'
+  embed.symbol_dst_subfolder_spec = :products_directory
+  unless embed.files_references.include?(target.product_reference)
+    runner.add_dependency(target)
+    file = embed.add_file_reference(target.product_reference, true)
+    file.settings = { 'ATTRIBUTES' => %w[RemoveHeadersOnCopy] }
+  end
+  # As for the widgets: embedding runs before Flutter's "Thin Binary".
+  thin = runner.build_phases.find { |p| p.respond_to?(:name) && p.name == 'Thin Binary' }
+  if thin && runner.build_phases.index(embed) > runner.build_phases.index(thin)
+    runner.build_phases.delete(embed)
+    runner.build_phases.insert(runner.build_phases.index(thin), embed)
+  end
+end
+
+# The watch app's Arabic strings.
+regions = project.root_object.known_regions
+regions << 'ar' unless regions.include?('ar')
+
+project.save
+puts project.targets.map(&:name).join(', ')
