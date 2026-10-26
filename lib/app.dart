@@ -10,6 +10,7 @@ import 'core/theme/app_theme.dart';
 import 'core/ui/mac_menu.dart';
 import 'features/audio/global_player.dart';
 import 'features/sync/sync_controller.dart';
+import 'features/tasbih/tasbih_providers.dart' show watchCountsProvider;
 import 'l10n/app_localizations.dart';
 
 class TibyanApp extends ConsumerWidget {
@@ -40,6 +41,8 @@ class TibyanApp extends ConsumerWidget {
     // «المزامنة» runs from the start (when switched on) without building
     // the app again on its status.
     ref.listen(cloudSyncProvider, (_, _) {});
+    // Watch counts join the misbaha at once, on any screen.
+    ref.listen(watchCountsProvider, (_, _) {});
     final router = ref.watch(appRouterProvider);
     return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,

@@ -238,6 +238,35 @@ void main() {
     await done(tester, db);
   });
 
+  testWidgets('watch counts join at once on any screen, into this device', (
+    tester,
+  ) async {
+    final (c, platform, db) = await pump(
+      tester,
+      TasbihStyle.button,
+      screen: const SizedBox(),
+    );
+    platform.pending = 3; // counted on the watch while the app was closed
+    // Started with the app (TibyanApp listens to it).
+    await tester.runAsync(() async => c.listen(watchCountsProvider, (_, _) {}));
+    Future<void> wait() => tester.runAsync(() async {
+      for (var i = 0; i < 50 && platform.pending > 0; i++) {
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+    });
+    await wait();
+    expect(platform.pending, 0);
+    final first = await tester.runAsync(() => db.select(db.tasbihDays).get());
+    expect(first!.single.count, 3);
+    platform.watchCount(2);
+    await wait();
+    final rows = await tester.runAsync(() => db.select(db.tasbihDays).get());
+    expect(rows!.single.count, 5);
+    expect(rows.single.device, '');
+    await done(tester, db);
+  });
+
   testWidgets('the screen reader hears the count', (tester) async {
     final handle = tester.ensureSemantics();
     final (_, _, db) = await pump(tester, TasbihStyle.button);

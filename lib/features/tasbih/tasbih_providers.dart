@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart' show AppLifecycleListener;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/settings/settings_controller.dart'
@@ -145,7 +146,16 @@ class TasbihController extends Notifier<TasbihCounter> {
 
   /// Counts made by the widget or the lock-screen service, added to the
   /// current dhikr as if tapped here (rounds included), without feedback.
-  Future<int> absorbPending() async {
+  Future<int> absorbPending() {
+    // One at a time: the app and the misbaha screen may both ask.
+    final run = (_absorbing ?? Future<int>.value(0)).then((_) => _absorb());
+    _absorbing = run;
+    return run;
+  }
+
+  Future<int>? _absorbing;
+
+  Future<int> _absorb() async {
     final n = await ref.read(tasbihPlatformProvider).takePending();
     if (n <= 0) return 0;
     var c = state;
@@ -217,3 +227,25 @@ TasbihCounter tapTimes(TasbihCounter c, int n) {
   }
   return out;
 }
+
+/// Counts from the watch (and the widget) join the phone's count as soon
+/// as they arrive, whatever screen is open: when the watch announces them,
+/// when the app starts and whenever it comes back. They land in this
+/// device's own daily row, so «المزامنة» adds them to the other devices'.
+final watchCountsProvider = Provider<void>((ref) {
+  Future<void> absorb() async {
+    final c = ref.read(tasbihCounterProvider.notifier);
+    if (await c.absorbPending() > 0 && ref.mounted) await c.syncWidget();
+  }
+
+  final sub = ref
+      .read(tasbihPlatformProvider)
+      .pendingAdded
+      .listen((_) => unawaited(absorb()));
+  final life = AppLifecycleListener(onResume: () => unawaited(absorb()));
+  unawaited(Future<void>(absorb));
+  ref.onDispose(() {
+    unawaited(sub.cancel());
+    life.dispose();
+  });
+});
