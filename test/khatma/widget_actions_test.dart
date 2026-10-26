@@ -148,12 +148,25 @@ void main() {
         title: 'ختمة',
         edition: 'madina1441',
         idle: 'تم',
-        days: {day: (portion: 'ص ٣', reference: 'البقرة ٥', page: 3)},
+        days: {
+          day: (
+            portion: 'ص ٣',
+            reference: 'البقرة ٥',
+            page: 3,
+            surah: 'البقرة',
+            to: 4,
+          ),
+        },
+        progress: .625,
       ),
     );
     expect(entries['title'], 'ختمة');
     expect(entries['days'], '2026-10-04');
     expect(entries['portion_2026-10-04'], 'ص ٣');
     expect(entries['uri_2026-10-04'], contains('page=3'));
+    expect(entries['progress'], '62');
+    expect(entries['surah_2026-10-04'], 'البقرة');
+    expect(entries['from_2026-10-04'], '3');
+    expect(entries['to_2026-10-04'], '4');
   });
 }

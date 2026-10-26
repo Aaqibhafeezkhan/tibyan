@@ -320,6 +320,9 @@ void main() {
     expect(find.text('2/4 · 0/33'), findsOneWidget);
     expect(platform.widget?['stages'], '33,33,33,1');
     expect(platform.widget?['round'], '33');
+    // The watch gets each stage's own words, cut from the dhikr's text.
+    expect(platform.widget?['stageTexts']?.split('\n'), hasLength(4));
+    expect(platform.widget?['target'], '0');
     for (var i = 0; i < 66; i++) {
       events.add((await tester.runAsync(ctrl.tap))!);
     }

@@ -1149,6 +1149,8 @@ class KhatmaService {
                 digits(first.number),
               ),
         page: range.from,
+        surah: surah == null ? '' : (ar ? surah.nameAr : surah.nameEn),
+        to: range.to,
       );
     }
     await _ref
@@ -1158,6 +1160,7 @@ class KhatmaService {
             title: s == null ? l.khatmaTitle : s.row.title,
             edition: s?.edition.name ?? '',
             days: days,
+            progress: s?.progress ?? 0,
             idle: s == null
                 ? l.widgetNoKhatma
                 : s.complete

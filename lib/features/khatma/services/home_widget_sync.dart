@@ -8,7 +8,15 @@ import '../../../core/platform/watch_bridge.dart';
 import '../domain/day.dart';
 
 /// What the home screen widget shows on one day.
-typedef WidgetDay = ({String portion, String reference, int page});
+/// [surah] is the name of the surah the portion starts in and [to] its
+/// last page (the watch shows «ص ٢٢ ← ص ٢٤»).
+typedef WidgetDay = ({
+  String portion,
+  String reference,
+  int page,
+  String surah,
+  int to,
+});
 
 /// The widget's data: today's portion and a verse reference, written ahead
 /// for the coming days so the widget stays right when the app is not
@@ -19,9 +27,13 @@ class WidgetData {
     required this.edition,
     required this.days,
     required this.idle,
+    this.progress = 0,
   });
 
   final String title;
+
+  /// The khatma's progress, 0 to 1 (the watch's ring).
+  final double progress;
   final String edition;
   final Map<Day, WidgetDay> days;
 
@@ -64,17 +76,22 @@ WidgetAction? widgetActionOf(Uri? uri) => uri == null || uri.host != 'action'
     : WidgetAction.of(uri.pathSegments.firstOrNull ?? '');
 
 /// The keys the platform widgets read, in one flat map: `title`, `idle`,
-/// `edition`, `days`, and per day `portion_`, `ref_` and `uri_`.
+/// `edition`, `progress` (percent), `days`, and per day `portion_`, `ref_`,
+/// `uri_`, `surah_`, `from_` and `to_`.
 Map<String, String> widgetEntries(WidgetData data) => {
   'title': data.title,
   'idle': data.idle,
   'edition': data.edition,
+  'progress': '${(data.progress.clamp(0.0, 1.0) * 100).floor()}',
   // One entry per day: `portion_yyyy-MM-dd` and so on.
   'days': [for (final d in data.days.keys) d.key].join(','),
   for (final MapEntry(key: d, value: v) in data.days.entries) ...{
     'portion_${d.key}': v.portion,
     'ref_${d.key}': v.reference,
     'uri_${d.key}': widgetUri(v.page, data.edition).toString(),
+    'surah_${d.key}': v.surah,
+    'from_${d.key}': '${v.page}',
+    'to_${d.key}': '${v.to}',
   },
 };
 

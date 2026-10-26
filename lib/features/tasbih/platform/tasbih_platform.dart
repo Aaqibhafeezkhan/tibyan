@@ -29,12 +29,16 @@ abstract interface class TasbihPlatform {
   /// What the home screen widget shows. For a dhikr said in stages,
   /// [stages] is their counts (`33,33,33,1`) and [round] the count in the
   /// current round, so the widget shows the stage as it counts.
+  /// [target] is the count to a round (0 for none) and [stageTexts] the
+  /// stages' own words, for the watch.
   Future<void> writeWidget({
     required String dhikr,
     required String count,
     required String label,
     String stages = '',
     int round = 0,
+    int target = 0,
+    List<String> stageTexts = const [],
   });
 }
 
@@ -81,12 +85,16 @@ class NoTasbihPlatform implements TasbihPlatform {
     required String label,
     String stages = '',
     int round = 0,
+    int target = 0,
+    List<String> stageTexts = const [],
   }) async => widget = {
     'dhikr': dhikr,
     'count': count,
     'label': label,
     'stages': stages,
     'round': '$round',
+    'target': '$target',
+    'stageTexts': stageTexts.join('\n'),
   };
 }
 
@@ -164,12 +172,18 @@ class ChannelTasbihPlatform implements TasbihPlatform {
     required String label,
     String stages = '',
     int round = 0,
+    int target = 0,
+    List<String> stageTexts = const [],
   }) async {
     if (!_mobile) return;
     await WatchBridge.push({
       'tasbih_dhikr': dhikr,
       'tasbih_count': count,
       'tasbih_label': label,
+      'tasbih_target': '$target',
+      'tasbih_stages': stages,
+      // One line per stage, cut from the dhikr's own text.
+      'tasbih_stage_texts': stageTexts.join('\n'),
     });
     try {
       await _group();

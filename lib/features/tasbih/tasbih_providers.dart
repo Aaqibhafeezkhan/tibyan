@@ -214,6 +214,11 @@ class TasbihController extends Notifier<TasbihCounter> {
           label: label,
           stages: dhikr.stageCounts?.join(',') ?? '',
           round: state.count,
+          target: dhikr.stageCounts == null ? state.target ?? 0 : 0,
+          stageTexts: [
+            for (final st in dhikr.stages)
+              dhikr.text.substring(st.start, st.end).trim(),
+          ],
         );
   }
 }
