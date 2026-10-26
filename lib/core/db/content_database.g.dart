@@ -9385,7 +9385,9 @@ class ShamarlyWordBoxRow extends DataClass
   final int x1;
   final int y1;
 
-  /// How sure the split into words is: 2 stable, 1 not yet reviewed.
+  /// How sure the split into words is: 2 stable, 1 not yet reviewed, 0
+  /// the best split, not confirmed (tajweed colouring only; see
+  /// [shamarlyWordLevel]).
   final int level;
   const ShamarlyWordBoxRow({
     required this.surah,

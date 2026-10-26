@@ -99,7 +99,7 @@ void main() {
     await r.record('app:seen34');
     expect(await r.dayCount('app:seen34'), 1);
     final version = await upgraded.customSelect('PRAGMA user_version').get();
-    expect(version.single.data.values.single, 7);
+    expect(version.single.data.values.single, upgraded.schemaVersion);
   });
 
   test('the app adhkar file is read with its source and references', () {

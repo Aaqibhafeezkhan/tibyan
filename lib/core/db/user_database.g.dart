@@ -99,6 +99,16 @@ class $BookmarkSetsTable extends BookmarkSets
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+    'uuid',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: newUuid,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -110,6 +120,7 @@ class $BookmarkSetsTable extends BookmarkSets
     sortOrder,
     updatedAt,
     kind,
+    uuid,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -186,6 +197,12 @@ class $BookmarkSetsTable extends BookmarkSets
         kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
       );
     }
+    if (data.containsKey('uuid')) {
+      context.handle(
+        _uuidMeta,
+        uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
+      );
+    }
     return context;
   }
 
@@ -231,6 +248,10 @@ class $BookmarkSetsTable extends BookmarkSets
         DriftSqlType.string,
         data['${effectivePrefix}kind'],
       ),
+      uuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}uuid'],
+      ),
     );
   }
 
@@ -255,6 +276,11 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
   /// One of [MarkKind] for the four fixed marks; null for the reader's
   /// own named fawasil.
   final String? kind;
+
+  /// The same on every device, so a named fasil syncs as one record even
+  /// when it moves or is renamed. Added in version 8; older rows got one
+  /// in the upgrade. The four fixed marks sync by [kind] instead.
+  final String? uuid;
   const BookmarkSetRow({
     required this.id,
     required this.name,
@@ -265,6 +291,7 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
     required this.sortOrder,
     required this.updatedAt,
     this.kind,
+    this.uuid,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -280,6 +307,9 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
     if (!nullToAbsent || kind != null) {
       map['kind'] = Variable<String>(kind);
     }
+    if (!nullToAbsent || uuid != null) {
+      map['uuid'] = Variable<String>(uuid);
+    }
     return map;
   }
 
@@ -294,6 +324,7 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
       sortOrder: Value(sortOrder),
       updatedAt: Value(updatedAt),
       kind: kind == null && nullToAbsent ? const Value.absent() : Value(kind),
+      uuid: uuid == null && nullToAbsent ? const Value.absent() : Value(uuid),
     );
   }
 
@@ -312,6 +343,7 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
       sortOrder: serializer.fromJson<int>(json['sortOrder']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       kind: serializer.fromJson<String?>(json['kind']),
+      uuid: serializer.fromJson<String?>(json['uuid']),
     );
   }
   @override
@@ -327,6 +359,7 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
       'sortOrder': serializer.toJson<int>(sortOrder),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'kind': serializer.toJson<String?>(kind),
+      'uuid': serializer.toJson<String?>(uuid),
     };
   }
 
@@ -340,6 +373,7 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
     int? sortOrder,
     DateTime? updatedAt,
     Value<String?> kind = const Value.absent(),
+    Value<String?> uuid = const Value.absent(),
   }) => BookmarkSetRow(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -350,6 +384,7 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
     sortOrder: sortOrder ?? this.sortOrder,
     updatedAt: updatedAt ?? this.updatedAt,
     kind: kind.present ? kind.value : this.kind,
+    uuid: uuid.present ? uuid.value : this.uuid,
   );
   BookmarkSetRow copyWithCompanion(BookmarkSetsCompanion data) {
     return BookmarkSetRow(
@@ -362,6 +397,7 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
       sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       kind: data.kind.present ? data.kind.value : this.kind,
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
     );
   }
 
@@ -376,7 +412,8 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
           ..write('page: $page, ')
           ..write('sortOrder: $sortOrder, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('kind: $kind')
+          ..write('kind: $kind, ')
+          ..write('uuid: $uuid')
           ..write(')'))
         .toString();
   }
@@ -392,6 +429,7 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
     sortOrder,
     updatedAt,
     kind,
+    uuid,
   );
   @override
   bool operator ==(Object other) =>
@@ -405,7 +443,8 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
           other.page == this.page &&
           other.sortOrder == this.sortOrder &&
           other.updatedAt == this.updatedAt &&
-          other.kind == this.kind);
+          other.kind == this.kind &&
+          other.uuid == this.uuid);
 }
 
 class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
@@ -418,6 +457,7 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
   final Value<int> sortOrder;
   final Value<DateTime> updatedAt;
   final Value<String?> kind;
+  final Value<String?> uuid;
   const BookmarkSetsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -428,6 +468,7 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
     this.sortOrder = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.kind = const Value.absent(),
+    this.uuid = const Value.absent(),
   });
   BookmarkSetsCompanion.insert({
     this.id = const Value.absent(),
@@ -439,6 +480,7 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
     this.sortOrder = const Value.absent(),
     required DateTime updatedAt,
     this.kind = const Value.absent(),
+    this.uuid = const Value.absent(),
   }) : name = Value(name),
        color = Value(color),
        surah = Value(surah),
@@ -455,6 +497,7 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
     Expression<int>? sortOrder,
     Expression<DateTime>? updatedAt,
     Expression<String>? kind,
+    Expression<String>? uuid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -466,6 +509,7 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
       if (sortOrder != null) 'sort_order': sortOrder,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (kind != null) 'kind': kind,
+      if (uuid != null) 'uuid': uuid,
     });
   }
 
@@ -479,6 +523,7 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
     Value<int>? sortOrder,
     Value<DateTime>? updatedAt,
     Value<String?>? kind,
+    Value<String?>? uuid,
   }) {
     return BookmarkSetsCompanion(
       id: id ?? this.id,
@@ -490,6 +535,7 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
       sortOrder: sortOrder ?? this.sortOrder,
       updatedAt: updatedAt ?? this.updatedAt,
       kind: kind ?? this.kind,
+      uuid: uuid ?? this.uuid,
     );
   }
 
@@ -523,6 +569,9 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
     if (kind.present) {
       map['kind'] = Variable<String>(kind.value);
     }
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
     return map;
   }
 
@@ -537,7 +586,8 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
           ..write('page: $page, ')
           ..write('sortOrder: $sortOrder, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('kind: $kind')
+          ..write('kind: $kind, ')
+          ..write('uuid: $uuid')
           ..write(')'))
         .toString();
   }
@@ -11783,6 +11833,421 @@ class TasbihDaysCompanion extends UpdateCompanion<TasbihDayRow> {
   }
 }
 
+class $SyncJournalTable extends SyncJournal
+    with TableInfo<$SyncJournalTable, SyncJournalRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SyncJournalTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _entityMeta = const VerificationMeta('entity');
+  @override
+  late final GeneratedColumn<String> entity = GeneratedColumn<String>(
+    'entity',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _recordKeyMeta = const VerificationMeta(
+    'recordKey',
+  );
+  @override
+  late final GeneratedColumn<String> recordKey = GeneratedColumn<String>(
+    'record_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hashMeta = const VerificationMeta('hash');
+  @override
+  late final GeneratedColumn<String> hash = GeneratedColumn<String>(
+    'hash',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deviceIdMeta = const VerificationMeta(
+    'deviceId',
+  );
+  @override
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
+    'device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
+  @override
+  late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
+    'deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    entity,
+    recordKey,
+    hash,
+    updatedAt,
+    deviceId,
+    deleted,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sync_journal';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SyncJournalRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('entity')) {
+      context.handle(
+        _entityMeta,
+        entity.isAcceptableOrUnknown(data['entity']!, _entityMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_entityMeta);
+    }
+    if (data.containsKey('record_key')) {
+      context.handle(
+        _recordKeyMeta,
+        recordKey.isAcceptableOrUnknown(data['record_key']!, _recordKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordKeyMeta);
+    }
+    if (data.containsKey('hash')) {
+      context.handle(
+        _hashMeta,
+        hash.isAcceptableOrUnknown(data['hash']!, _hashMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('device_id')) {
+      context.handle(
+        _deviceIdMeta,
+        deviceId.isAcceptableOrUnknown(data['device_id']!, _deviceIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deviceIdMeta);
+    }
+    if (data.containsKey('deleted')) {
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {entity, recordKey};
+  @override
+  SyncJournalRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SyncJournalRow(
+      entity: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entity'],
+      )!,
+      recordKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}record_key'],
+      )!,
+      hash: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hash'],
+      ),
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+    );
+  }
+
+  @override
+  $SyncJournalTable createAlias(String alias) {
+    return $SyncJournalTable(attachedDatabase, alias);
+  }
+}
+
+class SyncJournalRow extends DataClass implements Insertable<SyncJournalRow> {
+  final String entity;
+  final String recordKey;
+  final String? hash;
+
+  /// Milliseconds since the epoch of the record's last change.
+  final int updatedAt;
+
+  /// The device that made that change.
+  final String deviceId;
+  final bool deleted;
+  const SyncJournalRow({
+    required this.entity,
+    required this.recordKey,
+    this.hash,
+    required this.updatedAt,
+    required this.deviceId,
+    required this.deleted,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['entity'] = Variable<String>(entity);
+    map['record_key'] = Variable<String>(recordKey);
+    if (!nullToAbsent || hash != null) {
+      map['hash'] = Variable<String>(hash);
+    }
+    map['updated_at'] = Variable<int>(updatedAt);
+    map['device_id'] = Variable<String>(deviceId);
+    map['deleted'] = Variable<bool>(deleted);
+    return map;
+  }
+
+  SyncJournalCompanion toCompanion(bool nullToAbsent) {
+    return SyncJournalCompanion(
+      entity: Value(entity),
+      recordKey: Value(recordKey),
+      hash: hash == null && nullToAbsent ? const Value.absent() : Value(hash),
+      updatedAt: Value(updatedAt),
+      deviceId: Value(deviceId),
+      deleted: Value(deleted),
+    );
+  }
+
+  factory SyncJournalRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SyncJournalRow(
+      entity: serializer.fromJson<String>(json['entity']),
+      recordKey: serializer.fromJson<String>(json['recordKey']),
+      hash: serializer.fromJson<String?>(json['hash']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'entity': serializer.toJson<String>(entity),
+      'recordKey': serializer.toJson<String>(recordKey),
+      'hash': serializer.toJson<String?>(hash),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'deleted': serializer.toJson<bool>(deleted),
+    };
+  }
+
+  SyncJournalRow copyWith({
+    String? entity,
+    String? recordKey,
+    Value<String?> hash = const Value.absent(),
+    int? updatedAt,
+    String? deviceId,
+    bool? deleted,
+  }) => SyncJournalRow(
+    entity: entity ?? this.entity,
+    recordKey: recordKey ?? this.recordKey,
+    hash: hash.present ? hash.value : this.hash,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deviceId: deviceId ?? this.deviceId,
+    deleted: deleted ?? this.deleted,
+  );
+  SyncJournalRow copyWithCompanion(SyncJournalCompanion data) {
+    return SyncJournalRow(
+      entity: data.entity.present ? data.entity.value : this.entity,
+      recordKey: data.recordKey.present ? data.recordKey.value : this.recordKey,
+      hash: data.hash.present ? data.hash.value : this.hash,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      deleted: data.deleted.present ? data.deleted.value : this.deleted,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncJournalRow(')
+          ..write('entity: $entity, ')
+          ..write('recordKey: $recordKey, ')
+          ..write('hash: $hash, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('deleted: $deleted')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(entity, recordKey, hash, updatedAt, deviceId, deleted);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SyncJournalRow &&
+          other.entity == this.entity &&
+          other.recordKey == this.recordKey &&
+          other.hash == this.hash &&
+          other.updatedAt == this.updatedAt &&
+          other.deviceId == this.deviceId &&
+          other.deleted == this.deleted);
+}
+
+class SyncJournalCompanion extends UpdateCompanion<SyncJournalRow> {
+  final Value<String> entity;
+  final Value<String> recordKey;
+  final Value<String?> hash;
+  final Value<int> updatedAt;
+  final Value<String> deviceId;
+  final Value<bool> deleted;
+  final Value<int> rowid;
+  const SyncJournalCompanion({
+    this.entity = const Value.absent(),
+    this.recordKey = const Value.absent(),
+    this.hash = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.deleted = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SyncJournalCompanion.insert({
+    required String entity,
+    required String recordKey,
+    this.hash = const Value.absent(),
+    required int updatedAt,
+    required String deviceId,
+    this.deleted = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : entity = Value(entity),
+       recordKey = Value(recordKey),
+       updatedAt = Value(updatedAt),
+       deviceId = Value(deviceId);
+  static Insertable<SyncJournalRow> custom({
+    Expression<String>? entity,
+    Expression<String>? recordKey,
+    Expression<String>? hash,
+    Expression<int>? updatedAt,
+    Expression<String>? deviceId,
+    Expression<bool>? deleted,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (entity != null) 'entity': entity,
+      if (recordKey != null) 'record_key': recordKey,
+      if (hash != null) 'hash': hash,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deviceId != null) 'device_id': deviceId,
+      if (deleted != null) 'deleted': deleted,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SyncJournalCompanion copyWith({
+    Value<String>? entity,
+    Value<String>? recordKey,
+    Value<String?>? hash,
+    Value<int>? updatedAt,
+    Value<String>? deviceId,
+    Value<bool>? deleted,
+    Value<int>? rowid,
+  }) {
+    return SyncJournalCompanion(
+      entity: entity ?? this.entity,
+      recordKey: recordKey ?? this.recordKey,
+      hash: hash ?? this.hash,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deviceId: deviceId ?? this.deviceId,
+      deleted: deleted ?? this.deleted,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (entity.present) {
+      map['entity'] = Variable<String>(entity.value);
+    }
+    if (recordKey.present) {
+      map['record_key'] = Variable<String>(recordKey.value);
+    }
+    if (hash.present) {
+      map['hash'] = Variable<String>(hash.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncJournalCompanion(')
+          ..write('entity: $entity, ')
+          ..write('recordKey: $recordKey, ')
+          ..write('hash: $hash, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('deleted: $deleted, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$UserDatabase extends GeneratedDatabase {
   _$UserDatabase(QueryExecutor e) : super(e);
   $UserDatabaseManager get managers => $UserDatabaseManager(this);
@@ -11819,6 +12284,7 @@ abstract class _$UserDatabase extends GeneratedDatabase {
   late final $HifzGoalsTable hifzGoals = $HifzGoalsTable(this);
   late final $TasbihDhikrsTable tasbihDhikrs = $TasbihDhikrsTable(this);
   late final $TasbihDaysTable tasbihDays = $TasbihDaysTable(this);
+  late final $SyncJournalTable syncJournal = $SyncJournalTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -11844,6 +12310,7 @@ abstract class _$UserDatabase extends GeneratedDatabase {
     hifzGoals,
     tasbihDhikrs,
     tasbihDays,
+    syncJournal,
   ];
 }
 
@@ -11858,6 +12325,7 @@ typedef $$BookmarkSetsTableCreateCompanionBuilder =
       Value<int> sortOrder,
       required DateTime updatedAt,
       Value<String?> kind,
+      Value<String?> uuid,
     });
 typedef $$BookmarkSetsTableUpdateCompanionBuilder =
     BookmarkSetsCompanion Function({
@@ -11870,6 +12338,7 @@ typedef $$BookmarkSetsTableUpdateCompanionBuilder =
       Value<int> sortOrder,
       Value<DateTime> updatedAt,
       Value<String?> kind,
+      Value<String?> uuid,
     });
 
 class $$BookmarkSetsTableFilterComposer
@@ -11923,6 +12392,11 @@ class $$BookmarkSetsTableFilterComposer
 
   ColumnFilters<String> get kind => $composableBuilder(
     column: $table.kind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get uuid => $composableBuilder(
+    column: $table.uuid,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -11980,6 +12454,11 @@ class $$BookmarkSetsTableOrderingComposer
     column: $table.kind,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get uuid => $composableBuilder(
+    column: $table.uuid,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$BookmarkSetsTableAnnotationComposer
@@ -12017,6 +12496,9 @@ class $$BookmarkSetsTableAnnotationComposer
 
   GeneratedColumn<String> get kind =>
       $composableBuilder(column: $table.kind, builder: (column) => column);
+
+  GeneratedColumn<String> get uuid =>
+      $composableBuilder(column: $table.uuid, builder: (column) => column);
 }
 
 class $$BookmarkSetsTableTableManager
@@ -12059,6 +12541,7 @@ class $$BookmarkSetsTableTableManager
                 Value<int> sortOrder = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<String?> kind = const Value.absent(),
+                Value<String?> uuid = const Value.absent(),
               }) => BookmarkSetsCompanion(
                 id: id,
                 name: name,
@@ -12069,6 +12552,7 @@ class $$BookmarkSetsTableTableManager
                 sortOrder: sortOrder,
                 updatedAt: updatedAt,
                 kind: kind,
+                uuid: uuid,
               ),
           createCompanionCallback:
               ({
@@ -12081,6 +12565,7 @@ class $$BookmarkSetsTableTableManager
                 Value<int> sortOrder = const Value.absent(),
                 required DateTime updatedAt,
                 Value<String?> kind = const Value.absent(),
+                Value<String?> uuid = const Value.absent(),
               }) => BookmarkSetsCompanion.insert(
                 id: id,
                 name: name,
@@ -12091,6 +12576,7 @@ class $$BookmarkSetsTableTableManager
                 sortOrder: sortOrder,
                 updatedAt: updatedAt,
                 kind: kind,
+                uuid: uuid,
               ),
           withReferenceMapper: (p0) => p0
               .map(
@@ -17880,6 +18366,234 @@ typedef $$TasbihDaysTableProcessedTableManager =
       TasbihDayRow,
       PrefetchHooks Function()
     >;
+typedef $$SyncJournalTableCreateCompanionBuilder =
+    SyncJournalCompanion Function({
+      required String entity,
+      required String recordKey,
+      Value<String?> hash,
+      required int updatedAt,
+      required String deviceId,
+      Value<bool> deleted,
+      Value<int> rowid,
+    });
+typedef $$SyncJournalTableUpdateCompanionBuilder =
+    SyncJournalCompanion Function({
+      Value<String> entity,
+      Value<String> recordKey,
+      Value<String?> hash,
+      Value<int> updatedAt,
+      Value<String> deviceId,
+      Value<bool> deleted,
+      Value<int> rowid,
+    });
+
+class $$SyncJournalTableFilterComposer
+    extends Composer<_$UserDatabase, $SyncJournalTable> {
+  $$SyncJournalTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get entity => $composableBuilder(
+    column: $table.entity,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get recordKey => $composableBuilder(
+    column: $table.recordKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hash => $composableBuilder(
+    column: $table.hash,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SyncJournalTableOrderingComposer
+    extends Composer<_$UserDatabase, $SyncJournalTable> {
+  $$SyncJournalTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get entity => $composableBuilder(
+    column: $table.entity,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get recordKey => $composableBuilder(
+    column: $table.recordKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hash => $composableBuilder(
+    column: $table.hash,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+    column: $table.deviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SyncJournalTableAnnotationComposer
+    extends Composer<_$UserDatabase, $SyncJournalTable> {
+  $$SyncJournalTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get entity =>
+      $composableBuilder(column: $table.entity, builder: (column) => column);
+
+  GeneratedColumn<String> get recordKey =>
+      $composableBuilder(column: $table.recordKey, builder: (column) => column);
+
+  GeneratedColumn<String> get hash =>
+      $composableBuilder(column: $table.hash, builder: (column) => column);
+
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
+}
+
+class $$SyncJournalTableTableManager
+    extends
+        RootTableManager<
+          _$UserDatabase,
+          $SyncJournalTable,
+          SyncJournalRow,
+          $$SyncJournalTableFilterComposer,
+          $$SyncJournalTableOrderingComposer,
+          $$SyncJournalTableAnnotationComposer,
+          $$SyncJournalTableCreateCompanionBuilder,
+          $$SyncJournalTableUpdateCompanionBuilder,
+          (
+            SyncJournalRow,
+            BaseReferences<_$UserDatabase, $SyncJournalTable, SyncJournalRow>,
+          ),
+          SyncJournalRow,
+          PrefetchHooks Function()
+        > {
+  $$SyncJournalTableTableManager(_$UserDatabase db, $SyncJournalTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SyncJournalTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SyncJournalTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SyncJournalTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> entity = const Value.absent(),
+                Value<String> recordKey = const Value.absent(),
+                Value<String?> hash = const Value.absent(),
+                Value<int> updatedAt = const Value.absent(),
+                Value<String> deviceId = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SyncJournalCompanion(
+                entity: entity,
+                recordKey: recordKey,
+                hash: hash,
+                updatedAt: updatedAt,
+                deviceId: deviceId,
+                deleted: deleted,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String entity,
+                required String recordKey,
+                Value<String?> hash = const Value.absent(),
+                required int updatedAt,
+                required String deviceId,
+                Value<bool> deleted = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SyncJournalCompanion.insert(
+                entity: entity,
+                recordKey: recordKey,
+                hash: hash,
+                updatedAt: updatedAt,
+                deviceId: deviceId,
+                deleted: deleted,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SyncJournalTable, SyncJournalRow>(table),
+                  BaseReferences<
+                    _$UserDatabase,
+                    $SyncJournalTable,
+                    SyncJournalRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SyncJournalTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDatabase,
+      $SyncJournalTable,
+      SyncJournalRow,
+      $$SyncJournalTableFilterComposer,
+      $$SyncJournalTableOrderingComposer,
+      $$SyncJournalTableAnnotationComposer,
+      $$SyncJournalTableCreateCompanionBuilder,
+      $$SyncJournalTableUpdateCompanionBuilder,
+      (
+        SyncJournalRow,
+        BaseReferences<_$UserDatabase, $SyncJournalTable, SyncJournalRow>,
+      ),
+      SyncJournalRow,
+      PrefetchHooks Function()
+    >;
 
 class $UserDatabaseManager {
   final _$UserDatabase _db;
@@ -17924,4 +18638,6 @@ class $UserDatabaseManager {
       $$TasbihDhikrsTableTableManager(_db, _db.tasbihDhikrs);
   $$TasbihDaysTableTableManager get tasbihDays =>
       $$TasbihDaysTableTableManager(_db, _db.tasbihDays);
+  $$SyncJournalTableTableManager get syncJournal =>
+      $$SyncJournalTableTableManager(_db, _db.syncJournal);
 }

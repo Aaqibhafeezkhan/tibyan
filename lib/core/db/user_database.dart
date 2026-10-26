@@ -29,6 +29,35 @@ class BookmarkSets extends Table {
   /// One of [MarkKind] for the four fixed marks; null for the reader's
   /// own named fawasil.
   TextColumn get kind => text().nullable()();
+
+  /// The same on every device, so a named fasil syncs as one record even
+  /// when it moves or is renamed. Added in version 8; older rows got one
+  /// in the upgrade. The four fixed marks sync by [kind] instead.
+  TextColumn get uuid => text().nullable().clientDefault(newUuid)();
+}
+
+/// «المزامنة»: what this device knows of each synced record, so a change
+/// (or a deletion) is noticed between two syncs and the newer write wins
+/// across devices. [hash] is of the row as last seen here; a tombstone
+/// ([deleted]) keeps the record's key after the row is gone.
+@DataClassName('SyncJournalRow')
+class SyncJournal extends Table {
+  @override
+  String get tableName => 'sync_journal';
+
+  TextColumn get entity => text()();
+  TextColumn get recordKey => text()();
+  TextColumn get hash => text().nullable()();
+
+  /// Milliseconds since the epoch of the record's last change.
+  IntColumn get updatedAt => integer()();
+
+  /// The device that made that change.
+  TextColumn get deviceId => text()();
+  BoolColumn get deleted => boolean().withDefault(const Constant(false))();
+
+  @override
+  Set<Column> get primaryKey => {entity, recordKey};
 }
 
 /// The four fixed marks, set with one tap.
@@ -81,6 +110,7 @@ class ReadingPositions extends Table {
     HifzGoals,
     TasbihDhikrs,
     TasbihDays,
+    SyncJournal,
   ],
 )
 class UserDatabase extends _$UserDatabase {
@@ -89,7 +119,7 @@ class UserDatabase extends _$UserDatabase {
   UserDatabase.open() : super(driftDatabase(name: 'user'));
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -123,6 +153,25 @@ class UserDatabase extends _$UserDatabase {
         // tables only.
         await m.createTable(tasbihDhikrs);
         await m.createTable(tasbihDays);
+      }
+      if (from < 8) {
+        // «المزامنة»: a stable id for the fawasil and the sync journal.
+        // Guarded like v5's columns, so a database stamped older than it
+        // is runs this step safely.
+        final have = {
+          for (final r in await customSelect(
+            'PRAGMA table_info("bookmark_sets")',
+          ).get())
+            r.read<String>('name'),
+        };
+        if (!have.contains('uuid')) {
+          await m.addColumn(bookmarkSets, bookmarkSets.uuid);
+        }
+        await customStatement(
+          'UPDATE bookmark_sets SET uuid = lower(hex(randomblob(16))) '
+          'WHERE uuid IS NULL',
+        );
+        await m.createTable(syncJournal);
       }
     },
   );
