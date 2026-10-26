@@ -184,6 +184,8 @@ create table public.group_portion (
 
 الكود: `lib/core/sync/cloud/` (المحرك والمخازن) و`lib/features/sync/` (المتحكم والشاشة). كل جهاز يكتب ملفه فقط `tibyan-sync-<deviceId>.json` ويقرأ ملفات كل الأجهزة؛ الدمج آخر كتابة تغلب لكل سجل مع شواهد حذف، ودفتر `sync_journal` في user.db (الإصدار 8).
 
+منذ الإصدار 9: تُزامَن أيضا ملاحظات التدبر (`reflection`) وآخر موضع قراءة (`reading_positions`، بالسورة والآية فيصلح لأي طبعة). سجل المسبحة اليومي `tasbih_day` صار صفا لكل جهاز (عمود `device`، فارغ لهذا الجهاز) والعدد اليومي = مجموع الأجهزة، ومنه عدّات الساعة لأنها تُسجَّل على الهاتف. أي ختم زمني أبعد من يوم في المستقبل (ساعة جهاز خاطئة) يُعامل بوقت وصوله.
+
 ## iCloud (يلزم قبل التفعيل)
 1. developer.apple.com > Identifiers > iCloud Containers > + : `iCloud.app.tibyan.tibyan`.
 2. Identifiers > `app.tibyan.tibyan` > فعّل iCloud (CloudKit/Documents) واربطه بالحاوية. احفظ.
