@@ -6,6 +6,13 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+### Accessibility
+- Screen readers: every verse on a mushaf page now also offers «Listen from this verse» (starts the recitation when nothing is playing) and «Tafsir and translation» as actions.
+- Large text (up to 200%): the tasbih screen scrolls with a fixed large counter area; section headings, edition badges, onboarding steps, the surah index and the listening screen no longer overflow.
+- Small icon buttons (copy, tafsir and tasmee controls) now have 48 dp targets; small gold and muted text keeps a contrast margin in every look and mode.
+- Reduce motion: screens cross-fade instead of sliding or zooming (Android and others; iOS/macOS keep their slide and back swipe); small indicator and press animations stop.
+- A per-screen semantics audit test (labels, tap targets, contrast in all looks and modes, 200% text).
+
 ### Fixed
 - Toasts: every toast now dismisses itself (about 4 s, 6 s when it offers Undo), has a close (×) button and can be swiped away; all toasts go through one shared helper.
 
