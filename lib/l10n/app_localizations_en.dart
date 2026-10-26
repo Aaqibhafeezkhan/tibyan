@@ -4750,6 +4750,17 @@ class AppLocalizationsEn extends AppLocalizations {
       'May your time be blessed. Every page you read is good.';
 
   @override
+  String weeklyMissedDays(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count days without reading this week',
+      one: '$count day without reading this week',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get weeklyNoteMost =>
       'Masha’Allah, the Quran was with you on most days this week.';
 

@@ -75,6 +75,15 @@ class _WeeklyReportState extends ConsumerState<WeeklyReportScreen> {
                               WeeklyNote.someDays => l.weeklyNoteSome,
                               WeeklyNote.mostDays => l.weeklyNoteMost,
                             }),
+                            subtitle: report.missedDays > 0
+                                ? Text(
+                                    l.weeklyMissedDays(
+                                      report.missedDays,
+                                      digits(report.missedDays),
+                                    ),
+                                    style: TextStyle(color: t.muted),
+                                  )
+                                : null,
                           ),
                         ),
                         const SizedBox(height: 8),

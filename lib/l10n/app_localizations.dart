@@ -8048,6 +8048,12 @@ abstract class AppLocalizations {
   /// **'بارك الله في وقتك. كل صفحة تقرؤها خير.'**
   String get weeklyNoteSome;
 
+  /// No description provided for @weeklyMissedDays.
+  ///
+  /// In ar, this message translates to:
+  /// **'{n, plural, =1{يوم واحد بلا ورد هذا الأسبوع} =2{يومان بلا ورد هذا الأسبوع} few{{count} أيام بلا ورد هذا الأسبوع} many{{count} يومًا بلا ورد هذا الأسبوع} other{{count} يوم بلا ورد هذا الأسبوع}}'**
+  String weeklyMissedDays(int n, String count);
+
   /// No description provided for @weeklyNoteMost.
   ///
   /// In ar, this message translates to:

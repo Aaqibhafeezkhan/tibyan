@@ -53,6 +53,7 @@ void main() {
     expect(find.textContaining('بداية جديدة'), findsOneWidget);
     expect(find.textContaining('ولا بأس'), findsOneWidget);
     expect(find.text('الصفحات'), findsNothing);
+    expect(find.textContaining('بلا ورد'), findsNothing);
     final toggle = tester.widget<SwitchListTile>(find.byType(SwitchListTile));
     expect(toggle.value, isFalse);
   });
@@ -84,6 +85,9 @@ void main() {
     expect(find.text('قرأت ٥٪ منها هذا الأسبوع'), findsOneWidget);
     // The day's bar is read out with its minutes.
     expect(find.bySemanticsLabel(RegExp('١٢ دقيقة')), findsOneWidget);
+    // Days without reading: one calm line, read out too.
+    expect(find.text('٦ أيام بلا ورد هذا الأسبوع'), findsOneWidget);
+    expect(find.bySemanticsLabel(RegExp('٦ أيام بلا ورد')), findsOneWidget);
   });
 
   testWidgets('turning the reminder on keeps it and shows its time', (

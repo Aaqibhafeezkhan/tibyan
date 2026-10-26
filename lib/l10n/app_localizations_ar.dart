@@ -4813,6 +4813,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get weeklyNoteSome => 'بارك الله في وقتك. كل صفحة تقرؤها خير.';
 
   @override
+  String weeklyMissedDays(int n, String count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$count يوم بلا ورد هذا الأسبوع',
+      many: '$count يومًا بلا ورد هذا الأسبوع',
+      few: '$count أيام بلا ورد هذا الأسبوع',
+      two: 'يومان بلا ورد هذا الأسبوع',
+      one: 'يوم واحد بلا ورد هذا الأسبوع',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get weeklyNoteMost =>
       'ما شاء الله، كان القرآن رفيقك في أكثر أيام هذا الأسبوع.';
 

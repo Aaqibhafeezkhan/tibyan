@@ -1808,6 +1808,17 @@
   "weeklyNext": "Next week",
   "weeklyNoteFresh": "A new week, a fresh start. One page is enough to begin.",
   "weeklyNoteSome": "May your time be blessed. Every page you read is good.",
+  "weeklyMissedDays": "{n, plural, =1{{count} day without reading this week} other{{count} days without reading this week}}",
+  "@weeklyMissedDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "weeklyNoteMost": "Masha’Allah, the Quran was with you on most days this week.",
   "weeklyDailyChart": "Minutes of reading and listening each day",
   "weeklyDayMinutes": "{day}: {minutes} min",

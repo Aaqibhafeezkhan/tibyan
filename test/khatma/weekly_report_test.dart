@@ -16,6 +16,7 @@ void main() {
     expect(r.first, const Day(2026, 10, 20));
     expect(r.isEmpty, isTrue);
     expect(r.activeDays, 0);
+    expect(r.missedDays, 0); // the fresh start says it; no count
     expect(r.note, WeeklyNote.freshStart);
   });
 
@@ -33,6 +34,7 @@ void main() {
     expect(r.readingMinutes, 30);
     expect(r.listeningMinutes, 10);
     expect(r.activeDays, 3);
+    expect(r.missedDays, 4);
     expect(r.note, WeeklyNote.someDays);
   });
 
@@ -67,6 +69,15 @@ void main() {
       ],
     );
     expect(r.note, WeeklyNote.mostDays);
+    expect(r.missedDays, 2);
+  });
+
+  test('a full week has no missed days', () {
+    final r = buildWeeklyReport(
+      last: last,
+      tasbih: {for (var i = 0; i < 7; i++) last.add(-i).key: 1},
+    );
+    expect(r.missedDays, 0);
   });
 
   test('khatma: the share read this week, from the daily weight', () {

@@ -3334,6 +3334,17 @@
   "weeklyNext": "الأسبوع التالي",
   "weeklyNoteFresh": "أسبوع جديد وبداية جديدة. صفحة واحدة تكفي لتبدأ.",
   "weeklyNoteSome": "بارك الله في وقتك. كل صفحة تقرؤها خير.",
+  "weeklyMissedDays": "{n, plural, =1{يوم واحد بلا ورد هذا الأسبوع} =2{يومان بلا ورد هذا الأسبوع} few{{count} أيام بلا ورد هذا الأسبوع} many{{count} يومًا بلا ورد هذا الأسبوع} other{{count} يوم بلا ورد هذا الأسبوع}}",
+  "@weeklyMissedDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "weeklyNoteMost": "ما شاء الله، كان القرآن رفيقك في أكثر أيام هذا الأسبوع.",
   "weeklyDailyChart": "دقائق القراءة والاستماع في كل يوم",
   "weeklyDayMinutes": "{day}: {minutes} دقيقة",

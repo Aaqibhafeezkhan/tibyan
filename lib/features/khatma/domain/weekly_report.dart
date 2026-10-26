@@ -14,8 +14,9 @@ typedef KhatmaWeekInput = ({
   double Function(Day day) weightOn,
 });
 
-/// The calm line at the top of the weekly report. Nothing here counts
-/// missed days or compares with another week (plan D9, decision 1).
+/// The calm line at the top of the weekly report. It never compares with
+/// another week (plan D9, decision 1); days without reading are shown
+/// apart, gently ([WeeklyReport.missedDays]).
 enum WeeklyNote {
   /// Nothing recorded this week: an invitation, a new week to begin.
   freshStart,
@@ -70,6 +71,10 @@ class WeeklyReport {
 
   /// Days with a recitation session or tasbih counts.
   final Set<Day> otherActive;
+
+  /// Days of the week with nothing recorded; 0 when the week is empty
+  /// (the fresh-start note already speaks to that).
+  int get missedDays => isEmpty ? 0 : days.length - activeDays;
 
   /// Whether anything at all was recorded in the week.
   bool get isEmpty =>
