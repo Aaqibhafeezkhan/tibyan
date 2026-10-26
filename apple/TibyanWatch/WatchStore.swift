@@ -1,6 +1,7 @@
 import Foundation
 import WatchConnectivity
 import WatchKit
+import WidgetKit
 
 /// The phone's data on the watch (the WatchConnectivity application
 /// context, kept for when the phone is away) and the counts to send back.
@@ -10,7 +11,7 @@ final class WatchStore: NSObject, ObservableObject {
   /// Counts made in this sitting, shown on the misbaha.
   @Published private(set) var session = 0
 
-  private let saved = UserDefaults.standard
+  private let saved = UserDefaults(suiteName: "group.app.tibyan.tibyan") ?? UserDefaults.standard
   private var unsent = 0
   private var flush: Task<Void, Never>?
 
@@ -73,6 +74,8 @@ final class WatchStore: NSObject, ObservableObject {
     guard !strings.isEmpty else { return }
     entries = strings
     saved.set(strings, forKey: "context")
+    UserDefaults.standard.set(strings, forKey: "context")
+    WidgetCenter.shared.reloadAllTimelines()
   }
 }
 

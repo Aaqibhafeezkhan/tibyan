@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">تبيان</string>
     <string name="tile_label">ورد اليوم</string>
+    <string name="complication_label">ورد اليوم</string>
     <string name="wird_title">ورد اليوم</string>
     <string name="open_phone">افتح تبيان على الهاتف مرة واحدة لتظهر ختمتك هنا.</string>
     <string name="tasbih_title">المسبحة</string>

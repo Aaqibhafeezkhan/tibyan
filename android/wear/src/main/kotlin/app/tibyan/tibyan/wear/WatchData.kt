@@ -46,6 +46,11 @@ object WatchData {
       for (k in map.keySet()) putString(k, map.getString(k))
     }.apply()
     TileService.getUpdater(c).requestUpdate(WirdTileService::class.java)
+    try {
+      androidx.wear.watchface.complications.datasource.ComplicationDataSourceUpdateRequester
+          .create(c, android.content.ComponentName(c, WirdComplicationService::class.java))
+          .requestUpdateAll()
+    } catch (_: Exception) {}
   }
 
   /** Reads the phone's current item, for a first start or a missed change. */

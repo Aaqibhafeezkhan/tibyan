@@ -27,21 +27,27 @@ root = File.expand_path('../..', __dir__)
 project = Xcodeproj::Project.open(File.join(root, 'ios', 'Runner.xcodeproj'))
 runner = project.targets.find { |t| t.name == 'Runner' } or abort 'no Runner target'
 
+WIDGET_NAME = 'TibyanWatchWidgets'
+WIDGET_BUNDLE = "#{BUNDLE}.widgets"
+
 target = project.targets.find { |t| t.name == NAME }
-unless target
-  apple = project.main_group['Apple'] || project.main_group.new_group('Apple', '../apple')
-  group = apple[NAME] || apple.new_group(NAME, NAME)
-  target = project.new_target(:application, NAME, :watchos, DEPLOYMENT, nil, :swift)
-  sources = %w[TibyanWatchApp.swift WatchStore.swift].map { |f| group.new_reference(f) }
-  target.add_file_references(sources)
-  strings = group.new_variant_group('Localizable.strings')
-  %w[ar en].each do |lang|
+apple = project.main_group['Apple'] || project.main_group.new_group('Apple', '../apple')
+group = apple[NAME] || apple.new_group(NAME, NAME)
+strings = group['Localizable.strings'] || group.new_variant_group('Localizable.strings')
+%w[ar en].each do |lang|
+  unless strings.files.any? { |f| f.name == lang }
     ref = strings.new_reference("#{lang}.lproj/Localizable.strings")
     ref.name = lang
     ref.last_known_file_type = 'text.plist.strings'
   end
+end
+
+unless target
+  target = project.new_target(:application, NAME, :watchos, DEPLOYMENT, nil, :swift)
+  sources = %w[TibyanWatchApp.swift WatchStore.swift].map { |f| group[f] || group.new_reference(f) }
+  target.add_file_references(sources)
   target.add_resources([strings])
-  target.add_system_framework(%w[WatchConnectivity SwiftUI])
+  target.add_system_framework(%w[WatchConnectivity SwiftUI WidgetKit])
 
   target.build_configurations.each do |config|
     s = config.build_settings
@@ -64,6 +70,49 @@ unless target
     s['DEVELOPMENT_ASSET_PATHS'] = ''
     s['LOCALIZATION_PREFERS_STRING_CATALOGS'] = 'NO'
     s['LD_RUNPATH_SEARCH_PATHS'] = ['$(inherited)', '@executable_path/Frameworks']
+  end
+end
+
+target.add_system_framework(%w[WidgetKit])
+
+widget_target = project.targets.find { |t| t.name == WIDGET_NAME }
+unless widget_target
+  widget_target = project.new_target(:app_extension, WIDGET_NAME, :watchos, DEPLOYMENT, nil, :swift)
+  widget_source = group['TibyanWatchWidgets.swift'] || group.new_reference('TibyanWatchWidgets.swift')
+  widget_target.add_file_references([widget_source])
+  widget_target.add_resources([strings])
+  widget_target.add_system_framework(%w[WidgetKit SwiftUI])
+
+  widget_target.build_configurations.each do |config|
+    s = config.build_settings
+    s['PRODUCT_BUNDLE_IDENTIFIER'] = WIDGET_BUNDLE
+    s['PRODUCT_NAME'] = '$(TARGET_NAME)'
+    s['SDKROOT'] = 'watchos'
+    s['WATCHOS_DEPLOYMENT_TARGET'] = DEPLOYMENT
+    s['TARGETED_DEVICE_FAMILY'] = '4'
+    s['SWIFT_VERSION'] = '5.0'
+    s['CODE_SIGN_STYLE'] = 'Automatic'
+    s['GENERATE_INFOPLIST_FILE'] = 'YES'
+    s['INFOPLIST_KEY_CFBundleDisplayName'] = 'الختمة'
+    s['MARKETING_VERSION'] = '1.0'
+    s['CURRENT_PROJECT_VERSION'] = '1'
+    s['SKIP_INSTALL'] = 'YES'
+    s['APPLICATION_EXTENSION_API_ONLY'] = 'YES'
+    s['LOCALIZATION_PREFERS_STRING_CATALOGS'] = 'NO'
+    s['LD_RUNPATH_SEARCH_PATHS'] = [
+      '$(inherited)',
+      '@executable_path/Frameworks',
+      '@executable_path/../../Frameworks'
+    ]
+  end
+
+  target.add_dependency(widget_target)
+  embed_widgets = target.copy_files_build_phases.find { |p| p.name == 'Embed App Extensions' } ||
+                  target.new_copy_files_build_phase('Embed App Extensions')
+  embed_widgets.symbol_dst_subfolder_spec = :plug_ins
+  unless embed_widgets.files_references.include?(widget_target.product_reference)
+    file = embed_widgets.add_file_reference(widget_target.product_reference, true)
+    file.settings = { 'ATTRIBUTES' => %w[RemoveHeadersOnCopy] }
   end
 end
 

@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Tibyan</string>
     <string name="tile_label">Today\'s portion</string>
+    <string name="complication_label">Today\'s portion</string>
     <string name="wird_title">Today\'s portion</string>
     <string name="open_phone">Open Tibyan on your phone once to show your khatma here.</string>
     <string name="tasbih_title">Misbaha</string>
