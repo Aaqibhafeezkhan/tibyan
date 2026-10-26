@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +8,7 @@ import 'package:tibyan/app.dart';
 import 'package:tibyan/core/settings/settings_controller.dart';
 import 'package:tibyan/core/theme/theme_registry.dart';
 import 'package:tibyan/features/settings/settings_catalog.dart';
+import 'package:tibyan/features/settings/system_accessibility.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -100,4 +102,17 @@ void main() {
       );
     },
   );
+
+  test('the device accessibility link is hidden on iOS only', () {
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+    for (final (p, shown) in [
+      (TargetPlatform.android, true),
+      (TargetPlatform.macOS, true),
+      (TargetPlatform.iOS, false),
+    ]) {
+      debugDefaultTargetPlatformOverride = p;
+      expect(canOpenSystemAccessibility, shown, reason: '$p');
+    }
+    debugDefaultTargetPlatformOverride = null;
+  });
 }

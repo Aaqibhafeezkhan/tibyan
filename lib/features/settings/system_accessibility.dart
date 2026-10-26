@@ -1,12 +1,17 @@
 import 'dart:io' show Platform;
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart'
+    show TargetPlatform, defaultTargetPlatform, kIsWeb;
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// Whether this platform can open its accessibility settings from the app.
+/// Whether the settings show the link to the device's accessibility
+/// settings: Android and macOS only. iOS has no public link to that page
+/// (only the app's own page), so the link is hidden there (owner, 4b).
 bool get canOpenSystemAccessibility =>
-    !kIsWeb && (Platform.isAndroid || Platform.isIOS || Platform.isMacOS);
+    !kIsWeb &&
+    (defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.macOS);
 
 const _channel = MethodChannel('app.tibyan/settings');
 
