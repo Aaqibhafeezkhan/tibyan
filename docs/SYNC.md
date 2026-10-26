@@ -177,3 +177,23 @@ create table public.group_portion (
 - التحديث اللحظي: Supabase Realtime على `group_portion` لكل مجموعة.
 - الأجزاء المحجوزة تظهر في ورد العضو كأي ختمة، وقراءتها في المصحف تعلمها مقروءة (`KhatmaService.pageRead` بعد إضافة المجموعة).
 - قلب العلم `group_khatma` إلى `true` بعد الاختبار.
+
+---
+
+# «المزامنة» عبر iCloud وGoogle Drive (بدون خادم)
+
+الكود: `lib/core/sync/cloud/` (المحرك والمخازن) و`lib/features/sync/` (المتحكم والشاشة). كل جهاز يكتب ملفه فقط `tibyan-sync-<deviceId>.json` ويقرأ ملفات كل الأجهزة؛ الدمج آخر كتابة تغلب لكل سجل مع شواهد حذف، ودفتر `sync_journal` في user.db (الإصدار 8).
+
+## iCloud (يلزم قبل التفعيل)
+1. developer.apple.com > Identifiers > iCloud Containers > + : `iCloud.app.tibyan.tibyan`.
+2. Identifiers > `app.tibyan.tibyan` > فعّل iCloud (CloudKit/Documents) واربطه بالحاوية. احفظ.
+3. انسخ المفاتيح من `ios/Runner/iCloud.entitlements.disabled` إلى `ios/Runner/Runner.entitlements` و`macos/Runner/DebugProfile.entitlements` و`macos/Runner/Release.entitlements`.
+4. لبناء ماك Debug بالقدرة: سجّل الماك في Devices (أو افتح المشروع في Xcode مرة بحسابك ليسجله)، ثم ابنِ بـ `-allowProvisioningUpdates`.
+بدون ذلك تظهر «غير متاحة في هذه النسخة».
+
+## Google Drive (أندرويد)
+1. Google Cloud Console: مشروع جديد، فعّل Google Drive API.
+2. OAuth consent screen: External، الاسم «تبيان»، النطاق `.../auth/drive.appdata` فقط، رابط الخصوصية https://altibyan.app/privacy. انشره (Production) — نطاق appdata غير حساس.
+3. Credentials: عميل Android لـ `app.tibyan.tibyan` لكل بصمة SHA-1: مفتاح debug (`keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android`)، مفتاح الرفع (keystore في `~/.config/tibyan/`)، ومفتاح توقيع Play (Play Console > Setup > App signing).
+4. عميل Web application: معرّفه هو `serverClientId`.
+5. ابنِ مع `--dart-define=TIBYAN_GOOGLE_SERVER_CLIENT_ID=<web client id>` (ليس سرًا، لكنه يبقى خارج المستودع).
