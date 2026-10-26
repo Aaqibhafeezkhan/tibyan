@@ -4689,4 +4689,34 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get gkPrivacyNote =>
       'Tibyan\'s server keeps only the khatma name, the typed names and part states, and deletes them automatically after the khatma ends.';
+
+  @override
+  String get settingsSectionAccessibility => 'Accessibility';
+
+  @override
+  String get settingsSectionAccessibilityHint => 'Reduce motion, screen reader';
+
+  @override
+  String get reduceMotionLabel => 'Reduce motion';
+
+  @override
+  String get reduceMotionHint =>
+      'Follows the device by default; turn it on here to always use fewer animations and no sliding transitions';
+
+  @override
+  String get announceVerseNumberLabel => 'Read the verse number with its text';
+
+  @override
+  String get announceVerseNumberHint =>
+      'With a screen reader: the surah name and verse number before the verse text';
+
+  @override
+  String get systemAccessibilitySettings => 'Device accessibility settings';
+
+  @override
+  String get systemAccessibilitySettingsHint =>
+      'Text size, screen reader and reduce motion for the whole device';
+
+  @override
+  String get systemSettingsUnavailable => 'Couldn’t open the device settings';
 }

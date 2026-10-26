@@ -7945,6 +7945,60 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'يحفظ خادم تبيان اسم الختمة والأسماء المكتوبة وحالة الأجزاء فقط، ويحذفها تلقائيًا بعد انتهاء الختمة.'**
   String get gkPrivacyNote;
+
+  /// No description provided for @settingsSectionAccessibility.
+  ///
+  /// In ar, this message translates to:
+  /// **'إمكانية الوصول'**
+  String get settingsSectionAccessibility;
+
+  /// No description provided for @settingsSectionAccessibilityHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'تقليل الحركة، قارئ الشاشة'**
+  String get settingsSectionAccessibilityHint;
+
+  /// No description provided for @reduceMotionLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'تقليل الحركة'**
+  String get reduceMotionLabel;
+
+  /// No description provided for @reduceMotionHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'يتبع إعداد الجهاز تلقائيًا، ويمكنك تفعيله هنا دائمًا: انتقالات بلا انزلاق وحركات أقل'**
+  String get reduceMotionHint;
+
+  /// No description provided for @announceVerseNumberLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'قراءة رقم الآية مع نصها'**
+  String get announceVerseNumberLabel;
+
+  /// No description provided for @announceVerseNumberHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'في قارئ الشاشة: اسم السورة ورقم الآية قبل نص الآية'**
+  String get announceVerseNumberHint;
+
+  /// No description provided for @systemAccessibilitySettings.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعدادات إمكانية الوصول في الجهاز'**
+  String get systemAccessibilitySettings;
+
+  /// No description provided for @systemAccessibilitySettingsHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'حجم الخط، قارئ الشاشة، تقليل الحركة على مستوى الجهاز'**
+  String get systemAccessibilitySettingsHint;
+
+  /// No description provided for @systemSettingsUnavailable.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر فتح إعدادات الجهاز'**
+  String get systemSettingsUnavailable;
 }
 
 class _AppLocalizationsDelegate

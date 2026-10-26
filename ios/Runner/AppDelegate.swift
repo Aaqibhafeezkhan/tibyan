@@ -142,7 +142,9 @@ enum AppSettingsChannel {
   static func attach(_ messenger: FlutterBinaryMessenger) {
     let c = FlutterMethodChannel(name: "app.tibyan/settings", binaryMessenger: messenger)
     c.setMethodCallHandler { call, result in
-      guard call.method == "openAppSettings",
+      // iOS has no public link to its Accessibility page: both open the
+      // app's own page in Settings.
+      guard call.method == "openAppSettings" || call.method == "openAccessibilitySettings",
         let url = URL(string: UIApplication.openSettingsURLString)
       else {
         result(FlutterMethodNotImplemented)

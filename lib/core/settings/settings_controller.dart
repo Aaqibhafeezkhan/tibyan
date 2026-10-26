@@ -57,6 +57,8 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kLandscapeFit = 'settings.landscapeFit';
   static const _kOneVerseAuto = 'settings.oneVerseAutoSeconds';
   static const _kElderly = 'settings.elderlyMode';
+  static const _kReduceMotion = 'settings.forceReduceMotion';
+  static const _kAnnounceVerse = 'settings.announceVerseNumber';
   static const _kTajweed = 'settings.tajweedColors';
   static const _kTajweedHues = 'settings.tajweedHues';
   static const _kFocus = 'settings.focusMode';
@@ -170,6 +172,8 @@ class SettingsController extends Notifier<AppSettings> {
           LandscapeFit.width,
       oneVerseAutoSeconds: _prefs.getInt(_kOneVerseAuto) ?? 0,
       elderlyMode: _prefs.getBool(_kElderly) ?? false,
+      forceReduceMotion: _prefs.getBool(_kReduceMotion) ?? false,
+      announceVerseNumber: _prefs.getBool(_kAnnounceVerse) ?? true,
       tajweedColors: _prefs.getBool(_kTajweed) ?? false,
       tajweedHues: {
         for (final e in _prefs.getStringList(_kTajweedHues) ?? const <String>[])
@@ -457,6 +461,16 @@ class SettingsController extends Notifier<AppSettings> {
   Future<void> setElderlyMode(bool value) async {
     state = state.copyWith(elderlyMode: value);
     await _prefs.setBool(_kElderly, value);
+  }
+
+  Future<void> setForceReduceMotion(bool value) async {
+    state = state.copyWith(forceReduceMotion: value);
+    await _prefs.setBool(_kReduceMotion, value);
+  }
+
+  Future<void> setAnnounceVerseNumber(bool value) async {
+    state = state.copyWith(announceVerseNumber: value);
+    await _prefs.setBool(_kAnnounceVerse, value);
   }
 
   Future<void> setTajweedColors(bool value) async {

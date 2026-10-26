@@ -185,6 +185,8 @@ class AppSettings {
     this.landscapeFit = LandscapeFit.width,
     this.oneVerseAutoSeconds = 0,
     this.elderlyMode = false,
+    this.forceReduceMotion = false,
+    this.announceVerseNumber = true,
     this.tajweedColors = false,
     this.tajweedHues = const {},
     this.focusMode = false,
@@ -320,6 +322,14 @@ class AppSettings {
   /// slower transitions.
   final bool elderlyMode;
 
+  /// «تقليل الحركة»: less motion even when the device does not ask for it
+  /// (off: follow the device).
+  final bool forceReduceMotion;
+
+  /// Screen readers: read a mushaf verse's surah and number before its
+  /// text (on by default).
+  final bool announceVerseNumber;
+
   /// Colour the letters that tajweed rules apply to (off by default).
   final bool tajweedColors;
 
@@ -440,6 +450,8 @@ class AppSettings {
     LandscapeFit? landscapeFit,
     int? oneVerseAutoSeconds,
     bool? elderlyMode,
+    bool? forceReduceMotion,
+    bool? announceVerseNumber,
     bool? tajweedColors,
     Map<String, String>? tajweedHues,
     bool? focusMode,
@@ -497,6 +509,8 @@ class AppSettings {
     landscapeFit: landscapeFit ?? this.landscapeFit,
     oneVerseAutoSeconds: oneVerseAutoSeconds ?? this.oneVerseAutoSeconds,
     elderlyMode: elderlyMode ?? this.elderlyMode,
+    forceReduceMotion: forceReduceMotion ?? this.forceReduceMotion,
+    announceVerseNumber: announceVerseNumber ?? this.announceVerseNumber,
     tajweedColors: tajweedColors ?? this.tajweedColors,
     tajweedHues: tajweedHues ?? this.tajweedHues,
     focusMode: focusMode ?? this.focusMode,

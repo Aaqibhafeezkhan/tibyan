@@ -3306,5 +3306,14 @@
       }
     }
   },
-  "gkPrivacyNote": "يحفظ خادم تبيان اسم الختمة والأسماء المكتوبة وحالة الأجزاء فقط، ويحذفها تلقائيًا بعد انتهاء الختمة."
+  "gkPrivacyNote": "يحفظ خادم تبيان اسم الختمة والأسماء المكتوبة وحالة الأجزاء فقط، ويحذفها تلقائيًا بعد انتهاء الختمة.",
+  "settingsSectionAccessibility": "إمكانية الوصول",
+  "settingsSectionAccessibilityHint": "تقليل الحركة، قارئ الشاشة",
+  "reduceMotionLabel": "تقليل الحركة",
+  "reduceMotionHint": "يتبع إعداد الجهاز تلقائيًا، ويمكنك تفعيله هنا دائمًا: انتقالات بلا انزلاق وحركات أقل",
+  "announceVerseNumberLabel": "قراءة رقم الآية مع نصها",
+  "announceVerseNumberHint": "في قارئ الشاشة: اسم السورة ورقم الآية قبل نص الآية",
+  "systemAccessibilitySettings": "إعدادات إمكانية الوصول في الجهاز",
+  "systemAccessibilitySettingsHint": "حجم الخط، قارئ الشاشة، تقليل الحركة على مستوى الجهاز",
+  "systemSettingsUnavailable": "تعذّر فتح إعدادات الجهاز"
 }

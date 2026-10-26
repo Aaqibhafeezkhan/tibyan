@@ -50,17 +50,21 @@ class MainActivity : AudioServiceActivity() {
         // The tasmee's «open device settings» when the microphone is off.
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "app.tibyan/settings")
             .setMethodCallHandler { call, result ->
-                if (call.method != "openAppSettings") {
-                    result.notImplemented()
-                    return@setMethodCallHandler
+                // «إعدادات إمكانية الوصول في الجهاز» from the settings screen.
+                val intent = when (call.method) {
+                    "openAppSettings" -> Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.fromParts("package", packageName, null),
+                    )
+                    "openAccessibilitySettings" ->
+                        Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                    else -> {
+                        result.notImplemented()
+                        return@setMethodCallHandler
+                    }
                 }
                 try {
-                    startActivity(
-                        Intent(
-                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                            Uri.fromParts("package", packageName, null),
-                        ),
-                    )
+                    startActivity(intent)
                     result.success(true)
                 } catch (e: Exception) {
                     result.success(false)

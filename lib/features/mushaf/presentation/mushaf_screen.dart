@@ -810,6 +810,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
           underVerse: s.underVerse,
           twoPageSpread: s.twoPageSpread,
           landscapeFit: s.landscapeFit,
+          announceVerseNumber: s.announceVerseNumber,
           pageTurn: s.pageTurn,
           // Read through getters in the build (_focusTools, _touchReading).
           focusToolsShown: s.focusToolsShown,
@@ -1050,10 +1051,22 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
             : (a, b) => _memoDrag(pg, a, b),
         // Screen readers: each verse by its surah and number, then its
         // text as stored (Tanzil's plain text, which reads aloud well).
-        verseLabel: (v) => l.verseLabel(
-          surahs == null ? '' : surahName(context, surahs[v.surah - 1]),
-          NumberFormatter(Localizations.localeOf(context))(v.ayah),
-        ),
+        // Without «announce the verse number» the text alone is read
+        // (the name stays while the text is not loaded yet).
+        verseLabel: (v) =>
+            !settings.announceVerseNumber &&
+                ref
+                        .read(pageAyahsProvider(pg))
+                        .value
+                        ?.any(
+                          (a) => a.surah == v.surah && a.number == v.ayah,
+                        ) ==
+                    true
+            ? ''
+            : l.verseLabel(
+                surahs == null ? '' : surahName(context, surahs[v.surah - 1]),
+                NumberFormatter(Localizations.localeOf(context))(v.ayah),
+              ),
         verseText: (v) => ref
             .read(pageAyahsProvider(pg))
             .value

@@ -24,6 +24,7 @@ import '../tasbih/presentation/tasbih_screen.dart'
 import '../tasbih/presentation/tasbih_settings_tiles.dart';
 import 'home_widgets_card.dart';
 import 'settings_widgets.dart';
+import 'system_accessibility.dart';
 
 /// The nine tiles of the settings grid, each opening its own screen.
 enum SettingsSection {
@@ -33,6 +34,7 @@ enum SettingsSection {
   hifz(Icons.graphic_eq),
   khatma(Icons.event_repeat_outlined),
   tasbih(tasbihIcon),
+  accessibility(Icons.accessibility_new),
   storage(Icons.inventory_2_outlined),
   assistant(Icons.lightbulb_outline),
   about(Icons.info_outline);
@@ -50,6 +52,7 @@ enum SettingsSection {
     hifz => l.settingsSectionHifz,
     khatma => l.settingsSectionKhatma,
     tasbih => l.settingsSectionTasbih,
+    accessibility => l.settingsSectionAccessibility,
     storage => l.settingsSectionStorage,
     assistant => l.settingsSectionAssistant,
     about => l.settingsSectionAbout,
@@ -62,6 +65,7 @@ enum SettingsSection {
     hifz => l.settingsSectionHifzHint,
     khatma => l.settingsSectionKhatmaHint,
     tasbih => l.settingsSectionTasbihHint,
+    accessibility => l.settingsSectionAccessibilityHint,
     storage => l.settingsSectionStorageHint,
     assistant => l.settingsSectionAssistantHint,
     about => l.settingsSectionAboutHint,
@@ -513,6 +517,65 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         keywords: 'سجل الأيام مسبحة log history tasbih',
       ),
     ]),
+  ],
+  SettingsSection.accessibility: [
+    SettingsGroup(
+      Icons.accessibility_new,
+      (l) => l.settingsSectionAccessibility,
+      [
+        SettingEntry(
+          'reduceMotion',
+          (l) => l.reduceMotionLabel,
+          (c, r) => _switch(
+            c,
+            r,
+            icon: Icons.motion_photos_off_outlined,
+            title: (l) => l.reduceMotionLabel,
+            hint: (l) => l.reduceMotionHint,
+            value: (s) => s.forceReduceMotion,
+            set: (ctrl, v) => ctrl.setForceReduceMotion(v),
+          ),
+          keywords:
+              'حركة انتقالات رسوم متحركة motion animation reduce transitions',
+        ),
+        SettingEntry(
+          'announceVerseNumber',
+          (l) => l.announceVerseNumberLabel,
+          (c, r) => _switch(
+            c,
+            r,
+            icon: Icons.record_voice_over_outlined,
+            title: (l) => l.announceVerseNumberLabel,
+            hint: (l) => l.announceVerseNumberHint,
+            value: (s) => s.announceVerseNumber,
+            set: (ctrl, v) => ctrl.setAnnounceVerseNumber(v),
+          ),
+          keywords: 'قارئ الشاشة رقم الآية فويس أوفر توك باك screen reader voiceover talkback verse number',
+        ),
+        SettingEntry(
+          'systemAccessibility',
+          (l) => l.systemAccessibilitySettings,
+          (c, r) => canOpenSystemAccessibility
+              ? SettingsNavTile(
+                  icon: Icons.open_in_new,
+                  title: AppLocalizations.of(c).systemAccessibilitySettings,
+                  subtitle: AppLocalizations.of(c)
+                      .systemAccessibilitySettingsHint,
+                  onTap: () async {
+                    final messenger = ScaffoldMessenger.maybeOf(c);
+                    final text = AppLocalizations.of(c)
+                        .systemSettingsUnavailable;
+                    if (!await openSystemAccessibility()) {
+                      messenger?.showSnackBar(SnackBar(content: Text(text)));
+                    }
+                  },
+                )
+              : const SizedBox.shrink(),
+          keywords:
+              'إعدادات الجهاز النظام حجم الخط device system settings text size',
+        ),
+      ],
+    ),
   ],
   SettingsSection.storage: [
     SettingsGroup(Icons.inventory_2_outlined, (l) => l.settingsGroupData, [

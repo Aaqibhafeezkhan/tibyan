@@ -1790,5 +1790,14 @@
   "gkReminderSet": "Reminder: {date}",
   "gkReminderCancel": "Cancel reminder",
   "gkReminderBody": "Time to read {part} for the group khatma.",
-  "gkPrivacyNote": "Tibyan's server keeps only the khatma name, the typed names and part states, and deletes them automatically after the khatma ends."
+  "gkPrivacyNote": "Tibyan's server keeps only the khatma name, the typed names and part states, and deletes them automatically after the khatma ends.",
+  "settingsSectionAccessibility": "Accessibility",
+  "settingsSectionAccessibilityHint": "Reduce motion, screen reader",
+  "reduceMotionLabel": "Reduce motion",
+  "reduceMotionHint": "Follows the device by default; turn it on here to always use fewer animations and no sliding transitions",
+  "announceVerseNumberLabel": "Read the verse number with its text",
+  "announceVerseNumberHint": "With a screen reader: the surah name and verse number before the verse text",
+  "systemAccessibilitySettings": "Device accessibility settings",
+  "systemAccessibilitySettingsHint": "Text size, screen reader and reduce motion for the whole device",
+  "systemSettingsUnavailable": "Couldn’t open the device settings"
 }

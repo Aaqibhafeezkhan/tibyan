@@ -26,6 +26,7 @@ class TibyanApp extends ConsumerWidget {
           locale: s.locale,
           uiFont: s.uiFont,
           elderlyMode: s.elderlyMode,
+          forceReduceMotion: s.forceReduceMotion,
           interfaceStyle: s.interfaceStyle,
         ),
       ),
@@ -66,18 +67,35 @@ class TibyanApp extends ConsumerWidget {
           router: router,
           child: GlobalPlayer(router: router, child: child!),
         );
-        if (!settings.elderlyMode) return player;
-        final mq = MediaQuery.of(context);
-        final scale = mq.textScaler.scale(1);
+        if (!settings.elderlyMode && !settings.forceReduceMotion) {
+          return player;
+        }
         return MediaQuery(
-          data: mq.copyWith(
-            textScaler: TextScaler.linear(
-              scale < elderlyTextScale ? elderlyTextScale : scale,
-            ),
+          data: appMediaQuery(
+            MediaQuery.of(context),
+            elderly: settings.elderlyMode,
+            reduceMotion: settings.forceReduceMotion,
           ),
           child: player,
         );
       },
     );
   }
+}
+
+/// The device's [mq] as the app's own settings change it: elderly mode
+/// reads text at least a quarter larger (a larger system size is kept);
+/// «تقليل الحركة» turns animations off whatever the device asks.
+MediaQueryData appMediaQuery(
+  MediaQueryData mq, {
+  required bool elderly,
+  required bool reduceMotion,
+}) {
+  final scale = mq.textScaler.scale(1);
+  return mq.copyWith(
+    textScaler: elderly && scale < elderlyTextScale
+        ? const TextScaler.linear(elderlyTextScale)
+        : mq.textScaler,
+    disableAnimations: reduceMotion || mq.disableAnimations,
+  );
 }

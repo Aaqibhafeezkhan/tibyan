@@ -4754,4 +4754,34 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get gkPrivacyNote =>
       'يحفظ خادم تبيان اسم الختمة والأسماء المكتوبة وحالة الأجزاء فقط، ويحذفها تلقائيًا بعد انتهاء الختمة.';
+
+  @override
+  String get settingsSectionAccessibility => 'إمكانية الوصول';
+
+  @override
+  String get settingsSectionAccessibilityHint => 'تقليل الحركة، قارئ الشاشة';
+
+  @override
+  String get reduceMotionLabel => 'تقليل الحركة';
+
+  @override
+  String get reduceMotionHint =>
+      'يتبع إعداد الجهاز تلقائيًا، ويمكنك تفعيله هنا دائمًا: انتقالات بلا انزلاق وحركات أقل';
+
+  @override
+  String get announceVerseNumberLabel => 'قراءة رقم الآية مع نصها';
+
+  @override
+  String get announceVerseNumberHint =>
+      'في قارئ الشاشة: اسم السورة ورقم الآية قبل نص الآية';
+
+  @override
+  String get systemAccessibilitySettings => 'إعدادات إمكانية الوصول في الجهاز';
+
+  @override
+  String get systemAccessibilitySettingsHint =>
+      'حجم الخط، قارئ الشاشة، تقليل الحركة على مستوى الجهاز';
+
+  @override
+  String get systemSettingsUnavailable => 'تعذّر فتح إعدادات الجهاز';
 }

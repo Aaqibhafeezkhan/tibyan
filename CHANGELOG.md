@@ -16,6 +16,7 @@ All notable changes to Tibyan are recorded here. The format follows
 - Small icon buttons (copy, tafsir and tasmee controls) now have 48 dp targets; small gold and muted text keeps a contrast margin in every look and mode.
 - Reduce motion: screens cross-fade instead of sliding or zooming (Android and others; iOS/macOS keep their slide and back swipe); small indicator and press animations stop.
 - A per-screen semantics audit test (labels, tap targets, contrast in all looks and modes, 200% text).
+- Settings > «إمكانية الوصول» (Accessibility): «تقليل الحركة» (follows the device by default, can be forced on), «قراءة رقم الآية مع نصها» for screen readers (on by default), and a link to the device accessibility settings.
 
 ### Fixed
 - Toasts: every toast now dismisses itself (about 4 s, 6 s when it offers Undo), has a close (×) button and can be swiped away; all toasts go through one shared helper.
