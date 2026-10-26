@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:home_widget/home_widget.dart';
 
+import '../../../core/platform/watch_bridge.dart';
 import '../domain/day.dart';
 
 /// What the home screen widget shows on one day.
@@ -166,6 +167,8 @@ class PluginHomeWidgetSync implements HomeWidgetSync {
 
   @override
   Future<void> write(WidgetData data) async {
+    // The watch shows today's portion from the same keys.
+    await WatchBridge.push(widgetEntries(data));
     try {
       if (defaultTargetPlatform == TargetPlatform.iOS) {
         await HomeWidget.setAppGroupId(appGroup);

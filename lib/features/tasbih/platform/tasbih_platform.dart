@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:home_widget/home_widget.dart';
 
+import '../../../core/platform/watch_bridge.dart';
+
 /// The native side of the misbaha: the bead's click, counting with the
 /// volume buttons while the app is open, and the home screen widget.
 abstract interface class TasbihPlatform {
@@ -16,9 +18,13 @@ abstract interface class TasbihPlatform {
   /// A volume button press, while [setVolumeKeys] is on.
   Stream<void> get volumeKey;
 
-  /// Counts made on the home screen widget since the last call; the
-  /// counter is emptied.
+  /// Counts made on the home screen widget or the watch since the last
+  /// call; the counter is emptied.
   Future<int> takePending();
+
+  /// Fires when the watch adds counts while the app runs, so they can be
+  /// taken at once.
+  Stream<void> get pendingAdded;
 
   /// What the home screen widget shows. For a dhikr said in stages,
   /// [stages] is their counts (`33,33,33,1`) and [round] the count in the
@@ -39,7 +45,18 @@ class NoTasbihPlatform implements TasbihPlatform {
   Map<String, String>? widget;
   final _keys = StreamController<void>.broadcast();
 
+  final _pending = StreamController<void>.broadcast();
+
   void pressVolume() => _keys.add(null);
+
+  /// A count from the watch: added to [pending], then announced.
+  void watchCount(int n) {
+    pending += n;
+    _pending.add(null);
+  }
+
+  @override
+  Stream<void> get pendingAdded => _pending.stream;
 
   @override
   Future<void> click() async => clicks++;
@@ -77,6 +94,7 @@ class ChannelTasbihPlatform implements TasbihPlatform {
   ChannelTasbihPlatform() {
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'volumeKey') _keys.add(null);
+      if (call.method == 'pendingAdded') _pending.add(null);
     });
   }
 
@@ -88,6 +106,10 @@ class ChannelTasbihPlatform implements TasbihPlatform {
   static const pendingKey = 'tasbih_pending';
 
   final _keys = StreamController<void>.broadcast();
+  final _pending = StreamController<void>.broadcast();
+
+  @override
+  Stream<void> get pendingAdded => _pending.stream;
 
   Future<void> _group() async {
     if (defaultTargetPlatform == TargetPlatform.iOS) {
@@ -144,6 +166,11 @@ class ChannelTasbihPlatform implements TasbihPlatform {
     int round = 0,
   }) async {
     if (!_mobile) return;
+    await WatchBridge.push({
+      'tasbih_dhikr': dhikr,
+      'tasbih_count': count,
+      'tasbih_label': label,
+    });
     try {
       await _group();
       await HomeWidget.saveWidgetData<String>('tasbih_dhikr', dhikr);

@@ -219,6 +219,25 @@ void main() {
     await done(tester, db);
   });
 
+  testWidgets('counts from the watch join while the screen is open', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final (c, platform, db) = await pump(tester, TasbihStyle.button);
+    await tester.runAsync(() async {
+      platform.watchCount(2);
+      // The screen takes them on its own, no reopening needed.
+      for (var i = 0; i < 50 && platform.pending > 0; i++) {
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+    });
+    await settle(tester);
+    expect(platform.pending, 0);
+    expect(c.read(tasbihCounterProvider).count, 2);
+    await done(tester, db);
+  });
+
   testWidgets('the screen reader hears the count', (tester) async {
     final handle = tester.ensureSemantics();
     final (_, _, db) = await pump(tester, TasbihStyle.button);

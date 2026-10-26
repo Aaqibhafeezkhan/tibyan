@@ -42,6 +42,7 @@ class TasbihScreen extends ConsumerStatefulWidget {
 class _TasbihScreenState extends ConsumerState<TasbihScreen>
     with WidgetsBindingObserver {
   StreamSubscription<void>? _keys;
+  StreamSubscription<void>? _watch;
   late final TasbihPlatform _platform = ref.read(tasbihPlatformProvider);
   final _focus = FocusNode(debugLabel: 'tasbih');
 
@@ -54,6 +55,8 @@ class _TasbihScreenState extends ConsumerState<TasbihScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _keys = _platform.volumeKey.listen((_) => _count(announce: true));
+    // Counts made on the watch join the count while this screen is open.
+    _watch = _platform.pendingAdded.listen((_) => unawaited(_absorb()));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       unawaited(_absorb());
@@ -66,6 +69,7 @@ class _TasbihScreenState extends ConsumerState<TasbihScreen>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     unawaited(_keys?.cancel());
+    unawaited(_watch?.cancel());
     _closingTimer?.cancel();
     _focus.dispose();
     unawaited(_platform.setVolumeKeys(false));
