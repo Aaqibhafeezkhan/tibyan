@@ -9,6 +9,7 @@ import 'package:tibyan/features/khatma/presentation/journal_screen.dart';
 import 'package:tibyan/features/khatma/presentation/khatma_screen.dart';
 import 'package:tibyan/features/khatma/presentation/new_khatma_screen.dart';
 import 'package:tibyan/features/khatma/presentation/reports_screen.dart';
+import 'package:tibyan/features/khatma/presentation/weekly_report_screen.dart';
 import 'package:tibyan/features/mushaf/presentation/downloads_center_screen.dart';
 import 'package:tibyan/features/settings/storage_screen.dart';
 import 'package:tibyan/features/tasmee/presentation/tasmee_settings_screen.dart';
@@ -77,6 +78,7 @@ void main() {
     'khatma': const KhatmaScreen(),
     'khatma wizard': const NewKhatmaScreen(),
     'reports': const ReportsScreen(),
+    'weekly report': const WeeklyReportScreen(),
     'journal': const JournalScreen(),
     'assistant': const AssistantScreen(),
     'tajweed marks': const TajweedMarksScreen(),

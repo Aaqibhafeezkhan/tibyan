@@ -38,6 +38,7 @@ import 'features/khatma/domain/day.dart';
 import 'features/khatma/services/home_widget_sync.dart';
 import 'features/khatma/services/verse_of_day.dart';
 import 'features/khatma/services/reminder_scheduler.dart';
+import 'features/khatma/services/weekly_reminder.dart';
 import 'features/mushaf/data/background_packs.dart';
 import 'features/mushaf/data/bundled_pack.dart';
 import 'features/mushaf/mushaf_providers.dart';
@@ -215,6 +216,13 @@ void _startKhatma(ProviderContainer container) {
       }
       await service.refresh();
     } catch (_) {}
+    // The weekly report reminder, a few weeks ahead (off by default).
+    try {
+      await syncWeeklyReminder(
+        container.read(reminderSchedulerProvider),
+        container.read(settingsProvider),
+      );
+    } catch (_) {}
     // «آية اليوم»: a month ahead, whether or not there is a khatma. After
     // the first frame (it is ~30 lookups), and only when what the widgets
     // hold runs short or is in another language.
@@ -251,6 +259,11 @@ void _startKhatma(ProviderContainer container) {
 
   Future<void> open(Uri? uri) async {
     if (uri == null) return;
+    if (uri.toString() == weeklyReportLink) {
+      await container.read(appRouterReadyProvider).future;
+      unawaited(container.read(appRouterProvider).push(weeklyReportLocation));
+      return;
+    }
     // A group khatma link: https://altibyan.app/k/<id> (universal / app
     // link) or tibyan://group?id=<id> (the web page's button, reminders).
     final groupId = groupKhatmaIdOf(uri.toString());

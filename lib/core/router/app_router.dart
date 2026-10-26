@@ -23,6 +23,7 @@ import '../../features/khatma/presentation/journal_screen.dart';
 import '../../features/khatma/presentation/khatma_screen.dart';
 import '../../features/khatma/presentation/new_khatma_screen.dart';
 import '../../features/khatma/presentation/reports_screen.dart';
+import '../../features/khatma/presentation/weekly_report_screen.dart';
 import '../../features/mushaf/presentation/about_mushaf_screen.dart';
 import '../../features/mushaf/presentation/downloads_center_screen.dart';
 import '../../features/mushaf/presentation/download_screen.dart';
@@ -227,6 +228,13 @@ final appRouterProvider = Provider<GoRouter>(
             path: 'reports',
             builder: (context, state) =>
                 const LookTheme(child: ReportsScreen()),
+            routes: [
+              GoRoute(
+                path: 'weekly',
+                builder: (context, state) =>
+                    const LookTheme(child: WeeklyReportScreen()),
+              ),
+            ],
           ),
           GoRoute(
             path: 'journal',

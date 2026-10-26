@@ -4784,4 +4784,91 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get systemSettingsUnavailable => 'تعذّر فتح إعدادات الجهاز';
+
+  @override
+  String get weeklyReportTitle => 'التقرير الأسبوعي';
+
+  @override
+  String get weeklyReportHint => 'ملخص هادئ لقراءتك وحفظك في سبعة أيام';
+
+  @override
+  String weeklyRange(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String get weeklyThisWeek => 'آخر سبعة أيام';
+
+  @override
+  String get weeklyPrevious => 'الأسبوع السابق';
+
+  @override
+  String get weeklyNext => 'الأسبوع التالي';
+
+  @override
+  String get weeklyNoteFresh =>
+      'أسبوع جديد وبداية جديدة. صفحة واحدة تكفي لتبدأ.';
+
+  @override
+  String get weeklyNoteSome => 'بارك الله في وقتك. كل صفحة تقرؤها خير.';
+
+  @override
+  String get weeklyNoteMost =>
+      'ما شاء الله، كان القرآن رفيقك في أكثر أيام هذا الأسبوع.';
+
+  @override
+  String get weeklyDailyChart => 'دقائق القراءة والاستماع في كل يوم';
+
+  @override
+  String weeklyDayMinutes(String day, String minutes) {
+    return '$day: $minutes دقيقة';
+  }
+
+  @override
+  String get weeklyActiveDays => 'أيام فيها قراءة أو ذكر';
+
+  @override
+  String get weeklyRecitations => 'جلسات التسميع';
+
+  @override
+  String get weeklyVersesRecited => 'آيات سمّعتها';
+
+  @override
+  String get weeklyTasbih => 'التسبيحات';
+
+  @override
+  String get weeklyKhatmas => 'الختمات';
+
+  @override
+  String weeklyKhatmaProgress(String percent) {
+    return '$percent٪ من الختمة';
+  }
+
+  @override
+  String weeklyKhatmaGained(String percent) {
+    return 'قرأت $percent٪ منها هذا الأسبوع';
+  }
+
+  @override
+  String get weeklyEmptyBody =>
+      'لم يُسجَّل شيء في هذه الأيام، ولا بأس. ستظهر هنا قراءتك واستماعك وتسميعك تلقائيًا.';
+
+  @override
+  String get weeklyReminderToggle => 'تذكير أسبوعي بالتقرير';
+
+  @override
+  String get weeklyReminderHint =>
+      'إشعار على هذا الجهاز في اليوم والوقت اللذين تختارهما';
+
+  @override
+  String get weeklyReminderWhen => 'يوم التذكير ووقته';
+
+  @override
+  String get weeklyReminderTitle => 'تقريرك الأسبوعي جاهز';
+
+  @override
+  String get weeklyReminderBody => 'ألقِ نظرة هادئة على أسبوعك مع القرآن.';
+
+  @override
+  String get weeklyReminderChannel => 'التقرير الأسبوعي';
 }

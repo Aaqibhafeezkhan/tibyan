@@ -4719,4 +4719,94 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get systemSettingsUnavailable => 'Couldn’t open the device settings';
+
+  @override
+  String get weeklyReportTitle => 'Weekly report';
+
+  @override
+  String get weeklyReportHint =>
+      'A calm summary of your reading and memorisation over seven days';
+
+  @override
+  String weeklyRange(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String get weeklyThisWeek => 'The last seven days';
+
+  @override
+  String get weeklyPrevious => 'Previous week';
+
+  @override
+  String get weeklyNext => 'Next week';
+
+  @override
+  String get weeklyNoteFresh =>
+      'A new week, a fresh start. One page is enough to begin.';
+
+  @override
+  String get weeklyNoteSome =>
+      'May your time be blessed. Every page you read is good.';
+
+  @override
+  String get weeklyNoteMost =>
+      'Masha’Allah, the Quran was with you on most days this week.';
+
+  @override
+  String get weeklyDailyChart => 'Minutes of reading and listening each day';
+
+  @override
+  String weeklyDayMinutes(String day, String minutes) {
+    return '$day: $minutes min';
+  }
+
+  @override
+  String get weeklyActiveDays => 'Days with reading or dhikr';
+
+  @override
+  String get weeklyRecitations => 'Recitation sessions';
+
+  @override
+  String get weeklyVersesRecited => 'Verses recited';
+
+  @override
+  String get weeklyTasbih => 'Tasbih count';
+
+  @override
+  String get weeklyKhatmas => 'Khatmas';
+
+  @override
+  String weeklyKhatmaProgress(String percent) {
+    return '$percent% of the khatma';
+  }
+
+  @override
+  String weeklyKhatmaGained(String percent) {
+    return '$percent% of it read this week';
+  }
+
+  @override
+  String get weeklyEmptyBody =>
+      'Nothing was recorded on these days, and that is fine. Your reading, listening and recitation appear here automatically.';
+
+  @override
+  String get weeklyReminderToggle => 'Weekly report reminder';
+
+  @override
+  String get weeklyReminderHint =>
+      'A notification on this device on the day and time you choose';
+
+  @override
+  String get weeklyReminderWhen => 'Reminder day and time';
+
+  @override
+  String get weeklyReminderTitle => 'Your weekly report is ready';
+
+  @override
+  String get weeklyReminderBody =>
+      'Take a calm look at your week with the Quran.';
+
+  @override
+  String get weeklyReminderChannel => 'Weekly report';
 }

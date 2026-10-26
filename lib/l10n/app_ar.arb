@@ -3315,5 +3315,64 @@
   "announceVerseNumberHint": "في قارئ الشاشة: اسم السورة ورقم الآية قبل نص الآية",
   "systemAccessibilitySettings": "إعدادات إمكانية الوصول في الجهاز",
   "systemAccessibilitySettingsHint": "حجم الخط، قارئ الشاشة، تقليل الحركة على مستوى الجهاز",
-  "systemSettingsUnavailable": "تعذّر فتح إعدادات الجهاز"
+  "systemSettingsUnavailable": "تعذّر فتح إعدادات الجهاز",
+  "weeklyReportTitle": "التقرير الأسبوعي",
+  "weeklyReportHint": "ملخص هادئ لقراءتك وحفظك في سبعة أيام",
+  "weeklyRange": "{from} – {to}",
+  "@weeklyRange": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "weeklyThisWeek": "آخر سبعة أيام",
+  "weeklyPrevious": "الأسبوع السابق",
+  "weeklyNext": "الأسبوع التالي",
+  "weeklyNoteFresh": "أسبوع جديد وبداية جديدة. صفحة واحدة تكفي لتبدأ.",
+  "weeklyNoteSome": "بارك الله في وقتك. كل صفحة تقرؤها خير.",
+  "weeklyNoteMost": "ما شاء الله، كان القرآن رفيقك في أكثر أيام هذا الأسبوع.",
+  "weeklyDailyChart": "دقائق القراءة والاستماع في كل يوم",
+  "weeklyDayMinutes": "{day}: {minutes} دقيقة",
+  "@weeklyDayMinutes": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "weeklyActiveDays": "أيام فيها قراءة أو ذكر",
+  "weeklyRecitations": "جلسات التسميع",
+  "weeklyVersesRecited": "آيات سمّعتها",
+  "weeklyTasbih": "التسبيحات",
+  "weeklyKhatmas": "الختمات",
+  "weeklyKhatmaProgress": "{percent}٪ من الختمة",
+  "@weeklyKhatmaProgress": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "weeklyKhatmaGained": "قرأت {percent}٪ منها هذا الأسبوع",
+  "@weeklyKhatmaGained": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "weeklyEmptyBody": "لم يُسجَّل شيء في هذه الأيام، ولا بأس. ستظهر هنا قراءتك واستماعك وتسميعك تلقائيًا.",
+  "weeklyReminderToggle": "تذكير أسبوعي بالتقرير",
+  "weeklyReminderHint": "إشعار على هذا الجهاز في اليوم والوقت اللذين تختارهما",
+  "weeklyReminderWhen": "يوم التذكير ووقته",
+  "weeklyReminderTitle": "تقريرك الأسبوعي جاهز",
+  "weeklyReminderBody": "ألقِ نظرة هادئة على أسبوعك مع القرآن.",
+  "weeklyReminderChannel": "التقرير الأسبوعي"
 }

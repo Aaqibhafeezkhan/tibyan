@@ -14,6 +14,9 @@ import '../audio/recitation.dart';
 import '../home/whats_new.dart';
 import '../khatma/domain/khatmah.dart' show CountingMode;
 import '../khatma/khatma_providers.dart' show khatmaServiceProvider;
+import '../khatma/presentation/weekly_report_screen.dart'
+    show WeeklyReminderTiles;
+import '../khatma/services/weekly_reminder.dart' show weeklyReportLocation;
 import '../mushaf/mushaf_providers.dart';
 import '../mushaf/presentation/widgets/download_all_button.dart';
 import '../mushaf/presentation/widgets/edition_badge.dart';
@@ -376,6 +379,25 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
           onTap: () => c.push('/khatma'),
         ),
         keywords: 'ختمة خطة تذكير إشعار khatma plan reminder notification',
+      ),
+      SettingEntry(
+        'weeklyReport',
+        (l) => l.weeklyReportTitle,
+        (c, r) => SettingsNavTile(
+          icon: Icons.calendar_view_week_outlined,
+          title: AppLocalizations.of(c).weeklyReportTitle,
+          subtitle: AppLocalizations.of(c).weeklyReportHint,
+          onTap: () => c.push(weeklyReportLocation),
+        ),
+        keywords:
+            'تقرير أسبوعي ملخص الأسبوع إحصاءات weekly report summary stats',
+      ),
+      SettingEntry(
+        'weeklyReminder',
+        (l) => l.weeklyReminderToggle,
+        (c, r) => const WeeklyReminderTiles(),
+        keywords:
+            'تذكير أسبوعي إشعار التقرير weekly reminder notification report',
       ),
       SettingEntry(
         'wirdIndicator',

@@ -7,6 +7,8 @@ All notable changes to Tibyan are recorded here. The format follows
 ## [Unreleased]
 
 ### Added
+- «التقرير الأسبوعي» (Weekly report), from Khatma > Reports or Settings > Khatma: seven days of reading and listening minutes per day (chart), pages, recitation sessions and verses recited, tasbih counts and each khatma's progress with the share read that week; up to three earlier weeks. Calm notes only: a quiet week reads as a fresh start, nothing counts missed days or compares weeks. All local.
+- Optional weekly reminder for the report (off by default) on a chosen day and time, from the report or Settings > Khatma.
 - Settings > Mushaf > Reading: «الصفحة في الوضع الأفقي» for a phone held sideways: «بعرض الشاشة» (default, the page as wide as the screen, read by scrolling) or «الصفحة كاملة» (the whole page fitted to the screen height).
 - Fit-to-width pages follow the recitation: the recited line (or word, and the last word shown in a hifz test) scrolls smoothly into view, jumping instead with reduce motion, and waits a few seconds after a manual scroll.
 

@@ -7999,6 +7999,156 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تعذّر فتح إعدادات الجهاز'**
   String get systemSettingsUnavailable;
+
+  /// No description provided for @weeklyReportTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'التقرير الأسبوعي'**
+  String get weeklyReportTitle;
+
+  /// No description provided for @weeklyReportHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملخص هادئ لقراءتك وحفظك في سبعة أيام'**
+  String get weeklyReportHint;
+
+  /// No description provided for @weeklyRange.
+  ///
+  /// In ar, this message translates to:
+  /// **'{from} – {to}'**
+  String weeklyRange(String from, String to);
+
+  /// No description provided for @weeklyThisWeek.
+  ///
+  /// In ar, this message translates to:
+  /// **'آخر سبعة أيام'**
+  String get weeklyThisWeek;
+
+  /// No description provided for @weeklyPrevious.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأسبوع السابق'**
+  String get weeklyPrevious;
+
+  /// No description provided for @weeklyNext.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأسبوع التالي'**
+  String get weeklyNext;
+
+  /// No description provided for @weeklyNoteFresh.
+  ///
+  /// In ar, this message translates to:
+  /// **'أسبوع جديد وبداية جديدة. صفحة واحدة تكفي لتبدأ.'**
+  String get weeklyNoteFresh;
+
+  /// No description provided for @weeklyNoteSome.
+  ///
+  /// In ar, this message translates to:
+  /// **'بارك الله في وقتك. كل صفحة تقرؤها خير.'**
+  String get weeklyNoteSome;
+
+  /// No description provided for @weeklyNoteMost.
+  ///
+  /// In ar, this message translates to:
+  /// **'ما شاء الله، كان القرآن رفيقك في أكثر أيام هذا الأسبوع.'**
+  String get weeklyNoteMost;
+
+  /// No description provided for @weeklyDailyChart.
+  ///
+  /// In ar, this message translates to:
+  /// **'دقائق القراءة والاستماع في كل يوم'**
+  String get weeklyDailyChart;
+
+  /// No description provided for @weeklyDayMinutes.
+  ///
+  /// In ar, this message translates to:
+  /// **'{day}: {minutes} دقيقة'**
+  String weeklyDayMinutes(String day, String minutes);
+
+  /// No description provided for @weeklyActiveDays.
+  ///
+  /// In ar, this message translates to:
+  /// **'أيام فيها قراءة أو ذكر'**
+  String get weeklyActiveDays;
+
+  /// No description provided for @weeklyRecitations.
+  ///
+  /// In ar, this message translates to:
+  /// **'جلسات التسميع'**
+  String get weeklyRecitations;
+
+  /// No description provided for @weeklyVersesRecited.
+  ///
+  /// In ar, this message translates to:
+  /// **'آيات سمّعتها'**
+  String get weeklyVersesRecited;
+
+  /// No description provided for @weeklyTasbih.
+  ///
+  /// In ar, this message translates to:
+  /// **'التسبيحات'**
+  String get weeklyTasbih;
+
+  /// No description provided for @weeklyKhatmas.
+  ///
+  /// In ar, this message translates to:
+  /// **'الختمات'**
+  String get weeklyKhatmas;
+
+  /// No description provided for @weeklyKhatmaProgress.
+  ///
+  /// In ar, this message translates to:
+  /// **'{percent}٪ من الختمة'**
+  String weeklyKhatmaProgress(String percent);
+
+  /// No description provided for @weeklyKhatmaGained.
+  ///
+  /// In ar, this message translates to:
+  /// **'قرأت {percent}٪ منها هذا الأسبوع'**
+  String weeklyKhatmaGained(String percent);
+
+  /// No description provided for @weeklyEmptyBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يُسجَّل شيء في هذه الأيام، ولا بأس. ستظهر هنا قراءتك واستماعك وتسميعك تلقائيًا.'**
+  String get weeklyEmptyBody;
+
+  /// No description provided for @weeklyReminderToggle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تذكير أسبوعي بالتقرير'**
+  String get weeklyReminderToggle;
+
+  /// No description provided for @weeklyReminderHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'إشعار على هذا الجهاز في اليوم والوقت اللذين تختارهما'**
+  String get weeklyReminderHint;
+
+  /// No description provided for @weeklyReminderWhen.
+  ///
+  /// In ar, this message translates to:
+  /// **'يوم التذكير ووقته'**
+  String get weeklyReminderWhen;
+
+  /// No description provided for @weeklyReminderTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تقريرك الأسبوعي جاهز'**
+  String get weeklyReminderTitle;
+
+  /// No description provided for @weeklyReminderBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'ألقِ نظرة هادئة على أسبوعك مع القرآن.'**
+  String get weeklyReminderBody;
+
+  /// No description provided for @weeklyReminderChannel.
+  ///
+  /// In ar, this message translates to:
+  /// **'التقرير الأسبوعي'**
+  String get weeklyReminderChannel;
 }
 
 class _AppLocalizationsDelegate

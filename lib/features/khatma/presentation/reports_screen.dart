@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/ui/look_kit.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/db/user_database.dart';
 import '../../../core/theme/app_theme.dart';
@@ -12,6 +13,7 @@ import '../../mushaf/presentation/widgets/illuminated_frame.dart'
 import '../domain/day.dart';
 import '../domain/reading_stats.dart';
 import '../khatma_providers.dart';
+import '../services/weekly_reminder.dart' show weeklyReportLocation;
 import '../../../core/ui/responsive.dart';
 
 final _readingProvider = StreamProvider.family<List<ReadingSessionRow>, int>(
@@ -103,6 +105,18 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                           ),
                         ),
                       if (week != null) _WeekStrip(report: week),
+                      Card(
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.calendar_view_week_outlined,
+                            color: t.control,
+                          ),
+                          title: Text(l.weeklyReportTitle),
+                          subtitle: Text(l.weeklyReportHint),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () => context.push(weeklyReportLocation),
+                        ),
+                      ),
                       if (regular != null)
                         Padding(
                           padding: const EdgeInsets.symmetric(
