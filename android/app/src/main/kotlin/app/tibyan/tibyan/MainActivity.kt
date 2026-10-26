@@ -29,6 +29,8 @@ class MainActivity : AudioServiceActivity() {
         // counts are announced to the misbaha while the app runs.
         WatchBridge(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
         WatchBridge.onPending = { tasbih?.channel?.invokeMethod("pendingAdded", null) }
+        // «مشاركة كمقطع فيديو»: the reel's encoder.
+        VideoEncoder(flutterEngine.dartExecutor.binaryMessenger)
         // «Save to Photos» for shared verse pictures: Pictures/Tibyan,
         // through MediaStore (no permission from Android 10 on).
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "app.tibyan/photos")

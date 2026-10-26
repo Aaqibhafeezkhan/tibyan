@@ -12,6 +12,7 @@ class MainFlutterWindow: NSWindow {
     RegisterGeneratedPlugins(registry: flutterViewController)
     // «المزامنة» through the reader's iCloud.
     ICloudSyncChannel.attach(flutterViewController.engine.binaryMessenger)
+    VideoEncoderChannel.attach(flutterViewController.engine.binaryMessenger)
 
     super.awakeFromNib()
   }

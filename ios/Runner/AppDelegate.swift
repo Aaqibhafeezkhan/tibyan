@@ -29,6 +29,8 @@ import WatchConnectivity
     ICloudSyncChannel.attach(engineBridge.applicationRegistrar.messenger())
     // «الساعة»: today's portion and the dhikr to the Apple Watch app.
     WatchChannel.attach(engineBridge.applicationRegistrar.messenger())
+    // «مشاركة كمقطع فيديو»: the reel's encoder.
+    VideoEncoderChannel.attach(engineBridge.applicationRegistrar.messenger())
     // CarPlay may have started the app first: the phone's view controller
     // then adopted the launch engine CarPlay set up (CarPlaySceneDelegate
     // .swift), whose plugins and car channel are already registered.
