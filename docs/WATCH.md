@@ -52,34 +52,47 @@ cd android && ./gradlew :wear:assembleDebug
 
 ## Gated: what the owner must do
 
-### Apple Watch (not embedded in the iOS app yet)
+### Apple Watch (embedded, set up 2026-10-26)
 
-The watch target builds but is not part of the iOS app, so `flutter build
-ios` and uploads are unchanged until these steps are done:
+The watch app ships inside the iOS app (Runner > «Embed Watch Content»).
+`tools/apple/add_watch_target.rb --embed` sets it all up and can be re-run:
 
-1. developer.apple.com > Identifiers > + App ID:
-   - `app.tibyan.tibyan.watchkitapp`
-   - `app.tibyan.tibyan.watchkitapp.widgets` (optional App Group
-     `group.app.tibyan.tibyan` capability on both).
-2. On the Mac: `ruby tools/apple/add_watch_target.rb --embed` (adds the
-   watch app to Runner's «Embed Watch Content» and sets its
-   `WKCompanionAppBundleIdentifier`). From then on Flutter sees a watch
-   companion: `flutter build ios --simulator` needs `-d <simulator id>`
-   (`flutter devices`).
-3. Open `ios/Runner.xcworkspace` > targets TibyanWatch and
-   TibyanWatchWidgets > Signing: team as for Runner, automatic. Add an
-   AppIcon (1024 px) in a watch asset catalog.
-4. Set TibyanWatch and TibyanWatchWidgets version/build to match the app
-   before each release (`MARKETING_VERSION`, `CURRENT_PROJECT_VERSION`).
-5. Test: run Runner on the iPhone simulator paired with a Watch simulator,
-   then archive as usual; the watch app ships inside the iOS app.
+- Signing: team `T958VWM76Z`. Debug signs automatically; Release/Profile
+  sign manually like Runner, with the App Store profiles «Tibyan Watch
+  AppStore» and «Tibyan Watch Widgets AppStore» (Runner uses «Tibyan
+  AppStore 2026-10», which has iCloud and Associated Domains). An
+  automatically signed watch app inside the manually signed Runner fails
+  with "Embedded binary is not signed with the same certificate".
+- App Group `group.app.tibyan.tibyan` for both targets
+  (`apple/TibyanWatch/TibyanWatch.entitlements`).
+- Icon: `apple/TibyanWatch/Assets.xcassets/AppIcon.appiconset`, one 1024 px
+  watchOS image (the phone's App Store icon).
+- Version: both targets use `ios/Flutter/Watch.xcconfig`, so
+  `MARKETING_VERSION`/`CURRENT_PROJECT_VERSION` follow
+  `FLUTTER_BUILD_NAME`/`FLUTTER_BUILD_NUMBER` (pubspec or `--build-name` /
+  `--build-number`), the same as Runner. Nothing to match by hand.
+- Flutter now sees a watch companion: `flutter build ios --simulator`
+  needs `-d <simulator id>` (`flutter devices`).
+
+Archive (as in handoff «Releases»; key flags as a zsh array):
+
+```sh
+flutter build ios --release --config-only --build-number=N \
+  --dart-define-from-file=$HOME/.config/tibyan/google.env
+xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner \
+  -configuration Release -destination 'generic/platform=iOS' \
+  -allowProvisioningUpdates "${K[@]}" archive -archivePath <path>.xcarchive
+```
+
+The archive holds `Runner.app/Watch/TibyanWatch.app` with
+`PlugIns/TibyanWatchWidgets.appex`.
 
 ### Wear OS
 
 1. Build: `cd android && ./gradlew :wear:bundleRelease` (signed with the
    phone's upload key from `android/key.properties`).
 2. Play Console > Test and release > Advanced settings > Form factors > add
-   Wear OS; accept the Wear OS review rules; add at least one Wear
-   screenshot.
+   Wear OS; accept the Wear OS review rules (Ahmed); add the Wear
+   screenshots from `docs/brand/play/wear/`.
 3. Upload the wear bundle to the Wear OS track (internal testing first).
    Its `versionCode` (900001 and up) must differ from every phone build.

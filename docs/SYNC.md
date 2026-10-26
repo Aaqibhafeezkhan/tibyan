@@ -139,10 +139,10 @@
 
 ## بعد المتصفح (يقوم به Claude Code على الماك)
 
-1. **iCloud:** نقل مفاتيح `ios/Runner/iCloud.entitlements.disabled` إلى `ios/Runner/Runner.entitlements` و`macos/Runner/DebugProfile.entitlements` و`macos/Runner/Release.entitlements`، وإضافة `applinks:altibyan.app` إن لم تكن، ثم البناء بـ `-allowProvisioningUpdates`.
-2. **Google:** حفظ Web Client ID خارج المستودع (في `~/.config/tibyan/`) وتمريره في البناء: `--dart-define=TIBYAN_GOOGLE_SERVER_CLIENT_ID=<web client id>`.
-3. **الساعة:** `ruby tools/apple/add_watch_target.rb --embed`، ثم Signing تلقائي للهدفين `TibyanWatch` و`TibyanWatchWidgets` بنفس الفريق، وإضافة أيقونة الساعة 1024، ومطابقة الإصدار ورقم البناء مع التطبيق. التفاصيل في `docs/WATCH.md`.
-4. **Wear OS:** `cd android && ./gradlew :wear:bundleRelease` ثم رفعه لمسار Wear OS الداخلي، وصور شاشة من محاكي Wear OS.
+1. **iCloud:** تمت (2026-10-26). مفاتيح iCloud (CloudDocuments، الحاوية `iCloud.app.tibyan.tibyan`) في `ios/Runner/Runner.entitlements` و`macos/Runner/DebugProfile.entitlements` و`macos/Runner/Release.entitlements`، ومعها `applinks:altibyan.app` في iOS. بروفايل الآيفون للمتجر الآن «Tibyan AppStore 2026-10». الشاشة تفحص الإتاحة وقت التشغيل كما هي.
+2. **Google:** تمت. Web Client ID في `~/.config/tibyan/google.env` (سطر `TIBYAN_GOOGLE_SERVER_CLIENT_ID=...`، خارج المستودع). كل بناء يمرّره بـ `--dart-define-from-file=$HOME/.config/tibyan/google.env` (فلاتر يقبل ملف ‎.env مباشرة)، مثلًا: `flutter build appbundle --release --build-number=N --dart-define-from-file=$HOME/.config/tibyan/google.env`. بدونه يبقى Google Drive «غير متاح في هذه النسخة».
+3. **الساعة:** تمت. `ruby tools/apple/add_watch_target.rb --embed` يضبط التوقيع والأيقونة والإصدار (يتبع إصدار فلاتر تلقائيًا). التفاصيل في `docs/WATCH.md`.
+4. **Wear OS:** صور الشاشة جاهزة في `docs/brand/play/wear/`. الباقي: `cd android && ./gradlew :wear:bundleRelease` ورفعه لمسار Wear OS الداخلي (حين يطلب أحمد)، وقبول أحمد لشروط مراجعة Wear OS في Play.
 5. **الرفع:** أرشيف iOS وmacOS ورفعهما (طريقة الرفع في الذاكرة وملف handoff)، وحزمة أندرويد إلى Play الداخلي. فقط حين يطلب أحمد.
 6. **التحقق:** على الآيفون من TestFlight مع الساعة: المسبحة على الساعة تضيف للهاتف، وورد اليوم يظهر، والمزامنة تعمل بين الآيفون والماك عبر iCloud، وبين جهازي أندرويد عبر Google Drive.
 

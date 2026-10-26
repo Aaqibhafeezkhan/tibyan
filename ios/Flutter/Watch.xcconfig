@@ -1,0 +1,7 @@
+// The Apple Watch targets (TibyanWatch, TibyanWatchWidgets) take the app's
+// version from Flutter (pubspec.yaml / --build-name / --build-number), so the
+// watch app always matches Runner. Generated.xcconfig is written by
+// `flutter pub get` / `flutter build ios`.
+#include? "Generated.xcconfig"
+MARKETING_VERSION = $(FLUTTER_BUILD_NAME)
+CURRENT_PROJECT_VERSION = $(FLUTTER_BUILD_NUMBER)
