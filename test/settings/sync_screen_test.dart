@@ -36,9 +36,7 @@ void main() {
     tester,
   ) async {
     final store = MemoryCloudStore(kind: 'icloud');
-    final (c, db) =
-        await tester.runAsync(() => setUpContainer(store))!
-            as (ProviderContainer, UserDatabase);
+    final (c, db) = (await tester.runAsync(() => setUpContainer(store)))!;
     expect(c.read(cloudSyncProvider).enabled, isFalse);
     await tester.runAsync(() async {
       await db.addBookmarkSet(
@@ -73,9 +71,7 @@ void main() {
       kind: 'icloud',
       down: CloudUnavailable.notInThisBuild,
     );
-    final (c, _) =
-        await tester.runAsync(() => setUpContainer(store))!
-            as (ProviderContainer, UserDatabase);
+    final (c, _) = (await tester.runAsync(() => setUpContainer(store)))!;
     final ok = await tester.runAsync(
       () => c.read(cloudSyncProvider.notifier).enable(),
     );
@@ -89,9 +85,7 @@ void main() {
 
   testWidgets('a failed sync is reported and does not throw', (tester) async {
     final store = MemoryCloudStore(kind: 'gdrive');
-    final (c, _) =
-        await tester.runAsync(() => setUpContainer(store))!
-            as (ProviderContainer, UserDatabase);
+    final (c, _) = (await tester.runAsync(() => setUpContainer(store)))!;
     await tester.runAsync(() async {
       await c.read(cloudSyncProvider.notifier).enable();
       await c.read(cloudSyncProvider.notifier).syncNow();
