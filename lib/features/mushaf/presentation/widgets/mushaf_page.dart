@@ -14,6 +14,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../data/compiled_svg.dart';
 import '../../data/tajweed.dart';
 import '../../mushaf_providers.dart';
+import '../fit_width_scroll.dart';
 import 'image_page.dart';
 import 'page_interaction.dart';
 
@@ -1273,6 +1274,17 @@ class _MushafPageState extends ConsumerState<MushafPage> {
                   tafsirAction: l.tafsirTitle,
                 ),
                 ...handles,
+                if (x.follow case final f?)
+                  Positioned.fromRect(
+                    rect: Rect.fromPoints(
+                      layout.toScreen(f.topLeft, line: layout._lineOf(f.top)),
+                      layout.toScreen(
+                        f.bottomRight,
+                        line: layout._lineOf(f.bottom),
+                      ),
+                    ),
+                    child: FollowMark(rect: f),
+                  ),
               ],
             );
           },

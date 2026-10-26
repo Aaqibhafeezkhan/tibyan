@@ -10,6 +10,7 @@ import '../../../../core/settings/app_settings.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../data/tajweed.dart';
+import '../fit_width_scroll.dart';
 import 'mushaf_page.dart';
 import 'page_interaction.dart';
 
@@ -910,6 +911,11 @@ class _ImageMushafPageState extends ConsumerState<ImageMushafPage> {
                   tafsirAction: l.tafsirTitle,
                 ),
                 ...handles,
+                if (x.follow case final f?)
+                  Positioned.fromRect(
+                    rect: layout.toScreenRect(f),
+                    child: FollowMark(rect: f),
+                  ),
               ],
             );
           },

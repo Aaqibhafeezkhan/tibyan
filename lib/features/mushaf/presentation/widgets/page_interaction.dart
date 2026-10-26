@@ -54,6 +54,7 @@ class PageInteraction {
     this.divineColor,
     this.emphasisLines = const {},
     this.activeWord,
+    this.follow,
     this.onVerseTap,
     this.onListenFrom,
     this.onTafsir,
@@ -136,6 +137,11 @@ class PageInteraction {
   /// verse highlight.
   final Rect? activeWord;
 
+  /// Where reading has reached (edition units): the word or verse being
+  /// recited, or the last word shown in a hifz test. A page read by
+  /// scrolling ([FitWidthScroll]) keeps it in view.
+  final Rect? follow;
+
   /// Boxes of the divine names to colour (edition units), and the colour.
   final List<Rect> divineNames;
   final Color? divineColor;
@@ -190,6 +196,7 @@ class PageInteraction {
   PageInteraction recited({
     required Set<VerseKey> selection,
     required Rect? activeWord,
+    Rect? follow,
   }) => PageInteraction(
     selection: selection,
     marks: marks,
@@ -208,6 +215,7 @@ class PageInteraction {
     divineColor: divineColor,
     emphasisLines: emphasisLines,
     activeWord: activeWord,
+    follow: follow ?? this.follow,
     onVerseTap: onVerseTap,
     onListenFrom: onListenFrom,
     onTafsir: onTafsir,

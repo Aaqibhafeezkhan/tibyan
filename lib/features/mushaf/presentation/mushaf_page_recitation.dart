@@ -41,15 +41,26 @@ class RecitedPage extends ConsumerWidget {
     final ayah = r.ayah;
     if (!r.active || ayah == null) return builder(interaction);
     final word = r.word;
-    final pieces = word == null
-        ? null
-        : ref.watch(pageWordBoxesProvider(page)).value?[(r.surah, ayah, word)];
+    final boxes = ref.watch(pageWordBoxesProvider(page)).value;
+    final pieces = word == null ? null : boxes?[(r.surah, ayah, word)];
+    final activeWord = pieces?.reduce((a, b) => a.expandToInclude(b));
+    // Without word timings, the verse as a whole is followed.
+    final verse = [
+      for (final e
+          in boxes?.entries ?? const <MapEntry<(int, int, int), List<Rect>>>[])
+        if (e.key.$1 == r.surah && e.key.$2 == ayah) ...e.value,
+    ];
     return builder(
       interaction.recited(
         selection: followVerse
             ? <VerseKey>{(surah: r.surah, ayah: ayah)}
             : interaction.selection,
-        activeWord: pieces?.reduce((a, b) => a.expandToInclude(b)),
+        activeWord: activeWord,
+        follow:
+            activeWord ??
+            (verse.isEmpty
+                ? null
+                : verse.reduce((a, b) => a.expandToInclude(b))),
       ),
     );
   }

@@ -78,6 +78,7 @@ import 'widgets/illuminated_frame.dart';
 import 'widgets/mushaf_page.dart';
 import 'widgets/ornate_pages.dart';
 import 'widgets/old_mushaf_page.dart';
+import 'fit_width_scroll.dart';
 import 'mushaf_page_recitation.dart';
 import 'widgets/page_interaction.dart';
 import 'widgets/reading_bar.dart';
@@ -808,6 +809,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
           splitTranslation: s.splitTranslation,
           underVerse: s.underVerse,
           twoPageSpread: s.twoPageSpread,
+          landscapeFit: s.landscapeFit,
           pageTurn: s.pageTurn,
           // Read through getters in the build (_focusTools, _touchReading).
           focusToolsShown: s.focusToolsShown,
@@ -1006,6 +1008,14 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
         revealedWords: _testing
             ? _test.shownPieces(_pageKeys(pg), testUnits)
             : const {},
+        // A hifz test follows the last word shown.
+        follow: _testing
+            ? _test
+                  .shownPieces(_pageKeys(pg), testUnits)
+                  .values
+                  .lastWhere((w) => w.isNotEmpty, orElse: () => const [])
+                  .lastOrNull
+            : null,
         // A tap shows a covered verse, or covers it again; in a hifz test
         // it shows the verse's next word.
         onHiddenTap: (v) => setState(
@@ -1383,6 +1393,8 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                                                                           box.biggest,
                                                                           largeDevice:
                                                                               context.isLargeDevice,
+                                                                          fit: settings
+                                                                              .landscapeFit,
                                                                         );
                                                                         if (fit ==
                                                                             null) {
@@ -1391,7 +1403,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                                                                         // A phone held sideways: the page
                                                                         // as wide as the screen, read by
                                                                         // scrolling down.
-                                                                        return SingleChildScrollView(
+                                                                        return FitWidthScroll(
                                                                           key: PageStorageKey(
                                                                             'fit-width-${pages.single}',
                                                                           ),
