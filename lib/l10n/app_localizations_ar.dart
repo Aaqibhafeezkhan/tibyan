@@ -4956,4 +4956,100 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get syncDeleteFailed => 'تعذر الوصول إلى السحابة، فلم يُحذف شيء.';
+
+  @override
+  String get shareVerseVideo => 'مشاركة كمقطع فيديو';
+
+  @override
+  String get shareVideoTitle => 'مقطع فيديو للتلاوة';
+
+  @override
+  String get shareVideoFrom => 'من الآية';
+
+  @override
+  String get shareVideoTo => 'إلى الآية';
+
+  @override
+  String get shareVideoReciter => 'القارئ';
+
+  @override
+  String shareVideoLength(String seconds) {
+    return 'مدة المقطع نحو $seconds ثانية';
+  }
+
+  @override
+  String shareVideoTooLong(String max) {
+    return 'المقطع أطول من $max ثانية، اختر آيات أقل.';
+  }
+
+  @override
+  String get shareVideoWordsNote => 'تُضاء الكلمة المتلوة كلمةً كلمة.';
+
+  @override
+  String get shareVideoAyahNote =>
+      'لا توقيت كلمات لهذا القارئ، فتُضاء الآية كلها.';
+
+  @override
+  String get shareVideoNoTimings =>
+      'لا توقيت آيات لهذا القارئ في هذه السورة، فلا يمكن صنع مقطع بتلاوته.';
+
+  @override
+  String get shareVideoRiwaya => 'مقاطع الفيديو متاحة الآن لرواية حفص فقط.';
+
+  @override
+  String get shareVideoMake => 'اصنع المقطع';
+
+  @override
+  String get shareVideoAudio => 'جارٍ تحميل التلاوة…';
+
+  @override
+  String shareVideoRendering(String percent) {
+    return 'جارٍ صنع المقطع… $percent٪';
+  }
+
+  @override
+  String get shareVideoSaving => 'جارٍ حفظ المقطع…';
+
+  @override
+  String get shareVideoReady => 'المقطع جاهز';
+
+  @override
+  String get shareVideoShare => 'مشاركة المقطع';
+
+  @override
+  String get shareVideoFailed => 'تعذر صنع المقطع';
+
+  @override
+  String get shareVideoOffline =>
+      'التلاوة غير محمّلة على الجهاز ولا اتصال بالإنترنت.';
+
+  @override
+  String get shareVideoUnsupported =>
+      'صنع مقاطع الفيديو غير متاح على هذا الجهاز.';
+
+  @override
+  String get reelHeading => 'من القرآن الكريم';
+
+  @override
+  String reelVoice(String name) {
+    return 'بصوت الشيخ $name';
+  }
+
+  @override
+  String reelCredit(String name, String source) {
+    return 'تلاوة الشيخ $name · $source';
+  }
+
+  @override
+  String get reelJoin => 'انضم الآن';
+
+  @override
+  String reelVerse(String n) {
+    return 'الآية $n';
+  }
+
+  @override
+  String reelVerses(String from, String to) {
+    return 'الآيات $from إلى $to';
+  }
 }

@@ -4892,4 +4892,101 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get syncDeleteFailed =>
       'Could not reach the cloud, so nothing was deleted.';
+
+  @override
+  String get shareVerseVideo => 'Share as video';
+
+  @override
+  String get shareVideoTitle => 'Recitation video';
+
+  @override
+  String get shareVideoFrom => 'From verse';
+
+  @override
+  String get shareVideoTo => 'To verse';
+
+  @override
+  String get shareVideoReciter => 'Reciter';
+
+  @override
+  String shareVideoLength(String seconds) {
+    return 'About $seconds seconds long';
+  }
+
+  @override
+  String shareVideoTooLong(String max) {
+    return 'Longer than $max seconds; choose fewer verses.';
+  }
+
+  @override
+  String get shareVideoWordsNote => 'Each recited word lights up in turn.';
+
+  @override
+  String get shareVideoAyahNote =>
+      'No word timings for this reciter, so the whole verse lights up.';
+
+  @override
+  String get shareVideoNoTimings =>
+      'This reciter has no verse timings for this surah, so no video can be made with it.';
+
+  @override
+  String get shareVideoRiwaya =>
+      'Videos are available for the Hafs riwaya only for now.';
+
+  @override
+  String get shareVideoMake => 'Make the video';
+
+  @override
+  String get shareVideoAudio => 'Downloading the recitation…';
+
+  @override
+  String shareVideoRendering(String percent) {
+    return 'Making the video… $percent%';
+  }
+
+  @override
+  String get shareVideoSaving => 'Saving the video…';
+
+  @override
+  String get shareVideoReady => 'The video is ready';
+
+  @override
+  String get shareVideoShare => 'Share the video';
+
+  @override
+  String get shareVideoFailed => 'Could not make the video';
+
+  @override
+  String get shareVideoOffline =>
+      'The recitation is not on this device and there is no connection.';
+
+  @override
+  String get shareVideoUnsupported =>
+      'Making videos is not available on this device.';
+
+  @override
+  String get reelHeading => 'From the Noble Quran';
+
+  @override
+  String reelVoice(String name) {
+    return 'Recited by Sheikh $name';
+  }
+
+  @override
+  String reelCredit(String name, String source) {
+    return 'Recitation of Sheikh $name · $source';
+  }
+
+  @override
+  String get reelJoin => 'Join now';
+
+  @override
+  String reelVerse(String n) {
+    return 'Verse $n';
+  }
+
+  @override
+  String reelVerses(String from, String to) {
+    return 'Verses $from to $to';
+  }
 }

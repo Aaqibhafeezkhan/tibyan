@@ -3413,5 +3413,86 @@
   "syncDeleteConfirmTitle": "حذف بيانات المزامنة من السحابة؟",
   "syncDeleteConfirmBody": "تتوقف المزامنة ويُحذف ما رفعته أجهزتك إلى السحابة. تبقى بياناتك على هذا الجهاز كما هي. وإن بقيت المزامنة مفعّلة على جهاز آخر رفع بياناته من جديد.",
   "syncDeleted": "حُذفت بيانات المزامنة من السحابة.",
-  "syncDeleteFailed": "تعذر الوصول إلى السحابة، فلم يُحذف شيء."
+  "syncDeleteFailed": "تعذر الوصول إلى السحابة، فلم يُحذف شيء.",
+  "shareVerseVideo": "مشاركة كمقطع فيديو",
+  "shareVideoTitle": "مقطع فيديو للتلاوة",
+  "shareVideoFrom": "من الآية",
+  "shareVideoTo": "إلى الآية",
+  "shareVideoReciter": "القارئ",
+  "shareVideoLength": "مدة المقطع نحو {seconds} ثانية",
+  "@shareVideoLength": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "shareVideoTooLong": "المقطع أطول من {max} ثانية، اختر آيات أقل.",
+  "@shareVideoTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "shareVideoWordsNote": "تُضاء الكلمة المتلوة كلمةً كلمة.",
+  "shareVideoAyahNote": "لا توقيت كلمات لهذا القارئ، فتُضاء الآية كلها.",
+  "shareVideoNoTimings": "لا توقيت آيات لهذا القارئ في هذه السورة، فلا يمكن صنع مقطع بتلاوته.",
+  "shareVideoRiwaya": "مقاطع الفيديو متاحة الآن لرواية حفص فقط.",
+  "shareVideoMake": "اصنع المقطع",
+  "shareVideoAudio": "جارٍ تحميل التلاوة…",
+  "shareVideoRendering": "جارٍ صنع المقطع… {percent}٪",
+  "@shareVideoRendering": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "shareVideoSaving": "جارٍ حفظ المقطع…",
+  "shareVideoReady": "المقطع جاهز",
+  "shareVideoShare": "مشاركة المقطع",
+  "shareVideoFailed": "تعذر صنع المقطع",
+  "shareVideoOffline": "التلاوة غير محمّلة على الجهاز ولا اتصال بالإنترنت.",
+  "shareVideoUnsupported": "صنع مقاطع الفيديو غير متاح على هذا الجهاز.",
+  "reelHeading": "من القرآن الكريم",
+  "reelVoice": "بصوت الشيخ {name}",
+  "@reelVoice": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reelCredit": "تلاوة الشيخ {name} · {source}",
+  "@reelCredit": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "reelJoin": "انضم الآن",
+  "reelVerse": "الآية {n}",
+  "@reelVerse": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "reelVerses": "الآيات {from} إلى {to}",
+  "@reelVerses": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  }
 }

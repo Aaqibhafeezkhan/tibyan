@@ -8281,6 +8281,162 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تعذر الوصول إلى السحابة، فلم يُحذف شيء.'**
   String get syncDeleteFailed;
+
+  /// No description provided for @shareVerseVideo.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشاركة كمقطع فيديو'**
+  String get shareVerseVideo;
+
+  /// No description provided for @shareVideoTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'مقطع فيديو للتلاوة'**
+  String get shareVideoTitle;
+
+  /// No description provided for @shareVideoFrom.
+  ///
+  /// In ar, this message translates to:
+  /// **'من الآية'**
+  String get shareVideoFrom;
+
+  /// No description provided for @shareVideoTo.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلى الآية'**
+  String get shareVideoTo;
+
+  /// No description provided for @shareVideoReciter.
+  ///
+  /// In ar, this message translates to:
+  /// **'القارئ'**
+  String get shareVideoReciter;
+
+  /// No description provided for @shareVideoLength.
+  ///
+  /// In ar, this message translates to:
+  /// **'مدة المقطع نحو {seconds} ثانية'**
+  String shareVideoLength(String seconds);
+
+  /// No description provided for @shareVideoTooLong.
+  ///
+  /// In ar, this message translates to:
+  /// **'المقطع أطول من {max} ثانية، اختر آيات أقل.'**
+  String shareVideoTooLong(String max);
+
+  /// No description provided for @shareVideoWordsNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'تُضاء الكلمة المتلوة كلمةً كلمة.'**
+  String get shareVideoWordsNote;
+
+  /// No description provided for @shareVideoAyahNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توقيت كلمات لهذا القارئ، فتُضاء الآية كلها.'**
+  String get shareVideoAyahNote;
+
+  /// No description provided for @shareVideoNoTimings.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توقيت آيات لهذا القارئ في هذه السورة، فلا يمكن صنع مقطع بتلاوته.'**
+  String get shareVideoNoTimings;
+
+  /// No description provided for @shareVideoRiwaya.
+  ///
+  /// In ar, this message translates to:
+  /// **'مقاطع الفيديو متاحة الآن لرواية حفص فقط.'**
+  String get shareVideoRiwaya;
+
+  /// No description provided for @shareVideoMake.
+  ///
+  /// In ar, this message translates to:
+  /// **'اصنع المقطع'**
+  String get shareVideoMake;
+
+  /// No description provided for @shareVideoAudio.
+  ///
+  /// In ar, this message translates to:
+  /// **'جارٍ تحميل التلاوة…'**
+  String get shareVideoAudio;
+
+  /// No description provided for @shareVideoRendering.
+  ///
+  /// In ar, this message translates to:
+  /// **'جارٍ صنع المقطع… {percent}٪'**
+  String shareVideoRendering(String percent);
+
+  /// No description provided for @shareVideoSaving.
+  ///
+  /// In ar, this message translates to:
+  /// **'جارٍ حفظ المقطع…'**
+  String get shareVideoSaving;
+
+  /// No description provided for @shareVideoReady.
+  ///
+  /// In ar, this message translates to:
+  /// **'المقطع جاهز'**
+  String get shareVideoReady;
+
+  /// No description provided for @shareVideoShare.
+  ///
+  /// In ar, this message translates to:
+  /// **'مشاركة المقطع'**
+  String get shareVideoShare;
+
+  /// No description provided for @shareVideoFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذر صنع المقطع'**
+  String get shareVideoFailed;
+
+  /// No description provided for @shareVideoOffline.
+  ///
+  /// In ar, this message translates to:
+  /// **'التلاوة غير محمّلة على الجهاز ولا اتصال بالإنترنت.'**
+  String get shareVideoOffline;
+
+  /// No description provided for @shareVideoUnsupported.
+  ///
+  /// In ar, this message translates to:
+  /// **'صنع مقاطع الفيديو غير متاح على هذا الجهاز.'**
+  String get shareVideoUnsupported;
+
+  /// No description provided for @reelHeading.
+  ///
+  /// In ar, this message translates to:
+  /// **'من القرآن الكريم'**
+  String get reelHeading;
+
+  /// No description provided for @reelVoice.
+  ///
+  /// In ar, this message translates to:
+  /// **'بصوت الشيخ {name}'**
+  String reelVoice(String name);
+
+  /// No description provided for @reelCredit.
+  ///
+  /// In ar, this message translates to:
+  /// **'تلاوة الشيخ {name} · {source}'**
+  String reelCredit(String name, String source);
+
+  /// No description provided for @reelJoin.
+  ///
+  /// In ar, this message translates to:
+  /// **'انضم الآن'**
+  String get reelJoin;
+
+  /// No description provided for @reelVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآية {n}'**
+  String reelVerse(String n);
+
+  /// No description provided for @reelVerses.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآيات {from} إلى {to}'**
+  String reelVerses(String from, String to);
 }
 
 class _AppLocalizationsDelegate
