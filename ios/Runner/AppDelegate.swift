@@ -4,6 +4,7 @@ import MediaPlayer
 import Photos
 import UIKit
 import UserNotifications
+import WatchConnectivity
 
 @main
 @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
@@ -26,6 +27,8 @@ import UserNotifications
     TasbihChannel.attach(engineBridge.applicationRegistrar.messenger())
     // «المزامنة» through the reader's iCloud.
     ICloudSyncChannel.attach(engineBridge.applicationRegistrar.messenger())
+    // «الساعة»: today's portion and the dhikr to the Apple Watch app.
+    WatchChannel.attach(engineBridge.applicationRegistrar.messenger())
     // CarPlay may have started the app first: the phone's view controller
     // then adopted the launch engine CarPlay set up (CarPlaySceneDelegate
     // .swift), whose plugins and car channel are already registered.
@@ -367,6 +370,85 @@ enum ICloudSyncChannel {
       case .unavailable: return "iCloud is not available"
       case .badArguments: return "bad arguments"
       }
+    }
+  }
+}
+
+/// «الساعة» (`app.tibyan/watch`): what the Apple Watch app shows (today's
+/// portion from the khatma widget keys, the current dhikr) goes to it as the
+/// WatchConnectivity application context; counts made on the watch come back
+/// as user info (queued, delivered even if the app was closed) and join the
+/// misbaha's pending counts, like the home screen widget's (docs/WATCH.md).
+final class WatchChannel: NSObject, WCSessionDelegate {
+  private static var shared: WatchChannel?
+  private static let group = "group.app.tibyan.tibyan"
+  private static let pendingKey = "tasbih_pending"
+  private let tasbih: FlutterMethodChannel
+  /// Kept across launches so a dhikr update never drops the portion.
+  private var context =
+    UserDefaults.standard.dictionary(forKey: "watch_context") as? [String: String] ?? [:]
+
+  static func attach(_ messenger: FlutterBinaryMessenger) {
+    let me = WatchChannel(
+      tasbih: FlutterMethodChannel(name: "app.tibyan/tasbih", binaryMessenger: messenger))
+    shared = me
+    FlutterMethodChannel(name: "app.tibyan/watch", binaryMessenger: messenger)
+      .setMethodCallHandler { call, result in
+        guard call.method == "push", let entries = call.arguments as? [String: String] else {
+          result(FlutterMethodNotImplemented)
+          return
+        }
+        me.push(entries)
+        result(nil)
+      }
+    guard WCSession.isSupported() else { return }
+    WCSession.default.delegate = me
+    WCSession.default.activate()
+  }
+
+  private init(tasbih: FlutterMethodChannel) {
+    self.tasbih = tasbih
+  }
+
+  private func push(_ entries: [String: String]) {
+    // A new set of days replaces the old ones; the tap links stay on the phone.
+    if entries["days"] != nil {
+      context = context.filter { k, _ in
+        !k.hasPrefix("portion_") && !k.hasPrefix("ref_")
+      }
+    }
+    for (k, v) in entries where !k.hasPrefix("uri_") { context[k] = v }
+    UserDefaults.standard.set(context, forKey: "watch_context")
+    send()
+  }
+
+  private func send() {
+    guard WCSession.isSupported() else { return }
+    let s = WCSession.default
+    guard s.activationState == .activated, s.isPaired, s.isWatchAppInstalled else { return }
+    try? s.updateApplicationContext(context)
+  }
+
+  func session(
+    _ session: WCSession, activationDidCompleteWith state: WCSessionActivationState,
+    error: Error?
+  ) {
+    if state == .activated { DispatchQueue.main.async { self.send() } }
+  }
+
+  func sessionDidBecomeInactive(_ session: WCSession) {}
+
+  func sessionDidDeactivate(_ session: WCSession) {
+    // The reader switched watches: talk to the new one.
+    session.activate()
+  }
+
+  func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any] = [:]) {
+    guard let n = userInfo["tasbih_add"] as? Int, n > 0 else { return }
+    DispatchQueue.main.async {
+      let d = UserDefaults(suiteName: WatchChannel.group)
+      d?.set((d?.integer(forKey: WatchChannel.pendingKey) ?? 0) + n, forKey: WatchChannel.pendingKey)
+      self.tasbih.invokeMethod("pendingAdded", arguments: nil)
     }
   }
 }
