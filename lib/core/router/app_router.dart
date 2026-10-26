@@ -54,6 +54,7 @@ import '../../features/tasmee/presentation/tasmee_settings_screen.dart';
 import '../../features/tasmee/presentation/tasmee_setup_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/settings/storage_screen.dart';
+import '../../features/sync/sync_screen.dart';
 import '../settings/app_settings.dart';
 import '../ui/look_kit.dart';
 import '../settings/settings_controller.dart';
@@ -171,6 +172,11 @@ final appRouterProvider = Provider<GoRouter>(
                 path: 'storage',
                 builder: (context, state) =>
                     const LookTheme(child: StorageScreen()),
+              ),
+              GoRoute(
+                path: 'sync',
+                builder: (context, state) =>
+                    const LookTheme(child: SyncScreen()),
               ),
               GoRoute(
                 path: 'player',

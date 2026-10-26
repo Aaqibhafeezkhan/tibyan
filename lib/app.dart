@@ -9,6 +9,7 @@ import 'core/settings/settings_controller.dart';
 import 'core/theme/app_theme.dart';
 import 'core/ui/mac_menu.dart';
 import 'features/audio/global_player.dart';
+import 'features/sync/sync_controller.dart';
 import 'l10n/app_localizations.dart';
 
 class TibyanApp extends ConsumerWidget {
@@ -36,6 +37,9 @@ class TibyanApp extends ConsumerWidget {
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
     final mode = ref.read(settingsProvider).resolveMode(platformBrightness);
 
+    // «المزامنة» runs from the start (when switched on) without building
+    // the app again on its status.
+    ref.listen(cloudSyncProvider, (_, _) {});
     final router = ref.watch(appRouterProvider);
     return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,

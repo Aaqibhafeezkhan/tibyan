@@ -4809,4 +4809,76 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get weeklyReminderChannel => 'Weekly report';
+
+  @override
+  String get syncTitle => 'Sync';
+
+  @override
+  String get syncHint =>
+      'Between your devices via iCloud or Google Drive, with no Tibyan account';
+
+  @override
+  String get syncSwitch => 'Sync between my devices';
+
+  @override
+  String get syncViaICloud => 'Through your own iCloud account';
+
+  @override
+  String get syncViaDrive =>
+      'Through your own Google Drive, in a private app folder hidden from your files';
+
+  @override
+  String get syncWhat =>
+      'Synced: bookmarks and marks, khatmas and their progress, the misbaha, the hifz record, and look, page turn and reciter settings. Downloads and device settings are not synced.';
+
+  @override
+  String get syncPrivacy =>
+      'The data stays in your own account; Tibyan has no access to it. It works offline and syncs when you are back online.';
+
+  @override
+  String get syncNow => 'Sync now';
+
+  @override
+  String syncLast(String time) {
+    return 'Last synced: $time';
+  }
+
+  @override
+  String get syncNever => 'Not synced yet';
+
+  @override
+  String get syncRunning => 'Syncing…';
+
+  @override
+  String get syncFailed => 'Sync failed; it will try again automatically.';
+
+  @override
+  String get syncNotInBuild => 'Not available in this version';
+
+  @override
+  String get syncNoAccountICloud =>
+      'Sign in to iCloud in the device settings and turn on iCloud Drive for this app.';
+
+  @override
+  String get syncNoAccountDrive => 'Choose a Google account to turn on sync.';
+
+  @override
+  String get syncUnsupported => 'Sync is not available on this device.';
+
+  @override
+  String get syncDeleteCloud => 'Stop sync and delete cloud data';
+
+  @override
+  String get syncDeleteConfirmTitle => 'Delete sync data from the cloud?';
+
+  @override
+  String get syncDeleteConfirmBody =>
+      'Sync stops and what your devices uploaded is deleted from the cloud. Your data on this device stays as it is. A device that still has sync on will upload its data again.';
+
+  @override
+  String get syncDeleted => 'Sync data deleted from the cloud.';
+
+  @override
+  String get syncDeleteFailed =>
+      'Could not reach the cloud, so nothing was deleted.';
 }

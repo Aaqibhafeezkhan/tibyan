@@ -4871,4 +4871,75 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get weeklyReminderChannel => 'التقرير الأسبوعي';
+
+  @override
+  String get syncTitle => 'المزامنة';
+
+  @override
+  String get syncHint =>
+      'بين أجهزتك عبر iCloud أو Google Drive، دون حساب في تبيان';
+
+  @override
+  String get syncSwitch => 'مزامنة بين أجهزتي';
+
+  @override
+  String get syncViaICloud => 'عبر حسابك في iCloud';
+
+  @override
+  String get syncViaDrive =>
+      'عبر حسابك في Google Drive، في مجلد خاص بالتطبيق لا يظهر بين ملفاتك';
+
+  @override
+  String get syncWhat =>
+      'يُزامَن: الفواصل والعلامات، والختمات وتقدمها، والمسبحة، وسجل الحفظ، وإعدادات المظهر وقلب الصفحات والقارئ. لا تُزامَن التنزيلات ولا إعدادات الجهاز.';
+
+  @override
+  String get syncPrivacy =>
+      'تبقى البيانات في حسابك أنت، ولا يصل إليها تبيان. وتعمل دون اتصال، وتُزامَن عند عودة الاتصال.';
+
+  @override
+  String get syncNow => 'زامن الآن';
+
+  @override
+  String syncLast(String time) {
+    return 'آخر مزامنة: $time';
+  }
+
+  @override
+  String get syncNever => 'لم تتم المزامنة بعد';
+
+  @override
+  String get syncRunning => 'جارٍ المزامنة…';
+
+  @override
+  String get syncFailed => 'تعذرت المزامنة، وستُعاد المحاولة تلقائيًا.';
+
+  @override
+  String get syncNotInBuild => 'غير متاحة في هذه النسخة';
+
+  @override
+  String get syncNoAccountICloud =>
+      'سجّل الدخول إلى iCloud في إعدادات الجهاز وفعّل iCloud Drive لهذا التطبيق.';
+
+  @override
+  String get syncNoAccountDrive => 'اختر حساب Google لتفعيل المزامنة.';
+
+  @override
+  String get syncUnsupported => 'المزامنة غير متاحة على هذا الجهاز.';
+
+  @override
+  String get syncDeleteCloud => 'إيقاف المزامنة وحذف بيانات السحابة';
+
+  @override
+  String get syncDeleteConfirmTitle => 'حذف بيانات المزامنة من السحابة؟';
+
+  @override
+  String get syncDeleteConfirmBody =>
+      'تتوقف المزامنة ويُحذف ما رفعته أجهزتك إلى السحابة. تبقى بياناتك على هذا الجهاز كما هي. وإن بقيت المزامنة مفعّلة على جهاز آخر رفع بياناته من جديد.';
+
+  @override
+  String get syncDeleted => 'حُذفت بيانات المزامنة من السحابة.';
+
+  @override
+  String get syncDeleteFailed => 'تعذر الوصول إلى السحابة، فلم يُحذف شيء.';
 }

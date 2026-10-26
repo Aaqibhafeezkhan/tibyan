@@ -8149,6 +8149,132 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'التقرير الأسبوعي'**
   String get weeklyReminderChannel;
+
+  /// No description provided for @syncTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'المزامنة'**
+  String get syncTitle;
+
+  /// No description provided for @syncHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'بين أجهزتك عبر iCloud أو Google Drive، دون حساب في تبيان'**
+  String get syncHint;
+
+  /// No description provided for @syncSwitch.
+  ///
+  /// In ar, this message translates to:
+  /// **'مزامنة بين أجهزتي'**
+  String get syncSwitch;
+
+  /// No description provided for @syncViaICloud.
+  ///
+  /// In ar, this message translates to:
+  /// **'عبر حسابك في iCloud'**
+  String get syncViaICloud;
+
+  /// No description provided for @syncViaDrive.
+  ///
+  /// In ar, this message translates to:
+  /// **'عبر حسابك في Google Drive، في مجلد خاص بالتطبيق لا يظهر بين ملفاتك'**
+  String get syncViaDrive;
+
+  /// No description provided for @syncWhat.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُزامَن: الفواصل والعلامات، والختمات وتقدمها، والمسبحة، وسجل الحفظ، وإعدادات المظهر وقلب الصفحات والقارئ. لا تُزامَن التنزيلات ولا إعدادات الجهاز.'**
+  String get syncWhat;
+
+  /// No description provided for @syncPrivacy.
+  ///
+  /// In ar, this message translates to:
+  /// **'تبقى البيانات في حسابك أنت، ولا يصل إليها تبيان. وتعمل دون اتصال، وتُزامَن عند عودة الاتصال.'**
+  String get syncPrivacy;
+
+  /// No description provided for @syncNow.
+  ///
+  /// In ar, this message translates to:
+  /// **'زامن الآن'**
+  String get syncNow;
+
+  /// No description provided for @syncLast.
+  ///
+  /// In ar, this message translates to:
+  /// **'آخر مزامنة: {time}'**
+  String syncLast(String time);
+
+  /// No description provided for @syncNever.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم تتم المزامنة بعد'**
+  String get syncNever;
+
+  /// No description provided for @syncRunning.
+  ///
+  /// In ar, this message translates to:
+  /// **'جارٍ المزامنة…'**
+  String get syncRunning;
+
+  /// No description provided for @syncFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذرت المزامنة، وستُعاد المحاولة تلقائيًا.'**
+  String get syncFailed;
+
+  /// No description provided for @syncNotInBuild.
+  ///
+  /// In ar, this message translates to:
+  /// **'غير متاحة في هذه النسخة'**
+  String get syncNotInBuild;
+
+  /// No description provided for @syncNoAccountICloud.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجّل الدخول إلى iCloud في إعدادات الجهاز وفعّل iCloud Drive لهذا التطبيق.'**
+  String get syncNoAccountICloud;
+
+  /// No description provided for @syncNoAccountDrive.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر حساب Google لتفعيل المزامنة.'**
+  String get syncNoAccountDrive;
+
+  /// No description provided for @syncUnsupported.
+  ///
+  /// In ar, this message translates to:
+  /// **'المزامنة غير متاحة على هذا الجهاز.'**
+  String get syncUnsupported;
+
+  /// No description provided for @syncDeleteCloud.
+  ///
+  /// In ar, this message translates to:
+  /// **'إيقاف المزامنة وحذف بيانات السحابة'**
+  String get syncDeleteCloud;
+
+  /// No description provided for @syncDeleteConfirmTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف بيانات المزامنة من السحابة؟'**
+  String get syncDeleteConfirmTitle;
+
+  /// No description provided for @syncDeleteConfirmBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'تتوقف المزامنة ويُحذف ما رفعته أجهزتك إلى السحابة. تبقى بياناتك على هذا الجهاز كما هي. وإن بقيت المزامنة مفعّلة على جهاز آخر رفع بياناته من جديد.'**
+  String get syncDeleteConfirmBody;
+
+  /// No description provided for @syncDeleted.
+  ///
+  /// In ar, this message translates to:
+  /// **'حُذفت بيانات المزامنة من السحابة.'**
+  String get syncDeleted;
+
+  /// No description provided for @syncDeleteFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذر الوصول إلى السحابة، فلم يُحذف شيء.'**
+  String get syncDeleteFailed;
 }
 
 class _AppLocalizationsDelegate

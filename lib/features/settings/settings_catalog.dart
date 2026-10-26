@@ -625,6 +625,17 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         keywords: 'التحميلات تحميل تنزيل إيقاف متابعة downloads download pause resume',
       ),
       SettingEntry(
+        'sync',
+        (l) => l.syncTitle,
+        (c, r) => SettingsNavTile(
+          icon: Icons.sync,
+          title: AppLocalizations.of(c).syncTitle,
+          subtitle: AppLocalizations.of(c).syncHint,
+          onTap: () => c.push('/settings/sync'),
+        ),
+        keywords: 'مزامنة أجهزة iCloud Google Drive سحابة sync devices cloud',
+      ),
+      SettingEntry(
         'backupExport',
         (l) => l.backupExport,
         (c, r) => ListTile(
