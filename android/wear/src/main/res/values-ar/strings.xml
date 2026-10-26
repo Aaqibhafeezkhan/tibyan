@@ -4,9 +4,17 @@
     <string name="tile_label">ورد اليوم</string>
     <string name="complication_label">ورد اليوم</string>
     <string name="wird_title">ورد اليوم</string>
-    <string name="open_phone">افتح تبيان على الهاتف مرة واحدة لتظهر ختمتك هنا.</string>
+    <string name="open_phone">افتح تبيان على هاتفك مرة واحدة لتظهر هنا ختمتك ومسبحتك.</string>
     <string name="tasbih_title">المسبحة</string>
     <string name="tasbih_count">عُدّ</string>
     <string name="tasbih_reset">ابدأ من جديد</string>
     <string name="tasbih_open">اضغط للعدّ</string>
+    <string name="to_wird">ورد اليوم</string>
+    <string name="page_range">ص %1$s ← ص %2$s</string>
+    <string name="page_one">ص %1$s</string>
+    <string name="of_target">من %1$s</string>
+    <string name="count_of">%1$s من %2$s</string>
+    <string name="stage">%1$s / %2$s</string>
+    <string name="khatma_percent">%1$s من الختمة</string>
+    <string name="swipe_misbaha">اسحب لأعلى للمسبحة</string>
 </resources>

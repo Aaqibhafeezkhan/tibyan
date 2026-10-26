@@ -40,11 +40,36 @@ final class WatchStore: NSObject, ObservableObject {
     return (portion, entries["ref_\(key)"] ?? "")
   }
 
+  var progress: Double {
+    let p = Double(entries["progress"] ?? "") ?? 0.0
+    return min(max(p / 100.0, 0.0), 1.0)
+  }
+
+  var target: Int {
+    Int(entries["tasbih_target"] ?? "") ?? 0
+  }
+
+  var stages: [Int] {
+    let s = entries["tasbih_stages"] ?? ""
+    if s.isEmpty { return [] }
+    return s.split(separator: ",").compactMap { Int($0.trimmingCharacters(in: .whitespaces)) }
+  }
+
+  var stageTexts: [String] {
+    let s = entries["tasbih_stage_texts"] ?? ""
+    if s.isEmpty { return [] }
+    return s.components(separatedBy: "\n")
+  }
+
   func count() {
     session += 1
     unsent += 1
     saved.set(session, forKey: "session")
-    WKInterfaceDevice.current().play(.click)
+    if target > 0 && session % target == 0 {
+      WKInterfaceDevice.current().play(.success)
+    } else {
+      WKInterfaceDevice.current().play(.click)
+    }
     // Taps in a row go to the phone together.
     flush?.cancel()
     flush = Task { [weak self] in

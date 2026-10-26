@@ -24,8 +24,8 @@ android {
         targetSdk = 36
         // Play needs a code no phone build uses: the phone's codes are small
         // build numbers, so the watch counts from 900000 (docs/WATCH.md).
-        versionCode = 900001
-        versionName = "1.0"
+        versionCode = 900002
+        versionName = "1.1"
     }
 
     signingConfigs {

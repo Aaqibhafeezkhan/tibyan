@@ -4,9 +4,17 @@
     <string name="tile_label">Today\'s portion</string>
     <string name="complication_label">Today\'s portion</string>
     <string name="wird_title">Today\'s portion</string>
-    <string name="open_phone">Open Tibyan on your phone once to show your khatma here.</string>
+    <string name="open_phone">Open Tibyan on your phone once to bring your khatma and misbaha here.</string>
     <string name="tasbih_title">Misbaha</string>
     <string name="tasbih_count">Count</string>
     <string name="tasbih_reset">Start over</string>
     <string name="tasbih_open">Tap to count</string>
+    <string name="to_wird">Today\'s portion</string>
+    <string name="page_range">p. %1$s → p. %2$s</string>
+    <string name="page_one">p. %1$s</string>
+    <string name="of_target">of %1$s</string>
+    <string name="count_of">%1$s of %2$s</string>
+    <string name="stage">%1$s / %2$s</string>
+    <string name="khatma_percent">%1$s of the khatma</string>
+    <string name="swipe_misbaha">Swipe up for the misbaha</string>
 </resources>
