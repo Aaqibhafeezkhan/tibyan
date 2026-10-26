@@ -121,19 +121,19 @@
 
 | البند | الحالة / القيمة |
 |---|---|
-| أ-1 حاوية iCloud | |
-| أ-2 iCloud على `app.tibyan.tibyan` | |
-| أ-3 Associated Domains | |
-| أ-4 App IDs الساعة (2) + App Group | |
-| أ-5 تسجيل الماك | |
-| ب التحقق من صفحة iOS | |
-| ج-1 SHA-1 لتوقيع Play | |
-| ج-2 Wear OS مضاف | |
-| د-1 مشروع Google + Drive API | |
-| د-2 شاشة الموافقة منشورة | |
-| د-3 عملاء أندرويد (3) | |
-| د-3 Web Client ID | |
-| ملاحظات أو أشياء توقفت عندها | |
+| أ-1 حاوية iCloud | تمت: `iCloud.app.tibyan.tibyan` (Tibyan iCloud) |
+| أ-2 iCloud على `app.tibyan.tibyan` | تمت: iCloud مع CloudKit ومربوط بالحاوية |
+| أ-3 Associated Domains | تمت: مفعّلة |
+| أ-4 App IDs الساعة (2) + App Group | تمت: `app.tibyan.tibyan.watchkitapp` و`app.tibyan.tibyan.watchkitapp.widgets`، App Groups فقط مع `group.app.tibyan.tibyan` |
+| أ-5 تسجيل الماك | تمت: Ahmed Mac، UDID `00008132-000A61D10E03001C` |
+| ب التحقق من صفحة iOS | تمت: تبيان iOS 1.0 وmacOS 1.0 بحالة Prepare for Submission |
+| ج-1 SHA-1 لتوقيع Play | `F4:86:80:DD:2A:9C:84:AE:4F:D8:E5:4A:7C:1C:87:67:30:B8:4C:3D` |
+| ج-2 Wear OS مضاف | تمت: ظاهر في Form factors، ومستني صور الساعة وbundle ثم الموافقة على سياسة المراجعة |
+| د-1 مشروع Google + Drive API | تمت: مشروع Tibyan (`tibyan-512810`) على فوترة My AI BA، وDrive API مفعّل |
+| د-2 شاشة الموافقة منشورة | In production، External، نطاق drive.appdata فقط. والـ branding متوثّق |
+| د-3 عملاء أندرويد (3) | تمت: Tibyan Android debug وupload وPlay، بالحزمة `app.tibyan.tibyan` |
+| د-3 Web Client ID | `529437425213-lma668kqt2ir0gcnb02g4tui3cc14u8m.apps.googleusercontent.com` |
+| ملاحظات أو أشياء توقفت عندها | بريد الدعم في Google هو helalrules7@gmail.com لأن info@altibyan.app مش متاح في القايمة. اللوجو المرفوع في Branding خلّى Google يطلب تحقق؛ altibyan.app اتوثّق في Search Console عبر Cloudflare يوم 2026-10-26، والـ branding اتوثّق ومعروض للمستخدمين. اتفاقية Apple المحدثة اتقبلت. |
 
 ---
 
