@@ -1,201 +1,159 @@
-# الحسابات والمزامنة والختمة الجماعية
+# المزامنة وتطبيق الساعة: خطوات التجهيز في المتصفح
 
-الحالة: **طبقة المزامنة في التطبيق جاهزة ومطفأة** (`accounts_sync: false` و`group_khatma: false` في `assets/config/feature_flags.json`). لا يوجد مشروع Supabase بعد، ولا مفاتيح في المستودع. ما يلي هو كل ما يلزم لتشغيلها.
+هذا الملف دليل تنفيذ لوكيل يعمل في المتصفح (Claude Cowork في Chrome) تحت إشراف أحمد. يغطي ما لا يُعمل من الكود: إعداد Apple Developer وApp Store Connect وGoogle Cloud وGoogle Play. أما ما يُعمل على الماك (ملفات المشروع وXcode والبناء والرفع) فمكانه قسم «بعد المتصفح» في آخر الملف، ويقوم به Claude Code.
 
-## ما في التطبيق الآن
+## قواعد للوكيل
 
-نموذج المزامنة كما في المخطط: الجهاز هو المرجع، وكل جدول للمستخدم فيه `uuid` و`updated_at` و`deleted_at`، والتغييرات تدخل جدول الصادر `outbox`، وآخر كتابة تغلب لكل صف. والضيوف لا تخرج بياناتهم من الجهاز.
+1. **توقف واطلب أحمد** في كل مرة: تسجيل دخول، أو كلمة مرور، أو رمز تحقق (2FA)، أو أي دفع، أو قبول اتفاقية أو شروط جديدة، أو أي زر حذف، أو أي شيء غير متوقع في الصفحة.
+2. لا تكتب كلمات مرور ولا أسرارًا في أي مكان، ولا تنسخ أي «Client secret». معرّفات العملاء (Client ID) ليست أسرارًا، وهي المطلوبة.
+3. لا تحذف ولا تعدّل أي معرّف أو تطبيق موجود. أضف فقط ما في هذا الملف. إن وُجد ما تريد إنشاءه من قبل فاستخدمه ولا تُنشئ نسخة ثانية.
+4. بعد كل قسم، اكتب لأحمد سطرًا بما تم وانتقل للتالي. وفي النهاية املأ جدول «ما يُسلَّم» في آخر الملف.
 
-| الملف | ما فيه |
+## ثوابت المشروع
+
+| البند | القيمة |
 |---|---|
-| `lib/core/db/habit_tables.dart` | الجداول المزامَنة: `khatma`، `khatma_log`، `reading_session`، `listening_session`، `reflection`، وجدول `outbox` |
-| `lib/core/sync/outbox_writer.dart` | كل كتابة تضيف صفها للصادر في نفس المعاملة. صف واحد لكل سطر: التغيير الأحدث يحل محل الأقدم |
-| `lib/core/sync/sync.dart` | الواجهة `SyncBackend`، والخلفية المحلية `LocalOnlyBackend` (لا أحد مسجل، فلا يُرسل شيء)، و`SyncEngine.syncOnce()`، و`applyRemote()` (آخر كتابة تغلب؛ التعادل يبقي الصف المحلي)، و`syncBackendProvider` |
-| `lib/features/khatma/khatma_providers.dart` | `syncEngineProvider`، يقرأ علم `accounts_sync` |
-| `test/khatma/sync_test.dart` | الاختبارات بخلفية وهمية |
+| Team ID في Apple | `T958VWM76Z` |
+| معرّف التطبيق (iOS وmacOS وAndroid) | `app.tibyan.tibyan` |
+| تطبيق الساعة | `app.tibyan.tibyan.watchkitapp` |
+| إضافة واجهة الساعة (complication) | `app.tibyan.tibyan.watchkitapp.widgets` |
+| App Group | `group.app.tibyan.tibyan` |
+| حاوية iCloud | `iCloud.app.tibyan.tibyan` |
+| النطاق | `altibyan.app` |
+| سياسة الخصوصية | https://altibyan.app/privacy |
+| بريد الدعم | info@altibyan.app |
+| اسم التطبيق | تبيان (Tibyan) |
 
-`syncOnce()` يرجع `off` والعلم مطفأ، و`guest` بلا حساب. وعند الدخول: يرسل الصادر، ويحذف ما أُرسل فقط، ثم يسحب الصفوف الأحدث من آخر سحب (`sync.lastPull` في SharedPreferences) ويدمجها.
+بصمات SHA-1 لتوقيع أندرويد (بصمات عامة، ليست أسرارًا):
 
-شكل الحمولة: `toJson()` لصف drift، والمفاتيح بأسماء Dart (`updatedAt`، `khatmaUuid`، `body` لعمود `text`…)، والتواريخ بالمللي ثانية. والعمود `id` محلي لكل جهاز؛ الصفوف تتطابق بـ `uuid`.
-
-جدولا `bookmark_sets` و`reading_positions` القديمان لا يحملان `uuid` بعد، فلم يدخلا المزامنة (تغييرهما ليس إضافيا). يحتاجان خطوة ترحيل تضيف الأعمدة الثلاثة قبل مزامنتهما.
-
-## خطوات التشغيل
-
-### 1. مشروع Supabase (أحمد)
-
-- مشروع جديد، منفصل عن مشروع أداة المراجعة.
-- المنطقة الأقرب للمستخدمين (مثلا Frankfurt).
-- يُحفظ `SUPABASE_URL` و`anon key` خارج المستودع، ويمرران وقت البناء: `--dart-define=SUPABASE_URL=… --dart-define=SUPABASE_ANON_KEY=…`. مفتاح `service_role` لا يدخل التطبيق أبدا.
-
-### 2. الجداول والصلاحيات (SQL)
-
-جدول واحد لكل جدول محلي، بنفس الأعمدة مع `user_id`، وصلاحيات على مستوى الصف:
-
-```sql
-create table public.reflection (
-  uuid uuid primary key,
-  user_id uuid not null references auth.users on delete cascade default auth.uid(),
-  surah int not null,
-  ayah int not null,
-  text text not null,
-  created_at timestamptz not null,
-  updated_at timestamptz not null,
-  deleted_at timestamptz
-);
-create index on public.reflection (user_id, updated_at);
-alter table public.reflection enable row level security;
-create policy "own rows" on public.reflection
-  for all using (user_id = auth.uid()) with check (user_id = auth.uid());
-
--- Last write wins on the server too: an older write never replaces a newer row.
-create or replace function public.lww() returns trigger language plpgsql as $$
-begin
-  if tg_op = 'UPDATE' and new.updated_at <= old.updated_at then
-    return old;
-  end if;
-  return new;
-end $$;
-create trigger reflection_lww before update on public.reflection
-  for each row execute function public.lww();
-```
-
-وبالمثل:
-- `khatma(uuid, user_id, title, edition, unit, start_date date, target_date date, daily_portion real, reminder_time int, rebased_on date, completed_at, created_at, updated_at, deleted_at)`
-- `khatma_log(uuid, user_id, khatma_uuid uuid, date date, from_page int, to_page int, updated_at, deleted_at)`
-- `reading_session(uuid, user_id, started_at, ended_at, pages int, mode text, edition text, updated_at, deleted_at)`
-- `listening_session(uuid, user_id, started_at, seconds int, reciter_id int, updated_at, deleted_at)`
-
-لا يُحذف صف من الخادم أبدا: الحذف هو `deleted_at`.
-
-### 3. الدخول بجوجل وأبل
-
-- **Google**: في Google Cloud Console، عملاء OAuth لأندرويد (اسم الحزمة `app.tibyan.tibyan` وبصمة SHA-1 لمفتاح الرفع ومفتاح Play)، ولـ iOS، ولـ Web (هذا معرفه وسره يوضعان في Supabase ‹ Auth ‹ Providers ‹ Google). وفي iOS يضاف `REVERSED_CLIENT_ID` إلى `CFBundleURLTypes`.
-- **Apple**: في حساب Apple Developer، تفعيل Sign in with Apple للمعرف `app.tibyan.tibyan`، وService ID ومفتاح (.p8) يوضعان في Supabase ‹ Auth ‹ Providers ‹ Apple. وفي Xcode تضاف قدرة Sign in with Apple للهدف Runner. (أبل تشترطه إن وُجد دخول بجوجل.)
-- الحزم (لا تُضاف قبل التشغيل): `supabase_flutter`، `google_sign_in`، `sign_in_with_apple`.
-- الدخول اختياري دائما. التطبيق كله يعمل بلا حساب.
-
-### 4. الخلفية `SupabaseBackend`
-
-صنف واحد يطبق `SyncBackend`، ثم يستبدل في `main.dart`:
-
-```dart
-class SupabaseBackend implements SyncBackend {
-  SupabaseBackend(this._client);
-  final SupabaseClient _client;
-
-  @override
-  Future<String?> currentUser() async => _client.auth.currentUser?.id;
-
-  @override
-  Future<void> push(List<OutboxRow> changes) async {
-    for (final table in syncedTables) {
-      final rows = [
-        for (final c in changes)
-          if (c.entity == table) toServerRow(table, outboxPayload(c)),
-      ];
-      if (rows.isNotEmpty) {
-        await _client.from(table).upsert(rows, onConflict: 'uuid');
-      }
-    }
-  }
-
-  @override
-  Future<List<RemoteChange>> pull({DateTime? since}) async {
-    final out = <RemoteChange>[];
-    for (final table in syncedTables) {
-      var q = _client.from(table).select();
-      if (since != null) q = q.gt('updated_at', since.toUtc().toIso8601String());
-      for (final r in await q) {
-        final row = fromServerRow(table, r); // snake_case to the toJson() keys
-        out.add(RemoteChange(
-          table: table,
-          uuid: r['uuid'] as String,
-          row: row,
-          updatedAt: DateTime.parse(r['updated_at'] as String),
-        ));
-      }
-    }
-    return out;
-  }
-}
-```
-
-`toServerRow`/`fromServerRow` يحولان المفاتيح (camelCase ↔ snake_case) والتواريخ (مللي ثانية ↔ ISO) ويحذفان `id` المحلي.
-
-ثم في `main.dart`:
-
-```dart
-await Supabase.initialize(url: …, anonKey: …);
-// overrides:
-syncBackendProvider.overrideWithValue(SupabaseBackend(Supabase.instance.client)),
-```
-
-ومتى يُستدعى `syncEngine.syncOnce()`: بعد الدخول، وعند عودة التطبيق من الخلفية، وبعد الكتابة بمهلة (مثلا 30 ثانية تجمع التغييرات).
-
-### 5. الواجهة
-
-- شاشة «الحساب» في الإعدادات: دخول بجوجل/أبل، وآخر مزامنة، وخروج، وحذف الحساب (حذف صفوف الخادم كلها؛ أبل تشترطه).
-- عند أول دخول على جهاز فيه بيانات: تُرفع كلها (الصادر يحمل كل صف كُتب). وصفوف الخادم تُدمج بآخر كتابة تغلب.
-- قلب العلم `accounts_sync` إلى `true`.
-
-## الختمة الجماعية (العلم `group_khatma`)
-
-الوحيدة التي مرجعها الخادم، لا الجهاز:
-
-```sql
-create table public.group_khatma (
-  id uuid primary key default gen_random_uuid(),
-  owner uuid not null references auth.users default auth.uid(),
-  title text not null,
-  edition text not null,          -- page numbers of this edition
-  unit text not null default 'juz',
-  invite_code text unique not null default encode(gen_random_bytes(6), 'base64'),
-  start_date date not null,
-  target_date date not null,
-  created_at timestamptz not null default now()
-);
-create table public.group_member (
-  group_id uuid references public.group_khatma on delete cascade,
-  user_id uuid references auth.users on delete cascade default auth.uid(),
-  display_name text,
-  joined_at timestamptz not null default now(),
-  primary key (group_id, user_id)
-);
-create table public.group_portion (
-  group_id uuid references public.group_khatma on delete cascade,
-  unit_index int not null,        -- juz 0..29, hizb 0..59, or page
-  taken_by uuid references auth.users,
-  done_at timestamptz,
-  primary key (group_id, unit_index)
-);
-```
-
-- الصلاحيات: العضو يرى مجموعته وأعضاءها وأجزاءها، ويحجز جزءا شاغرا أو يعلم جزأه مقروءا. المالك يعدل ويحذف.
-- الانضمام: دالة `join_group(code text)` بصلاحية `security definer` تتحقق من الرمز وتضيف العضو، حتى لا تُكشف المجموعات بالرموز.
-- رابط الدعوة: `https://tibyan.ahmedhelal.dev/k/<code>` (App Links في أندرويد بملف `assetlinks.json`، وUniversal Links في iOS بملف `apple-app-site-association` على نفس النطاق)، مع المخطط `tibyan://join?code=…` احتياطا. ويضاف مسار `/join` في `app_router.dart`.
-- التحديث اللحظي: Supabase Realtime على `group_portion` لكل مجموعة.
-- الأجزاء المحجوزة تظهر في ورد العضو كأي ختمة، وقراءتها في المصحف تعلمها مقروءة (`KhatmaService.pageRead` بعد إضافة المجموعة).
-- قلب العلم `group_khatma` إلى `true` بعد الاختبار.
+| المفتاح | SHA-1 |
+|---|---|
+| debug (للتجربة من الماك) | `28:CC:02:B4:91:4A:0E:95:1F:DB:FE:4A:E2:47:02:BA:EA:91:29:55` |
+| upload (مفتاح الرفع) | `F1:FF:F2:F9:10:A3:F8:56:5D:63:FC:A7:82:02:1B:26:38:C0:72:5F` |
+| Play app signing | تُنسخ من Play Console في الخطوة ج-1 |
 
 ---
 
-# «المزامنة» عبر iCloud وGoogle Drive (بدون خادم)
+## أ. Apple Developer (developer.apple.com/account)
 
-الكود: `lib/core/sync/cloud/` (المحرك والمخازن) و`lib/features/sync/` (المتحكم والشاشة). كل جهاز يكتب ملفه فقط `tibyan-sync-<deviceId>.json` ويقرأ ملفات كل الأجهزة؛ الدمج آخر كتابة تغلب لكل سجل مع شواهد حذف، ودفتر `sync_journal` في user.db (الإصدار 8).
+### أ-1. حاوية iCloud
+1. Certificates, Identifiers & Profiles > Identifiers > زر **+** > **iCloud Containers** > Continue.
+2. Description: `Tibyan iCloud`، Identifier: `iCloud.app.tibyan.tibyan` > Continue > Register.
 
-منذ الإصدار 9: تُزامَن أيضا ملاحظات التدبر (`reflection`) وآخر موضع قراءة (`reading_positions`، بالسورة والآية فيصلح لأي طبعة). سجل المسبحة اليومي `tasbih_day` صار صفا لكل جهاز (عمود `device`، فارغ لهذا الجهاز) والعدد اليومي = مجموع الأجهزة، ومنه عدّات الساعة لأنها تُسجَّل على الهاتف. أي ختم زمني أبعد من يوم في المستقبل (ساعة جهاز خاطئة) يُعامل بوقت وصوله.
+### أ-2. تفعيل iCloud على التطبيق
+1. Identifiers > اختر `app.tibyan.tibyan`.
+2. في Capabilities فعّل **iCloud** واختر **Include CloudKit support** (أو iCloud Documents إن ظهر الخياران؛ المطلوب الوصول لحاوية iCloud).
+3. اضغط **Configure** بجوار iCloud واختر الحاوية `iCloud.app.tibyan.tibyan` > Continue > Save.
+4. لا تغيّر أي capability أخرى (App Groups وAssociated Domains وPush إن وُجدت تبقى كما هي).
+5. إن ظهر تنبيه أن الملفات الشخصية (profiles) ستُبطل: هذا متوقع، وافق.
 
-## iCloud (يلزم قبل التفعيل)
-1. developer.apple.com > Identifiers > iCloud Containers > + : `iCloud.app.tibyan.tibyan`.
-2. Identifiers > `app.tibyan.tibyan` > فعّل iCloud (CloudKit/Documents) واربطه بالحاوية. احفظ.
-3. انسخ المفاتيح من `ios/Runner/iCloud.entitlements.disabled` إلى `ios/Runner/Runner.entitlements` و`macos/Runner/DebugProfile.entitlements` و`macos/Runner/Release.entitlements`.
-4. لبناء ماك Debug بالقدرة: سجّل الماك في Devices (أو افتح المشروع في Xcode مرة بحسابك ليسجله)، ثم ابنِ بـ `-allowProvisioningUpdates`.
-بدون ذلك تظهر «غير متاحة في هذه النسخة».
+### أ-3. روابط الختمة الجماعية (Associated Domains)
+1. في نفس صفحة `app.tibyan.tibyan`: إن لم تكن **Associated Domains** مفعّلة ففعّلها > Save.
 
-## Google Drive (أندرويد)
-1. Google Cloud Console: مشروع جديد، فعّل Google Drive API.
-2. OAuth consent screen: External، الاسم «تبيان»، النطاق `.../auth/drive.appdata` فقط، رابط الخصوصية https://altibyan.app/privacy. انشره (Production) — نطاق appdata غير حساس.
-3. Credentials: عميل Android لـ `app.tibyan.tibyan` لكل بصمة SHA-1: مفتاح debug (`keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android`)، مفتاح الرفع (keystore في `~/.config/tibyan/`)، ومفتاح توقيع Play (Play Console > Setup > App signing).
-4. عميل Web application: معرّفه هو `serverClientId`.
-5. ابنِ مع `--dart-define=TIBYAN_GOOGLE_SERVER_CLIENT_ID=<web client id>` (ليس سرًا، لكنه يبقى خارج المستودع).
+### أ-4. معرّفا تطبيق الساعة
+1. Identifiers > **+** > **App IDs** > **App** > Continue.
+2. Description: `Tibyan Watch`، Bundle ID (Explicit): `app.tibyan.tibyan.watchkitapp`.
+3. Capabilities: فعّل **App Groups** فقط > Continue > Register. ثم افتحه > App Groups > Configure > اختر `group.app.tibyan.tibyan` > Save.
+4. كرر للإضافة: Description `Tibyan Watch Widgets`، Bundle ID `app.tibyan.tibyan.watchkitapp.widgets`، مع **App Groups** فقط ونفس المجموعة.
+
+### أ-5. تسجيل الماك كجهاز (لبناء Debug بقدرة iCloud)
+هذه الخطوة يحتاج فيها الوكيل إلى رقم الماك:
+1. اطلب من أحمد أن يشغّل في التيرمنال: `system_profiler SPHardwareDataType | grep "Provisioning UDID"` ويعطيك الرقم.
+2. Devices > **+** > Platform: **macOS**، Name: `Ahmed Mac`، Device ID: الرقم > Continue > Register.
+
+---
+
+## ب. App Store Connect (appstoreconnect.apple.com)
+
+تطبيق الساعة **ليس منصة مستقلة** هنا، ولا يُضاف من قائمة المنصات (التي تعرض tvOS وvisionOS فقط). هو جزء من تطبيق iOS نفسه ويُرفع داخل نفس الـ build. ما يُعمل في المتصفح:
+
+1. Apps > تبيان > تأكد أن صفحة نسخة iOS موجودة. لا تُنشئ تطبيقًا جديدًا للساعة.
+2. لا شيء آخر قبل الرفع. بعد أول build فيه الساعة (من قسم «بعد المتصفح») يظهر في صفحة نسخة iOS قسم **Apple Watch** لصور الشاشة، وفي TestFlight يظهر نفس الـ build ومعه الساعة.
+3. (بعد الرفع) TestFlight: تأكد أن الـ build الجديد حالته Ready to Test، ثم أبلغ أحمد ليثبّته على الآيفون، ومن تطبيق **Watch** على الآيفون يضغط Install بجوار تبيان.
+
+---
+
+## ج. Google Play Console (play.google.com/console)
+
+### ج-1. بصمة توقيع Play
+1. التطبيق تبيان > **Test and release** > **App integrity** (أو Setup > App signing) > **App signing key certificate**.
+2. انسخ **SHA-1** (وليس SHA-256) واكتبه في جدول «ما يُسلَّم».
+
+### ج-2. إضافة Wear OS
+1. Test and release > **Advanced settings** > **Form factors** > **+ Add form factor** > **Wear OS**.
+2. اقرأ لأحمد شروط مراجعة Wear OS، **وتوقف ليقبلها هو**.
+3. اختر مسار Wear OS للاختبار الداخلي (Internal testing) إن عُرض اختيار.
+4. صور شاشة الساعة: توقف واطلبها من أحمد (يجهّزها Claude Code لاحقًا من المحاكي). لا ترفع صورًا من عندك.
+5. لا ترفع أي ملف bundle: الرفع يتم من الماك (قسم «بعد المتصفح»).
+
+---
+
+## د. Google Cloud (console.cloud.google.com)
+
+### د-1. المشروع والـ API
+1. توقف إن طُلب إنشاء حساب فوترة أو أي دفع؛ هذا الإعداد مجاني ولا يحتاج فوترة.
+2. أنشئ مشروعًا: Project name `Tibyan`. (إن وُجد مشروع لتبيان فاستخدمه.)
+3. APIs & Services > Library > ابحث **Google Drive API** > Enable.
+
+### د-2. شاشة الموافقة (Google Auth Platform / OAuth consent screen)
+1. User type: **External**.
+2. App name: `تبيان`، User support email: `info@altibyan.app` (أو بريد أحمد إن لم يُقبل)، Developer contact: نفسه.
+3. App domain: Home page `https://altibyan.app`، Privacy policy `https://altibyan.app/privacy`، Authorized domains: `altibyan.app`.
+4. Scopes / Data access: أضف **`https://www.googleapis.com/auth/drive.appdata`** فقط. لا تضف أي نطاق آخر.
+5. Audience / Publishing status: **Publish app** (إلى Production). نطاق appdata غير حساس، فلا يحتاج مراجعة Google. إن طُلب تحقق (verification) فتوقف وأخبر أحمد.
+
+### د-3. عملاء OAuth (Clients)
+أنشئ هذه العملاء من Clients (أو Credentials) > **Create client**:
+
+| النوع | الاسم | Package name | SHA-1 |
+|---|---|---|---|
+| Android | `Tibyan Android debug` | `app.tibyan.tibyan` | بصمة debug من الجدول أعلاه |
+| Android | `Tibyan Android upload` | `app.tibyan.tibyan` | بصمة upload من الجدول أعلاه |
+| Android | `Tibyan Android Play` | `app.tibyan.tibyan` | بصمة Play من ج-1 |
+| Web application | `Tibyan Web` | (لا شيء) | (لا شيء) |
+
+- لعميل Web: لا تضف Authorized origins ولا redirect URIs.
+- انسخ **Client ID** لعميل Web فقط (ينتهي بـ `.apps.googleusercontent.com`) إلى جدول «ما يُسلَّم». **لا تنسخ Client secret**، ولا تحمّل ملف JSON.
+
+---
+
+## ما يُسلَّم (يملؤه الوكيل في النهاية ويرسله لأحمد)
+
+| البند | الحالة / القيمة |
+|---|---|
+| أ-1 حاوية iCloud | |
+| أ-2 iCloud على `app.tibyan.tibyan` | |
+| أ-3 Associated Domains | |
+| أ-4 App IDs الساعة (2) + App Group | |
+| أ-5 تسجيل الماك | |
+| ب التحقق من صفحة iOS | |
+| ج-1 SHA-1 لتوقيع Play | |
+| ج-2 Wear OS مضاف | |
+| د-1 مشروع Google + Drive API | |
+| د-2 شاشة الموافقة منشورة | |
+| د-3 عملاء أندرويد (3) | |
+| د-3 Web Client ID | |
+| ملاحظات أو أشياء توقفت عندها | |
+
+---
+
+## بعد المتصفح (يقوم به Claude Code على الماك)
+
+1. **iCloud:** نقل مفاتيح `ios/Runner/iCloud.entitlements.disabled` إلى `ios/Runner/Runner.entitlements` و`macos/Runner/DebugProfile.entitlements` و`macos/Runner/Release.entitlements`، وإضافة `applinks:altibyan.app` إن لم تكن، ثم البناء بـ `-allowProvisioningUpdates`.
+2. **Google:** حفظ Web Client ID خارج المستودع (في `~/.config/tibyan/`) وتمريره في البناء: `--dart-define=TIBYAN_GOOGLE_SERVER_CLIENT_ID=<web client id>`.
+3. **الساعة:** `ruby tools/apple/add_watch_target.rb --embed`، ثم Signing تلقائي للهدفين `TibyanWatch` و`TibyanWatchWidgets` بنفس الفريق، وإضافة أيقونة الساعة 1024، ومطابقة الإصدار ورقم البناء مع التطبيق. التفاصيل في `docs/WATCH.md`.
+4. **Wear OS:** `cd android && ./gradlew :wear:bundleRelease` ثم رفعه لمسار Wear OS الداخلي، وصور شاشة من محاكي Wear OS.
+5. **الرفع:** أرشيف iOS وmacOS ورفعهما (طريقة الرفع في الذاكرة وملف handoff)، وحزمة أندرويد إلى Play الداخلي. فقط حين يطلب أحمد.
+6. **التحقق:** على الآيفون من TestFlight مع الساعة: المسبحة على الساعة تضيف للهاتف، وورد اليوم يظهر، والمزامنة تعمل بين الآيفون والماك عبر iCloud، وبين جهازي أندرويد عبر Google Drive.
+
+---
+
+## مرجع تقني (للمطورين)
+
+الكود: `lib/core/sync/cloud/` (المحرك والمخازن) و`lib/features/sync/` (المتحكم والشاشة: الإعدادات > البيانات > «المزامنة»). كل جهاز يكتب ملفه فقط `tibyan-sync-<deviceId>.json` ويقرأ ملفات كل الأجهزة؛ الدمج آخر كتابة تغلب لكل سجل مع شواهد حذف، ودفتر `sync_journal` في user.db. بدون الإعداد أعلاه تعرض الشاشة «غير متاحة في هذه النسخة».
+
+يُزامَن: الفواصل، والختمات وتقدمها، وجلسات القراءة والاستماع، والمسبحة، والحفظ وتقييمات وضع الحفظ، وملاحظات التدبر (`reflection`)، وآخر موضع قراءة (`reading_positions`، بالسورة والآية فيصلح لأي طبعة)، و13 إعدادًا للشكل والوضع والتقليب والبرواز والقارئ. سجل المسبحة اليومي `tasbih_day` صف لكل جهاز (عمود `device`) والعدد اليومي = مجموع الأجهزة، ومنه عدّات الساعة لأنها تُسجَّل على الهاتف. أي ختم زمني أبعد من يوم في المستقبل يُعامل بوقت وصوله.
+
+الختمة الجماعية لا تستخدم هذه المزامنة: هي بلينك ومن غير حسابات، وخادمها في `training-platform/app/group_khatma.py` (القرار في `docs/plan/post-launch-roadmap.md`).
+
+خطة الحسابات القديمة عبر Supabase أُلغيت بقرار أحمد (2026-10-24: مزامنة عبر iCloud وGoogle Drive، بلا حسابات). نصها في تاريخ git لهذا الملف لمن أراد الرجوع إليه.
