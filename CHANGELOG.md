@@ -6,6 +6,10 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Settings > Mushaf > Reading: «الصفحة في الوضع الأفقي» for a phone held sideways: «بعرض الشاشة» (default, the page as wide as the screen, read by scrolling) or «الصفحة كاملة» (the whole page fitted to the screen height).
+- Fit-to-width pages follow the recitation: the recited line (or word, and the last word shown in a hifz test) scrolls smoothly into view, jumping instead with reduce motion, and waits a few seconds after a manual scroll.
+
 ### Accessibility
 - Screen readers: every verse on a mushaf page now also offers «Listen from this verse» (starts the recitation when nothing is playing) and «Tafsir and translation» as actions.
 - Large text (up to 200%): the tasbih screen scrolls with a fixed large counter area; section headings, edition badges, onboarding steps, the surah index and the listening screen no longer overflow.
