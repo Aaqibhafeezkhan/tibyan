@@ -144,6 +144,7 @@ docs/brand/**/*_altibyan_root.mp4
 docs/brand/**/*_plex.png
 docs/brand/**/*.mp3
 docs/brand/**/__pycache__/
+docs/brand/store/video/
 
 # User-reported bug evidence (screenshots, videos)
 issues-found/
