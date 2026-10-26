@@ -8,7 +8,7 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ### Added
 - Settings > Data > «المزامنة» (Sync), opt-in: bookmarks and marks, khatmas and progress, misbaha, hifz record and look/page-turn/reciter settings sync between your devices through your own iCloud (Apple) or Google Drive app folder (Android); no Tibyan server or account. Last write wins per record, deletions sync, works offline, «زامن الآن», and «إيقاف المزامنة وحذف بيانات السحابة». Shows «غير متاحة في هذه النسخة» until the iCloud capability / Google OAuth client are set up.
-- «التقرير الأسبوعي» (Weekly report), from Khatma > Reports or Settings > Khatma: seven days of reading and listening minutes per day (chart), pages, recitation sessions and verses recited, tasbih counts and each khatma's progress with the share read that week; up to three earlier weeks. Calm notes only: a quiet week reads as a fresh start, nothing counts missed days or compares weeks. All local.
+- «التقرير الأسبوعي» (Weekly report), from Khatma > Reports or Settings > Khatma: seven days of reading and listening minutes per day (chart), pages, recitation sessions and verses recited, tasbih counts and each khatma's progress with the share read that week; up to three earlier weeks. Calm notes only: a quiet week reads as a fresh start, a gentle line (also read by screen readers) says how many days had no reading when there were any, and weeks are never compared. All local.
 - Optional weekly reminder for the report (off by default) on a chosen day and time, from the report or Settings > Khatma.
 - Settings > Mushaf > Reading: «الصفحة في الوضع الأفقي» for a phone held sideways: «بعرض الشاشة» (default, the page as wide as the screen, read by scrolling) or «الصفحة كاملة» (the whole page fitted to the screen height).
 - Fit-to-width pages follow the recitation: the recited line (or word, and the last word shown in a hifz test) scrolls smoothly into view, jumping instead with reduce motion, and waits a few seconds after a manual scroll.
@@ -19,7 +19,7 @@ All notable changes to Tibyan are recorded here. The format follows
 - Small icon buttons (copy, tafsir and tasmee controls) now have 48 dp targets; small gold and muted text keeps a contrast margin in every look and mode.
 - Reduce motion: screens cross-fade instead of sliding or zooming (Android and others; iOS/macOS keep their slide and back swipe); small indicator and press animations stop.
 - A per-screen semantics audit test (labels, tap targets, contrast in all looks and modes, 200% text).
-- Settings > «إمكانية الوصول» (Accessibility): «تقليل الحركة» (follows the device by default, can be forced on), «قراءة رقم الآية مع نصها» for screen readers (on by default), and a link to the device accessibility settings.
+- Settings > «إمكانية الوصول» (Accessibility): «تقليل الحركة» (follows the device by default, can be forced on), «قراءة رقم الآية مع نصها» for screen readers (on by default), and a link to the device accessibility settings (Android and macOS; hidden on iOS, which has no public link to that page).
 
 ### Fixed
 - Toasts: every toast now dismisses itself (about 4 s, 6 s when it offers Undo), has a close (×) button and can be swiped away; all toasts go through one shared helper.
