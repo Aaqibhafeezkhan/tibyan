@@ -11511,6 +11511,16 @@ class $TasbihDaysTable extends TasbihDays
     requiredDuringInsert: false,
     clientDefault: DateTime.now,
   );
+  static const VerificationMeta _deviceMeta = const VerificationMeta('device');
+  @override
+  late final GeneratedColumn<String> device = GeneratedColumn<String>(
+    'device',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -11519,6 +11529,7 @@ class $TasbihDaysTable extends TasbihDays
     count,
     rounds,
     updatedAt,
+    device,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -11569,6 +11580,12 @@ class $TasbihDaysTable extends TasbihDays
         updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
       );
     }
+    if (data.containsKey('device')) {
+      context.handle(
+        _deviceMeta,
+        device.isAcceptableOrUnknown(data['device']!, _deviceMeta),
+      );
+    }
     return context;
   }
 
@@ -11576,7 +11593,7 @@ class $TasbihDaysTable extends TasbihDays
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   List<Set<GeneratedColumn>> get uniqueKeys => [
-    {day, dhikr},
+    {day, dhikr, device},
   ];
   @override
   TasbihDayRow map(Map<String, dynamic> data, {String? tablePrefix}) {
@@ -11606,6 +11623,10 @@ class $TasbihDaysTable extends TasbihDays
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at'],
       )!,
+      device: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device'],
+      )!,
     );
   }
 
@@ -11624,6 +11645,11 @@ class TasbihDayRow extends DataClass implements Insertable<TasbihDayRow> {
   final int count;
   final int rounds;
   final DateTime updatedAt;
+
+  /// The device that counted: empty for this device, another device's
+  /// sync id for counts that came through «المزامنة». A day's total is the
+  /// sum over devices.
+  final String device;
   const TasbihDayRow({
     required this.id,
     required this.day,
@@ -11631,6 +11657,7 @@ class TasbihDayRow extends DataClass implements Insertable<TasbihDayRow> {
     required this.count,
     required this.rounds,
     required this.updatedAt,
+    required this.device,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -11641,6 +11668,7 @@ class TasbihDayRow extends DataClass implements Insertable<TasbihDayRow> {
     map['count'] = Variable<int>(count);
     map['rounds'] = Variable<int>(rounds);
     map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['device'] = Variable<String>(device);
     return map;
   }
 
@@ -11652,6 +11680,7 @@ class TasbihDayRow extends DataClass implements Insertable<TasbihDayRow> {
       count: Value(count),
       rounds: Value(rounds),
       updatedAt: Value(updatedAt),
+      device: Value(device),
     );
   }
 
@@ -11667,6 +11696,7 @@ class TasbihDayRow extends DataClass implements Insertable<TasbihDayRow> {
       count: serializer.fromJson<int>(json['count']),
       rounds: serializer.fromJson<int>(json['rounds']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      device: serializer.fromJson<String>(json['device']),
     );
   }
   @override
@@ -11679,6 +11709,7 @@ class TasbihDayRow extends DataClass implements Insertable<TasbihDayRow> {
       'count': serializer.toJson<int>(count),
       'rounds': serializer.toJson<int>(rounds),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'device': serializer.toJson<String>(device),
     };
   }
 
@@ -11689,6 +11720,7 @@ class TasbihDayRow extends DataClass implements Insertable<TasbihDayRow> {
     int? count,
     int? rounds,
     DateTime? updatedAt,
+    String? device,
   }) => TasbihDayRow(
     id: id ?? this.id,
     day: day ?? this.day,
@@ -11696,6 +11728,7 @@ class TasbihDayRow extends DataClass implements Insertable<TasbihDayRow> {
     count: count ?? this.count,
     rounds: rounds ?? this.rounds,
     updatedAt: updatedAt ?? this.updatedAt,
+    device: device ?? this.device,
   );
   TasbihDayRow copyWithCompanion(TasbihDaysCompanion data) {
     return TasbihDayRow(
@@ -11705,6 +11738,7 @@ class TasbihDayRow extends DataClass implements Insertable<TasbihDayRow> {
       count: data.count.present ? data.count.value : this.count,
       rounds: data.rounds.present ? data.rounds.value : this.rounds,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      device: data.device.present ? data.device.value : this.device,
     );
   }
 
@@ -11716,13 +11750,15 @@ class TasbihDayRow extends DataClass implements Insertable<TasbihDayRow> {
           ..write('dhikr: $dhikr, ')
           ..write('count: $count, ')
           ..write('rounds: $rounds, ')
-          ..write('updatedAt: $updatedAt')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('device: $device')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, day, dhikr, count, rounds, updatedAt);
+  int get hashCode =>
+      Object.hash(id, day, dhikr, count, rounds, updatedAt, device);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -11732,7 +11768,8 @@ class TasbihDayRow extends DataClass implements Insertable<TasbihDayRow> {
           other.dhikr == this.dhikr &&
           other.count == this.count &&
           other.rounds == this.rounds &&
-          other.updatedAt == this.updatedAt);
+          other.updatedAt == this.updatedAt &&
+          other.device == this.device);
 }
 
 class TasbihDaysCompanion extends UpdateCompanion<TasbihDayRow> {
@@ -11742,6 +11779,7 @@ class TasbihDaysCompanion extends UpdateCompanion<TasbihDayRow> {
   final Value<int> count;
   final Value<int> rounds;
   final Value<DateTime> updatedAt;
+  final Value<String> device;
   const TasbihDaysCompanion({
     this.id = const Value.absent(),
     this.day = const Value.absent(),
@@ -11749,6 +11787,7 @@ class TasbihDaysCompanion extends UpdateCompanion<TasbihDayRow> {
     this.count = const Value.absent(),
     this.rounds = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.device = const Value.absent(),
   });
   TasbihDaysCompanion.insert({
     this.id = const Value.absent(),
@@ -11757,6 +11796,7 @@ class TasbihDaysCompanion extends UpdateCompanion<TasbihDayRow> {
     this.count = const Value.absent(),
     this.rounds = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.device = const Value.absent(),
   }) : day = Value(day),
        dhikr = Value(dhikr);
   static Insertable<TasbihDayRow> custom({
@@ -11766,6 +11806,7 @@ class TasbihDaysCompanion extends UpdateCompanion<TasbihDayRow> {
     Expression<int>? count,
     Expression<int>? rounds,
     Expression<DateTime>? updatedAt,
+    Expression<String>? device,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -11774,6 +11815,7 @@ class TasbihDaysCompanion extends UpdateCompanion<TasbihDayRow> {
       if (count != null) 'count': count,
       if (rounds != null) 'rounds': rounds,
       if (updatedAt != null) 'updated_at': updatedAt,
+      if (device != null) 'device': device,
     });
   }
 
@@ -11784,6 +11826,7 @@ class TasbihDaysCompanion extends UpdateCompanion<TasbihDayRow> {
     Value<int>? count,
     Value<int>? rounds,
     Value<DateTime>? updatedAt,
+    Value<String>? device,
   }) {
     return TasbihDaysCompanion(
       id: id ?? this.id,
@@ -11792,6 +11835,7 @@ class TasbihDaysCompanion extends UpdateCompanion<TasbihDayRow> {
       count: count ?? this.count,
       rounds: rounds ?? this.rounds,
       updatedAt: updatedAt ?? this.updatedAt,
+      device: device ?? this.device,
     );
   }
 
@@ -11816,6 +11860,9 @@ class TasbihDaysCompanion extends UpdateCompanion<TasbihDayRow> {
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
+    if (device.present) {
+      map['device'] = Variable<String>(device.value);
+    }
     return map;
   }
 
@@ -11827,7 +11874,8 @@ class TasbihDaysCompanion extends UpdateCompanion<TasbihDayRow> {
           ..write('dhikr: $dhikr, ')
           ..write('count: $count, ')
           ..write('rounds: $rounds, ')
-          ..write('updatedAt: $updatedAt')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('device: $device')
           ..write(')'))
         .toString();
   }
@@ -18153,6 +18201,7 @@ typedef $$TasbihDaysTableCreateCompanionBuilder = TasbihDaysCompanion Function({
   Value<int> count,
   Value<int> rounds,
   Value<DateTime> updatedAt,
+  Value<String> device,
 });
 typedef $$TasbihDaysTableUpdateCompanionBuilder = TasbihDaysCompanion Function({
   Value<int> id,
@@ -18161,6 +18210,7 @@ typedef $$TasbihDaysTableUpdateCompanionBuilder = TasbihDaysCompanion Function({
   Value<int> count,
   Value<int> rounds,
   Value<DateTime> updatedAt,
+  Value<String> device,
 });
 
 class $$TasbihDaysTableFilterComposer
@@ -18199,6 +18249,11 @@ class $$TasbihDaysTableFilterComposer
 
   ColumnFilters<DateTime> get updatedAt => $composableBuilder(
     column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get device => $composableBuilder(
+    column: $table.device,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -18241,6 +18296,11 @@ class $$TasbihDaysTableOrderingComposer
     column: $table.updatedAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get device => $composableBuilder(
+    column: $table.device,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TasbihDaysTableAnnotationComposer
@@ -18269,6 +18329,9 @@ class $$TasbihDaysTableAnnotationComposer
 
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get device =>
+      $composableBuilder(column: $table.device, builder: (column) => column);
 }
 
 class $$TasbihDaysTableTableManager
@@ -18308,6 +18371,7 @@ class $$TasbihDaysTableTableManager
                 Value<int> count = const Value.absent(),
                 Value<int> rounds = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> device = const Value.absent(),
               }) => TasbihDaysCompanion(
                 id: id,
                 day: day,
@@ -18315,6 +18379,7 @@ class $$TasbihDaysTableTableManager
                 count: count,
                 rounds: rounds,
                 updatedAt: updatedAt,
+                device: device,
               ),
           createCompanionCallback:
               ({
@@ -18324,6 +18389,7 @@ class $$TasbihDaysTableTableManager
                 Value<int> count = const Value.absent(),
                 Value<int> rounds = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> device = const Value.absent(),
               }) => TasbihDaysCompanion.insert(
                 id: id,
                 day: day,
@@ -18331,6 +18397,7 @@ class $$TasbihDaysTableTableManager
                 count: count,
                 rounds: rounds,
                 updatedAt: updatedAt,
+                device: device,
               ),
           withReferenceMapper: (p0) => p0
               .map(

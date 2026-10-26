@@ -101,7 +101,7 @@ class TasbihRepository {
     await _db.customStatement(
       'INSERT INTO tasbih_day (day, dhikr, "count", rounds, updated_at) '
       'VALUES (?, ?, ?, ?, ?) '
-      'ON CONFLICT(day, dhikr) DO UPDATE SET '
+      'ON CONFLICT(day, dhikr, device) DO UPDATE SET '
       '"count" = "count" + excluded."count", rounds = rounds + excluded.rounds, '
       'updated_at = excluded.updated_at',
       [
@@ -115,14 +115,13 @@ class TasbihRepository {
     _db.notifyUpdates({TableUpdate.onTable(_db.tasbihDays)});
   }
 
-  /// [dhikr]'s count on [at]'s day.
+  /// [dhikr]'s count on [at]'s day, on every device together.
   Future<int> dayCount(String dhikr, {DateTime? at}) async {
     final day = tasbihDayKey(at ?? DateTime.now());
-    final row =
-        await (_db.select(_db.tasbihDays)
-              ..where((t) => t.day.equals(day) & t.dhikr.equals(dhikr)))
-            .getSingleOrNull();
-    return row?.count ?? 0;
+    final rows = await (_db.select(
+      _db.tasbihDays,
+    )..where((t) => t.day.equals(day) & t.dhikr.equals(dhikr))).get();
+    return rows.fold<int>(0, (a, r) => a + r.count);
   }
 
   /// Every dhikr's count together on [at]'s day.
@@ -144,7 +143,7 @@ class TasbihRepository {
     )..where((t) => t.day.isSmallerThanValue(first))).go();
   }
 
-  /// The log, newest day first: day -> totals.
+  /// The log, newest day first: day -> totals, summed over devices.
   Stream<Map<String, TasbihDayTotals>> watchLog() =>
       (_db.select(_db.tasbihDays)..orderBy([
             (t) => OrderingTerm.desc(t.day),
@@ -154,9 +153,21 @@ class TasbihRepository {
           .map((rows) {
             final out = <String, TasbihDayTotals>{};
             for (final r in rows) {
-              (out[r.day] ??= {})[r.dhikr] = (count: r.count, rounds: r.rounds);
+              final day = out[r.day] ??= {};
+              final have = day[r.dhikr];
+              day[r.dhikr] = (
+                count: r.count + (have?.count ?? 0),
+                rounds: r.rounds + (have?.rounds ?? 0),
+              );
             }
-            return out;
+            // Most counted first, by the sum.
+            return {
+              for (final MapEntry(:key, :value) in out.entries)
+                key: Map.fromEntries(
+                  value.entries.toList()
+                    ..sort((a, b) => b.value.count.compareTo(a.value.count)),
+                ),
+            };
           });
 
   /// Today's total of every dhikr together.

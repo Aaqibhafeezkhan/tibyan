@@ -39,7 +39,7 @@ void main() {
       expect(await db.watchSrsItems().first, isEmpty);
       expect(await db.watchVerseStrengths().first, isEmpty);
       final v = await db.customSelect('PRAGMA user_version').getSingle();
-      expect(v.data.values.single, 8); // v7: the misbaha
+      expect(v.data.values.single, db.schemaVersion);
     },
   );
 

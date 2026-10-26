@@ -82,7 +82,7 @@ void main() {
     expect(await v5.watchRecitations().first, isEmpty);
     expect(await v5.watchHifzGoals().first, isEmpty);
     final v = await v5.customSelect('PRAGMA user_version').getSingle();
-    expect(v.data.values.single, 8);
+    expect(v.data.values.single, v5.schemaVersion);
   });
 
   group('the record', () {

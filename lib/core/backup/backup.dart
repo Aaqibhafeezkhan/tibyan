@@ -284,12 +284,14 @@ class Backup {
           Variable.withInt((v['verse']! as num).toInt()),
           Variable.withInt((v['word']! as num).toInt()),
         ]);
-      // One row a dhikr a day.
+      // One row a dhikr a day a device (older backups: this device's).
       case 'tasbih_day':
         if (v['day'] is! String || v['dhikr'] is! String) return null;
-        return _Where('day = ? AND dhikr = ?', [
+        final device = v['device'];
+        return _Where('day = ? AND dhikr = ? AND device = ?', [
           Variable.withString(v['day']! as String),
           Variable.withString(v['dhikr']! as String),
+          Variable.withString(device is String ? device : ''),
         ]);
       default:
         final uuid = v['uuid'];

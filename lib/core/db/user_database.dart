@@ -119,7 +119,7 @@ class UserDatabase extends _$UserDatabase {
   UserDatabase.open() : super(driftDatabase(name: 'user'));
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -172,6 +172,26 @@ class UserDatabase extends _$UserDatabase {
           'WHERE uuid IS NULL',
         );
         await m.createTable(syncJournal);
+      }
+      if (from < 9) {
+        // «المزامنة»: the misbaha's daily log keeps one row a device, so
+        // counts from several devices add up. Existing rows are this
+        // device's; their journal entries (keyed without a device) go.
+        final cols = {
+          for (final r in await customSelect(
+            'PRAGMA table_info("tasbih_day")',
+          ).get())
+            r.read<String>('name'),
+        };
+        await m.alterTable(
+          TableMigration(
+            tasbihDays,
+            newColumns: [if (!cols.contains('device')) tasbihDays.device],
+          ),
+        );
+        await customStatement(
+          "DELETE FROM sync_journal WHERE entity = 'tasbih_day'",
+        );
       }
     },
   );

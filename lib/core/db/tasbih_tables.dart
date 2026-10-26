@@ -21,8 +21,8 @@ class TasbihDhikrs extends Table with SyncColumns {
 }
 
 /// The calm daily log: how many times a dhikr was counted on a local day
-/// (`yyyy-MM-dd`) and how many rounds closed. One row a dhikr a day; only
-/// the last 30 days are kept.
+/// (`yyyy-MM-dd`) and how many rounds closed. One row a dhikr a day a
+/// device; only the last 30 days are kept.
 @DataClassName('TasbihDayRow')
 class TasbihDays extends Table {
   @override
@@ -37,8 +37,13 @@ class TasbihDays extends Table {
   IntColumn get rounds => integer().withDefault(const Constant(0))();
   DateTimeColumn get updatedAt => dateTime().clientDefault(DateTime.now)();
 
+  /// The device that counted: empty for this device, another device's
+  /// sync id for counts that came through «المزامنة». A day's total is the
+  /// sum over devices.
+  TextColumn get device => text().withDefault(const Constant(''))();
+
   @override
   List<Set<Column>> get uniqueKeys => [
-    {day, dhikr},
+    {day, dhikr, device},
   ];
 }
