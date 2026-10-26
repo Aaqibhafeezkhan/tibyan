@@ -246,6 +246,12 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         keywords: 'صفحتين متقابلتين جهاز لوحي two pages spread tablet',
       ),
       SettingEntry(
+        'landscapeFit',
+        (l) => l.landscapeFitLabel,
+        (c, r) => const LandscapeFitCard(),
+        keywords: 'أفقي عرض الشاشة الصفحة كاملة تمرير ارتفاع landscape fit width whole page scroll height',
+      ),
+      SettingEntry(
         'pageTurn',
         (l) => l.pageTurnLabel,
         (c, r) => const PageTurnCard(),

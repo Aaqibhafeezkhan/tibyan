@@ -2426,6 +2426,22 @@ class AppLocalizationsAr extends AppLocalizations {
       'على الشاشات العريضة في الوضع الأفقي، كالمصحف المفتوح';
 
   @override
+  String get landscapeFitLabel => 'الصفحة في الوضع الأفقي';
+
+  @override
+  String get landscapeFitWidth => 'بعرض الشاشة';
+
+  @override
+  String get landscapeFitWidthHint =>
+      'الصفحة بعرض الشاشة، وتُقرأ بالتمرير لأسفل';
+
+  @override
+  String get landscapeFitPage => 'الصفحة كاملة';
+
+  @override
+  String get landscapeFitPageHint => 'الصفحة كلها على ارتفاع الشاشة';
+
+  @override
   String get oneVerse => 'آية آية';
 
   @override

@@ -2389,6 +2389,23 @@ class AppLocalizationsEn extends AppLocalizations {
       'On wide screens held sideways, like an open mushaf';
 
   @override
+  String get landscapeFitLabel => 'Page in landscape';
+
+  @override
+  String get landscapeFitWidth => 'Fit to width';
+
+  @override
+  String get landscapeFitWidthHint =>
+      'The page as wide as the screen, read by scrolling down';
+
+  @override
+  String get landscapeFitPage => 'Whole page';
+
+  @override
+  String get landscapeFitPageHint =>
+      'The whole page fitted to the screen height';
+
+  @override
   String get oneVerse => 'Verse by verse';
 
   @override

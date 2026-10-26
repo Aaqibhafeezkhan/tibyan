@@ -1,5 +1,7 @@
 import 'dart:ui' show Size;
 
+import '../../../core/settings/app_settings.dart' show LandscapeFit;
+
 /// Whether a pager of [size] shows two facing pages: a box wider than it
 /// is tall and wide enough for two readable pages, on a tablet or a
 /// desktop. A phone held sideways is wide but short: two pages there would
@@ -9,14 +11,18 @@ bool showsSpread(Size size, {required bool largeDevice}) =>
 
 /// A phone held sideways shows one page as wide as the screen, read by
 /// scrolling down: the page's height for a pager of [size], or null where
-/// the page fits the pager as it is (upright, a tablet, a desktop).
+/// the page fits the pager as it is (upright, a tablet, a desktop, or the
+/// reader chose the whole page, [LandscapeFit.page]).
 /// [aspect] is the page's height over its width, near a printed page's.
 double? fitWidthHeight(
   Size size, {
   required bool largeDevice,
+  LandscapeFit fit = LandscapeFit.width,
   double aspect = 1.45,
 }) {
-  if (largeDevice || size.width <= size.height) return null;
+  if (fit == LandscapeFit.page || largeDevice || size.width <= size.height) {
+    return null;
+  }
   return size.width * aspect;
 }
 

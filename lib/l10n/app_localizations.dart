@@ -4039,6 +4039,36 @@ abstract class AppLocalizations {
   /// **'على الشاشات العريضة في الوضع الأفقي، كالمصحف المفتوح'**
   String get twoPageSpreadHint;
 
+  /// No description provided for @landscapeFitLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصفحة في الوضع الأفقي'**
+  String get landscapeFitLabel;
+
+  /// No description provided for @landscapeFitWidth.
+  ///
+  /// In ar, this message translates to:
+  /// **'بعرض الشاشة'**
+  String get landscapeFitWidth;
+
+  /// No description provided for @landscapeFitWidthHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصفحة بعرض الشاشة، وتُقرأ بالتمرير لأسفل'**
+  String get landscapeFitWidthHint;
+
+  /// No description provided for @landscapeFitPage.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصفحة كاملة'**
+  String get landscapeFitPage;
+
+  /// No description provided for @landscapeFitPageHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصفحة كلها على ارتفاع الشاشة'**
+  String get landscapeFitPageHint;
+
   /// No description provided for @oneVerse.
   ///
   /// In ar, this message translates to:

@@ -81,6 +81,24 @@ void main() {
     });
   });
 
+  test(
+    'phone landscape: fit to width by default, the choice persists',
+    () async {
+      final c = await containerWith({});
+      expect(c.read(settingsProvider).landscapeFit, LandscapeFit.width);
+      await c
+          .read(settingsProvider.notifier)
+          .setLandscapeFit(LandscapeFit.page);
+      expect(c.read(settingsProvider).landscapeFit, LandscapeFit.page);
+      final sp = await SharedPreferences.getInstance();
+      expect(sp.getString('settings.landscapeFit'), 'page');
+      final again = await containerWith({'settings.landscapeFit': 'page'});
+      expect(again.read(settingsProvider).landscapeFit, LandscapeFit.page);
+      final bad = await containerWith({'settings.landscapeFit': 'nope'});
+      expect(bad.read(settingsProvider).landscapeFit, LandscapeFit.width);
+    },
+  );
+
   test('changes are saved and restored', () async {
     final c = await containerWith({});
     final ctrl = c.read(settingsProvider.notifier);

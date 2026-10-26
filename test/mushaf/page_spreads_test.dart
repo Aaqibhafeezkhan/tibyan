@@ -1,6 +1,7 @@
 import 'dart:ui' show Size;
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tibyan/core/settings/app_settings.dart';
 import 'package:tibyan/features/mushaf/presentation/page_spreads.dart';
 
 void main() {
@@ -87,5 +88,16 @@ void main() {
     );
     expect(fitWidthHeight(const Size(393, 700), largeDevice: false), isNull);
     expect(fitWidthHeight(const Size(1366, 1000), largeDevice: true), isNull);
+  });
+
+  test('the whole page in landscape: no fit to width', () {
+    expect(
+      fitWidthHeight(
+        const Size(932, 400),
+        largeDevice: false,
+        fit: LandscapeFit.page,
+      ),
+      isNull,
+    );
   });
 }

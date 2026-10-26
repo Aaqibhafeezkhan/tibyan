@@ -528,6 +528,44 @@ class FasilStyleCard extends ConsumerWidget {
   }
 }
 
+/// A phone held sideways: the page fitted to the width or to the height.
+class LandscapeFitCard extends ConsumerWidget {
+  const LandscapeFitCard({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
+    final muted = TextStyle(color: context.look.sub);
+    return RadioGroup<LandscapeFit>(
+      groupValue: ref.watch(settingsProvider.select((s) => s.landscapeFit)),
+      onChanged: (v) => v == null
+          ? null
+          : ref.read(settingsProvider.notifier).setLandscapeFit(v),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+            child: Text(
+              l.landscapeFitLabel,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          for (final (v, name, hint) in [
+            (LandscapeFit.width, l.landscapeFitWidth, l.landscapeFitWidthHint),
+            (LandscapeFit.page, l.landscapeFitPage, l.landscapeFitPageHint),
+          ])
+            RadioListTile(
+              value: v,
+              title: Text(name),
+              subtitle: Text(hint, style: muted),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 /// «تأثير قلب الصفحة»: how the mushaf turns a page.
 class PageTurnCard extends ConsumerWidget {
   const PageTurnCard({super.key});

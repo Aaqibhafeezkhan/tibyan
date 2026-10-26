@@ -79,6 +79,11 @@ enum PageFill { lines, stretch, full }
 /// [fade]: the next page fades in over the last (the default).
 enum PageTurn { normal, curl, bend, fold, fade }
 
+/// A phone held sideways: [width] shows the page as wide as the screen,
+/// read by scrolling down (the default); [page] fits the whole page to the
+/// screen's height.
+enum LandscapeFit { width, page }
+
 /// «شكل الفاصلة»: how a named fasil shows on its page. [tint]: its verse
 /// tinted in its colour (the first look, kept by readers who already had
 /// fawasil); [ribbon]: a fabric ribbon laid over the page; [tab]: a die-cut
@@ -177,6 +182,7 @@ class AppSettings {
     this.underVerse = const [],
     this.splitTranslation = false,
     this.twoPageSpread = true,
+    this.landscapeFit = LandscapeFit.width,
     this.oneVerseAutoSeconds = 0,
     this.elderlyMode = false,
     this.tajweedColors = false,
@@ -303,6 +309,9 @@ class AppSettings {
   /// Wide screens held sideways: two pages side by side.
   final bool twoPageSpread;
 
+  /// A phone held sideways: the page fitted to the width or to the height.
+  final LandscapeFit landscapeFit;
+
   /// «آية آية»: seconds before the next verse turns by itself; 0 for off.
   final int oneVerseAutoSeconds;
 
@@ -428,6 +437,7 @@ class AppSettings {
     List<int>? underVerse,
     bool? splitTranslation,
     bool? twoPageSpread,
+    LandscapeFit? landscapeFit,
     int? oneVerseAutoSeconds,
     bool? elderlyMode,
     bool? tajweedColors,
@@ -484,6 +494,7 @@ class AppSettings {
     underVerse: underVerse ?? this.underVerse,
     splitTranslation: splitTranslation ?? this.splitTranslation,
     twoPageSpread: twoPageSpread ?? this.twoPageSpread,
+    landscapeFit: landscapeFit ?? this.landscapeFit,
     oneVerseAutoSeconds: oneVerseAutoSeconds ?? this.oneVerseAutoSeconds,
     elderlyMode: elderlyMode ?? this.elderlyMode,
     tajweedColors: tajweedColors ?? this.tajweedColors,

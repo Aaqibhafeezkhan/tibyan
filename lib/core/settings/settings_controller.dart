@@ -54,6 +54,7 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kUnderVerse = 'settings.underVerse';
   static const _kSplitTranslation = 'settings.splitTranslation';
   static const _kTwoPageSpread = 'settings.twoPageSpread';
+  static const _kLandscapeFit = 'settings.landscapeFit';
   static const _kOneVerseAuto = 'settings.oneVerseAutoSeconds';
   static const _kElderly = 'settings.elderlyMode';
   static const _kTajweed = 'settings.tajweedColors';
@@ -164,6 +165,9 @@ class SettingsController extends Notifier<AppSettings> {
       ],
       splitTranslation: _prefs.getBool(_kSplitTranslation) ?? false,
       twoPageSpread: _prefs.getBool(_kTwoPageSpread) ?? true,
+      landscapeFit:
+          _enumByName(LandscapeFit.values, _prefs.getString(_kLandscapeFit)) ??
+          LandscapeFit.width,
       oneVerseAutoSeconds: _prefs.getInt(_kOneVerseAuto) ?? 0,
       elderlyMode: _prefs.getBool(_kElderly) ?? false,
       tajweedColors: _prefs.getBool(_kTajweed) ?? false,
@@ -428,6 +432,11 @@ class SettingsController extends Notifier<AppSettings> {
   Future<void> setTwoPageSpread(bool on) async {
     state = state.copyWith(twoPageSpread: on);
     await _prefs.setBool(_kTwoPageSpread, on);
+  }
+
+  Future<void> setLandscapeFit(LandscapeFit value) async {
+    state = state.copyWith(landscapeFit: value);
+    await _prefs.setString(_kLandscapeFit, value.name);
   }
 
   Future<void> setSplitTranslation(bool on) async {
