@@ -30,6 +30,7 @@ class VerseServicesPanel extends StatelessWidget {
     this.onCopy,
     this.onShareText,
     this.onShareImage,
+    this.onShareVideo,
     this.preview,
     this.similarCount = 0,
     this.onSimilar,
@@ -94,6 +95,9 @@ class VerseServicesPanel extends StatelessWidget {
   final VoidCallback? onCopy;
   final VoidCallback? onShareText;
   final VoidCallback? onShareImage;
+
+  /// «مشاركة كمقطع فيديو»: the verses with the recitation, as a reel.
+  final VoidCallback? onShareVideo;
 
   /// The reader's chosen texts for the first selected verse (a translation
   /// or al-Muyassar), shown under the title; null for the Arabic only.
@@ -361,6 +365,17 @@ class VerseServicesPanel extends StatelessWidget {
                   ),
                 ),
             ],
+          ),
+        ],
+        if (onShareVideo != null) ...[
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            onPressed: onShareVideo,
+            icon: const Icon(Icons.movie_outlined),
+            label: Text(l.shareVerseVideo),
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(44),
+            ),
           ),
         ],
         const SizedBox(height: 8),

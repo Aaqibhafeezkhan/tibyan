@@ -62,6 +62,7 @@ import '../data/tajweed.dart';
 import '../data/riwaya_data.dart';
 import '../data/verse_share.dart';
 import '../../share_image/share_preview_screen.dart';
+import '../../share_video/share_video_screen.dart';
 import '../../reading/under_verse.dart';
 import '../../sajdah/sajdah_card.dart';
 import '../../sajdah/sajdah_positions.dart';
@@ -2013,6 +2014,8 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
           edition.isRiwaya ? null : () => _shareVerseText(range),
         ),
         onShareImage: act(() => _shareVerseImage(range)),
+        // A riwaya edition's screen says it is not offered there yet.
+        onShareVideo: act(() => showShareVideo(context, range)),
         preview: underVerse.isEmpty
             ? null
             : UnderVerseTexts(
