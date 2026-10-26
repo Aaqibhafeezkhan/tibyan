@@ -195,12 +195,13 @@ void main() {
     await start(tester, recitation);
     await settle(tester, falaq(2));
     await settle(tester);
-    // No action to listen from a verse either.
+    // Screen readers still have actions to start listening from the
+    // verse and to open its tafsir (a start, not a jump).
     final node = tester.getSemantics(falaq(2).first);
     final labels = node.getSemanticsData().customSemanticsActionIds!.map(
       (id) => CustomSemanticsAction.getAction(id)?.label,
     );
-    expect(labels, isNot(contains('استمع من هذه الآية')));
+    expect(labels, containsAll(['استمع من هذه الآية', 'التفسير والترجمة']));
     // Touch reading (on by default) shades the verse: no jump, no tools.
     await tester.tapAt(tester.getRect(falaq(2).first).center);
     await tester.pump();

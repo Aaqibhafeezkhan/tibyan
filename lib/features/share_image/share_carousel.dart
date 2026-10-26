@@ -148,7 +148,9 @@ class _ShareCarouselState extends State<ShareCarousel> {
                       children: [
                         for (var i = 0; i < widget.count; i++)
                           AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
+                            duration: MediaQuery.disableAnimationsOf(context)
+                                ? Duration.zero
+                                : const Duration(milliseconds: 200),
                             margin: const EdgeInsets.symmetric(horizontal: 3),
                             width: i == _page ? 9 : 6,
                             height: i == _page ? 9 : 6,

@@ -190,7 +190,9 @@ class _StyleSwatch extends StatelessWidget {
         child: Column(
           children: [
             AnimatedContainer(
-              duration: const Duration(milliseconds: 180),
+              duration: MediaQuery.disableAnimationsOf(context)
+                  ? Duration.zero
+                  : const Duration(milliseconds: 180),
               height: 72,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),

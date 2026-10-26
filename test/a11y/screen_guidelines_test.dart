@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tibyan/core/theme/interface_style.dart';
 import 'package:tibyan/core/theme/theme_tokens.dart';
 import 'package:tibyan/core/ui/look_kit.dart';
 import 'package:tibyan/features/audio/audio_downloads_screen.dart';
@@ -53,6 +54,7 @@ void main() {
     WidgetTester tester,
     Widget screen, {
     ThemeModeId mode = ThemeModeId.light,
+    InterfaceStyle look = defaultInterfaceStyle,
     double scale = 1,
   }) async {
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
@@ -72,36 +74,39 @@ void main() {
           maxScaleFactor: scale,
           child: LookTheme(child: screen),
         ),
-        theme: tasmeeTheme(container, mode: mode),
+        theme: tasmeeTheme(container, mode: mode, interfaceStyle: look),
       ),
     );
     await settle(tester);
   }
 
   for (final MapEntry(key: name, value: screen) in screens.entries) {
-    for (final mode in ThemeModeId.values) {
-      testWidgets('$name (${mode.name}): labelled, large, readable', (
+    for (final look in InterfaceStyle.values) {
+      for (final mode in ThemeModeId.values) {
+        testWidgets('$name (${look.name}, ${mode.name}): labelled, large, '
+            'readable', (tester) async {
+          final handle = tester.ensureSemantics();
+          await pump(tester, screen(), mode: mode, look: look);
+          await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+          await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+          await expectLater(tester, meetsGuideline(iOSTapTargetGuideline));
+          await expectLater(tester, meetsGuideline(textContrastGuideline));
+          await tester.pumpWidget(const SizedBox());
+          handle.dispose();
+        });
+      }
+      testWidgets('$name (${look.name}): no overflow at 200% text', (
         tester,
       ) async {
-        final handle = tester.ensureSemantics();
-        await pump(tester, screen(), mode: mode);
-        await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
-        await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
-        await expectLater(tester, meetsGuideline(iOSTapTargetGuideline));
-        await expectLater(tester, meetsGuideline(textContrastGuideline));
+        await pump(tester, screen(), look: look, scale: 2);
+        final error = tester.takeException();
+        expect(
+          error,
+          isNull,
+          reason: error is FlutterError ? error.toStringDeep() : '$error',
+        );
         await tester.pumpWidget(const SizedBox());
-        handle.dispose();
       });
     }
-    testWidgets('$name: no overflow at 200% text', (tester) async {
-      await pump(tester, screen(), scale: 2);
-      final error = tester.takeException();
-      expect(
-        error,
-        isNull,
-        reason: error is FlutterError ? error.toStringDeep() : '$error',
-      );
-      await tester.pumpWidget(const SizedBox());
-    });
   }
 }

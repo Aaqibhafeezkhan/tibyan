@@ -78,7 +78,9 @@ class _HoverHaloState extends State<HoverHalo>
               opacity: _fade,
               child: AnimatedScale(
                 scale: _pressed ? 0.92 : 1,
-                duration: const Duration(milliseconds: 100),
+                duration: MediaQuery.disableAnimationsOf(context)
+                    ? Duration.zero
+                    : const Duration(milliseconds: 100),
                 child: Container(
                   width: widget.radius * 2,
                   height: widget.radius * 2,

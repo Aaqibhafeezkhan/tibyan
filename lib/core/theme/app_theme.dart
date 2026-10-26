@@ -133,6 +133,37 @@ class ElderlyPageTransitionsBuilder extends PageTransitionsBuilder {
   );
 }
 
+/// The platform's page transition, or a plain cross-fade when the system
+/// asks for less motion (no slide or zoom between screens).
+class ReducedMotionPageTransitionsBuilder extends PageTransitionsBuilder {
+  const ReducedMotionPageTransitionsBuilder(this.base);
+
+  final PageTransitionsBuilder base;
+
+  @override
+  Duration get transitionDuration => base.transitionDuration;
+
+  @override
+  Duration get reverseTransitionDuration => base.reverseTransitionDuration;
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) => MediaQuery.disableAnimationsOf(context)
+      ? FadeTransition(opacity: animation, child: child)
+      : base.buildTransitions(
+          route,
+          context,
+          animation,
+          secondaryAnimation,
+          child,
+        );
+}
+
 /// Elderly mode's button label: the theme's labelLarge (the interface
 /// face and its fallbacks), larger and bolder.
 TextStyle elderlyButtonLabel(ThemeData theme) =>
@@ -283,6 +314,16 @@ ThemeData buildTheme({
         foregroundColor: t.onControl,
         minimumSize: const Size(48, 48),
       ),
+    ),
+    pageTransitionsTheme: PageTransitionsTheme(
+      builders: {
+        for (final MapEntry(:key, :value)
+            in const PageTransitionsTheme().builders.entries)
+          // iOS and macOS keep their slide, and the back swipe it carries.
+          key: key == TargetPlatform.iOS || key == TargetPlatform.macOS
+              ? value
+              : ReducedMotionPageTransitionsBuilder(value),
+      },
     ),
   );
   if (!elderly) return look.overlays(themed);
