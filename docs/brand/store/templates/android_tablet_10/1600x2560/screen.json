@@ -1,0 +1,32 @@
+{
+  "device": "android_tablet_10",
+  "canvas": {
+    "w": 1600,
+    "h": 2560
+  },
+  "screen": {
+    "x": 239,
+    "y": 632,
+    "w": 1122,
+    "h": 1795,
+    "corner_radius": 39
+  },
+  "paste_screenshot": {
+    "w": 1600,
+    "h": 2560,
+    "note": "Use a 10-inch Android tablet screenshot of 1600x2560 px; scale it to exactly 1122x1795 px and place it at x=239, y=632."
+  },
+  "headline_band": {
+    "x": 96,
+    "y": 90,
+    "w": 1408,
+    "h": 435
+  },
+  "layers": [
+    "background.png",
+    "frame.png",
+    "headline.png",
+    "headline_en.png",
+    "screen_mask.png"
+  ]
+}

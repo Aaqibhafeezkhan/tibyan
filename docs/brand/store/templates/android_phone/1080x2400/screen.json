@@ -1,0 +1,32 @@
+{
+  "device": "android_phone",
+  "canvas": {
+    "w": 1080,
+    "h": 2400
+  },
+  "screen": {
+    "x": 148,
+    "y": 564,
+    "w": 783,
+    "h": 1741,
+    "corner_radius": 67
+  },
+  "paste_screenshot": {
+    "w": 1080,
+    "h": 2400,
+    "note": "Use a Android phone screenshot of 1080x2400 px; scale it to exactly 783x1741 px and place it at x=148, y=564."
+  },
+  "headline_band": {
+    "x": 65,
+    "y": 84,
+    "w": 950,
+    "h": 408
+  },
+  "layers": [
+    "background.png",
+    "frame.png",
+    "headline.png",
+    "headline_en.png",
+    "screen_mask.png"
+  ]
+}

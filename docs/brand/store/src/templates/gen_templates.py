@@ -21,12 +21,20 @@ SIZES = {
     'iphone_duo': [(1398, 2034), (2034, 1398), (2007, 2853), (2853, 2007)],
     'ipad_13': [(2048, 2732), (2732, 2048), (2064, 2752), (2752, 2064)],
     'mac': [(2880, 1800), (2560, 1600), (1440, 900), (1280, 800)],
+    # Google Play
+    'android_phone': [(1080, 1920), (1080, 2400), (1920, 1080)],
+    'android_tablet_7': [(1200, 1920), (1920, 1200)],
+    'android_tablet_10': [(1600, 2560), (2560, 1600)],
 }
+TABLETS = ('ipad_13', 'android_tablet_7', 'android_tablet_10')
 # per device: (bezel k, screen corner k, outer corner extra) as fractions of min(screen w,h)
 SPEC = {
     'iphone_6.3': dict(bezel=0.042, radius=0.137),
     'iphone_duo': dict(bezel=0.036, radius=0.075),
     'ipad_13': dict(bezel=0.048, radius=0.038),
+    'android_phone': dict(bezel=0.030, radius=0.085),
+    'android_tablet_7': dict(bezel=0.055, radius=0.035),
+    'android_tablet_10': dict(bezel=0.050, radius=0.035),
 }
 BODY, EDGE, INNER = '#151a1b', '#5a6467', '#050707'
 
@@ -66,7 +74,7 @@ def handheld(device, W, H):
     edge = max(1.5, m * 0.006)
     parts = []
     # side buttons (drawn first, under the body)
-    if device != 'ipad_13':
+    if device not in TABLETS:
         bt = m * 0.012
         btn = []
         if portrait:
@@ -92,9 +100,13 @@ def handheld(device, W, H):
             parts.append(f'<rect x="{sx+(sw-iw)/2:.1f}" y="{sy+0.028*m:.1f}" width="{iw:.1f}" height="{ih:.1f}" rx="{ih/2:.1f}" fill="#000"/>')
         else:
             parts.append(f'<rect x="{sx+0.028*m:.1f}" y="{sy+(sh-iw)/2:.1f}" width="{ih:.1f}" height="{iw:.1f}" rx="{ih/2:.1f}" fill="#000"/>')
+    elif device == 'android_phone':  # punch-hole camera (on the display)
+        pr = 0.028 * m
+        cx, cy = ((sx + sw / 2, sy + 0.045 * m) if portrait else (sx + 0.045 * m, sy + sh / 2))
+        parts.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{pr:.1f}" fill="#000"/>')
     else:  # camera dot in the bezel
         cr = b * 0.16
-        if device == 'ipad_13':
+        if device in TABLETS:
             cx, cy = ((ox + ow - b / 2, oy + oh / 2) if portrait else (ox + ow / 2, oy + b / 2))
         else:
             cx, cy = ox + ow / 2, oy + b / 2
@@ -200,7 +212,9 @@ def build(device, W, H, psd=True):
     tpl = Image.alpha_composite(tpl, fr)
     tpl.save(os.path.join(d, 'template.png'))
     native = {'iphone_6.3': 'iPhone 6.1"/6.3" screenshot', 'iphone_duo': 'iPhone Duo screenshot',
-              'ipad_13': 'iPad 12.9"/13" screenshot', 'mac': 'Mac screenshot'}[device]
+              'ipad_13': 'iPad 12.9"/13" screenshot', 'mac': 'Mac screenshot',
+              'android_phone': 'Android phone screenshot', 'android_tablet_7': '7-inch Android tablet screenshot',
+              'android_tablet_10': '10-inch Android tablet screenshot'}[device]
     info = dict(device=device, canvas=dict(w=W, h=H), screen=screen,
                 paste_screenshot=dict(w=W, h=H, note=f'Use a {native} of {W}x{H} px; scale it to exactly '
                                       f'{screen["w"]}x{screen["h"]} px and place it at x={screen["x"]}, y={screen["y"]}.'),

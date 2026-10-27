@@ -1,0 +1,32 @@
+{
+  "device": "android_tablet_7",
+  "canvas": {
+    "w": 1200,
+    "h": 1920
+  },
+  "screen": {
+    "x": 182,
+    "y": 478,
+    "w": 836,
+    "h": 1338,
+    "corner_radius": 29
+  },
+  "paste_screenshot": {
+    "w": 1200,
+    "h": 1920,
+    "note": "Use a 7-inch Android tablet screenshot of 1200x1920 px; scale it to exactly 836x1338 px and place it at x=182, y=478."
+  },
+  "headline_band": {
+    "x": 72,
+    "y": 67,
+    "w": 1056,
+    "h": 326
+  },
+  "layers": [
+    "background.png",
+    "frame.png",
+    "headline.png",
+    "headline_en.png",
+    "screen_mask.png"
+  ]
+}
