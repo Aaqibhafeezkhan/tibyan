@@ -1,0 +1,38 @@
+{
+  "device": "mac",
+  "canvas": {
+    "w": 1280,
+    "h": 800
+  },
+  "screen": {
+    "x": 217,
+    "y": 184,
+    "w": 846,
+    "h": 529,
+    "corner_radius": 9,
+    "notch": {
+      "x": 587,
+      "y": 184,
+      "w": 106,
+      "h": 18
+    }
+  },
+  "paste_screenshot": {
+    "w": 1280,
+    "h": 800,
+    "note": "Use a Mac screenshot of 1280x800 px; scale it to exactly 846x529 px and place it at x=217, y=184."
+  },
+  "headline_band": {
+    "x": 102,
+    "y": 24,
+    "w": 1075,
+    "h": 120
+  },
+  "layers": [
+    "background.png",
+    "frame.png",
+    "headline.png",
+    "headline_en.png",
+    "screen_mask.png"
+  ]
+}

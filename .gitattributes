@@ -33,3 +33,5 @@ data/packs/*.db filter=lfs diff=lfs merge=lfs -text
 docs/brand/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
 docs/brand/**/*.png filter=lfs diff=lfs merge=lfs -text
 docs/brand/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+# Store screenshot templates: layered Photoshop files.
+docs/brand/**/*.psd filter=lfs diff=lfs merge=lfs -text

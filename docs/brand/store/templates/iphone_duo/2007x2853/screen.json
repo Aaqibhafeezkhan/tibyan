@@ -1,0 +1,32 @@
+{
+  "device": "iphone_duo",
+  "canvas": {
+    "w": 2007,
+    "h": 2853
+  },
+  "screen": {
+    "x": 292,
+    "y": 693,
+    "w": 1423,
+    "h": 2023,
+    "corner_radius": 107
+  },
+  "paste_screenshot": {
+    "w": 2007,
+    "h": 2853,
+    "note": "Use a iPhone Duo screenshot of 2007x2853 px; scale it to exactly 1423x2023 px and place it at x=292, y=693."
+  },
+  "headline_band": {
+    "x": 120,
+    "y": 100,
+    "w": 1766,
+    "h": 485
+  },
+  "layers": [
+    "background.png",
+    "frame.png",
+    "headline.png",
+    "headline_en.png",
+    "screen_mask.png"
+  ]
+}

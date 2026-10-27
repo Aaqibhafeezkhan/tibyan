@@ -1,0 +1,32 @@
+{
+  "device": "ipad_13",
+  "canvas": {
+    "w": 2048,
+    "h": 2732
+  },
+  "screen": {
+    "x": 312,
+    "y": 683,
+    "w": 1423,
+    "h": 1899,
+    "corner_radius": 54
+  },
+  "paste_screenshot": {
+    "w": 2048,
+    "h": 2732,
+    "note": "Use a iPad 12.9\"/13\" screenshot of 2048x2732 px; scale it to exactly 1423x1899 px and place it at x=312, y=683."
+  },
+  "headline_band": {
+    "x": 123,
+    "y": 96,
+    "w": 1802,
+    "h": 464
+  },
+  "layers": [
+    "background.png",
+    "frame.png",
+    "headline.png",
+    "headline_en.png",
+    "screen_mask.png"
+  ]
+}

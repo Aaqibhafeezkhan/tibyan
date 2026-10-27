@@ -1,0 +1,32 @@
+{
+  "device": "iphone_6.3",
+  "canvas": {
+    "w": 1206,
+    "h": 2622
+  },
+  "screen": {
+    "x": 170,
+    "y": 626,
+    "w": 865,
+    "h": 1881,
+    "corner_radius": 119
+  },
+  "paste_screenshot": {
+    "w": 1206,
+    "h": 2622,
+    "note": "Use a iPhone 6.1\"/6.3\" screenshot of 1206x2622 px; scale it to exactly 865x1881 px and place it at x=170, y=626."
+  },
+  "headline_band": {
+    "x": 72,
+    "y": 92,
+    "w": 1061,
+    "h": 446
+  },
+  "layers": [
+    "background.png",
+    "frame.png",
+    "headline.png",
+    "headline_en.png",
+    "screen_mask.png"
+  ]
+}
