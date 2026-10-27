@@ -71,21 +71,23 @@ struct WatchNightBackground: View {
   }
 }
 
-/// Edge progress ring (gold over track).
+/// Edge progress ring (gold over track), hugging the display's rounded edge.
 struct EdgeProgressRing: View {
   var progress: Double
 
   var body: some View {
-    Circle()
-      .stroke(Look.track, lineWidth: 5)
-      .overlay(
-        Circle()
-          .trim(from: 0, to: CGFloat(min(max(progress, 0), 1)))
-          .stroke(Look.gold, style: StrokeStyle(lineWidth: 5, lineCap: .round))
-          .rotationEffect(.degrees(-90))
-      )
-      .padding(4)
-      .ignoresSafeArea()
+    GeometryReader { geo in
+      let shape = RoundedRectangle(cornerRadius: min(geo.size.width, geo.size.height) * 0.24, style: .continuous)
+      shape
+        .stroke(Look.track, lineWidth: 5)
+        .overlay(
+          shape
+            .trim(from: 0, to: CGFloat(min(max(progress, 0), 1)))
+            .stroke(Look.gold, style: StrokeStyle(lineWidth: 5, lineCap: .round))
+        )
+        .padding(3)
+    }
+    .ignoresSafeArea()
   }
 }
 
@@ -158,7 +160,7 @@ struct WirdView: View {
         }
 
         if store.progress > 0 {
-          Text(String(format: "%.0f%%", store.progress * 100))
+          Text(store.progress.formatted(.percent.precision(.fractionLength(0))))
             .font(.system(size: 11, weight: .medium, design: .rounded))
             .foregroundStyle(Look.gold)
             .padding(.top, 2)
@@ -215,7 +217,7 @@ struct TasbihView: View {
 
         if store.target > 0 {
           let rem = store.session % store.target
-          Text("\(rem) / \(store.target)")
+          Text("\(rem.formatted()) / \(store.target.formatted())")
             .font(.caption2)
             .foregroundStyle(Look.cream.opacity(0.65))
             .monospacedDigit()
