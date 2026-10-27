@@ -28,9 +28,9 @@ TODAY = datetime.date.today().isoformat()
 
 DATA = {
     'ar': dict(title='ختمة رمضان', idle='', portion='الجزء ١٢', ref='هود ٦ – يوسف ٥٢', progress='38',
-               dhikr='سبحان الله', staged='الحمد لله', lang='ar'),
+               dhikr='سبحان الله', staged='الحمد لله', lang='ar', locale='ar_SA@numbers=arab'),
     'en': dict(title='Ramadan khatma', idle='', portion='Juz 12', ref='Hud 6 – Yusuf 52', progress='38',
-               dhikr='SubhanAllah', staged='Alhamdulillah', lang='en'),
+               dhikr='SubhanAllah', staged='Alhamdulillah', lang='en', locale='en_US'),
 }
 # (file slug, tab, dhikr key, session count, target, stages)
 SHOTS = [
@@ -72,8 +72,10 @@ def shoot(udid, lang, shot, out):
     os.remove(tmp)
     env = dict(os.environ, SIMCTL_CHILD_SHOT_TAB=str(tab))
     subprocess.run(['xcrun', 'simctl', 'launch', udid, BUNDLE, '-AppleLanguages', f'({d["lang"]})',
-                    '-AppleLocale', d['lang']], check=True, env=env, capture_output=True)
+                    '-AppleLocale', d['locale']], check=True, env=env, capture_output=True)
     time.sleep(4)
+    sh('xcrun', 'simctl', 'status_bar', udid, 'override', '--time', '9:41', check=False)
+    time.sleep(1)
     raw = out + '.raw.png'
     sh('xcrun', 'simctl', 'io', udid, 'screenshot', raw)
     Image.open(raw).convert('RGB').save(out)
