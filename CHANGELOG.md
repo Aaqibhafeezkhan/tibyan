@@ -25,6 +25,7 @@ All notable changes to Tibyan are recorded here. The format follows
 - Settings > «إمكانية الوصول» (Accessibility): «تقليل الحركة» (follows the device by default, can be forced on), «قراءة رقم الآية مع نصها» for screen readers (on by default), and a link to the device accessibility settings (Android and macOS; hidden on iOS, which has no public link to that page).
 
 ### Fixed
+- iOS: listening in the background is lighter and safer: the audio session is set to playback at launch (before any sound can start it in another category), page turns and fit-to-width scrolls that follow the recitation happen at once instead of queuing animations while the app is off screen, and the decoded page images are released when the app goes to the background. Reported as the app closing when a surah plays with the app in the background (TestFlight 0.6.0 build 41); not reproduced on the simulator.
 - Toasts: every toast now dismisses itself (about 4 s, 6 s when it offers Undo), has a close (×) button and can be swiped away; all toasts go through one shared helper.
 
 ### Changed
