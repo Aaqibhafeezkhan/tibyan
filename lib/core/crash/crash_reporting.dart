@@ -25,6 +25,10 @@ class CrashReporting {
 
   static bool _running = false;
 
+  /// The same for every install: no way to tell users apart.
+  @visibleForTesting
+  static final anonymousUser = SentryUser(id: 'anonymous');
+
   static bool get isAvailable => _dsn.isNotEmpty;
 
   /// Pre-builds (TestFlight, GitHub beta) suggest «agree» in the consent
@@ -42,6 +46,10 @@ class CrashReporting {
         options.dist = info.buildNumber;
         configure(options);
       });
+      // Native crash reports skip the Dart scrubber and would carry the
+      // SDK's per-install id as the user; a constant user, synced to the
+      // native SDKs, replaces it.
+      await Sentry.configureScope((scope) => scope.setUser(anonymousUser));
       _running = true;
     } else if (!optIn && _running) {
       await Sentry.close();
