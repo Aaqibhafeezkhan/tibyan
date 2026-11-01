@@ -39,6 +39,23 @@ import 'package:tibyan/main.dart' as app;
 
 const _set = String.fromEnvironment('PERF_SET', defaultValue: 'phone');
 
+/// Comma-separated scenario names (as printed) to run; empty = all.
+const _only = String.fromEnvironment('PERF_ONLY');
+
+/// Comma-separated page-turn effects to run; empty = all.
+const _effects = String.fromEnvironment('PERF_EFFECTS');
+
+/// How many times each case runs (one line each), for medians.
+const _repeat = int.fromEnvironment('PERF_REPEAT', defaultValue: 1);
+
+bool _wanted(String scenario) =>
+    _only.isEmpty || _only.split(',').contains(scenario);
+
+List<PageTurn> get _effectList => [
+  for (final e in PageTurn.values)
+    if (_effects.isEmpty || _effects.split(',').contains(e.name)) e,
+];
+
 Future<void> pumpFor(WidgetTester t, Duration d) async {
   final end = DateTime.now().add(d);
   while (DateTime.now().isBefore(end)) {
@@ -95,48 +112,67 @@ void main() {
     void collect(List<FrameTiming> f) => timings.addAll(f);
 
     Future<void> run(String scenario, {bool memorize = false}) async {
-      for (final effect in PageTurn.values) {
-        await s.setPageTurn(effect);
-        c
-            .read(appRouterProvider)
-            .go('/mushaf?page=50${memorize ? '&memorize=1' : ''}&n=${n++}');
-        await pumpFor(t, const Duration(seconds: 3));
-        // One unmeasured pair: first-show entrances, shader warm-up.
-        Future<void> turn(int i) async {
-          final pager = find.byType(PageView).first;
-          await t.fling(pager, Offset(i.isEven ? 320 : -320, 0), 1400);
-          await pumpFor(t, const Duration(milliseconds: 1200));
-        }
+      if (!_wanted(scenario)) return;
+      for (final effect in _effectList) {
+        for (var rep = 0; rep < _repeat; rep++) {
+          await s.setPageTurn(effect);
+          c
+              .read(appRouterProvider)
+              .go('/mushaf?page=50${memorize ? '&memorize=1' : ''}&n=${n++}');
+          await pumpFor(t, const Duration(seconds: 3));
+          // One unmeasured pair: first-show entrances, shader warm-up.
+          Future<void> turn(int i) async {
+            final pager = find.byType(PageView).first;
+            await t.fling(pager, Offset(i.isEven ? 320 : -320, 0), 1400);
+            await pumpFor(t, const Duration(milliseconds: 1200));
+          }
 
-        await turn(0);
-        await turn(1);
-        timings.clear();
-        SchedulerBinding.instance.addTimingsCallback(collect);
-        for (var i = 0; i < 6; i++) {
-          await turn(i);
+          // The very first turn after opening, timed on its own: what a
+          // reader feels first (snapshots, shaders not ready yet).
+          timings.clear();
+          SchedulerBinding.instance.addTimingsCallback(collect);
+          await turn(0);
+          SchedulerBinding.instance.removeTimingsCallback(collect);
+          final first = [...timings];
+          await turn(1);
+          timings.clear();
+          SchedulerBinding.instance.addTimingsCallback(collect);
+          for (var i = 0; i < 6; i++) {
+            await turn(i);
+          }
+          await pumpFor(t, const Duration(milliseconds: 500));
+          SchedulerBinding.instance.removeTimingsCallback(collect);
+          double ms(Duration d) => d.inMicroseconds / 1000;
+          final build = [for (final f in timings) ms(f.buildDuration)];
+          final raster = [for (final f in timings) ms(f.rasterDuration)];
+          final total = [for (final f in timings) ms(f.totalSpan)];
+          int over(int us) => timings
+              .where(
+                (f) =>
+                    f.buildDuration.inMicroseconds > us ||
+                    f.rasterDuration.inMicroseconds > us,
+              )
+              .length;
+          String pct(int k) => timings.isEmpty
+              ? '-'
+              : (100 * k / timings.length).toStringAsFixed(1);
+          debugPrint(
+            'PERF $scenario ${effect.name} frames=${timings.length} '
+            'build=${stats(build)} raster=${stats(raster)} '
+            'total=${stats(total)} jank60=${pct(over(16667))}% '
+            'jank120=${pct(over(8333))}%',
+          );
+          final fBuild = [for (final f in first) ms(f.buildDuration)];
+          final fRaster = [for (final f in first) ms(f.rasterDuration)];
+          double mx(List<double> v) =>
+              v.isEmpty ? 0 : v.reduce((a, b) => a > b ? a : b);
+          debugPrint(
+            'PERF-FIRST $scenario ${effect.name} frames=${first.length} '
+            'buildmax=${mx(fBuild).toStringAsFixed(1)} '
+            'rastermax=${mx(fRaster).toStringAsFixed(1)} '
+            'jank60=${first.where((f) => f.buildDuration.inMicroseconds > 16667 || f.rasterDuration.inMicroseconds > 16667).length}',
+          );
         }
-        await pumpFor(t, const Duration(milliseconds: 500));
-        SchedulerBinding.instance.removeTimingsCallback(collect);
-        double ms(Duration d) => d.inMicroseconds / 1000;
-        final build = [for (final f in timings) ms(f.buildDuration)];
-        final raster = [for (final f in timings) ms(f.rasterDuration)];
-        final total = [for (final f in timings) ms(f.totalSpan)];
-        int over(int us) => timings
-            .where(
-              (f) =>
-                  f.buildDuration.inMicroseconds > us ||
-                  f.rasterDuration.inMicroseconds > us,
-            )
-            .length;
-        String pct(int k) => timings.isEmpty
-            ? '-'
-            : (100 * k / timings.length).toStringAsFixed(1);
-        debugPrint(
-          'PERF $scenario ${effect.name} frames=${timings.length} '
-          'build=${stats(build)} raster=${stats(raster)} '
-          'total=${stats(total)} jank60=${pct(over(16667))}% '
-          'jank120=${pct(over(8333))}%',
-        );
       }
     }
 
@@ -158,54 +194,60 @@ void main() {
       // first page looked up, then the route), timed to the target page's
       // first frame and to the end of the transition.
       Future<void> nav(String scenario) async {
-        for (final effect in PageTurn.values) {
-          await s.setPageTurn(effect);
-          final lookup = <double>[], ttff = <double>[], settle = <double>[];
-          timings.clear();
-          for (final (surah, page) in [(3, 50), (18, 293), (36, 440)]) {
-            c.read(appRouterProvider).go('/mushaf/index');
-            await pumpFor(t, const Duration(seconds: 2));
-            SchedulerBinding.instance.addTimingsCallback(collect);
-            final sw = Stopwatch()..start();
-            final p = await c.read(versePageProvider((surah, 1)).future);
-            lookup.add(sw.elapsedMicroseconds / 1000);
-            c.read(appRouterProvider).go(mushafLocation(p));
-            bool shown() => find
-                .byWidgetPredicate((w) => w is MushafPage && w.page == page)
-                .evaluate()
-                .isNotEmpty;
-            while (!shown() && sw.elapsed.inSeconds < 10) {
+        if (!_wanted(scenario)) return;
+        c.read(appRouterProvider).go('/mushaf?page=10');
+        await pumpFor(t, const Duration(seconds: 2));
+        for (final effect in _effectList) {
+          for (var rep = 0; rep < _repeat; rep++) {
+            await s.setPageTurn(effect);
+            final lookup = <double>[], ttff = <double>[], settle = <double>[];
+            timings.clear();
+            for (final (surah, page) in [(3, 50), (18, 293), (36, 440)]) {
+              // As the reader does: the index pushed over the page.
+              unawaited(c.read(appRouterProvider).push('/mushaf/index'));
+              await pumpFor(t, const Duration(seconds: 2));
+              SchedulerBinding.instance.addTimingsCallback(collect);
+              final sw = Stopwatch()..start();
+              final p = await c.read(versePageProvider((surah, 1)).future);
+              lookup.add(sw.elapsedMicroseconds / 1000);
+              c.read(appRouterProvider).go(mushafLocation(p));
+              bool shown() => find
+                  .byWidgetPredicate((w) => w is MushafPage && w.page == page)
+                  .evaluate()
+                  .isNotEmpty;
+              while (!shown() && sw.elapsed.inSeconds < 10) {
+                await t.pump(const Duration(milliseconds: 1));
+              }
               await t.pump(const Duration(milliseconds: 1));
+              ttff.add(sw.elapsedMicroseconds / 1000);
+              var idle = 0;
+              while (idle < 3 && sw.elapsed.inSeconds < 10) {
+                await t.pump(const Duration(milliseconds: 16));
+                idle = SchedulerBinding.instance.transientCallbackCount == 0
+                    ? idle + 1
+                    : 0;
+              }
+              settle.add(sw.elapsedMicroseconds / 1000);
+              await pumpFor(t, const Duration(milliseconds: 300));
+              SchedulerBinding.instance.removeTimingsCallback(collect);
             }
-            await t.pump(const Duration(milliseconds: 1));
-            ttff.add(sw.elapsedMicroseconds / 1000);
-            var idle = 0;
-            while (idle < 3 && sw.elapsed.inSeconds < 10) {
-              await t.pump(const Duration(milliseconds: 16));
-              idle = SchedulerBinding.instance.transientCallbackCount == 0
-                  ? idle + 1
-                  : 0;
-            }
-            settle.add(sw.elapsedMicroseconds / 1000);
-            await pumpFor(t, const Duration(milliseconds: 300));
-            SchedulerBinding.instance.removeTimingsCallback(collect);
+            double ms(Duration d) => d.inMicroseconds / 1000;
+            final build = [for (final f in timings) ms(f.buildDuration)];
+            final raster = [for (final f in timings) ms(f.rasterDuration)];
+            final janky = timings
+                .where(
+                  (f) =>
+                      f.buildDuration.inMicroseconds > 16667 ||
+                      f.rasterDuration.inMicroseconds > 16667,
+                )
+                .length;
+            debugPrint(
+              'PERF index-$scenario ${effect.name} frames=${timings.length} '
+              'lookup=${stats(lookup)} ttff=${stats(ttff)} '
+              'settle=${stats(settle)} build=${stats(build)} '
+              'raster=${stats(raster)} jank60=$janky',
+            );
           }
-          double ms(Duration d) => d.inMicroseconds / 1000;
-          final build = [for (final f in timings) ms(f.buildDuration)];
-          final raster = [for (final f in timings) ms(f.rasterDuration)];
-          final janky = timings
-              .where(
-                (f) =>
-                    f.buildDuration.inMicroseconds > 16667 ||
-                    f.rasterDuration.inMicroseconds > 16667,
-              )
-              .length;
-          debugPrint(
-            'PERF index-$scenario ${effect.name} frames=${timings.length} '
-            'lookup=${stats(lookup)} ttff=${stats(ttff)} '
-            'settle=${stats(settle)} build=${stats(build)} '
-            'raster=${stats(raster)} jank60=$janky',
-          );
         }
       }
 
@@ -217,6 +259,84 @@ void main() {
       await s.setFasilStyle(FasilStyle.tab);
       await nav('marks-tab');
       await marks(const []);
+      return;
+    }
+
+    if (_set == 'home') {
+      // Home «متابعة القراءة»: from the home screen into the mushaf at the
+      // saved position (page 293), as the card's tap does. A: an ornate
+      // (art) frame with two fawasil on the page, B: the plain frame with
+      // them, C: the plain frame and no fawasil.
+      final db2 = c.read(userDatabaseProvider);
+      await db2.savePosition(
+        edition: MushafEdition.madina1441.name,
+        view: 'page',
+        surah: 18,
+        ayah: 1,
+        page: 293,
+      );
+      Future<void> home(String scenario) async {
+        if (!_wanted(scenario)) return;
+        for (var rep = 0; rep < _repeat; rep++) {
+          c.read(appRouterProvider).go('/');
+          await pumpFor(t, const Duration(seconds: 2));
+          timings.clear();
+          SchedulerBinding.instance.addTimingsCallback(collect);
+          final sw = Stopwatch()..start();
+          c.read(appRouterProvider).go('/mushaf?entry=home');
+          bool shown() => find
+              .byWidgetPredicate((w) => w is MushafPage && w.page == 293)
+              .evaluate()
+              .isNotEmpty;
+          while (!shown() && sw.elapsed.inSeconds < 10) {
+            await t.pump(const Duration(milliseconds: 1));
+          }
+          await t.pump(const Duration(milliseconds: 1));
+          final ttff = sw.elapsedMicroseconds / 1000;
+          var idle = 0;
+          while (idle < 3 && sw.elapsed.inSeconds < 10) {
+            await t.pump(const Duration(milliseconds: 16));
+            idle = SchedulerBinding.instance.transientCallbackCount == 0
+                ? idle + 1
+                : 0;
+          }
+          final settle = sw.elapsedMicroseconds / 1000;
+          await pumpFor(t, const Duration(milliseconds: 300));
+          SchedulerBinding.instance.removeTimingsCallback(collect);
+          double ms(Duration d) => d.inMicroseconds / 1000;
+          final build = [for (final f in timings) ms(f.buildDuration)];
+          final raster = [for (final f in timings) ms(f.rasterDuration)];
+          double sum(List<double> v) =>
+              v.isEmpty ? 0 : v.reduce((a, b) => a + b);
+          final janky = timings
+              .where(
+                (f) =>
+                    f.buildDuration.inMicroseconds > 16667 ||
+                    f.rasterDuration.inMicroseconds > 16667,
+              )
+              .length;
+          debugPrint(
+            'PERF home-$scenario frames=${timings.length} '
+            'ttff=${ttff.toStringAsFixed(1)} '
+            'settle=${settle.toStringAsFixed(1)} build=${stats(build)} '
+            'raster=${stats(raster)} buildsum=${sum(build).toStringAsFixed(0)} '
+            'rastersum=${sum(raster).toStringAsFixed(0)} jank60=$janky',
+          );
+        }
+      }
+
+      await s.setPageTurn(PageTurn.curl);
+      await s.setFasilStyle(FasilStyle.ribbon);
+      await marks([
+        ('حفظ', 0xFF1D2F55, 18, 1, 293),
+        ('تلاوة', 0xFFC69A3A, 18, 5, 293),
+      ]);
+      await s.setStyle('hijazi');
+      await home('A-ornate-fasil');
+      await s.setStyle('simple');
+      await home('B-plain-fasil');
+      await marks(const []);
+      await home('C-plain-nofasil');
       return;
     }
 
