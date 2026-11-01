@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app_links/app_links.dart';
+import 'package:audio_session/audio_session.dart';
 
 import 'package:flutter/foundation.dart'
     show TargetPlatform, defaultTargetPlatform;
@@ -79,6 +80,12 @@ Future<void> main() async {
         androidNotificationIcon: 'drawable/ic_stat_tibyan',
         notificationColor: const Color(0xFF0F6660),
       );
+      // The session is set for playback before anything plays, so
+      // iOS keeps the recitation going in the background (the .playback
+      // category) whichever sound starts first (the misbaha's click, a
+      // recording).
+      final session = await AudioSession.instance;
+      await session.configure(const AudioSessionConfiguration.music());
   }
 
   final registry = await ThemeRegistry.load(rootBundle);
@@ -255,7 +262,14 @@ void _startKhatma(ProviderContainer container) {
   }
 
   unawaited(refresh());
-  AppLifecycleListener(onResume: refresh);
+  AppLifecycleListener(
+    onResume: refresh,
+    // Listening with the screen off: the decoded pages and pictures kept
+    // for quick turns are let go, so the app holds less memory while iOS
+    // keeps it running in the background for the recitation. They are
+    // decoded again when needed.
+    onHide: () => PaintingBinding.instance.imageCache.clear(),
+  );
 
   Future<void> open(Uri? uri) async {
     if (uri == null) return;
