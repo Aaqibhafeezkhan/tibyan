@@ -154,11 +154,125 @@ Reading:
    reopening the page read last blits it. **Settle −55–60%, raster p90
    −80%.** A cold first open (page never baked this session) is unchanged.
 
-### Still pending (stopped on owner request)
-- Low-end AVD: only fix 1 measured; fixes 2–5 and the home ablation pending.
-- Tablet spread (`PERF_SET=tablet`) and editions 1405/Shamarly
-  (`PERF_SET=editions`, needs pack download): not run.
-- A clean-host rerun of the Pixel 7 numbers.
+### Still pending after round 2
+Done in round 3 (below), except iOS (owner: not needed).
+
+## Round 3 (branch `perf/measure-round3`, main at c50bb695): Android, quiet host
+
+Code under test: `main` with all round-2 fixes except fix 2 (memo), which
+the margin-ribbon layout replaced, plus per-fasil looks and margin ribbons.
+Setup: profile builds, Impeller, emulators with `-gpu host` (Apple M4 GPU)
+and no audio; host load ~2.5 (no other builds). **Medians of 5 runs.**
+Format: raster avg/p90/p99 ms; jank60 = % of frames over 16.7 ms (page
+turns) or a frame count of ~55 (index/home). Build avg stays ≤ 1 ms
+everywhere, so it is left out.
+
+Note: a first low-end run with `-no-window` fell back to SwiftShader
+(software GPU) and showed 55–79% jank; it was discarded. Always pass
+`-gpu host`.
+
+### Low-end AVD `Tibyan_PageTurn_Low` (API 33, 2 GB, 4 cores, 720×1600)
+
+Page turns (merged code), raster p90 ms / jank60 %:
+
+| Scenario | normal | curl | bend | fold | fade |
+|---|---|---|---|---|---|
+| plain | 15.3 / 6.3 | 16.7 / 10.1 | 17.0 / 12.3 | 15.2 / 5.4 | 16.9 / 12.0 |
+| active tint | 16.4 / 8.0 | 16.1 / 6.6 | 16.1 / 7.1 | 6.3 / 4.4 | 5.2 / 3.5 |
+| active ribbon | 15.4 / 5.2 | 16.1 / 6.7 | 16.1 / 7.8 | 13.5 / 5.3 | 17.1 / 12.7 |
+| active tab | 15.2 / 6.8 | 16.1 / 7.3 | 16.9 / 12.9 | 16.8 / 11.7 | 13.9 / 5.4 |
+| ghost ribbon | 16.4 / 8.4 | 4.7 / 2.4 | 6.5 / 4.3 | 5.6 / 4.8 | 15.9 / 6.0 |
+| ghost tab | 13.7 / 4.6 | 4.5 / 0.0 | 14.6 / 4.7 | 15.7 / 7.4 | 14.3 / 5.0 |
+| memorize | 12.4 / 6.3 | 4.9 / 1.6 | 15.4 / 4.9 | 14.9 / 5.6 | 5.1 / 4.7 |
+
+Worst case 12.9% janky, p90 17.1 ms, p99 ≤ 28.7 ms. No page-turn scenario
+reaches the heavy-jank bar (> 25% or p90 > 30 ms), so no new fix.
+
+Fix A/B on the low-end AVD (old → new):
+
+| Fix | Case | raster p90 | jank60 | first-turn raster max |
+|---|---|---|---|---|
+| 1 fade snapshot | plain fade | 16.6 → 7.8 | 10.0% → 5.6% | 22.7 → 8.4 |
+| | active-ribbon fade | 16.5 → 16.5 | 8.7% → 9.6% | 9.5 → 7.7 |
+| | active-tab fade | 17.2 → 15.8 | 14.2% → 7.9% | 8.8 → 17.7 |
+| 3 precache | plain curl / bend / fold | 16.1→6.1 / 14.3→4.4 / 6.4→10.9 | 7.3→3.8 / 6.2→0.6 / 5.1→6.8 | ≈ same (8–10) |
+| | active-ribbon curl / bend / fold | 16.1→12.8 / 15.8→7.4 / 6.8→11.9 | 8.3→4.5 / 7.1→4.5 / 5.9→5.2 | ≈ same (7–20) |
+
+Fix 4, index jump reuse (median over 5 effects): ttff no marks 55 → 39 ms,
+ribbon 56 → 40, tab 55 → 40 (**−28%**); settle −3 to −19%. Frames during
+the jump: raster p90 27–35 ms, 11–16 janky of ~55 (20–29%), same before
+and after: this is the cold bake of the target page and its neighbours plus
+the route transition, not the reuse path. Pixel 7 shows the same profile
+(p90 31–42 ms), so it is the bake cost, not a low-end weakness. Possible
+follow-up (not done, medium risk): defer neighbour bakes until the route
+transition ends.
+
+### Home «متابعة القراءة» ablation (fix 5 A/B = cold vs warm)
+
+`~old` disables the shared baked-page cache, i.e. a cold open (page never
+baked); `~new` reopens the page read last (warm).
+
+| Device | Case | ttff | settle cold → warm | raster p90 cold → warm | raster sum cold → warm | janky frames |
+|---|---|---|---|---|---|---|
+| Low-end | A ornate + fasil | 95 / 85 | 434 → 233 | 39.7 → 11.2 | 218 → 94 | 5 → 0 |
+| Low-end | B plain + fasil | 84 / 86 | 397 → 233 | 33.2 → 7.0 | 173 → 73 | 3 → 0 |
+| Low-end | C plain, no fasil | 89 / 86 | 353 → 218 | 31.3 → 5.2 | 150 → 39 | 4 → 0 |
+| Pixel 7 | A ornate + fasil | 55 / 59 | 517 → 251 | 41.4 → 16.9 | 292 → 169 | 6 → 2 |
+| Pixel 7 | B plain + fasil | 55 / 56 | 466 → 246 | 38.0 → 15.8 | 233 → 150 | 4 → 0 |
+| Pixel 7 | C plain, no fasil | 54 / 54 | 416 → 218 | 38.9 → 5.3 | 190 → 73 | 4 → 0 |
+
+Cold: the ornate frame adds ~25% raster over plain, fawasil ~15%. Warm
+opens settle **~45% faster** with raster p90 −60–85%.
+
+### Tablet two-page spread (`Tibyan_PageTurn_Tab`, 2560×1600)
+
+Raster p90 ms / jank60 %:
+
+| Scenario | normal | curl | bend | fold | fade |
+|---|---|---|---|---|---|
+| plain | 11.3 / 6.9 | 16.7 / 10.6 | 6.6 / 3.3 | 16.6 / 9.5 | 16.9 / 14.0 |
+| active tint | 8.5 / 6.0 | 5.4 / 3.3 | 11.2 / 4.6 | 16.1 / 8.1 | 16.8 / 12.4 |
+| active ribbon | 14.8 / 5.9 | 16.9 / 12.9 | 16.4 / 8.3 | 16.9 / 13.1 | 17.1 / 15.6 |
+| active tab | 16.7 / 10.6 | 17.0 / 13.6 | 15.7 / 7.2 | 17.0 / 13.4 | 16.6 / 8.7 |
+| ghost ribbon | 16.9 / 12.9 | 16.8 / 11.9 | 16.6 / 9.3 | 16.3 / 8.9 | 17.0 / 14.2 |
+| ghost tab | 16.6 / 8.6 | 16.6 / 9.9 | 16.5 / 8.0 | 16.3 / 8.2 | 16.8 / 12.4 |
+
+Worst 15.6% (active ribbon fade); p99 ≤ 28.3 ms. Fine.
+
+### Editions on Pixel 7 (packs downloaded in the emulator app)
+
+Raster p90 ms / jank60 %:
+
+| Scenario | normal | curl | bend | fold | fade |
+|---|---|---|---|---|---|
+| 1405 plain | 6.9 / 5.8 | 4.7 / 0.4 | 16.4 / 7.8 | 13.2 / 5.3 | 16.3 / 7.4 |
+| 1405 active ribbon | 12.9 / 4.5 | 15.7 / 6.1 | 16.1 / 6.6 | 13.5 / 5.1 | 15.9 / 5.7 |
+| Shamarly plain | 15.3 / 5.5 | 5.5 / 4.3 | 7.6 / 4.6 | 4.2 / 0.6 | 4.9 / 2.2 |
+| Shamarly active ribbon | 7.1 / 5.2 | 4.8 / 0.6 | 7.6 / 5.5 | 16.1 / 6.9 | 11.6 / 4.3 |
+
+Both PNG editions turn as smoothly as 1441 (≤ 7.8% janky).
+
+### Pixel 7 key numbers, quiet host (`Tibyan_PageTurn`)
+
+Raster p90 ms / jank60 % (first-turn raster max in brackets):
+
+| Scenario | normal | curl | bend | fold | fade |
+|---|---|---|---|---|---|
+| plain | 14.3 / 5.4 (7) | 6.6 / 5.2 (21) | 4.7 / 0.8 (16) | 4.9 / 1.6 (21) | 9.8 / 5.5 (16) |
+| active ribbon | 6.2 / 2.9 (8) | 15.3 / 4.6 (18) | 6.4 / 4.8 (18) | 4.4 / 0.6 (18) | 15.1 / 5.5 (16) |
+| active tab | 7.0 / 5.3 (21) | 15.1 / 5.3 (17) | 14.9 / 5.4 (16) | 6.9 / 4.9 (16) | 15.5 / 5.5 (16) |
+
+Index jump ttff 36–42 ms, settle 280–400 ms. The round-1/2 Pixel 7 numbers
+(jank 35–75%, first-turn max 120–180 ms) were inflated by the loaded host;
+on a quiet host every turn is ≤ 5.5% janky and first turns ≤ 21 ms.
+
+### Round 3 conclusions
+1. No page-turn scenario on any device crosses the heavy-jank bar; no code
+   change this round. Fix 2 (memo) stays removed: margin-layout numbers do
+   not need it.
+2. Remaining cost: the cold bake on navigation (index jump, cold home
+   open): p90 raster 30–40 ms over ~0.3 s. Candidate follow-up: defer
+   neighbour bakes until after the route transition.
 
 ## Index → mushaf navigation
 
@@ -185,8 +299,8 @@ comparable).
 
 ## Not done (needs follow-up)
 
-- iOS numbers (no device connected), tablet spread, editions runs.
-- Home «متابعة القراءة» frame/fasil ablation (A/B/C) scenario.
+- iOS numbers (owner: not needed). Tablet, editions and home ablation: done
+  in «Round 3».
 - Owner feature requests forwarded mid-task: 8-fawasil limit with move sheet,
   index fawasil management tab, per-fasil look/material/colour overrides.
   These are features, not perf work; they need their own branch.
