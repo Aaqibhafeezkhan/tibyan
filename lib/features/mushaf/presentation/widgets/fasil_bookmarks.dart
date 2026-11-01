@@ -837,12 +837,17 @@ class _Touchable extends StatelessWidget {
     required this.look,
     required this.child,
     this.onLongPress,
+    this.narrow = false,
   });
 
   final FasilMark mark;
   final FasilLook look;
   final Widget child;
   final VoidCallback? onLongPress;
+
+  /// A ribbon in the margin: its touch area is its own width, so it does
+  /// not widen over the text beside it.
+  final bool narrow;
 
   @override
   Widget build(BuildContext context) {
@@ -855,7 +860,7 @@ class _Touchable extends StatelessWidget {
         onLongPress: onLongPress,
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            minWidth: look.target,
+            minWidth: narrow ? 0 : look.target,
             minHeight: look.target,
           ),
           child: Align(alignment: Alignment.topCenter, child: child),
@@ -865,11 +870,63 @@ class _Touchable extends StatelessWidget {
   }
 }
 
+/// The text block of [lines] (screen rects of the page's lines or verse
+/// pieces): their union, raised to [firstLineTop] when the first line (a
+/// surah's title, say) starts above its first verse.
+Rect? textBlockOf(Iterable<Rect> lines, {double? firstLineTop}) {
+  Rect? u;
+  for (final r in lines) {
+    u = u == null ? r : u.expandToInclude(r);
+  }
+  if (u == null || firstLineTop == null || firstLineTop >= u.top) return u;
+  return Rect.fromLTRB(u.left, firstLineTop, u.right, u.bottom);
+}
+
+/// Where the fawasil layer above learns the page's text block.
+class _FasilTextScope extends InheritedWidget {
+  const _FasilTextScope({required this.report, required super.child});
+
+  final void Function(BuildContext from, Rect? rect) report;
+
+  @override
+  bool updateShouldNotify(_FasilTextScope old) => false;
+}
+
+/// Tells the [FasilPageLayer] around it where the page's text is: [rect]
+/// in this widget's own box. Placed by each edition's page over its whole
+/// area, so ribbons hang in the margin and never over a line.
+class FasilTextBlock extends StatefulWidget {
+  const FasilTextBlock({super.key, required this.rect});
+
+  final Rect? rect;
+
+  @override
+  State<FasilTextBlock> createState() => _FasilTextBlockState();
+}
+
+class _FasilTextBlockState extends State<FasilTextBlock> {
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final scope = context
+          .getElementForInheritedWidgetOfExactType<_FasilTextScope>()
+          ?.widget;
+      if (scope is _FasilTextScope) scope.report(context, widget.rect);
+    });
+    return const SizedBox.expand();
+  }
+}
+
 /// The fawasil on one page, over it: a ribbon hanging from the top on the
 /// page's outer side (or down its outer edge), or a tab hanging from it. In
 /// focus mode a short ribbon from the top edge, for either look. Part of
 /// the page, so it turns with it.
-class FasilPageLayer extends StatelessWidget {
+///
+/// A ribbon hangs only in the margin between the page's edge and its text
+/// ([FasilTextBlock]): narrower where the margin is thin, and where there
+/// is no room for one, a short tab above the text instead.
+class FasilPageLayer extends StatefulWidget {
   const FasilPageLayer({
     super.key,
     required this.marks,
@@ -889,121 +946,191 @@ class FasilPageLayer extends StatelessWidget {
   final Widget child;
   final void Function(FasilMark)? onLongPress;
 
-  /// The bookmarks last built for a list of marks: built again only when
-  /// the list (the same list from a screen that keeps it), the look or the
-  /// place changes, so a page turn does not build them anew.
-  static final _built = Expando<_BuiltMarks>();
+  /// The narrowest ribbon worth drawing in a margin.
+  static const minRibbonWidth = 9.0;
+
+  @override
+  State<FasilPageLayer> createState() => _FasilPageLayerState();
+}
+
+class _FasilPageLayerState extends State<FasilPageLayer> {
+  /// The page's text block, in this layer's box; null until it is told.
+  final _text = ValueNotifier<Rect?>(null);
+
+  void _report(BuildContext from, Rect? rect) {
+    if (!mounted) return;
+    final me = context.findRenderObject();
+    final them = from.findRenderObject();
+    Rect? local;
+    if (rect != null &&
+        me is RenderBox &&
+        them is RenderBox &&
+        me.hasSize &&
+        them.hasSize &&
+        them.attached) {
+      local = Rect.fromPoints(
+        them.localToGlobal(rect.topLeft, ancestor: me),
+        them.localToGlobal(rect.bottomRight, ancestor: me),
+      );
+    }
+    if (local != _text.value) _text.value = local;
+  }
+
+  @override
+  void dispose() {
+    _text.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final shown = [
-      for (final m in marks)
-        if (look.draws(m)) m,
+      for (final m in widget.marks)
+        if (widget.look.draws(m)) m,
     ];
-    if (shown.isEmpty) return child;
+    if (shown.isEmpty) return widget.child;
+    final page = _FasilTextScope(report: _report, child: widget.child);
     return LayoutBuilder(
-      builder: (context, box) {
-        final h = box.maxHeight.isFinite ? box.maxHeight : 600.0;
-        final key = (look, outerRight, focus, h, onLongPress);
-        final have = _built[marks];
-        if (have != null && have.key == key) {
-          return Stack(
-            clipBehavior: Clip.hardEdge,
-            children: [child, ...have.bookmarks],
-          );
-        }
-        final children = <Widget>[child];
-        // Mixed looks share the edge in the fawasil's order: each takes
-        // its own width, one after another, so none overlaps.
-        var along = 0.0;
-        var down = 0;
-        for (final (i, m) in shown.indexed) {
-          final look = this.look.forMark(m);
-          final step = focus ? i * (look.ribbonWidth + 6) : along;
-          Widget bookmark;
-          double inset;
-          double top = 0;
-          if (focus) {
-            bookmark = FasilRibbon(
-              mark: m,
-              look: look,
-              length: math.max(56, h * .13),
-              width: look.ribbonWidth * .85,
-              showLabel: look.elderly,
-            );
-            inset = 4 + step;
-          } else if (look.style == FasilStyle.ribbon) {
-            final side = look.place == FasilPlace.side;
-            bookmark = FasilRibbon(
-              mark: m,
-              look: look,
-              length: h * (side ? .62 : .42),
-            );
-            inset = (side ? 2 : 10) + step;
-            along += look.ribbonWidth + 6;
-          } else if (look.place == FasilPlace.side) {
-            bookmark = RotatedBox(
-              quarterTurns: outerRight ? 1 : 3,
-              // Only the dome shows past the edge, over the frame; its
-              // shadow is not cut.
-              child: ClipRect(
-                clipper: const _BelowTop(),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  heightFactor: .72,
-                  child: FasilTab(
-                    mark: m,
-                    look: look,
-                    width: look.tabWidth * .7,
-                  ),
-                ),
-              ),
-            );
-            inset = 0;
-            top = h * .14 + down * (look.tabWidth * .7 + 8);
-            down++;
-          } else {
-            bookmark = FasilTab(mark: m, look: look);
-            inset = 8 + step;
-            along += look.tabWidth + 4;
-          }
-          final placed = _Touchable(
-            mark: m,
-            look: look,
-            onLongPress: onLongPress == null ? null : () => onLongPress!(m),
-            // Its own layer: the cloth, the ornament and the name are not
-            // painted again with the page under them.
-            child: RepaintBoundary(
-              child: FasilEntrance(
-                key: ValueKey('fasil-entrance-${m.id}'),
-                mark: m,
-                look: look,
-                child: bookmark,
-              ),
-            ),
-          );
-          children.add(
-            Positioned(
-              key: ValueKey('fasil-${m.id}'),
-              top: top,
-              right: outerRight ? inset : null,
-              left: outerRight ? null : inset,
-              child: placed,
-            ),
-          );
-        }
-        _built[marks] = _BuiltMarks(key, children.sublist(1));
-        return Stack(clipBehavior: Clip.hardEdge, children: children);
-      },
+      builder: (context, box) => ValueListenableBuilder<Rect?>(
+        valueListenable: _text,
+        builder: (context, text, _) => _layer(context, box, shown, text, page),
+      ),
     );
   }
-}
 
-class _BuiltMarks {
-  _BuiltMarks(this.key, this.bookmarks);
+  Widget _layer(
+    BuildContext context,
+    BoxConstraints box,
+    List<FasilMark> shown,
+    Rect? text,
+    Widget page,
+  ) {
+    final focus = widget.focus;
+    final outerRight = widget.outerRight;
+    final h = box.maxHeight.isFinite ? box.maxHeight : 600.0;
+    final w = box.maxWidth.isFinite ? box.maxWidth : 400.0;
+    final children = <Widget>[page];
 
-  final Object key;
-  final List<Widget> bookmarks;
+    // The margin's room: from the outer edge to the text, less a hair on
+    // each side; and above the text, for the short tabs.
+    final ribbons = [
+      for (final m in shown)
+        if (focus || widget.look.forMark(m).style == FasilStyle.ribbon) m,
+    ];
+    double? ribbonW;
+    var inMargin = true;
+    double above = h;
+    if (text != null) {
+      final free = outerRight ? w - text.right : text.left;
+      const gap = 3.0;
+      final room = free - 4 - gap * math.max(0, ribbons.length - 1);
+      final each = ribbons.isEmpty ? 0.0 : room / ribbons.length;
+      final base = widget.look.ribbonWidth * (focus ? .85 : 1);
+      ribbonW = math.min(base, each);
+      inMargin = ribbonW >= FasilPageLayer.minRibbonWidth;
+      above = math.max(4, text.top - 2);
+    }
+    final gap = text == null ? 6.0 : 3.0;
+
+    // Mixed looks share the edge in the fawasil's order: each takes its
+    // own width, one after another, so none overlaps.
+    var along = 0.0;
+    var down = 0;
+    for (final m in shown) {
+      final look = widget.look.forMark(m);
+      Widget bookmark;
+      double inset;
+      double top = 0;
+      final ribbon = focus || look.style == FasilStyle.ribbon;
+      if (ribbon && text != null && !inMargin) {
+        // No margin for a ribbon on this page: a short tab above the
+        // text, only its foot showing.
+        final tw = look.tabWidth * .6;
+        bookmark = ClipRect(
+          clipper: const _BelowTop(),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            heightFactor: math.min(1, above / (tw * 1.6)),
+            child: FasilTab(mark: m, look: look, width: tw),
+          ),
+        );
+        inset = 6 + along;
+        along += tw + 4;
+      } else if (focus) {
+        final rw = ribbonW ?? look.ribbonWidth * .85;
+        bookmark = FasilRibbon(
+          mark: m,
+          look: look,
+          length: math.max(56, h * .13),
+          width: rw,
+          showLabel: look.elderly && rw >= look.labelSize + 6,
+        );
+        inset = (text == null ? 4 : 2) + along;
+        along += rw + gap;
+      } else if (look.style == FasilStyle.ribbon) {
+        final side = look.place == FasilPlace.side;
+        final rw = ribbonW ?? look.ribbonWidth;
+        bookmark = FasilRibbon(
+          mark: m,
+          look: look,
+          length: h * (side ? .62 : .42),
+          width: rw,
+          showLabel: rw >= look.labelSize + 6,
+        );
+        inset = (text != null || side ? 2 : 10) + along;
+        along += rw + gap;
+      } else if (look.place == FasilPlace.side) {
+        bookmark = RotatedBox(
+          quarterTurns: outerRight ? 1 : 3,
+          // Only the dome shows past the edge, over the frame; its
+          // shadow is not cut.
+          child: ClipRect(
+            clipper: const _BelowTop(),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              heightFactor: .72,
+              child: FasilTab(mark: m, look: look, width: look.tabWidth * .7),
+            ),
+          ),
+        );
+        inset = 0;
+        top = h * .14 + down * (look.tabWidth * .7 + 8);
+        down++;
+      } else {
+        bookmark = FasilTab(mark: m, look: look);
+        inset = 8 + along;
+        along += look.tabWidth + 4;
+      }
+      final placed = _Touchable(
+        mark: m,
+        look: look,
+        narrow: text != null && ribbon && inMargin,
+        onLongPress: widget.onLongPress == null
+            ? null
+            : () => widget.onLongPress!(m),
+        // Its own layer: the cloth, the ornament and the name are not
+        // painted again with the page under them.
+        child: RepaintBoundary(
+          child: FasilEntrance(
+            key: ValueKey('fasil-entrance-${m.id}'),
+            mark: m,
+            look: look,
+            child: bookmark,
+          ),
+        ),
+      );
+      children.add(
+        Positioned(
+          key: ValueKey('fasil-${m.id}'),
+          top: top,
+          right: outerRight ? inset : null,
+          left: outerRight ? null : inset,
+          child: placed,
+        ),
+      );
+    }
+    return Stack(clipBehavior: Clip.hardEdge, children: children);
+  }
 }
 
 /// A spread's fawasil in its spine: ribbons lying in the gutter, fanned a

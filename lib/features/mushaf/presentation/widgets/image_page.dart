@@ -1,3 +1,5 @@
+import 'fasil_bookmarks.dart';
+
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
@@ -781,6 +783,25 @@ class _ImageMushafPageState extends ConsumerState<ImageMushafPage> {
             return Stack(
               clipBehavior: Clip.none,
               children: [
+                // Where the text is, for the fawasil to keep off it.
+                Positioned.fill(
+                  child: FasilTextBlock(
+                    rect: textBlockOf(
+                      [
+                        for (final (_, r) in data.pieces)
+                          layout.toScreenRect(r),
+                      ],
+                      firstLineTop: data.geometry.lines == 0
+                          ? null
+                          : layout
+                                .toScreen(
+                                  Offset(0, data.geometry.bandTops.first),
+                                  line: 0,
+                                )
+                                .dy,
+                    ),
+                  ),
+                ),
                 Positioned.fill(
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
