@@ -150,10 +150,18 @@ void main() {
       motion: false,
     ),
     'tab, focus': FasilLook(style: FasilStyle.tab, motion: false),
+    // The tab look: every tab, the open one too, stays above the text.
+    'tab': FasilLook(style: FasilStyle.tab, motion: false),
+    'tab elderly': FasilLook(
+      style: FasilStyle.tab,
+      elderly: true,
+      motion: false,
+    ),
+    'tab night': FasilLook(style: FasilStyle.tab, night: true, motion: false),
   };
   const sizes = [Size(393, 700), Size(820, 1100)];
 
-  testWidgets('no ribbon crosses a line of text', (tester) async {
+  testWidgets('no ribbon or tab crosses a line of text', (tester) async {
     expect(samples.length, greaterThanOrEqualTo(8));
     final failures = <String>[];
     var checked = 0;

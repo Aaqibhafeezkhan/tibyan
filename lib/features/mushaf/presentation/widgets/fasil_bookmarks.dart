@@ -571,10 +571,17 @@ Path _tabInline(Size s) {
 }
 
 class _TabPainter extends CustomPainter {
-  const _TabPainter({required this.color, required this.night});
+  const _TabPainter({
+    required this.color,
+    required this.night,
+    this.edge = false,
+  });
 
   final Color color;
   final bool night;
+
+  /// A thin gold edge around the card: the fasil open on the page.
+  final bool edge;
 
   @override
   void paint(Canvas canvas, Size s) {
@@ -600,11 +607,20 @@ class _TabPainter extends CustomPainter {
             ? const Color(0x804F3714)
             : Colors.white.withValues(alpha: night ? .4 : .6),
     );
+    if (edge) {
+      canvas.drawPath(
+        path,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.6
+          ..color = night ? const Color(0xFFE2C46A) : const Color(0xFFC9A23A),
+      );
+    }
   }
 
   @override
   bool shouldRepaint(_TabPainter old) =>
-      old.color != color || old.night != night;
+      old.color != color || old.night != night || old.edge != edge;
 }
 
 class _TabShadePainter extends CustomPainter {
@@ -641,12 +657,16 @@ class FasilTab extends StatelessWidget {
     required this.look,
     this.width,
     this.folded = false,
+    this.edge = false,
   });
 
   final FasilMark mark;
   final FasilLook look;
   final double? width;
   final bool folded;
+
+  /// The fasil open on the page: told by a gold edge, not by size.
+  final bool edge;
 
   @override
   Widget build(BuildContext context) {
@@ -660,7 +680,11 @@ class FasilTab extends StatelessWidget {
         children: [
           Positioned.fill(
             child: CustomPaint(
-              painter: _TabPainter(color: mark.color, night: look.night),
+              painter: _TabPainter(
+                color: mark.color,
+                night: look.night,
+                edge: edge,
+              ),
             ),
           ),
           // The ornament: the grey medallion multiplied by the card's line
@@ -1042,16 +1066,19 @@ class _FasilPageLayerState extends State<FasilPageLayer> {
       double inset;
       double top = 0;
       final ribbon = focus || look.style == FasilStyle.ribbon;
-      if (ribbon && text != null && !inMargin) {
-        // No margin for a ribbon on this page: a short tab above the
-        // text, only its foot showing.
+      final topTab = !ribbon && look.place != FasilPlace.side && text != null;
+      if ((ribbon && text != null && !inMargin) || topTab) {
+        // A short tab above the text, only its foot showing: a ribbon with
+        // no margin on this page, or a tab. A tab is the same size as the
+        // others and stays in the top margin; it is told by its full
+        // colour and a gold edge.
         final tw = look.tabWidth * .6;
         bookmark = ClipRect(
           clipper: const _BelowTop(),
           child: Align(
             alignment: Alignment.bottomCenter,
             heightFactor: math.min(1, above / (tw * 1.6)),
-            child: FasilTab(mark: m, look: look, width: tw),
+            child: FasilTab(mark: m, look: look, width: tw, edge: topTab),
           ),
         );
         inset = 6 + along;
