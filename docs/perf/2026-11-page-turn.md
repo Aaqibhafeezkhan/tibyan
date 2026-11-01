@@ -88,6 +88,78 @@ see the appendix.
    (`app_router.dart:347`), so every index jump rebuilds the whole reader
    state; reuse the screen and jump the controller instead.
 
+## Round 2 (branch `perf/page-turn-fasil-2`): all proposed fixes
+
+Method: each fix has a debug switch back to the old way, and the harness
+runs old and new **interleaved, case by case, in the same run**
+(`--dart-define=PERF_AB=fade|memo|precache|reuse|artcache`,
+`PERF_REPEAT=5`, `PERF_ONLY`, `PERF_EFFECTS`). Values below are **medians
+of 5 runs** (build/raster avg/p90/p99 ms; jank60 = % frames > 16.7 ms).
+The host was heavily loaded by other agents (iOS simulator, flutter test;
+load average up to 190) during the Pixel 7 runs, so Pixel 7 absolutes are
+inflated; old/new pairs ran minutes apart under the same load. The low-end
+AVD run happened on a quiet host (load ~2).
+
+Devices: `Tibyan_PageTurn` (Pixel 7 profile, API 35, 1080x2400, 4 GB);
+`Tibyan_PageTurn_Low` (new: API 33, 2 GB RAM, 4 cores, 720x1600, 280 dpi).
+No physical Android phone was connected. iOS not measured (owner: not needed).
+
+| # | Fix | Device | Case | Old | New |
+|---|---|---|---|---|---|
+| 1 | Fade from snapshot (no Opacity layer) | Pixel 7 | plain fade raster / jank60 | 24.6/63/189, 34.9% | 23.6/61/190, 28.6% |
+| 1 | | Pixel 7 | active-ribbon fade | 26.7/48/147, 56.0% | 27.9/59/176, 46.6% |
+| 1 | | Pixel 7 | active-tab fade | 24.5/44/180, 49.0% | 26.3/53/204, 46.9% |
+| 1 | | Low-end | plain fade | 4.5/16.3/26.0, 7.6% | 3.8/15.3/23.3, 6.5% |
+| 1 | | Low-end | active-ribbon fade | 8.1/17.3/27.5, 16.8% | 6.3/16.7/22.3, 10.2% |
+| 1 | | Low-end | active-tab fade | 8.0/17.3/23.6, 15.0% | 7.0/17.1/22.8, 12.7% |
+| 2 | Memoized `fawasilOn` + reused bookmark widgets | Pixel 7 | active-ribbon normal / curl jank60 | 50.2% / 42.5% | 49.0% / 41.7% |
+| 2 | | Pixel 7 | active-tab normal / curl jank60 | 44.1% / 41.6% | 43.6% / 43.2% |
+| 3 | Snapshot before first drag (bounded wait), shader warm-up, spread halves ahead | Pixel 7 | **first turn** raster max, plain curl | 173 | 123 |
+| 3 | | Pixel 7 | first turn raster max, active-ribbon curl / fold | 187 / 176 | 127 / 144 |
+| 3 | | Pixel 7 | first turn raster max, plain bend / active-ribbon bend | 148 / 130 | 156 / 181 |
+| 3 | | Pixel 7 | steady jank60 plain bend / active-ribbon fold | 37.9% / 40.3% | 33.2% / 35.9% |
+| 4 | Index jump reuses MushafScreen | Pixel 7 | index ttff (nomarks / ribbon / tab) | 226 / 246 / 220 ms | 126 / 143 / 122 ms |
+| 4 | | Pixel 7 | index settle (nomarks / ribbon / tab) | 1364 / 1626 / 1635 ms | 1235 / 1411 / 1314 ms |
+| 5 | Shared cache of the last 4 baked pages | Pixel 7 | home A ornate+fasil: settle, raster p90, raster sum | 1987 ms, 201, 1137 ms | 897 ms, 40, 690 ms |
+| 5 | | Pixel 7 | home B plain+fasil | 1737 ms, 168, 853 ms | 839 ms, 35, 480 ms |
+| 5 | | Pixel 7 | home C plain, no fasil | 1845 ms, 171, 808 ms | 770 ms, 36, 364 ms |
+
+Reading:
+1. **Fade**: fewer janky frames everywhere (low-end active-ribbon 16.8% → 10.2%);
+   raster avg down on the low-end AVD; on the loaded Pixel 7 run raster is
+   within noise. Visuals: same pixels (the snapshot is taken at the device
+   pixel ratio; it falls back to the old Opacity until the snapshot exists).
+2. **Memo**: neutral in frame times: the screen rarely rebuilds during a
+   turn (build avg 2–3 ms). It removes needless bookmark rebuilds when it
+   does (unit test `test/mushaf/fasil_layer_reuse_test.dart`). Kept: tiny,
+   no visual change.
+3. **Precache**: first-turn worst raster frame −30–50 ms for curl/fold;
+   bend mixed (within noise).
+4. **Index reuse**: time to the target page's first frame **−45%**; settle
+   −10–20%. The rest is the index route's pop transition. Deep links with a
+   verse (`s`/`a`), hifz, listen and memorize still open a new screen
+   (`mushafSessionOf` in `app_router.dart`); tests in
+   `test/flows/mushaf_index_jump_test.dart`. The home card opens `/mushaf`
+   from `/` where no MushafScreen exists, so reuse cannot apply there;
+   fix 5 targets it instead.
+5. **Home «متابعة القراءة» ablation** (before the cache, Pixel 7, medians):
+   A ornate (hijazi) + 2 fawasil: ttff 161 ms, settle 2188 ms, raster
+   p90 263 ms, raster sum 1233 ms; B plain + fawasil: 238 / 2107 / 161 / 1006;
+   C plain, no fasil: 190 / 1971 / 192 / 950. Breakdown: build sum is only
+   90–140 ms; **raster dominates**, and it is the page bake (thousands of
+   SVG paths into an image) of the target page and its two neighbours
+   during the entrance; the ornate frame adds ~20% raster, fawasil ~5%.
+   Fix: the last 4 baked pages are shared across MushafPage instances
+   (`MushafPage._baked`, image clones, LRU, ~30 MB max at 1080p), so
+   reopening the page read last blits it. **Settle −55–60%, raster p90
+   −80%.** A cold first open (page never baked this session) is unchanged.
+
+### Still pending (stopped on owner request)
+- Low-end AVD: only fix 1 measured; fixes 2–5 and the home ablation pending.
+- Tablet spread (`PERF_SET=tablet`) and editions 1405/Shamarly
+  (`PERF_SET=editions`, needs pack download): not run.
+- A clean-host rerun of the Pixel 7 numbers.
+
 ## Index → mushaf navigation
 
 What a tap on a surah does: `versePageProvider` lookup, then
