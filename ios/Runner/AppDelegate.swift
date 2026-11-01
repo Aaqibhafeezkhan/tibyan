@@ -1,8 +1,10 @@
 import AVFoundation
+import CoreSpotlight
 import Flutter
 import MediaPlayer
 import Photos
 import UIKit
+import UniformTypeIdentifiers
 import UserNotifications
 import WatchConnectivity
 
@@ -15,6 +17,9 @@ import WatchConnectivity
     // Pack-download notifications (background_downloader).
     UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
     BackupExclusion.apply()
+    // Spotlight: the icon says «تبيان»; this item lets English searches
+    // ("Tibyan", "Quran") find the app too.
+    AppSearchIndex.register()
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
@@ -451,6 +456,40 @@ final class WatchChannel: NSObject, WCSessionDelegate {
       let d = UserDefaults(suiteName: WatchChannel.group)
       d?.set((d?.integer(forKey: WatchChannel.pendingKey) ?? 0) + n, forKey: WatchChannel.pendingKey)
       self.tasbih.invokeMethod("pendingAdded", arguments: nil)
+    }
+  }
+}
+
+/// One Spotlight item for the app itself. The home-screen name is Arabic
+/// («تبيان»), which Spotlight matches; this adds the English name and the
+/// usual search words in both languages. Indexed once per app build.
+enum AppSearchIndex {
+  private static let itemId = "app.tibyan.tibyan.spotlight.app"
+  private static let doneKey = "tibyanSpotlightIndexedBuild"
+
+  static func register() {
+    let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
+    let defaults = UserDefaults.standard
+    guard defaults.string(forKey: doneKey) != build, CSSearchableIndex.isIndexingAvailable()
+    else { return }
+    let attributes = CSSearchableItemAttributeSet(contentType: .application)
+    attributes.title = "Tibyan – Quran"
+    attributes.alternateNames = ["تبيان", "تبيان - القرآن الكريم", "Tibyan"]
+    attributes.contentDescription = "تبيان - القرآن الكريم · Tibyan Quran"
+    attributes.keywords = [
+      "Tibyan", "Quran", "Koran", "Mushaf", "قرآن", "مصحف", "تبيان", "القرآن الكريم",
+    ]
+    let item = CSSearchableItem(
+      uniqueIdentifier: itemId, domainIdentifier: "app.tibyan.tibyan.app",
+      attributeSet: attributes)
+    item.expirationDate = .distantFuture
+    CSSearchableIndex.default().indexSearchableItems([item]) { error in
+      if let error {
+        NSLog("TibyanSpotlight: indexing failed: \(error.localizedDescription)")
+      } else {
+        defaults.set(build, forKey: doneKey)
+        NSLog("TibyanSpotlight: indexed app item (build \(build))")
+      }
     }
   }
 }

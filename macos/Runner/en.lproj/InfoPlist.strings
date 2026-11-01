@@ -1,3 +1,4 @@
-/* The app menu's name and the name under the Dock icon. */
-"CFBundleName" = "Tibyan";
-"CFBundleDisplayName" = "Tibyan";
+/* The app menu's name and the name under the Dock icon: the Arabic name in
+   every language (Spotlight still finds "Tibyan" by the bundle's file name). */
+"CFBundleName" = "تبيان";
+"CFBundleDisplayName" = "تبيان";

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- The name under the launcher icon: Arabic in every language. -->
+    <string name="app_name">تبيان</string>
+    <!-- Static shortcut: its English label lets launcher search find the app by "Tibyan" or "Quran". -->
+    <string name="shortcut_mushaf_short">Tibyan – Quran</string>
+    <string name="shortcut_mushaf_long">Tibyan – Quran (Mushaf)</string>
     <string name="khatma_widget_label">Khatma</string>
     <string name="khatma_widget_description">Today\'s khatma portion</string>
     <string name="khatma_widget_open">Open Tibyan</string>

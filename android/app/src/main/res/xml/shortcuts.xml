@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Long-press shortcut that continues reading the mushaf. Launchers index
+     shortcut labels in search, so the app is found by "Tibyan"/"Quran" as
+     well as by its Arabic name «تبيان». -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="mushaf"
+        android:enabled="true"
+        android:icon="@drawable/ic_action_book"
+        android:shortcutShortLabel="@string/shortcut_mushaf_short"
+        android:shortcutLongLabel="@string/shortcut_mushaf_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="app.tibyan.tibyan"
+            android:targetClass="app.tibyan.tibyan.MainActivity"
+            android:data="tibyan://reader" />
+    </shortcut>
+</shortcuts>

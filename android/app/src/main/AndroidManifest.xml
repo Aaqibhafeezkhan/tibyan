@@ -20,7 +20,7 @@
          permission is asked for. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
-        android:label="tibyan"
+        android:label="@string/app_name"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="true"
@@ -47,6 +47,9 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
             <!-- Verse links: tibyan://verse?s=2&a=255 (app_links). -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

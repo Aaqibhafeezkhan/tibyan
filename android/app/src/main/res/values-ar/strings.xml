@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">تبيان</string>
+    <string name="shortcut_mushaf_short">تبيان – القرآن الكريم</string>
+    <string name="shortcut_mushaf_long">تبيان – المصحف (القرآن الكريم)</string>
     <string name="khatma_widget_label">الختمة</string>
     <string name="khatma_widget_description">ورد اليوم من الختمة</string>
     <string name="khatma_widget_open">افتح تبيان</string>
