@@ -5120,12 +5120,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String fasilLimitTitle(int max) {
-    return 'بلغت الحدّ الأقصى: $max فواصل';
+    return 'بلغت الحدّ الأقصى: $max فواصل، منها العلامات الثابتة';
   }
 
   @override
   String get fasilLimitHint =>
-      'انقل إحدى فواصلك إلى هذا الموضع، أو احذف واحدة لتضيف فاصلة جديدة.';
+      'تُحسب العلامات الثابتة التي وضعتها (قراءة، مراجعة، حفظ، تدبر) ضمن الحدّ. انقل إحدى فواصلك إلى هذا الموضع، أو احذف واحدة لتضيف فاصلة جديدة.';
 
   @override
   String fasilLimitOver(int count, int keep) {

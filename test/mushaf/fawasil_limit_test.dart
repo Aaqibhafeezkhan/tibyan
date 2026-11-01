@@ -16,17 +16,52 @@ void main() {
     }
     expect(await db.canAddFasil(), isFalse);
     await expectLater(add('ninth'), throwsA(isA<FawasilLimitReached>()));
-    expect(await db.namedFawasilCount(), maxFawasil);
+    expect(await db.fawasilCount(), maxFawasil);
   });
 
-  test('the four fixed marks do not count', () async {
+  test('the four fixed marks, once placed, count toward the eight', () async {
     for (final k in MarkKind.values) {
       await db.setMark(k, name: k.name, surah: 1, ayah: 1, page: 1);
     }
+    for (var i = 0; i < maxFawasil - MarkKind.values.length; i++) {
+      await add('f$i');
+    }
+    expect(await db.fawasilCount(), maxFawasil);
+    expect(await db.canAddFasil(), isFalse);
+    await expectLater(add('fifth'), throwsA(isA<FawasilLimitReached>()));
+  });
+
+  test('a fixed mark never placed takes no place', () async {
+    await db.setMark(
+      MarkKind.values.first,
+      name: 'x',
+      surah: 1,
+      ayah: 1,
+      page: 1,
+    );
+    for (var i = 0; i < maxFawasil - 1; i++) {
+      await add('f$i');
+    }
+    expect(await db.canAddFasil(), isFalse);
+    expect(await db.fawasilCount(), maxFawasil);
+  });
+
+  test('a reader over the limit keeps all; a fixed mark still moves', () async {
     for (var i = 0; i < maxFawasil; i++) {
       await add('f$i');
     }
-    expect(await db.namedFawasilCount(), maxFawasil);
+    for (final k in MarkKind.values) {
+      await db.setMark(k, name: k.name, surah: 1, ayah: 1, page: 1);
+    }
+    expect(await db.fawasilCount(), maxFawasil + MarkKind.values.length);
+    await db.setMark(
+      MarkKind.values.first,
+      name: 'x',
+      surah: 2,
+      ayah: 1,
+      page: 2,
+    );
+    expect(await db.canAddFasil(), isFalse);
   });
 
   test('a deleted fasil frees a place; undo puts it back whole', () async {

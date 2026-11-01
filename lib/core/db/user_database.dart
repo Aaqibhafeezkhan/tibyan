@@ -46,16 +46,18 @@ class BookmarkSets extends Table {
   TextColumn get material => text().nullable()();
 }
 
-/// The most named fawasil a reader keeps. A reader who already had more
-/// (from before the limit) keeps them all but adds none until fewer than
-/// this many remain.
+/// The most fawasil a reader keeps, counting the fixed marks (reading,
+/// review, memorizing, reflection) that have been placed on a page. A
+/// fixed mark never set has no row and takes no place. A reader who
+/// already had more (from before the limit) keeps them all but adds none
+/// until fewer than this many remain.
 const maxFawasil = 8;
 
 /// Thrown when a named fasil would be added past [maxFawasil].
 class FawasilLimitReached implements Exception {
   const FawasilLimitReached(this.count);
 
-  /// How many named fawasil there are now.
+  /// How many fawasil there are now (fixed marks placed included).
   final int count;
 
   @override
@@ -373,17 +375,16 @@ class UserDatabase extends _$UserDatabase {
           ]))
           .watch();
 
-  /// How many named fawasil there are (the four fixed marks not counted).
-  Future<int> namedFawasilCount() async {
+  /// How many fawasil count toward [maxFawasil]: every named fasil plus
+  /// each fixed mark the reader has placed (an unset one has no row).
+  Future<int> fawasilCount() async {
     final n = bookmarkSets.id.count();
-    final q = selectOnly(bookmarkSets)
-      ..addColumns([n])
-      ..where(bookmarkSets.kind.isNull());
+    final q = selectOnly(bookmarkSets)..addColumns([n]);
     return (await q.getSingle()).read(n) ?? 0;
   }
 
   /// Whether one more named fasil may be added (see [maxFawasil]).
-  Future<bool> canAddFasil() async => await namedFawasilCount() < maxFawasil;
+  Future<bool> canAddFasil() async => await fawasilCount() < maxFawasil;
 
   /// Adds a named fasil at the end of the page edge's order. Throws
   /// [FawasilLimitReached] when there are already [maxFawasil] or more.
@@ -394,7 +395,7 @@ class UserDatabase extends _$UserDatabase {
     required int ayah,
     required int page,
   }) => transaction(() async {
-    final count = await namedFawasilCount();
+    final count = await fawasilCount();
     if (count >= maxFawasil) throw FawasilLimitReached(count);
     final top = bookmarkSets.sortOrder.max();
     final last = (await (selectOnly(

@@ -8561,13 +8561,13 @@ abstract class AppLocalizations {
   /// No description provided for @fasilLimitTitle.
   ///
   /// In ar, this message translates to:
-  /// **'بلغت الحدّ الأقصى: {max} فواصل'**
+  /// **'بلغت الحدّ الأقصى: {max} فواصل، منها العلامات الثابتة'**
   String fasilLimitTitle(int max);
 
   /// No description provided for @fasilLimitHint.
   ///
   /// In ar, this message translates to:
-  /// **'انقل إحدى فواصلك إلى هذا الموضع، أو احذف واحدة لتضيف فاصلة جديدة.'**
+  /// **'تُحسب العلامات الثابتة التي وضعتها (قراءة، مراجعة، حفظ، تدبر) ضمن الحدّ. انقل إحدى فواصلك إلى هذا الموضع، أو احذف واحدة لتضيف فاصلة جديدة.'**
   String get fasilLimitHint;
 
   /// No description provided for @fasilLimitOver.

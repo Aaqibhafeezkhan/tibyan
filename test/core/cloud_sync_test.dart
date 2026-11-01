@@ -468,7 +468,7 @@ void main() {
     expect(await a.fawasil(), hasLength(maxFawasil));
     expect((await b.fawasil()).map((f) => f.name), contains('من ب'));
     // B had one of its own: it takes seven of A's, then stops at eight.
-    expect(await b.db.namedFawasilCount(), maxFawasil);
+    expect(await b.db.fawasilCount(), maxFawasil);
     // A rename of a fasil both have still arrives.
     final shared = (await b.fawasil()).firstWhere((f) => f.name != 'من ب');
     final mine = (await a.fawasil()).firstWhere((f) => f.uuid == shared.uuid);

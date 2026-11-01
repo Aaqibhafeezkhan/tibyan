@@ -165,9 +165,9 @@ Future<void> showSaveToFasil(
                     leading: const Icon(Icons.add),
                     title: Text(l.fasilNew),
                     onTap: () async {
-                      final named = sets.where((s) => s.kind == null).length;
-                      // Full: move one here or delete one instead.
-                      if (named >= maxFawasil) {
+                      // Full (fixed marks placed count too): move one
+                      // here or delete one instead.
+                      if (sets.length >= maxFawasil) {
                         Navigator.of(sheet).pop();
                         await showFawasilLimit(
                           context,
@@ -189,7 +189,10 @@ Future<void> showSaveToFasil(
                       try {
                         await db.addBookmarkSet(
                           name: name,
-                          color: nextFasilColor(style, named),
+                          color: nextFasilColor(
+                            style,
+                            sets.where((s) => s.kind == null).length,
+                          ),
                           surah: verse.surah,
                           ayah: verse.ayah,
                           page: page,

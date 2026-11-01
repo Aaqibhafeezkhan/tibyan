@@ -483,8 +483,9 @@ Future<void> showFawasilLimit(
           final l = AppLocalizations.of(sheet);
           final t = sheet.tokens.colors;
           final db = ref.read(userDatabaseProvider);
+          final all = ref.watch(bookmarkSetsProvider).value ?? const [];
           final named = [
-            for (final r in ref.watch(bookmarkSetsProvider).value ?? const [])
+            for (final r in all)
               if (r.kind == null) r,
           ];
           final surahs = ref.watch(surahsProvider).value;
@@ -505,9 +506,9 @@ Future<void> showFawasilLimit(
                       ),
                     ),
                     subtitle: Text(
-                      named.length > maxFawasil
+                      all.length > maxFawasil
                           ? digits.decimal(
-                              l.fasilLimitOver(named.length, maxFawasil - 1),
+                              l.fasilLimitOver(all.length, maxFawasil - 1),
                             )
                           : l.fasilLimitHint,
                       style: const TextStyle(height: 1.6),
@@ -647,7 +648,8 @@ class FawasilIndexTab extends ConsumerWidget {
       );
     }
     final digits = NumberFormatter(Localizations.localeOf(context));
-    final named = rows.where((r) => r.kind == null).length;
+    // The count is of all fawasil, fixed marks placed included.
+    final named = rows.length;
     final ids = [for (final r in rows) r.id];
     Future<void> reorder(int from, int to) async {
       final next = [...ids];

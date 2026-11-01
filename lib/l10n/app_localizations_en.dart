@@ -5057,12 +5057,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String fasilLimitTitle(int max) {
-    return 'You have reached the limit of $max bookmarks';
+    return 'You have reached the limit of $max bookmarks, fixed marks included';
   }
 
   @override
   String get fasilLimitHint =>
-      'Move one of your bookmarks here, or delete one to add a new bookmark.';
+      'Fixed marks you have placed (reading, review, memorizing, reflection) count toward the limit. Move one of your bookmarks here, or delete one to add a new bookmark.';
 
   @override
   String fasilLimitOver(int count, int keep) {
