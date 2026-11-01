@@ -3498,5 +3498,88 @@
         "type": "String"
       }
     }
-  }
+  },
+  "tabFawasil": "الفواصل",
+  "fasilMoveTo": "انقل إلى…",
+  "fasilMoveTitle": "انقل «{name}» إلى",
+  "@fasilMoveTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "fasilMoveBySurah": "سورة وآية",
+  "fasilMoveByPage": "رقم الصفحة",
+  "fasilMoveCurrent": "موضع القراءة الحالي",
+  "fasilSurah": "السورة",
+  "fasilAyah": "الآية",
+  "fasilPage": "الصفحة",
+  "fasilMove": "انقل",
+  "fasilMoved": "نُقلت الفاصلة",
+  "fasilRenameAction": "أعد التسمية",
+  "fasilChangeStyle": "غيّر الشكل والخامة واللون",
+  "fasilStyleTitle": "مظهر «{name}»",
+  "@fasilStyleTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "fasilFollowDefault": "اتبع الإعداد الافتراضي",
+  "fasilDefaultOption": "الافتراضي",
+  "fasilLimitTitle": "بلغت الحدّ الأقصى: {max} فواصل",
+  "@fasilLimitTitle": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "fasilLimitHint": "انقل إحدى فواصلك إلى هذا الموضع، أو احذف واحدة لتضيف فاصلة جديدة.",
+  "fasilLimitOver": "لديك {count} فواصل من قبل وضع الحدّ، وهي محفوظة كلها. لتضيف فاصلة جديدة احذف حتى يبقى {keep} أو أقل.",
+  "@fasilLimitOver": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "keep": {
+        "type": "int"
+      }
+    }
+  },
+  "fasilMoveHereShort": "انقلها إلى هنا",
+  "fasilReorderHint": "اسحب الفاصلة لترتيبها كما تظهر على حافة الصفحة.",
+  "fasilItemLabel": "فاصلة {name}، {surah} الآية {ayah}، الصفحة {page}",
+  "@fasilItemLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "surah": {
+        "type": "String"
+      },
+      "ayah": {
+        "type": "String"
+      },
+      "page": {
+        "type": "String"
+      }
+    }
+  },
+  "fasilInvalidPlace": "موضع غير صحيح",
+  "fasilCount": "{count} من {max}",
+  "@fasilCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "fasilMoveUp": "قدّمها",
+  "fasilMoveDown": "أخّرها"
 }

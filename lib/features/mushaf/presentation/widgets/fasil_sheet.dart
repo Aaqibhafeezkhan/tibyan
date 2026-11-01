@@ -12,6 +12,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/ui/look_kit.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../mushaf_providers.dart';
+import '../fawasil_manage.dart';
 import 'fasil_bookmarks.dart';
 import 'mushaf_page.dart';
 import '../../../../core/ui/meta_separator.dart';
@@ -165,6 +166,16 @@ Future<void> showSaveToFasil(
                     title: Text(l.fasilNew),
                     onTap: () async {
                       final named = sets.where((s) => s.kind == null).length;
+                      // Full: move one here or delete one instead.
+                      if (named >= maxFawasil) {
+                        Navigator.of(sheet).pop();
+                        await showFawasilLimit(
+                          context,
+                          here: verse,
+                          page: page,
+                        );
+                        return;
+                      }
                       final style = await ensureFasilStyle(
                         context,
                         ref,
@@ -175,13 +186,25 @@ Future<void> showSaveToFasil(
                       if (name == null || name.isEmpty) return;
                       armFasilEntrance();
                       await HapticFeedback.lightImpact();
-                      await db.addBookmarkSet(
-                        name: name,
-                        color: nextFasilColor(style, named),
-                        surah: verse.surah,
-                        ayah: verse.ayah,
-                        page: page,
-                      );
+                      try {
+                        await db.addBookmarkSet(
+                          name: name,
+                          color: nextFasilColor(style, named),
+                          surah: verse.surah,
+                          ayah: verse.ayah,
+                          page: page,
+                        );
+                      } on FawasilLimitReached {
+                        // Another device's fawasil arrived meanwhile.
+                        if (!context.mounted) return;
+                        Navigator.of(sheet).pop();
+                        await showFawasilLimit(
+                          context,
+                          here: verse,
+                          page: page,
+                        );
+                        return;
+                      }
                       done();
                     },
                   ),
@@ -335,18 +358,28 @@ extension on FasilLook {
 /// A small page with lines of «text» and one fasil in [look], for the
 /// chooser and the settings.
 class FasilPreview extends StatelessWidget {
-  const FasilPreview({super.key, required this.look, this.height = 140});
+  const FasilPreview({
+    super.key,
+    required this.look,
+    this.height = 140,
+    this.color,
+  });
 
   final FasilLook look;
   final double height;
+
+  /// The fasil's colour; a sample one when null.
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final t = context.tokens.colors;
-    final color = Color(
-      look.style == FasilStyle.tab ? fasilCardColors.first : fasilColors[2],
-    );
+    final color =
+        this.color ??
+        Color(
+          look.style == FasilStyle.tab ? fasilCardColors.first : fasilColors[2],
+        );
     final mark = FasilMark(
       id: -1,
       name: l.fasilSuggestReview,
@@ -394,6 +427,10 @@ class FasilPreview extends StatelessWidget {
     );
   }
 }
+
+/// Asks a fasil's name (see [FasilNameDialog]).
+Future<String?> askFasilName(BuildContext context, {String? initial}) =>
+    _askName(context, initial: initial);
 
 Future<String?> _askName(BuildContext context, {String? initial}) =>
     showDialog<String>(
@@ -572,6 +609,15 @@ Future<void> showFasilActions(
                     ),
                   ),
                 ),
+                ListTile(
+                  key: const ValueKey('fasil-change-style'),
+                  leading: const Icon(Icons.palette_outlined),
+                  title: Text(l.fasilChangeStyle),
+                  onTap: () {
+                    Navigator.of(sheet).pop();
+                    showFasilStyleEditor(context, ref, fasil);
+                  },
+                ),
                 if (here != null)
                   ListTile(
                     leading: const Icon(Icons.swap_horiz),
@@ -616,17 +662,8 @@ Future<void> showFasilActions(
                       ),
                     );
                     if (sure != true) return;
-                    await db.deleteBookmarkSet(fasil.id);
+                    await deleteFasilWithUndo(messenger, l, db, fasil);
                     if (sheet.mounted) Navigator.of(sheet).pop();
-                    messenger.showSnackBar(
-                      appToast(
-                        content: Text(l.fasilDeleted),
-                        action: SnackBarAction(
-                          label: l.fasilUndo,
-                          onPressed: () => _restore(db, fasil),
-                        ),
-                      ),
-                    );
                   },
                 ),
               ],
@@ -636,32 +673,4 @@ Future<void> showFasilActions(
       ),
     ),
   );
-}
-
-/// Puts a deleted fasil back as it was: a fixed one stays fixed.
-Future<void> _restore(UserDatabase db, BookmarkSetRow f) async {
-  final kind = MarkKind.values.where((k) => k.name == f.kind).firstOrNull;
-  if (kind == null) {
-    await db.addBookmarkSet(
-      name: f.name,
-      color: f.color,
-      surah: f.surah,
-      ayah: f.ayah,
-      page: f.page,
-    );
-    return;
-  }
-  await db.setMark(
-    kind,
-    name: f.name,
-    surah: f.surah,
-    ayah: f.ayah,
-    page: f.page,
-  );
-  if (f.color != kind.color) {
-    final back = (await db.watchBookmarkSets().first)
-        .where((r) => r.kind == f.kind)
-        .firstOrNull;
-    if (back != null) await db.updateBookmarkSet(back.id, color: f.color);
-  }
 }

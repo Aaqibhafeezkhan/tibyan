@@ -5002,4 +5002,96 @@ class AppLocalizationsEn extends AppLocalizations {
   String reelVerses(String from, String to) {
     return 'Verses $from to $to';
   }
+
+  @override
+  String get tabFawasil => 'Bookmarks';
+
+  @override
+  String get fasilMoveTo => 'Move to…';
+
+  @override
+  String fasilMoveTitle(String name) {
+    return 'Move «$name» to';
+  }
+
+  @override
+  String get fasilMoveBySurah => 'Surah and verse';
+
+  @override
+  String get fasilMoveByPage => 'Page number';
+
+  @override
+  String get fasilMoveCurrent => 'Where you are reading';
+
+  @override
+  String get fasilSurah => 'Surah';
+
+  @override
+  String get fasilAyah => 'Verse';
+
+  @override
+  String get fasilPage => 'Page';
+
+  @override
+  String get fasilMove => 'Move';
+
+  @override
+  String get fasilMoved => 'Bookmark moved';
+
+  @override
+  String get fasilRenameAction => 'Rename';
+
+  @override
+  String get fasilChangeStyle => 'Change look, cloth and colour';
+
+  @override
+  String fasilStyleTitle(String name) {
+    return 'Look of «$name»';
+  }
+
+  @override
+  String get fasilFollowDefault => 'Follow the default';
+
+  @override
+  String get fasilDefaultOption => 'Default';
+
+  @override
+  String fasilLimitTitle(int max) {
+    return 'You have reached the limit of $max bookmarks';
+  }
+
+  @override
+  String get fasilLimitHint =>
+      'Move one of your bookmarks here, or delete one to add a new bookmark.';
+
+  @override
+  String fasilLimitOver(int count, int keep) {
+    return 'You have $count bookmarks from before the limit, and all are kept. To add a new one, delete until $keep or fewer remain.';
+  }
+
+  @override
+  String get fasilMoveHereShort => 'Move here';
+
+  @override
+  String get fasilReorderHint =>
+      'Drag a bookmark to order it as it appears on the page edge.';
+
+  @override
+  String fasilItemLabel(String name, String surah, String ayah, String page) {
+    return 'Bookmark $name, $surah verse $ayah, page $page';
+  }
+
+  @override
+  String get fasilInvalidPlace => 'Not a valid place';
+
+  @override
+  String fasilCount(int count, int max) {
+    return '$count of $max';
+  }
+
+  @override
+  String get fasilMoveUp => 'Move earlier';
+
+  @override
+  String get fasilMoveDown => 'Move later';
 }

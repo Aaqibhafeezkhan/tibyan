@@ -12,7 +12,9 @@ import '../../../l10n/app_localizations.dart';
 import '../data/mushaf_repository.dart';
 import '../mushaf_providers.dart';
 import 'mushaf_screen.dart';
+import 'fawasil_manage.dart';
 import 'navigation.dart';
+import '../../khatma/domain/khatmah.dart' show EntryPoint;
 import 'pages_map.dart';
 import 'widgets/illuminated_frame.dart' show NumberFormatter;
 import '../../../core/ui/responsive.dart';
@@ -38,7 +40,7 @@ String _fold(String s) => s
   return (surah: int.parse(m[1]!), ayah: int.parse(m[2]!));
 }
 
-enum IndexTab { surahs, juz, hizb, pages, marks }
+enum IndexTab { surahs, juz, hizb, pages, marks, fawasil }
 
 /// Row height in the index lists, fixed so the current row can be
 /// scrolled into view before it is built.
@@ -114,6 +116,7 @@ class _IndexScreenState extends ConsumerState<IndexScreen> {
                   l.tabHizb,
                   l.tabPages,
                   l.tabMarks,
+                  l.tabFawasil,
                 ],
               ),
               Expanded(
@@ -162,6 +165,15 @@ class _IndexScreenState extends ConsumerState<IndexScreen> {
                               ),
                             PagesMap(current: widget.page),
                             _MarksTab(surahs: surahs),
+                            FawasilIndexTab(
+                              onOpen: (f) => openVerse(
+                                context,
+                                ref,
+                                surah: f.surah,
+                                ayah: f.ayah,
+                                entry: EntryPoint.bookmark,
+                              ),
+                            ),
                           ],
                         ),
                       ),

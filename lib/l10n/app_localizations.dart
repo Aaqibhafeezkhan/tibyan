@@ -8461,6 +8461,162 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'الآيات {from} إلى {to}'**
   String reelVerses(String from, String to);
+
+  /// No description provided for @tabFawasil.
+  ///
+  /// In ar, this message translates to:
+  /// **'الفواصل'**
+  String get tabFawasil;
+
+  /// No description provided for @fasilMoveTo.
+  ///
+  /// In ar, this message translates to:
+  /// **'انقل إلى…'**
+  String get fasilMoveTo;
+
+  /// No description provided for @fasilMoveTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'انقل «{name}» إلى'**
+  String fasilMoveTitle(String name);
+
+  /// No description provided for @fasilMoveBySurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'سورة وآية'**
+  String get fasilMoveBySurah;
+
+  /// No description provided for @fasilMoveByPage.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم الصفحة'**
+  String get fasilMoveByPage;
+
+  /// No description provided for @fasilMoveCurrent.
+  ///
+  /// In ar, this message translates to:
+  /// **'موضع القراءة الحالي'**
+  String get fasilMoveCurrent;
+
+  /// No description provided for @fasilSurah.
+  ///
+  /// In ar, this message translates to:
+  /// **'السورة'**
+  String get fasilSurah;
+
+  /// No description provided for @fasilAyah.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآية'**
+  String get fasilAyah;
+
+  /// No description provided for @fasilPage.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصفحة'**
+  String get fasilPage;
+
+  /// No description provided for @fasilMove.
+  ///
+  /// In ar, this message translates to:
+  /// **'انقل'**
+  String get fasilMove;
+
+  /// No description provided for @fasilMoved.
+  ///
+  /// In ar, this message translates to:
+  /// **'نُقلت الفاصلة'**
+  String get fasilMoved;
+
+  /// No description provided for @fasilRenameAction.
+  ///
+  /// In ar, this message translates to:
+  /// **'أعد التسمية'**
+  String get fasilRenameAction;
+
+  /// No description provided for @fasilChangeStyle.
+  ///
+  /// In ar, this message translates to:
+  /// **'غيّر الشكل والخامة واللون'**
+  String get fasilChangeStyle;
+
+  /// No description provided for @fasilStyleTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'مظهر «{name}»'**
+  String fasilStyleTitle(String name);
+
+  /// No description provided for @fasilFollowDefault.
+  ///
+  /// In ar, this message translates to:
+  /// **'اتبع الإعداد الافتراضي'**
+  String get fasilFollowDefault;
+
+  /// No description provided for @fasilDefaultOption.
+  ///
+  /// In ar, this message translates to:
+  /// **'الافتراضي'**
+  String get fasilDefaultOption;
+
+  /// No description provided for @fasilLimitTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'بلغت الحدّ الأقصى: {max} فواصل'**
+  String fasilLimitTitle(int max);
+
+  /// No description provided for @fasilLimitHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'انقل إحدى فواصلك إلى هذا الموضع، أو احذف واحدة لتضيف فاصلة جديدة.'**
+  String get fasilLimitHint;
+
+  /// No description provided for @fasilLimitOver.
+  ///
+  /// In ar, this message translates to:
+  /// **'لديك {count} فواصل من قبل وضع الحدّ، وهي محفوظة كلها. لتضيف فاصلة جديدة احذف حتى يبقى {keep} أو أقل.'**
+  String fasilLimitOver(int count, int keep);
+
+  /// No description provided for @fasilMoveHereShort.
+  ///
+  /// In ar, this message translates to:
+  /// **'انقلها إلى هنا'**
+  String get fasilMoveHereShort;
+
+  /// No description provided for @fasilReorderHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسحب الفاصلة لترتيبها كما تظهر على حافة الصفحة.'**
+  String get fasilReorderHint;
+
+  /// No description provided for @fasilItemLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'فاصلة {name}، {surah} الآية {ayah}، الصفحة {page}'**
+  String fasilItemLabel(String name, String surah, String ayah, String page);
+
+  /// No description provided for @fasilInvalidPlace.
+  ///
+  /// In ar, this message translates to:
+  /// **'موضع غير صحيح'**
+  String get fasilInvalidPlace;
+
+  /// No description provided for @fasilCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count} من {max}'**
+  String fasilCount(int count, int max);
+
+  /// No description provided for @fasilMoveUp.
+  ///
+  /// In ar, this message translates to:
+  /// **'قدّمها'**
+  String get fasilMoveUp;
+
+  /// No description provided for @fasilMoveDown.
+  ///
+  /// In ar, this message translates to:
+  /// **'أخّرها'**
+  String get fasilMoveDown;
 }
 
 class _AppLocalizationsDelegate

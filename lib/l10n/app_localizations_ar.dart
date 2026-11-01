@@ -5065,4 +5065,96 @@ class AppLocalizationsAr extends AppLocalizations {
   String reelVerses(String from, String to) {
     return 'الآيات $from إلى $to';
   }
+
+  @override
+  String get tabFawasil => 'الفواصل';
+
+  @override
+  String get fasilMoveTo => 'انقل إلى…';
+
+  @override
+  String fasilMoveTitle(String name) {
+    return 'انقل «$name» إلى';
+  }
+
+  @override
+  String get fasilMoveBySurah => 'سورة وآية';
+
+  @override
+  String get fasilMoveByPage => 'رقم الصفحة';
+
+  @override
+  String get fasilMoveCurrent => 'موضع القراءة الحالي';
+
+  @override
+  String get fasilSurah => 'السورة';
+
+  @override
+  String get fasilAyah => 'الآية';
+
+  @override
+  String get fasilPage => 'الصفحة';
+
+  @override
+  String get fasilMove => 'انقل';
+
+  @override
+  String get fasilMoved => 'نُقلت الفاصلة';
+
+  @override
+  String get fasilRenameAction => 'أعد التسمية';
+
+  @override
+  String get fasilChangeStyle => 'غيّر الشكل والخامة واللون';
+
+  @override
+  String fasilStyleTitle(String name) {
+    return 'مظهر «$name»';
+  }
+
+  @override
+  String get fasilFollowDefault => 'اتبع الإعداد الافتراضي';
+
+  @override
+  String get fasilDefaultOption => 'الافتراضي';
+
+  @override
+  String fasilLimitTitle(int max) {
+    return 'بلغت الحدّ الأقصى: $max فواصل';
+  }
+
+  @override
+  String get fasilLimitHint =>
+      'انقل إحدى فواصلك إلى هذا الموضع، أو احذف واحدة لتضيف فاصلة جديدة.';
+
+  @override
+  String fasilLimitOver(int count, int keep) {
+    return 'لديك $count فواصل من قبل وضع الحدّ، وهي محفوظة كلها. لتضيف فاصلة جديدة احذف حتى يبقى $keep أو أقل.';
+  }
+
+  @override
+  String get fasilMoveHereShort => 'انقلها إلى هنا';
+
+  @override
+  String get fasilReorderHint =>
+      'اسحب الفاصلة لترتيبها كما تظهر على حافة الصفحة.';
+
+  @override
+  String fasilItemLabel(String name, String surah, String ayah, String page) {
+    return 'فاصلة $name، $surah الآية $ayah، الصفحة $page';
+  }
+
+  @override
+  String get fasilInvalidPlace => 'موضع غير صحيح';
+
+  @override
+  String fasilCount(int count, int max) {
+    return '$count من $max';
+  }
+
+  @override
+  String get fasilMoveUp => 'قدّمها';
+
+  @override
+  String get fasilMoveDown => 'أخّرها';
 }
