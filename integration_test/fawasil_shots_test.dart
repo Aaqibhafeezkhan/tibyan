@@ -117,6 +117,16 @@ void main() {
       await pumpFor(t, const Duration(seconds: 4));
       await snap(t, 'page-mixed-$tag');
 
+      // The same page in the 1405 edition (its page pack downloads the
+      // first time), then back to 1441.
+      await s.setEdition(MushafEdition.madina1405);
+      router.go(mushafLocation(50));
+      await pumpFor(t, const Duration(seconds: 25));
+      await snap(t, 'page-1405-$tag');
+      await s.setEdition(MushafEdition.madina1441);
+      router.go(mushafLocation(50));
+      await pumpFor(t, const Duration(seconds: 4));
+
       router.go('/mushaf/index?tab=fawasil');
       await pumpFor(t, const Duration(seconds: 3));
       await snap(t, 'index-fawasil-$tag');
