@@ -5,6 +5,14 @@ import 'package:tibyan/features/khatma/services/kahf_reminder.dart';
 import 'package:tibyan/features/khatma/services/reminder_scheduler.dart';
 
 class _Recording extends NoReminders {
+  var asked = 0;
+
+  @override
+  Future<bool> requestPermission() async {
+    asked++;
+    return true;
+  }
+
   final texts = <int, (String, String, String)>{};
 
   @override
@@ -32,11 +40,28 @@ void main() {
   // A Wednesday.
   final now = DateTime(2026, 11, 4, 12);
 
-  test('off by default: nothing is scheduled', () async {
+  test('on by default', () {
+    expect(const AppSettings(styleId: 'simple').kahfReminder, isTrue);
+  });
+
+  test('turned off: nothing is scheduled', () async {
     final s = _Recording();
-    expect(const AppSettings(styleId: 'simple').kahfReminder, isFalse);
+    await syncKahfReminder(
+      s,
+      const AppSettings(styleId: 'simple', kahfReminder: false),
+      now: now,
+    );
+    expect(s.once, isEmpty);
+  });
+
+  test('without the permission it waits, and never asks', () async {
+    final s = _Recording()..permitted = false;
     await syncKahfReminder(s, const AppSettings(styleId: 'simple'), now: now);
     expect(s.once, isEmpty);
+    expect(s.asked, 0);
+    s.permitted = true;
+    await syncKahfReminder(s, const AppSettings(styleId: 'simple'), now: now);
+    expect(s.once.length, kahfRemindersAhead);
   });
 
   test('on: the next Fridays at 09:00, opening 18:1', () async {
@@ -65,7 +90,11 @@ void main() {
       const AppSettings(styleId: 'simple', kahfReminder: true),
       now: now,
     );
-    await syncKahfReminder(s, const AppSettings(styleId: 'simple'), now: now);
+    await syncKahfReminder(
+      s,
+      const AppSettings(styleId: 'simple', kahfReminder: false),
+      now: now,
+    );
     expect(s.once, isEmpty);
   });
 

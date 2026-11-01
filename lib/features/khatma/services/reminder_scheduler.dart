@@ -25,6 +25,13 @@ abstract interface class ReminderScheduler {
   /// Asks for permission to notify; false when refused.
   Future<bool> requestPermission();
 
+  /// Whether notifying is already allowed, without asking.
+  Future<bool> hasPermission();
+
+  /// Called each time [requestPermission] is granted (reminders that wait
+  /// for the permission are scheduled then).
+  set onGranted(void Function()? handler);
+
   /// One reminder at [at] (a group khatma part); replaces one with [id].
   Future<void> scheduleOnce({
     required int id,
@@ -57,8 +64,17 @@ class NoReminders implements ReminderScheduler {
 
   final once = <int, DateTime>{};
 
+  /// What [hasPermission] answers (tests).
+  bool permitted = true;
+
   @override
   Future<bool> requestPermission() async => true;
+
+  @override
+  Future<bool> hasPermission() async => permitted;
+
+  @override
+  set onGranted(void Function()? handler) {}
 
   @override
   Future<void> scheduleOnce({
@@ -89,6 +105,46 @@ class LocalReminderScheduler implements ReminderScheduler {
 
   @override
   set onTap(void Function(String payload)? handler) => _onTap = handler;
+
+  void Function()? _onGranted;
+
+  @override
+  set onGranted(void Function()? handler) => _onGranted = handler;
+
+  @override
+  Future<bool> hasPermission() async {
+    if (!_supported) return false;
+    try {
+      await _init();
+      return switch (defaultTargetPlatform) {
+        TargetPlatform.android =>
+          await _plugin
+                  .resolvePlatformSpecificImplementation<
+                    AndroidFlutterLocalNotificationsPlugin
+                  >()
+                  ?.areNotificationsEnabled() ??
+              false,
+        TargetPlatform.macOS =>
+          (await _plugin
+                      .resolvePlatformSpecificImplementation<
+                        MacOSFlutterLocalNotificationsPlugin
+                      >()
+                      ?.checkPermissions())
+                  ?.isEnabled ??
+              false,
+        _ =>
+          (await _plugin
+                      .resolvePlatformSpecificImplementation<
+                        IOSFlutterLocalNotificationsPlugin
+                      >()
+                      ?.checkPermissions())
+                  ?.isEnabled ??
+              false,
+      };
+    } catch (_) {
+      return false;
+    }
+  }
 
   Future<void> _init() => _ready ??= () async {
     tzdata.initializeTimeZones();
@@ -132,6 +188,12 @@ class LocalReminderScheduler implements ReminderScheduler {
 
   @override
   Future<bool> requestPermission() async {
+    final granted = await _request();
+    if (granted) _onGranted?.call();
+    return granted;
+  }
+
+  Future<bool> _request() async {
     if (!_supported) return false;
     await _init();
     if (defaultTargetPlatform == TargetPlatform.android) {

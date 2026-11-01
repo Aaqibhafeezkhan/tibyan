@@ -7,7 +7,7 @@ import '../../../l10n/app_localizations.dart';
 import '../khatma_providers.dart' show reminderSchedulerProvider;
 import '../services/kahf_reminder.dart';
 
-/// The Friday Surah Al-Kahf reminder's switch (off by default).
+/// The Friday Surah Al-Kahf reminder's switch (on by default).
 class KahfReminderTile extends ConsumerWidget {
   const KahfReminderTile({super.key});
 

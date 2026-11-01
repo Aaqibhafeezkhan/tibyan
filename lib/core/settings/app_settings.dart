@@ -188,7 +188,7 @@ class AppSettings {
     this.forceReduceMotion = false,
     this.announceVerseNumber = true,
     this.weeklyReminder = false,
-    this.kahfReminder = false,
+    this.kahfReminder = true,
     this.weeklyReminderWeekday = DateTime.friday,
     this.weeklyReminderMinutes = 20 * 60,
     this.tajweedColors = false,
@@ -340,7 +340,7 @@ class AppSettings {
   final bool weeklyReminder;
 
   /// A neutral reminder each Friday morning that opens Surah Al-Kahf in
-  /// the edition being read (off by default).
+  /// the edition being read (on by default; the reader may turn it off).
   final bool kahfReminder;
   final int weeklyReminderWeekday;
   final int weeklyReminderMinutes;

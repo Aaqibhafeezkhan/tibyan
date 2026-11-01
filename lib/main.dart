@@ -237,7 +237,8 @@ void _startKhatma(ProviderContainer container) {
         container.read(settingsProvider),
       );
     } catch (_) {}
-    // The Friday Surah Al-Kahf reminder (off by default).
+    // The Friday Surah Al-Kahf reminder (on by default, scheduled only
+    // when notifying is already allowed).
     try {
       await syncKahfReminder(
         container.read(reminderSchedulerProvider),
@@ -338,6 +339,13 @@ void _startKhatma(ProviderContainer container) {
   };
 
   final reminders = container.read(reminderSchedulerProvider);
+  // A permission granted for any reminder also schedules the Friday one.
+  reminders.onGranted = () => unawaited(
+    syncKahfReminder(
+      reminders,
+      container.read(settingsProvider),
+    ).catchError((_) {}),
+  );
   reminders.onTap = (payload) => open(Uri.tryParse(payload));
   unawaited(
     reminders

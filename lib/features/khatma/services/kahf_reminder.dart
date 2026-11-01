@@ -20,7 +20,10 @@ const kahfReminderMinutes = 9 * 60;
 final kahfReminderLink = verseLink(18, 1).toString();
 
 /// Schedules (or, when turned off, cancels) the Friday reminder. Its text is
-/// fixed and neutral: the surah's name only.
+/// fixed and neutral: the surah's name only. On by default, but scheduled
+/// only once notifying is already allowed: it never asks for the permission
+/// itself (the scheduler's `onGranted` schedules it when another reminder,
+/// or this switch, is granted).
 Future<void> syncKahfReminder(
   ReminderScheduler scheduler,
   AppSettings settings, {
@@ -29,7 +32,7 @@ Future<void> syncKahfReminder(
   for (var i = 0; i < kahfRemindersAhead; i++) {
     await scheduler.cancelOnce(kahfReminderIdBase + i);
   }
-  if (!settings.kahfReminder) return;
+  if (!settings.kahfReminder || !await scheduler.hasPermission()) return;
   final l = lookupAppLocalizations(settings.locale ?? const Locale('ar'));
   final times = nextWeeklyTimes(
     now ?? DateTime.now(),

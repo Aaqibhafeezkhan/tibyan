@@ -179,7 +179,7 @@ class SettingsController extends Notifier<AppSettings> {
       forceReduceMotion: _prefs.getBool(_kReduceMotion) ?? false,
       announceVerseNumber: _prefs.getBool(_kAnnounceVerse) ?? true,
       weeklyReminder: _prefs.getBool(_kWeeklyReminder) ?? false,
-      kahfReminder: _prefs.getBool(_kKahfReminder) ?? false,
+      kahfReminder: _prefs.getBool(_kKahfReminder) ?? true,
       weeklyReminderWeekday: (_prefs.getInt(_kWeeklyDay) ?? DateTime.friday)
           .clamp(DateTime.monday, DateTime.sunday),
       weeklyReminderMinutes: (_prefs.getInt(_kWeeklyMinutes) ?? 20 * 60).clamp(
