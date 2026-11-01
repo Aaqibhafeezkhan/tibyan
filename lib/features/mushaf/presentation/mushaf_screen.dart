@@ -122,7 +122,12 @@ class MushafScreen extends ConsumerStatefulWidget {
     this.listen = false,
     this.memorize = false,
     this.entry = EntryPoint.other,
+    this.visit,
   });
+
+  /// The address's visit counter (`v=`): a new one asks the open page view
+  /// to go to [initialPage] again, even the same page.
+  final String? visit;
 
   /// Open in memorization mode (hidden words), over [hifzFrom]..[hifzTo]
   /// when both are given (`surah:ayah`), else over the pages.
@@ -319,6 +324,32 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     }
     if (ref.read(settingsProvider).keepScreenOn) WakelockPlus.enable();
     _applySystemBars();
+  }
+
+  @override
+  void didUpdateWidget(MushafScreen old) {
+    super.didUpdateWidget(old);
+    // The same page view opened again at a page (from the index, the home
+    // screen): the pager goes there, the rest of the reader stays.
+    final page = widget.initialPage;
+    if (page == null ||
+        (page == old.initialPage && widget.visit == old.visit)) {
+      return;
+    }
+    final start = page.clamp(_first, ref.read(editionProvider).pageCount);
+    if (widget.entry.countsOnlyAfterLanding) _tracker.onlyAfterPage = start;
+    // Nothing chosen on the page left behind follows to the new one.
+    _selA = _selB = null;
+    final controller = _controller;
+    // Still opening: [_open] reads the new page.
+    if (controller == null) return;
+    if (!controller.hasClients) {
+      controller.dispose();
+      _controller = PageController(initialPage: _indexOf(start));
+      _page = start;
+      return;
+    }
+    controller.jumpToPage(_indexOf(start));
   }
 
   /// The system's bars show with the menus; focus mode keeps them hidden

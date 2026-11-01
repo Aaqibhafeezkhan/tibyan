@@ -69,6 +69,38 @@ void markAppRouterReady(Completer<void> ready) {
   if (!ready.isCompleted) ready.complete();
 }
 
+/// The measuring harness's switch back to a page view keyed by its whole
+/// address (built anew on every jump), to time both in one run.
+@visibleForTesting
+bool debugMushafKeyedByUri = false;
+
+/// The page view's identity: what it opens with besides its page (a verse
+/// to select, a hifz test, listening, memorization); not the page, the
+/// visit counter, where it was opened from, nor a child route's own
+/// parameters (the index's tab). A jump to another page from the
+/// index or the home screen, while the page view is there, keeps it and
+/// turns its pager to the page instead of building it all again; any other
+/// change (a verse to select, a hifz test, listening, memorization) opens
+/// it anew.
+@visibleForTesting
+String mushafSessionOf(Uri uri) {
+  if (debugMushafKeyedByUri) return uri.toString();
+  final q = {
+    for (final e in uri.queryParameters.entries)
+      if (const {
+        's',
+        'a',
+        'hifz',
+        'from',
+        'to',
+        'listen',
+        'memorize',
+      }.contains(e.key))
+        e.key: e.value,
+  };
+  return Uri(path: '/mushaf', queryParameters: q.isEmpty ? null : q).toString();
+}
+
 int? _int(GoRouterState s, String key) =>
     int.tryParse(s.uri.queryParameters[key] ?? '');
 
@@ -344,8 +376,9 @@ final appRouterProvider = Provider<GoRouter>(
       GoRoute(
         path: '/mushaf',
         builder: (context, state) => MushafScreen(
-          key: ValueKey(state.uri.toString()),
+          key: ValueKey(mushafSessionOf(state.uri)),
           initialPage: _int(state, 'page'),
+          visit: state.uri.queryParameters['v'],
           selectSurah: _int(state, 's'),
           selectAyah: _int(state, 'a'),
           hifzUnit: state.uri.queryParameters['hifz'],
