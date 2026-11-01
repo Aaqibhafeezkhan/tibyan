@@ -167,15 +167,12 @@ class _BuildHeader extends StatelessWidget {
           children: [
             line,
             const MetaSeparator(),
-            Flexible(
-              flex: 3,
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: look.goldText,
-                  fontWeight: FontWeight.w700,
-                ),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: look.goldText,
+                fontWeight: FontWeight.w700,
               ),
             ),
             const MetaSeparator(),
