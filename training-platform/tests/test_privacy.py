@@ -53,12 +53,12 @@ class PrivacyPageTests(unittest.TestCase):
         self.assertIn("سياسة الخصوصية", page)
         self.assertIn('class="policy-summary"', page)
         self.assertIn("info@altibyan.app", page)
-        self.assertIn('<time datetime="2026-10-26">', page)
+        self.assertIn('<time datetime="2026-11-01">', page)
         self.assertIn('id="group-khatma"', page)
         self.assertIn('href="/privacy/en"', page)
         self.assertIn('rel="canonical" href="https://altibyan.app/privacy"', page)
         # the facts the policy must state
-        for fact in ("مغلقة افتراضيًّا", "CC BY 4.0", "Sentry", "١٢ شهرًا", "ولي الأمر"):
+        for fact in ("لا يُرسل شيء إلا إن وافقت", "CC BY 4.0", "GlitchTip", "errors.altibyan.app", "١٢ شهرًا", "ولي الأمر"):
             self.assertIn(fact, page)
 
     def test_english_policy(self):
@@ -69,7 +69,7 @@ class PrivacyPageTests(unittest.TestCase):
         self.assertIn('lang="en" dir="ltr"', page)
         self.assertIn("Privacy policy", page)
         self.assertIn("off by default", page)
-        self.assertIn("26 October 2026", page)
+        self.assertIn("1 November 2026", page)
         self.assertIn('href="/privacy"', page)
 
     def test_language_cookie_does_not_change_the_url_language(self):

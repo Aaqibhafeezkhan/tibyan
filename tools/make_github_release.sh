@@ -70,6 +70,14 @@ if [ "$SKIP_BUILD" -eq 0 ]; then
   if [ -f "$HOME/.config/tibyan/google.env" ]; then
     ENV_ARG=(--dart-define-from-file="$HOME/.config/tibyan/google.env")
   fi
+  # Crash reports (GlitchTip DSN) and readable stack traces: symbols kept per build,
+  # uploaded at the end with tools/upload_symbols.sh. GitHub builds are the beta channel.
+  if [ -f "$HOME/.config/tibyan/sentry.env" ]; then
+    ENV_ARG+=(--dart-define-from-file="$HOME/.config/tibyan/sentry.env")
+  else
+    echo "Warning: ~/.config/tibyan/sentry.env missing: this build sends no crash reports." >&2
+  fi
+  ENV_ARG+=(--dart-define=TIBYAN_CHANNEL=beta --split-debug-info="build/symbols/$BUILD")
 
   # Android: per-ABI APKs, then the universal one (the second build replaces the first's outputs).
   flutter build apk --release --split-per-abi --build-number="$BUILD" "${ENV_ARG[@]}"
@@ -101,6 +109,11 @@ if [ "$SKIP_BUILD" -eq 0 ]; then
   fi
   ditto -c -k --keepParent "$APP" "$OUT/$NAME-macos.zip"
   echo "$MAC_STATE" > "$OUT/.macos-state"
+
+  # Debug symbols to GlitchTip (and dSYM copies in ~/.config/tibyan/dsyms/<build>).
+  if [ -f "$HOME/.config/tibyan/glitchtip.env" ]; then
+    tools/upload_symbols.sh "$BUILD" || echo "Warning: symbol upload failed; rerun tools/upload_symbols.sh $BUILD" >&2
+  fi
 fi
 
 [ -d "$OUT" ] || { echo "No build in $OUT (drop --skip-build)." >&2; exit 1; }

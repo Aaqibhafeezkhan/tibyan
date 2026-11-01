@@ -105,6 +105,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'Sends technical crash details only, with no personal data. Off until you agree.';
 
   @override
+  String get crashConsentTitle => 'Help us improve Tibyan';
+
+  @override
+  String get crashConsentBody =>
+      'If the app crashes, it can send us an anonymous technical report describing where it failed, the device model and the system version, so we can fix it quickly. The report never includes your name, email, IP address, or anything you read or record. Reports are kept only on Tibyan\'s own server, and you can change your choice any time in Settings.';
+
+  @override
+  String get crashConsentAgree => 'I agree';
+
+  @override
+  String get crashConsentDecline => 'No, thanks';
+
+  @override
   String get aboutTitle => 'About';
 
   @override

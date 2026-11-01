@@ -47,7 +47,7 @@
           <li>كل ما تصنعه في التطبيق (الإعدادات، والفواصل، والتدبّرات، والختمات، والحفظ، والتسبيح) يُحفظ على جهازك فقط.</li>
           <li>الاستثناء الوحيد «الختمة الجماعية» إن أنشأتها أو شاركت فيها: يُحفظ على خادمنا اسمها والأسماء التي تكتبونها وحالة الأجزاء فقط، وتُحذف تلقائيًا (التفاصيل في البند ٩).</li>
           <li>التسميع يعمل على جهازك: صوتك لا يُسجَّل ولا يُرسَل إلى أي خادم.</li>
-          <li>لا يصلنا منك إلا ما ترسله بنفسك: بلاغ «الإبلاغ عن مشكلة»، أو تقارير الأعطال إن فعّلتها، أو بريدك في نماذج الموقع، أو تسجيلاتك في منصة التدريب.</li>
+          <li>لا يصلنا منك إلا ما ترسله بنفسك: بلاغ «الإبلاغ عن مشكلة»، أو تقارير الأعطال إن وافقت عليها، أو بريدك في نماذج الموقع، أو تسجيلاتك في منصة التدريب.</li>
           <li>لا نبيع بياناتك ولا نشاركها لأغراض تسويقية. للتواصل: <a href="mailto:info@altibyan.app">info@altibyan.app</a>.</li>
         </ul>
       </section>
@@ -116,7 +116,12 @@
 
       <section id="crash">
         <h2>٦. تقارير الأعطال (اختيارية)</h2>
-        <p>تقارير الأعطال <strong>مغلقة افتراضيًّا</strong>. إن فعّلتها من الإعدادات، يرسل التطبيق عند حدوث عطل تقريرًا تقنيًّا (تفاصيل الخطأ، ونسخة التطبيق، ونوع الجهاز ونظامه) عبر خدمة Sentry. أُعدّ التطبيق بحيث لا يرسل بيانات شخصية: لا هوية مستخدم، ولا لقطات شاشة، ولا سجلّ تنقّل، ولا بيانات طلبات. يمكنك إيقافها في أي وقت فيتوقف الإرسال فورًا.</p>
+        <p>عند أول تشغيل يسألك التطبيق مرة واحدة: «ساعدنا نحسّن تبيان». <strong>لا يُرسل شيء إلا إن وافقت</strong>، ويمكنك تغيير اختيارك في أي وقت من الإعدادات فيتوقف الإرسال فورًا.</p>
+        <ul>
+          <li><strong>ما يُرسل:</strong> عند حدوث عطل أو تجمّد أو إغلاق النظام للتطبيق، يُرسل تقرير تقني: نوع الخطأ وموضعه في الشيفرة، ونسخة التطبيق ورقم بنائه، وطراز الجهاز ونظامه ولغته، وخطوات عامة سبقت العطل (مثل الانتقال بين الشاشات أو انتقال التطبيق إلى الخلفية).</li>
+          <li><strong>ما لا يُرسل:</strong> اسمك أو بريدك أو أي معرّف لك، واسم الجهاز، وعنوان IP (لا يمرَّر إلى خادم التقارير ويُحذف إن وصل)، ولقطات الشاشة، وما تقرؤه أو تكتبه أو تسجّله، وعناوين الطلبات ومحتواها.</li>
+          <li><strong>أين تُحفظ:</strong> على خادم تبيان نفسه (<span dir="ltr">errors.altibyan.app</span>) ببرنامج GlitchTip مفتوح المصدر، لا لدى شركة خارجية. لا يطّلع عليها إلا فريق تبيان، وتُحذف تلقائيًّا بعد ٩٠ يومًا.</li>
+        </ul>
       </section>
 
       <section id="report">
@@ -174,7 +179,7 @@
 
       <section id="share">
         <h2>١١. المشاركة مع الغير</h2>
-        <p>لا نبيع بياناتك، ولا نشاركها لأغراض إعلانية أو تسويقية. نستعين فقط بما يلزم لتشغيل الخدمة: مزوّد الاستضافة، ومزوّد البريد الإلكتروني لإرسال الرسائل، وSentry لتقارير الأعطال إن فعّلتها، وGoogle Play وTestFlight لإضافة المختبِرين. وقد نفصح عن بيانات إن ألزمنا القانون بذلك.</p>
+        <p>لا نبيع بياناتك، ولا نشاركها لأغراض إعلانية أو تسويقية. نستعين فقط بما يلزم لتشغيل الخدمة: مزوّد الاستضافة، ومزوّد البريد الإلكتروني لإرسال الرسائل، وGoogle Play وTestFlight لإضافة المختبِرين. وقد نفصح عن بيانات إن ألزمنا القانون بذلك.</p>
       </section>
 
       <section id="rights">
@@ -204,7 +209,7 @@
           <li>Everything you make in the app (settings, bookmarks, reflections, khatmas, memorisation, tasbih) is stored on your device only.</li>
           <li>The one exception is «Group khatma», if you create or join one: our server keeps only its title, the names you type and the state of the parts, and deletes it automatically (details in section 9).</li>
           <li>Recitation checking runs on your device: your voice is never recorded or sent to any server.</li>
-          <li>We only receive what you send yourself: a «Report a problem» message, crash reports if you turn them on, your email in the site's forms, or your recordings on the training platform.</li>
+          <li>We only receive what you send yourself: a «Report a problem» message, crash reports if you agree to them, your email in the site's forms, or your recordings on the training platform.</li>
           <li>We never sell your data or share it for marketing. Contact: <a href="mailto:info@altibyan.app">info@altibyan.app</a>.</li>
         </ul>
       </section>
@@ -273,7 +278,12 @@
 
       <section id="crash">
         <h2>6. Crash reports (optional)</h2>
-        <p>Crash reports are <strong>off by default</strong>. If you turn them on in the settings, the app sends a technical report when it crashes (error details, app version, device type and OS) through Sentry. The app is set up to send no personal data: no user identity, no screenshots, no navigation trail and no request data. You can turn them off at any time and sending stops at once.</p>
+        <p>On first launch the app asks you once: «Help us improve Tibyan». <strong>Nothing is sent unless you agree</strong>, and you can change your choice at any time in the settings; sending stops at once.</p>
+        <ul>
+          <li><strong>What is sent:</strong> when the app crashes, freezes or is closed by the system, a technical report: the error type and where in the code it happened, the app version and build number, the device model, OS and language, and general steps before the crash (such as moving between screens or the app going to the background).</li>
+          <li><strong>What is never sent:</strong> your name, email or any identifier for you, the device name, your IP address (it is not passed to the report server and is removed if it arrives), screenshots, anything you read, type or record, and request addresses or contents.</li>
+          <li><strong>Where it is kept:</strong> on Tibyan's own server (<span dir="ltr">errors.altibyan.app</span>), running the open-source GlitchTip, not with an outside company. Only the Tibyan team can see reports, and they are deleted automatically after 90 days.</li>
+        </ul>
       </section>
 
       <section id="report">
@@ -331,7 +341,7 @@
 
       <section id="share">
         <h2>11. Sharing with others</h2>
-        <p>We never sell your data or share it for advertising or marketing. We only rely on what running the service needs: our hosting provider, an email provider to send messages, Sentry for crash reports if you turn them on, and Google Play and TestFlight to add testers. We may disclose data if the law requires us to.</p>
+        <p>We never sell your data or share it for advertising or marketing. We only rely on what running the service needs: our hosting provider, an email provider to send messages, and Google Play and TestFlight to add testers. We may disclose data if the law requires us to.</p>
       </section>
 
       <section id="rights">

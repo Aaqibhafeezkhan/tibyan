@@ -284,6 +284,30 @@ abstract class AppLocalizations {
   /// **'يرسل تفاصيل تقنية عن الأعطال فقط، بلا أي بيانات شخصية. متوقف حتى توافق.'**
   String get crashReportsHint;
 
+  /// No description provided for @crashConsentTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'ساعدنا نحسّن تبيان'**
+  String get crashConsentTitle;
+
+  /// No description provided for @crashConsentBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'إذا تعطّل التطبيق، يمكنه أن يرسل إلينا تقريرًا تقنيًا مجهولًا يصف موضع العطل وطراز الجهاز وإصدار النظام، لنصلحه سريعًا. لا يتضمن التقرير اسمك ولا بريدك ولا عنوان IP ولا شيئًا مما تقرؤه أو تسجّله. تُحفظ التقارير على خادم تبيان وحده، ويمكنك تغيير اختيارك في أي وقت من الإعدادات.'**
+  String get crashConsentBody;
+
+  /// No description provided for @crashConsentAgree.
+  ///
+  /// In ar, this message translates to:
+  /// **'أوافق'**
+  String get crashConsentAgree;
+
+  /// No description provided for @crashConsentDecline.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا، شكرًا'**
+  String get crashConsentDecline;
+
   /// No description provided for @aboutTitle.
   ///
   /// In ar, this message translates to:

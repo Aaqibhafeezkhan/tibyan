@@ -105,6 +105,19 @@ class AppLocalizationsAr extends AppLocalizations {
       'يرسل تفاصيل تقنية عن الأعطال فقط، بلا أي بيانات شخصية. متوقف حتى توافق.';
 
   @override
+  String get crashConsentTitle => 'ساعدنا نحسّن تبيان';
+
+  @override
+  String get crashConsentBody =>
+      'إذا تعطّل التطبيق، يمكنه أن يرسل إلينا تقريرًا تقنيًا مجهولًا يصف موضع العطل وطراز الجهاز وإصدار النظام، لنصلحه سريعًا. لا يتضمن التقرير اسمك ولا بريدك ولا عنوان IP ولا شيئًا مما تقرؤه أو تسجّله. تُحفظ التقارير على خادم تبيان وحده، ويمكنك تغيير اختيارك في أي وقت من الإعدادات.';
+
+  @override
+  String get crashConsentAgree => 'أوافق';
+
+  @override
+  String get crashConsentDecline => 'لا، شكرًا';
+
+  @override
   String get aboutTitle => 'عن التطبيق';
 
   @override
