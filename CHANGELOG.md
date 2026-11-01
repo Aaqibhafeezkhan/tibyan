@@ -10,6 +10,7 @@ All notable changes to Tibyan are recorded here. The format follows
 - Metadata separators («الآية ٨٤ · صفحة ٣٠٣») are now a small gold eight-pointed star instead of a middle dot, which read as the Arabic-Indic zero («٨٤٠»): home card, mushaf banners and bars, player, khatma, hifz, tasmee, downloads, storage, search and more. Screen readers hear a pause; plain-text places (notifications, shared images and reels, the tasbih widget and shortcut) use « – » or «،».
 
 ### Added
+- «ما الجديد» (What's new) for builds 40, 41 and 42, grouped by build under a gold star rule: shown once after updating (never on a first install), and from Settings > About.
 - «الفواصل» in the Index: every fasil with its look, surah, verse and page in the edition being read; «انقل إلى…» (a surah and verse, a page number, or where you are reading; the verse finds its own page in every edition), «أعد التسمية», «غيّر الشكل والخامة واللون», «احذف» with «تراجع», and drag (or screen-reader actions) to set their order on the page edge.
 - Each fasil can keep its own look (tinted verse, ribbon or domed tab), cloth (silk, linen, velvet) and colour, from the Index or a long press on it; «اتبع الإعداد الافتراضي» returns it to the settings. Un-customized fawasil keep following the settings, and mixed looks share one page edge in order without overlapping. Synced; user.db schema 10 (two nullable columns, nothing existing changes).
 - Up to eight fawasil in all, counting the fixed marks (قراءة، مراجعة، حفظ، تدبر) the reader has placed; a fixed mark never set takes no place, and setting or moving one is never refused. Adding one more opens a sheet to move one of them here or delete one. Readers who already had more keep them all and are told how many to delete before adding; sync never adds a named fasil past eight (it stays on the other device).
@@ -25,6 +26,8 @@ All notable changes to Tibyan are recorded here. The format follows
 - Fit-to-width pages follow the recitation: the recited line (or word, and the last word shown in a hifz test) scrolls smoothly into view, jumping instead with reduce motion, and waits a few seconds after a manual scroll.
 
 ### Accessibility
+- Crash report question scrolls at large text instead of overflowing; fasil colour swatches have 48 dp targets and are read as «اللون ٣ من ١٢», not a hex code.
+- An audit test of the newer screens in Arabic and English (fawasil in the Index, the move dialog, a fasil's own look, the limit sheet, what's new, crash consent): labels, 48 dp targets, 200% text.
 - Screen readers: every verse on a mushaf page now also offers «Listen from this verse» (starts the recitation when nothing is playing) and «Tafsir and translation» as actions.
 - Large text (up to 200%): the tasbih screen scrolls with a fixed large counter area; section headings, edition badges, onboarding steps, the surah index and the listening screen no longer overflow.
 - Small icon buttons (copy, tafsir and tasmee controls) now have 48 dp targets; small gold and muted text keeps a contrast margin in every look and mode.
@@ -33,6 +36,8 @@ All notable changes to Tibyan are recorded here. The format follows
 - Settings > «إمكانية الوصول» (Accessibility): «تقليل الحركة» (follows the device by default, can be forced on), «قراءة رقم الآية مع نصها» for screen readers (on by default), and a link to the device accessibility settings (Android and macOS; hidden on iOS, which has no public link to that page).
 
 ### Fixed
+- Fawasil: a tab above the text (the open one too) hangs from under the page's info bar (surah, juz, hizb) in the plain, heritage and Zakhrafa frames instead of covering it.
+- Fasil move dialog takes Arabic-Indic digits; the khatma screen shows a localized message instead of a raw error.
 - iOS: listening in the background is lighter and safer: the audio session is set to playback at launch (before any sound can start it in another category), page turns and fit-to-width scrolls that follow the recitation happen at once instead of queuing animations while the app is off screen, and the decoded page images are released when the app goes to the background. Reported as the app closing when a surah plays with the app in the background (TestFlight 0.6.0 build 41); not reproduced on the simulator.
 - Toasts: every toast now dismisses itself (about 4 s, 6 s when it offers Undo), has a close (×) button and can be swiped away; all toasts go through one shared helper.
 

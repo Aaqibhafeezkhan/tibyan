@@ -554,7 +554,7 @@ Future<void> showFasilActions(
           final l = AppLocalizations.of(sheet);
           final t = sheet.tokens.colors;
           final db = ref.read(userDatabaseProvider);
-          final target = sheet.tokens.elderly ? elderlyTarget : 44.0;
+          final target = sheet.tokens.elderly ? elderlyTarget : 48.0;
           return SafeArea(
             child: ListView(
               shrinkWrap: true,

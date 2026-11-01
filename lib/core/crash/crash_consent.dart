@@ -93,8 +93,9 @@ Future<bool?> showCrashConsent(
             style: OutlinedButton.styleFrom(minimumSize: size),
             child: Text(l.crashConsentAgree),
           );
+    // Scrolls when large text makes it taller than the screen.
     return SafeArea(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,

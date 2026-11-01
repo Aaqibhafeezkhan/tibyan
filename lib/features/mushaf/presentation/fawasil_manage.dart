@@ -361,7 +361,7 @@ class _StyleEditor extends ConsumerWidget {
       ],
     );
 
-    final target = context.tokens.elderly ? elderlyTarget : 44.0;
+    final target = context.tokens.elderly ? elderlyTarget : 48.0;
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
