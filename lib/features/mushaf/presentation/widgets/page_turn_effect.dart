@@ -70,6 +70,11 @@ class PageTurnEffect extends StatefulWidget {
   @visibleForTesting
   static bool debugLayerFade = false;
 
+  /// The measuring harness's switch back to snapshots that wait for a
+  /// still screen however long it takes, and no shader warm-up.
+  @visibleForTesting
+  static bool debugLazySnapshots = false;
+
   /// The perspective's strength: Matrix4 entry (3, 2).
   static const depth = 0.0008;
 
@@ -107,10 +112,51 @@ class _PageTurnEffectState extends State<PageTurnEffect> {
   static void _loadProgram() {
     if (_program != null || _loading) return;
     _loading = true;
-    ui.FragmentProgram.fromAsset('shaders/page_curl.frag')
-        .then((p) => _program = p, onError: (_) {});
-    ui.FragmentProgram.fromAsset('shaders/page_curl_spread.frag')
-        .then((p) => _spreadProgram = p, onError: (_) {});
+    ui.FragmentProgram.fromAsset('shaders/page_curl.frag').then((p) {
+      _program = p;
+      if (!PageTurnEffect.debugLazySnapshots) _warm(p);
+    }, onError: (_) {});
+    ui.FragmentProgram.fromAsset('shaders/page_curl_spread.frag').then((p) {
+      _spreadProgram = p;
+      if (!PageTurnEffect.debugLazySnapshots) _warm(p);
+    }, onError: (_) {});
+  }
+
+  /// Draws a shader once, off screen and tiny, so the first turn does not
+  /// pay for preparing it.
+  static void _warm(ui.FragmentProgram program) {
+    ui.Image? blank;
+    try {
+      final rec = ui.PictureRecorder();
+      Canvas(rec).drawRect(
+        const Rect.fromLTWH(0, 0, 1, 1),
+        Paint()..color = const Color(0xFFFFFFFF),
+      );
+      final pic = rec.endRecording();
+      blank = pic.toImageSync(1, 1);
+      pic.dispose();
+      final shader = program.fragmentShader();
+      // Its images: all the samplers it has get the blank one; its floats
+      // stay 0.
+      for (var i = 0; i < 4; i++) {
+        try {
+          shader.setImageSampler(i, blank);
+        } catch (_) {
+          break;
+        }
+      }
+      final rec2 = ui.PictureRecorder();
+      Canvas(rec2)
+          .drawRect(const Rect.fromLTWH(0, 0, 1, 1), Paint()..shader = shader);
+      final pic2 = rec2.endRecording();
+      pic2.toImageSync(1, 1).dispose();
+      pic2.dispose();
+      shader.dispose();
+    } catch (_) {
+      // Only a warm-up: the turn prepares it itself.
+    } finally {
+      blank?.dispose();
+    }
   }
 
   /// «انحناء الورقة» across two facing pages.
@@ -173,24 +219,41 @@ class _PageTurnEffectState extends State<PageTurnEffect> {
 
   int _prepared = 0;
 
+  /// Frames a snapshot waits for the screen to be still.
+  static const _patience = 30;
+
   /// Takes the snapshot after a frame with nothing animating. Frame driven,
   /// not an idle-priority task: while an animation runs such a task is put
   /// back on the event loop at once, again and again, which spins forever
   /// under a test's fake clock. A post-frame callback asks for no frame, so
   /// it waits for the next one the app draws anyway.
+  ///
+  /// It waits for the screen to be still at most [_patience] frames: past
+  /// them (a looping animation, a page view's entrance), it is taken
+  /// anyway, before the reader's first drag rather than in its first frame.
   void _prepare() {
     final ticket = ++_prepared;
+    var waited = 0;
     void attempt(Duration _) {
       if (!mounted || ticket != _prepared || _snapshot != null) return;
       final c = widget.controller;
       if (c == null || !c.hasClients || c.position.isScrollingNotifier.value) {
         return;
       }
-      if (SchedulerBinding.instance.transientCallbackCount > 0) {
+      if (SchedulerBinding.instance.transientCallbackCount > 0 &&
+          (PageTurnEffect.debugLazySnapshots || ++waited < _patience)) {
         SchedulerBinding.instance.addPostFrameCallback(attempt);
         return;
       }
-      _snap();
+      if (_snap() != null &&
+          widget.effect == PageTurn.bend &&
+          !PageTurnEffect.debugLazySnapshots) {
+        // A spread's halves, cut now rather than in the turn's first frame.
+        if (widget.isSpread?.call(widget.index) == true) {
+          _half(true);
+          _half(false);
+        }
+      }
     }
 
     SchedulerBinding.instance.addPostFrameCallback(attempt);
