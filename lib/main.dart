@@ -24,6 +24,7 @@ import 'core/db/content_database.dart';
 import 'core/db/user_database.dart';
 import 'core/downloads/background_downloads.dart';
 import 'core/flags/feature_flags.dart';
+import 'core/review/review_prompt.dart';
 import 'core/router/app_router.dart';
 import 'core/ui/desktop_window.dart';
 import 'core/settings/settings_controller.dart';
@@ -262,6 +263,7 @@ void _startKhatma(ProviderContainer container) {
   }
 
   unawaited(refresh());
+  unawaited(container.read(reviewPromptProvider).noteLaunch());
   AppLifecycleListener(
     onResume: refresh,
     // Listening with the screen off: the decoded pages and pictures kept

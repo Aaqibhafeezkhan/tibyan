@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../../../core/review/review_prompt.dart';
 import '../../../core/ui/app_toast.dart';
 import '../../../core/ui/meta_separator.dart';
 import '../../../core/ui/on_screen.dart';
@@ -297,13 +298,25 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     if (_testing) _muteSajdah(true);
     _container; // read now: ref is not usable in dispose
     final service = ref.read(khatmaServiceProvider);
+    final review = ref.read(reviewPromptProvider);
     _tracker = ReadingTracker(
       onPageRead: (r) => unawaited(
         service.pageRead(r, entry: widget.entry).catchError((_) {}),
       ),
-      onSessionEnd: (s) => unawaited(
-        service.sessionEnded(s, entry: widget.entry).catchError((_) {}),
-      ),
+      onSessionEnd: (s) {
+        unawaited(
+          service.sessionEnded(s, entry: widget.entry).catchError((_) {}),
+        );
+        // A reading day for the store's review sheet; asked only while
+        // the app is in front (a session also ends when it is hidden).
+        unawaited(
+          review.readingSession(
+            ask:
+                WidgetsBinding.instance.lifecycleState ==
+                AppLifecycleState.resumed,
+          ),
+        );
+      },
       pageWeight: _pageWeight,
       minDwell: Duration(
         seconds: ref.read(settingsProvider).readingSpeed.secondsPerPage,

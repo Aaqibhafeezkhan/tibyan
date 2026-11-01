@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
+import '../../../core/review/review_prompt.dart';
 import '../../../core/ui/app_toast.dart';
 
 import '../../../core/flags/feature_flags.dart';
@@ -161,6 +164,11 @@ class _KhatmaScreenState extends ConsumerState<KhatmaScreen> {
           ),
         ),
       ),
+    );
+    // A completed khatma: the store's own review sheet may follow (once per
+    // version, with a cooldown; the store decides whether it shows).
+    unawaited(
+      ref.read(reviewPromptProvider).maybeAsk(ReviewMoment.khatmaComplete),
     );
     if (reuse == true && mounted) await _reusePlan(completed);
   }
