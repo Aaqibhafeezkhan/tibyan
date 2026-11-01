@@ -908,9 +908,17 @@ Rect? textBlockOf(Iterable<Rect> lines, {double? firstLineTop}) {
 
 /// Where the fawasil layer above learns the page's text block.
 class _FasilTextScope extends InheritedWidget {
-  const _FasilTextScope({required this.report, required super.child});
+  const _FasilTextScope({
+    required this.report,
+    required this.keepClear,
+    required super.child,
+  });
 
   final void Function(BuildContext from, Rect? rect) report;
+
+  /// Where a part of the page the fawasil must not cover (the info bar
+  /// above the page) is: [rect] in [from]'s box, null when it is gone.
+  final void Function(BuildContext from, Rect? rect) keepClear;
 
   @override
   bool updateShouldNotify(_FasilTextScope old) => false;
@@ -939,6 +947,48 @@ class _FasilTextBlockState extends State<FasilTextBlock> {
       if (scope is _FasilTextScope) scope.report(context, widget.rect);
     });
     return const SizedBox.expand();
+  }
+}
+
+/// Tells the [FasilPageLayer] around it that [child] (the page's info bar:
+/// surah, juz and hizb) must stay uncovered: a tab above the text hangs
+/// below it instead of over it.
+class FasilKeepClear extends StatefulWidget {
+  const FasilKeepClear({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  State<FasilKeepClear> createState() => _FasilKeepClearState();
+}
+
+class _FasilKeepClearState extends State<FasilKeepClear> {
+  _FasilTextScope? _scope;
+
+  void _tell(Rect? rect) {
+    final scope = context
+        .getElementForInheritedWidgetOfExactType<_FasilTextScope>()
+        ?.widget;
+    if (scope is _FasilTextScope) {
+      _scope = scope;
+      scope.keepClear(context, rect);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final box = context.findRenderObject();
+      _tell(box is RenderBox && box.hasSize ? Offset.zero & box.size : null);
+    });
+    return widget.child;
+  }
+
+  @override
+  void deactivate() {
+    _scope?.keepClear(context, null);
+    super.deactivate();
   }
 }
 
@@ -981,6 +1031,37 @@ class _FasilPageLayerState extends State<FasilPageLayer> {
   /// The page's text block, in this layer's box; null until it is told.
   final _text = ValueNotifier<Rect?>(null);
 
+  /// What the fawasil keep clear of ([FasilKeepClear]), in this layer's box.
+  final _clear = ValueNotifier<Map<BuildContext, Rect>>(const {});
+
+  void _keepClear(BuildContext from, Rect? rect) {
+    if (!mounted) return;
+    final local = rect == null ? null : _toLocal(from, rect);
+    final now = _clear.value;
+    if (now[from] == local) return;
+    _clear.value = {
+      for (final e in now.entries)
+        if (e.key != from) e.key: e.value,
+      from: ?local,
+    };
+  }
+
+  Rect? _toLocal(BuildContext from, Rect rect) {
+    final me = context.findRenderObject();
+    final them = from.findRenderObject();
+    if (me is RenderBox &&
+        them is RenderBox &&
+        me.hasSize &&
+        them.hasSize &&
+        them.attached) {
+      return Rect.fromPoints(
+        them.localToGlobal(rect.topLeft, ancestor: me),
+        them.localToGlobal(rect.bottomRight, ancestor: me),
+      );
+    }
+    return null;
+  }
+
   void _report(BuildContext from, Rect? rect) {
     if (!mounted) return;
     final me = context.findRenderObject();
@@ -1003,6 +1084,7 @@ class _FasilPageLayerState extends State<FasilPageLayer> {
   @override
   void dispose() {
     _text.dispose();
+    _clear.dispose();
     super.dispose();
   }
 
@@ -1013,11 +1095,22 @@ class _FasilPageLayerState extends State<FasilPageLayer> {
         if (widget.look.draws(m)) m,
     ];
     if (shown.isEmpty) return widget.child;
-    final page = _FasilTextScope(report: _report, child: widget.child);
+    final page = _FasilTextScope(
+      report: _report,
+      keepClear: _keepClear,
+      child: widget.child,
+    );
     return LayoutBuilder(
-      builder: (context, box) => ValueListenableBuilder<Rect?>(
-        valueListenable: _text,
-        builder: (context, text, _) => _layer(context, box, shown, text, page),
+      builder: (context, box) => ListenableBuilder(
+        listenable: Listenable.merge([_text, _clear]),
+        builder: (context, _) => _layer(
+          context,
+          box,
+          shown,
+          _text.value,
+          _clear.value.values.toList(),
+          page,
+        ),
       ),
     );
   }
@@ -1027,6 +1120,7 @@ class _FasilPageLayerState extends State<FasilPageLayer> {
     BoxConstraints box,
     List<FasilMark> shown,
     Rect? text,
+    List<Rect> clear,
     Widget page,
   ) {
     final focus = widget.focus;
@@ -1073,16 +1167,24 @@ class _FasilPageLayerState extends State<FasilPageLayer> {
         // others and stays in the top margin; it is told by its full
         // colour and a gold edge.
         final tw = look.tabWidth * .6;
+        inset = 6 + along;
+        along += tw + 4;
+        // It hangs from under the info bar where the bar is above it.
+        final x0 = outerRight ? w - inset - tw : inset;
+        for (final c in clear) {
+          if (c.left < x0 + tw && c.right > x0 && c.top < above) {
+            top = math.max(top, c.bottom + 1);
+          }
+        }
+        final room = math.max(4.0, above - top);
         bookmark = ClipRect(
           clipper: const _BelowTop(),
           child: Align(
             alignment: Alignment.bottomCenter,
-            heightFactor: math.min(1, above / (tw * 1.6)),
+            heightFactor: math.min(1, room / (tw * 1.6)),
             child: FasilTab(mark: m, look: look, width: tw, edge: topTab),
           ),
         );
-        inset = 6 + along;
-        along += tw + 4;
       } else if (focus) {
         final rw = ribbonW ?? look.ribbonWidth * .85;
         bookmark = FasilRibbon(

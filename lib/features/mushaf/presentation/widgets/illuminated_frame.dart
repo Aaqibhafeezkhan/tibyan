@@ -8,6 +8,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/theme/duotone.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'art_frame.dart';
+import 'fasil_bookmarks.dart' show FasilKeepClear;
 import 'opening_art.dart';
 import 'page_interaction.dart' show PageGround;
 import 'raster_frame.dart';
@@ -335,43 +336,45 @@ class IlluminatedFrame extends ConsumerWidget {
             left: 0,
             right: 0,
             child: Center(
-              child: _Cartouche(
-                width: 234,
-                height: 32,
-                fill: cartoucheFill,
-                rosette: images?.rosette,
-                child: DefaultTextStyle.merge(
-                  style: TextStyle(
-                    fontFamily: 'UthmanTahaNaskh',
-                    fontSize: 15,
-                    color: t.ink,
-                  ),
-                  // A long surah name or large system text shrinks
-                  // to the cartouche instead of overflowing it.
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        FrameTap(
-                          label: l.juzLabel(digits(info!.juz)),
-                          onTap: onJuzTap,
-                        ),
-                        FrameStar(color: t.marker),
-                        if (info!.hizb case final hizb?) ...[
+              child: FasilKeepClear(
+                child: _Cartouche(
+                  width: 234,
+                  height: 32,
+                  fill: cartoucheFill,
+                  rosette: images?.rosette,
+                  child: DefaultTextStyle.merge(
+                    style: TextStyle(
+                      fontFamily: 'UthmanTahaNaskh',
+                      fontSize: 15,
+                      color: t.ink,
+                    ),
+                    // A long surah name or large system text shrinks
+                    // to the cartouche instead of overflowing it.
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
                           FrameTap(
-                            label: l.hizbLabel(digits(hizb)),
-                            onTap: onHizbTap,
+                            label: l.juzLabel(digits(info!.juz)),
+                            onTap: onJuzTap,
                           ),
                           FrameStar(color: t.marker),
+                          if (info!.hizb case final hizb?) ...[
+                            FrameTap(
+                              label: l.hizbLabel(digits(hizb)),
+                              onTap: onHizbTap,
+                            ),
+                            FrameStar(color: t.marker),
+                          ],
+                          FrameTap(
+                            label: info!.surahName,
+                            bold: true,
+                            onTap: onSurahTap,
+                            onLongPress: onSurahLongPress,
+                          ),
                         ],
-                        FrameTap(
-                          label: info!.surahName,
-                          bold: true,
-                          onTap: onSurahTap,
-                          onLongPress: onSurahLongPress,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
@@ -1171,37 +1174,39 @@ class PlainFrame extends StatelessWidget {
     return Column(
       children: [
         if (info != null)
-          Container(
-            margin: const EdgeInsets.fromLTRB(10, 2, 10, 4),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            decoration: BoxDecoration(
-              border: Border.all(color: t.border),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: DefaultTextStyle.merge(
-              style: label,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FrameTap(
-                    label: info.surahName,
-                    bold: true,
-                    onTap: onSurahTap,
-                    onLongPress: onSurahLongPress,
-                  ),
-                  FrameStar(color: t.marker),
-                  FrameTap(
-                    label: l.juzLabel(digits(info.juz)),
-                    onTap: onJuzTap,
-                  ),
-                  if (info.hizb case final hizb?) ...[
+          FasilKeepClear(
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(10, 2, 10, 4),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                border: Border.all(color: t.border),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: DefaultTextStyle.merge(
+                style: label,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FrameTap(
+                      label: info.surahName,
+                      bold: true,
+                      onTap: onSurahTap,
+                      onLongPress: onSurahLongPress,
+                    ),
                     FrameStar(color: t.marker),
                     FrameTap(
-                      label: l.hizbLabel(digits(hizb)),
-                      onTap: onHizbTap,
+                      label: l.juzLabel(digits(info.juz)),
+                      onTap: onJuzTap,
                     ),
+                    if (info.hizb case final hizb?) ...[
+                      FrameStar(color: t.marker),
+                      FrameTap(
+                        label: l.hizbLabel(digits(hizb)),
+                        onTap: onHizbTap,
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ),

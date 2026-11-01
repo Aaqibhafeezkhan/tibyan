@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
+import 'fasil_bookmarks.dart' show FasilKeepClear;
 import 'illuminated_frame.dart';
 import 'theme_art.dart';
 import 'opening_art.dart';
@@ -117,44 +118,46 @@ class ArtPageFrame extends StatelessWidget {
               ? null
               // The theme's own surah header: the surah on top, the juz
               // and hizb under it, in its name box.
-              : ArtHeader(
-                  art: art,
-                  inset: 0.05,
-                  content: DefaultTextStyle.merge(
-                    style: TextStyle(
-                      fontFamily: 'UthmanTahaNaskh',
-                      color: t.ink,
-                      height: 1.25,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _SmallTap(
-                          label: info.surahName,
-                          bold: true,
-                          fontSize: 16,
-                          onTap: onSurahTap,
-                          onLongPress: onSurahLongPress,
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            _SmallTap(
-                              label: l.juzLabel(digits(info.juz)),
-                              fontSize: 12.5,
-                              onTap: onJuzTap,
-                            ),
-                            if (info.hizb case final hizb?) ...[
-                              FrameStar(color: t.marker),
+              : FasilKeepClear(
+                  child: ArtHeader(
+                    art: art,
+                    inset: 0.05,
+                    content: DefaultTextStyle.merge(
+                      style: TextStyle(
+                        fontFamily: 'UthmanTahaNaskh',
+                        color: t.ink,
+                        height: 1.25,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _SmallTap(
+                            label: info.surahName,
+                            bold: true,
+                            fontSize: 16,
+                            onTap: onSurahTap,
+                            onLongPress: onSurahLongPress,
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
                               _SmallTap(
-                                label: l.hizbLabel(digits(hizb)),
+                                label: l.juzLabel(digits(info.juz)),
                                 fontSize: 12.5,
-                                onTap: onHizbTap,
+                                onTap: onJuzTap,
                               ),
+                              if (info.hizb case final hizb?) ...[
+                                FrameStar(color: t.marker),
+                                _SmallTap(
+                                  label: l.hizbLabel(digits(hizb)),
+                                  fontSize: 12.5,
+                                  onTap: onHizbTap,
+                                ),
+                              ],
                             ],
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
