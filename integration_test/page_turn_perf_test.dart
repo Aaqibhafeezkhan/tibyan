@@ -120,6 +120,11 @@ void main() {
               .read(appRouterProvider)
               .go('/mushaf?page=50${memorize ? '&memorize=1' : ''}&n=${n++}');
           await pumpFor(t, const Duration(seconds: 3));
+          // A loaded host can be slow to open the page view.
+          for (var i = 0; i < 150; i++) {
+            if (find.byType(PageView).evaluate().isNotEmpty) break;
+            await t.pump(const Duration(milliseconds: 100));
+          }
           // One unmeasured pair: first-show entrances, shader warm-up.
           Future<void> turn(int i) async {
             final pager = find.byType(PageView).first;

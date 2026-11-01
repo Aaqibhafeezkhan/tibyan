@@ -65,6 +65,11 @@ class PageTurnEffect extends StatefulWidget {
       ..multiply(Matrix4.translationValues(-hinge.dx, -hinge.dy, 0));
   }
 
+  /// The measuring harness's switch back to the old fade (an opacity layer
+  /// over the live page), to time both in one run.
+  @visibleForTesting
+  static bool debugLayerFade = false;
+
   /// The perspective's strength: Matrix4 entry (3, 2).
   static const depth = 0.0008;
 
@@ -554,7 +559,7 @@ class _PageTurnEffectState extends State<PageTurnEffect> {
       // with its alpha: no layer the size of the screen each frame. The
       // live page stays in the tree, not painted (an opacity of 0 skips
       // it); until the snapshot is there, it fades itself.
-      final shot = _snapshot;
+      final shot = PageTurnEffect.debugLayerFade ? null : _snapshot;
       return Transform(
         transform: undo,
         child: Stack(
