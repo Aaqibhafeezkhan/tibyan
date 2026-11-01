@@ -233,11 +233,12 @@ class _PageTurnEffectState extends State<PageTurnEffect> {
         if (d == -1 ||
             (d == 1 &&
                 (widget.effect == PageTurn.bend ||
+                    widget.effect == PageTurn.fade ||
                     _spreadPair(1) ||
                     _spreadPair(-1)))) {
           // The page before, built beside the screen: turning back it is
           // the leaf, so it is ready too. The page after is what the
-          // curl uncovers.
+          // curl uncovers, or what fades in.
           if (_snapshot == null) _prepare();
           return page!;
         }
@@ -548,9 +549,30 @@ class _PageTurnEffectState extends State<PageTurnEffect> {
     // Between a single page and a spread (the opening pages).
     if (widget.effect == PageTurn.normal) return page;
     if (widget.effect == PageTurn.fade) {
+      if (d <= 0) return Transform(transform: undo, child: page);
+      // The page fading in is drawn from its snapshot, the image painted
+      // with its alpha: no layer the size of the screen each frame. The
+      // live page stays in the tree, not painted (an opacity of 0 skips
+      // it); until the snapshot is there, it fades itself.
+      final shot = _snapshot;
       return Transform(
         transform: undo,
-        child: d > 0 ? Opacity(opacity: 1 - d, child: page) : page,
+        child: Stack(
+          fit: StackFit.passthrough,
+          children: [
+            Opacity(opacity: shot == null ? 1 - d : 0, child: page),
+            if (shot != null)
+              IgnorePointer(
+                child: RawImage(
+                  image: shot,
+                  width: size.width,
+                  height: size.height,
+                  fit: BoxFit.fill,
+                  opacity: AlwaysStoppedAnimation(1 - d),
+                ),
+              ),
+          ],
+        ),
       );
     }
     if (widget.effect == PageTurn.bend) {
