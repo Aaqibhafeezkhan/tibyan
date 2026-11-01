@@ -16,6 +16,7 @@ import '../khatma/domain/khatmah.dart' show CountingMode;
 import '../khatma/khatma_providers.dart' show khatmaServiceProvider;
 import '../khatma/presentation/weekly_report_screen.dart'
     show WeeklyReminderTiles;
+import '../khatma/presentation/kahf_reminder_tile.dart';
 import '../khatma/services/weekly_reminder.dart' show weeklyReportLocation;
 import '../mushaf/mushaf_providers.dart';
 import '../mushaf/presentation/widgets/download_all_button.dart';
@@ -398,6 +399,13 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         (c, r) => const WeeklyReminderTiles(),
         keywords:
             'تذكير أسبوعي إشعار التقرير weekly reminder notification report',
+      ),
+      SettingEntry(
+        'kahfReminder',
+        (l) => l.kahfReminderToggle,
+        (c, r) => const KahfReminderTile(),
+        keywords:
+            'تذكير الجمعة سورة الكهف إشعار friday kahf reminder notification',
       ),
       SettingEntry(
         'wirdIndicator',

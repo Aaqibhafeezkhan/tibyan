@@ -4900,6 +4900,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get weeklyReminderChannel => 'التقرير الأسبوعي';
 
   @override
+  String get kahfReminderToggle => 'تذكير الجمعة بسورة الكهف';
+
+  @override
+  String get kahfReminderHint =>
+      'إشعار على هذا الجهاز صباح كل جمعة يفتح سورة الكهف';
+
+  @override
+  String get kahfReminderTitle => 'تذكير: سورة الكهف';
+
+  @override
+  String get kahfReminderBody => 'اضغط لفتح السورة.';
+
+  @override
+  String get kahfReminderChannel => 'تذكير الجمعة';
+
+  @override
   String get syncTitle => 'المزامنة';
 
   @override

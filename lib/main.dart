@@ -40,6 +40,7 @@ import 'features/khatma/domain/day.dart';
 import 'features/khatma/services/home_widget_sync.dart';
 import 'features/khatma/services/verse_of_day.dart';
 import 'features/khatma/services/reminder_scheduler.dart';
+import 'features/khatma/services/kahf_reminder.dart';
 import 'features/khatma/services/weekly_reminder.dart';
 import 'features/mushaf/data/background_packs.dart';
 import 'features/mushaf/data/bundled_pack.dart';
@@ -227,6 +228,13 @@ void _startKhatma(ProviderContainer container) {
     // The weekly report reminder, a few weeks ahead (off by default).
     try {
       await syncWeeklyReminder(
+        container.read(reminderSchedulerProvider),
+        container.read(settingsProvider),
+      );
+    } catch (_) {}
+    // The Friday Surah Al-Kahf reminder (off by default).
+    try {
+      await syncKahfReminder(
         container.read(reminderSchedulerProvider),
         container.read(settingsProvider),
       );

@@ -7,6 +7,7 @@ import 'package:path/path.dart' as p;
 import 'package:tibyan/core/db/content_database.dart';
 import 'package:tibyan/core/settings/app_settings.dart';
 import 'package:tibyan/features/audio/timing_updates.dart';
+import 'package:tibyan/features/khatma/services/kahf_reminder.dart';
 import 'package:tibyan/features/mushaf/data/mushaf_repository.dart';
 import 'package:tibyan/features/mushaf/data/page_pack.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
@@ -58,6 +59,20 @@ void main() {
       final v = verseOfLink(link)!;
       return verseLinkLocation(c, v.surah, v.ayah);
     }
+
+    test('the Friday Kahf reminder opens 18:1 in each edition', () async {
+      final link = Uri.parse(kahfReminderLink);
+      expect(verseOfLink(link), (surah: 18, ayah: 1));
+      final row = await MushafRepository(
+        db,
+        const NoTimingOverrides(),
+      ).ayah(18, 1);
+      final at1441 = Uri.parse(await open(MushafEdition.madina1441, link));
+      final at1405 = Uri.parse(await open(MushafEdition.madina1405, link));
+      expect(at1441.queryParameters['page'], '293');
+      expect(at1441.queryParameters['page'], '${row.page}');
+      expect(at1405.queryParameters['page'], '${row.page1405}');
+    });
 
     for (final (s, a) in [(2, 255), (5, 83), (18, 1), (114, 6)]) {
       test('$s:$a in the 1441 and the 1405 edition', () async {

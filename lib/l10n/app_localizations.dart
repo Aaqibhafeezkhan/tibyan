@@ -8180,6 +8180,36 @@ abstract class AppLocalizations {
   /// **'التقرير الأسبوعي'**
   String get weeklyReminderChannel;
 
+  /// No description provided for @kahfReminderToggle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تذكير الجمعة بسورة الكهف'**
+  String get kahfReminderToggle;
+
+  /// No description provided for @kahfReminderHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'إشعار على هذا الجهاز صباح كل جمعة يفتح سورة الكهف'**
+  String get kahfReminderHint;
+
+  /// No description provided for @kahfReminderTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تذكير: سورة الكهف'**
+  String get kahfReminderTitle;
+
+  /// No description provided for @kahfReminderBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'اضغط لفتح السورة.'**
+  String get kahfReminderBody;
+
+  /// No description provided for @kahfReminderChannel.
+  ///
+  /// In ar, this message translates to:
+  /// **'تذكير الجمعة'**
+  String get kahfReminderChannel;
+
   /// No description provided for @syncTitle.
   ///
   /// In ar, this message translates to:

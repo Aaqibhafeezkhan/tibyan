@@ -60,6 +60,7 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kReduceMotion = 'settings.forceReduceMotion';
   static const _kAnnounceVerse = 'settings.announceVerseNumber';
   static const _kWeeklyReminder = 'settings.weeklyReminder';
+  static const _kKahfReminder = 'settings.kahfReminder';
   static const _kWeeklyDay = 'settings.weeklyReminderWeekday';
   static const _kWeeklyMinutes = 'settings.weeklyReminderMinutes';
   static const _kTajweed = 'settings.tajweedColors';
@@ -178,6 +179,7 @@ class SettingsController extends Notifier<AppSettings> {
       forceReduceMotion: _prefs.getBool(_kReduceMotion) ?? false,
       announceVerseNumber: _prefs.getBool(_kAnnounceVerse) ?? true,
       weeklyReminder: _prefs.getBool(_kWeeklyReminder) ?? false,
+      kahfReminder: _prefs.getBool(_kKahfReminder) ?? false,
       weeklyReminderWeekday: (_prefs.getInt(_kWeeklyDay) ?? DateTime.friday)
           .clamp(DateTime.monday, DateTime.sunday),
       weeklyReminderMinutes: (_prefs.getInt(_kWeeklyMinutes) ?? 20 * 60).clamp(
@@ -486,6 +488,11 @@ class SettingsController extends Notifier<AppSettings> {
   Future<void> setWeeklyReminder(bool value) async {
     state = state.copyWith(weeklyReminder: value);
     await _prefs.setBool(_kWeeklyReminder, value);
+  }
+
+  Future<void> setKahfReminder(bool value) async {
+    state = state.copyWith(kahfReminder: value);
+    await _prefs.setBool(_kKahfReminder, value);
   }
 
   Future<void> setWeeklyReminderTime({
