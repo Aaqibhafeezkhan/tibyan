@@ -51,7 +51,7 @@ const _effects = String.fromEnvironment('PERF_EFFECTS');
 const _repeat = int.fromEnvironment('PERF_REPEAT', defaultValue: 1);
 
 /// A fix to time against the old way in the same run, case by case:
-/// `fade`, `memo`, `precache` or `reuse`; each case then runs twice, the
+/// `fade`, `memo`, `precache`, `reuse` or `artcache`; each case then runs twice, the
 /// old way (`~old`) and the new (`~new`).
 const _abFix = String.fromEnvironment('PERF_AB');
 
@@ -65,6 +65,7 @@ void _setAb(String ab) {
   MushafScreen.debugFreshFawasil = old && _abFix == 'memo';
   PageTurnEffect.debugLazySnapshots = old && _abFix == 'precache';
   debugMushafKeyedByUri = old && _abFix == 'reuse';
+  MushafPage.debugNoArtCache = old && _abFix == 'artcache';
 }
 
 bool _wanted(String scenario) =>

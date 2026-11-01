@@ -384,6 +384,29 @@ class MushafPage extends ConsumerStatefulWidget {
   const MushafPage({super.key, required this.page, required this.interaction});
 
   final int page;
+
+  /// The last pages baked ([_MushafPageState._bakeArt]), shared by every
+  /// page widget: a page opened again (the home screen's «متابعة القراءة»,
+  /// a return from another screen) is blitted at once instead of drawn
+  /// again during the screen's entrance. A few pages only: each is an
+  /// image the size of the screen.
+  static final _baked = <String, (ui.Image, ui.Image?)>{};
+  static const _bakedMax = 4;
+
+  /// The measuring harness's switch to bake every page anew (no shared
+  /// pages), to time both in one run.
+  @visibleForTesting
+  static bool debugNoArtCache = false;
+
+  /// Empties the shared pages (tests, a memory warning).
+  static void clearBaked() {
+    for (final (art, marker) in _baked.values) {
+      art.dispose();
+      marker?.dispose();
+    }
+    _baked.clear();
+  }
+
   final PageInteraction interaction;
 
   @override
@@ -427,6 +450,24 @@ class _MushafPageState extends ConsumerState<MushafPage> {
     _artKey = key;
     final width = (layout.size.width * dpr).ceil();
     final height = (layout.size.height * dpr).ceil();
+    // The same page from the same pages (an edition's store), drawn the
+    // same way: already baked.
+    final shared = '${identityHashCode(ref.read(pageStoreProvider))}|$key';
+    final hit = MushafPage.debugNoArtCache
+        ? null
+        : MushafPage._baked.remove(shared);
+    if (hit != null) {
+      MushafPage._baked[shared] = hit; // the most recent now
+      final old = [_art, _markerArt];
+      _art = hit.$1.clone();
+      _markerArt = hit.$2?.clone();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        for (final i in old) {
+          i?.dispose();
+        }
+      });
+      return;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       Future<ui.Image> render(void Function(Canvas, bool, int) draw) async {
@@ -451,6 +492,17 @@ class _MushafPageState extends ConsumerState<MushafPage> {
         art.dispose();
         markerArt?.dispose();
         return;
+      }
+      final baked = MushafPage._baked;
+      final had = baked.remove(shared);
+      had?.$1.dispose();
+      had?.$2?.dispose();
+      baked[shared] = (art.clone(), markerArt?.clone());
+      while (baked.length > MushafPage._bakedMax) {
+        final first = baked.keys.first;
+        final (a, m) = baked.remove(first)!;
+        a.dispose();
+        m?.dispose();
       }
       final old = [_art, _markerArt];
       setState(() {
