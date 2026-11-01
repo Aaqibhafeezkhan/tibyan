@@ -33,7 +33,9 @@ import 'package:tibyan/features/hifz/data/memorize_prefs.dart';
 import 'package:tibyan/features/hifz/domain/memorize_session.dart';
 import 'package:tibyan/features/mushaf/data/page_pack.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
+import 'package:tibyan/features/mushaf/presentation/mushaf_screen.dart';
 import 'package:tibyan/features/mushaf/presentation/navigation.dart';
+import 'package:tibyan/features/mushaf/presentation/widgets/page_turn_effect.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
 import 'package:tibyan/main.dart' as app;
 
@@ -47,6 +49,23 @@ const _effects = String.fromEnvironment('PERF_EFFECTS');
 
 /// How many times each case runs (one line each), for medians.
 const _repeat = int.fromEnvironment('PERF_REPEAT', defaultValue: 1);
+
+/// A fix to time against the old way in the same run, case by case:
+/// `fade`, `memo`, `precache` or `reuse`; each case then runs twice, the
+/// old way (`~old`) and the new (`~new`).
+const _abFix = String.fromEnvironment('PERF_AB');
+
+List<String> get _abs => _abFix.isEmpty ? const [''] : const ['old', 'new'];
+
+String _tag(String ab) => ab.isEmpty ? '' : '~$ab';
+
+void _setAb(String ab) {
+  final old = ab == 'old';
+  PageTurnEffect.debugLayerFade = old && _abFix == 'fade';
+  MushafScreen.debugFreshFawasil = old && _abFix == 'memo';
+  PageTurnEffect.debugLazySnapshots = old && _abFix == 'precache';
+  debugMushafKeyedByUri = old && _abFix == 'reuse';
+}
 
 bool _wanted(String scenario) =>
     _only.isEmpty || _only.split(',').contains(scenario);
@@ -114,7 +133,8 @@ void main() {
     Future<void> run(String scenario, {bool memorize = false}) async {
       if (!_wanted(scenario)) return;
       for (final effect in _effectList) {
-        for (var rep = 0; rep < _repeat; rep++) {
+        for (final ab in [for (var r = 0; r < _repeat; r++) ..._abs]) {
+          _setAb(ab);
           await s.setPageTurn(effect);
           c
               .read(appRouterProvider)
@@ -162,7 +182,7 @@ void main() {
               ? '-'
               : (100 * k / timings.length).toStringAsFixed(1);
           debugPrint(
-            'PERF $scenario ${effect.name} frames=${timings.length} '
+            'PERF $scenario${_tag(ab)} ${effect.name} frames=${timings.length} '
             'build=${stats(build)} raster=${stats(raster)} '
             'total=${stats(total)} jank60=${pct(over(16667))}% '
             'jank120=${pct(over(8333))}%',
@@ -172,7 +192,7 @@ void main() {
           double mx(List<double> v) =>
               v.isEmpty ? 0 : v.reduce((a, b) => a > b ? a : b);
           debugPrint(
-            'PERF-FIRST $scenario ${effect.name} frames=${first.length} '
+            'PERF-FIRST $scenario${_tag(ab)} ${effect.name} frames=${first.length} '
             'buildmax=${mx(fBuild).toStringAsFixed(1)} '
             'rastermax=${mx(fRaster).toStringAsFixed(1)} '
             'jank60=${first.where((f) => f.buildDuration.inMicroseconds > 16667 || f.rasterDuration.inMicroseconds > 16667).length}',
@@ -203,7 +223,8 @@ void main() {
         c.read(appRouterProvider).go('/mushaf?page=10');
         await pumpFor(t, const Duration(seconds: 2));
         for (final effect in _effectList) {
-          for (var rep = 0; rep < _repeat; rep++) {
+          for (final ab in [for (var r = 0; r < _repeat; r++) ..._abs]) {
+            _setAb(ab);
             await s.setPageTurn(effect);
             final lookup = <double>[], ttff = <double>[], settle = <double>[];
             timings.clear();
@@ -247,7 +268,7 @@ void main() {
                 )
                 .length;
             debugPrint(
-              'PERF index-$scenario ${effect.name} frames=${timings.length} '
+              'PERF index-$scenario${_tag(ab)} ${effect.name} frames=${timings.length} '
               'lookup=${stats(lookup)} ttff=${stats(ttff)} '
               'settle=${stats(settle)} build=${stats(build)} '
               'raster=${stats(raster)} jank60=$janky',
@@ -282,7 +303,8 @@ void main() {
       );
       Future<void> home(String scenario) async {
         if (!_wanted(scenario)) return;
-        for (var rep = 0; rep < _repeat; rep++) {
+        for (final ab in [for (var r = 0; r < _repeat; r++) ..._abs]) {
+          _setAb(ab);
           c.read(appRouterProvider).go('/');
           await pumpFor(t, const Duration(seconds: 2));
           timings.clear();
@@ -321,7 +343,7 @@ void main() {
               )
               .length;
           debugPrint(
-            'PERF home-$scenario frames=${timings.length} '
+            'PERF home-$scenario${_tag(ab)} frames=${timings.length} '
             'ttff=${ttff.toStringAsFixed(1)} '
             'settle=${settle.toStringAsFixed(1)} build=${stats(build)} '
             'raster=${stats(raster)} buildsum=${sum(build).toStringAsFixed(0)} '
