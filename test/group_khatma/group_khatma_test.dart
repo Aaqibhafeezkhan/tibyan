@@ -21,6 +21,8 @@ import 'package:tibyan/features/khatma/khatma_providers.dart';
 import 'package:tibyan/features/khatma/services/reminder_scheduler.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
+import '../support/meta_finders.dart';
+
 const _id = 'AbCdEfGhIjKlMnOpQrStUv';
 
 /// A small stand-in for altibyan.app's /api/k.
@@ -340,7 +342,7 @@ void main() {
         server: server,
       );
       expect(find.text('العائلة'), findsOneWidget);
-      expect(find.text('محجوز 0 من 30 · تمّ 0'), findsOneWidget);
+      expect(findMeta('محجوز 0 من 30 · تمّ 0'), findsOneWidget);
 
       await tester.tap(find.byKey(const Key('gk-claim-1')));
       await tester.pumpAndSettle();
@@ -348,7 +350,7 @@ void main() {
       await tester.tap(find.text('حفظ'));
       await tester.pumpAndSettle();
       expect(find.textContaining('مريم (أنت)'), findsOneWidget);
-      expect(find.text('محجوز 1 من 30 · تمّ 0'), findsOneWidget);
+      expect(findMeta('محجوز 1 من 30 · تمّ 0'), findsOneWidget);
 
       await tester.tap(find.byKey(const Key('gk-mine-1')));
       await tester.pumpAndSettle();
@@ -362,7 +364,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('تمّت قراءته'));
       await tester.pumpAndSettle();
-      expect(find.text('محجوز 1 من 30 · تمّ 1'), findsOneWidget);
+      expect(findMeta('محجوز 1 من 30 · تمّ 1'), findsOneWidget);
     });
 
     testWidgets('offline shows the saved copy and hides actions', (

@@ -196,7 +196,7 @@ struct TasbihEntry: TimelineEntry {
   let date: Date
   let dhikr: String
   let count: Int
-  /// «٢/٤ · ١٢/٣٣» for a dhikr said in stages.
+  /// «٢/٤ – ١٢/٣٣» for a dhikr said in stages.
   var stage: String? = nil
 }
 
@@ -215,7 +215,7 @@ private func stageLabel() -> String? {
     at -= stages[i]
     i += 1
   }
-  return "\(digits(i + 1))/\(digits(stages.count)) · \(digits(at))/\(digits(stages[i]))"
+  return "\(digits(i + 1))/\(digits(stages.count)) – \(digits(at))/\(digits(stages[i]))"
 }
 
 private func tasbihEntry() -> TasbihEntry {

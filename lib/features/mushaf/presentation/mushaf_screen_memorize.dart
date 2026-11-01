@@ -97,11 +97,14 @@ class _MemorizeBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (verse != null)
-                    Text(
+                    MetaText(
                       verse!,
                       style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
-                  Text(note, style: TextStyle(fontSize: 12, color: t.muted)),
+                  MetaText(
+                    note,
+                    style: TextStyle(fontSize: 12, color: t.muted),
+                  ),
                 ],
               ),
             ),

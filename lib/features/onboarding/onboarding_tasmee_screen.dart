@@ -11,6 +11,7 @@ import '../tasmee/presentation/tasmee_settings_screen.dart'
     show tasmeeModelInfoProvider;
 import 'background_downloads.dart';
 import 'onboarding_frame.dart';
+import '../../core/ui/meta_separator.dart';
 
 /// Whether this platform can run the recitation check (the speech model
 /// and the background downloader): every app build but the web one.
@@ -115,7 +116,7 @@ class OnboardingTasmeeScreen extends ConsumerWidget {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: Text(
+                    child: MetaText(
                       !supported
                           ? l.onbTasmeeUnsupported
                           : ready

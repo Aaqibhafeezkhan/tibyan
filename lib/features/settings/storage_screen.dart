@@ -19,6 +19,7 @@ import '../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
 import 'storage.dart';
 import '../../core/ui/responsive.dart';
+import '../../core/ui/meta_separator.dart';
 
 final _storageProvider = FutureProvider.autoDispose<List<StorageEntry>>((ref) {
   ref.watch(packInstallsProvider);
@@ -164,7 +165,7 @@ class StorageScreen extends ConsumerWidget {
                         Card(
                           child: ListTile(
                             title: Text(name(e)),
-                            subtitle: Text(
+                            subtitle: MetaText(
                               e.kind == StorageKind.partial
                                   ? '${size(e.bytes)} · ${l.storagePartialHint}'
                                   : bundled(e)
@@ -259,7 +260,7 @@ class _BookOffer extends StatelessWidget {
         title: Text(title),
         subtitle: Semantics(
           liveRegion: busy,
-          child: Text(status, style: TextStyle(color: t.muted)),
+          child: MetaText(status, style: TextStyle(color: t.muted)),
         ),
         trailing: busy
             ? const SizedBox(

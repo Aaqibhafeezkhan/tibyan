@@ -23,6 +23,7 @@ import '../mushaf/presentation/widgets/illuminated_frame.dart';
 import '../tasmee/presentation/tasmee_setup_screen.dart' show showTasmeeSetup;
 import 'whats_new.dart';
 import '../../core/ui/responsive.dart';
+import '../../core/ui/meta_separator.dart';
 
 /// How much larger the home's cards and buttons draw on a tablet or a
 /// desktop window, so the extra room is used rather than left empty.
@@ -372,7 +373,7 @@ class _ContinueCard extends StatelessWidget {
               height: 1.7,
             ),
           if (detail != null)
-            Text(
+            MetaText(
               detail!,
               textAlign: center ? TextAlign.center : TextAlign.start,
               style: TextStyle(
@@ -1061,7 +1062,7 @@ class _BigAction extends StatelessWidget {
                           ),
                         ),
                         if (detail != null)
-                          Text(
+                          MetaText(
                             detail!,
                             style: TextStyle(fontSize: 17, color: fg),
                           ),

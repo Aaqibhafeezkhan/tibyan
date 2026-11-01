@@ -30,6 +30,8 @@ import '../audio/player_test.dart' show FakeAudio, FakeRepo;
 
 import 'package:tibyan/core/testing/test_packs.dart';
 
+import '../support/meta_finders.dart';
+
 String fixtureText(String name) =>
     File('test/fixtures/audio_content/$name.json').readAsStringSync();
 VerseAudioIndex fixture(String name) =>
@@ -376,8 +378,8 @@ void main() {
           fixture('nuqayah_per_surah_sample'),
         ],
       );
-      expect(find.text('استمع للتفسير · التفسير الميسر'), findsOneWidget);
-      expect(find.text('استمع للتفسير · تفسير السعدي'), findsOneWidget);
+      expect(findMeta('استمع للتفسير · التفسير الميسر'), findsOneWidget);
+      expect(findMeta('استمع للتفسير · تفسير السعدي'), findsOneWidget);
     });
 
     Widget panel(VoidCallback? onTafsirAudio) => VerseServicesPanel(
@@ -453,7 +455,7 @@ void main() {
       expect(find.text('Placeholder text for 2:2.'), findsOneWidget);
       expect(find.text('Placeholder note.'), findsOneWidget);
       expect(
-        find.text(
+        findMeta(
           contentCredit(
             ContentSources.quranEncMokhtasar,
             'en',

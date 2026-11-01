@@ -11,6 +11,7 @@ import 'art_frame.dart';
 import 'opening_art.dart';
 import 'page_interaction.dart' show PageGround;
 import 'raster_frame.dart';
+import '../../../../core/ui/meta_separator.dart';
 
 /// Ornament images for the Zakhrafa frame (built by tools/build_ornaments.py).
 class FrameImages {
@@ -799,7 +800,7 @@ class SurahBannerView extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            MetaText(
               l.surahBannerTitle(digits(b.number), b.name, type),
               style: TextStyle(
                 fontFamily: 'UthmanTahaNaskh',
@@ -809,7 +810,7 @@ class SurahBannerView extends ConsumerWidget {
                 color: ink,
               ),
             ),
-            Text(
+            MetaText(
               info,
               style: TextStyle(
                 fontFamily: 'KFGQPCAN',
@@ -824,7 +825,9 @@ class SurahBannerView extends ConsumerWidget {
     );
     return Semantics(
       header: true,
-      label: '${l.surahBannerTitle(digits(b.number), b.name, type)}. $info',
+      label: spokenMeta(
+        '${l.surahBannerTitle(digits(b.number), b.name, type)}. $info',
+      ),
       excludeSemantics: true,
       child: CustomPaint(
         painter: _BannerPainter(

@@ -26,6 +26,7 @@ import 'package:tibyan/features/mushaf/presentation/widgets/ornate_pages.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/reading_bar.dart';
 
 import '../testing/bundled_pages.dart';
+import '../support/meta_finders.dart';
 
 /// Listening to al-Baqarah, playing; [toggle] and [stop] change only the
 /// state, and are counted.
@@ -227,7 +228,7 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.descendant(of: bar, matching: find.text('البقرة · آل عمران')),
+      find.descendant(of: bar, matching: findMeta('البقرة · آل عمران')),
       findsOneWidget,
     );
   });

@@ -29,6 +29,7 @@ import '../mushaf_providers.dart';
 import 'background_downloads_list.dart';
 import 'widgets/illuminated_frame.dart';
 import '../../../core/ui/responsive.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// The Downloads Center: what is on the device, what is downloading and
 /// what can be downloaded, in three sections (the mushafs, the
@@ -317,7 +318,7 @@ class _RecitationsSection extends ConsumerWidget {
         Future<void> download(ReciterRow r) => bg.enqueueAll(
           r,
           urls: (s) => ref.read(audioHostsProvider.notifier).urls(r, s),
-          displayName: reciterLabel(context, r),
+          displayName: plainMeta(reciterLabel(context, r)),
         );
         final rows = <Widget>[];
         for (final r in reciters) {

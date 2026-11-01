@@ -28,6 +28,7 @@ import '../mushaf/presentation/mushaf_screen.dart';
 import '../mushaf/presentation/widgets/illuminated_frame.dart';
 import '../mushaf/presentation/widgets/mushaf_page.dart';
 import 'kashida_text.dart';
+import '../../core/ui/meta_separator.dart';
 
 final commentaryEditionsProvider = FutureProvider<List<CommentaryEditionRow>>(
   (ref) => ref.watch(mushafRepositoryProvider).commentaryEditions(),
@@ -550,7 +551,7 @@ class _CommentaryCard extends ConsumerWidget {
           ],
           if (credit != null) ...[
             const SizedBox(height: 10),
-            Text(
+            MetaText(
               credit,
               textDirection: dir,
               style: TextStyle(fontSize: 11, color: t.muted),

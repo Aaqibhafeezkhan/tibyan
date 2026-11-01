@@ -10,6 +10,7 @@ import 'theme_art.dart';
 import 'opening_art.dart';
 
 import 'raster_frame.dart';
+import '../../../../core/ui/meta_separator.dart';
 
 /// The page in a heritage theme, laid out as approved: the juz ✦ hizb ✦
 /// surah cartouche above the frame, the theme's frame around the page, and
@@ -356,7 +357,7 @@ class ArtSurahBanner extends StatelessWidget {
         : l.surahBannerInfo(digits(b.ayahCount), digits(b.order), b.after!);
     return Semantics(
       header: true,
-      label: '$title. $info',
+      label: spokenMeta('$title. $info'),
       excludeSemantics: true,
       child: LayoutBuilder(
         builder: (context, box) {
@@ -376,7 +377,7 @@ class ArtSurahBanner extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
+                  MetaText(
                     title,
                     style: TextStyle(
                       fontFamily: 'UthmanTahaNaskh',
@@ -387,7 +388,7 @@ class ArtSurahBanner extends StatelessWidget {
                     ),
                   ),
                   if (slotH >= 26)
-                    Text(
+                    MetaText(
                       info,
                       style: TextStyle(
                         fontFamily: 'KFGQPCAN',

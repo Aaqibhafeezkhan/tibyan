@@ -29,6 +29,7 @@ import '../mushaf/presentation/widgets/illuminated_frame.dart'
 import '../mushaf/presentation/widgets/theme_art.dart';
 import '../tasmee/data/tasmee_settings.dart';
 import 'theme_picker.dart';
+import '../../core/ui/meta_separator.dart';
 
 // The settings' own controls, placed by settings_catalog.dart into the
 // sections of the settings grid.
@@ -719,7 +720,7 @@ class SettingsNavTile extends StatelessWidget {
       title: Text(title),
       subtitle: subtitle == null || subtitle!.isEmpty
           ? null
-          : Text(subtitle!, style: TextStyle(color: t.sub)),
+          : MetaText(subtitle!, style: TextStyle(color: t.sub)),
       trailing: Icon(Icons.chevron_right, color: t.sub),
       onTap: onTap,
     );

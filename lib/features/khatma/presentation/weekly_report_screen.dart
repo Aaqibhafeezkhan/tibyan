@@ -15,6 +15,7 @@ import '../domain/weekly_report.dart';
 import '../khatma_providers.dart' show reminderSchedulerProvider;
 import '../services/weekly_reminder.dart';
 import '../weekly_report_providers.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// «التقرير الأسبوعي»: seven days of reading, listening, recitation, khatma
 /// progress and tasbih, told calmly. A quiet week is a fresh start, never
@@ -455,7 +456,7 @@ class WeeklyReminderTiles extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.schedule),
             title: Text(l.weeklyReminderWhen),
-            subtitle: Text(
+            subtitle: MetaText(
               '${dayName(s.weeklyReminderWeekday)} · '
               '${MaterialLocalizations.of(context).formatTimeOfDay(time)}',
             ),

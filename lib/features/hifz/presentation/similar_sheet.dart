@@ -13,6 +13,7 @@ import '../../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
 import '../data/hifz_repository.dart';
 import '../hifz_providers.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// The mutashabihat links' row in content.db `source`.
 const _similarSourceKey = 'waqar144-mutashabihat';
@@ -98,7 +99,7 @@ class SimilarVersesView extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
+          MetaText(
             own
                 ? '${l.similarThisVerse} · ${place(p.verses)}'
                 : place(p.verses),

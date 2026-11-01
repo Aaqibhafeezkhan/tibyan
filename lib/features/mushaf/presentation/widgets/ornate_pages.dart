@@ -6,6 +6,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../mushaf_providers.dart';
 import 'illuminated_frame.dart';
+import '../../../../core/ui/meta_separator.dart';
 
 /// The Shamarly edition's own cover, copied as printed on its first page
 /// (tools/.cache/shamarly/pages/001.png). The contact address printed there
@@ -215,7 +216,7 @@ class OpeningPage extends ConsumerWidget {
             fontSize: boldFirst ? 18 : 13,
           ),
         ),
-        Text(
+        MetaText(
           b,
           style: TextStyle(
             fontWeight: boldFirst ? FontWeight.w400 : FontWeight.w700,

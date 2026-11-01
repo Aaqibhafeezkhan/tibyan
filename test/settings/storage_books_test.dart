@@ -16,6 +16,8 @@ import 'package:tibyan/features/books/data/book_pack.dart';
 import 'package:tibyan/features/mushaf/data/page_pack.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 
+import '../support/meta_finders.dart';
+
 /// Book packs on the storage screen (a file of its own: the app is
 /// pumped once per file here).
 void main() {
@@ -70,9 +72,9 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.text('كتاب «تفسير تجريبي»'), findsOneWidget);
-    expect(find.textContaining('· تفسير'), findsOneWidget);
+    expect(findMetaContaining('· تفسير'), findsOneWidget);
     expect(find.text('كتاب «كتاب وجوه تجريبي»'), findsOneWidget);
-    expect(find.textContaining('· الوجوه والنظائر'), findsOneWidget);
+    expect(findMetaContaining('· الوجوه والنظائر'), findsOneWidget);
   });
 }
 

@@ -21,6 +21,7 @@ import '../hifz_providers.dart';
 import 'hifz_sheets.dart' show showStartTestSheet;
 import 'hifz_screen.dart' show openHifzTest;
 import 'strength_style.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// A whole number in the interface's digits.
 String _n(BuildContext context, int v) =>
@@ -375,7 +376,7 @@ class _PartRow extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
-                Text(
+                MetaText(
                   l.progressShares(
                     hifzPercent(context, part.memorizedShare),
                     hifzPercent(context, part.masteredShare),
@@ -390,7 +391,7 @@ class _PartRow extends StatelessWidget {
               mastered: part.masteredShare,
             ),
             const SizedBox(height: 6),
-            Text(
+            MetaText(
               [
                 last == null
                     ? l.progressNotRecited
@@ -460,7 +461,7 @@ class HistoryTab extends ConsumerWidget {
                       ),
                 style: const TextStyle(fontWeight: FontWeight.w600),
               ),
-              subtitle: Text(
+              subtitle: MetaText(
                 '${recitationKindLabel(l, s.kind)} · ${_day(context, s.endedAt)}',
               ),
               trailing: Text(
@@ -595,7 +596,7 @@ class RecitationSessionScreen extends ConsumerWidget {
                               ),
                               subtitle: v.row.words == 0
                                   ? null
-                                  : Text(
+                                  : MetaText(
                                       '${l.tasmeeWordWrong} ${_n(context, v.row.wrong)} · '
                                       '${l.tasmeeWordSkipped} ${_n(context, v.row.skipped)} · '
                                       '${l.tasmeeWordCorrectedShort} ${_n(context, v.row.corrected)}',
@@ -768,7 +769,7 @@ class HardWordsTab extends ConsumerWidget {
                             (surah: a.surah, ayah: a.number),
                             (surah: a.surah, ayah: a.number),
                           );
-                    return Text(
+                    return MetaText(
                       '$place\n${l.hardWordsCount(h.count, _n(context, h.count), _day(context, h.last))}',
                     );
                   },

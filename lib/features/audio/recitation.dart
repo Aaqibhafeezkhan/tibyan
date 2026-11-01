@@ -19,6 +19,7 @@ import '../mushaf/mushaf_providers.dart';
 import '../sajdah/sajdah_card.dart';
 import '../sajdah/sajdah_positions.dart';
 import 'verse_queue.dart';
+import '../../core/ui/meta_separator.dart';
 
 /// Every recitation in the content database, of every riwaya.
 final allRecitersProvider = FutureProvider<List<ReciterRow>>(
@@ -973,9 +974,9 @@ class RecitationController extends Notifier<RecitationState> {
         MediaItem(
           id: 'clip/${info.kind}/${info.surah}/${info.ayah}',
           title: info.wholeSurah
-              ? '${info.titleAr} · $name'
-              : '${info.titleAr} · $name ${info.ayah}',
-          artist: contentCredit(info.source, 'ar'),
+              ? '${info.titleAr} – $name'
+              : '${info.titleAr} – $name ${info.ayah}',
+          artist: plainMeta(contentCredit(info.source, 'ar')),
           album: 'تبيان',
         ),
         clip.start,

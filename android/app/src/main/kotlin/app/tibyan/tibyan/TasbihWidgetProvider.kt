@@ -78,7 +78,7 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
 
   /**
    * For a dhikr said in stages (`tasbih_stages`: `33,33,33,1`), the stage
-   * and the count in it as the widget counts: «٢/٤ · ١٢/٣٣». The round's
+   * and the count in it as the widget counts: «٢/٤ – ١٢/٣٣». The round's
    * count is what the app last wrote plus the widget's own counts.
    */
   private fun stageLabel(data: SharedPreferences, ar: Boolean): String? {
@@ -93,7 +93,7 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
       i++
     }
     fun d(n: Int) = if (ar) arabicDigits(n) else "$n"
-    return "${d(i + 1)}/${d(stages.size)} · ${d(at)}/${d(stages[i])}"
+    return "${d(i + 1)}/${d(stages.size)} – ${d(at)}/${d(stages[i])}"
   }
 
   private fun arabicDigits(n: Int): String =

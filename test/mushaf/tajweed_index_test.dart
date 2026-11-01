@@ -22,6 +22,8 @@ import 'package:tibyan/features/share_image/share_text_runs.dart';
 import 'package:tibyan/features/assistant/tajweed_marks_screen.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
+import '../support/meta_finders.dart';
+
 /// The tajweed index of «About this mushaf», against the real bundled
 /// database: every letter of every rule is shown, on its own word, in the
 /// stored text, without a character added or changed.
@@ -352,11 +354,11 @@ void main() {
       expect(find.text(tajweedRuleName(l, rule)), findsOneWidget);
     }
     // The madd lazim: 121 verses, the first al-Fatiha 7 on page 1.
-    expect(find.text('الآيات: ١٢١ · الحروف الملونة: ١٤١'), findsOneWidget);
+    expect(findMeta('الآيات: ١٢١ · الحروف الملونة: ١٤١'), findsOneWidget);
     await tester.tap(find.text(l.tajweedMadd6));
     await settle(tester);
     expect(find.byType(TajweedRuleScreen), findsOneWidget);
-    expect(find.text('الفاتحة ٧ · الصفحة ١'), findsOneWidget);
+    expect(findMeta('الفاتحة ٧ · الصفحة ١'), findsOneWidget);
     addTearDown(() => tester.binding.setSurfaceSize(null));
   });
 

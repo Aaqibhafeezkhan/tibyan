@@ -14,6 +14,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../mushaf_providers.dart';
 import 'fasil_bookmarks.dart';
 import 'mushaf_page.dart';
+import '../../../../core/ui/meta_separator.dart';
 
 /// Colours offered for new fawasil, in order.
 const fasilColors = <int>[
@@ -494,7 +495,7 @@ Future<void> showFasilActions(
               children: [
                 ListTile(
                   leading: Icon(Icons.bookmark, color: Color(fasil.color)),
-                  title: Text(
+                  title: MetaText(
                     '${fasil.name} · $pageLabel',
                     style: TextStyle(
                       color: t.goldText,

@@ -32,6 +32,7 @@ import 'tasmee_page.dart';
 import 'tasmee_session_controller.dart';
 import 'tasmee_sheets.dart';
 import 'tasmee_style.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// Where the side panel replaces the bottom one (laptops, tablets held
 /// sideways).
@@ -488,7 +489,7 @@ class _TopBar extends StatelessWidget {
                               size: look.isHandasi ? 17 : 21,
                             ).copyWith(height: 1.2),
                           ),
-                          Text(
+                          MetaText(
                             line,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

@@ -7,6 +7,7 @@ import '../../../core/ui/look_kit.dart';
 import '../../../core/theme/theme_tokens.dart';
 import '../../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
+import '../../../core/ui/meta_separator.dart';
 
 /// The word-state colours of the tasmee, drawn on the word's own letters,
 /// per mode. Correct words keep the page's ink.
@@ -184,7 +185,7 @@ class TasmeeBanner extends StatelessWidget {
             Icon(icon, size: 18, color: color),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(
+              child: MetaText(
                 text,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

@@ -16,6 +16,7 @@ import 'navigation.dart';
 import 'pages_map.dart';
 import 'widgets/illuminated_frame.dart' show NumberFormatter;
 import '../../../core/ui/responsive.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// Removes Arabic marks and unifies alef forms, for matching surah names.
 String _fold(String s) => s
@@ -582,7 +583,7 @@ class _SurahRowTile extends StatelessWidget {
                   color: l.ink,
                 ),
               ),
-              Text(
+              MetaText(
                 '$ayahs · $kind',
                 style: TextStyle(fontSize: 12, color: l.sub),
               ),
@@ -604,7 +605,7 @@ class _SurahRowTile extends StatelessWidget {
                   height: l.isMakhtuta ? 1.8 : 1.6,
                 ),
                 if (!l.isMakhtuta)
-                  Text(
+                  MetaText(
                     '$ayahs · $kind',
                     textScaler: TextScaler.noScaling,
                     style: TextStyle(
@@ -951,7 +952,7 @@ class _MarksTab extends ConsumerWidget {
               m.name,
               style: const TextStyle(fontWeight: FontWeight.w600),
             ),
-            subtitle: Text(
+            subtitle: MetaText(
               l.fasilLastAt(
                 surahName(context, surahs[m.surah - 1]),
                 '${m.ayah}',

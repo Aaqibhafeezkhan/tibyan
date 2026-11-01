@@ -6,6 +6,7 @@ import '../../l10n/app_localizations.dart';
 import '../audio/recitation.dart';
 import 'credits.dart';
 import 'verse_audio_index.dart';
+import '../../core/ui/meta_separator.dart';
 
 /// The label of «استمع للتفسير» for [clip] of [index]; [several] adds the
 /// tafsir's name when more than one has the verse.
@@ -68,7 +69,7 @@ class TafsirAudioButtons extends ConsumerWidget {
                 icon: Icon(
                   mine && s.playing ? Icons.pause : Icons.headphones_outlined,
                 ),
-                label: Text(
+                label: MetaText(
                   mine
                       ? (s.playing ? l.pause : l.resume)
                       : tafsirAudioLabel(
@@ -86,7 +87,7 @@ class TafsirAudioButtons extends ConsumerWidget {
             },
           ),
           const SizedBox(height: 4),
-          Text(
+          MetaText(
             contentCredit(index.source, lang),
             style: TextStyle(fontSize: 11, color: t.muted),
           ),

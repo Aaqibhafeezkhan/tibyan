@@ -12,6 +12,7 @@ import '../../tafsir/tafsir_screen.dart';
 import '../search_screen.dart' show allAyahsProvider;
 import 'meaning_providers.dart';
 import 'meaning_search.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// «بالمعنى»: verses found through the meaning texts, each with its own
 /// text and, under it, the text that matched, exactly as stored, with the
@@ -63,7 +64,7 @@ class MeaningResults extends ConsumerWidget {
                 liveRegion: true,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Text(
+                  child: MetaText(
                     hits.isEmpty
                         ? l.searchNothing
                         : '${l.searchMeaningCount(hits.length, digits(hits.length))}'

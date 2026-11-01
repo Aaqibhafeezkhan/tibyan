@@ -9,6 +9,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../mushaf_screen.dart';
 import 'illuminated_frame.dart';
 import 'mushaf_page.dart';
+import '../../../../core/ui/meta_separator.dart';
 
 /// Services for the selected verses: listening, tafsir and translation,
 /// the four one-tap marks, copying and sharing (as text and as a picture of
@@ -163,7 +164,7 @@ class VerseServicesPanel extends StatelessWidget {
                   ),
                   Semantics(
                     liveRegion: true,
-                    child: Text(
+                    child: MetaText(
                       title,
                       style: TextStyle(fontSize: 12, color: t.muted),
                     ),

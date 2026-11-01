@@ -20,6 +20,7 @@ import '../mushaf/presentation/widgets/illuminated_frame.dart';
 import 'reel_maker.dart';
 import 'reel_painter.dart';
 import 'reel_timeline.dart';
+import '../../core/ui/meta_separator.dart';
 
 /// The encoder the screen uses; tests put their own.
 final reelEncoderProvider = Provider<ReelEncoder>(
@@ -243,10 +244,10 @@ class _ShareVideoState extends ConsumerState<ShareVideoScreen> {
           heading: _ar.reelHeading,
           range: reelRangeLabel(_from, _to),
           voice: _ar.reelVoice(r.nameAr),
-          credit: _ar.reelCredit(r.nameAr, reelSource(r.folderUrl)),
+          credit: plainMeta(_ar.reelCredit(r.nameAr, reelSource(r.folderUrl))),
           join: _ar.reelJoin,
           url: 'altibyan.app',
-          stores: 'Google Play  ·  App Store  ·  Mac',
+          stores: 'Google Play  –  App Store  –  Mac',
           frame: frame,
           banner: banner,
           logo: logo.picture,

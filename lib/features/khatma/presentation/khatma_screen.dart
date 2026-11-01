@@ -20,6 +20,7 @@ import '../domain/khatmah.dart'
     show CountingMode, EntryPoint, Khatmah, KhatmahStatus;
 import '../khatma_providers.dart';
 import '../../../core/ui/responsive.dart';
+import '../../../core/ui/meta_separator.dart';
 
 enum _RecoveryAction { today, gradually, spread, extend }
 
@@ -572,7 +573,7 @@ class _Active extends ConsumerWidget {
                                 digits(s.total),
                               ),
                             ),
-                            Text(
+                            MetaText(
                               '${l.khatmaEnds(formatDay(context, s.target))} · '
                               '${l.khatmaDaysLeft(digits(s.daysLeft))}',
                               style: TextStyle(color: t.muted, fontSize: 13),
@@ -1025,7 +1026,7 @@ class _YearMonthSummary extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               const Spacer(),
-              Text(
+              MetaText(
                 '$daysLabel: ${digits(totals.readingDays)} · $pagesLabel: ${digits(totals.weight.round())}',
                 style: TextStyle(color: muted),
                 maxLines: 2,

@@ -28,6 +28,7 @@ import 'package:tibyan/l10n/app_localizations.dart';
 
 import 'tasmee_fakes.dart';
 import 'tasmee_test_env.dart';
+import '../support/meta_finders.dart';
 
 void main() {
   late TasmeeTestData data;
@@ -204,12 +205,12 @@ void main() {
         expect(find.text(kind), findsOneWidget, reason: kind);
       }
       // Al-Fatiha by default: 7 verses, 29 words, page 1.
-      expect(find.textContaining('٧ آيات · ٢٩ كلمة'), findsOneWidget);
+      expect(findMetaContaining('٧ آيات · ٢٩ كلمة'), findsOneWidget);
 
       await tester.tap(find.text('جزء'));
       await settle(tester);
       expect(find.text('الجزء'), findsWidgets);
-      expect(find.textContaining('آية ·'), findsOneWidget);
+      expect(findMetaContaining('آية ·'), findsOneWidget);
 
       await tester.ensureVisible(find.byKey(const ValueKey('tasmee-start')));
       await tester.tap(find.byKey(const ValueKey('tasmee-start')));
@@ -241,7 +242,7 @@ void main() {
               '{"from":[2,6],"to":[2,16],"reached":[2,9],"accuracy":96}',
         },
       );
-      expect(find.textContaining('آخر تسميع: البقرة ٦–١٦ · ٩٦٪'), findsOne);
+      expect(findMetaContaining('آخر تسميع: البقرة ٦–١٦ · ٩٦٪'), findsOne);
       await tester.tap(find.byKey(const ValueKey('tasmee-resume')));
       await settle(tester);
       expect(
@@ -484,7 +485,7 @@ void main() {
       expect(page.state.statusOf(0), WordStatus.correct);
       expect(page.state.statusOf(4), WordStatus.hidden);
       // Verse 1 is done: its result shows in the panel.
-      expect(find.textContaining('الآية ١ · ١٠٠٪'), findsOneWidget);
+      expect(findMetaContaining('الآية ١ · ١٠٠٪'), findsOneWidget);
 
       await tapMain(tester); // pause
       expect(b.microphone0.running, isFalse);
@@ -554,7 +555,7 @@ void main() {
       // The verse's last word was not read: skipped.
       final page = tester.widget<TasmeePage>(find.byType(TasmeePage));
       expect(page.state.statusOf(3), WordStatus.skipped);
-      expect(find.textContaining('الآية ١ ·'), findsOneWidget);
+      expect(findMetaContaining('الآية ١ ·'), findsOneWidget);
       expect(find.text('سمّع الآية'), findsOneWidget);
     });
 
@@ -607,7 +608,7 @@ void main() {
 
     testWidgets('English: left to right, English labels', (tester) async {
       await pumpSession(tester, lang: 'en');
-      expect(find.text('Tasmee · Al-Ikhlaas'), findsOneWidget);
+      expect(findMeta('Tasmee · Al-Ikhlaas'), findsOneWidget);
       expect(find.text('Start'), findsOneWidget);
       final dir = Directionality.of(
         tester.element(find.byKey(const ValueKey('tasmee-panel'))),

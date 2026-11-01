@@ -80,7 +80,7 @@ String shareReference(ShareRange range, List<SurahRow> surahs) {
 /// The header of surah [surah]: «سورة النساء», and under it its type, its
 /// place in the order of revelation and the surah revealed before it, as
 /// the page banners show them, from the Tanzil metadata of content.db:
-/// «مدنية · ترتيبها في النزول ٩٢ · نزلت بعد الممتحنة». The first surah
+/// «مدنية، ترتيبها في النزول ٩٢، نزلت بعد الممتحنة». The first surah
 /// revealed (al-'Alaq) has no «نزلت بعد». The type is the plain «مكية» or
 /// «مدنية»: no documented source of the verses excepted from it is held
 /// yet (docs/MISSING_DATA.md).
@@ -95,7 +95,7 @@ ShareSurahHeader shareSurahHeader(int surah, List<SurahRow> surahs) {
       s.revelation == 'meccan' ? _ar.meccan : _ar.medinan,
       _ar.revealedOrder(_digits(s.revelationOrder)),
       if (before != null) _ar.revealedAfter(before.nameAr),
-    ].join(' · '),
+    ].join('، '),
   );
 }
 

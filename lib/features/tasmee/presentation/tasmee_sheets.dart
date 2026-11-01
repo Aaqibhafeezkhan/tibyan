@@ -11,6 +11,7 @@ import '../data/tasmee_backend.dart';
 import '../domain/expected_words.dart';
 import '../domain/tasmee_report.dart';
 import 'tasmee_style.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// «It checks your memorisation, not your tajweed»: shown before the first
 /// session, and from the session's help button.
@@ -277,7 +278,7 @@ class _ModelSheetState extends State<ModelSheet> {
                       ),
                     ),
                   ),
-                  Text(
+                  MetaText(
                     mb == null
                         ? l.tasmeeModelSizeUnknown
                         : l.tasmeeModelSize(context.digits(mb)),
@@ -516,7 +517,7 @@ class SummarySheet extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(title, style: TextStyle(color: t.ink, fontSize: 14)),
-                  Text(
+                  MetaText(
                     l.tasmeeDurationWords(
                       context.digits(minutes),
                       context.digits(seconds),
@@ -558,7 +559,7 @@ class SummarySheet extends StatelessWidget {
               Icon(Icons.check_circle_outline, size: 18, color: t.goldText),
               const SizedBox(width: 6),
               Expanded(
-                child: Text(
+                child: MetaText(
                   saved,
                   style: TextStyle(color: t.ink, fontSize: 13),
                 ),

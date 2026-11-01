@@ -13,6 +13,7 @@ import 'mushaf_screen.dart';
 import 'navigation.dart';
 import '../../khatma/domain/khatmah.dart' show EntryPoint;
 import '../../../core/ui/responsive.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// The last reading position and the reader's named bookmarks (fawasil).
 class FawasilScreen extends ConsumerWidget {
@@ -48,7 +49,7 @@ class FawasilScreen extends ConsumerWidget {
                       child: ListTile(
                         leading: Icon(Icons.history, color: t.goldText),
                         title: Text(l.lastPosition),
-                        subtitle: Text(
+                        subtitle: MetaText(
                           NumberFormatter(
                             Localizations.localeOf(context),
                           ).decimal(
@@ -96,7 +97,7 @@ class FawasilScreen extends ConsumerWidget {
                       child: ListTile(
                         leading: Icon(Icons.bookmark, color: Color(s.color)),
                         title: Text(s.name),
-                        subtitle: Text(
+                        subtitle: MetaText(
                           NumberFormatter(Localizations.localeOf(context))
                               .decimal(
                                 l.fasilLastAt(

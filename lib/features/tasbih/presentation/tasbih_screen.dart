@@ -24,6 +24,7 @@ import '../tasbih_settings.dart';
 import 'dhikr_sheet.dart';
 import 'styles/counter_styles.dart';
 import 'styles/misbaha_view.dart';
+import '../../../core/ui/meta_separator.dart';
 
 const tasbihLocation = '/tasbih';
 
@@ -502,7 +503,7 @@ class _StageLine extends ConsumerWidget {
     final digits = NumberFormatter(Localizations.localeOf(context));
     return Padding(
       padding: const EdgeInsets.only(top: 4),
-      child: Text(
+      child: MetaText(
         l.tasbihStageLine(
           digits(stage.index + 1),
           digits(c.stages!.length),

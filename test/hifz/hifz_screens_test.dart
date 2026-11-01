@@ -20,6 +20,8 @@ import 'package:tibyan/features/hifz/presentation/strength_style.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
+import '../support/meta_finders.dart';
+
 void main() {
   late ContentDatabase content;
   late UserDatabase user;
@@ -123,7 +125,7 @@ void main() {
     expect(find.text('لا مراجعة مستحقة اليوم.'), findsNothing);
     expect(find.text('الصفحة ٢'), findsOneWidget);
     expect(find.textContaining('البقرة ١–٥'), findsOneWidget);
-    expect(find.textContaining('مستحقة اليوم · متوسط'), findsOneWidget);
+    expect(findMetaContaining('مستحقة اليوم · متوسط'), findsOneWidget);
     // Later units are listed under all units.
     await tester.scrollUntilVisible(
       find.text('سورة الملك'),
@@ -171,7 +173,7 @@ void main() {
     );
     await settle(tester);
     expect(find.text('المتشابهات'), findsOneWidget);
-    expect(find.textContaining('الآية · البقرة ٣'), findsOneWidget);
+    expect(findMetaContaining('الآية · البقرة ٣'), findsOneWidget);
     expect(find.text('الأنفال ٣'), findsOneWidget);
     expect(find.text('النمل ٣'), findsOneWidget);
     expect(find.text('لقمان ٤'), findsOneWidget);

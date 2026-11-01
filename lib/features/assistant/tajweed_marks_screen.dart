@@ -19,6 +19,7 @@ import '../mushaf/presentation/navigation.dart';
 import '../mushaf/presentation/widgets/tajweed_legend.dart';
 import '../share_image/share_text_runs.dart';
 import '../../core/ui/responsive.dart';
+import '../../core/ui/meta_separator.dart';
 
 /// Where the tajweed marks (the rules with their colours) open.
 const tajweedMarksLocation = '/assistant/tajweed';
@@ -99,7 +100,7 @@ class TajweedMarksScreen extends ConsumerWidget {
                           ),
                           title: Text(tajweedRuleName(l, rule)),
                           subtitle: switch (counts?[rule.key]) {
-                            final c? => Text(
+                            final c? => MetaText(
                               l.tajweedRuleCount(
                                 digits(c.verses),
                                 digits(c.letters),
@@ -178,7 +179,7 @@ class TajweedRuleScreen extends ConsumerWidget {
           ),
           if (count != null) ...[
             const SizedBox(height: 8),
-            Text(
+            MetaText(
               l.tajweedRuleCount(digits(count.verses), digits(count.letters)),
             ),
           ],
@@ -317,7 +318,7 @@ class _PlaceTile extends ConsumerWidget {
           ],
         ),
       ),
-      subtitle: Text(
+      subtitle: MetaText(
         l.tajweedPlaceAt(
           surahName,
           NumberFormatter(Localizations.localeOf(context))(place.ayah),

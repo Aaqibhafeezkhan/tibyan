@@ -19,6 +19,7 @@ import '../mushaf/presentation/widgets/illuminated_frame.dart';
 import 'recitation.dart';
 import 'reciter_avatar.dart';
 import 'verse_queue.dart';
+import '../../core/ui/meta_separator.dart';
 
 String reciterLabel(BuildContext context, ReciterRow r) {
   final l = AppLocalizations.of(context);
@@ -111,7 +112,7 @@ class PlayerBar extends ConsumerWidget {
                     children: [
                       Semantics(
                         liveRegion: true,
-                        child: Text(
+                        child: MetaText(
                           where,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -124,7 +125,7 @@ class PlayerBar extends ConsumerWidget {
                       // Live: an error or the repeat count is announced.
                       Semantics(
                         liveRegion: true,
-                        child: Text(
+                        child: MetaText(
                           s.error != null
                               ? l.playerError
                               : clip != null
@@ -413,7 +414,7 @@ class PlayerOptions extends ConsumerWidget {
                   contentPadding: EdgeInsets.zero,
                   dense: true,
                   value: r.id,
-                  title: Text(reciterLabel(context, r)),
+                  title: MetaText(reciterLabel(context, r)),
                   secondary: ReciterAvatar(
                     id: r.id,
                     name: reciterLabel(context, r),
@@ -440,7 +441,7 @@ class PlayerOptions extends ConsumerWidget {
                       dense: true,
                       enabled: false,
                       value: r.id,
-                      title: Text(reciterLabel(context, r)),
+                      title: MetaText(reciterLabel(context, r)),
                       subtitle: Text(
                         l.reciterOfRiwaya(
                           riwayaName(l, Riwaya.values.byName(r.riwaya)),
@@ -580,7 +581,7 @@ class PlayerOptions extends ConsumerWidget {
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(l.translationAudioAfterVerse),
-              subtitle: Text(
+              subtitle: MetaText(
                 '${l.translationAudioHint}\n'
                 '${contentCredit(idx.source, Localizations.localeOf(context).languageCode)}',
               ),

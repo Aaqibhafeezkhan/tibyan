@@ -16,6 +16,7 @@ import 'background_recitations.dart';
 import 'player_bar.dart';
 import 'recitation.dart';
 import 'reciter_avatar.dart';
+import '../../core/ui/meta_separator.dart';
 
 /// «الاستماع»: choose a reciter, play any surah (from the device, or
 /// streamed), and download surahs for listening offline. Surahs saved
@@ -38,7 +39,7 @@ class _AudioDownloadsScreenState extends ConsumerState<AudioDownloadsScreen> {
         r,
         surah,
         urls: ref.read(audioHostsProvider.notifier).urls(r, surah),
-        displayName: reciterLabel(context, r),
+        displayName: plainMeta(reciterLabel(context, r)),
       );
 
   Future<void> _downloadAll(ReciterRow r) => ref
@@ -46,7 +47,7 @@ class _AudioDownloadsScreenState extends ConsumerState<AudioDownloadsScreen> {
       .enqueueAll(
         r,
         urls: (s) => ref.read(audioHostsProvider.notifier).urls(r, s),
-        displayName: reciterLabel(context, r),
+        displayName: plainMeta(reciterLabel(context, r)),
       );
 
   bool _anyQueued(BackgroundRecitations bg, int reciter) {
@@ -141,7 +142,7 @@ class _AudioDownloadsScreenState extends ConsumerState<AudioDownloadsScreen> {
                               name: reciterLabel(context, reciter),
                               size: 38,
                             ),
-                            title: Text(reciterLabel(context, reciter)),
+                            title: MetaText(reciterLabel(context, reciter)),
                             subtitle: Text(
                               '${l.audioDownloaded}: ${digits(have.length)} / ${digits(114)}',
                             ),

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import '../../../core/ui/app_toast.dart';
+import '../../../core/ui/meta_separator.dart';
 import '../../../core/ui/on_screen.dart';
 
 import 'package:flutter/gestures.dart';
@@ -2550,7 +2551,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       ..showSnackBar(
         appToast(
           behavior: SnackBarBehavior.floating,
-          content: Text(
+          content: MetaText(
             [l.gradeSaved(reviewDate(context, review.due)), ?saved].join('\n'),
           ),
         ),

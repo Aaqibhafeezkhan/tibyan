@@ -493,7 +493,7 @@ class _MultiSelectBar extends StatelessWidget {
             Expanded(
               child: Semantics(
                 liveRegion: true,
-                child: Text(
+                child: MetaText(
                   '${l.multiSelectHint} · ${count == 2 ? l.twoVerses : l.versesCount(count, digits(count))}',
                   style: const TextStyle(fontSize: 13),
                 ),

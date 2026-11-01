@@ -107,7 +107,7 @@ class _FocusTopBar extends StatelessWidget {
             Flexible(
               child: tappable(
                 shrink(
-                  Text(
+                  MetaText(
                     surahs.join(' · '),
                     style: const TextStyle(fontWeight: FontWeight.w700),
                   ),

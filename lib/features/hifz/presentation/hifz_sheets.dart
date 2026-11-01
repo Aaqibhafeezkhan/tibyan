@@ -15,6 +15,7 @@ import '../../mushaf/presentation/widgets/illuminated_frame.dart'
 import '../data/hifz_repository.dart';
 import '../domain/fsrs.dart';
 import '../hifz_providers.dart';
+import '../../../core/ui/meta_separator.dart';
 
 String gradeLabel(AppLocalizations l, Grade g) => switch (g) {
   Grade.again => l.gradeAgain,
@@ -55,7 +56,10 @@ Future<Grade?> showGradeSheet(
                 ),
                 Text(title, style: TextStyle(color: t.muted)),
                 if (counts != null)
-                  Text(counts, style: TextStyle(color: t.muted, fontSize: 12)),
+                  MetaText(
+                    counts,
+                    style: TextStyle(color: t.muted, fontSize: 12),
+                  ),
                 const SizedBox(height: 12),
                 for (final g in Grade.values)
                   Padding(
@@ -66,7 +70,7 @@ Future<Grade?> showGradeSheet(
                             style: FilledButton.styleFrom(
                               minimumSize: const Size.fromHeight(48),
                             ),
-                            child: Text(
+                            child: MetaText(
                               '${gradeLabel(l, g)} · ${l.gradeSuggested}',
                             ),
                           )

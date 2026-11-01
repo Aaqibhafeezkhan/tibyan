@@ -7,6 +7,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../data/page_pack.dart';
 import '../../mushaf_providers.dart';
 import 'illuminated_frame.dart';
+import '../../../../core/ui/meta_separator.dart';
 
 /// Whether an edition's pages are on this device, shown beside its name.
 class EditionBadge extends ConsumerWidget {
@@ -42,7 +43,7 @@ class EditionBadge extends ConsumerWidget {
             ),
             const SizedBox(width: 4),
             Flexible(
-              child: Text(
+              child: MetaText(
                 here ? l.editionOnDevice : l.editionNotDownloaded(digits(size)),
                 style: TextStyle(fontSize: 11, color: color),
               ),

@@ -14,6 +14,7 @@ import '../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
 import 'background_downloads.dart';
 import 'onboarding_frame.dart';
+import '../../core/ui/meta_separator.dart';
 
 /// First launch, step 5: one suggested reciter, offered for the whole
 /// mushaf offline. The download carries on in the background; any other
@@ -57,7 +58,10 @@ class _OnboardingReciterScreenState
           : () {
               ref
                   .read(fullMushafAudioProvider.notifier)
-                  .start(reciter, displayName: reciterLabel(context, reciter));
+                  .start(
+                    reciter,
+                    displayName: plainMeta(reciterLabel(context, reciter)),
+                  );
               _next();
             },
       secondary: downloading
@@ -86,7 +90,7 @@ class _OnboardingReciterScreenState
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          MetaText(
                             reciterLabel(context, reciter),
                             style: TextStyle(
                               fontSize: 18,
@@ -95,7 +99,7 @@ class _OnboardingReciterScreenState
                             ),
                           ),
                           const SizedBox(height: 4),
-                          Text(
+                          MetaText(
                             downloading
                                 ? l.onbDownloadingBg(
                                     digits(download.done),
@@ -171,7 +175,7 @@ class _ReciterList extends ConsumerWidget {
                   name: reciterLabel(context, r),
                   size: 36,
                 ),
-                title: Text(reciterLabel(context, r)),
+                title: MetaText(reciterLabel(context, r)),
               ),
           ],
         ),

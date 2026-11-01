@@ -27,6 +27,7 @@ import '../domain/recitation_range.dart';
 import '../domain/tasmee_session_request.dart';
 import 'tasmee_settings_screen.dart' show openModelUpdate;
 import 'tasmee_style.dart';
+import '../../../core/ui/meta_separator.dart';
 
 final _verseIndexProvider = FutureProvider<List<VerseIndexEntry>>(
   (ref) =>
@@ -529,7 +530,7 @@ class _ResumeRow extends StatelessWidget {
     final t = context.tokens.colors;
     return Semantics(
       button: true,
-      label: '$label · $action',
+      label: spokenMeta('$label · $action'),
       excludeSemantics: true,
       child: Material(
         color: t.highlight,
@@ -545,7 +546,7 @@ class _ResumeRow extends StatelessWidget {
                 Icon(icon, size: 18, color: t.goldText),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(
+                  child: MetaText(
                     label,
                     style: TextStyle(
                       color: t.ink,
@@ -911,7 +912,7 @@ class _Summary extends StatelessWidget {
           Icon(Icons.auto_stories_outlined, size: 16, color: t.muted),
           const SizedBox(width: 6),
           Expanded(
-            child: Text(
+            child: MetaText(
               text,
               style: TextStyle(color: t.muted, fontSize: 12.5, height: 1.5),
             ),

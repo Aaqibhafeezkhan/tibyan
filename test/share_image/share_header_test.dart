@@ -25,10 +25,10 @@ void main() {
         ('١٧٦', hafs),
       ]);
       expect(runs('١ من ٣٠'), [('١', hafs), (' من ', changa), ('٣٠', hafs)]);
-      expect(runs('مدنية · ترتيبها في النزول ٩٢ · نزلت بعد الممتحنة'), [
-        ('مدنية · ترتيبها في النزول ', changa),
+      expect(runs('مدنية، ترتيبها في النزول ٩٢، نزلت بعد الممتحنة'), [
+        ('مدنية، ترتيبها في النزول ', changa),
         ('٩٢', hafs),
-        (' · نزلت بعد الممتحنة', changa),
+        ('، نزلت بعد الممتحنة', changa),
       ]);
     });
 
@@ -68,20 +68,20 @@ void main() {
       expect(shareSurahHeader(4, surahs).title, 'سورة النساء');
       expect(
         shareSurahHeader(4, surahs).info,
-        'مدنية · ترتيبها في النزول ٩٢ · نزلت بعد الممتحنة',
+        'مدنية، ترتيبها في النزول ٩٢، نزلت بعد الممتحنة',
       );
       expect(
         shareSurahHeader(1, surahs).info,
-        'مكية · ترتيبها في النزول ٥ · نزلت بعد المدثر',
+        'مكية، ترتيبها في النزول ٥، نزلت بعد المدثر',
       );
       expect(
         shareSurahHeader(2, surahs).info,
-        'مدنية · ترتيبها في النزول ٨٧ · نزلت بعد المطففين',
+        'مدنية، ترتيبها في النزول ٨٧، نزلت بعد المطففين',
       );
     });
 
     test('al-Alaq, the first revealed, has no «نزلت بعد»', () {
-      expect(shareSurahHeader(96, surahs).info, 'مكية · ترتيبها في النزول ١');
+      expect(shareSurahHeader(96, surahs).info, 'مكية، ترتيبها في النزول ١');
       for (var s = 1; s <= 114; s++) {
         final info = shareSurahHeader(s, surahs).info;
         expect(info.contains('نزلت بعد'), s != 96, reason: 'surah $s');
@@ -90,7 +90,7 @@ void main() {
 
     test('the plain type: no excepted verses without a documented source', () {
       for (var s = 1; s <= 114; s++) {
-        final type = shareSurahHeader(s, surahs).info.split(' · ').first;
+        final type = shareSurahHeader(s, surahs).info.split('، ').first;
         expect(type, anyOf('مكية', 'مدنية'), reason: 'surah $s');
         expect(shareSurahHeader(s, surahs).info, isNot(contains('إلا')));
       }

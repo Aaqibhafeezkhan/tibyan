@@ -6,6 +6,9 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- Metadata separators («الآية ٨٤ · صفحة ٣٠٣») are now a small gold eight-pointed star instead of a middle dot, which read as the Arabic-Indic zero («٨٤٠»): home card, mushaf banners and bars, player, khatma, hifz, tasmee, downloads, storage, search and more. Screen readers hear a pause; plain-text places (notifications, shared images and reels, the tasbih widget and shortcut) use « – » or «،».
+
 ### Added
 - «مشاركة كمقطع فيديو» (Share as video) in the verse menu: a vertical 1080x1920 MP4 (720x1280 on Android) of whole verses of one surah, made on the device (no server): Tibyan intro and closing cards, the verses on a mushaf page in the reader's own page frame with the surah banner, each recited word lit as the reciter reaches it (the whole verse for reciters without word timings), and the chosen reciter's recitation only, faded in and out; no music or sound effects. Up to 90 seconds, progress with cancel, then the share sheet; works offline once the surah's audio is downloaded. Hafs editions only for now.
 - Sync now also carries tadabbur notes and the last reading position. The misbaha's daily counts add up across devices (each device keeps its own counter, watch counts included) instead of the latest device's count winning, and a change stamped more than a day in the future (a wrong clock) counts as when it arrived.

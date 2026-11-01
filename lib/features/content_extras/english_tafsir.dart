@@ -20,6 +20,7 @@ import '../mushaf/presentation/widgets/illuminated_frame.dart'
     show NumberFormatter;
 import 'credits.dart';
 import '../../core/testing/test_packs.dart';
+import '../../core/ui/meta_separator.dart';
 
 /// A tafsir text pack on Tibyan's mirror: one SQLite file written by
 /// `tools/fetch_quranenc_extra.py pack` (the English «المختصر في تفسير
@@ -260,7 +261,9 @@ class EnglishTafsirSection extends ConsumerWidget {
                 icon: Icon(Icons.copy, size: 18, color: t.muted),
                 onPressed: () async {
                   await Clipboard.setData(
-                    ClipboardData(text: '${entry.text}\n\n$credit'),
+                    ClipboardData(
+                      text: '${entry.text}\n\n${plainMeta(credit)}',
+                    ),
                   );
                   if (!context.mounted) return;
                   ScaffoldMessenger.of(context)
@@ -299,7 +302,7 @@ class EnglishTafsirSection extends ConsumerWidget {
             ),
           ],
           const SizedBox(height: 10),
-          Text(
+          MetaText(
             credit,
             textDirection: dir,
             style: TextStyle(fontSize: 11, color: t.muted),

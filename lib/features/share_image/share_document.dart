@@ -64,7 +64,7 @@ class SharePalette {
 }
 
 /// A surah's header: its title («سورة البقرة») and the line under it
-/// («مدنية · ترتيبها في النزول ٨٧ · نزلت بعد المطففين»).
+/// («مدنية، ترتيبها في النزول ٨٧، نزلت بعد المطففين»).
 class ShareSurahHeader {
   const ShareSurahHeader({required this.title, required this.info});
 

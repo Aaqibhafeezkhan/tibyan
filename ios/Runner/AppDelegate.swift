@@ -475,7 +475,7 @@ enum AppSearchIndex {
     let attributes = CSSearchableItemAttributeSet(contentType: .application)
     attributes.title = "Tibyan – Quran"
     attributes.alternateNames = ["تبيان", "تبيان - القرآن الكريم", "Tibyan"]
-    attributes.contentDescription = "تبيان - القرآن الكريم · Tibyan Quran"
+    attributes.contentDescription = "تبيان - القرآن الكريم – Tibyan Quran"
     attributes.keywords = [
       "Tibyan", "Quran", "Koran", "Mushaf", "قرآن", "مصحف", "تبيان", "القرآن الكريم",
     ]

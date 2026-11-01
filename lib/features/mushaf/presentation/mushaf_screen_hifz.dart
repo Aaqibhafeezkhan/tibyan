@@ -63,12 +63,12 @@ class _TestBar extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          MetaText(
                             verse!,
                             style: const TextStyle(fontWeight: FontWeight.w700),
                           ),
                           if (counts != null)
-                            Text(
+                            MetaText(
                               counts!,
                               style: TextStyle(fontSize: 12, color: t.muted),
                             ),

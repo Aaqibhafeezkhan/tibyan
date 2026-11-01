@@ -23,6 +23,7 @@ import '../domain/hifz_goal.dart';
 import '../hifz_providers.dart';
 import 'hifz_screen.dart' show openHifzTest;
 import 'progress_tabs.dart';
+import '../../../core/ui/meta_separator.dart';
 
 String _n(BuildContext context, int v) =>
     NumberFormatter(Localizations.localeOf(context))(v);
@@ -141,7 +142,7 @@ class _GoalCard extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: 6),
-              Text(
+              MetaText(
                 [
                   l.goalLeft(
                     r.remainingWeight.ceil(),

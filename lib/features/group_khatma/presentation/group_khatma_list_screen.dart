@@ -9,6 +9,7 @@ import '../../../l10n/app_localizations.dart';
 import '../data/group_khatma_api.dart';
 import '../group_khatma_providers.dart';
 import 'group_khatma_common.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// «ختمة جماعية»: create one, join by a link, and the ones you follow.
 class GroupKhatmaListScreen extends ConsumerWidget {
@@ -63,7 +64,7 @@ class GroupKhatmaListScreen extends ConsumerWidget {
                                 title: Text(s.cached?.title ?? l.gkTitle),
                                 subtitle: s.cached == null
                                     ? null
-                                    : Text(
+                                    : MetaText(
                                         l.gkProgress(
                                           s.cached!.taken,
                                           s.cached!.done,

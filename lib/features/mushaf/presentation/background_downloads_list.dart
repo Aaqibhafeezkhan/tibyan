@@ -9,6 +9,7 @@ import '../../audio/background_recitations.dart';
 import '../../tasmee/data/background_model_download.dart';
 import '../../tasmee/data/model_manifest.dart';
 import 'widgets/illuminated_frame.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// The downloads the system runs besides the editions (the recognition
 /// model, recitations), each with its progress and pause / resume / retry
@@ -99,12 +100,12 @@ class DownloadRow extends StatelessWidget {
               Expanded(
                 child: Semantics(
                   liveRegion: true,
-                  label: '$title. $status',
+                  label: spokenMeta('$title. $status'),
                   excludeSemantics: true,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      MetaText(
                         title,
                         style: TextStyle(
                           color: t.ink,
@@ -116,7 +117,7 @@ class DownloadRow extends StatelessWidget {
                         LinearProgressIndicator(value: fraction, minHeight: 6),
                       ],
                       const SizedBox(height: 6),
-                      Text(
+                      MetaText(
                         status,
                         style: TextStyle(color: t.muted, fontSize: 12),
                       ),

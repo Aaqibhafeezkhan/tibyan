@@ -12,6 +12,7 @@ import '../data/group_khatma_api.dart';
 import '../data/group_khatma_store.dart';
 import '../group_khatma_providers.dart';
 import 'group_khatma_common.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// One group khatma: progress and the parts. Shows the saved copy at once
 /// and the server's state when it arrives; offline it says so and keeps
@@ -314,7 +315,7 @@ class _Body extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                MetaText(
                   l.gkProgress(k.taken, k.done, total),
                   key: const Key('gk-progress'),
                   style: Theme.of(context).textTheme.titleMedium,
@@ -331,7 +332,7 @@ class _Body extends StatelessWidget {
                 ),
                 if (k.organizer != null || k.targetDate != null) ...[
                   const SizedBox(height: 8),
-                  Text(
+                  MetaText(
                     [
                       if (k.organizer != null) l.gkOrganizer(k.organizer!),
                       if (k.targetDate != null)
@@ -439,7 +440,7 @@ class _Body extends StatelessWidget {
           PartState.done => Icons.check_circle,
         }, color: p.state == PartState.done ? look.accent : look.sub),
         title: Text(partLabel(l, khatma, p.number)),
-        subtitle: Text(
+        subtitle: MetaText(
           reminder == null
               ? who
               : '$who\n${l.gkReminderSet('${ml.formatMediumDate(reminder)} ${ml.formatTimeOfDay(TimeOfDay.fromDateTime(reminder))}')}',

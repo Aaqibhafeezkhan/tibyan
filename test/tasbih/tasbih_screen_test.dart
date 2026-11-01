@@ -25,6 +25,8 @@ import 'package:tibyan/features/tasbih/tasbih_providers.dart';
 import 'package:tibyan/features/tasbih/tasbih_settings.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
+import '../support/meta_finders.dart';
+
 late ThemeData _theme;
 final _containers = <ProviderContainer>[];
 
@@ -308,7 +310,7 @@ void main() {
       expect(dhikr.text.substring(s.start, s.end).trim(), isNotEmpty);
     }
     expect(c.read(tasbihCounterProvider).target, 100);
-    expect(find.text('1/4 · 0/33'), findsOneWidget);
+    expect(findMeta('1/4 · 0/33'), findsOneWidget);
     final ctrl = c.read(tasbihCounterProvider.notifier);
     final events = <CountEvent>[];
     for (var i = 0; i < 33; i++) {
@@ -317,7 +319,7 @@ void main() {
     expect(events.last, CountEvent.stageChanged);
     expect(events.where((e) => e == CountEvent.stageChanged), hasLength(1));
     await tester.pump(const Duration(milliseconds: 300));
-    expect(find.text('2/4 · 0/33'), findsOneWidget);
+    expect(findMeta('2/4 · 0/33'), findsOneWidget);
     expect(platform.widget?['stages'], '33,33,33,1');
     expect(platform.widget?['round'], '33');
     // The watch gets each stage's own words, cut from the dhikr's text.
@@ -332,7 +334,7 @@ void main() {
     expect(events.where((e) => e == CountEvent.stageChanged), hasLength(3));
     expect(c.read(tasbihCounterProvider).rounds, 1);
     await tester.pump(const Duration(milliseconds: 300));
-    expect(find.text('1/4 · 0/33'), findsOneWidget);
+    expect(findMeta('1/4 · 0/33'), findsOneWidget);
     handle.dispose();
     await done(tester, c.read(userDatabaseProvider));
   });

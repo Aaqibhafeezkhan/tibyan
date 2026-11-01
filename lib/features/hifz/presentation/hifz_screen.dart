@@ -22,6 +22,7 @@ import 'hifz_sheets.dart';
 import 'progress_tabs.dart';
 import 'strength_style.dart';
 import '../../../core/ui/responsive.dart';
+import '../../../core/ui/meta_separator.dart';
 
 /// Opens the mushaf on a unit's first page in recitation mode, as a test
 /// of that unit (graded at the end).
@@ -396,7 +397,7 @@ class _UnitTile extends ConsumerWidget {
           ),
         ),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(
+        subtitle: MetaText(
           '$range\n${due ? l.hifzDueToday : l.hifzDueOn(reviewDate(context, item.dueAt))} · ${strengthLabel(l, strength)}',
         ),
         isThreeLine: true,
