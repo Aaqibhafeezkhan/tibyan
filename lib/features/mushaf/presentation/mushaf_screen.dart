@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import '../../../core/ui/app_toast.dart';
+import '../../../core/ui/on_screen.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -2320,11 +2321,7 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       // A riwaya's recitations are numbered by the riwaya, like its pages.
       final page = _riwaya?.pageOf(v.surah, v.ayah);
       if (!mounted || page == null || _onScreen(page)) return;
-      _controller?.animateToPage(
-        _indexOf(page),
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.easeInOut,
-      );
+      _turnTo(page, const Duration(milliseconds: 350));
       return;
     }
     final row = await repo.ayah(v.surah, v.ayah);
@@ -2338,10 +2335,22 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       }
     }
     if (!mounted || _onScreen(page)) return;
-    _controller?.animateToPage(
+    // Elderly mode: a slower turn that is easy to follow.
+    _turnTo(page, Duration(milliseconds: context.tokens.elderly ? 700 : 350));
+  }
+
+  /// Turns the pager to [page] for the recitation; at once, without an
+  /// animation, while the app is in the background ([appOnScreen]).
+  void _turnTo(int page, Duration duration) {
+    final controller = _controller;
+    if (controller == null || !controller.hasClients) return;
+    if (!appOnScreen) {
+      controller.jumpToPage(_indexOf(page));
+      return;
+    }
+    controller.animateToPage(
       _indexOf(page),
-      // Elderly mode: a slower turn that is easy to follow.
-      duration: Duration(milliseconds: context.tokens.elderly ? 700 : 350),
+      duration: duration,
       curve: Curves.easeInOut,
     );
   }

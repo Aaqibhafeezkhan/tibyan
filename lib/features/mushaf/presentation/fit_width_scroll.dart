@@ -2,6 +2,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../../core/theme/reveal.dart';
+import '../../../core/ui/on_screen.dart';
 
 /// A page read by scrolling down (a phone held sideways, the page as wide
 /// as the screen). It keeps the place reading has reached in view: a
@@ -59,7 +60,7 @@ class FitWidthScrollState extends State<FitWidthScroll> {
       position.maxScrollExtent,
     );
     if ((target - position.pixels).abs() < 1) return;
-    if (reduceMotion(context)) {
+    if (reduceMotion(context) || !appOnScreen) {
       _controller.jumpTo(target);
     } else {
       _controller.animateTo(
