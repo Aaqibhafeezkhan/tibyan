@@ -185,6 +185,7 @@ ThemeData buildTheme({
     interfaceStyle,
     night: !mode.isLight,
     white: mode == ThemeModeId.white,
+    black: mode == ThemeModeId.black,
     elderly: elderly,
   );
   final base0 = style.modes[mode]!;

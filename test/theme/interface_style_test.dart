@@ -47,9 +47,18 @@ void main() {
   test('text reaches 4.5:1 (7:1 in elderly mode) in every style', () {
     final failures = <String>[];
     for (final style in InterfaceStyle.values) {
-      for (final night in [false, true]) {
+      for (final (night, black) in [
+        (false, false),
+        (true, false),
+        (true, true),
+      ]) {
         for (final elderly in [false, true]) {
-          final l = UiLook.of(style, night: night, elderly: elderly);
+          final l = UiLook.of(
+            style,
+            night: night,
+            black: black,
+            elderly: elderly,
+          );
           final min = elderly ? 7.0 : 4.5;
           for (final (ground, gname) in [
             (l.bg, 'bg'),
@@ -65,7 +74,11 @@ void main() {
               final r = contrastRatio(fg, ground);
               if (r < min) {
                 failures.add(
-                  '${style.name}/${night ? 'night' : 'light'}'
+                  '${style.name}/${black
+                      ? 'black'
+                      : night
+                      ? 'night'
+                      : 'light'}'
                   '${elderly ? '/elderly' : ''}: $fname on $gname '
                   '${r.toStringAsFixed(2)}',
                 );

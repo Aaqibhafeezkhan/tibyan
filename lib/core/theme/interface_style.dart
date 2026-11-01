@@ -111,15 +111,18 @@ class UiLook extends ThemeExtension<UiLook> {
   /// Smallest touch target.
   double get target => elderly ? 56 : 48;
 
-  /// The look of [style]; [night] for the night and black modes, [white]
+  /// The look of [style]; [night] for the night and black modes ([black]
+  /// picks the OLED black variant of the night palette), [white]
   /// for «أبيض زاهي» (pure white grounds instead of the cream paper).
   factory UiLook.of(
     InterfaceStyle style, {
     required bool night,
     bool white = false,
+    bool black = false,
     bool elderly = false,
   }) {
-    final base = _palette(style, night, white && !night);
+    var base = _palette(style, night, white && !night);
+    if (night) base = black ? base._oled() : base._dusk();
     return elderly ? base._strong() : base;
   }
 
@@ -311,6 +314,86 @@ class UiLook extends ThemeExtension<UiLook> {
       elderly: true,
     );
   }
+
+  /// [look] with its text colours moved toward white, where needed, to
+  /// keep 4.5:1 on its grounds.
+  static UiLook _readable(UiLook look) {
+    final grounds = [look.bg, look.surface, look.row];
+    Color fix(Color c) =>
+        towardContrast(c, const Color(0xFFFFFFFF), grounds, 4.5);
+    return UiLook(
+      style: look.style,
+      night: look.night,
+      bg: look.bg,
+      surface: look.surface,
+      row: look.row,
+      ink: fix(look.ink),
+      sub: fix(look.sub),
+      gold: look.gold,
+      goldText: fix(look.goldText),
+      accent: look.accent,
+      accent2: fix(look.accent2),
+      frame: look.frame,
+      onFrame: look.onFrame,
+      control: look.control,
+      onControl: look.onControl,
+      line: look.line,
+      headFont: look.headFont,
+      radius: look.radius,
+      elderly: look.elderly,
+    );
+  }
+
+  /// The night mode: grounds lifted toward deep teal, softer ink, so it
+  /// reads apart from black.
+  UiLook _dusk() => _readable(
+    UiLook(
+      style: style,
+      night: true,
+      bg: Color.lerp(bg, const Color(0xFF1E3A40), 0.45)!,
+      surface: Color.lerp(surface, const Color(0xFF2A4A50), 0.45)!,
+      row: Color.lerp(row, const Color(0xFF2A4A50), 0.45)!,
+      ink: const Color(0xFFDDD8CC),
+      sub: sub,
+      gold: gold,
+      goldText: goldText,
+      accent: accent,
+      accent2: accent2,
+      frame: Color.lerp(frame, const Color(0xFF1E3A40), 0.5)!,
+      onFrame: onFrame,
+      control: control,
+      onControl: onControl,
+      line: line,
+      headFont: headFont,
+      radius: radius,
+      elderly: elderly,
+    ),
+  );
+
+  /// The black mode: true OLED black, dimmer ink, gold and accents.
+  UiLook _oled() => _readable(
+    UiLook(
+      style: style,
+      night: true,
+      bg: const Color(0xFF000000),
+      surface: const Color(0xFF0A0A0A),
+      row: const Color(0xFF0A0A0A),
+      ink: const Color(0xFFC9C7C1),
+      sub: Color.lerp(sub, const Color(0xFF000000), 0.25)!,
+      gold: Color.lerp(gold, const Color(0xFF000000), 0.25)!,
+      goldText: Color.lerp(goldText, const Color(0xFF000000), 0.2)!,
+      accent: Color.lerp(accent, const Color(0xFF000000), 0.2)!,
+      accent2: accent2,
+      frame: const Color(0xFF000000),
+      onFrame: Color.lerp(onFrame, const Color(0xFF000000), 0.2)!,
+      control: Color.lerp(control, const Color(0xFF000000), 0.2)!,
+      onControl: onControl,
+      line: const Color(0xFF1C1C1C),
+      headFont: headFont,
+      radius: radius,
+      elderly: elderly,
+    ),
+  );
 
   @override
   UiLook copyWith({
