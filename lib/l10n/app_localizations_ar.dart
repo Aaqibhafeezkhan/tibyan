@@ -4916,6 +4916,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get kahfReminderChannel => 'تذكير الجمعة';
 
   @override
+  String liveActivityVerse(String number) {
+    return 'الآية $number';
+  }
+
+  @override
+  String get liveActivityPlay => 'تشغيل';
+
+  @override
   String get syncTitle => 'المزامنة';
 
   @override

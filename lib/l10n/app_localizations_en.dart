@@ -4851,6 +4851,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get kahfReminderChannel => 'Friday reminder';
 
   @override
+  String liveActivityVerse(String number) {
+    return 'Verse $number';
+  }
+
+  @override
+  String get liveActivityPlay => 'Play';
+
+  @override
   String get syncTitle => 'Sync';
 
   @override

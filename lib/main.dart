@@ -33,6 +33,7 @@ import 'core/theme/theme_registry.dart';
 import 'features/audio/background_recitations.dart';
 import 'features/audio/car_browser.dart';
 import 'features/audio/car_channel.dart';
+import 'features/audio/live_activity.dart';
 import 'features/audio/recitation.dart';
 import 'features/audio/timing_updates.dart';
 import 'features/audio/word_timing_packs.dart';
@@ -47,6 +48,8 @@ import 'features/mushaf/data/background_packs.dart';
 import 'features/mushaf/data/bundled_pack.dart';
 import 'features/mushaf/mushaf_providers.dart';
 import 'features/mushaf/presentation/navigation.dart';
+import 'features/mushaf/presentation/widgets/illuminated_frame.dart'
+    show NumberFormatter;
 import 'features/tasmee/data/background_model_download.dart';
 import 'l10n/app_localizations.dart';
 
@@ -167,6 +170,7 @@ Future<void> main() async {
   unawaited(_refreshTimings(container, timing));
   unawaited(_tidyStorage(container));
   _startCarBrowsing(container);
+  _startLiveActivity(container);
   _startKhatma(container);
 }
 
@@ -412,4 +416,59 @@ void _startCarBrowsing(ProviderContainer container) {
   } else {
     unawaited(CarChannel(browser).attach());
   }
+}
+
+/// iOS: the recitation's Live Activity on the lock screen and in the
+/// Dynamic Island (reciter, surah, verse number; play/pause on iOS 17+).
+/// It follows the recitation's state and never drives the player, except
+/// for its own play/pause button.
+void _startLiveActivity(ProviderContainer container) {
+  if (!RecitationActivitySync.supported) return;
+  final host = ChannelRecitationActivity();
+  final sync = RecitationActivitySync(host);
+  host.onToggle = () =>
+      unawaited(container.read(recitationProvider.notifier).toggle());
+  unawaited(sync.start());
+  Future<RecitationActivityContent?> contentOf(RecitationState s) async {
+    if (!s.active) return null;
+    final l = lookupAppLocalizations(
+      container.read(settingsProvider).locale ?? const Locale('ar'),
+    );
+    final ar = l.localeName == 'ar';
+    String? surah, reciter;
+    try {
+      final surahs = await container.read(surahsProvider.future);
+      final row = surahs.where((r) => r.id == s.surah).firstOrNull;
+      if (row != null) surah = l.surahWord(ar ? row.nameAr : row.nameEn);
+      final reciters = await container.read(recitersProvider.future);
+      final r = reciters.where((r) => r.id == s.reciterId).firstOrNull;
+      if (r != null) reciter = ar ? r.nameAr : r.nameEn;
+    } catch (_) {}
+    final digits = NumberFormatter(Locale(l.localeName));
+    return RecitationActivityContent(
+      reciter: reciter ?? '',
+      surah: surah ?? digits(s.surah),
+      verse: s.ayah == null ? '' : l.liveActivityVerse(digits(s.ayah!)),
+      playing: s.playing,
+      playLabel: l.liveActivityPlay,
+      pauseLabel: l.pause,
+      rtl: ar,
+    );
+  }
+
+  container.listen<RecitationState>(recitationProvider, (before, s) async {
+    // Only what the activity shows: not each word, not the loading flag.
+    if (before != null &&
+        before.active == s.active &&
+        before.playing == s.playing &&
+        before.surah == s.surah &&
+        before.ayah == s.ayah &&
+        before.reciterId == s.reciterId) {
+      return;
+    }
+    final content = await contentOf(s);
+    // A newer state may have arrived meanwhile: show only the latest.
+    if (!identical(container.read(recitationProvider), s)) return;
+    await sync.show(content);
+  });
 }

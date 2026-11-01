@@ -3395,6 +3395,15 @@
   "kahfReminderTitle": "تذكير: سورة الكهف",
   "kahfReminderBody": "اضغط لفتح السورة.",
   "kahfReminderChannel": "تذكير الجمعة",
+  "liveActivityVerse": "الآية {number}",
+  "@liveActivityVerse": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "liveActivityPlay": "تشغيل",
   "syncTitle": "المزامنة",
   "syncHint": "بين أجهزتك عبر iCloud أو Google Drive، دون حساب في تبيان",
   "syncSwitch": "مزامنة بين أجهزتي",

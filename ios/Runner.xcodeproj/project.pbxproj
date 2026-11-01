@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0451620CFDFA57F8751B1F44 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 995968C981614F3555181908 /* Localizable.strings */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		14C19713BC294399892ED66F /* RecitationActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC9B185F7D25AF189B54060 /* RecitationActivity.swift */; };
 		1EA764A18BB7BB06BEA4884F /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13824F0867040AB486B86E68 /* WidgetKit.framework */; };
 		307FDFA0E4D6EE5B853FBD5D /* VideoEncoderChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07F714DC71373EF7DE925C3 /* VideoEncoderChannel.swift */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
@@ -22,6 +23,9 @@
 		5AE294F754E5AD56F6E3CAF3 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1FDD5F468BDB412A9057B04 /* SwiftUI.framework */; };
 		5B624BB0F7F63BFB563D748F /* WidgetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85040AE8A0E0E7DE3F495F98 /* WidgetStore.swift */; };
 		5BBD4F1EB5FBD07C3A4D9766 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3C029527FBDC23A9EDEA473C /* Localizable.strings */; };
+		67A0FD4C0080531D0FD1A4D6 /* LiveActivityChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6CF622922AF5BEDF955875 /* LiveActivityChannel.swift */; };
+		67D1F3862880ED7927E50DF5 /* RecitationLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7509ADCE427F862DCB6F63 /* RecitationLiveActivity.swift */; };
+		6DB54D7BD573508B11B79B23 /* RecitationActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC9B185F7D25AF189B54060 /* RecitationActivity.swift */; };
 		72D8A5BF7A1284B2A45BCA51 /* TibyanWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C55590CA125EC6E4D60E0D /* TibyanWatchApp.swift */; };
 		7323F38C6F6C9C9678A2B4C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC4C2E2BDD7E14378460A66 /* Foundation.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
@@ -34,8 +38,10 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		99AD5B17E49547C2241364E7 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 989C360F9BD2313994BCBA07 /* ActivityKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9B493981957A5BC1EB70E801 /* TibyanWatchWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3F2E9614D9F4D504DC3DAF /* TibyanWatchWidgets.swift */; };
 		A217ACC3FC4E2FF65544964B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 373A34BB71DBFB805129B4C0 /* Foundation.framework */; };
+		A26CF153E415A955D28C2A31 /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 527EF0D9E863FCB564E39C16 /* AppIntents.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A8DDA6C198C138F1DC500ECD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 995968C981614F3555181908 /* Localizable.strings */; };
 		B16D4F6A472F082461FA7611 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1FDD5F468BDB412A9057B04 /* SwiftUI.framework */; };
 		B8FFA3BFE0B404B983065FDC /* WidgetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85040AE8A0E0E7DE3F495F98 /* WidgetStore.swift */; };
@@ -153,7 +159,9 @@
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		45B4FF3CD634AE5ED094ABFE /* ar */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4CB4CFC4A6CC084D956EFE89 /* TibyanWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TibyanWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4EC9B185F7D25AF189B54060 /* RecitationActivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RecitationActivity.swift; sourceTree = "<group>"; };
 		52076B7979BA37ECD05D6F55 /* WatchStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchStore.swift; sourceTree = "<group>"; };
+		527EF0D9E863FCB564E39C16 /* AppIntents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = System/Library/Frameworks/AppIntents.framework; sourceTree = SDKROOT; };
 		555C80A9D283507854CB47A5 /* ar */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5E9CF23FC44CCC0A4D869185 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
 		64149AE8867AC65DDC346858 /* AppShortcuts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppShortcuts.swift; sourceTree = "<group>"; };
@@ -166,6 +174,7 @@
 		7D66178CD3466430EC45D15F /* Extension-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Extension-Info.plist"; sourceTree = "<group>"; };
 		85040AE8A0E0E7DE3F495F98 /* WidgetStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetStore.swift; sourceTree = "<group>"; };
 		8CA00C4737B18EA119837B36 /* TibyanActions.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TibyanActions.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F6CF622922AF5BEDF955875 /* LiveActivityChannel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LiveActivityChannel.swift; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,8 +182,10 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		989C360F9BD2313994BCBA07 /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = System/Library/Frameworks/ActivityKit.framework; sourceTree = SDKROOT; };
 		98C55590CA125EC6E4D60E0D /* TibyanWatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TibyanWatchApp.swift; sourceTree = "<group>"; };
 		A59EA9ABF748BB98075127F4 /* TibyanWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TibyanWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD7509ADCE427F862DCB6F63 /* RecitationLiveActivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RecitationLiveActivity.swift; sourceTree = "<group>"; };
 		B0A98497B216B9179AE3AC8F /* Widget-ios.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = "Widget-ios.entitlements"; sourceTree = "<group>"; };
 		B2610DF88EDCD16EF7517C54 /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B5AA1FCC2C61A24018F6B1EF /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -221,6 +232,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */,
+				99AD5B17E49547C2241364E7 /* ActivityKit.framework in Frameworks */,
+				A26CF153E415A955D28C2A31 /* AppIntents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				22F06D2079F7027187E78722 /* TibyanActions.swift */,
+				AD7509ADCE427F862DCB6F63 /* RecitationLiveActivity.swift */,
 			);
 			name = TibyanActions;
 			path = TibyanActions;
@@ -270,6 +284,8 @@
 			children = (
 				5C9134B7EC7392BE918BAC68 /* iOS */,
 				E748F8C0F4448302695EC941 /* watchOS */,
+				989C360F9BD2313994BCBA07 /* ActivityKit.framework */,
+				527EF0D9E863FCB564E39C16 /* AppIntents.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -289,6 +305,7 @@
 			isa = PBXGroup;
 			children = (
 				85040AE8A0E0E7DE3F495F98 /* WidgetStore.swift */,
+				4EC9B185F7D25AF189B54060 /* RecitationActivity.swift */,
 			);
 			name = Shared;
 			path = Shared;
@@ -376,6 +393,7 @@
 				64149AE8867AC65DDC346858 /* AppShortcuts.swift */,
 				ECF049BAA9205C249D39BC74 /* AppShortcuts.strings */,
 				3C029527FBDC23A9EDEA473C /* Localizable.strings */,
+				8F6CF622922AF5BEDF955875 /* LiveActivityChannel.swift */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -703,6 +721,8 @@
 				7AED21D454FCD855C2081D78 /* CarPlaySceneDelegate.swift in Sources */,
 				307FDFA0E4D6EE5B853FBD5D /* VideoEncoderChannel.swift in Sources */,
 				796C00625C16CD263C7D516F /* AppShortcuts.swift in Sources */,
+				67A0FD4C0080531D0FD1A4D6 /* LiveActivityChannel.swift in Sources */,
+				6DB54D7BD573508B11B79B23 /* RecitationActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,6 +732,8 @@
 			files = (
 				4F0C98C481D19BA6E2C484E2 /* TibyanActions.swift in Sources */,
 				B8FFA3BFE0B404B983065FDC /* WidgetStore.swift in Sources */,
+				14C19713BC294399892ED66F /* RecitationActivity.swift in Sources */,
+				67D1F3862880ED7927E50DF5 /* RecitationLiveActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1845,6 +1845,8 @@
   "kahfReminderTitle": "Reminder: Surah Al-Kahf",
   "kahfReminderBody": "Tap to open the surah.",
   "kahfReminderChannel": "Friday reminder",
+  "liveActivityVerse": "Verse {number}",
+  "liveActivityPlay": "Play",
   "syncTitle": "Sync",
   "syncHint": "Between your devices via iCloud or Google Drive, with no Tibyan account",
   "syncSwitch": "Sync between my devices",

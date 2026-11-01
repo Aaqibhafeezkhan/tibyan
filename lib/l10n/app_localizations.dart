@@ -8210,6 +8210,18 @@ abstract class AppLocalizations {
   /// **'تذكير الجمعة'**
   String get kahfReminderChannel;
 
+  /// No description provided for @liveActivityVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآية {number}'**
+  String liveActivityVerse(String number);
+
+  /// No description provided for @liveActivityPlay.
+  ///
+  /// In ar, this message translates to:
+  /// **'تشغيل'**
+  String get liveActivityPlay;
+
   /// No description provided for @syncTitle.
   ///
   /// In ar, this message translates to:

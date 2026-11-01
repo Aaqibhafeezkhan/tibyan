@@ -313,6 +313,7 @@ struct TibyanActionsBundle: WidgetBundle {
     TibyanActionsWidget()
     #if os(iOS)
     TibyanTasbihWidget()
+    RecitationLiveActivity()
     #endif
   }
 }
