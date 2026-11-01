@@ -1,0 +1,7 @@
+/* عبارات Siri والبحث (AppShortcuts.swift). */
+"Open my daily wird in ${applicationName}" = "افتح وردي اليومي في ${applicationName}";
+"${applicationName} daily wird" = "${applicationName} وردي اليومي";
+"Continue reading in ${applicationName}" = "تابع القراءة في ${applicationName}";
+"${applicationName} continue reading" = "${applicationName} متابعة القراءة";
+"Open ${surah} in ${applicationName}" = "افتح ${surah} في ${applicationName}";
+"Open surah ${surah} in ${applicationName}" = "افتح سورة ${surah} في ${applicationName}";

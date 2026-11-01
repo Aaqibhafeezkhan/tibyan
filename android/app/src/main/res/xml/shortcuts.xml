@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Long-press shortcut that continues reading the mushaf. Launchers index
+<!-- Long-press shortcuts, also offered to Google Assistant: «open my daily
+     wird» / «continue reading» in Tibyan (actions.intent.OPEN_APP_FEATURE,
+     routed by lib/core/platform/app_shortcuts.dart). The first one continues
+     reading the mushaf. Launchers index
      shortcut labels in search, so the app is found by "Tibyan"/"Quran" as
      well as by its Arabic name «تبيان». -->
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
@@ -15,4 +18,50 @@
             android:targetClass="app.tibyan.tibyan.MainActivity"
             android:data="tibyan://reader" />
     </shortcut>
+    <shortcut
+        android:shortcutId="wird"
+        android:enabled="true"
+        android:icon="@drawable/ic_action_check"
+        android:shortcutShortLabel="@string/shortcut_wird_short"
+        android:shortcutLongLabel="@string/shortcut_wird_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="app.tibyan.tibyan"
+            android:targetClass="app.tibyan.tibyan.MainActivity"
+            android:data="tibyan://reader" />
+        <capability-binding android:key="actions.intent.OPEN_APP_FEATURE">
+            <parameter-binding
+                android:key="feature"
+                android:value="@array/shortcut_wird_synonyms" />
+        </capability-binding>
+    </shortcut>
+    <shortcut
+        android:shortcutId="continue"
+        android:enabled="true"
+        android:icon="@drawable/ic_action_book"
+        android:shortcutShortLabel="@string/shortcut_continue_short"
+        android:shortcutLongLabel="@string/shortcut_continue_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="app.tibyan.tibyan"
+            android:targetClass="app.tibyan.tibyan.MainActivity"
+            android:data="tibyan://action/continue" />
+        <capability-binding android:key="actions.intent.OPEN_APP_FEATURE">
+            <parameter-binding
+                android:key="feature"
+                android:value="@array/shortcut_continue_synonyms" />
+        </capability-binding>
+    </shortcut>
+    <capability android:name="actions.intent.OPEN_APP_FEATURE">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="app.tibyan.tibyan"
+            android:targetClass="app.tibyan.tibyan.MainActivity">
+            <url-template android:value="tibyan://action/feature{?name}" />
+            <parameter
+                android:name="feature"
+                android:key="name"
+                android:mimeType="https://schema.org/Thing" />
+        </intent>
+    </capability>
 </shortcuts>

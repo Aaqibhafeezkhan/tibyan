@@ -1,0 +1,7 @@
+/* Siri / Spotlight phrases (AppShortcuts.swift). */
+"Open my daily wird in ${applicationName}" = "Open my daily wird in ${applicationName}";
+"${applicationName} daily wird" = "${applicationName} daily wird";
+"Continue reading in ${applicationName}" = "Continue reading in ${applicationName}";
+"${applicationName} continue reading" = "${applicationName} continue reading";
+"Open ${surah} in ${applicationName}" = "Open ${surah} in ${applicationName}";
+"Open surah ${surah} in ${applicationName}" = "Open surah ${surah} in ${applicationName}";

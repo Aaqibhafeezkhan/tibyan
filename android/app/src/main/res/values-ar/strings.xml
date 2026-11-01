@@ -19,4 +19,17 @@
     <string name="tasbih_widget_label">المسبحة</string>
     <string name="tasbih_widget_description">الذكر الذي تعدّه، وزر يعدّ دون فتح التطبيق</string>
     <string name="tasbih_count">عد</string>
+    <string name="shortcut_wird_short">وردي اليومي</string>
+    <string name="shortcut_wird_long">افتح وردي اليومي</string>
+    <string name="shortcut_continue_short">متابعة القراءة</string>
+    <string name="shortcut_continue_long">متابعة القراءة في المصحف</string>
+    <string-array name="shortcut_wird_synonyms">
+        <item>وردي اليومي</item>
+        <item>الورد اليومي</item>
+        <item>ورد اليوم</item>
+    </string-array>
+    <string-array name="shortcut_continue_synonyms">
+        <item>متابعة القراءة</item>
+        <item>أكمل القراءة</item>
+    </string-array>
 </resources>

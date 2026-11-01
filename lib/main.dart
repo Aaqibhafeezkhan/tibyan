@@ -24,6 +24,7 @@ import 'core/db/content_database.dart';
 import 'core/db/user_database.dart';
 import 'core/downloads/background_downloads.dart';
 import 'core/flags/feature_flags.dart';
+import 'core/platform/app_shortcuts.dart';
 import 'core/review/review_prompt.dart';
 import 'core/router/app_router.dart';
 import 'core/ui/desktop_window.dart';
@@ -281,8 +282,10 @@ void _startKhatma(ProviderContainer container) {
     onHide: () => PaintingBinding.instance.imageCache.clear(),
   );
 
-  Future<void> open(Uri? uri) async {
-    if (uri == null) return;
+  Future<void> open(Uri? link) async {
+    if (link == null) return;
+    // Google Assistant's «open app feature»: the shortcut's own link.
+    final uri = assistantFeatureLink(link) ?? link;
     if (uri.toString() == weeklyReportLink) {
       await container.read(appRouterReadyProvider).future;
       unawaited(container.read(appRouterProvider).push(weeklyReportLocation));
@@ -357,6 +360,22 @@ void _startKhatma(ProviderContainer container) {
     links.uriLinkStream.listen((u) {
       if (mine(u)) open(u);
     }, onError: (_) {});
+  }
+
+  // Siri / Spotlight App Shortcuts (iOS 16+): «وردي اليومي», «متابعة
+  // القراءة» and «افتح سورة …», with the surah names from the content data.
+  if (AppShortcutsChannel.supported) {
+    unawaited(
+      AppShortcutsChannel()
+          .attach(
+            open: open,
+            surahs: () async => [
+              for (final s in await container.read(surahsProvider.future))
+                (s.id, s.nameAr, s.nameEn),
+            ],
+          )
+          .catchError((_) {}),
+    );
   }
 }
 

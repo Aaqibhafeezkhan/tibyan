@@ -36,6 +36,8 @@ import WatchConnectivity
     WatchChannel.attach(engineBridge.applicationRegistrar.messenger())
     // «مشاركة كمقطع فيديو»: the reel's encoder.
     VideoEncoderChannel.attach(engineBridge.applicationRegistrar.messenger())
+    // Siri / Spotlight App Shortcuts (AppShortcuts.swift).
+    ShortcutsChannel.attach(engineBridge.applicationRegistrar.messenger())
     // CarPlay may have started the app first: the phone's view controller
     // then adopted the launch engine CarPlay set up (CarPlaySceneDelegate
     // .swift), whose plugins and car channel are already registered.

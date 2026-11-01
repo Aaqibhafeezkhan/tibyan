@@ -16,15 +16,18 @@
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		3BDBA187D556D7403694703C /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF630D919A0D4630FDCF759 /* AppIntents.framework */; };
 		4F0C98C481D19BA6E2C484E2 /* TibyanActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F06D2079F7027187E78722 /* TibyanActions.swift */; };
+		505C338E635D922B5FAE8339 /* AppShortcuts.strings in Resources */ = {isa = PBXBuildFile; fileRef = ECF049BAA9205C249D39BC74 /* AppShortcuts.strings */; };
 		5091867B69375D18323D65FE /* TibyanWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4CB4CFC4A6CC084D956EFE89 /* TibyanWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5289326F61B16D35DD7B09D9 /* WatchConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 213E142C5B73187223ABD3FF /* WatchConnectivity.framework */; };
 		5AE294F754E5AD56F6E3CAF3 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1FDD5F468BDB412A9057B04 /* SwiftUI.framework */; };
 		5B624BB0F7F63BFB563D748F /* WidgetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85040AE8A0E0E7DE3F495F98 /* WidgetStore.swift */; };
+		5BBD4F1EB5FBD07C3A4D9766 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3C029527FBDC23A9EDEA473C /* Localizable.strings */; };
 		72D8A5BF7A1284B2A45BCA51 /* TibyanWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C55590CA125EC6E4D60E0D /* TibyanWatchApp.swift */; };
 		7323F38C6F6C9C9678A2B4C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC4C2E2BDD7E14378460A66 /* Foundation.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */; };
 		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
+		796C00625C16CD263C7D516F /* AppShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64149AE8867AC65DDC346858 /* AppShortcuts.swift */; };
 		7AED21D454FCD855C2081D78 /* CarPlaySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB09B15ABDE72A8C2D1A5C4 /* CarPlaySceneDelegate.swift */; };
 		86837F38A7AABE8FEC180DC5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC4C2E2BDD7E14378460A66 /* Foundation.framework */; };
 		8DD319DA4AB9BF0BCA77EAF7 /* TibyanActions.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8CA00C4737B18EA119837B36 /* TibyanActions.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -136,6 +139,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0B48A634FA7270161C4030C2 /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AppShortcuts.strings; sourceTree = "<group>"; };
 		0BF630D919A0D4630FDCF759 /* AppIntents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/AppIntents.framework; sourceTree = DEVELOPER_DIR; };
 		13824F0867040AB486B86E68 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/WidgetKit.framework; sourceTree = DEVELOPER_DIR; };
 		13B6D073A35F916204CDFEA0 /* CarPlay.entitlements.disabled */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = CarPlay.entitlements.disabled; sourceTree = "<group>"; };
@@ -150,7 +154,9 @@
 		45B4FF3CD634AE5ED094ABFE /* ar */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4CB4CFC4A6CC084D956EFE89 /* TibyanWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TibyanWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		52076B7979BA37ECD05D6F55 /* WatchStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchStore.swift; sourceTree = "<group>"; };
+		555C80A9D283507854CB47A5 /* ar */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5E9CF23FC44CCC0A4D869185 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
+		64149AE8867AC65DDC346858 /* AppShortcuts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppShortcuts.swift; sourceTree = "<group>"; };
 		6869FF162642F62798A8A6D9 /* Watch.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Watch.xcconfig; path = Flutter/Watch.xcconfig; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -170,6 +176,7 @@
 		98C55590CA125EC6E4D60E0D /* TibyanWatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TibyanWatchApp.swift; sourceTree = "<group>"; };
 		A59EA9ABF748BB98075127F4 /* TibyanWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TibyanWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0A98497B216B9179AE3AC8F /* Widget-ios.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = "Widget-ios.entitlements"; sourceTree = "<group>"; };
+		B2610DF88EDCD16EF7517C54 /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B5AA1FCC2C61A24018F6B1EF /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C069A7288C12AF1E37CBA9E0 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C8EE5BC516288244E69F4C69 /* Widget-ios.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Widget-ios.xcconfig"; sourceTree = "<group>"; };
@@ -182,6 +189,7 @@
 		E0FBA031405A896DBB55CC1F /* Runner.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		E1FDD5F468BDB412A9057B04 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
 		F8FC4C3DE09579A2305C35AE /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/WidgetKit.framework; sourceTree = DEVELOPER_DIR; };
+		F945E623B1D1759DA0EEAE46 /* ar */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/AppShortcuts.strings; sourceTree = "<group>"; };
 		F986FC25A0391562500D2D93 /* TibyanWatchWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TibyanWatchWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -365,6 +373,9 @@
 				CEB09B15ABDE72A8C2D1A5C4 /* CarPlaySceneDelegate.swift */,
 				13B6D073A35F916204CDFEA0 /* CarPlay.entitlements.disabled */,
 				E07F714DC71373EF7DE925C3 /* VideoEncoderChannel.swift */,
+				64149AE8867AC65DDC346858 /* AppShortcuts.swift */,
+				ECF049BAA9205C249D39BC74 /* AppShortcuts.strings */,
+				3C029527FBDC23A9EDEA473C /* Localizable.strings */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -590,6 +601,8 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				505C338E635D922B5FAE8339 /* AppShortcuts.strings in Resources */,
+				5BBD4F1EB5FBD07C3A4D9766 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -689,6 +702,7 @@
 				7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */,
 				7AED21D454FCD855C2081D78 /* CarPlaySceneDelegate.swift in Sources */,
 				307FDFA0E4D6EE5B853FBD5D /* VideoEncoderChannel.swift in Sources */,
+				796C00625C16CD263C7D516F /* AppShortcuts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -736,6 +750,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		3C029527FBDC23A9EDEA473C /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B2610DF88EDCD16EF7517C54 /* en */,
+				555C80A9D283507854CB47A5 /* ar */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -759,6 +782,15 @@
 				B5AA1FCC2C61A24018F6B1EF /* en */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		ECF049BAA9205C249D39BC74 /* AppShortcuts.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0B48A634FA7270161C4030C2 /* en */,
+				F945E623B1D1759DA0EEAE46 /* ar */,
+			);
+			name = AppShortcuts.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -961,7 +993,6 @@
 				DEVELOPMENT_TEAM = T958VWM76Z;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "../apple/Extension-Info.plist";
-				TIBYAN_WIDGET_NAME = "الختمة";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -976,6 +1007,7 @@
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
+				TIBYAN_WIDGET_NAME = "الختمة";
 				VALIDATE_PRODUCT = YES;
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
@@ -992,7 +1024,6 @@
 				DEVELOPMENT_TEAM = T958VWM76Z;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "../apple/Extension-Info.plist";
-				TIBYAN_WIDGET_NAME = "الختمة";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1007,6 +1038,7 @@
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
+				TIBYAN_WIDGET_NAME = "الختمة";
 				VALIDATE_PRODUCT = YES;
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
@@ -1022,7 +1054,6 @@
 				DEVELOPMENT_TEAM = T958VWM76Z;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "../apple/Extension-Info.plist";
-				TIBYAN_WIDGET_NAME = "الختمة";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1036,6 +1067,7 @@
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
+				TIBYAN_WIDGET_NAME = "الختمة";
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;

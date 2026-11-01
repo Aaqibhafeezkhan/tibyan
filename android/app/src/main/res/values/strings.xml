@@ -21,4 +21,17 @@
     <string name="tasbih_widget_label">Tasbih</string>
     <string name="tasbih_widget_description">The dhikr being counted, with a button that counts</string>
     <string name="tasbih_count">Count</string>
+    <string name="shortcut_wird_short">Daily wird</string>
+    <string name="shortcut_wird_long">Open my daily wird</string>
+    <string name="shortcut_continue_short">Continue</string>
+    <string name="shortcut_continue_long">Continue reading the mushaf</string>
+    <string-array name="shortcut_wird_synonyms">
+        <item>daily wird</item>
+        <item>my wird</item>
+        <item>today\'s portion</item>
+    </string-array>
+    <string-array name="shortcut_continue_synonyms">
+        <item>continue reading</item>
+        <item>resume reading</item>
+    </string-array>
 </resources>
