@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:drift/native.dart';
@@ -171,21 +172,23 @@ void main() {
     'limit sheet': (
       blank,
       (tester) async {
-        showFawasilLimit(host(tester), here: (surah: 50, ayah: 3), page: 518);
+        unawaited(
+          showFawasilLimit(host(tester), here: (surah: 50, ayah: 3), page: 518),
+        );
         await idle(tester);
       },
     ),
     'what\'s new': (
       blank,
       (tester) async {
-        showWhatsNew(host(tester));
+        unawaited(showWhatsNew(host(tester)));
         await idle(tester);
       },
     ),
     'crash consent': (
       blank,
       (tester) async {
-        showCrashConsent(host(tester), suggestAgree: false);
+        unawaited(showCrashConsent(host(tester), suggestAgree: false));
         await idle(tester);
       },
     ),
@@ -221,7 +224,7 @@ void main() {
       'node, read in order', (tester) async {
     final handle = tester.ensureSemantics();
     await pump(tester, blank, locale: 'ar');
-    showWhatsNew(host(tester));
+    unawaited(showWhatsNew(host(tester)));
     await idle(tester);
     final l = AppLocalizations.of(host(tester));
     expect(
