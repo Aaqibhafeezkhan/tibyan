@@ -3338,41 +3338,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Open the device settings and allow Tibyan to use the microphone.';
 
   @override
-  String get newKhatmah => 'The new khatma';
-
-  @override
-  String get newKhatmahBody =>
-      'Several khatmas at once, a setup wizard with ready plans, an adaptive daily portion, clearer stats and reminders, and today\'s portion shown in the mushaf.';
-
-  @override
-  String get newTasmee => 'Recite from memory (beta)';
-
-  @override
-  String get newTasmeeBody =>
-      'Recite from memory and each word appears in its place, with mistakes marked. It runs on your device, offline after the model download, and checks memorisation, not tajweed.';
-
-  @override
-  String get newSajdah => 'Sajdah timer';
-
-  @override
-  String get newSajdahBody =>
-      'At a verse of prostration the reciter pauses and a card shows the supplications with a countdown, then the recitation resumes. Turn it on in Settings.';
-
-  @override
-  String get newAssistant => 'The Assistant: help with using the app';
-
-  @override
-  String get newAssistantBody =>
-      'A new screen with the tajweed rules and their colours, each with its places in the mushaf.';
-
-  @override
-  String get newFocus => 'Focus mode';
-
-  @override
-  String get newFocusBody =>
-      'The page alone, frameless and filling the screen, tools when you need them, and a small player you can drag anywhere.';
-
-  @override
   String get tasmeeAutoUpdateModel => 'Update the model automatically on Wi‑Fi';
 
   @override
@@ -3427,20 +3392,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsGroupData => 'Data and privacy';
-
-  @override
-  String get newLook => 'A new look';
-
-  @override
-  String get newLookBody =>
-      'Three styles to choose from in Settings: Geometric, Manuscript and Night gold, with surah names in the King Fahd Complex\'s calligraphy and Meccan/Medinan emblems.';
-
-  @override
-  String get newModelUpdate => 'Automatic tasmee model updates';
-
-  @override
-  String get newModelUpdateBody =>
-      'When the recitation model improves, it downloads by itself on Wi‑Fi, and the old one keeps working until the new one is complete.';
 
   @override
   String get progressSaved => 'Result saved';
@@ -3765,13 +3716,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get whatsNewHifzProgress => 'Hifz journey';
 
   @override
-  String get newJourney => 'Your memorisation journey';
-
-  @override
-  String get newJourneyBody =>
-      'Every recitation is saved and measures your mastery: progress per surah and juz, a mastery map, the words you miss, and memorisation goals with a daily portion.';
-
-  @override
   String onbStepOf(String step, String total) {
     return 'Step $step of $total';
   }
@@ -3915,13 +3859,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get digitsFontNote =>
       'Every interface digit uses one clear font: a digits-only subset of IBM Plex Sans Arabic (© 2017 IBM Corp.), renamed because \"Plex\" is a Reserved Font Name. Licence: SIL Open Font License 1.1, which permits subsetting and modification under a new name and the same licence.';
-
-  @override
-  String get newSettings => 'Easier settings';
-
-  @override
-  String get newSettingsBody =>
-      'Settings are now eight sections with a search that takes you to any setting, plus clearer numbers across the app.';
 
   @override
   String get reportProblemTitle => 'Report a problem';
@@ -5124,4 +5061,104 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fasilMoveDown => 'Move later';
+
+  @override
+  String whatsNewBuild(String build) {
+    return 'Build $build';
+  }
+
+  @override
+  String get whatsNewIntro =>
+      'What we added and improved in the latest updates.';
+
+  @override
+  String get wn42Fawasil => 'Fawasil your way';
+
+  @override
+  String get wn42FawasilBody =>
+      'Each fasil keeps its own look, cloth and colour, up to eight in all; adding a ninth offers to move or delete one.';
+
+  @override
+  String get wn42Index => 'Fawasil in the Index';
+
+  @override
+  String get wn42IndexBody =>
+      'Move any fasil to a surah and verse or a page, rename or reorder it, and delete it with undo.';
+
+  @override
+  String get wn42Ribbons => 'Ribbons in the margin';
+
+  @override
+  String get wn42RibbonsBody =>
+      'Ribbons hang in the page margin beside the text, like a mushaf\'s ribbon, never over a line.';
+
+  @override
+  String get wn42Speed => 'Smoother page turns';
+
+  @override
+  String get wn42SpeedBody =>
+      'Pages turn lighter and faster, and a page opens at once from the Index or the home screen.';
+
+  @override
+  String get wn42Crash => 'Anonymous crash reports';
+
+  @override
+  String get wn42CrashBody =>
+      'Only if you agree: reports without your name, device or anything you type help us fix errors faster. Change it any time in Settings.';
+
+  @override
+  String get wn41Hifz => 'Memorization mode';
+
+  @override
+  String get wn41HifzBody =>
+      'The mushaf hides words for you to recite from memory, in five styles; a word shows with a tap or as you recite.';
+
+  @override
+  String get wn41Group => 'Group khatma';
+
+  @override
+  String get wn41GroupBody =>
+      'Create a khatma and share its link; each person claims a part under their name. No account, no e-mail.';
+
+  @override
+  String get wn41Report => 'Weekly report';
+
+  @override
+  String get wn41ReportBody =>
+      'Your reading and listening minutes, pages and khatma progress for the week, with calm notes that never compare weeks.';
+
+  @override
+  String get wn41Sync => 'Sync across your devices';
+
+  @override
+  String get wn41SyncBody =>
+      'Your fawasil, khatmas, misbaha and settings move between your devices through your own iCloud or Google Drive, with no Tibyan server.';
+
+  @override
+  String get wn41Watch => 'Watch';
+
+  @override
+  String get wn41WatchBody =>
+      'Today\'s portion and the misbaha on Apple Watch and Wear OS, with watch face complications.';
+
+  @override
+  String get wn41Video => 'Share as video';
+
+  @override
+  String get wn41VideoBody =>
+      'Share verses in your chosen reciter\'s recitation as a vertical clip made on your device, with no music or sound effects.';
+
+  @override
+  String get wn41A11y => 'Accessibility';
+
+  @override
+  String get wn41A11yBody =>
+      'Reduce motion, verse numbers read by screen readers, and text up to twice the size without overlaps.';
+
+  @override
+  String get wn40Tasbih => 'Misbaha';
+
+  @override
+  String get wn40TasbihBody =>
+      'The reset button and long press respond as they should, and every preset dhikr has a short description.';
 }

@@ -5630,66 +5630,6 @@ abstract class AppLocalizations {
   /// **'افتح إعدادات الجهاز، ثم اسمح لتبيان باستخدام الميكروفون.'**
   String get tasmeeAllowMicHint;
 
-  /// No description provided for @newKhatmah.
-  ///
-  /// In ar, this message translates to:
-  /// **'الختمة الجديدة'**
-  String get newKhatmah;
-
-  /// No description provided for @newKhatmahBody.
-  ///
-  /// In ar, this message translates to:
-  /// **'أكثر من ختمة معا، ومعالج إنشاء بقوالب جاهزة، وورد يومي يتكيّف، وإحصاءات وتذكيرات أدق، ومؤشر ورد اليوم في المصحف.'**
-  String get newKhatmahBody;
-
-  /// No description provided for @newTasmee.
-  ///
-  /// In ar, this message translates to:
-  /// **'التسميع بالصوت (تجريبي)'**
-  String get newTasmee;
-
-  /// No description provided for @newTasmeeBody.
-  ///
-  /// In ar, this message translates to:
-  /// **'اقرأ من حفظك، فتظهر كل كلمة في موضعها وتُعلَّم الأخطاء. يعمل على جهازك دون إنترنت بعد تنزيل النموذج، ويختبر الحفظ لا التجويد.'**
-  String get newTasmeeBody;
-
-  /// No description provided for @newSajdah.
-  ///
-  /// In ar, this message translates to:
-  /// **'مؤقت سجدات التلاوة'**
-  String get newSajdah;
-
-  /// No description provided for @newSajdahBody.
-  ///
-  /// In ar, this message translates to:
-  /// **'عند آية السجدة يتوقف الشيخ وتظهر بطاقة بأذكار السجود وعدّ تنازلي، ثم تُستكمل التلاوة. يُفعَّل من الإعدادات.'**
-  String get newSajdahBody;
-
-  /// No description provided for @newAssistant.
-  ///
-  /// In ar, this message translates to:
-  /// **'المساعد: المساعدة في استخدام التطبيق'**
-  String get newAssistant;
-
-  /// No description provided for @newAssistantBody.
-  ///
-  /// In ar, this message translates to:
-  /// **'شاشة جديدة فيها أحكام التجويد بألوانها، ولكل حكم مواضعه في المصحف.'**
-  String get newAssistantBody;
-
-  /// No description provided for @newFocus.
-  ///
-  /// In ar, this message translates to:
-  /// **'وضع التركيز'**
-  String get newFocus;
-
-  /// No description provided for @newFocusBody.
-  ///
-  /// In ar, this message translates to:
-  /// **'الصفحة وحدها بلا إطار وتملأ الشاشة، والأدوات عند الحاجة، ومشغّل صغير تسحبه أينما شئت.'**
-  String get newFocusBody;
-
   /// No description provided for @tasmeeAutoUpdateModel.
   ///
   /// In ar, this message translates to:
@@ -5785,30 +5725,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'البيانات والخصوصية'**
   String get settingsGroupData;
-
-  /// No description provided for @newLook.
-  ///
-  /// In ar, this message translates to:
-  /// **'شكل جديد للواجهة'**
-  String get newLook;
-
-  /// No description provided for @newLookBody.
-  ///
-  /// In ar, this message translates to:
-  /// **'ثلاثة أشكال تختار منها في الإعدادات: هندسي ومخطوطة وليلي ذهبي، بأسماء السور بخط مجمع الملك فهد، وعلامات المكية والمدنية.'**
-  String get newLookBody;
-
-  /// No description provided for @newModelUpdate.
-  ///
-  /// In ar, this message translates to:
-  /// **'تحديث نموذج التسميع تلقائيًا'**
-  String get newModelUpdate;
-
-  /// No description provided for @newModelUpdateBody.
-  ///
-  /// In ar, this message translates to:
-  /// **'حين يتحسّن نموذج التسميع ينزل وحده على الواي فاي، ويظل القديم يعمل حتى يكتمل الجديد.'**
-  String get newModelUpdateBody;
 
   /// No description provided for @progressSaved.
   ///
@@ -6314,18 +6230,6 @@ abstract class AppLocalizations {
   /// **'مسيرة الحفظ'**
   String get whatsNewHifzProgress;
 
-  /// No description provided for @newJourney.
-  ///
-  /// In ar, this message translates to:
-  /// **'مسيرة الحفظ'**
-  String get newJourney;
-
-  /// No description provided for @newJourneyBody.
-  ///
-  /// In ar, this message translates to:
-  /// **'كل تسميع يُحفظ ويقيس إتقانك: نسب لكل سورة وجزء، وخريطة إتقان، والكلمات التي تخطئ فيها، وأهداف حفظ بورد يومي.'**
-  String get newJourneyBody;
-
   /// No description provided for @onbStepOf.
   ///
   /// In ar, this message translates to:
@@ -6583,18 +6487,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'أرقام الواجهة كلها بخط واحد واضح: مقتطع من IBM Plex Sans Arabic (حقوقه لشركة IBM، 2017) يضم الأرقام وحدها، وسُمّي باسم جديد لأن «Plex» اسم محجوز. الرخصة: رخصة الخطوط المفتوحة SIL OFL 1.1، وهي تبيح الاقتطاع والتعديل بشرط تغيير الاسم وبقاء الرخصة نفسها.'**
   String get digitsFontNote;
-
-  /// No description provided for @newSettings.
-  ///
-  /// In ar, this message translates to:
-  /// **'إعدادات أسهل'**
-  String get newSettings;
-
-  /// No description provided for @newSettingsBody.
-  ///
-  /// In ar, this message translates to:
-  /// **'الإعدادات صارت ثمانية أقسام مع بحث يوصلك لأي إعداد، وصيغ الأعداد صحيحة («٧ آيات»)، وأرقام أوضح في الواجهة.'**
-  String get newSettingsBody;
 
   /// No description provided for @reportProblemTitle.
   ///
@@ -8671,6 +8563,174 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'أخّرها'**
   String get fasilMoveDown;
+
+  /// No description provided for @whatsNewBuild.
+  ///
+  /// In ar, this message translates to:
+  /// **'التحديث {build}'**
+  String whatsNewBuild(String build);
+
+  /// No description provided for @whatsNewIntro.
+  ///
+  /// In ar, this message translates to:
+  /// **'ما أضفناه وحسّنّاه في التحديثات الأخيرة.'**
+  String get whatsNewIntro;
+
+  /// No description provided for @wn42Fawasil.
+  ///
+  /// In ar, this message translates to:
+  /// **'فواصل على ذوقك'**
+  String get wn42Fawasil;
+
+  /// No description provided for @wn42FawasilBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'لكل فاصل شكله وخامته ولونه، وتتسع الصفحة لثمانية فواصل؛ فإن أضفت تاسعًا عرضنا عليك نقل أحدها أو حذفه.'**
+  String get wn42FawasilBody;
+
+  /// No description provided for @wn42Index.
+  ///
+  /// In ar, this message translates to:
+  /// **'الفواصل في الفهرس'**
+  String get wn42Index;
+
+  /// No description provided for @wn42IndexBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'انقل أي فاصل إلى سورة وآية أو إلى صفحة، وأعد تسميته أو ترتيبه، واحذفه مع إمكان التراجع.'**
+  String get wn42IndexBody;
+
+  /// No description provided for @wn42Ribbons.
+  ///
+  /// In ar, this message translates to:
+  /// **'أشرطة في الهامش'**
+  String get wn42Ribbons;
+
+  /// No description provided for @wn42RibbonsBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'تتدلى الأشرطة في هامش الصفحة بجوار النص كشريط المصحف، ولا تغطي سطرًا أبدًا.'**
+  String get wn42RibbonsBody;
+
+  /// No description provided for @wn42Speed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تقليب أسلس'**
+  String get wn42Speed;
+
+  /// No description provided for @wn42SpeedBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'صار تقليب الصفحات أخف وأسرع، وتنفتح الصفحة من الفهرس ومن الشاشة الرئيسية في الحال.'**
+  String get wn42SpeedBody;
+
+  /// No description provided for @wn42Crash.
+  ///
+  /// In ar, this message translates to:
+  /// **'تقارير أعطال مجهولة الهوية'**
+  String get wn42Crash;
+
+  /// No description provided for @wn42CrashBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'بإذنك وحده: تقارير لا تحمل اسمك ولا جهازك ولا ما تكتبه، تعيننا على إصلاح الأخطاء أسرع، ويمكنك تغييرها من الإعدادات.'**
+  String get wn42CrashBody;
+
+  /// No description provided for @wn41Hifz.
+  ///
+  /// In ar, this message translates to:
+  /// **'وضع الحفظ'**
+  String get wn41Hifz;
+
+  /// No description provided for @wn41HifzBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'يخفي المصحف الكلمات لتستظهرها، بخمسة أنماط للإخفاء، وتنكشف الكلمة بلمسة أو مع تلاوتك.'**
+  String get wn41HifzBody;
+
+  /// No description provided for @wn41Group.
+  ///
+  /// In ar, this message translates to:
+  /// **'الختمة الجماعية'**
+  String get wn41Group;
+
+  /// No description provided for @wn41GroupBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'أنشئ ختمة وشارك رابطها، فيختار كل مشارك جزءًا باسمه، بلا حساب ولا بريد.'**
+  String get wn41GroupBody;
+
+  /// No description provided for @wn41Report.
+  ///
+  /// In ar, this message translates to:
+  /// **'التقرير الأسبوعي'**
+  String get wn41Report;
+
+  /// No description provided for @wn41ReportBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'دقائق قراءتك واستماعك وصفحات أسبوعك وتقدّم ختماتك، بملاحظات هادئة لا تقارن بين الأسابيع.'**
+  String get wn41ReportBody;
+
+  /// No description provided for @wn41Sync.
+  ///
+  /// In ar, this message translates to:
+  /// **'المزامنة بين أجهزتك'**
+  String get wn41Sync;
+
+  /// No description provided for @wn41SyncBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنتقل فواصلك وختماتك ومسبحتك وإعداداتك بين أجهزتك عبر iCloud أو Google Drive الخاص بك، دون خادم لتبيان.'**
+  String get wn41SyncBody;
+
+  /// No description provided for @wn41Watch.
+  ///
+  /// In ar, this message translates to:
+  /// **'الساعة'**
+  String get wn41Watch;
+
+  /// No description provided for @wn41WatchBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'ورد اليوم والمسبحة على Apple Watch وWear OS، مع إضافات لواجهة الساعة.'**
+  String get wn41WatchBody;
+
+  /// No description provided for @wn41Video.
+  ///
+  /// In ar, this message translates to:
+  /// **'المشاركة مقطعًا مرئيًا'**
+  String get wn41Video;
+
+  /// No description provided for @wn41VideoBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'شارك آيات بتلاوة القارئ الذي تختاره في مقطع رأسي يُصنع على جهازك، بلا موسيقى ولا مؤثرات.'**
+  String get wn41VideoBody;
+
+  /// No description provided for @wn41A11y.
+  ///
+  /// In ar, this message translates to:
+  /// **'إمكانية الوصول'**
+  String get wn41A11y;
+
+  /// No description provided for @wn41A11yBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'تقليل الحركة، وقراءة رقم الآية لقارئ الشاشة، ونص أكبر حتى الضعف دون تداخل.'**
+  String get wn41A11yBody;
+
+  /// No description provided for @wn40Tasbih.
+  ///
+  /// In ar, this message translates to:
+  /// **'المسبحة'**
+  String get wn40Tasbih;
+
+  /// No description provided for @wn40TasbihBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'زر التصفير والضغط المطوّل يستجيبان كما ينبغي، ولكل ذكر من الأذكار المعدّة وصف قصير.'**
+  String get wn40TasbihBody;
 }
 
 class _AppLocalizationsDelegate

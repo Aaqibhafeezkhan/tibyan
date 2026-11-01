@@ -3378,41 +3378,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'افتح إعدادات الجهاز، ثم اسمح لتبيان باستخدام الميكروفون.';
 
   @override
-  String get newKhatmah => 'الختمة الجديدة';
-
-  @override
-  String get newKhatmahBody =>
-      'أكثر من ختمة معا، ومعالج إنشاء بقوالب جاهزة، وورد يومي يتكيّف، وإحصاءات وتذكيرات أدق، ومؤشر ورد اليوم في المصحف.';
-
-  @override
-  String get newTasmee => 'التسميع بالصوت (تجريبي)';
-
-  @override
-  String get newTasmeeBody =>
-      'اقرأ من حفظك، فتظهر كل كلمة في موضعها وتُعلَّم الأخطاء. يعمل على جهازك دون إنترنت بعد تنزيل النموذج، ويختبر الحفظ لا التجويد.';
-
-  @override
-  String get newSajdah => 'مؤقت سجدات التلاوة';
-
-  @override
-  String get newSajdahBody =>
-      'عند آية السجدة يتوقف الشيخ وتظهر بطاقة بأذكار السجود وعدّ تنازلي، ثم تُستكمل التلاوة. يُفعَّل من الإعدادات.';
-
-  @override
-  String get newAssistant => 'المساعد: المساعدة في استخدام التطبيق';
-
-  @override
-  String get newAssistantBody =>
-      'شاشة جديدة فيها أحكام التجويد بألوانها، ولكل حكم مواضعه في المصحف.';
-
-  @override
-  String get newFocus => 'وضع التركيز';
-
-  @override
-  String get newFocusBody =>
-      'الصفحة وحدها بلا إطار وتملأ الشاشة، والأدوات عند الحاجة، ومشغّل صغير تسحبه أينما شئت.';
-
-  @override
   String get tasmeeAutoUpdateModel => 'تحديث النموذج تلقائيًا على الواي فاي';
 
   @override
@@ -3467,20 +3432,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get settingsGroupData => 'البيانات والخصوصية';
-
-  @override
-  String get newLook => 'شكل جديد للواجهة';
-
-  @override
-  String get newLookBody =>
-      'ثلاثة أشكال تختار منها في الإعدادات: هندسي ومخطوطة وليلي ذهبي، بأسماء السور بخط مجمع الملك فهد، وعلامات المكية والمدنية.';
-
-  @override
-  String get newModelUpdate => 'تحديث نموذج التسميع تلقائيًا';
-
-  @override
-  String get newModelUpdateBody =>
-      'حين يتحسّن نموذج التسميع ينزل وحده على الواي فاي، ويظل القديم يعمل حتى يكتمل الجديد.';
 
   @override
   String get progressSaved => 'حُفظت النتيجة';
@@ -3840,13 +3791,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get whatsNewHifzProgress => 'مسيرة الحفظ';
 
   @override
-  String get newJourney => 'مسيرة الحفظ';
-
-  @override
-  String get newJourneyBody =>
-      'كل تسميع يُحفظ ويقيس إتقانك: نسب لكل سورة وجزء، وخريطة إتقان، والكلمات التي تخطئ فيها، وأهداف حفظ بورد يومي.';
-
-  @override
   String onbStepOf(String step, String total) {
     return 'الخطوة $step من $total';
   }
@@ -3989,13 +3933,6 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get digitsFontNote =>
       'أرقام الواجهة كلها بخط واحد واضح: مقتطع من IBM Plex Sans Arabic (حقوقه لشركة IBM، 2017) يضم الأرقام وحدها، وسُمّي باسم جديد لأن «Plex» اسم محجوز. الرخصة: رخصة الخطوط المفتوحة SIL OFL 1.1، وهي تبيح الاقتطاع والتعديل بشرط تغيير الاسم وبقاء الرخصة نفسها.';
-
-  @override
-  String get newSettings => 'إعدادات أسهل';
-
-  @override
-  String get newSettingsBody =>
-      'الإعدادات صارت ثمانية أقسام مع بحث يوصلك لأي إعداد، وصيغ الأعداد صحيحة («٧ آيات»)، وأرقام أوضح في الواجهة.';
 
   @override
   String get reportProblemTitle => 'الإبلاغ عن مشكلة';
@@ -5187,4 +5124,103 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get fasilMoveDown => 'أخّرها';
+
+  @override
+  String whatsNewBuild(String build) {
+    return 'التحديث $build';
+  }
+
+  @override
+  String get whatsNewIntro => 'ما أضفناه وحسّنّاه في التحديثات الأخيرة.';
+
+  @override
+  String get wn42Fawasil => 'فواصل على ذوقك';
+
+  @override
+  String get wn42FawasilBody =>
+      'لكل فاصل شكله وخامته ولونه، وتتسع الصفحة لثمانية فواصل؛ فإن أضفت تاسعًا عرضنا عليك نقل أحدها أو حذفه.';
+
+  @override
+  String get wn42Index => 'الفواصل في الفهرس';
+
+  @override
+  String get wn42IndexBody =>
+      'انقل أي فاصل إلى سورة وآية أو إلى صفحة، وأعد تسميته أو ترتيبه، واحذفه مع إمكان التراجع.';
+
+  @override
+  String get wn42Ribbons => 'أشرطة في الهامش';
+
+  @override
+  String get wn42RibbonsBody =>
+      'تتدلى الأشرطة في هامش الصفحة بجوار النص كشريط المصحف، ولا تغطي سطرًا أبدًا.';
+
+  @override
+  String get wn42Speed => 'تقليب أسلس';
+
+  @override
+  String get wn42SpeedBody =>
+      'صار تقليب الصفحات أخف وأسرع، وتنفتح الصفحة من الفهرس ومن الشاشة الرئيسية في الحال.';
+
+  @override
+  String get wn42Crash => 'تقارير أعطال مجهولة الهوية';
+
+  @override
+  String get wn42CrashBody =>
+      'بإذنك وحده: تقارير لا تحمل اسمك ولا جهازك ولا ما تكتبه، تعيننا على إصلاح الأخطاء أسرع، ويمكنك تغييرها من الإعدادات.';
+
+  @override
+  String get wn41Hifz => 'وضع الحفظ';
+
+  @override
+  String get wn41HifzBody =>
+      'يخفي المصحف الكلمات لتستظهرها، بخمسة أنماط للإخفاء، وتنكشف الكلمة بلمسة أو مع تلاوتك.';
+
+  @override
+  String get wn41Group => 'الختمة الجماعية';
+
+  @override
+  String get wn41GroupBody =>
+      'أنشئ ختمة وشارك رابطها، فيختار كل مشارك جزءًا باسمه، بلا حساب ولا بريد.';
+
+  @override
+  String get wn41Report => 'التقرير الأسبوعي';
+
+  @override
+  String get wn41ReportBody =>
+      'دقائق قراءتك واستماعك وصفحات أسبوعك وتقدّم ختماتك، بملاحظات هادئة لا تقارن بين الأسابيع.';
+
+  @override
+  String get wn41Sync => 'المزامنة بين أجهزتك';
+
+  @override
+  String get wn41SyncBody =>
+      'تنتقل فواصلك وختماتك ومسبحتك وإعداداتك بين أجهزتك عبر iCloud أو Google Drive الخاص بك، دون خادم لتبيان.';
+
+  @override
+  String get wn41Watch => 'الساعة';
+
+  @override
+  String get wn41WatchBody =>
+      'ورد اليوم والمسبحة على Apple Watch وWear OS، مع إضافات لواجهة الساعة.';
+
+  @override
+  String get wn41Video => 'المشاركة مقطعًا مرئيًا';
+
+  @override
+  String get wn41VideoBody =>
+      'شارك آيات بتلاوة القارئ الذي تختاره في مقطع رأسي يُصنع على جهازك، بلا موسيقى ولا مؤثرات.';
+
+  @override
+  String get wn41A11y => 'إمكانية الوصول';
+
+  @override
+  String get wn41A11yBody =>
+      'تقليل الحركة، وقراءة رقم الآية لقارئ الشاشة، ونص أكبر حتى الضعف دون تداخل.';
+
+  @override
+  String get wn40Tasbih => 'المسبحة';
+
+  @override
+  String get wn40TasbihBody =>
+      'زر التصفير والضغط المطوّل يستجيبان كما ينبغي، ولكل ذكر من الأذكار المعدّة وصف قصير.';
 }
