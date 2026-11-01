@@ -31,6 +31,8 @@ class FasilMark {
     required this.color,
     required this.page,
     this.placedAt,
+    this.style,
+    this.material,
   });
 
   final int id;
@@ -43,16 +45,22 @@ class FasilMark {
   /// When it was last placed (made or moved).
   final DateTime? placedAt;
 
+  /// This fasil's own look and cloth; null follows [FasilLook]'s.
+  final FasilStyle? style;
+  final FasilMaterial? material;
+
   @override
   bool operator ==(Object other) =>
       other is FasilMark &&
       other.id == id &&
       other.name == name &&
       other.color == color &&
-      other.page == page;
+      other.page == page &&
+      other.style == style &&
+      other.material == material;
 
   @override
-  int get hashCode => Object.hash(id, name, color, page);
+  int get hashCode => Object.hash(id, name, color, page, style, material);
 }
 
 /// What every bookmark on screen shares.
@@ -99,6 +107,23 @@ class FasilLook {
   final bool motion;
 
   bool get drawn => style != FasilStyle.tint;
+
+  /// The look of [mark]: its own look and cloth over these.
+  FasilLook forMark(FasilMark mark) =>
+      (mark.style ?? style) == style && (mark.material ?? material) == material
+      ? this
+      : FasilLook(
+          style: mark.style ?? style,
+          place: place,
+          material: mark.material ?? material,
+          tassel: tassel,
+          night: night,
+          elderly: elderly,
+          motion: motion,
+        );
+
+  /// Whether [mark] is drawn (a ribbon or a tab) rather than tinted.
+  bool draws(FasilMark mark) => forMark(mark).drawn;
 
   double get ribbonWidth => elderly ? 34 : 24;
   double get labelSize => elderly ? 15 : 11;
@@ -871,7 +896,11 @@ class FasilPageLayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!look.drawn || marks.isEmpty) return child;
+    final shown = [
+      for (final m in marks)
+        if (look.draws(m)) m,
+    ];
+    if (shown.isEmpty) return child;
     return LayoutBuilder(
       builder: (context, box) {
         final h = box.maxHeight.isFinite ? box.maxHeight : 600.0;
@@ -884,8 +913,13 @@ class FasilPageLayer extends StatelessWidget {
           );
         }
         final children = <Widget>[child];
-        for (final (i, m) in marks.indexed) {
-          final step = i * (look.ribbonWidth + 6);
+        // Mixed looks share the edge in the fawasil's order: each takes
+        // its own width, one after another, so none overlaps.
+        var along = 0.0;
+        var down = 0;
+        for (final (i, m) in shown.indexed) {
+          final look = this.look.forMark(m);
+          final step = focus ? i * (look.ribbonWidth + 6) : along;
           Widget bookmark;
           double inset;
           double top = 0;
@@ -906,6 +940,7 @@ class FasilPageLayer extends StatelessWidget {
               length: h * (side ? .62 : .42),
             );
             inset = (side ? 2 : 10) + step;
+            along += look.ribbonWidth + 6;
           } else if (look.place == FasilPlace.side) {
             bookmark = RotatedBox(
               quarterTurns: outerRight ? 1 : 3,
@@ -925,10 +960,12 @@ class FasilPageLayer extends StatelessWidget {
               ),
             );
             inset = 0;
-            top = h * .14 + i * (look.tabWidth * .7 + 8);
+            top = h * .14 + down * (look.tabWidth * .7 + 8);
+            down++;
           } else {
             bookmark = FasilTab(mark: m, look: look);
-            inset = 8 + i * (look.tabWidth + 4);
+            inset = 8 + step;
+            along += look.tabWidth + 4;
           }
           final placed = _Touchable(
             mark: m,
@@ -991,17 +1028,22 @@ class FasilSpineLayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!look.drawn || (right.isEmpty && left.isEmpty)) return child;
+    final all = [
+      for (final m in right)
+        if (look.draws(m)) (m, true),
+      for (final m in left)
+        if (look.draws(m)) (m, false),
+    ];
+    if (all.isEmpty) return child;
     return LayoutBuilder(
       builder: (context, box) {
         final cx = box.maxWidth / 2;
         final h = box.maxHeight;
         final children = <Widget>[child];
-        final all = [
-          for (final m in right) (m, true),
-          for (final m in left) (m, false),
-        ];
+        // Tabs on each side, one after another whatever lies between.
+        final tabsOn = {true: 0, false: 0};
         for (final (i, (m, onRight)) in all.indexed) {
+          final look = this.look.forMark(m);
           Widget bookmark;
           double x;
           if (look.style == FasilStyle.ribbon) {
@@ -1020,10 +1062,8 @@ class FasilSpineLayer extends StatelessWidget {
           } else {
             final w = look.tabWidth * .9;
             bookmark = FasilTab(mark: m, look: look, width: w);
-            final n = all.where((e) => e.$2 == onRight).toList().indexOf((
-              m,
-              onRight,
-            ));
+            final n = tabsOn[onRight]!;
+            tabsOn[onRight] = n + 1;
             x = onRight ? cx + 6 + n * (w + 4) : cx - 6 - w - n * (w + 4);
           }
           children.add(
@@ -1073,54 +1113,57 @@ class FoldedFawasil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!look.drawn || marks.isEmpty) return const SizedBox.shrink();
+    final shown = [
+      for (final m in marks)
+        if (look.draws(m)) m,
+    ];
+    if (shown.isEmpty) return const SizedBox.shrink();
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        for (final m in marks)
-          Semantics(
-            key: ValueKey('folded-${m.id}'),
-            button: true,
-            label: semanticLabel(m),
-            excludeSemantics: true,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => onTap(m),
-              onLongPress: () => onLongPress(m),
-              child: SizedBox(
-                width: math.max(look.target * .62, look.ribbonWidth + 8),
-                height: look.target,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: look.style == FasilStyle.ribbon
-                      ? FasilRibbon(
-                          mark: m,
-                          look: look,
-                          length: look.elderly ? 52 : 40,
-                          width: look.ribbonWidth * .8,
-                          folded: true,
-                        )
-                      // Cut only at the top edge (the card tucked under
-                      // the page): its shadow shows at the sides and foot.
-                      : ClipRect(
-                          clipper: const _BelowTop(),
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            heightFactor: .55,
-                            child: FasilTab(
-                              mark: m,
-                              look: look,
-                              width: look.ribbonWidth + 6,
-                              folded: true,
-                            ),
-                          ),
-                        ),
-                ),
-              ),
-            ),
-          ),
-      ],
+      children: [for (final m in shown) _folded(m, look.forMark(m))],
     );
   }
+
+  Widget _folded(FasilMark m, FasilLook look) => Semantics(
+    key: ValueKey('folded-${m.id}'),
+    button: true,
+    label: semanticLabel(m),
+    excludeSemantics: true,
+    child: GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => onTap(m),
+      onLongPress: () => onLongPress(m),
+      child: SizedBox(
+        width: math.max(look.target * .62, look.ribbonWidth + 8),
+        height: look.target,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: look.style == FasilStyle.ribbon
+              ? FasilRibbon(
+                  mark: m,
+                  look: look,
+                  length: look.elderly ? 52 : 40,
+                  width: look.ribbonWidth * .8,
+                  folded: true,
+                )
+              // Cut only at the top edge (the card tucked under
+              // the page): its shadow shows at the sides and foot.
+              : ClipRect(
+                  clipper: const _BelowTop(),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    heightFactor: .55,
+                    child: FasilTab(
+                      mark: m,
+                      look: look,
+                      width: look.ribbonWidth + 6,
+                      folded: true,
+                    ),
+                  ),
+                ),
+        ),
+      ),
+    ),
+  );
 }

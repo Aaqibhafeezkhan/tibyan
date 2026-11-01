@@ -33,35 +33,48 @@ int nextFasilColor(FasilStyle style, int count) {
   return palette[count % palette.length];
 }
 
+/// [row]'s own look, or null when it follows the reader's default.
+FasilStyle? fasilStyleOf(BookmarkSetRow row) =>
+    row.look == null ? null : FasilStyle.values.asNameMap()[row.look];
+
+/// [row]'s own cloth, or null when it follows the reader's default.
+FasilMaterial? fasilMaterialOf(BookmarkSetRow row) => row.material == null
+    ? null
+    : FasilMaterial.values.asNameMap()[row.material];
+
 /// The verses tinted for [rows]: every fasil (the four fixed ones and the
-/// named alike) in the tinted look, none when they are drawn.
+/// named alike) whose look, its own or the default, is the tint.
 Map<K, Color> fasilTints<K>(
   List<BookmarkSetRow> rows,
   FasilLook look,
   K Function(BookmarkSetRow) keyOf,
-) => look.drawn
-    ? <K, Color>{}
-    : {for (final m in rows) keyOf(m): Color(m.color)};
+) => {
+  for (final m in rows)
+    if ((fasilStyleOf(m) ?? look.style) == FasilStyle.tint)
+      keyOf(m): Color(m.color),
+};
 
-/// The bookmarks drawn for [rows] in a ribbon or tab look: every fasil,
-/// fixed (قراءة، مراجعة، حفظ، تدبر, in their own colours and names) or
-/// named. [pageOf] gives each one's page in the edition being read.
+/// The bookmarks drawn for [rows] as ribbons or tabs: every fasil, fixed
+/// (قراءة، مراجعة، حفظ، تدبر, in their own colours and names) or named,
+/// whose look (its own or the default) is drawn, in their order. [pageOf]
+/// gives each one's page in the edition being read.
 List<FasilMark> fasilMarksOf(
   List<BookmarkSetRow> rows,
   FasilLook look,
   int Function(BookmarkSetRow) pageOf,
-) => !look.drawn
-    ? const <FasilMark>[]
-    : [
-        for (final m in rows)
-          FasilMark(
-            id: m.id,
-            name: m.name,
-            color: Color(m.color),
-            page: pageOf(m),
-            placedAt: m.updatedAt,
-          ),
-      ];
+) => [
+  for (final m in rows)
+    if ((fasilStyleOf(m) ?? look.style) != FasilStyle.tint)
+      FasilMark(
+        id: m.id,
+        name: m.name,
+        color: Color(m.color),
+        page: pageOf(m),
+        placedAt: m.updatedAt,
+        style: fasilStyleOf(m),
+        material: fasilMaterialOf(m),
+      ),
+];
 
 /// Places a fixed fasil ([kind]: قراءة، مراجعة، حفظ، تدبر) at a verse, from
 /// the ayah tools or a tap on the verse's number, in the reader's look:
