@@ -864,12 +864,25 @@ class FasilPageLayer extends StatelessWidget {
   final Widget child;
   final void Function(FasilMark)? onLongPress;
 
+  /// The bookmarks last built for a list of marks: built again only when
+  /// the list (the same list from a screen that keeps it), the look or the
+  /// place changes, so a page turn does not build them anew.
+  static final _built = Expando<_BuiltMarks>();
+
   @override
   Widget build(BuildContext context) {
     if (!look.drawn || marks.isEmpty) return child;
     return LayoutBuilder(
       builder: (context, box) {
         final h = box.maxHeight.isFinite ? box.maxHeight : 600.0;
+        final key = (look, outerRight, focus, h, onLongPress);
+        final have = _built[marks];
+        if (have != null && have.key == key) {
+          return Stack(
+            clipBehavior: Clip.hardEdge,
+            children: [child, ...have.bookmarks],
+          );
+        }
         final children = <Widget>[child];
         for (final (i, m) in marks.indexed) {
           final step = i * (look.ribbonWidth + 6);
@@ -942,10 +955,18 @@ class FasilPageLayer extends StatelessWidget {
             ),
           );
         }
+        _built[marks] = _BuiltMarks(key, children.sublist(1));
         return Stack(clipBehavior: Clip.hardEdge, children: children);
       },
     );
   }
+}
+
+class _BuiltMarks {
+  _BuiltMarks(this.key, this.bookmarks);
+
+  final Object key;
+  final List<Widget> bookmarks;
 }
 
 /// A spread's fawasil in its spine: ribbons lying in the gutter, fanned a

@@ -106,6 +106,11 @@ class MushafScreen extends ConsumerStatefulWidget {
   @visibleForTesting
   static int debugBuildCount = 0;
 
+  /// The measuring harness's switch back to a new fawasil list per page on
+  /// every build (no reuse), to time both in one run.
+  @visibleForTesting
+  static bool debugFreshFawasil = false;
+
   const MushafScreen({
     super.key,
     this.initialPage,
@@ -257,6 +262,20 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
 
   Duration _lastTick = Duration.zero;
   double _pageExtent = 1;
+
+  /// The fawasil as last built, and each page's share of them, kept while
+  /// they do not change: a page's list is then the same list, so its
+  /// [FasilPageLayer] reuses the bookmarks it built.
+  List<FasilMark> _fawasil = const [];
+  final _fawasilByPage = <int, List<FasilMark>>{};
+
+  static bool _sameFawasil(List<FasilMark> a, List<FasilMark> b) {
+    if (a.length != b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] != b[i] || a[i].placedAt != b[i].placedAt) return false;
+    }
+    return true;
+  }
 
   /// Counts pages read (for the khatma) and the time spent reading (for
   /// the reports).
@@ -788,8 +807,12 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       fasilLook,
       (m) => ref.watch(versePageProvider((m.surah, m.ayah))).value ?? m.page,
     );
-    List<FasilMark> fawasilOn(int pg) => [
-      for (final f in fawasil)
+    if (MushafScreen.debugFreshFawasil || !_sameFawasil(fawasil, _fawasil)) {
+      _fawasil = fawasil;
+      _fawasilByPage.clear();
+    }
+    List<FasilMark> fawasilOn(int pg) => _fawasilByPage[pg] ??= [
+      for (final f in _fawasil)
         if (f.page == pg) f,
     ];
 
