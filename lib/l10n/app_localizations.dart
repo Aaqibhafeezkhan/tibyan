@@ -287,7 +287,7 @@ abstract class AppLocalizations {
   /// No description provided for @crashConsentTitle.
   ///
   /// In ar, this message translates to:
-  /// **'ساعدنا نحسّن تبيان'**
+  /// **'ساعدنا على تحسين تبيان'**
   String get crashConsentTitle;
 
   /// No description provided for @crashConsentBody.
@@ -7259,7 +7259,7 @@ abstract class AppLocalizations {
   /// No description provided for @fasilStyleTabHint.
   ///
   /// In ar, this message translates to:
-  /// **'كرت بقبّة مزخرفة يطلّ من أعلى الصفحة'**
+  /// **'بطاقة بقبّة مزخرفة تطلّ من أعلى الصفحة'**
   String get fasilStyleTabHint;
 
   /// No description provided for @fasilChooserTitle.
@@ -7355,7 +7355,7 @@ abstract class AppLocalizations {
   /// No description provided for @fasilMoveHere.
   ///
   /// In ar, this message translates to:
-  /// **'نقل للصفحة الحالية'**
+  /// **'نقل إلى الصفحة الحالية'**
   String get fasilMoveHere;
 
   /// No description provided for @fasilDeleted.
@@ -8519,7 +8519,7 @@ abstract class AppLocalizations {
   /// No description provided for @fasilLimitOver.
   ///
   /// In ar, this message translates to:
-  /// **'لديك {count} فواصل من قبل وضع الحدّ، وهي محفوظة كلها. لتضيف فاصلة جديدة احذف حتى يبقى {keep} أو أقل.'**
+  /// **'لديك {count} فواصل وُضعت قبل تحديد الحدّ، وهي محفوظة كلها. لتضيف فاصلة جديدة احذف حتى يبقى {keep} أو أقل.'**
   String fasilLimitOver(int count, int keep);
 
   /// No description provided for @fasilMoveHereShort.
@@ -8731,6 +8731,18 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'زر التصفير والضغط المطوّل يستجيبان كما ينبغي، ولكل ذكر من الأذكار المعدّة وصف قصير.'**
   String get wn40TasbihBody;
+
+  /// No description provided for @khatmaPlansLoadFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر تحميل الختمات. أعد المحاولة بعد قليل.'**
+  String get khatmaPlansLoadFailed;
+
+  /// No description provided for @fasilColorOption.
+  ///
+  /// In ar, this message translates to:
+  /// **'اللون {n} من {count}'**
+  String fasilColorOption(int n, int count);
 }
 
 class _AppLocalizationsDelegate

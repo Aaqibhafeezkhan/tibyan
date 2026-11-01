@@ -126,7 +126,7 @@ void main() {
         );
         await tester.tap(find.text('open'));
         await tester.pumpAndSettle();
-        expect(find.text('ساعدنا نحسّن تبيان'), findsOneWidget);
+        expect(find.text('ساعدنا على تحسين تبيان'), findsOneWidget);
         expect(
           find.byType(FilledButton),
           suggest ? findsOneWidget : findsNothing,

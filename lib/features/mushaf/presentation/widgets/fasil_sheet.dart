@@ -14,6 +14,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../mushaf_providers.dart';
 import '../fawasil_manage.dart';
 import 'fasil_bookmarks.dart';
+import 'illuminated_frame.dart' show NumberFormatter;
 import 'mushaf_page.dart';
 import '../../../../core/ui/meta_separator.dart';
 
@@ -26,6 +27,19 @@ const fasilColors = <int>[
   0xFF7A4A9E,
   0xFF3A7F8C,
 ];
+
+/// Every colour a fasil can be given, cards first.
+final fasilColorChoices = [
+  ...{...fasilCardColors, ...fasilColors},
+];
+
+/// What a screen reader says for colour [i] of [fasilColorChoices]:
+/// «اللون ٣ من ١٢», never its hex code.
+String fasilColorLabel(BuildContext context, int i) =>
+    NumberFormatter(Localizations.localeOf(context)).decimal(
+      AppLocalizations.of(context)
+          .fasilColorOption(i + 1, fasilColorChoices.length),
+    );
 
 /// The colour a new fasil takes after [count] others: cards take the card
 /// palette.
@@ -576,11 +590,11 @@ Future<void> showFasilActions(
                       spacing: 8,
                       runSpacing: 8,
                       children: [
-                        for (final c in {...fasilCardColors, ...fasilColors})
+                        for (final (i, c) in fasilColorChoices.indexed)
                           Semantics(
                             button: true,
                             selected: c == fasil.color,
-                            label: '${l.fasilColor} #${c.toRadixString(16)}',
+                            label: fasilColorLabel(context, i),
                             child: InkResponse(
                               key: ValueKey('fasil-color-$c'),
                               onTap: () async {

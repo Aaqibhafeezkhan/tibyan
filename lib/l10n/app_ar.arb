@@ -31,7 +31,7 @@
   "privacyTitle": "الخصوصية",
   "crashReportsLabel": "إرسال تقارير الأعطال",
   "crashReportsHint": "يرسل تفاصيل تقنية عن الأعطال فقط، بلا أي بيانات شخصية. متوقف حتى توافق.",
-  "crashConsentTitle": "ساعدنا نحسّن تبيان",
+  "crashConsentTitle": "ساعدنا على تحسين تبيان",
   "crashConsentBody": "إذا تعطّل التطبيق، يمكنه أن يرسل إلينا تقريرًا تقنيًا مجهولًا يصف موضع العطل وطراز الجهاز وإصدار النظام، لنصلحه سريعًا. لا يتضمن التقرير اسمك ولا بريدك ولا عنوان IP ولا شيئًا مما تقرؤه أو تسجّله. تُحفظ التقارير على خادم تبيان وحده، ويمكنك تغيير اختيارك في أي وقت من الإعدادات.",
   "crashConsentAgree": "أوافق",
   "crashConsentDecline": "لا، شكرًا",
@@ -3100,7 +3100,7 @@
   "fasilStyleRibbon": "شريطة قماش",
   "fasilStyleRibbonHint": "شريطة تتدلّى على الصفحة كالمصحف المطبوع",
   "fasilStyleTab": "لسان مقوّى",
-  "fasilStyleTabHint": "كرت بقبّة مزخرفة يطلّ من أعلى الصفحة",
+  "fasilStyleTabHint": "بطاقة بقبّة مزخرفة تطلّ من أعلى الصفحة",
   "fasilChooserTitle": "اختر شكل فواصلك",
   "fasilChooserHint": "تقدر تغيّره في أي وقت من الإعدادات › المصحف",
   "fasilPlaceLabel": "مكانها على الصفحة",
@@ -3116,7 +3116,7 @@
   "fasilSuggestReview": "مراجعة",
   "fasilRename": "إعادة تسمية",
   "fasilColor": "اللون",
-  "fasilMoveHere": "نقل للصفحة الحالية",
+  "fasilMoveHere": "نقل إلى الصفحة الحالية",
   "fasilDeleted": "حُذفت الفاصلة",
   "fasilUndo": "تراجع",
   "fasilPreview": "معاينة",
@@ -3536,7 +3536,7 @@
     }
   },
   "fasilLimitHint": "تُحسب العلامات الثابتة التي وضعتها (قراءة، مراجعة، حفظ، تدبر) ضمن الحدّ. انقل إحدى فواصلك إلى هذا الموضع، أو احذف واحدة لتضيف فاصلة جديدة.",
-  "fasilLimitOver": "لديك {count} فواصل من قبل وضع الحدّ، وهي محفوظة كلها. لتضيف فاصلة جديدة احذف حتى يبقى {keep} أو أقل.",
+  "fasilLimitOver": "لديك {count} فواصل وُضعت قبل تحديد الحدّ، وهي محفوظة كلها. لتضيف فاصلة جديدة احذف حتى يبقى {keep} أو أقل.",
   "@fasilLimitOver": {
     "placeholders": {
       "count": {
@@ -3612,6 +3612,18 @@
     "placeholders": {
       "build": {
         "type": "String"
+      }
+    }
+  },
+  "khatmaPlansLoadFailed": "تعذّر تحميل الختمات. أعد المحاولة بعد قليل.",
+  "fasilColorOption": "اللون {n} من {count}",
+  "@fasilColorOption": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
       }
     }
   }

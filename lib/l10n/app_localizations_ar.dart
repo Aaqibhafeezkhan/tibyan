@@ -105,7 +105,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'يرسل تفاصيل تقنية عن الأعطال فقط، بلا أي بيانات شخصية. متوقف حتى توافق.';
 
   @override
-  String get crashConsentTitle => 'ساعدنا نحسّن تبيان';
+  String get crashConsentTitle => 'ساعدنا على تحسين تبيان';
 
   @override
   String get crashConsentBody =>
@@ -4375,7 +4375,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fasilStyleTab => 'لسان مقوّى';
 
   @override
-  String get fasilStyleTabHint => 'كرت بقبّة مزخرفة يطلّ من أعلى الصفحة';
+  String get fasilStyleTabHint => 'بطاقة بقبّة مزخرفة تطلّ من أعلى الصفحة';
 
   @override
   String get fasilChooserTitle => 'اختر شكل فواصلك';
@@ -4423,7 +4423,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fasilColor => 'اللون';
 
   @override
-  String get fasilMoveHere => 'نقل للصفحة الحالية';
+  String get fasilMoveHere => 'نقل إلى الصفحة الحالية';
 
   @override
   String get fasilDeleted => 'حُذفت الفاصلة';
@@ -5096,7 +5096,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String fasilLimitOver(int count, int keep) {
-    return 'لديك $count فواصل من قبل وضع الحدّ، وهي محفوظة كلها. لتضيف فاصلة جديدة احذف حتى يبقى $keep أو أقل.';
+    return 'لديك $count فواصل وُضعت قبل تحديد الحدّ، وهي محفوظة كلها. لتضيف فاصلة جديدة احذف حتى يبقى $keep أو أقل.';
   }
 
   @override
@@ -5223,4 +5223,13 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get wn40TasbihBody =>
       'زر التصفير والضغط المطوّل يستجيبان كما ينبغي، ولكل ذكر من الأذكار المعدّة وصف قصير.';
+
+  @override
+  String get khatmaPlansLoadFailed =>
+      'تعذّر تحميل الختمات. أعد المحاولة بعد قليل.';
+
+  @override
+  String fasilColorOption(int n, int count) {
+    return 'اللون $n من $count';
+  }
 }

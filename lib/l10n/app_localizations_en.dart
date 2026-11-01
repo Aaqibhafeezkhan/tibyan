@@ -5161,4 +5161,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get wn40TasbihBody =>
       'The reset button and long press respond as they should, and every preset dhikr has a short description.';
+
+  @override
+  String get khatmaPlansLoadFailed =>
+      'The khatmas could not be loaded. Try again shortly.';
+
+  @override
+  String fasilColorOption(int n, int count) {
+    return 'Colour $n of $count';
+  }
 }

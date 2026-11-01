@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/db/user_database.dart';
@@ -126,7 +125,7 @@ class _MoveDialogState extends ConsumerState<_MoveDialog> {
         if (p != null) to = (surah: p.surah, ayah: p.ayah);
       case _MoveBy.verse:
         final surahs = ref.read(surahsProvider).value;
-        final n = int.tryParse(_ayah.text.trim());
+        final n = NumberFormatter.parse(_ayah.text);
         if (surahs != null &&
             n != null &&
             n >= 1 &&
@@ -134,7 +133,7 @@ class _MoveDialogState extends ConsumerState<_MoveDialog> {
           to = (surah: _surah, ayah: n);
         }
       case _MoveBy.page:
-        final n = int.tryParse(_page.text.trim());
+        final n = NumberFormatter.parse(_page.text);
         final count = ref.read(editionProvider).pageCount;
         if (n != null && n >= 1 && n <= count) {
           to = await firstVerseOfPage(container, n);
@@ -214,10 +213,12 @@ class _MoveDialogState extends ConsumerState<_MoveDialog> {
               key: const ValueKey('fasil-move-ayah'),
               controller: _ayah,
               keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              inputFormatters: [NumberFormatter.digitsInput],
               decoration: InputDecoration(
                 labelText: l.fasilAyah,
-                helperText: l.fasilCount(1, surahs[_surah - 1].ayahCount),
+                helperText: digits.decimal(
+                  l.fasilCount(1, surahs[_surah - 1].ayahCount),
+                ),
               ),
               onSubmitted: (_) => _submit(),
             ),
@@ -227,10 +228,10 @@ class _MoveDialogState extends ConsumerState<_MoveDialog> {
               key: const ValueKey('fasil-move-page'),
               controller: _page,
               keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              inputFormatters: [NumberFormatter.digitsInput],
               decoration: InputDecoration(
                 labelText: l.fasilPage,
-                helperText: l.fasilCount(1, pages),
+                helperText: digits.decimal(l.fasilCount(1, pages)),
               ),
               onSubmitted: (_) => _submit(),
             ),
@@ -417,11 +418,11 @@ class _StyleEditor extends ConsumerWidget {
               spacing: 8,
               runSpacing: 8,
               children: [
-                for (final c in {...fasilCardColors, ...fasilColors})
+                for (final (i, c) in fasilColorChoices.indexed)
                   Semantics(
                     button: true,
                     selected: c == fasil.color,
-                    label: '${l.fasilColor} #${c.toRadixString(16)}',
+                    label: fasilColorLabel(context, i),
                     child: InkResponse(
                       key: ValueKey('fasil-own-color-$c'),
                       onTap: () => db.updateBookmarkSet(id, color: c),

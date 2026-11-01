@@ -1931,5 +1931,17 @@
   "wn41A11y": "Accessibility",
   "wn41A11yBody": "Reduce motion, verse numbers read by screen readers, and text up to twice the size without overlaps.",
   "wn40Tasbih": "Misbaha",
-  "wn40TasbihBody": "The reset button and long press respond as they should, and every preset dhikr has a short description."
+  "wn40TasbihBody": "The reset button and long press respond as they should, and every preset dhikr has a short description.",
+  "khatmaPlansLoadFailed": "The khatmas could not be loaded. Try again shortly.",
+  "fasilColorOption": "Colour {n} of {count}",
+  "@fasilColorOption": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

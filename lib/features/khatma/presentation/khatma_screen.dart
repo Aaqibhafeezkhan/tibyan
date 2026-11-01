@@ -100,7 +100,11 @@ class _KhatmaScreenState extends ConsumerState<KhatmaScreen> {
                     statuses: plans,
                     past: past,
                   ),
-                  AsyncError(:final error) => Center(child: Text('$error')),
+                  AsyncError() => Center(
+                    child: Text(
+                      AppLocalizations.of(context).khatmaPlansLoadFailed,
+                    ),
+                  ),
                   _ => const Center(child: CircularProgressIndicator()),
                 },
               ),
@@ -125,7 +129,9 @@ class _KhatmaScreenState extends ConsumerState<KhatmaScreen> {
       data: (status) => status == null
           ? _Overview(statuses: statuses, past: past)
           : _Completed(status: status),
-      error: (error, _) => Center(child: Text('$error')),
+      error: (_, _) => Center(
+        child: Text(AppLocalizations.of(context).khatmaPlansLoadFailed),
+      ),
       loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
