@@ -233,6 +233,14 @@ class SyncRecords {
         )
         .getSingleOrNull();
     if (found == null) {
+      // A named fasil from another device is not added past the limit:
+      // it stays there (and in its file) until one goes here. Edits to
+      // fawasil this device already has still apply, whatever the count.
+      if (entity == 'bookmark_sets' &&
+          row['kind'] == null &&
+          !await db.canAddFasil()) {
+        return false;
+      }
       for (final c in columns.entries) {
         if (c.value && c.key != 'id' && values[c.key] == null) return false;
       }

@@ -452,4 +452,100 @@ void main() {
     await TasbihRepository(db).record('app:seen34', at: DateTime(2026, 10, 1));
     expect((await db.select(db.tasbihDays).getSingle()).count, 34);
   });
+
+  test('sync adds no named fasil past the limit; edits still apply', () async {
+    for (var i = 0; i < maxFawasil; i++) {
+      await a.addFasil('a$i');
+    }
+    await b.addFasil('من ب');
+    a.later();
+    await a.sync();
+    b.later();
+    await b.sync();
+    a.later();
+    await a.sync();
+    // A is full: B's fasil is not added there, and stays on B.
+    expect(await a.fawasil(), hasLength(maxFawasil));
+    expect((await b.fawasil()).map((f) => f.name), contains('من ب'));
+    // B had one of its own: it takes seven of A's, then stops at eight.
+    expect(await b.db.namedFawasilCount(), maxFawasil);
+    // A rename of a fasil both have still arrives.
+    final shared = (await b.fawasil()).firstWhere((f) => f.name != 'من ب');
+    final mine = (await a.fawasil()).firstWhere((f) => f.uuid == shared.uuid);
+    a.later();
+    await a.db.updateBookmarkSet(mine.id, name: 'جديد');
+    await a.sync();
+    b.later();
+    await b.sync();
+    expect((await b.fawasil()).map((f) => f.name), contains('جديد'));
+  });
+
+  test('a reader with more than eight keeps them all through sync', () async {
+    for (var i = 0; i < maxFawasil + 2; i++) {
+      await a.addFasil('a$i');
+    }
+    await a.sync();
+    a.later();
+    await a.sync();
+    expect(await a.fawasil(), hasLength(maxFawasil + 2));
+    expect(await a.db.canAddFasil(), isFalse);
+  });
+
+  test("a fasil's own look and cloth sync, and a reset too", () async {
+    final id = await a.addFasil('الكهف');
+    await a.sync();
+    await b.sync();
+    a.later();
+    await a.db.setBookmarkSetStyle(id, look: 'ribbon', material: 'velvet');
+    await a.sync();
+    b.later();
+    await b.sync();
+    var got = (await b.fawasil()).single;
+    expect((got.look, got.material), ('ribbon', 'velvet'));
+    a.later();
+    await a.db.setBookmarkSetStyle(id, look: null, material: null);
+    await a.sync();
+    b.later();
+    await b.sync();
+    got = (await b.fawasil()).single;
+    expect((got.look, got.material), (null, null));
+  });
+
+  test(
+    'a version 9 database keeps its fawasil, following the default',
+    () async {
+      final dir = Directory.systemTemp.createTempSync('sync_migration_10');
+      addTearDown(() => dir.deleteSync(recursive: true));
+      final file = File('${dir.path}/user.db');
+      final fresh = UserDatabase(NativeDatabase(file));
+      await fresh.customSelect('SELECT 1').get();
+      await fresh.close();
+      final raw = sqlite3.open(file.path)
+        ..execute('DROP TABLE bookmark_sets')
+        ..execute(
+          'CREATE TABLE bookmark_sets (id INTEGER PRIMARY KEY AUTOINCREMENT, '
+          'name TEXT NOT NULL, color INTEGER NOT NULL, surah INTEGER NOT NULL, '
+          'ayah INTEGER NOT NULL, page INTEGER NOT NULL, sort_order INTEGER '
+          'NOT NULL DEFAULT 0, updated_at INTEGER NOT NULL, kind TEXT NULL, '
+          'uuid TEXT NULL)',
+        );
+      for (var i = 0; i < 10; i++) {
+        raw.execute(
+          'INSERT INTO bookmark_sets (name, color, surah, ayah, page, '
+          "updated_at, uuid) VALUES ('f$i', 1, 2, 1, 2, 1, 'u$i')",
+        );
+      }
+      raw
+        ..execute('PRAGMA user_version = 9')
+        ..close();
+      final db = UserDatabase(NativeDatabase(file));
+      addTearDown(db.close);
+      final rows = await db.select(db.bookmarkSets).get();
+      expect(rows, hasLength(10));
+      expect(rows.map((r) => (r.look, r.material)).toSet(), {(null, null)});
+      expect(await db.canAddFasil(), isFalse);
+      final v = await db.customSelect('PRAGMA user_version').get();
+      expect(v.single.data.values.single, 10);
+    },
+  );
 }

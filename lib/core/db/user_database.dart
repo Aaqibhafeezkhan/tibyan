@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 
@@ -34,6 +36,30 @@ class BookmarkSets extends Table {
   /// when it moves or is renamed. Added in version 8; older rows got one
   /// in the upgrade. The four fixed marks sync by [kind] instead.
   TextColumn get uuid => text().nullable().clientDefault(newUuid)();
+
+  /// This fasil's own look (a FasilStyle name: tint, ribbon, tab); null
+  /// follows the reader's default. Added in version 10.
+  TextColumn get look => text().nullable()();
+
+  /// This fasil's own cloth (a FasilMaterial name: silk, linen, velvet);
+  /// null follows the reader's default. Added in version 10.
+  TextColumn get material => text().nullable()();
+}
+
+/// The most named fawasil a reader keeps. A reader who already had more
+/// (from before the limit) keeps them all but adds none until fewer than
+/// this many remain.
+const maxFawasil = 8;
+
+/// Thrown when a named fasil would be added past [maxFawasil].
+class FawasilLimitReached implements Exception {
+  const FawasilLimitReached(this.count);
+
+  /// How many named fawasil there are now.
+  final int count;
+
+  @override
+  String toString() => 'FawasilLimitReached($count of $maxFawasil)';
 }
 
 /// «المزامنة»: what this device knows of each synced record, so a change
@@ -119,7 +145,7 @@ class UserDatabase extends _$UserDatabase {
   UserDatabase.open() : super(driftDatabase(name: 'user'));
 
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 10;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -192,6 +218,22 @@ class UserDatabase extends _$UserDatabase {
         await customStatement(
           "DELETE FROM sync_journal WHERE entity = 'tasbih_day'",
         );
+      }
+      if (from < 10) {
+        // «الفواصل»: each fasil may keep its own look and cloth. Nullable,
+        // so every existing fasil follows the reader's default as before.
+        final have = {
+          for (final r in await customSelect(
+            'PRAGMA table_info("bookmark_sets")',
+          ).get())
+            r.read<String>('name'),
+        };
+        if (!have.contains('look')) {
+          await m.addColumn(bookmarkSets, bookmarkSets.look);
+        }
+        if (!have.contains('material')) {
+          await m.addColumn(bookmarkSets, bookmarkSets.material);
+        }
       }
     },
   );
@@ -331,20 +373,77 @@ class UserDatabase extends _$UserDatabase {
           ]))
           .watch();
 
+  /// How many named fawasil there are (the four fixed marks not counted).
+  Future<int> namedFawasilCount() async {
+    final n = bookmarkSets.id.count();
+    final q = selectOnly(bookmarkSets)
+      ..addColumns([n])
+      ..where(bookmarkSets.kind.isNull());
+    return (await q.getSingle()).read(n) ?? 0;
+  }
+
+  /// Whether one more named fasil may be added (see [maxFawasil]).
+  Future<bool> canAddFasil() async => await namedFawasilCount() < maxFawasil;
+
+  /// Adds a named fasil at the end of the page edge's order. Throws
+  /// [FawasilLimitReached] when there are already [maxFawasil] or more.
   Future<int> addBookmarkSet({
     required String name,
     required int color,
     required int surah,
     required int ayah,
     required int page,
-  }) => into(bookmarkSets).insert(
-    BookmarkSetsCompanion.insert(
-      name: name,
-      color: color,
-      surah: surah,
-      ayah: ayah,
-      page: page,
-      updatedAt: DateTime.now(),
+  }) => transaction(() async {
+    final count = await namedFawasilCount();
+    if (count >= maxFawasil) throw FawasilLimitReached(count);
+    final top = bookmarkSets.sortOrder.max();
+    final last = (await (selectOnly(
+      bookmarkSets,
+    )..addColumns([top])).getSingle()).read(top);
+    return into(bookmarkSets).insert(
+      BookmarkSetsCompanion.insert(
+        name: name,
+        color: color,
+        surah: surah,
+        ayah: ayah,
+        page: page,
+        sortOrder: Value(math.max(0, (last ?? -1) + 1)),
+        updatedAt: DateTime.now(),
+      ),
+    );
+  });
+
+  /// Puts a just-deleted fasil back as it was (its id, uuid, look and
+  /// place in the order), for «تراجع». Not counted against [maxFawasil]:
+  /// it only undoes a deletion.
+  Future<void> restoreBookmarkSet(BookmarkSetRow row) => into(bookmarkSets)
+      .insert(
+        row.copyWith(updatedAt: DateTime.now()),
+        mode: InsertMode.insertOrReplace,
+      );
+
+  /// Sets the order of the fawasil on the page edge: [ids] first to last.
+  Future<void> reorderBookmarkSets(List<int> ids) => batch((b) {
+    for (final (i, id) in ids.indexed) {
+      b.update(
+        bookmarkSets,
+        BookmarkSetsCompanion(sortOrder: Value(i)),
+        where: (t) => t.id.equals(id),
+      );
+    }
+  });
+
+  /// Sets a fasil's own [look] and [material] (names of FasilStyle and
+  /// FasilMaterial); null follows the reader's default.
+  Future<void> setBookmarkSetStyle(
+    int id, {
+    required String? look,
+    required String? material,
+  }) => (update(bookmarkSets)..where((t) => t.id.equals(id))).write(
+    BookmarkSetsCompanion(
+      look: Value(look),
+      material: Value(material),
+      updatedAt: Value(DateTime.now()),
     ),
   );
 

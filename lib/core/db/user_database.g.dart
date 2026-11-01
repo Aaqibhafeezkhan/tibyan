@@ -109,6 +109,26 @@ class $BookmarkSetsTable extends BookmarkSets
     requiredDuringInsert: false,
     clientDefault: newUuid,
   );
+  static const VerificationMeta _lookMeta = const VerificationMeta('look');
+  @override
+  late final GeneratedColumn<String> look = GeneratedColumn<String>(
+    'look',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _materialMeta = const VerificationMeta(
+    'material',
+  );
+  @override
+  late final GeneratedColumn<String> material = GeneratedColumn<String>(
+    'material',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -121,6 +141,8 @@ class $BookmarkSetsTable extends BookmarkSets
     updatedAt,
     kind,
     uuid,
+    look,
+    material,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -203,6 +225,18 @@ class $BookmarkSetsTable extends BookmarkSets
         uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
       );
     }
+    if (data.containsKey('look')) {
+      context.handle(
+        _lookMeta,
+        look.isAcceptableOrUnknown(data['look']!, _lookMeta),
+      );
+    }
+    if (data.containsKey('material')) {
+      context.handle(
+        _materialMeta,
+        material.isAcceptableOrUnknown(data['material']!, _materialMeta),
+      );
+    }
     return context;
   }
 
@@ -252,6 +286,14 @@ class $BookmarkSetsTable extends BookmarkSets
         DriftSqlType.string,
         data['${effectivePrefix}uuid'],
       ),
+      look: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}look'],
+      ),
+      material: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}material'],
+      ),
     );
   }
 
@@ -281,6 +323,14 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
   /// when it moves or is renamed. Added in version 8; older rows got one
   /// in the upgrade. The four fixed marks sync by [kind] instead.
   final String? uuid;
+
+  /// This fasil's own look (a FasilStyle name: tint, ribbon, tab); null
+  /// follows the reader's default. Added in version 10.
+  final String? look;
+
+  /// This fasil's own cloth (a FasilMaterial name: silk, linen, velvet);
+  /// null follows the reader's default. Added in version 10.
+  final String? material;
   const BookmarkSetRow({
     required this.id,
     required this.name,
@@ -292,6 +342,8 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
     required this.updatedAt,
     this.kind,
     this.uuid,
+    this.look,
+    this.material,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -310,6 +362,12 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
     if (!nullToAbsent || uuid != null) {
       map['uuid'] = Variable<String>(uuid);
     }
+    if (!nullToAbsent || look != null) {
+      map['look'] = Variable<String>(look);
+    }
+    if (!nullToAbsent || material != null) {
+      map['material'] = Variable<String>(material);
+    }
     return map;
   }
 
@@ -325,6 +383,10 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
       updatedAt: Value(updatedAt),
       kind: kind == null && nullToAbsent ? const Value.absent() : Value(kind),
       uuid: uuid == null && nullToAbsent ? const Value.absent() : Value(uuid),
+      look: look == null && nullToAbsent ? const Value.absent() : Value(look),
+      material: material == null && nullToAbsent
+          ? const Value.absent()
+          : Value(material),
     );
   }
 
@@ -344,6 +406,8 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       kind: serializer.fromJson<String?>(json['kind']),
       uuid: serializer.fromJson<String?>(json['uuid']),
+      look: serializer.fromJson<String?>(json['look']),
+      material: serializer.fromJson<String?>(json['material']),
     );
   }
   @override
@@ -360,6 +424,8 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'kind': serializer.toJson<String?>(kind),
       'uuid': serializer.toJson<String?>(uuid),
+      'look': serializer.toJson<String?>(look),
+      'material': serializer.toJson<String?>(material),
     };
   }
 
@@ -374,6 +440,8 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
     DateTime? updatedAt,
     Value<String?> kind = const Value.absent(),
     Value<String?> uuid = const Value.absent(),
+    Value<String?> look = const Value.absent(),
+    Value<String?> material = const Value.absent(),
   }) => BookmarkSetRow(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -385,6 +453,8 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
     updatedAt: updatedAt ?? this.updatedAt,
     kind: kind.present ? kind.value : this.kind,
     uuid: uuid.present ? uuid.value : this.uuid,
+    look: look.present ? look.value : this.look,
+    material: material.present ? material.value : this.material,
   );
   BookmarkSetRow copyWithCompanion(BookmarkSetsCompanion data) {
     return BookmarkSetRow(
@@ -398,6 +468,8 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       kind: data.kind.present ? data.kind.value : this.kind,
       uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      look: data.look.present ? data.look.value : this.look,
+      material: data.material.present ? data.material.value : this.material,
     );
   }
 
@@ -413,7 +485,9 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
           ..write('sortOrder: $sortOrder, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('kind: $kind, ')
-          ..write('uuid: $uuid')
+          ..write('uuid: $uuid, ')
+          ..write('look: $look, ')
+          ..write('material: $material')
           ..write(')'))
         .toString();
   }
@@ -430,6 +504,8 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
     updatedAt,
     kind,
     uuid,
+    look,
+    material,
   );
   @override
   bool operator ==(Object other) =>
@@ -444,7 +520,9 @@ class BookmarkSetRow extends DataClass implements Insertable<BookmarkSetRow> {
           other.sortOrder == this.sortOrder &&
           other.updatedAt == this.updatedAt &&
           other.kind == this.kind &&
-          other.uuid == this.uuid);
+          other.uuid == this.uuid &&
+          other.look == this.look &&
+          other.material == this.material);
 }
 
 class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
@@ -458,6 +536,8 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
   final Value<DateTime> updatedAt;
   final Value<String?> kind;
   final Value<String?> uuid;
+  final Value<String?> look;
+  final Value<String?> material;
   const BookmarkSetsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -469,6 +549,8 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
     this.updatedAt = const Value.absent(),
     this.kind = const Value.absent(),
     this.uuid = const Value.absent(),
+    this.look = const Value.absent(),
+    this.material = const Value.absent(),
   });
   BookmarkSetsCompanion.insert({
     this.id = const Value.absent(),
@@ -481,6 +563,8 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
     required DateTime updatedAt,
     this.kind = const Value.absent(),
     this.uuid = const Value.absent(),
+    this.look = const Value.absent(),
+    this.material = const Value.absent(),
   }) : name = Value(name),
        color = Value(color),
        surah = Value(surah),
@@ -498,6 +582,8 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
     Expression<DateTime>? updatedAt,
     Expression<String>? kind,
     Expression<String>? uuid,
+    Expression<String>? look,
+    Expression<String>? material,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -510,6 +596,8 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
       if (updatedAt != null) 'updated_at': updatedAt,
       if (kind != null) 'kind': kind,
       if (uuid != null) 'uuid': uuid,
+      if (look != null) 'look': look,
+      if (material != null) 'material': material,
     });
   }
 
@@ -524,6 +612,8 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
     Value<DateTime>? updatedAt,
     Value<String?>? kind,
     Value<String?>? uuid,
+    Value<String?>? look,
+    Value<String?>? material,
   }) {
     return BookmarkSetsCompanion(
       id: id ?? this.id,
@@ -536,6 +626,8 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
       updatedAt: updatedAt ?? this.updatedAt,
       kind: kind ?? this.kind,
       uuid: uuid ?? this.uuid,
+      look: look ?? this.look,
+      material: material ?? this.material,
     );
   }
 
@@ -572,6 +664,12 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
     if (uuid.present) {
       map['uuid'] = Variable<String>(uuid.value);
     }
+    if (look.present) {
+      map['look'] = Variable<String>(look.value);
+    }
+    if (material.present) {
+      map['material'] = Variable<String>(material.value);
+    }
     return map;
   }
 
@@ -587,7 +685,9 @@ class BookmarkSetsCompanion extends UpdateCompanion<BookmarkSetRow> {
           ..write('sortOrder: $sortOrder, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('kind: $kind, ')
-          ..write('uuid: $uuid')
+          ..write('uuid: $uuid, ')
+          ..write('look: $look, ')
+          ..write('material: $material')
           ..write(')'))
         .toString();
   }
@@ -12374,6 +12474,8 @@ typedef $$BookmarkSetsTableCreateCompanionBuilder =
       required DateTime updatedAt,
       Value<String?> kind,
       Value<String?> uuid,
+      Value<String?> look,
+      Value<String?> material,
     });
 typedef $$BookmarkSetsTableUpdateCompanionBuilder =
     BookmarkSetsCompanion Function({
@@ -12387,6 +12489,8 @@ typedef $$BookmarkSetsTableUpdateCompanionBuilder =
       Value<DateTime> updatedAt,
       Value<String?> kind,
       Value<String?> uuid,
+      Value<String?> look,
+      Value<String?> material,
     });
 
 class $$BookmarkSetsTableFilterComposer
@@ -12445,6 +12549,16 @@ class $$BookmarkSetsTableFilterComposer
 
   ColumnFilters<String> get uuid => $composableBuilder(
     column: $table.uuid,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get look => $composableBuilder(
+    column: $table.look,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get material => $composableBuilder(
+    column: $table.material,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -12507,6 +12621,16 @@ class $$BookmarkSetsTableOrderingComposer
     column: $table.uuid,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get look => $composableBuilder(
+    column: $table.look,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get material => $composableBuilder(
+    column: $table.material,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$BookmarkSetsTableAnnotationComposer
@@ -12547,6 +12671,12 @@ class $$BookmarkSetsTableAnnotationComposer
 
   GeneratedColumn<String> get uuid =>
       $composableBuilder(column: $table.uuid, builder: (column) => column);
+
+  GeneratedColumn<String> get look =>
+      $composableBuilder(column: $table.look, builder: (column) => column);
+
+  GeneratedColumn<String> get material =>
+      $composableBuilder(column: $table.material, builder: (column) => column);
 }
 
 class $$BookmarkSetsTableTableManager
@@ -12590,6 +12720,8 @@ class $$BookmarkSetsTableTableManager
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<String?> kind = const Value.absent(),
                 Value<String?> uuid = const Value.absent(),
+                Value<String?> look = const Value.absent(),
+                Value<String?> material = const Value.absent(),
               }) => BookmarkSetsCompanion(
                 id: id,
                 name: name,
@@ -12601,6 +12733,8 @@ class $$BookmarkSetsTableTableManager
                 updatedAt: updatedAt,
                 kind: kind,
                 uuid: uuid,
+                look: look,
+                material: material,
               ),
           createCompanionCallback:
               ({
@@ -12614,6 +12748,8 @@ class $$BookmarkSetsTableTableManager
                 required DateTime updatedAt,
                 Value<String?> kind = const Value.absent(),
                 Value<String?> uuid = const Value.absent(),
+                Value<String?> look = const Value.absent(),
+                Value<String?> material = const Value.absent(),
               }) => BookmarkSetsCompanion.insert(
                 id: id,
                 name: name,
@@ -12625,6 +12761,8 @@ class $$BookmarkSetsTableTableManager
                 updatedAt: updatedAt,
                 kind: kind,
                 uuid: uuid,
+                look: look,
+                material: material,
               ),
           withReferenceMapper: (p0) => p0
               .map(
