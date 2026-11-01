@@ -485,24 +485,22 @@ class FasilRibbon extends StatelessWidget {
       ),
     );
     if (folded) {
-      ribbon = Opacity(
-        opacity: .6,
-        child: ColorFiltered(
-          colorFilter: const ColorFilter.matrix(_desaturate),
-          child: ribbon,
-        ),
+      // One layer, not two: the 60% opacity is in the matrix.
+      ribbon = ColorFiltered(
+        colorFilter: const ColorFilter.matrix(_faded),
+        child: ribbon,
       );
     }
     return ribbon;
   }
 }
 
-/// 60% saturation.
-const _desaturate = <double>[
+/// 60% saturation at 60% opacity.
+const _faded = <double>[
   .69, .29, .03, 0, 0, //
   .09, .89, .03, 0, 0, //
   .09, .29, .63, 0, 0, //
-  0, 0, 0, 1, 0, //
+  0, 0, 0, .6, 0, //
 ];
 
 // ---------------------------------------------------------------------------
@@ -692,12 +690,10 @@ class FasilTab extends StatelessWidget {
       ),
     );
     if (folded) {
-      tab = Opacity(
-        opacity: .6,
-        child: ColorFiltered(
-          colorFilter: const ColorFilter.matrix(_desaturate),
-          child: tab,
-        ),
+      // One layer, not two: the 60% opacity is in the matrix.
+      tab = ColorFiltered(
+        colorFilter: const ColorFilter.matrix(_faded),
+        child: tab,
       );
     }
     return tab;
@@ -900,8 +896,10 @@ class FasilPageLayer extends StatelessWidget {
           } else if (look.place == FasilPlace.side) {
             bookmark = RotatedBox(
               quarterTurns: outerRight ? 1 : 3,
-              // Only the dome shows past the edge, over the frame.
+              // Only the dome shows past the edge, over the frame; its
+              // shadow is not cut.
               child: ClipRect(
+                clipper: const _BelowTop(),
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   heightFactor: .72,
@@ -923,11 +921,15 @@ class FasilPageLayer extends StatelessWidget {
             mark: m,
             look: look,
             onLongPress: onLongPress == null ? null : () => onLongPress!(m),
-            child: FasilEntrance(
-              key: ValueKey('fasil-entrance-${m.id}'),
-              mark: m,
-              look: look,
-              child: bookmark,
+            // Its own layer: the cloth, the ornament and the name are not
+            // painted again with the page under them.
+            child: RepaintBoundary(
+              child: FasilEntrance(
+                key: ValueKey('fasil-entrance-${m.id}'),
+                mark: m,
+                look: look,
+                child: bookmark,
+              ),
             ),
           );
           children.add(
@@ -1012,11 +1014,13 @@ class FasilSpineLayer extends StatelessWidget {
                 mark: m,
                 look: look,
                 onLongPress: onLongPress == null ? null : () => onLongPress!(m),
-                child: FasilEntrance(
-                  key: ValueKey('fasil-entrance-${m.id}'),
-                  mark: m,
-                  look: look,
-                  child: bookmark,
+                child: RepaintBoundary(
+                  child: FasilEntrance(
+                    key: ValueKey('fasil-entrance-${m.id}'),
+                    mark: m,
+                    look: look,
+                    child: bookmark,
+                  ),
                 ),
               ),
             ),
@@ -1076,7 +1080,10 @@ class FoldedFawasil extends StatelessWidget {
                           width: look.ribbonWidth * .8,
                           folded: true,
                         )
+                      // Cut only at the top edge (the card tucked under
+                      // the page): its shadow shows at the sides and foot.
                       : ClipRect(
+                          clipper: const _BelowTop(),
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             heightFactor: .55,
