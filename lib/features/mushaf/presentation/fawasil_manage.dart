@@ -652,7 +652,7 @@ class FawasilIndexTab extends ConsumerWidget {
     Future<void> reorder(int from, int to) async {
       final next = [...ids];
       final id = next.removeAt(from);
-      next.insert(to > from ? to - 1 : to, id);
+      next.insert(to, id);
       await ref.read(userDatabaseProvider).reorderBookmarkSets(next);
     }
 
@@ -685,7 +685,7 @@ class FawasilIndexTab extends ConsumerWidget {
             buildDefaultDragHandles: false,
             padding: const EdgeInsets.only(bottom: 16),
             itemCount: rows.length,
-            onReorder: reorder,
+            onReorderItem: reorder,
             itemBuilder: (context, i) {
               final f = rows[i];
               final page =
@@ -769,7 +769,7 @@ class _FasilTile extends ConsumerWidget {
               onReorder(index, index - 1),
         if (index < count - 1)
           CustomSemanticsAction(label: l.fasilMoveDown): () =>
-              onReorder(index, index + 2),
+              onReorder(index, index + 1),
       },
       child: Material(
         type: MaterialType.transparency,

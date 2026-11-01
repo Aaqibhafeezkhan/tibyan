@@ -9,7 +9,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tibyan/core/db/content_database.dart';
 import 'package:tibyan/core/db/user_database.dart';
-import 'package:tibyan/core/settings/app_settings.dart';
 import 'package:tibyan/core/settings/settings_controller.dart';
 import 'package:tibyan/core/theme/app_theme.dart';
 import 'package:tibyan/core/theme/interface_style.dart';
