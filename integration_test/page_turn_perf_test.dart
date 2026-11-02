@@ -36,6 +36,7 @@ import 'package:tibyan/features/hifz/domain/memorize_session.dart';
 import 'package:tibyan/features/mushaf/data/page_pack.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 import 'package:tibyan/features/mushaf/presentation/mushaf_screen.dart';
+import 'package:tibyan/features/mushaf/presentation/index_warm.dart';
 import 'package:tibyan/features/mushaf/presentation/navigation.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/page_turn_effect.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
@@ -53,7 +54,8 @@ const _effects = String.fromEnvironment('PERF_EFFECTS');
 const _repeat = int.fromEnvironment('PERF_REPEAT', defaultValue: 1);
 
 /// A fix to time against the old way in the same run, case by case:
-/// `fade`, `memo`, `precache`, `reuse` or `artcache`; each case then runs twice, the
+/// `fade`, `memo`, `precache`, `reuse`, `artcache`, `touch` (index rows'
+/// touch-down warm) or `tap` (home: the card tapped, or the route alone); each case then runs twice, the
 /// old way (`~old`) and the new (`~new`).
 const _abFix = String.fromEnvironment('PERF_AB');
 
@@ -238,6 +240,17 @@ void main() {
               unawaited(c.read(appRouterProvider).push('/mushaf/index'));
               await pumpFor(t, const Duration(seconds: 2));
               SchedulerBinding.instance.addTimingsCallback(collect);
+              // As a finger does: down on the row (the page starts to be
+              // prepared), up about a tenth of a second later. `~old` with
+              // PERF_AB=touch skips the touch-down.
+              final p0 = await c.read(versePageProvider((surah, 1)).future);
+              if (!(ab == 'old' && _abFix == 'touch')) {
+                final scope = find.byType(IndexWarmScope);
+                if (scope.evaluate().isNotEmpty) {
+                  t.widget<IndexWarmScope>(scope.first).warmer.touchDown(p0);
+                }
+              }
+              await pumpFor(t, const Duration(milliseconds: 100));
               final sw = Stopwatch()..start();
               final p = await c.read(versePageProvider((surah, 1)).future);
               lookup.add(sw.elapsedMicroseconds / 1000);
@@ -308,52 +321,64 @@ void main() {
       );
       Future<void> home(String scenario) async {
         if (!_wanted(scenario)) return;
-        for (final ab in [for (var r = 0; r < _repeat; r++) ..._abs]) {
-          _setAb(ab);
-          c.read(appRouterProvider).go('/');
-          await pumpFor(t, const Duration(seconds: 2));
-          timings.clear();
-          SchedulerBinding.instance.addTimingsCallback(collect);
-          final sw = Stopwatch()..start();
-          c.read(appRouterProvider).go('/mushaf?entry=home');
-          bool shown() => find
-              .byWidgetPredicate((w) => w is MushafPage && w.page == 293)
-              .evaluate()
-              .isNotEmpty;
-          while (!shown() && sw.elapsed.inSeconds < 10) {
+        for (var r = 0; r < _repeat; r++) {
+          for (final ab in _abs) {
+            _setAb(ab);
+            c.read(appRouterProvider).go('/');
+            // Long enough for the home screen's prewarm (ContinuePrewarm).
+            await pumpFor(t, const Duration(seconds: 4));
+            timings.clear();
+            SchedulerBinding.instance.addTimingsCallback(collect);
+            final sw = Stopwatch()..start();
+            // The card's own button, as the reader taps it: the saved
+            // picture is armed and the page grows from the card.
+            final button = find.text('متابعة القراءة');
+            if (button.evaluate().isNotEmpty &&
+                !(ab == 'old' && _abFix == 'tap')) {
+              await t.tap(button.first, warnIfMissed: false);
+            } else {
+              c.read(appRouterProvider).go('/mushaf?entry=home');
+            }
+            bool shown() => find
+                .byWidgetPredicate((w) => w is MushafPage && w.page == 293)
+                .evaluate()
+                .isNotEmpty;
+            while (!shown() && sw.elapsed.inSeconds < 10) {
+              await t.pump(const Duration(milliseconds: 1));
+            }
             await t.pump(const Duration(milliseconds: 1));
+            final ttff = sw.elapsedMicroseconds / 1000;
+            var idle = 0;
+            while (idle < 3 && sw.elapsed.inSeconds < 10) {
+              await t.pump(const Duration(milliseconds: 16));
+              idle = SchedulerBinding.instance.transientCallbackCount == 0
+                  ? idle + 1
+                  : 0;
+            }
+            final settle = sw.elapsedMicroseconds / 1000;
+            await pumpFor(t, const Duration(milliseconds: 300));
+            SchedulerBinding.instance.removeTimingsCallback(collect);
+            double ms(Duration d) => d.inMicroseconds / 1000;
+            final build = [for (final f in timings) ms(f.buildDuration)];
+            final raster = [for (final f in timings) ms(f.rasterDuration)];
+            double sum(List<double> v) =>
+                v.isEmpty ? 0 : v.reduce((a, b) => a + b);
+            final janky = timings
+                .where(
+                  (f) =>
+                      f.buildDuration.inMicroseconds > 16667 ||
+                      f.rasterDuration.inMicroseconds > 16667,
+                )
+                .length;
+            final when = r == 0 ? '~first' : '~again';
+            debugPrint(
+              'PERF home-$scenario${_tag(ab)}$when frames=${timings.length} '
+              'ttff=${ttff.toStringAsFixed(1)} '
+              'settle=${settle.toStringAsFixed(1)} build=${stats(build)} '
+              'raster=${stats(raster)} buildsum=${sum(build).toStringAsFixed(0)} '
+              'rastersum=${sum(raster).toStringAsFixed(0)} jank60=$janky',
+            );
           }
-          await t.pump(const Duration(milliseconds: 1));
-          final ttff = sw.elapsedMicroseconds / 1000;
-          var idle = 0;
-          while (idle < 3 && sw.elapsed.inSeconds < 10) {
-            await t.pump(const Duration(milliseconds: 16));
-            idle = SchedulerBinding.instance.transientCallbackCount == 0
-                ? idle + 1
-                : 0;
-          }
-          final settle = sw.elapsedMicroseconds / 1000;
-          await pumpFor(t, const Duration(milliseconds: 300));
-          SchedulerBinding.instance.removeTimingsCallback(collect);
-          double ms(Duration d) => d.inMicroseconds / 1000;
-          final build = [for (final f in timings) ms(f.buildDuration)];
-          final raster = [for (final f in timings) ms(f.rasterDuration)];
-          double sum(List<double> v) =>
-              v.isEmpty ? 0 : v.reduce((a, b) => a + b);
-          final janky = timings
-              .where(
-                (f) =>
-                    f.buildDuration.inMicroseconds > 16667 ||
-                    f.rasterDuration.inMicroseconds > 16667,
-              )
-              .length;
-          debugPrint(
-            'PERF home-$scenario${_tag(ab)} frames=${timings.length} '
-            'ttff=${ttff.toStringAsFixed(1)} '
-            'settle=${settle.toStringAsFixed(1)} build=${stats(build)} '
-            'raster=${stats(raster)} buildsum=${sum(build).toStringAsFixed(0)} '
-            'rastersum=${sum(raster).toStringAsFixed(0)} jank60=$janky',
-          );
         }
       }
 

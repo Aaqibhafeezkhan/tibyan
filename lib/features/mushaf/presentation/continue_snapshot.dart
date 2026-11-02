@@ -1,3 +1,5 @@
+import '../../../core/perf/startup_marks.dart';
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -420,6 +422,7 @@ class ContinuePrewarmState extends ConsumerState<ContinuePrewarm> {
     super.initState();
     // After the home screen's first frame: nothing competes with it.
     SchedulerBinding.instance.addPostFrameCallback((_) {
+      startupMark('home-frame');
       _framed = true;
       _retarget();
     });
