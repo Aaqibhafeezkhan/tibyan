@@ -6,6 +6,8 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-11-02
+
 ### Changed
 - Metadata separators («الآية ٨٤ · صفحة ٣٠٣») are now a small gold eight-pointed star instead of a middle dot, which read as the Arabic-Indic zero («٨٤٠»): home card, mushaf banners and bars, player, khatma, hifz, tasmee, downloads, storage, search and more. Screen readers hear a pause; plain-text places (notifications, shared images and reels, the tasbih widget and shortcut) use « – » or «،».
 
@@ -396,7 +398,8 @@ Phase 0: foundation. No Quran or religious text appears in this release.
 4. Switch the language to English and back to Arabic; the layout should flip direction.
 5. Close and reopen the app: every choice should be kept.
 
-[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.5.1...HEAD
+[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/helalrules7/tibyan/compare/v0.5.1...v0.7.0
 [0.5.1]: https://github.com/helalrules7/tibyan/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/helalrules7/tibyan/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/helalrules7/tibyan/compare/v0.3.0...v0.4.0
