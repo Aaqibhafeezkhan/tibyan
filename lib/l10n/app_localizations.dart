@@ -8393,7 +8393,7 @@ abstract class AppLocalizations {
   /// No description provided for @reelJoin.
   ///
   /// In ar, this message translates to:
-  /// **'انضم الآن'**
+  /// **'حمّل التطبيق الآن'**
   String get reelJoin;
 
   /// No description provided for @reelVerse.

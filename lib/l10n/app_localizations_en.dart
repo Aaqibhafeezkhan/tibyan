@@ -4958,7 +4958,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get reelJoin => 'Join now';
+  String get reelJoin => 'Get the app now';
 
   @override
   String reelVerse(String n) {

@@ -5021,7 +5021,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get reelJoin => 'انضم الآن';
+  String get reelJoin => 'حمّل التطبيق الآن';
 
   @override
   String reelVerse(String n) {

@@ -7,6 +7,16 @@ import '../../core/theme/ornaments.dart' show starPath;
 import '../mushaf/data/divine_names.dart';
 import 'reel_timeline.dart';
 
+/// The platform marks on the end card, in order: `assets/brand/platform_<name>.svg`
+/// (Google Play, App Store and Linux from Simple Icons, CC0).
+const reelPlatforms = [
+  'google_play',
+  'app_store',
+  'windows',
+  'watchos',
+  'linux',
+];
+
 /// The reel's colours (tools/video/ayah_reel_mushaf.html).
 abstract final class ReelColors {
   static const teal = Color(0xFF0F6660);
@@ -55,7 +65,7 @@ class ReelContent {
     required this.credit,
     required this.join,
     required this.url,
-    required this.stores,
+    required this.platforms,
     required this.frame,
     required this.logo,
     required this.logoSize,
@@ -65,7 +75,12 @@ class ReelContent {
 
   final int surah;
   final List<ReelVerse> verses;
-  final String heading, range, voice, credit, join, url, stores;
+  final String heading, range, voice, credit, join, url;
+
+  /// The platforms Tibyan runs on, each a 24×24 monochrome mark (Google
+  /// Play, App Store, Windows, watchOS, Linux), drawn in a row on the end
+  /// card.
+  final List<ui.Picture> platforms;
 
   /// The mushaf page's frame, as the reader's theme draws it.
   final ui.Image frame;
@@ -439,6 +454,39 @@ class ReelPainter {
     ),
   );
 
+  static const _markSize = 60.0;
+  static const _markGap = 64.0;
+
+  /// The platform marks in one centred row, in cream.
+  (double, double, void Function(Canvas, double)) _platformsItem() {
+    final n = content.platforms.length;
+    final w = n * _markSize + (n - 1) * _markGap;
+    return (
+      w,
+      _markSize,
+      (c, y) {
+        var x = (reelDesign.width - w) / 2;
+        for (final mark in content.platforms) {
+          c.save();
+          c.translate(x, y);
+          c.scale(_markSize / 24);
+          c.saveLayer(
+            const Rect.fromLTWH(0, 0, 24, 24),
+            Paint()
+              ..colorFilter = ColorFilter.mode(
+                ReelColors.cream.withValues(alpha: .9),
+                BlendMode.srcIn,
+              ),
+          );
+          c.drawPicture(mark);
+          c.restore();
+          c.restore();
+          x += _markSize + _markGap;
+        }
+      },
+    );
+  }
+
   void _drawIntro(Canvas c) {
     final items = <Object>[
       _logoItem(420),
@@ -479,13 +527,7 @@ class ReelPainter {
       40.0,
       _rule(),
       56.0,
-      _line(
-        content.stores,
-        36,
-        color: ReelColors.cream.withValues(alpha: .85),
-        family: 'Changa',
-        dir: TextDirection.ltr,
-      ),
+      _platformsItem(),
     ];
     _column(c, (reelDesign.height - _height(items)) / 2, items);
   }

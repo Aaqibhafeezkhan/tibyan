@@ -233,6 +233,13 @@ class _ShareVideoState extends ConsumerState<ShareVideoScreen> {
         const SvgAssetLoader('assets/brand/tibyan_logo.svg'),
         null,
       );
+      final marks = [
+        for (final p in reelPlatforms)
+          await vg.loadPicture(
+            SvgAssetLoader('assets/brand/platform_$p.svg'),
+            null,
+          ),
+      ];
       final verses = [
         for (final a in _chosen)
           ReelVerse(number: a.number, displayText: a.displayText),
@@ -247,7 +254,7 @@ class _ShareVideoState extends ConsumerState<ShareVideoScreen> {
           credit: plainMeta(_ar.reelCredit(r.nameAr, reelSource(r.folderUrl))),
           join: _ar.reelJoin,
           url: 'altibyan.app',
-          stores: 'Google Play  –  App Store  –  Mac',
+          platforms: [for (final m in marks) m.picture],
           frame: frame,
           banner: banner,
           logo: logo.picture,
