@@ -22,7 +22,8 @@ RELEASES = [
      "assets": [asset("v0.6.0", "tibyan-0.6.0-universal.apk")]},
     {"tag_name": "v0.5.0", "draft": False, "prerelease": True, "assets": [
         asset("v0.5.0", "SHA256SUMS.txt", 651),
-        asset("v0.5.0", "tibyan-0.5.0-arm64-v8a.apk"),
+        asset("v0.5.0", "tibyan-0.5.0-android-armeabi-v7a.apk"),
+        asset("v0.5.0", "tibyan-0.5.0-android-arm64-v8a.apk", 90_000_000),
         asset("v0.5.0", "tibyan-0.5.0-universal.apk"),
         asset("v0.5.0", "tibyan-0.5.0-macos.zip", 141_878_800),
         asset("v0.5.0", "tibyan-0.5.0-windows-x64.zip"),
@@ -51,7 +52,9 @@ class DownloadsTest(unittest.TestCase):
     def test_redirects_to_newest_prerelease_assets(self):
         with patch.object(releases, "_fetch", return_value=RELEASES):
             want = {
-                "android": f"{GH}/v0.5.0/tibyan-0.5.0-universal.apk",
+                "android": f"{GH}/v0.5.0/tibyan-0.5.0-android-arm64-v8a.apk",
+                "android-armeabi-v7a": f"{GH}/v0.5.0/tibyan-0.5.0-android-armeabi-v7a.apk",
+                "android-universal": f"{GH}/v0.5.0/tibyan-0.5.0-universal.apk",
                 "macos": f"{GH}/v0.5.0/tibyan-0.5.0-macos.zip",
                 "windows": f"{GH}/v0.5.0/tibyan-0.5.0-windows-x64.zip",
                 "linux": f"{GH}/v0.4.0/tibyan-0.4.0-linux-x64.tar.gz",  # older release fills the gap
@@ -60,6 +63,15 @@ class DownloadsTest(unittest.TestCase):
                 r = self.get(platform)
                 self.assertEqual(r.status_code, 302, platform)
                 self.assertEqual(r.headers["location"], url)
+
+    def test_android_falls_back_to_universal_without_split(self):
+        only_universal = [{"tag_name": "v0.3.0", "draft": False,
+                           "assets": [asset("v0.3.0", "tibyan-0.3.0-universal.apk")]}]
+        with patch.object(releases, "_fetch", return_value=only_universal):
+            r = self.get("android")
+            self.assertEqual(r.headers["location"], f"{GH}/v0.3.0/tibyan-0.3.0-universal.apk")
+            # No x86_64 build anywhere: the releases page.
+            self.assertEqual(self.get("android-x86_64").headers["location"], releases.RELEASES_PAGE)
 
     def test_unknown_platform_404(self):
         self.assertEqual(self.get("ios").status_code, 404)
@@ -90,7 +102,7 @@ class DownloadsTest(unittest.TestCase):
         releases._cache["at"] = 1.0  # force expiry
         with patch.object(releases, "_fetch", side_effect=OSError("down")):
             r = self.get("android")
-        self.assertTrue(r.headers["location"].endswith("tibyan-0.5.0-universal.apk"))
+        self.assertTrue(r.headers["location"].endswith("tibyan-0.5.0-android-arm64-v8a.apk"))
 
     def test_no_matching_asset_falls_back(self):
         with patch.object(releases, "_fetch", return_value=[RELEASES[2]]):
@@ -107,7 +119,8 @@ class DownloadsTest(unittest.TestCase):
         self.assertLess(html.index('class="downloads"'), html.index('class="beta-form"'))
 
     def test_beta_page_renders_when_api_down(self):
-        r = self.client.get("/beta")
+        with patch.object(releases, "_fetch", side_effect=OSError("down")):
+            r = self.client.get("/beta")
         self.assertEqual(r.status_code, 200)
         self.assertIn('href="/download/android"', r.text)
         self.assertNotIn("dl-meta", r.text)

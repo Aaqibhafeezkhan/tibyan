@@ -20,6 +20,13 @@ final sharedPreferencesProvider = Provider<SharedPreferences>(
   (ref) => throw UnimplementedError('sharedPreferencesProvider not overridden'),
 );
 
+/// The local calendar day of [t], as stored for the once-a-day splash.
+String splashDayOf(DateTime t) {
+  final l = t.toLocal();
+  String two(int n) => n.toString().padLeft(2, '0');
+  return '${l.year}-${two(l.month)}-${two(l.day)}';
+}
+
 final settingsProvider = NotifierProvider<SettingsController, AppSettings>(
   SettingsController.new,
 );
@@ -58,6 +65,7 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kOneVerseAuto = 'settings.oneVerseAutoSeconds';
   static const _kElderly = 'settings.elderlyMode';
   static const _kReduceMotion = 'settings.forceReduceMotion';
+  static const _kSplashDay = 'settings.splashShownDay';
   static const _kAnnounceVerse = 'settings.announceVerseNumber';
   static const _kWeeklyReminder = 'settings.weeklyReminder';
   static const _kKahfReminder = 'settings.kahfReminder';
@@ -304,6 +312,14 @@ class SettingsController extends Notifier<AppSettings> {
     state = state.copyWith(crashReportsOptIn: value);
     await _prefs.setBool(_kCrash, value);
   }
+
+  /// The animated splash plays in full once a local calendar day: has it
+  /// already played on [now]'s day?
+  bool splashShownOn(DateTime now) =>
+      _prefs.getString(_kSplashDay) == splashDayOf(now);
+
+  Future<void> markSplashShown(DateTime now) =>
+      _prefs.setString(_kSplashDay, splashDayOf(now));
 
   Future<void> completeOnboarding() async {
     state = state.copyWith(onboardingDone: true);

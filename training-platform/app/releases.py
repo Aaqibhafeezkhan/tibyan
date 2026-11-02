@@ -14,11 +14,18 @@ API_URL = "https://api.github.com/repos/helalrules7/tibyan/releases?per_page=5"
 RELEASES_PAGE = "https://github.com/helalrules7/tibyan/releases"
 CACHE_TTL = 600  # seconds
 FAIL_TTL = 60  # retry a failed fetch after a minute, not on every request
+# Each platform: glob patterns in order of preference within one release.
+# Releases ship per-ABI APKs (flutter build apk --split-per-abi); /download/android
+# gives arm64-v8a (nearly every phone), falling back to a universal APK for
+# releases that have no split. The other ABIs keep their own links.
 PATTERNS = {
-    "android": "*universal*.apk",
-    "macos": "*macos*.zip",
-    "windows": "*windows*.zip",
-    "linux": "*linux*.tar.gz",
+    "android": ("*arm64-v8a*.apk", "*universal*.apk"),
+    "android-armeabi-v7a": ("*armeabi-v7a*.apk",),
+    "android-x86_64": ("*x86_64*.apk",),
+    "android-universal": ("*universal*.apk",),
+    "macos": ("*macos*.zip",),
+    "windows": ("*windows*.zip",),
+    "linux": ("*linux*.tar.gz",),
 }
 
 _now = time.monotonic  # patched in tests
@@ -42,17 +49,25 @@ def _pick(releases: list) -> dict:
     for rel in releases:
         if not isinstance(rel, dict) or rel.get("draft"):
             continue
-        for platform, pattern in PATTERNS.items():
+        assets = rel.get("assets") or []
+        for platform, patterns in PATTERNS.items():
             if platform in found:
                 continue
-            for asset in rel.get("assets") or []:
-                name = asset.get("name") or ""
-                url = asset.get("browser_download_url") or ""
-                if fnmatch.fnmatch(name.lower(), pattern) and url.startswith("https://github.com/"):
+            for pattern in patterns:
+                hit = next(
+                    (
+                        a
+                        for a in assets
+                        if fnmatch.fnmatch((a.get("name") or "").lower(), pattern)
+                        and (a.get("browser_download_url") or "").startswith("https://github.com/")
+                    ),
+                    None,
+                )
+                if hit:
                     found[platform] = {
-                        "url": url,
-                        "name": name,
-                        "size": int(asset.get("size") or 0),
+                        "url": hit["browser_download_url"],
+                        "name": hit.get("name") or "",
+                        "size": int(hit.get("size") or 0),
                         "version": (rel.get("tag_name") or "").lstrip("v"),
                     }
                     break

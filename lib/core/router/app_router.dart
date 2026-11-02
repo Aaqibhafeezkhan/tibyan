@@ -67,6 +67,15 @@ final appRouterReadyProvider = Provider<Completer<void>>(
   (ref) => Completer<void>(),
 );
 
+/// Set when the app is opened for a link, a shortcut, a notification or a
+/// widget: the splash then hands over at once instead of playing, and the
+/// target follows.
+final launchTargetProvider = Provider<ValueNotifier<bool>>((ref) {
+  final v = ValueNotifier(false);
+  ref.onDispose(v.dispose);
+  return v;
+});
+
 void markAppRouterReady(Completer<void> ready) {
   if (!ready.isCompleted) ready.complete();
 }

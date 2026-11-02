@@ -314,6 +314,7 @@ void _startKhatma(ProviderContainer container) {
     // Google Assistant's «open app feature»: the shortcut's own link.
     final uri = assistantFeatureLink(link) ?? link;
     if (uri.toString() == weeklyReportLink) {
+      container.read(launchTargetProvider).value = true;
       await container.read(appRouterReadyProvider).future;
       unawaited(container.read(appRouterProvider).push(weeklyReportLocation));
       return;
@@ -325,6 +326,7 @@ void _startKhatma(ProviderContainer container) {
       if (!container.read(featureFlagsProvider).isOn(Feature.groupKhatma)) {
         return;
       }
+      container.read(launchTargetProvider).value = true;
       await container.read(appRouterReadyProvider).future;
       unawaited(
         container.read(appRouterProvider).push('/khatma/group/$groupId'),
@@ -349,6 +351,7 @@ void _startKhatma(ProviderContainer container) {
     // After the splash screen (or the first-run setup) has handed over,
     // so its own navigation does not replace the link's. A link of a
     // running app goes at once: the signal is already given.
+    container.read(launchTargetProvider).value = true;
     await container.read(appRouterReadyProvider).future;
     container.read(appRouterProvider).go(route);
   }
@@ -356,6 +359,7 @@ void _startKhatma(ProviderContainer container) {
   // A download's notification opens the Downloads screen, which only
   // shows them: it never queues anything.
   container.read(backgroundDownloadsProvider).onNotificationTap = () async {
+    container.read(launchTargetProvider).value = true;
     await container.read(appRouterReadyProvider).future;
     unawaited(container.read(appRouterProvider).push('/downloads'));
   };

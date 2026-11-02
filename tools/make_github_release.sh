@@ -8,7 +8,8 @@
 #
 # Assets (in build/github-release/<tag>/):
 #   tibyan-<ver>-android-arm64-v8a.apk, -armeabi-v7a.apk, -x86_64.apk   (split per ABI)
-#   tibyan-<ver>-android-universal.apk
+#   tibyan-<ver>-android-universal.apk   (fallback: altibyan.app/download/android gives arm64-v8a,
+#                                         and links armeabi-v7a, x86_64 and universal)
 #   tibyan-<ver>-macos.zip    (Developer ID signed + notarized when credentials exist, otherwise unsigned)
 #   SHA256SUMS
 #
@@ -90,7 +91,7 @@ if [ "$SKIP_BUILD" -eq 0 ]; then
   # Check the APK is signed with the upload key, not the debug key.
   APKSIGNER="$(ls -d "${ANDROID_HOME:-$HOME/Library/Android/sdk}"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -1 || true)"
   if [ -n "$APKSIGNER" ]; then
-    if "$APKSIGNER" verify --print-certs "$OUT/$NAME-android-universal.apk" | grep -q "CN=Android Debug"; then
+    if "$APKSIGNER" verify --print-certs "$OUT/$NAME-android-arm64-v8a.apk" | grep -q "CN=Android Debug"; then
       echo "The APK is debug-signed: check android/key.properties." >&2; exit 1
     fi
   fi
