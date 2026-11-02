@@ -4872,6 +4872,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get syncUnsupported => 'Sync is not available on this device.';
 
   @override
+  String get syncNoGoogleServices =>
+      'Google Drive sync needs Google Play services, which this device does not have. To move your data, use Backup in Settings.';
+
+  @override
   String get syncDeleteCloud => 'Stop sync and delete cloud data';
 
   @override

@@ -16,7 +16,7 @@ class CrashReporting {
   static const _dsn = String.fromEnvironment('SENTRY_DSN');
 
   /// Where the build goes: `beta` (GitHub), `testflight`, `production`
-  /// (App Store / Play). Set with `--dart-define=TIBYAN_CHANNEL=...`;
+  /// (App Store / Play), `huawei` (AppGallery). Set with `--dart-define=TIBYAN_CHANNEL=...`;
   /// release builds without it count as production.
   static const channel = String.fromEnvironment(
     'TIBYAN_CHANNEL',
@@ -33,7 +33,8 @@ class CrashReporting {
 
   /// Pre-builds (TestFlight, GitHub beta) suggest «agree» in the consent
   /// sheet; the store build leaves both choices equal.
-  static bool get isPrerelease => channel != 'production';
+  static bool get isPrerelease =>
+      channel != 'production' && channel != 'huawei';
 
   static Future<void> apply({required bool optIn}) async {
     if (!isAvailable) return;

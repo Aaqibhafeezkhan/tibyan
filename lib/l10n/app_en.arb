@@ -1853,6 +1853,7 @@
   "syncNoAccountICloud": "Sign in to iCloud in the device settings and turn on iCloud Drive for this app.",
   "syncNoAccountDrive": "Choose a Google account to turn on sync.",
   "syncUnsupported": "Sync is not available on this device.",
+  "syncNoGoogleServices": "Google Drive sync needs Google Play services, which this device does not have. To move your data, use Backup in Settings.",
   "syncDeleteCloud": "Stop sync and delete cloud data",
   "syncDeleteConfirmTitle": "Delete sync data from the cloud?",
   "syncDeleteConfirmBody": "Sync stops and what your devices uploaded is deleted from the cloud. Your data on this device stays as it is. A device that still has sync on will upload its data again.",

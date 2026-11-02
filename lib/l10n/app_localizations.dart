@@ -8252,6 +8252,12 @@ abstract class AppLocalizations {
   /// **'المزامنة غير متاحة على هذا الجهاز.'**
   String get syncUnsupported;
 
+  /// No description provided for @syncNoGoogleServices.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحتاج مزامنة Google Drive إلى خدمات Google Play، وهي غير متوفرة على هذا الجهاز. لنقل بياناتك استخدم «النسخ الاحتياطي» في الإعدادات.'**
+  String get syncNoGoogleServices;
+
   /// No description provided for @syncDeleteCloud.
   ///
   /// In ar, this message translates to:

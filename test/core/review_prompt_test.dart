@@ -8,14 +8,16 @@ void main() {
   late int asked;
   var version = '0.6.0+42';
 
-  ReviewPrompt make({bool supported = true}) => ReviewPrompt(
-    prefs,
-    available: () async => true,
-    request: () async => asked++,
-    version: () async => version,
-    clock: () => now,
-    supported: supported,
-  );
+  ReviewPrompt make({bool supported = true, bool services = true}) =>
+      ReviewPrompt(
+        prefs,
+        available: () async => true,
+        request: () async => asked++,
+        version: () async => version,
+        clock: () => now,
+        supported: supported,
+        services: () async => services,
+      );
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
@@ -83,5 +85,13 @@ void main() {
     now = now.add(const Duration(days: 1));
     expect(await p.readingSession(ask: false), isFalse);
     expect(p.distinctDays, 1);
+  });
+
+  test('without Google Play services (Huawei) it never asks', () async {
+    final p = make(services: false);
+    await p.noteLaunch();
+    now = now.add(const Duration(days: 1));
+    expect(await p.maybeAsk(ReviewMoment.khatmaComplete), isFalse);
+    expect(asked, 0);
   });
 }
