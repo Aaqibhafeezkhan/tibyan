@@ -119,6 +119,13 @@ flutter:
     - assets/tasbih/
 
   fonts:
+    # Interface numbers outside the mushaf: digits and number signs cut from
+    # IBM Plex Sans Arabic Bold, renamed ("Plex" is a Reserved Font Name). One
+    # bold face only, so every number is bold. SIL OFL 1.1
+    - family: TibyanNumerals
+      fonts:
+        - asset: assets/fonts/ofl/tibyannumerals/TibyanNumerals-Bold.ttf
+          weight: 700
     # Interface digits (Western, Arabic-Indic, Persian), named ahead of
     # Changa (its ٢ and ٣ read alike): a digits-only subset of IBM Plex Sans Arabic, renamed
     # ("Plex" is a Reserved Font Name). SIL OFL 1.1

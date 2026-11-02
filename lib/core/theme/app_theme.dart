@@ -23,6 +23,38 @@ enum UiFont {
 /// Arabic with Changa's line metrics, so a line keeps its height.
 const digitsFamily = 'TibyanDigits';
 
+/// Every interface digit (and %, /, :, …) outside the mushaf: IBM Plex Sans
+/// Arabic Bold cut to numbers only, so any number reads clearly and always
+/// bold whatever the text's weight. Letters fall through to the chosen font.
+const numeralsFamily = 'TibyanNumerals';
+
+/// The families every interface text falls back to after [numeralsFamily].
+List<String> uiFallback(UiFont f) => [
+  f.family,
+  if (f.family != 'IBMPlexSansArabic') 'IBMPlexSansArabic',
+  'IBMPlexSans',
+];
+
+/// The mushaf screen keeps the fonts it had before [numeralsFamily]: its
+/// page, info bar and overlays.
+ThemeData withMushafFonts(ThemeData theme, UiFont f) {
+  final fallback = [
+    if (f.textFamily != f.family) f.family,
+    'IBMPlexSansArabic',
+    'IBMPlexSans',
+  ];
+  return theme.copyWith(
+    textTheme: theme.textTheme.apply(
+      fontFamily: f.textFamily,
+      fontFamilyFallback: fallback,
+    ),
+    primaryTextTheme: theme.primaryTextTheme.apply(
+      fontFamily: f.textFamily,
+      fontFamilyFallback: fallback,
+    ),
+  );
+}
+
 /// Theme values that Material's [ColorScheme] has no slot for.
 /// Widgets read these instead of hard-coding colours.
 class TibyanTokens extends ThemeExtension<TibyanTokens> {
@@ -218,12 +250,8 @@ ThemeData buildTheme({
     colorScheme: scheme,
     brightness: brightness,
     scaffoldBackgroundColor: t.bg,
-    fontFamily: uiFont.textFamily,
-    fontFamilyFallback: [
-      if (uiFont.textFamily != uiFont.family) uiFont.family,
-      'IBMPlexSansArabic',
-      'IBMPlexSans',
-    ],
+    fontFamily: numeralsFamily,
+    fontFamilyFallback: uiFallback(uiFont),
     materialTapTargetSize: MaterialTapTargetSize.padded,
   );
 

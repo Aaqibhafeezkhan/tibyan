@@ -1311,596 +1311,608 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
               ],
             ],
           );
-    return _keyboard(
-      Scaffold(
-        backgroundColor: t.bg,
-        // The keyboard (go to page, a fasil's name, …) rises over the page
-        // and never moves or shrinks it: laying the page out anew at every
-        // step of the keyboard's slide re-baked it each frame. The dialogs
-        // and sheets that hold the fields lift themselves above it.
-        resizeToAvoidBottomInset: false,
-        body: _WithoutKeyboard(
-          child: Stack(
-            children: [
-              // The frame and the space above and below the page open the
-              // menus too; a tap on the page itself or on a frame label is
-              // taken by that (deeper) widget first.
-              // Wide screens may show the chosen texts beside the page.
-              Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: _onPageTap,
-                      onLongPress: menu
-                          ? () => unawaited(_openFocusMenu(_page, null))
-                          : null,
-                      child: SafeArea(
-                        // Focus mode's bar stands in the room above the page.
-                        top: !focus,
-                        // While listening, the page sits above the player bar so the
-                        // catchword and the reading tools stay visible. The
-                        // floating players stay over the page instead.
-                        minimum: EdgeInsets.only(
-                          bottom:
-                              reciting.active &&
-                                  !_autoScroll &&
-                                  playerStyle == PlayerStyle.normal
-                              ? MediaQuery.paddingOf(context).bottom + 80
-                              : 0,
-                        ),
-                        child: Column(
-                          children: [
-                            ?focusBar,
-                            Expanded(
-                              child: _autoScroll
-                                  ? LayoutBuilder(
-                                      builder: (context, box) {
-                                        _pageExtent = box.maxHeight;
-                                        _vertical ??= ScrollController(
-                                          initialScrollOffset:
-                                              (_page - _first) * box.maxHeight,
-                                        );
-                                        return ListView.builder(
-                                          controller: _vertical,
-                                          itemExtent: box.maxHeight,
-                                          itemCount: pageCount + 1 - _first,
-                                          itemBuilder: (context, i) =>
-                                              pageAt(i),
-                                        );
-                                      },
-                                    )
-                                  : _controller == null
-                                  ? Center(
-                                      child: CircularProgressIndicator(
-                                        semanticsLabel: l.loadingLabel,
-                                      ),
-                                    )
-                                  // The pages turn under one reading bar, which
-                                  // stays put.
-                                  : Column(
-                                      children: [
-                                        Expanded(
-                                          child: Stack(
-                                            children: [
-                                              Positioned.fill(
-                                                child: NotificationListener<ScrollNotification>(
-                                                  onNotification:
-                                                      _onPagerScroll,
-                                                  child:
-                                                      // The mushaf opens from the right in every interface language.
-                                                      Directionality(
-                                                        textDirection:
-                                                            TextDirection.rtl,
-                                                        child: LayoutBuilder(
-                                                          builder: (context, box) {
-                                                            // A wide screen held sideways shows two
-                                                            // pages; not in a hifz test, which is one
-                                                            // page at a time.
-                                                            final spread =
-                                                                settings
-                                                                    .twoPageSpread &&
-                                                                !_testing &&
-                                                                showsSpread(
-                                                                  box.biggest,
-                                                                  largeDevice:
-                                                                      context
-                                                                          .isLargeDevice,
-                                                                );
-                                                            if (spread !=
-                                                                _spread) {
-                                                              WidgetsBinding
-                                                                  .instance
-                                                                  .addPostFrameCallback(
-                                                                    (_) =>
-                                                                        _setSpread(
-                                                                          spread,
-                                                                        ),
+    return Theme(
+      data: withMushafFonts(
+        Theme.of(context),
+        ref.watch(settingsProvider.select((s) => s.uiFont)),
+      ),
+      child: _keyboard(
+        Scaffold(
+          backgroundColor: t.bg,
+          // The keyboard (go to page, a fasil's name, …) rises over the page
+          // and never moves or shrinks it: laying the page out anew at every
+          // step of the keyboard's slide re-baked it each frame. The dialogs
+          // and sheets that hold the fields lift themselves above it.
+          resizeToAvoidBottomInset: false,
+          body: _WithoutKeyboard(
+            child: Stack(
+              children: [
+                // The frame and the space above and below the page open the
+                // menus too; a tap on the page itself or on a frame label is
+                // taken by that (deeper) widget first.
+                // Wide screens may show the chosen texts beside the page.
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: _onPageTap,
+                        onLongPress: menu
+                            ? () => unawaited(_openFocusMenu(_page, null))
+                            : null,
+                        child: SafeArea(
+                          // Focus mode's bar stands in the room above the page.
+                          top: !focus,
+                          // While listening, the page sits above the player bar so the
+                          // catchword and the reading tools stay visible. The
+                          // floating players stay over the page instead.
+                          minimum: EdgeInsets.only(
+                            bottom:
+                                reciting.active &&
+                                    !_autoScroll &&
+                                    playerStyle == PlayerStyle.normal
+                                ? MediaQuery.paddingOf(context).bottom + 80
+                                : 0,
+                          ),
+                          child: Column(
+                            children: [
+                              ?focusBar,
+                              Expanded(
+                                child: _autoScroll
+                                    ? LayoutBuilder(
+                                        builder: (context, box) {
+                                          _pageExtent = box.maxHeight;
+                                          _vertical ??= ScrollController(
+                                            initialScrollOffset:
+                                                (_page - _first) *
+                                                box.maxHeight,
+                                          );
+                                          return ListView.builder(
+                                            controller: _vertical,
+                                            itemExtent: box.maxHeight,
+                                            itemCount: pageCount + 1 - _first,
+                                            itemBuilder: (context, i) =>
+                                                pageAt(i),
+                                          );
+                                        },
+                                      )
+                                    : _controller == null
+                                    ? Center(
+                                        child: CircularProgressIndicator(
+                                          semanticsLabel: l.loadingLabel,
+                                        ),
+                                      )
+                                    // The pages turn under one reading bar, which
+                                    // stays put.
+                                    : Column(
+                                        children: [
+                                          Expanded(
+                                            child: Stack(
+                                              children: [
+                                                Positioned.fill(
+                                                  child: NotificationListener<ScrollNotification>(
+                                                    onNotification:
+                                                        _onPagerScroll,
+                                                    child:
+                                                        // The mushaf opens from the right in every interface language.
+                                                        Directionality(
+                                                          textDirection:
+                                                              TextDirection.rtl,
+                                                          child: LayoutBuilder(
+                                                            builder: (context, box) {
+                                                              // A wide screen held sideways shows two
+                                                              // pages; not in a hifz test, which is one
+                                                              // page at a time.
+                                                              final spread =
+                                                                  settings
+                                                                      .twoPageSpread &&
+                                                                  !_testing &&
+                                                                  showsSpread(
+                                                                    box.biggest,
+                                                                    largeDevice:
+                                                                        context
+                                                                            .isLargeDevice,
                                                                   );
-                                                            }
-                                                            // A mouse and a trackpad drag the pages
-                                                            // like a finger; the wheel turns them.
-                                                            return Listener(
-                                                              onPointerSignal:
-                                                                  _onWheel,
-                                                              child: FadeTransition(
-                                                                opacity:
-                                                                    _jumpFade,
-                                                                child: ScrollConfiguration(
-                                                                  behavior:
-                                                                      ScrollConfiguration.of(
-                                                                        context,
-                                                                      ).copyWith(
-                                                                        dragDevices: PointerDeviceKind
-                                                                            .values
-                                                                            .toSet(),
+                                                              if (spread !=
+                                                                  _spread) {
+                                                                WidgetsBinding
+                                                                    .instance
+                                                                    .addPostFrameCallback(
+                                                                      (
+                                                                        _,
+                                                                      ) => _setSpread(
+                                                                        spread,
                                                                       ),
-                                                                  child: PageView.builder(
-                                                                    // A new controller (spreads turned on or off, another
-                                                                    // edition) starts a new pager: the old one would keep its
-                                                                    // place, now another page.
-                                                                    key: ObjectKey(
-                                                                      _controller,
-                                                                    ),
-                                                                    controller:
+                                                                    );
+                                                              }
+                                                              // A mouse and a trackpad drag the pages
+                                                              // like a finger; the wheel turns them.
+                                                              return Listener(
+                                                                onPointerSignal:
+                                                                    _onWheel,
+                                                                child: FadeTransition(
+                                                                  opacity:
+                                                                      _jumpFade,
+                                                                  child: ScrollConfiguration(
+                                                                    behavior:
+                                                                        ScrollConfiguration.of(
+                                                                          context,
+                                                                        ).copyWith(
+                                                                          dragDevices: PointerDeviceKind
+                                                                              .values
+                                                                              .toSet(),
+                                                                        ),
+                                                                    child: PageView.builder(
+                                                                      // A new controller (spreads turned on or off, another
+                                                                      // edition) starts a new pager: the old one would keep its
+                                                                      // place, now another page.
+                                                                      key: ObjectKey(
                                                                         _controller,
-                                                                    itemCount:
-                                                                        _spreads
-                                                                            .count,
-                                                                    // The pages either side are built and their images
-                                                                    // decoded before they are turned to, so a page turn
-                                                                    // does not stop on a spinner.
-                                                                    allowImplicitScrolling:
-                                                                        true,
-                                                                    onPageChanged:
-                                                                        _onPageChanged,
-                                                                    itemBuilder: (context, i) => PageTurnEffect(
+                                                                      ),
                                                                       controller:
                                                                           _controller,
-                                                                      index: i,
-                                                                      effect: settings
-                                                                          .pageTurn,
-                                                                      isSpread: (j) =>
-                                                                          _spread &&
-                                                                          j >=
-                                                                              0 &&
-                                                                          j < _spreads.count &&
-                                                                          _pagesAt(
-                                                                                j,
-                                                                              ).length ==
-                                                                              2,
-                                                                      child: () {
-                                                                        final pages =
-                                                                            _pagesAt(
-                                                                              i,
+                                                                      itemCount:
+                                                                          _spreads
+                                                                              .count,
+                                                                      // The pages either side are built and their images
+                                                                      // decoded before they are turned to, so a page turn
+                                                                      // does not stop on a spinner.
+                                                                      allowImplicitScrolling:
+                                                                          true,
+                                                                      onPageChanged:
+                                                                          _onPageChanged,
+                                                                      itemBuilder: (context, i) => PageTurnEffect(
+                                                                        controller:
+                                                                            _controller,
+                                                                        index:
+                                                                            i,
+                                                                        effect:
+                                                                            settings.pageTurn,
+                                                                        isSpread: (j) =>
+                                                                            _spread &&
+                                                                            j >=
+                                                                                0 &&
+                                                                            j < _spreads.count &&
+                                                                            _pagesAt(j).length ==
+                                                                                2,
+                                                                        child: () {
+                                                                          final pages =
+                                                                              _pagesAt(
+                                                                                i,
+                                                                              );
+                                                                          if (pages.length ==
+                                                                              1) {
+                                                                            final one = pageOf(
+                                                                              pages.single,
                                                                             );
-                                                                        if (pages.length ==
-                                                                            1) {
-                                                                          final one = pageOf(
-                                                                            pages.single,
-                                                                          );
-                                                                          final fit = fitWidthHeight(
-                                                                            box.biggest,
-                                                                            largeDevice:
-                                                                                context.isLargeDevice,
-                                                                            fit:
-                                                                                settings.landscapeFit,
-                                                                          );
-                                                                          if (fit ==
-                                                                              null) {
-                                                                            return one;
+                                                                            final fit = fitWidthHeight(
+                                                                              box.biggest,
+                                                                              largeDevice: context.isLargeDevice,
+                                                                              fit: settings.landscapeFit,
+                                                                            );
+                                                                            if (fit ==
+                                                                                null) {
+                                                                              return one;
+                                                                            }
+                                                                            // A phone held sideways: the page
+                                                                            // as wide as the screen, read by
+                                                                            // scrolling down.
+                                                                            return FitWidthScroll(
+                                                                              key: PageStorageKey(
+                                                                                'fit-width-${pages.single}',
+                                                                              ),
+                                                                              child: SizedBox(
+                                                                                height: fit,
+                                                                                child: one,
+                                                                              ),
+                                                                            );
                                                                           }
-                                                                          // A phone held sideways: the page
-                                                                          // as wide as the screen, read by
-                                                                          // scrolling down.
-                                                                          return FitWidthScroll(
-                                                                            key: PageStorageKey(
-                                                                              'fit-width-${pages.single}',
+                                                                          // Right page first: the mushaf opens
+                                                                          // from the right.
+                                                                          return FasilSpineLayer(
+                                                                            right: fawasilOn(
+                                                                              pages.first,
                                                                             ),
-                                                                            child: SizedBox(
-                                                                              height: fit,
-                                                                              child: one,
+                                                                            left: fawasilOn(
+                                                                              pages.last,
+                                                                            ),
+                                                                            look:
+                                                                                fasilLook,
+                                                                            onLongPress:
+                                                                                _fasilActions,
+                                                                            child: Row(
+                                                                              textDirection: TextDirection.rtl,
+                                                                              children: [
+                                                                                for (final pg in pages) Expanded(child: pageOf(pg, bookmarks: false)),
+                                                                              ],
                                                                             ),
                                                                           );
-                                                                        }
-                                                                        // Right page first: the mushaf opens
-                                                                        // from the right.
-                                                                        return FasilSpineLayer(
-                                                                          right: fawasilOn(
-                                                                            pages.first,
-                                                                          ),
-                                                                          left: fawasilOn(
-                                                                            pages.last,
-                                                                          ),
-                                                                          look:
-                                                                              fasilLook,
-                                                                          onLongPress:
-                                                                              _fasilActions,
-                                                                          child: Row(
-                                                                            textDirection:
-                                                                                TextDirection.rtl,
-                                                                            children: [
-                                                                              for (final pg in pages)
-                                                                                Expanded(child: pageOf(pg, bookmarks: false)),
-                                                                            ],
-                                                                          ),
-                                                                        );
-                                                                      }(),
+                                                                        }(),
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                            );
-                                                          },
-                                                        ),
-                                                      ),
-                                                ),
-                                              ),
-                                              // The fawasil kept on other
-                                              // pages, folded at the top edge
-                                              // on the inner side.
-                                              if (fawasil.isNotEmpty)
-                                                Positioned(
-                                                  top: 0,
-                                                  left:
-                                                      _spreads.isRightPage(
-                                                        shownPages.first,
-                                                      )
-                                                      ? 4
-                                                      : null,
-                                                  right:
-                                                      _spreads.isRightPage(
-                                                        shownPages.first,
-                                                      )
-                                                      ? null
-                                                      : 4,
-                                                  child: FoldedFawasil(
-                                                    marks: [
-                                                      for (final f in fawasil)
-                                                        if (!shownPages
-                                                            .contains(f.page))
-                                                          f,
-                                                    ],
-                                                    look: fasilLook,
-                                                    onTap: (f) =>
-                                                        _fadeJumpTo(f.page),
-                                                    onLongPress: _fasilActions,
-                                                    semanticLabel: (f) =>
-                                                        l.fasilOnPage(
-                                                          f.name,
-                                                          NumberFormatter(
-                                                            Localizations.localeOf(
-                                                              context,
-                                                            ),
-                                                          )(f.page),
+                                                              );
+                                                            },
+                                                          ),
                                                         ),
                                                   ),
                                                 ),
-                                            ],
+                                                // The fawasil kept on other
+                                                // pages, folded at the top edge
+                                                // on the inner side.
+                                                if (fawasil.isNotEmpty)
+                                                  Positioned(
+                                                    top: 0,
+                                                    left:
+                                                        _spreads.isRightPage(
+                                                          shownPages.first,
+                                                        )
+                                                        ? 4
+                                                        : null,
+                                                    right:
+                                                        _spreads.isRightPage(
+                                                          shownPages.first,
+                                                        )
+                                                        ? null
+                                                        : 4,
+                                                    child: FoldedFawasil(
+                                                      marks: [
+                                                        for (final f in fawasil)
+                                                          if (!shownPages
+                                                              .contains(f.page))
+                                                            f,
+                                                      ],
+                                                      look: fasilLook,
+                                                      onTap: (f) =>
+                                                          _fadeJumpTo(f.page),
+                                                      onLongPress:
+                                                          _fasilActions,
+                                                      semanticLabel: (f) =>
+                                                          l.fasilOnPage(
+                                                            f.name,
+                                                            NumberFormatter(
+                                                              Localizations.localeOf(
+                                                                context,
+                                                              ),
+                                                            )(f.page),
+                                                          ),
+                                                    ),
+                                                  ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        if (!_autoScroll && !focus)
-                                          readingBar(),
-                                        // Focus mode's tools, while shown, take
-                                        // their own room under the page: the
-                                        // page's lines close up above them. At
-                                        // once, not animated: the page is drawn
-                                        // into an image of its exact size
-                                        // (MushafPage's bake), so every frame of
-                                        // a size animation drew it all again.
-                                        // The menus lie over it rather than
-                                        // resizing the page again.
-                                        if (!_autoScroll &&
-                                            focus &&
-                                            _focusTools)
-                                          _FocusToolsPanel(
-                                            key: const ValueKey('focus-tools'),
-                                            bar: readingBar(),
-                                            labelledTools:
-                                                context.tokens.elderly
-                                                ? readingTools(labelled: true)
-                                                : null,
-                                          ),
-                                      ],
-                                    ),
-                            ),
-                          ],
+                                          if (!_autoScroll && !focus)
+                                            readingBar(),
+                                          // Focus mode's tools, while shown, take
+                                          // their own room under the page: the
+                                          // page's lines close up above them. At
+                                          // once, not animated: the page is drawn
+                                          // into an image of its exact size
+                                          // (MushafPage's bake), so every frame of
+                                          // a size animation drew it all again.
+                                          // The menus lie over it rather than
+                                          // resizing the page again.
+                                          if (!_autoScroll &&
+                                              focus &&
+                                              _focusTools)
+                                            _FocusToolsPanel(
+                                              key: const ValueKey(
+                                                'focus-tools',
+                                              ),
+                                              bar: readingBar(),
+                                              labelledTools:
+                                                  context.tokens.elderly
+                                                  ? readingTools(labelled: true)
+                                                  : null,
+                                            ),
+                                        ],
+                                      ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  if (settings.splitTranslation &&
-                      settings.underVerse.isNotEmpty &&
-                      !_autoScroll &&
-                      MediaQuery.sizeOf(context).width >= 900)
-                    _SidePane(page: _page, riwaya: _riwaya),
-                ],
-              ),
-              // The menus come and go with a short fade and slide (at once
-              // when less motion is asked for).
-              // A light veil so the controls read as a layer over the page.
-              Positioned.fill(
-                child: Reveal(
-                  visible: _chrome,
-                  from: Offset.zero,
-                  child: Semantics(
-                    button: true,
-                    label: l.hideMenus,
-                    onTap: () => _setChrome(false),
-                    excludeSemantics: true,
-                    child: GestureDetector(
+                    if (settings.splitTranslation &&
+                        settings.underVerse.isNotEmpty &&
+                        !_autoScroll &&
+                        MediaQuery.sizeOf(context).width >= 900)
+                      _SidePane(page: _page, riwaya: _riwaya),
+                  ],
+                ),
+                // The menus come and go with a short fade and slide (at once
+                // when less motion is asked for).
+                // A light veil so the controls read as a layer over the page.
+                Positioned.fill(
+                  child: Reveal(
+                    visible: _chrome,
+                    from: Offset.zero,
+                    child: Semantics(
+                      button: true,
+                      label: l.hideMenus,
                       onTap: () => _setChrome(false),
-                      child: ColoredBox(
-                        color: context.look.frame.withValues(alpha: 0.32),
+                      excludeSemantics: true,
+                      child: GestureDetector(
+                        onTap: () => _setChrome(false),
+                        child: ColoredBox(
+                          color: context.look.frame.withValues(alpha: 0.32),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Reveal(
-                  visible: _chrome,
-                  from: const Offset(0, -0.25),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Reveal(
+                    visible: _chrome,
+                    from: const Offset(0, -0.25),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _TopControls(
+                          items: [
+                            (
+                              Icons.list_alt,
+                              l.indexTitle,
+                              () => context.push('/mushaf/index'),
+                            ),
+                            (
+                              Icons.bookmarks_outlined,
+                              l.fawasilTitle,
+                              () => context.push('/mushaf/fawasil'),
+                            ),
+                            (
+                              assistantIcon,
+                              l.assistantTitle,
+                              () => context.push(assistantLocation),
+                            ),
+                            (
+                              Icons.home_outlined,
+                              l.homeTitle,
+                              () => context.go('/'),
+                            ),
+                            (
+                              Icons.search_outlined,
+                              l.sectionSearch,
+                              () => context.push('/search'),
+                            ),
+                            (
+                              Icons.tune,
+                              l.settingsTitle,
+                              () => context.push('/settings'),
+                            ),
+                          ],
+                        ),
+                        // «ورد اليوم · 18 / 20» under the menus; a tap
+                        // continues the khatma.
+                        const Padding(
+                          padding: EdgeInsets.only(top: 8),
+                          child: WirdIndicator(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Reveal(
+                    visible: _chrome,
+                    child: !_chrome
+                        ? null
+                        : _BottomControls(
+                            page: scrubbing,
+                            pageCount: pageCount,
+                            label: _scrubLabel(context, scrubbing, surahs),
+                            onChanged: (p) => setState(() => _scrubPage = p),
+                            onChangeEnd: (p) {
+                              setState(() => _scrubPage = null);
+                              _controller?.jumpToPage(_indexOf(p));
+                            },
+                            onRecite: _startRecite,
+                            onMemorize: _toggleMemorize,
+                            memorize: _memo != null,
+                            onListen: _listenFromPage,
+                            onGoTo: _goToPage,
+                            onAutoScroll: _startAutoScroll,
+                            onContinuous: _openContinuous,
+                            onOneVerse: _openOneVerse,
+                            touchReading: _touchReading,
+                            onTouchReading: _toggleTouchReading,
+                            recite: _recite,
+                            listening: reciting.active,
+                          ),
+                  ),
+                ),
+                Positioned(
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
+                  child: Reveal(
+                    visible: _autoScroll,
+                    child: SafeArea(
+                      top: false,
+                      child: _AutoScrollBar(
+                        paused: _paused,
+                        speed: _speed,
+                        onPause: () => setState(() => _paused = !_paused),
+                        onSlower: () => ref
+                            .read(settingsProvider.notifier)
+                            .setAutoScrollSpeed(_speed - 1),
+                        onFaster: () => ref
+                            .read(settingsProvider.notifier)
+                            .setAutoScrollSpeed(_speed + 1),
+                        onClose: _stopAutoScroll,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 12,
+                  right: 12,
+                  bottom: 12,
+                  child: Reveal(
+                    visible:
+                        playerStyle == PlayerStyle.normal &&
+                        reciting.active &&
+                        range == null &&
+                        !_multi &&
+                        !_chrome &&
+                        !(focus && _focusTools),
+                    from: const Offset(0, 0.4),
+                    child: const SafeArea(top: false, child: PlayerBar()),
+                  ),
+                ),
+                // «شكل المشغل»: the pill or the single button, over the page
+                // wherever the reader left it.
+                Positioned.fill(
+                  child: Reveal(
+                    visible:
+                        playerStyle != PlayerStyle.normal &&
+                        reciting.active &&
+                        range == null &&
+                        !_multi &&
+                        !_chrome,
+                    from: Offset.zero,
+                    child: playerStyle == PlayerStyle.normal
+                        ? null
+                        : FloatingPlayer(style: playerStyle),
+                  ),
+                ),
+                // The chosen edition is still downloading: say so, and that the
+                // new Madina edition is read meanwhile.
+                Positioned(
+                  top: 0,
+                  left: 24,
+                  right: 24,
+                  child: Reveal(
+                    visible:
+                        ref.watch(chosenEditionProvider) != edition && !_chrome,
+                    from: const Offset(0, -0.25),
+                    child: const SafeArea(child: DownloadingBanner()),
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  left: 16,
+                  right: 16,
+                  child: Reveal(
+                    visible: _multi,
+                    from: const Offset(0, -0.25),
+                    child: SafeArea(
+                      child: _MultiSelectBar(
+                        count: range?.length ?? 1,
+                        onDone: () => setState(() => _multi = false),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 12,
+                  right: 12,
+                  bottom: 12,
+                  child: Reveal(
+                    visible: _testing && !_chrome,
+                    from: const Offset(0, 0.4),
+                    child: !_testing
+                        ? null
+                        : SafeArea(
+                            top: false,
+                            child: _testBar(context, surahs),
+                          ),
+                  ),
+                ),
+                Positioned(
+                  left: 12,
+                  right: 12,
+                  bottom: 12,
+                  child: Reveal(
+                    visible: _memo != null && !_testing && !_chrome,
+                    from: const Offset(0, 0.4),
+                    child: _memo == null || _testing
+                        ? null
+                        : SafeArea(
+                            top: false,
+                            child: _memoBar(context, surahs),
+                          ),
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  left: 16,
+                  right: 16,
+                  child: Reveal(
+                    visible: _pickWord,
+                    from: const Offset(0, -0.25),
+                    child: SafeArea(
+                      child: _WordPickBar(
+                        onCancel: () => setState(() => _pickWord = false),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Reveal(
+                    visible: range != null && !_multi,
+                    from: const Offset(0, 0.15),
+                    child: range == null || _multi
+                        ? null
+                        : _verseServices(
+                            ref,
+                            range,
+                            onClose: () => setState(() => _selA = _selB = null),
+                          ),
+                  ),
+                ),
+                // «ask»: a khatma that asks before counting, once a session
+                // has ended; never over the player, the menus or the sajdah
+                // card.
+                Positioned(
+                  left: 12,
+                  right: 12,
+                  bottom: 12,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _TopControls(
-                        items: [
-                          (
-                            Icons.list_alt,
-                            l.indexTitle,
-                            () => context.push('/mushaf/index'),
-                          ),
-                          (
-                            Icons.bookmarks_outlined,
-                            l.fawasilTitle,
-                            () => context.push('/mushaf/fawasil'),
-                          ),
-                          (
-                            assistantIcon,
-                            l.assistantTitle,
-                            () => context.push(assistantLocation),
-                          ),
-                          (
-                            Icons.home_outlined,
-                            l.homeTitle,
-                            () => context.go('/'),
-                          ),
-                          (
-                            Icons.search_outlined,
-                            l.sectionSearch,
-                            () => context.push('/search'),
-                          ),
-                          (
-                            Icons.tune,
-                            l.settingsTitle,
-                            () => context.push('/settings'),
-                          ),
-                        ],
+                      WirdCompletionBanner(
+                        shownPages: shownPages,
+                        allowed:
+                            !_chrome &&
+                            !_testing &&
+                            !_hiding &&
+                            !_autoScroll &&
+                            !_multi &&
+                            range == null &&
+                            !reciting.active &&
+                            !(focus && _focusTools) &&
+                            ref.watch(sajdahCardProvider) == null,
                       ),
-                      // «ورد اليوم · 18 / 20» under the menus; a tap
-                      // continues the khatma.
-                      const Padding(
-                        padding: EdgeInsets.only(top: 8),
-                        child: WirdIndicator(),
+                      AskCreditLine(
+                        currentSession: () => _tracker.session,
+                        allowed:
+                            !_chrome &&
+                            !_testing &&
+                            !_hiding &&
+                            !_autoScroll &&
+                            !_multi &&
+                            range == null &&
+                            !reciting.active &&
+                            !(focus && _focusTools) &&
+                            ref.watch(sajdahCardProvider) == null,
                       ),
                     ],
                   ),
                 ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Reveal(
-                  visible: _chrome,
-                  child: !_chrome
-                      ? null
-                      : _BottomControls(
-                          page: scrubbing,
-                          pageCount: pageCount,
-                          label: _scrubLabel(context, scrubbing, surahs),
-                          onChanged: (p) => setState(() => _scrubPage = p),
-                          onChangeEnd: (p) {
-                            setState(() => _scrubPage = null);
-                            _controller?.jumpToPage(_indexOf(p));
-                          },
-                          onRecite: _startRecite,
-                          onMemorize: _toggleMemorize,
-                          memorize: _memo != null,
-                          onListen: _listenFromPage,
-                          onGoTo: _goToPage,
-                          onAutoScroll: _startAutoScroll,
-                          onContinuous: _openContinuous,
-                          onOneVerse: _openOneVerse,
-                          touchReading: _touchReading,
-                          onTouchReading: _toggleTouchReading,
-                          recite: _recite,
-                          listening: reciting.active,
-                        ),
-                ),
-              ),
-              Positioned(
-                left: 16,
-                right: 16,
-                bottom: 16,
-                child: Reveal(
-                  visible: _autoScroll,
-                  child: SafeArea(
-                    top: false,
-                    child: _AutoScrollBar(
-                      paused: _paused,
-                      speed: _speed,
-                      onPause: () => setState(() => _paused = !_paused),
-                      onSlower: () => ref
-                          .read(settingsProvider.notifier)
-                          .setAutoScrollSpeed(_speed - 1),
-                      onFaster: () => ref
-                          .read(settingsProvider.notifier)
-                          .setAutoScrollSpeed(_speed + 1),
-                      onClose: _stopAutoScroll,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 12,
-                right: 12,
-                bottom: 12,
-                child: Reveal(
-                  visible:
-                      playerStyle == PlayerStyle.normal &&
-                      reciting.active &&
-                      range == null &&
-                      !_multi &&
-                      !_chrome &&
-                      !(focus && _focusTools),
-                  from: const Offset(0, 0.4),
-                  child: const SafeArea(top: false, child: PlayerBar()),
-                ),
-              ),
-              // «شكل المشغل»: the pill or the single button, over the page
-              // wherever the reader left it.
-              Positioned.fill(
-                child: Reveal(
-                  visible:
-                      playerStyle != PlayerStyle.normal &&
-                      reciting.active &&
-                      range == null &&
-                      !_multi &&
-                      !_chrome,
-                  from: Offset.zero,
-                  child: playerStyle == PlayerStyle.normal
-                      ? null
-                      : FloatingPlayer(style: playerStyle),
-                ),
-              ),
-              // The chosen edition is still downloading: say so, and that the
-              // new Madina edition is read meanwhile.
-              Positioned(
-                top: 0,
-                left: 24,
-                right: 24,
-                child: Reveal(
-                  visible:
-                      ref.watch(chosenEditionProvider) != edition && !_chrome,
-                  from: const Offset(0, -0.25),
-                  child: const SafeArea(child: DownloadingBanner()),
-                ),
-              ),
-              Positioned(
-                top: 0,
-                left: 16,
-                right: 16,
-                child: Reveal(
-                  visible: _multi,
-                  from: const Offset(0, -0.25),
-                  child: SafeArea(
-                    child: _MultiSelectBar(
-                      count: range?.length ?? 1,
-                      onDone: () => setState(() => _multi = false),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 12,
-                right: 12,
-                bottom: 12,
-                child: Reveal(
-                  visible: _testing && !_chrome,
-                  from: const Offset(0, 0.4),
-                  child: !_testing
-                      ? null
-                      : SafeArea(top: false, child: _testBar(context, surahs)),
-                ),
-              ),
-              Positioned(
-                left: 12,
-                right: 12,
-                bottom: 12,
-                child: Reveal(
-                  visible: _memo != null && !_testing && !_chrome,
-                  from: const Offset(0, 0.4),
-                  child: _memo == null || _testing
-                      ? null
-                      : SafeArea(top: false, child: _memoBar(context, surahs)),
-                ),
-              ),
-              Positioned(
-                top: 0,
-                left: 16,
-                right: 16,
-                child: Reveal(
-                  visible: _pickWord,
-                  from: const Offset(0, -0.25),
-                  child: SafeArea(
-                    child: _WordPickBar(
-                      onCancel: () => setState(() => _pickWord = false),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Reveal(
-                  visible: range != null && !_multi,
-                  from: const Offset(0, 0.15),
-                  child: range == null || _multi
-                      ? null
-                      : _verseServices(
-                          ref,
-                          range,
-                          onClose: () => setState(() => _selA = _selB = null),
-                        ),
-                ),
-              ),
-              // «ask»: a khatma that asks before counting, once a session
-              // has ended; never over the player, the menus or the sajdah
-              // card.
-              Positioned(
-                left: 12,
-                right: 12,
-                bottom: 12,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    WirdCompletionBanner(
-                      shownPages: shownPages,
-                      allowed:
-                          !_chrome &&
-                          !_testing &&
-                          !_hiding &&
-                          !_autoScroll &&
-                          !_multi &&
-                          range == null &&
-                          !reciting.active &&
-                          !(focus && _focusTools) &&
-                          ref.watch(sajdahCardProvider) == null,
-                    ),
-                    AskCreditLine(
-                      currentSession: () => _tracker.session,
-                      allowed:
-                          !_chrome &&
-                          !_testing &&
-                          !_hiding &&
-                          !_autoScroll &&
-                          !_multi &&
-                          range == null &&
-                          !reciting.active &&
-                          !(focus && _focusTools) &&
-                          ref.watch(sajdahCardProvider) == null,
-                    ),
-                  ],
-                ),
-              ),
-              const SajdahCardLayer(),
-            ],
+                const SajdahCardLayer(),
+              ],
+            ),
           ),
         ),
       ),
