@@ -3848,6 +3848,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Count listening toward the daily portion';
 
   @override
+  String get emptyOpenMushaf => 'Open the mushaf where you stopped';
+
+  @override
+  String get journalAddNote => 'Add a note';
+
+  @override
+  String get tasbihStart => 'Start counting';
+
+  @override
+  String get zeroLabel => 'zero';
+
+  @override
   String get settingsHifzOpen => 'Open memorization';
 
   @override

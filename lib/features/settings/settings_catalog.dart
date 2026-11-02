@@ -414,6 +414,7 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         (c, r) => _switch(
           c,
           r,
+          icon: Icons.bookmark_border,
           title: (l) => l.settingsWirdIndicator,
           value: (s) => s.showWirdIndicator,
           set: (ctrl, v) => ctrl.setShowWirdIndicator(v),
@@ -432,6 +433,7 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         (c, r) => _switch(
           c,
           r,
+          icon: Icons.headphones_outlined,
           title: (l) => l.settingsCountListening,
           value: (s) => s.countListening,
           set: (ctrl, v) => ctrl.setCountListening(v),
@@ -900,6 +902,7 @@ class _KhatmaCountingModeTile extends ConsumerWidget {
       CountingMode.manual => l.khatmaCountManual,
     };
     return ListTile(
+      leading: const Icon(Icons.rule),
       title: Text(l.khatmaCountingMode),
       subtitle: Text(label, style: TextStyle(color: context.look.sub)),
       // chevron_right mirrors itself in Arabic (matchTextDirection), as

@@ -386,7 +386,8 @@ class UiLook extends ThemeExtension<UiLook> {
       accent2: accent2,
       frame: const Color(0xFF000000),
       onFrame: Color.lerp(onFrame, const Color(0xFF000000), 0.2)!,
-      control: Color.lerp(control, const Color(0xFF000000), 0.2)!,
+      // The main button keeps night's colour: only the grounds differ.
+      control: control,
       onControl: onControl,
       line: const Color(0xFF1C1C1C),
       headFont: headFont,

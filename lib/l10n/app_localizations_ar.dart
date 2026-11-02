@@ -3922,6 +3922,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settingsCountListening => 'احتساب الاستماع من الورد';
 
   @override
+  String get emptyOpenMushaf => 'افتح المصحف حيث توقفت';
+
+  @override
+  String get journalAddNote => 'أضف ملاحظة';
+
+  @override
+  String get tasbihStart => 'ابدأ التسبيح';
+
+  @override
+  String get zeroLabel => 'صفر';
+
+  @override
   String get settingsHifzOpen => 'افتح الحفظ';
 
   @override

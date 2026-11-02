@@ -489,7 +489,11 @@ class _ContinueCard extends StatelessWidget {
     final buttonFg = layli ? look.frame : (look.night ? look.bg : look.accent);
     final k = _scale(context);
     return SizedBox(
-      height: (look.elderly ? 340 : 300) * k,
+      // The texts and the button grow with the reader's text size.
+      height:
+          (look.elderly ? 340 : 300) * k +
+          MediaQuery.textScalerOf(context).scale(48) -
+          48,
       child: Stack(
         children: [
           Positioned.fill(

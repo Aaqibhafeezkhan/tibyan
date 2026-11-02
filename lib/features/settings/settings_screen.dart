@@ -183,7 +183,7 @@ class _Grid extends ConsumerWidget {
           crossAxisSpacing: 12,
           // The texts grow with the reader's text size; the emblem does not.
           mainAxisExtent:
-              (elderly ? 196 : 156) +
+              (elderly ? 198 : 160) +
               MediaQuery.textScalerOf(context).scale(96) -
               96,
         ),
@@ -321,14 +321,26 @@ class _Tile extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 2),
-                    Text(
-                      section.hint(l),
-                      maxLines: elderly ? 1 : 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: elderly ? 14 : 12,
-                        height: 1.35,
-                        color: look.sub,
+                    // The hint keeps room for all its lines, so every
+                    // card's title sits on the same line.
+                    SizedBox(
+                      height:
+                          MediaQuery.textScalerOf(context)
+                              .scale(elderly ? 14 : 12) *
+                          1.35 *
+                          (elderly ? 1 : 2),
+                      child: Align(
+                        alignment: AlignmentDirectional.topStart,
+                        child: Text(
+                          section.hint(l),
+                          maxLines: elderly ? 1 : 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: elderly ? 14 : 12,
+                            height: 1.35,
+                            color: look.sub,
+                          ),
+                        ),
                       ),
                     ),
                   ],
