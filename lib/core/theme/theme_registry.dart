@@ -21,13 +21,12 @@ class ThemeRegistry {
       await bundle.loadString('assets/themes/index.json'),
     ) as Map<String, dynamic>;
     final ids = List<String>.from(index['styles'] as List);
-    // All at once: one by one, each read waits its own turn on a cold
-    // start (a slow phone's storage), most of a second in all.
-    final styles = [
-      for (final json in await Future.wait([
-        for (final id in ids) bundle.loadString('assets/themes/$id.json'),
-      ]))
-        TibyanStyle.fromJson(jsonDecode(json) as Map<String, dynamic>),
+    final styles = <TibyanStyle>[
+      for (final id in ids)
+        TibyanStyle.fromJson(
+          jsonDecode(await bundle.loadString('assets/themes/$id.json'))
+              as Map<String, dynamic>,
+        ),
     ];
     return ThemeRegistry(
       defaultStyleId: index['default'] as String,

@@ -78,10 +78,8 @@ Future<void> main() async {
       }
     });
   }
-  // The audio backend is set up alongside the first frames: about a
-  // second on a slow phone, and nothing plays before a tap. A player
-  // waits for it before loading (audioBackendReady).
-  audioBackendReady = _initAudio();
+  await _initAudio();
+  startupMark('audio');
   final registry = await ThemeRegistry.load(rootBundle);
   startupMark('theme');
   final flags = await FeatureFlags.load(rootBundle);
@@ -169,6 +167,8 @@ Future<void> main() async {
   startupMark('main-done');
 }
 
+/// The recitation's background service and the audio session, before
+/// anything can play.
 Future<void> _initAudio() async {
   switch (defaultTargetPlatform) {
     case TargetPlatform.windows || TargetPlatform.linux:
@@ -194,8 +194,6 @@ Future<void> _initAudio() async {
       final session = await AudioSession.instance;
       await session.configure(const AudioSessionConfiguration.music());
   }
-
-  startupMark('audio-ready');
 }
 
 /// After the first frame: storage an older build used that this one no
