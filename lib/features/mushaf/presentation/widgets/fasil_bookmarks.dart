@@ -951,8 +951,8 @@ class _FasilTextBlockState extends State<FasilTextBlock> {
 }
 
 /// Tells the [FasilPageLayer] around it that [child] (the page's info bar:
-/// surah, juz and hizb) must stay uncovered: a tab above the text hangs
-/// below it instead of over it.
+/// surah, juz and hizb). The tabs once hung under it, a sliver or cut off;
+/// now they hang over it, painted above it, and keep off only the text.
 class FasilKeepClear extends StatefulWidget {
   const FasilKeepClear({super.key, required this.child});
 
@@ -1022,6 +1022,10 @@ class FasilPageLayer extends StatefulWidget {
 
   /// The narrowest ribbon worth drawing in a margin.
   static const minRibbonWidth = 9.0;
+
+  /// The least of a short tab above the text that shows in the tightest
+  /// frame (the plain one, whose info box sits right on the text).
+  static double minTabShowing(FasilLook look) => look.tabWidth * .6 * .8;
 
   @override
   State<FasilPageLayer> createState() => _FasilPageLayerState();
@@ -1169,14 +1173,10 @@ class _FasilPageLayerState extends State<FasilPageLayer> {
         final tw = look.tabWidth * .6;
         inset = 6 + along;
         along += tw + 4;
-        // It hangs from under the info bar where the bar is above it.
-        final x0 = outerRight ? w - inset - tw : inset;
-        for (final c in clear) {
-          if (c.left < x0 + tw && c.right > x0 && c.top < above) {
-            top = math.max(top, c.bottom + 1);
-          }
-        }
-        final room = math.max(4.0, above - top);
+        // It hangs from the page's top, painted over the frame and the info
+        // bar (never under them), whole where the text leaves room for it,
+        // else down to the text and no further: the text is never covered.
+        final room = math.max(4.0, above);
         bookmark = ClipRect(
           clipper: const _BelowTop(),
           child: Align(

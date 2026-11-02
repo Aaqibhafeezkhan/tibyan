@@ -1,11 +1,14 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tibyan/core/settings/app_settings.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/fasil_bookmarks.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
-/// The tabs above the text (the open one too) hang from under the page's
-/// info bar (surah, juz, hizb), never over it, on either side.
+/// The tabs above the text (the open one too) hang from the page's top,
+/// painted over its info bar (surah, juz, hizb), never under it: whole
+/// where the text leaves room, else down to the text and never over it.
 void main() {
   const marks = [
     FasilMark(id: 1, name: 'قراءة', color: Color(0xFF2F6FD0), page: 1),
@@ -18,6 +21,7 @@ void main() {
     required FasilLook look,
     required bool outerRight,
     required bool keepClear,
+    double textTop = 10,
   }) async {
     const bar = SizedBox(key: barKey, height: 30, width: double.infinity);
     await tester.pumpWidget(
@@ -37,9 +41,9 @@ void main() {
               child: Column(
                 children: [
                   keepClear ? const FasilKeepClear(child: bar) : bar,
-                  const Expanded(
+                  Expanded(
                     child: FasilTextBlock(
-                      rect: Rect.fromLTRB(14, 10, 379, 630),
+                      rect: Rect.fromLTRB(14, textTop, 379, 630),
                     ),
                   ),
                 ],
@@ -66,20 +70,36 @@ void main() {
 
   for (final MapEntry(key: name, value: look) in looks.entries) {
     for (final outerRight in [true, false]) {
-      testWidgets('$name, ${outerRight ? 'right' : 'left'}: '
-          'the tabs keep off the info bar and the text', (tester) async {
-        await pump(tester, look: look, outerRight: outerRight, keepClear: true);
-        final bar = tester.getRect(find.byKey(barKey));
-        for (final m in marks) {
-          final r = tester
-              .getRect(find.byKey(ValueKey('fasil-entrance-${m.id}')))
-              .deflate(.5);
-          expect(r.overlaps(bar), isFalse, reason: '${m.name} $r over $bar');
-          expect(r.top, greaterThanOrEqualTo(bar.bottom));
-          expect(r.bottom, lessThanOrEqualTo(40));
-          expect(r.height, greaterThan(4));
-        }
-      });
+      for (final textTop in [10.0, 80.0]) {
+        testWidgets('$name, ${outerRight ? 'right' : 'left'}, text at '
+            '$textTop: the tabs hang over the bar, off the text', (
+          tester,
+        ) async {
+          await pump(
+            tester,
+            look: look,
+            outerRight: outerRight,
+            keepClear: true,
+            textTop: textTop,
+          );
+          final bar = tester.getRect(find.byKey(barKey));
+          final text = bar.bottom + textTop;
+          for (final m in marks) {
+            final entrance = find.byKey(ValueKey('fasil-entrance-${m.id}'));
+            final r = tester.getRect(entrance);
+            final whole = tester.getSize(
+              find.descendant(of: entrance, matching: find.byType(FasilTab)),
+            );
+            expect(r.top, 0, reason: '${m.name} $r');
+            expect(r.overlaps(bar), isTrue, reason: 'over the bar');
+            expect(r.bottom, lessThanOrEqualTo(text));
+            expect(
+              r.height,
+              moreOrLessEquals(math.min(whole.height, text - 2), epsilon: .5),
+            );
+          }
+        });
+      }
     }
   }
 
