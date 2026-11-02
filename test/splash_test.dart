@@ -133,6 +133,27 @@ void main() {
       await home(tester);
     });
 
+    testWidgets('reduced motion: the first launch notes the day', (
+      tester,
+    ) async {
+      await pump(tester, reduce: true, shownDay: '2026-11-01');
+      await tester.pump();
+      expect(find.text('home'), findsNothing);
+      expect(sp.getString('settings.splashShownDay'), '2026-11-02');
+    });
+
+    testWidgets('reduced motion: a later launch goes straight home', (
+      tester,
+    ) async {
+      await pump(
+        tester,
+        reduce: true,
+        shownDay: '2026-11-02',
+        now: DateTime(2026, 11, 2, 23, 59),
+      );
+      await home(tester);
+    });
+
     testWidgets('past midnight it plays again', (tester) async {
       await pump(
         tester,
@@ -175,17 +196,6 @@ void main() {
       );
       await tester.pump(const Duration(milliseconds: 300));
       expect(shimmer(), findsOneWidget);
-    });
-
-    testWidgets('reduced motion: unchanged, still every launch', (
-      tester,
-    ) async {
-      await pump(tester, reduce: true, shownDay: '2026-11-02');
-      await tester.pump(const Duration(milliseconds: 500));
-      expect(find.text('home'), findsNothing);
-      await tester.pump(const Duration(milliseconds: 500));
-      await tester.pump();
-      expect(find.text('home'), findsOneWidget);
     });
   });
 }
