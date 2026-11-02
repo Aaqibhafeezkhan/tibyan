@@ -6,6 +6,24 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-11-02
+
+### Added
+- Instant «متابعة القراءة»: the last page is prepared ahead and opens with a grow transition; an Index row's page is prepared on touch-down.
+- The animated splash plays once a day (reduce-motion users included); later launches and link, shortcut, notification and widget launches go straight on.
+- Share as video: the start card shows the reciter's photo, the end card invites viewers to get the app.
+- Huawei AppGallery build without Google Play services (docs/HUAWEI.md).
+- altibyan.app/download/android serves the arm64-v8a APK, with links for armeabi-v7a, x86_64 and universal.
+
+### Changed
+- Normal page turn is the default and the first choice.
+- Every interface number uses bold IBM Plex Sans Arabic.
+
+### Fixed
+- Fawasil tabs hang over the frame and info bar, never over the text; one fawasil tab in the Index.
+- The keyboard never moves or resizes the page; the page ground fills the camera cutout on Android.
+- Interface polish: Arabic percent sign, a dash for zero, settings tiles grow with text size, aligned rows and cards, side rail scrolls on short windows.
+
 ## [0.7.0] - 2026-11-02
 
 ### Changed
@@ -398,7 +416,8 @@ Phase 0: foundation. No Quran or religious text appears in this release.
 4. Switch the language to English and back to Arabic; the layout should flip direction.
 5. Close and reopen the app: every choice should be kept.
 
-[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.7.1...HEAD
+[0.7.1]: https://github.com/helalrules7/tibyan/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/helalrules7/tibyan/compare/v0.5.1...v0.7.0
 [0.5.1]: https://github.com/helalrules7/tibyan/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/helalrules7/tibyan/compare/v0.4.0...v0.5.0
