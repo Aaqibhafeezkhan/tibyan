@@ -1,0 +1,36 @@
+# pass 1
+UPTIME 17:24  up  4:43, 2 users, load averages: 2.82 3.60 4.45
+PERF home-A-ornate-fasil frames=10 ttff=165.9 settle=4817.9 build=14.0/38.6/38.6 raster=284.6/653.2/653.2 buildsum=140 rastersum=2846 jank60=7
+PERF home-A-ornate-fasil frames=17 ttff=236.7 settle=869.9 build=6.6/24.2/47.7 raster=27.0/60.4/63.8 buildsum=112 rastersum=459 jank60=13
+PERF home-A-ornate-fasil frames=23 ttff=258.3 settle=1073.7 build=4.9/12.5/27.1 raster=22.5/30.1/69.6 buildsum=113 rastersum=518 jank60=16
+PERF home-A-ornate-fasil frames=19 ttff=260.5 settle=854.8 build=4.1/9.8/29.1 raster=21.9/39.8/78.8 buildsum=77 rastersum=417 jank60=14
+PERF home-A-ornate-fasil frames=16 ttff=189.8 settle=711.8 build=7.2/11.0/82.3 raster=20.3/36.0/38.2 buildsum=114 rastersum=325 jank60=11
+PERF home-B-plain-fasil frames=17 ttff=202.8 settle=1747.1 build=9.1/26.1/41.9 raster=44.4/162.6/176.8 buildsum=155 rastersum=755 jank60=12
+PERF home-B-plain-fasil frames=20 ttff=235.0 settle=914.3 build=9.1/33.3/56.7 raster=19.7/33.7/67.3 buildsum=182 rastersum=393 jank60=8
+PERF home-B-plain-fasil frames=19 ttff=279.2 settle=934.1 build=8.9/30.0/39.3 raster=19.5/36.2/54.1 buildsum=168 rastersum=371 jank60=11
+PERF home-B-plain-fasil frames=22 ttff=149.0 settle=878.0 build=4.1/9.3/28.2 raster=13.7/20.9/36.2 buildsum=90 rastersum=302 jank60=6
+PERF home-B-plain-fasil frames=14 ttff=208.7 settle=703.2 build=4.7/13.0/19.1 raster=20.3/33.7/60.1 buildsum=66 rastersum=285 jank60=7
+PERF home-C-plain-nofasil frames=24 ttff=67.7 settle=647.8 build=4.1/10.9/17.0 raster=10.0/17.2/25.6 buildsum=98 rastersum=241 jank60=4
+PERF home-C-plain-nofasil frames=15 ttff=169.7 settle=694.8 build=3.6/8.3/15.0 raster=6.8/8.2/24.2 buildsum=55 rastersum=102 jank60=1
+PERF home-C-plain-nofasil frames=22 ttff=276.5 settle=910.8 build=4.5/7.2/24.3 raster=29.1/71.8/150.1 buildsum=100 rastersum=640 jank60=9
+PERF home-C-plain-nofasil frames=24 ttff=161.3 settle=705.7 build=4.8/10.0/40.6 raster=10.5/28.4/32.7 buildsum=115 rastersum=251 jank60=6
+PERF home-C-plain-nofasil frames=21 ttff=267.7 settle=759.6 build=3.1/8.3/12.0 raster=8.0/17.4/25.6 buildsum=66 rastersum=168 jank60=4
+UPTIME_END 17:25  up  4:44, 2 users, load averages: 4.20 3.86 4.48
+# pass 2
+UPTIME 18:14  up  5:32, 2 users, load averages: 2.99 3.28 3.43
+PERF home-A-ornate-fasil frames=9 ttff=196.9 settle=4532.2 build=25.6/73.9/73.9 raster=283.4/513.1/513.1 buildsum=230 rastersum=2551 jank60=7
+PERF home-A-ornate-fasil frames=24 ttff=287.9 settle=961.8 build=3.9/9.7/21.7 raster=23.9/42.9/63.4 buildsum=94 rastersum=572 jank60=16
+PERF home-A-ornate-fasil frames=25 ttff=221.0 settle=909.5 build=4.4/9.1/42.1 raster=22.6/32.9/46.7 buildsum=111 rastersum=565 jank60=20
+PERF home-A-ornate-fasil frames=18 ttff=327.7 settle=1145.5 build=5.3/11.8/36.7 raster=30.1/47.5/136.3 buildsum=95 rastersum=541 jank60=14
+PERF home-A-ornate-fasil frames=22 ttff=276.5 settle=833.3 build=4.9/20.3/22.0 raster=32.8/59.9/130.6 buildsum=108 rastersum=721 jank60=19
+PERF home-B-plain-fasil frames=19 ttff=286.5 settle=1842.2 build=3.8/11.5/12.6 raster=50.5/172.0/197.8 buildsum=72 rastersum=959 jank60=11
+PERF home-B-plain-fasil frames=22 ttff=203.2 settle=991.7 build=5.6/14.9/28.5 raster=18.0/34.6/44.6 buildsum=124 rastersum=395 jank60=10
+PERF home-B-plain-fasil frames=20 ttff=174.8 settle=679.0 build=4.9/17.3/17.4 raster=18.2/42.7/84.0 buildsum=98 rastersum=365 jank60=7
+PERF home-B-plain-fasil frames=19 ttff=133.6 settle=1107.9 build=6.0/19.4/26.7 raster=14.4/30.6/31.1 buildsum=114 rastersum=274 jank60=8
+PERF home-B-plain-fasil frames=25 ttff=377.5 settle=1389.3 build=5.7/20.8/24.8 raster=20.9/37.0/84.4 buildsum=143 rastersum=524 jank60=12
+PERF home-C-plain-nofasil frames=20 ttff=200.0 settle=868.3 build=5.2/20.3/24.7 raster=9.6/23.0/26.6 buildsum=104 rastersum=193 jank60=5
+PERF home-C-plain-nofasil frames=15 ttff=291.1 settle=709.1 build=4.9/12.2/18.4 raster=11.4/25.2/47.2 buildsum=74 rastersum=172 jank60=3
+PERF home-C-plain-nofasil frames=16 ttff=205.5 settle=760.2 build=6.7/14.9/51.4 raster=16.0/46.6/53.6 buildsum=107 rastersum=255 jank60=6
+PERF home-C-plain-nofasil frames=14 ttff=227.2 settle=747.9 build=5.4/15.1/24.5 raster=10.5/25.5/26.0 buildsum=75 rastersum=146 jank60=3
+PERF home-C-plain-nofasil frames=21 ttff=242.8 settle=912.1 build=2.1/5.3/6.7 raster=7.0/11.7/21.0 buildsum=44 rastersum=148 jank60=1
+UPTIME_END 18:15  up  5:33, 2 users, load averages: 4.47 3.65 3.56

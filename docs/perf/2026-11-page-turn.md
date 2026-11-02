@@ -362,9 +362,44 @@ marks cases most; the same host-noise caveat applies, and the old path
 1. ABI split for side-loaded APKs and a baseline profile: ~0.5 s of the
    1.0 s `bindApplication`.
 2. Splash length (960 ms fixed): the largest cut left, a design decision.
-3. Re-measure index/continue repeat opens on a quiet host to confirm the
-   Round 3 → 5 gap is host load.
+3. ~~Re-measure index/continue repeat opens~~: done in «Round 5b», host load.
 4. Neighbour bakes during the index route transition (Round 3 follow-up).
+
+## Round 5b: host load or regression? (main bf2873f9 vs Round 3 416f9347)
+
+Same session, same AVD (`Tibyan_PageTurn_Low`, `-gpu host -no-audio`, one
+emulator), profile APKs built **before** measuring (`--use-application-binary`),
+order main/r3/main/r3, each run started at 1-min load < 3.0 (2.7–3.0;
+MetaTrader held ~1 core all session). `PERF_REPEAT=5`, two passes, medians.
+Each build runs its own harness: main with `PERF_AB=tap|touch` gives `~old`
+(the Round 3 path) and `~new`; r3 has no A/B. Raw: `docs/perf/raw/round5b-*.txt`.
+
+Home «متابعة القراءة», repeat opens (`again`, 8 runs), ttff / settle / raster p90 ms:
+
+| Case | r3 | main ~old | main ~new |
+|---|---|---|---|
+| A ornate + fasil | 259 / 890 / 41 | 232 / 503 / 43 | 219 / 626 / 54 |
+| B plain + fasil | 206 / 924 / 34 | 215 / 411 / 37 | 130 / 466 / 33 |
+| C plain | 235 / 754 / 25 | 245 / 551 / 29 | 234 / 374 / 26 |
+
+First open after launch, settle: A 4675 (r3) / 3715 (~old) / 841 (~new); B 1795 / 778 / 482.
+
+Index jump (5 effects × 5 runs × 2 passes), ttff / settle / raster p90 ms / janky frames:
+
+| Case | r3 | main ~old | main ~new |
+|---|---|---|---|
+| no marks | 151 / 1277 / 130 / 21.5 | 134 / 353 / 42 / 9 | 90 / 322 / 36 / 12 |
+| marks + ribbon | 162 / 1291 / 133 / 37 | 141 / 691 / 110 / 22 | 97 / 660 / 108 / 25 |
+| marks + tab | 153 / 1277 / 138 / 41 | 154 / 799 / 119 / 25 | 93 / 607 / 104 / 27 |
+
+The two passes agree within ~15%.
+
+**Verdict: host, not code.** On the same host, the Round 3 build is slower
+than main on every metric (index settle 3.6× slower, repeat-open settle 1.4–2.2×),
+and it is itself 3–4× slower than its own Round 3 figures (index ttff 39–40,
+settle 218–233). So the whole emulator is slower than on the Round 3 day;
+nothing since Round 3 regressed. No bisect, no fix. Compare runs only
+within one session.
 
 ## Index → mushaf navigation
 
