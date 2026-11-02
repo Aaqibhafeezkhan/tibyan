@@ -23,12 +23,30 @@ struct RecitationAttributes: ActivityAttributes {
     var playLabel: String
     var pauseLabel: String
     var rtl: Bool
+    /// The verse (0: not known) and the surah's verse count: the progress
+    /// bar and the previous/next buttons. Numbers only.
+    var ayah: Int = 0
+    var ayahCount: Int = 0
+    var previousLabel: String = ""
+    var nextLabel: String = ""
+
+    var progress: Double? {
+      ayah > 0 && ayahCount > 0 ? min(1, Double(ayah) / Double(ayahCount)) : nil
+    }
   }
 }
 
 extension Notification.Name {
-  /// The Live Activity's play/pause button (handled by the app's channel).
-  static let tibyanToggleRecitation = Notification.Name("app.tibyan.toggleRecitation")
+  /// The Live Activity's buttons (handled by the app's channel); the
+  /// notification's object is the command: "toggle", "previous" or "next".
+  static let tibyanRecitationCommand = Notification.Name("app.tibyan.recitationCommand")
+}
+
+@available(iOS 17.0, *)
+private func send(_ command: String) async {
+  await MainActor.run {
+    NotificationCenter.default.post(name: .tibyanRecitationCommand, object: command)
+  }
 }
 
 /// Play/pause from the lock screen or the Dynamic Island (iOS 17+). A Live
@@ -40,9 +58,29 @@ struct ToggleRecitationIntent: LiveActivityIntent {
   static var isDiscoverable = false
 
   func perform() async throws -> some IntentResult {
-    await MainActor.run {
-      NotificationCenter.default.post(name: .tibyanToggleRecitation, object: nil)
-    }
+    await send("toggle")
+    return .result()
+  }
+}
+
+@available(iOS 17.0, *)
+struct PreviousVerseIntent: LiveActivityIntent {
+  static var title: LocalizedStringResource = "Previous verse"
+  static var isDiscoverable = false
+
+  func perform() async throws -> some IntentResult {
+    await send("previous")
+    return .result()
+  }
+}
+
+@available(iOS 17.0, *)
+struct NextVerseIntent: LiveActivityIntent {
+  static var title: LocalizedStringResource = "Next verse"
+  static var isDiscoverable = false
+
+  func perform() async throws -> some IntentResult {
+    await send("next")
     return .result()
   }
 }

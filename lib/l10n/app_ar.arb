@@ -3404,6 +3404,8 @@
     }
   },
   "liveActivityPlay": "تشغيل",
+  "liveActivityPreviousVerse": "الآية السابقة",
+  "liveActivityNextVerse": "الآية التالية",
   "syncTitle": "المزامنة",
   "syncHint": "بين أجهزتك عبر iCloud أو Google Drive، دون حساب في تبيان",
   "syncSwitch": "مزامنة بين أجهزتي",

@@ -10,7 +10,7 @@ class _Host implements RecitationActivityHost {
   @override
   Future<void> end() async => calls.add('end');
   @override
-  set onToggle(void Function()? handler) {}
+  set onCommand(void Function(RecitationCommand command)? handler) {}
 }
 
 RecitationActivityContent _c(String verse, {bool playing = true}) =>
@@ -22,6 +22,10 @@ RecitationActivityContent _c(String verse, {bool playing = true}) =>
       playLabel: 'Play',
       pauseLabel: 'Pause',
       rtl: false,
+      ayah: int.tryParse(verse.split(' ').last) ?? 0,
+      ayahCount: 286,
+      previousLabel: 'Previous verse',
+      nextLabel: 'Next verse',
     );
 
 void main() {
@@ -47,7 +51,7 @@ void main() {
     ]);
   });
 
-  test('the channel: names and numbers only, toggle comes back', () async {
+  test('the channel: names and numbers only, the buttons come back', () async {
     const name = 'app.tibyan/live_activity';
     final sent = <MethodCall>[];
     final m = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
@@ -59,8 +63,8 @@ void main() {
       () => m.setMockMethodCallHandler(const MethodChannel(name), null),
     );
     final host = ChannelRecitationActivity();
-    var toggled = 0;
-    host.onToggle = () => toggled++;
+    final commands = <RecitationCommand>[];
+    host.onCommand = commands.add;
     await host.update(_c('Verse 3'));
     await host.end();
     expect(sent.map((c) => c.method), ['update', 'end']);
@@ -72,13 +76,25 @@ void main() {
       'playLabel',
       'pauseLabel',
       'rtl',
+      'ayah',
+      'ayahCount',
+      'previousLabel',
+      'nextLabel',
     });
-    await m.handlePlatformMessage(
-      name,
-      const StandardMethodCodec().encodeMethodCall(const MethodCall('toggle')),
-      (_) {},
-    );
-    expect(toggled, 1);
+    expect((sent.first.arguments as Map)['ayah'], 3);
+    expect((sent.first.arguments as Map)['ayahCount'], 286);
+    for (final name in ['toggle', 'previous', 'next', 'unknown']) {
+      await m.handlePlatformMessage(
+        'app.tibyan/live_activity',
+        const StandardMethodCodec().encodeMethodCall(MethodCall(name)),
+        (_) {},
+      );
+    }
+    expect(commands, [
+      RecitationCommand.toggle,
+      RecitationCommand.previous,
+      RecitationCommand.next,
+    ]);
   });
 
   test('a platform failure is ignored', () async {

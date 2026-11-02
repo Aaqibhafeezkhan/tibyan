@@ -30,11 +30,14 @@ final class LiveActivityChannel {
     }
     channel = c
     if observer == nil {
-      // The Live Activity's play/pause button (ToggleRecitationIntent).
+      // The Live Activity's buttons (RecitationActivity.swift's intents).
       observer = NotificationCenter.default.addObserver(
-        forName: .tibyanToggleRecitation, object: nil, queue: .main
-      ) { _ in
-        channel?.invokeMethod("toggle", arguments: nil)
+        forName: .tibyanRecitationCommand, object: nil, queue: .main
+      ) { note in
+        guard let command = note.object as? String,
+          ["toggle", "previous", "next"].contains(command)
+        else { return }
+        channel?.invokeMethod(command, arguments: nil)
       }
     }
   }
@@ -48,7 +51,11 @@ final class LiveActivityChannel {
       playing: m["playing"] as? Bool ?? false,
       playLabel: m["playLabel"] as? String ?? "",
       pauseLabel: m["pauseLabel"] as? String ?? "",
-      rtl: m["rtl"] as? Bool ?? true
+      rtl: m["rtl"] as? Bool ?? true,
+      ayah: m["ayah"] as? Int ?? 0,
+      ayahCount: m["ayahCount"] as? Int ?? 0,
+      previousLabel: m["previousLabel"] as? String ?? "",
+      nextLabel: m["nextLabel"] as? String ?? ""
     )
   }
 }

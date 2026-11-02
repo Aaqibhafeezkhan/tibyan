@@ -8222,6 +8222,18 @@ abstract class AppLocalizations {
   /// **'تشغيل'**
   String get liveActivityPlay;
 
+  /// No description provided for @liveActivityPreviousVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآية السابقة'**
+  String get liveActivityPreviousVerse;
+
+  /// No description provided for @liveActivityNextVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'الآية التالية'**
+  String get liveActivityNextVerse;
+
   /// No description provided for @syncTitle.
   ///
   /// In ar, this message translates to:

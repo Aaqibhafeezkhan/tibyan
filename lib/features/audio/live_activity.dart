@@ -3,8 +3,12 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+/// The Live Activity's buttons (iOS 17+), as the channel names them.
+enum RecitationCommand { toggle, previous, next }
+
 /// What the recitation's Live Activity shows: names and numbers only (the
-/// reciter, the surah, the verse number), never the Quran's text.
+/// reciter, the surah, the verse number and the surah's verse count for
+/// the progress bar), never the Quran's text.
 @immutable
 class RecitationActivityContent {
   const RecitationActivityContent({
@@ -15,6 +19,10 @@ class RecitationActivityContent {
     required this.playLabel,
     required this.pauseLabel,
     required this.rtl,
+    this.ayah = 0,
+    this.ayahCount = 0,
+    this.previousLabel = '',
+    this.nextLabel = '',
   });
 
   final String reciter;
@@ -25,6 +33,15 @@ class RecitationActivityContent {
   final String pauseLabel;
   final bool rtl;
 
+  /// The verse being recited (0: not known, no progress bar or verse
+  /// buttons) and the surah's verse count, from the app's surah data.
+  final int ayah;
+  final int ayahCount;
+
+  /// Accessibility labels of the previous / next verse buttons.
+  final String previousLabel;
+  final String nextLabel;
+
   Map<String, Object> toMap() => {
     'reciter': reciter,
     'surah': surah,
@@ -33,6 +50,10 @@ class RecitationActivityContent {
     'playLabel': playLabel,
     'pauseLabel': pauseLabel,
     'rtl': rtl,
+    'ayah': ayah,
+    'ayahCount': ayahCount,
+    'previousLabel': previousLabel,
+    'nextLabel': nextLabel,
   };
 
   @override
@@ -44,18 +65,33 @@ class RecitationActivityContent {
       other.playing == playing &&
       other.playLabel == playLabel &&
       other.pauseLabel == pauseLabel &&
-      other.rtl == rtl;
+      other.rtl == rtl &&
+      other.ayah == ayah &&
+      other.ayahCount == ayahCount &&
+      other.previousLabel == previousLabel &&
+      other.nextLabel == nextLabel;
 
   @override
-  int get hashCode =>
-      Object.hash(reciter, surah, verse, playing, playLabel, pauseLabel, rtl);
+  int get hashCode => Object.hash(
+    reciter,
+    surah,
+    verse,
+    playing,
+    playLabel,
+    pauseLabel,
+    rtl,
+    ayah,
+    ayahCount,
+    previousLabel,
+    nextLabel,
+  );
 }
 
 /// The platform side of the Live Activity.
 abstract interface class RecitationActivityHost {
   Future<void> update(RecitationActivityContent content);
   Future<void> end();
-  set onToggle(void Function()? handler);
+  set onCommand(void Function(RecitationCommand command)? handler);
 }
 
 /// iOS (16.2+, ios/Runner/LiveActivityChannel.swift) through
@@ -65,16 +101,20 @@ class ChannelRecitationActivity implements RecitationActivityHost {
   ChannelRecitationActivity({MethodChannel? channel})
     : _channel = channel ?? const MethodChannel('app.tibyan/live_activity') {
     _channel.setMethodCallHandler((call) async {
-      if (call.method == 'toggle') _onToggle?.call();
+      final command = RecitationCommand.values
+          .where((c) => c.name == call.method)
+          .firstOrNull;
+      if (command != null) _onCommand?.call(command);
       return null;
     });
   }
 
   final MethodChannel _channel;
-  void Function()? _onToggle;
+  void Function(RecitationCommand command)? _onCommand;
 
   @override
-  set onToggle(void Function()? handler) => _onToggle = handler;
+  set onCommand(void Function(RecitationCommand command)? handler) =>
+      _onCommand = handler;
 
   @override
   Future<void> update(RecitationActivityContent content) async {

@@ -4924,6 +4924,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get liveActivityPlay => 'تشغيل';
 
   @override
+  String get liveActivityPreviousVerse => 'الآية السابقة';
+
+  @override
+  String get liveActivityNextVerse => 'الآية التالية';
+
+  @override
   String get syncTitle => 'المزامنة';
 
   @override

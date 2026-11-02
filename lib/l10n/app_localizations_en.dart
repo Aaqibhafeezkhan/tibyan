@@ -4859,6 +4859,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get liveActivityPlay => 'Play';
 
   @override
+  String get liveActivityPreviousVerse => 'Previous verse';
+
+  @override
+  String get liveActivityNextVerse => 'Next verse';
+
+  @override
   String get syncTitle => 'Sync';
 
   @override

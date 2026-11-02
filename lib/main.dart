@@ -434,8 +434,15 @@ void _startLiveActivity(ProviderContainer container) {
   if (!RecitationActivitySync.supported) return;
   final host = ChannelRecitationActivity();
   final sync = RecitationActivitySync(host);
-  host.onToggle = () =>
-      unawaited(container.read(recitationProvider.notifier).toggle());
+  // Its buttons: the player's own play/pause and previous/next verse.
+  host.onCommand = (command) {
+    final player = container.read(recitationProvider.notifier);
+    unawaited(switch (command) {
+      RecitationCommand.toggle => player.toggle(),
+      RecitationCommand.previous => player.step(-1),
+      RecitationCommand.next => player.step(1),
+    });
+  };
   unawaited(sync.start());
   Future<RecitationActivityContent?> contentOf(RecitationState s) async {
     if (!s.active) return null;
@@ -444,10 +451,14 @@ void _startLiveActivity(ProviderContainer container) {
     );
     final ar = l.localeName == 'ar';
     String? surah, reciter;
+    var ayahCount = 0;
     try {
       final surahs = await container.read(surahsProvider.future);
       final row = surahs.where((r) => r.id == s.surah).firstOrNull;
-      if (row != null) surah = l.surahWord(ar ? row.nameAr : row.nameEn);
+      if (row != null) {
+        surah = l.surahWord(ar ? row.nameAr : row.nameEn);
+        ayahCount = row.ayahCount;
+      }
       final reciters = await container.read(recitersProvider.future);
       final r = reciters.where((r) => r.id == s.reciterId).firstOrNull;
       if (r != null) reciter = ar ? r.nameAr : r.nameEn;
@@ -461,6 +472,10 @@ void _startLiveActivity(ProviderContainer container) {
       playLabel: l.liveActivityPlay,
       pauseLabel: l.pause,
       rtl: ar,
+      ayah: s.ayah ?? 0,
+      ayahCount: ayahCount,
+      previousLabel: l.liveActivityPreviousVerse,
+      nextLabel: l.liveActivityNextVerse,
     );
   }
 

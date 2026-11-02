@@ -1847,6 +1847,8 @@
   "kahfReminderChannel": "Friday reminder",
   "liveActivityVerse": "Verse {number}",
   "liveActivityPlay": "Play",
+  "liveActivityPreviousVerse": "Previous verse",
+  "liveActivityNextVerse": "Next verse",
   "syncTitle": "Sync",
   "syncHint": "Between your devices via iCloud or Google Drive, with no Tibyan account",
   "syncSwitch": "Sync between my devices",
