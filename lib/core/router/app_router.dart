@@ -103,79 +103,6 @@ String mushafSessionOf(Uri uri) {
   return Uri(path: '/mushaf', queryParameters: q.isEmpty ? null : q).toString();
 }
 
-/// The mushaf's page. Opened by «متابعة القراءة», it grows from the card
-/// tapped ([ContinueTransition]); otherwise it enters as any screen does.
-/// One page type for every entry, so going from one mushaf location to
-/// another keeps the reader.
-Page<void> _mushafPage(Ref ref, GoRouterState state, Widget child) {
-  final q = state.uri.queryParameters;
-  final continued = q['entry'] == EntryPoint.home.name && q['page'] == null;
-  return _MushafPage(
-    key: state.pageKey,
-    name: state.name ?? state.path,
-    restorationId: state.pageKey.value,
-    continued: continued,
-    origin: continued ? ref.read(continueSnapshotsProvider).origin : null,
-    child: child,
-  );
-}
-
-class _MushafPage extends MaterialPage<void> {
-  const _MushafPage({
-    required super.child,
-    required this.continued,
-    required this.origin,
-    super.key,
-    super.name,
-    super.restorationId,
-  });
-
-  final bool continued;
-  final Rect? origin;
-
-  @override
-  Route<void> createRoute(BuildContext context) => _MushafRoute(this);
-}
-
-class _MushafRoute extends PageRoute<void>
-    with MaterialRouteTransitionMixin<void> {
-  _MushafRoute(_MushafPage page)
-    : _continued = page.continued,
-      _origin = page.origin,
-      super(settings: page);
-
-  final bool _continued;
-  final Rect? _origin;
-
-  _MushafPage get _page => settings as _MushafPage;
-
-  @override
-  Widget buildContent(BuildContext context) => _page.child;
-
-  @override
-  bool get maintainState => _page.maintainState;
-
-  @override
-  bool get fullscreenDialog => _page.fullscreenDialog;
-
-  @override
-  Duration get transitionDuration =>
-      _continued ? ContinueTransition.duration : super.transitionDuration;
-
-  @override
-  Widget buildTransitions(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-    Widget child,
-  ) => _continued
-      ? ContinueTransition(animation: animation, origin: _origin, child: child)
-      : super.buildTransitions(context, animation, secondaryAnimation, child);
-
-  @override
-  String get debugLabel => '${super.debugLabel}(${_page.name})';
-}
-
 int? _int(GoRouterState s, String key) =>
     int.tryParse(s.uri.queryParameters[key] ?? '');
 
@@ -451,29 +378,25 @@ final appRouterProvider = Provider<GoRouter>(
       ),
       GoRoute(
         path: '/mushaf',
-        pageBuilder: (context, state) => _mushafPage(
-          ref,
-          state,
-          MushafScreen(
-            key: ValueKey(mushafSessionOf(state.uri)),
-            initialPage: _int(state, 'page'),
-            visit: state.uri.queryParameters['v'],
-            selectSurah: _int(state, 's'),
-            selectAyah: _int(state, 'a'),
-            hifzUnit: state.uri.queryParameters['hifz'],
-            hifzFrom: state.uri.queryParameters['from'],
-            hifzTo: state.uri.queryParameters['to'],
-            listen: state.uri.queryParameters['listen'] == '1',
-            memorize: state.uri.queryParameters['memorize'] == '1',
-            // `entry=`: where the reading was opened from (the reading
-            // tracker counts only past the landing page for some).
-            entry:
-                enumNamed(
-                  EntryPoint.values,
-                  state.uri.queryParameters['entry'],
-                ) ??
-                EntryPoint.other,
-          ),
+        builder: (context, state) => MushafScreen(
+          key: ValueKey(mushafSessionOf(state.uri)),
+          initialPage: _int(state, 'page'),
+          visit: state.uri.queryParameters['v'],
+          selectSurah: _int(state, 's'),
+          selectAyah: _int(state, 'a'),
+          hifzUnit: state.uri.queryParameters['hifz'],
+          hifzFrom: state.uri.queryParameters['from'],
+          hifzTo: state.uri.queryParameters['to'],
+          listen: state.uri.queryParameters['listen'] == '1',
+          memorize: state.uri.queryParameters['memorize'] == '1',
+          // `entry=`: where the reading was opened from (the reading
+          // tracker counts only past the landing page for some).
+          entry:
+              enumNamed(
+                EntryPoint.values,
+                state.uri.queryParameters['entry'],
+              ) ??
+              EntryPoint.other,
         ),
         routes: [
           GoRoute(

@@ -159,11 +159,24 @@ class ElderlyPageTransitionsBuilder extends PageTransitionsBuilder {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
     Widget child,
-  ) => FadeTransition(
-    opacity: CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-    child: child,
-  );
+  ) =>
+      routeTransitionOverride?.call(route, context, animation, child) ??
+      FadeTransition(
+        opacity: CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+        child: child,
+      );
 }
+
+/// A screen's own entrance, for the routes it claims (the mushaf opened
+/// by «متابعة القراءة» grows from the card tapped); null for every other
+/// route, which keeps the theme's transition.
+Widget? Function(
+  PageRoute<dynamic> route,
+  BuildContext context,
+  Animation<double> animation,
+  Widget child,
+)?
+routeTransitionOverride;
 
 /// The platform's page transition, or a plain cross-fade when the system
 /// asks for less motion (no slide or zoom between screens).
@@ -185,15 +198,48 @@ class ReducedMotionPageTransitionsBuilder extends PageTransitionsBuilder {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
     Widget child,
-  ) => MediaQuery.disableAnimationsOf(context)
-      ? FadeTransition(opacity: animation, child: child)
-      : base.buildTransitions(
-          route,
-          context,
-          animation,
-          secondaryAnimation,
-          child,
-        );
+  ) =>
+      routeTransitionOverride?.call(route, context, animation, child) ??
+      (MediaQuery.disableAnimationsOf(context)
+          ? FadeTransition(opacity: animation, child: child)
+          : base.buildTransitions(
+              route,
+              context,
+              animation,
+              secondaryAnimation,
+              child,
+            ));
+}
+
+/// The platform's own transition (iOS and macOS: the slide and its back
+/// swipe), except for a route that [routeTransitionOverride] claims.
+class RouteAwarePageTransitionsBuilder extends PageTransitionsBuilder {
+  const RouteAwarePageTransitionsBuilder(this.base);
+
+  final PageTransitionsBuilder base;
+
+  @override
+  Duration get transitionDuration => base.transitionDuration;
+
+  @override
+  Duration get reverseTransitionDuration => base.reverseTransitionDuration;
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) =>
+      routeTransitionOverride?.call(route, context, animation, child) ??
+      base.buildTransitions(
+        route,
+        context,
+        animation,
+        secondaryAnimation,
+        child,
+      );
 }
 
 /// Elderly mode's button label: the theme's labelLarge (the interface
@@ -350,7 +396,7 @@ ThemeData buildTheme({
             in const PageTransitionsTheme().builders.entries)
           // iOS and macOS keep their slide, and the back swipe it carries.
           key: key == TargetPlatform.iOS || key == TargetPlatform.macOS
-              ? value
+              ? RouteAwarePageTransitionsBuilder(value)
               : ReducedMotionPageTransitionsBuilder(value),
       },
     ),

@@ -12,6 +12,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../../core/settings/app_settings.dart';
 import '../../../core/settings/settings_controller.dart';
+import '../../../core/theme/app_theme.dart' show routeTransitionOverride;
 import '../data/compiled_svg.dart';
 import '../mushaf_providers.dart';
 import 'widgets/image_page.dart';
@@ -239,7 +240,42 @@ class ContinueSnapshots {
   }
 }
 
+/// The mushaf route «متابعة القراءة» opened, and where it grows from; read
+/// by the theme's page transitions ([routeTransitionOverride]).
+final _origins = Expando<Rect>('continue origin');
+final _plain = Expando<bool>('not continued');
+
+/// Set by the «متابعة القراءة» tap, taken by the mushaf route it opens.
+Rect? _pendingOrigin;
+
+Widget? continueRouteTransition(
+  PageRoute<dynamic> route,
+  BuildContext context,
+  Animation<double> animation,
+  Widget child,
+) {
+  if (_plain[route] ?? false) return null;
+  var origin = _origins[route];
+  if (origin == null) {
+    final args = route.settings.arguments;
+    final continued =
+        route.settings.name == '/mushaf' &&
+        args is Map &&
+        args['entry'] == 'home' &&
+        args['page'] == null &&
+        _pendingOrigin != null;
+    if (!continued) {
+      _plain[route] = true;
+      return null;
+    }
+    origin = _origins[route] = _pendingOrigin!;
+    _pendingOrigin = null;
+  }
+  return ContinueTransition(animation: animation, origin: origin, child: child);
+}
+
 final continueSnapshotsProvider = Provider<ContinueSnapshots>((ref) {
+  routeTransitionOverride ??= continueRouteTransition;
   final store = ContinueSnapshots(
     () async => Directory(
       p.join((await getApplicationCacheDirectory()).path, 'continue'),
@@ -289,6 +325,8 @@ void openContinueReading(BuildContext from, WidgetRef ref, VoidCallback go) {
         : SnapshotKey.of(from, ref.read(settingsProvider), edition, page),
     from: origin,
   );
+  routeTransitionOverride ??= continueRouteTransition;
+  _pendingOrigin = origin;
   go();
 }
 
