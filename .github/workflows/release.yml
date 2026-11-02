@@ -3,12 +3,20 @@ name: Release
 on:
   push:
     tags: ['v*']
+  # Rebuild only the Windows and Linux apps of an existing tag; the files are
+  # kept as workflow artifacts and attached to the release by hand.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to build, e.g. v0.7.0'
+        required: true
 
 permissions:
   contents: write
 
 jobs:
   android:
+    if: github.event_name == 'push'
     name: Android APK
     runs-on: ubuntu-latest
     timeout-minutes: 40
@@ -71,6 +79,7 @@ jobs:
           path: out/
 
   ios:
+    if: github.event_name == 'push'
     name: iOS build (unsigned)
     runs-on: macos-latest
     timeout-minutes: 60
@@ -97,6 +106,7 @@ jobs:
           path: tibyan-ios-unsigned.zip
 
   macos:
+    if: github.event_name == 'push'
     name: macOS build (unsigned)
     runs-on: macos-latest
     timeout-minutes: 60
@@ -136,6 +146,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           lfs: true
+          ref: ${{ inputs.tag || github.ref }}
       - name: Build tools (GTK, libmpv, libcurl)
         run: |
           sudo apt-get update
@@ -149,7 +160,16 @@ jobs:
           cache: true
       - run: flutter config --enable-linux-desktop
       - run: flutter pub get
-      - run: flutter build linux --release
+      - name: Crash reporting and Drive config (secrets)
+        env:
+          SENTRY_ENV: ${{ secrets.TIBYAN_SENTRY_ENV }}
+          GOOGLE_ENV: ${{ secrets.TIBYAN_GOOGLE_ENV }}
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/tibyan"
+          printf '%s\n' "$SENTRY_ENV" > "$RUNNER_TEMP/tibyan/sentry.env"
+          printf '%s\n' "$GOOGLE_ENV" > "$RUNNER_TEMP/tibyan/google.env"
+      - run: flutter build linux --release --dart-define-from-file="$RUNNER_TEMP/tibyan/sentry.env" --dart-define-from-file="$RUNNER_TEMP/tibyan/google.env" --dart-define=TIBYAN_CHANNEL=beta --split-debug-info=build/symbols/desktop
       # Needs libmpv on the reader's system (for the recitation):
       # apt install libmpv2, or the distribution's mpv package.
       - name: Archive the bundle
@@ -158,6 +178,10 @@ jobs:
         with:
           name: tibyan-linux
           path: tibyan-linux-x64.tar.gz
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tibyan-linux-symbols
+          path: build/symbols/desktop
 
   windows:
     name: Windows build
@@ -167,6 +191,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           lfs: true
+          ref: ${{ inputs.tag || github.ref }}
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: 3.47.5
@@ -174,7 +199,17 @@ jobs:
           cache: true
       - run: flutter config --enable-windows-desktop
       - run: flutter pub get
-      - run: flutter build windows --release
+      - name: Crash reporting and Drive config (secrets)
+        env:
+          SENTRY_ENV: ${{ secrets.TIBYAN_SENTRY_ENV }}
+          GOOGLE_ENV: ${{ secrets.TIBYAN_GOOGLE_ENV }}
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/tibyan"
+          printf '%s\n' "$SENTRY_ENV" > "$RUNNER_TEMP/tibyan/sentry.env"
+          printf '%s\n' "$GOOGLE_ENV" > "$RUNNER_TEMP/tibyan/google.env"
+      - shell: bash
+        run: flutter build windows --release --dart-define-from-file="$RUNNER_TEMP/tibyan/sentry.env" --dart-define-from-file="$RUNNER_TEMP/tibyan/google.env" --dart-define=TIBYAN_CHANNEL=beta --split-debug-info=build/symbols/desktop
       - name: Zip the app
         shell: pwsh
         run: Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath tibyan-windows-x64.zip
@@ -182,9 +217,14 @@ jobs:
         with:
           name: tibyan-windows
           path: tibyan-windows-x64.zip
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tibyan-windows-symbols
+          path: build/symbols/desktop
 
   publish:
     name: GitHub release
+    if: github.event_name == 'push'
     needs: [android, ios, macos, linux, windows]
     runs-on: ubuntu-latest
     steps:
