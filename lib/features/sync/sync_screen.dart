@@ -84,11 +84,13 @@ class _SyncScreenState extends ConsumerState<SyncScreen> {
     final notInBuild =
         s.kind == null ||
         s.unavailable == CloudUnavailable.notInThisBuild ||
-        s.unavailable == CloudUnavailable.unsupported;
+        s.unavailable == CloudUnavailable.unsupported ||
+        s.unavailable == CloudUnavailable.noGoogleServices;
     final unavailableText = switch (s.unavailable) {
       null => null,
       CloudUnavailable.notInThisBuild => l.syncNotInBuild,
       CloudUnavailable.unsupported => l.syncUnsupported,
+      CloudUnavailable.noGoogleServices => l.syncNoGoogleServices,
       CloudUnavailable.noAccount =>
         s.kind == 'icloud' ? l.syncNoAccountICloud : l.syncNoAccountDrive,
     };
@@ -119,6 +121,8 @@ class _SyncScreenState extends ConsumerState<SyncScreen> {
                     subtitle: Text(
                       s.kind == null
                           ? l.syncUnsupported
+                          : s.unavailable == CloudUnavailable.noGoogleServices
+                          ? l.syncNoGoogleServices
                           : notInBuild
                           ? l.syncNotInBuild
                           : s.kind == 'icloud'

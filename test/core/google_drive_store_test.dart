@@ -112,4 +112,19 @@ void main() {
     expect(await signedOut.unavailable(), CloudUnavailable.noAccount);
     expect(await signedOut.connect(), isTrue);
   });
+
+  test('no Google Play services (a Huawei phone): never signs in', () async {
+    var asked = false;
+    final store = GoogleDriveStore(
+      configured: true,
+      token: ({required interactive}) async {
+        asked = true;
+        return 'good';
+      },
+      services: () async => false,
+    );
+    expect(await store.unavailable(), CloudUnavailable.noGoogleServices);
+    expect(await store.connect(), isFalse);
+    expect(asked, isFalse);
+  });
 }

@@ -10,6 +10,10 @@ enum CloudUnavailable {
 
   /// The platform has no store (Windows, Linux, web).
   unsupported,
+
+  /// Google Drive needs Google Play services, which this device (a Huawei
+  /// phone) or this build (Huawei AppGallery) does not have.
+  noGoogleServices,
 }
 
 /// Where a device's sync file lives: the reader's own iCloud or Google

@@ -55,6 +55,8 @@ class WatchBridge(private val context: Context, messenger: BinaryMessenger) {
       val request = PutDataMapRequest.create(STATE).apply {
         for (k in saved.keys()) dataMap.putString(k, saved.getString(k))
       }.asPutDataRequest().setUrgent()
+      // Sideloaded on a phone without Google Play services: no watch.
+      if (!Gms.available(context)) return
       try {
         Wearable.getDataClient(context).putDataItem(request)
       } catch (e: Exception) {

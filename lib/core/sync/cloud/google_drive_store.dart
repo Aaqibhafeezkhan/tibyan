@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
+import '../../platform/app_store.dart';
 import 'cloud_store.dart';
 
 /// The web OAuth client id of Tibyan's Google Cloud project, given at build
@@ -30,6 +31,7 @@ class GoogleDriveStore implements CloudStore {
     required this.token,
     this.forgetToken,
     this.signOut,
+    this.services,
     http.Client? client,
   }) : _client = client ?? http.Client();
 
@@ -41,6 +43,7 @@ class GoogleDriveStore implements CloudStore {
       token: auth.token,
       forgetToken: auth.forget,
       signOut: auth.signOut,
+      services: GoogleServices.available,
     );
   }
 
@@ -49,7 +52,13 @@ class GoogleDriveStore implements CloudStore {
   final DriveToken token;
   final Future<void> Function(String token)? forgetToken;
   final Future<void> Function()? signOut;
+
+  /// Whether Google Play services are on the device; null: assume so.
+  final Future<bool> Function()? services;
   final http.Client _client;
+
+  Future<bool> _noServices() async =>
+      services != null && !await services!.call();
 
   static const _api = 'https://www.googleapis.com/drive/v3/files';
   static const _upload = 'https://www.googleapis.com/upload/drive/v3/files';
@@ -59,6 +68,7 @@ class GoogleDriveStore implements CloudStore {
 
   @override
   Future<CloudUnavailable?> unavailable() async {
+    if (await _noServices()) return CloudUnavailable.noGoogleServices;
     if (!configured) return CloudUnavailable.notInThisBuild;
     try {
       return await token(interactive: false) == null
@@ -72,7 +82,7 @@ class GoogleDriveStore implements CloudStore {
 
   @override
   Future<bool> connect() async {
-    if (!configured) return false;
+    if (!configured || await _noServices()) return false;
     return await token(interactive: true) != null;
   }
 

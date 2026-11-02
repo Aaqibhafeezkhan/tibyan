@@ -6,6 +6,7 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../platform/app_store.dart';
 import '../settings/settings_controller.dart';
 
 /// What makes a moment worth the store's review sheet.
@@ -61,11 +62,13 @@ class ReviewPrompt {
     Future<String> Function()? version,
     DateTime Function()? clock,
     bool? supported,
-  }) : _available = available ?? InAppReview.instance.isAvailable,
+    Future<bool> Function()? services,
+  }) : _services = services ?? GoogleServices.available,
+       _available = available ?? InAppReview.instance.isAvailable,
        _request = request ?? InAppReview.instance.requestReview,
        _version = version ?? _appVersion,
        _clock = clock ?? DateTime.now,
-       _supported = supported ?? _mobile;
+       _supported = supported ?? (_mobile && !isHuaweiBuild);
 
   static const firstSeenKey = 'review.firstSeen';
   static const daysKey = 'review.days';
@@ -79,6 +82,7 @@ class ReviewPrompt {
   final Future<String> Function() _version;
   final DateTime Function() _clock;
   final bool _supported;
+  final Future<bool> Function() _services;
 
   static bool get _mobile =>
       !kIsWeb &&
@@ -134,6 +138,11 @@ class ReviewPrompt {
         version: version,
       );
       if (!allowed || !await _available()) return false;
+      // A Huawei phone with the Play build sideloaded: no Play review.
+      if (defaultTargetPlatform == TargetPlatform.android &&
+          !await _services()) {
+        return false;
+      }
       await _prefs.setString(lastAskedKey, now.toIso8601String());
       await _prefs.setString(lastVersionKey, version);
       await _request();

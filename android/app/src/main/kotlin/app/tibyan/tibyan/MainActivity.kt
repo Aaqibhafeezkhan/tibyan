@@ -29,6 +29,16 @@ class MainActivity : AudioServiceActivity() {
         // counts are announced to the misbaha while the app runs.
         WatchBridge(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
         WatchBridge.onPending = { tasbih?.channel?.invokeMethod("pendingAdded", null) }
+        // Which store this build is for, and whether Google Play services
+        // are on the device (Huawei phones have none; docs/HUAWEI.md).
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "app.tibyan/store")
+            .setMethodCallHandler { call, result ->
+                if (call.method == "gmsAvailable") {
+                    result.success(Gms.available(applicationContext))
+                } else {
+                    result.notImplemented()
+                }
+            }
         // «مشاركة كمقطع فيديو»: the reel's encoder.
         VideoEncoder(flutterEngine.dartExecutor.binaryMessenger)
         // «Save to Photos» for shared verse pictures: Pictures/Tibyan,

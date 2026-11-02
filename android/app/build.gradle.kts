@@ -1,3 +1,4 @@
+import java.util.Base64
 import java.util.Properties
 
 plugins {
@@ -13,6 +14,19 @@ val keyProperties = Properties().apply {
     val file = rootProject.file("key.properties")
     if (file.exists()) file.inputStream().use { load(it) }
 }
+
+// The store this build is for, from `--dart-define=TIBYAN_STORE=huawei`
+// (Flutter hands the dart-defines to Gradle base64-encoded). The Huawei
+// AppGallery build has no Google Play services: the Wear OS bridge is left
+// out (src/huawei instead of src/gms) and so is play-services-wearable
+// (docs/HUAWEI.md). Any other value, or none, is the Play/GitHub build.
+val tibyanStore: String = (project.findProperty("dart-defines") as String?)
+    ?.split(",")
+    ?.mapNotNull { runCatching { String(Base64.getDecoder().decode(it)) }.getOrNull() }
+    ?.firstOrNull { it.startsWith("TIBYAN_STORE=") }
+    ?.substringAfter("=")
+    ?: "play"
+val huaweiBuild = tibyanStore == "huawei"
 
 android {
     namespace = "app.tibyan.tibyan"
@@ -53,6 +67,8 @@ android {
         }
     }
 
+    sourceSets["main"].java.srcDir(if (huaweiBuild) "src/huawei/kotlin" else "src/gms/kotlin")
+
     buildTypes {
         release {
             signingConfig = signingConfigs.findByName("upload")
@@ -74,5 +90,7 @@ flutter {
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
     // «الساعة»: the Wear OS app (android/wear) through the Data Layer.
-    implementation("com.google.android.gms:play-services-wearable:19.0.0")
+    if (!huaweiBuild) {
+        implementation("com.google.android.gms:play-services-wearable:19.0.0")
+    }
 }

@@ -4937,6 +4937,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get syncUnsupported => 'المزامنة غير متاحة على هذا الجهاز.';
 
   @override
+  String get syncNoGoogleServices =>
+      'تحتاج مزامنة Google Drive إلى خدمات Google Play، وهي غير متوفرة على هذا الجهاز. لنقل بياناتك استخدم «النسخ الاحتياطي» في الإعدادات.';
+
+  @override
   String get syncDeleteCloud => 'إيقاف المزامنة وحذف بيانات السحابة';
 
   @override
