@@ -93,11 +93,9 @@ void main() {
             'b1',
           ]) {
             final style = styleOf(tester, text);
-            expect(style.fontFamily, font.textFamily, reason: '$text $tag');
+            expect(style.fontFamily, numeralsFamily, reason: '$text $tag');
             final fallback = style.fontFamilyFallback ?? const <String>[];
-            if (font.textFamily != font.family) {
-              expect(fallback.first, font.family, reason: '$text $tag');
-            }
+            expect(fallback.first, font.family, reason: '$text $tag');
             expect(fallback, contains('IBMPlexSansArabic'), reason: text);
           }
           if (elderly) {
