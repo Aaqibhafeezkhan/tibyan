@@ -15,6 +15,7 @@
         <span class="dl-kind">APK</span>
       </a>
       {{ meta('android') }}
+      <p class="dl-note">{{ 'أجهزة أخرى:' if ar else 'Other devices:' }} <a class="dl-alt" href="/download/android-armeabi-v7a">armeabi-v7a</a> · <a class="dl-alt" href="/download/android-x86_64">x86_64</a> · <a class="dl-alt" href="/download/android-universal">{{ 'شامل' if ar else 'universal' }}</a></p>
       <a class="dl-alt" href="{{ play_url }}" rel="noopener">{{ 'أو عبر Google Play (اختبار)' if ar else 'or via Google Play (testing)' }}</a>
       <p class="dl-note">{{ 'ملف APK لا يحدّث نسخة Google Play؛ احذف إحداهما قبل تثبيت الأخرى.' if ar else 'The APK can’t update the Google Play version; remove one before installing the other.' }}</p>
     </div>
