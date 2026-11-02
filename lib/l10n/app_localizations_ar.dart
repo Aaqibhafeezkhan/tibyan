@@ -3922,6 +3922,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settingsCountListening => 'احتساب الاستماع من الورد';
 
   @override
+  String get settingsHifzOpen => 'افتح الحفظ';
+
+  @override
+  String get tasmeeSettingsTitle => 'إعدادات التسميع';
+
+  @override
   String get settingsHifzGoals => 'أهداف الحفظ وتذكيراتها';
 
   @override

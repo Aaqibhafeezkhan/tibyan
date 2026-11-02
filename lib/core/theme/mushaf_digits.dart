@@ -20,7 +20,9 @@ class MushafDigitsText extends StatelessWidget {
   /// enlarged to stand about as tall as the letters beside them.
   static const digitScale = 2.3;
 
-  static final _digits = RegExp('[٠-٩0-9]+');
+  /// Arabic-Indic digits only: the font has no Western digits of its own,
+  /// so «255» in English would come out in a fallback font at 2.3× size.
+  static final _digits = RegExp('[٠-٩]+');
 
   @override
   Widget build(BuildContext context) {

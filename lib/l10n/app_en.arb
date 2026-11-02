@@ -1545,6 +1545,8 @@
   "settingsKhatmaPlans": "Khatma plans and reminders",
   "settingsWirdIndicator": "Daily portion indicator on the mushaf",
   "settingsCountListening": "Count listening toward the daily portion",
+  "settingsHifzOpen": "Open memorization",
+  "tasmeeSettingsTitle": "Recitation practice settings",
   "settingsHifzGoals": "Memorization goals and reminders",
   "digitsFontNote": "Every interface digit uses one clear font: a digits-only subset of IBM Plex Sans Arabic (© 2017 IBM Corp.), renamed because \"Plex\" is a Reserved Font Name. Licence: SIL Open Font License 1.1, which permits subsetting and modification under a new name and the same licence.",
   "digitsFontTitle": "Interface digits font (Tibyan Digits)",

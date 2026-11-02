@@ -325,7 +325,8 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         (l) => l.hifzTitle,
         (c, r) => SettingsNavTile(
           icon: Icons.psychology_alt_outlined,
-          title: AppLocalizations.of(c).hifzTitle,
+          title: AppLocalizations.of(c).settingsHifzOpen,
+          subtitle: AppLocalizations.of(c).hifzTileNote,
           onTap: () => c.push('/hifz'),
         ),
         keywords: 'حفظ مراجعة hifz memorize review',
@@ -347,7 +348,7 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         (l) => l.tasmeeTitle,
         (c, r) => SettingsNavTile(
           icon: Icons.graphic_eq,
-          title: AppLocalizations.of(c).tasmeeTitle,
+          title: AppLocalizations.of(c).tasmeeSettingsTitle,
           subtitle: AppLocalizations.of(c).tasmeeSettingsNote,
           onTap: () => c.push('/settings/tasmee'),
         ),

@@ -2677,6 +2677,8 @@
   "settingsKhatmaPlans": "خطط الختمة وتذكيراتها",
   "settingsWirdIndicator": "مؤشر الورد فوق المصحف",
   "settingsCountListening": "احتساب الاستماع من الورد",
+  "settingsHifzOpen": "افتح الحفظ",
+  "tasmeeSettingsTitle": "إعدادات التسميع",
   "settingsHifzGoals": "أهداف الحفظ وتذكيراتها",
   "digitsFontTitle": "خط الأرقام في الواجهة (Tibyan Digits)",
   "digitsFontNote": "أرقام الواجهة كلها بخط واحد واضح: مقتطع من IBM Plex Sans Arabic (حقوقه لشركة IBM، 2017) يضم الأرقام وحدها، وسُمّي باسم جديد لأن «Plex» اسم محجوز. الرخصة: رخصة الخطوط المفتوحة SIL OFL 1.1، وهي تبيح الاقتطاع والتعديل بشرط تغيير الاسم وبقاء الرخصة نفسها.",

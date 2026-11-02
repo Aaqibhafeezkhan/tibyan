@@ -3848,6 +3848,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Count listening toward the daily portion';
 
   @override
+  String get settingsHifzOpen => 'Open memorization';
+
+  @override
+  String get tasmeeSettingsTitle => 'Recitation practice settings';
+
+  @override
   String get settingsHifzGoals => 'Memorization goals and reminders';
 
   @override

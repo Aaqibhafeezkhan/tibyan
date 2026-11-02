@@ -181,7 +181,11 @@ class _Grid extends ConsumerWidget {
           crossAxisCount: wide ? 4 : 2,
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
-          mainAxisExtent: elderly ? 196 : 156,
+          // The texts grow with the reader's text size; the emblem does not.
+          mainAxisExtent:
+              (elderly ? 196 : 156) +
+              MediaQuery.textScalerOf(context).scale(96) -
+              96,
         ),
         delegate: SliverChildListDelegate([
           for (final s in SettingsSection.values)

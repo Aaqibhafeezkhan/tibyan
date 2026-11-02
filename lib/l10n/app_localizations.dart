@@ -6464,6 +6464,18 @@ abstract class AppLocalizations {
   /// **'احتساب الاستماع من الورد'**
   String get settingsCountListening;
 
+  /// No description provided for @settingsHifzOpen.
+  ///
+  /// In ar, this message translates to:
+  /// **'افتح الحفظ'**
+  String get settingsHifzOpen;
+
+  /// No description provided for @tasmeeSettingsTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعدادات التسميع'**
+  String get tasmeeSettingsTitle;
+
   /// No description provided for @settingsHifzGoals.
   ///
   /// In ar, this message translates to:

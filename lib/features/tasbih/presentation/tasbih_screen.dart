@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-import '../../../core/theme/app_theme.dart' show digitsFamily;
+import '../../../core/theme/app_theme.dart' show digitsFamily, numeralsFamily;
 import '../../../core/theme/interface_style.dart';
 import '../../../core/ui/look_kit.dart';
 import '../../../core/ui/responsive.dart';
@@ -282,9 +282,10 @@ class _Layout extends ConsumerWidget {
         ),
       const TargetBar(),
     ];
-    // Large text: the screen scrolls, and the counter keeps a large,
-    // fixed area to tap.
-    if (MediaQuery.textScalerOf(context).scale(10) > 13) {
+    // Large text or a short window (a phone on its side): the screen
+    // scrolls, and the counter keeps a large, fixed area to tap.
+    if (MediaQuery.textScalerOf(context).scale(10) > 13 ||
+        MediaQuery.sizeOf(context).height < 500) {
       return LayoutBuilder(
         builder: (context, box) => SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
@@ -514,7 +515,7 @@ class _StageLine extends ConsumerWidget {
             '${l.tasbihStageAnnounce(digits(stage.index + 1), digits(c.stages!.length))}، '
             '${l.tasbihCountOf(digits(stage.count), digits(stage.of))}',
         style: TextStyle(
-          fontFamily: digitsFamily,
+          fontFamily: numeralsFamily,
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: context.look.accent,
@@ -646,7 +647,7 @@ class TargetBar extends ConsumerWidget {
                 target == null ? '—' : digits(target),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontFamily: digitsFamily,
+                  fontFamily: numeralsFamily,
                   fontSize: big ? 30 : 24,
                   fontWeight: FontWeight.w600,
                   color: look.ink,
