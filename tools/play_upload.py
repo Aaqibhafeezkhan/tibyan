@@ -114,6 +114,7 @@ def main():
     p.add_argument('--track', default='internal')
     p.add_argument('--name', required=True, help='release name, e.g. "0.4.0 (6)"')
     p.add_argument('--notes', default='', help='Arabic release notes')
+    p.add_argument('--notes-en', default='', help='English release notes')
     p.add_argument('--status', default='completed', choices=['completed', 'draft'])
     p.add_argument('--key', default=KEY)
     a = p.parse_args()
@@ -137,6 +138,8 @@ def main():
     release = {'name': a.name, 'versionCodes': [str(code)], 'status': a.status}
     if a.notes:
         release['releaseNotes'] = [{'language': 'ar', 'text': a.notes}]
+    if a.notes_en:
+        release.setdefault('releaseNotes', []).append({'language': 'en-US', 'text': a.notes_en})
     call('PUT', f'{API}/{PACKAGE}/edits/{edit}/tracks/{a.track}', tok,
          body={'track': a.track, 'releases': [release]})
     call('POST', f'{API}/{PACKAGE}/edits/{edit}:commit', tok)
