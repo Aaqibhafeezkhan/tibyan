@@ -404,10 +404,12 @@ final appRouterProvider = Provider<GoRouter>(
           GoRoute(
             path: 'index',
             builder: (context, state) => IndexScreen(
-              tab:
-                  IndexTab.values
-                      .asNameMap()[state.uri.queryParameters['tab']] ??
-                  IndexTab.surahs,
+              // The old reading-marks tab now lives in the fawasil tab.
+              tab: state.uri.queryParameters['tab'] == 'marks'
+                  ? IndexTab.fawasil
+                  : IndexTab.values
+                            .asNameMap()[state.uri.queryParameters['tab']] ??
+                        IndexTab.surahs,
               surah: _int(state, 's'),
               juz: _int(state, 'j'),
               hizb: _int(state, 'h'),

@@ -1653,6 +1653,8 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         _TopControls(
+                          // Home in the middle, set apart.
+                          emphasized: 2,
                           items: [
                             (
                               Icons.list_alt,
@@ -1660,17 +1662,12 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                               () => context.push('/mushaf/index'),
                             ),
                             (
-                              Icons.bookmarks_outlined,
-                              l.fawasilTitle,
-                              () => context.push('/mushaf/fawasil'),
-                            ),
-                            (
                               assistantIcon,
                               l.assistantTitle,
                               () => context.push(assistantLocation),
                             ),
                             (
-                              Icons.home_outlined,
+                              Icons.home_rounded,
                               l.homeTitle,
                               () => context.go('/'),
                             ),

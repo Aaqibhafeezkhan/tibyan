@@ -634,12 +634,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get markRemoved => 'Mark removed';
 
   @override
-  String get tabMarks => 'Reading marks';
-
-  @override
-  String get noMarks => 'No marks yet. Tap a verse marker to mark it.';
-
-  @override
   String get shareAsMushafPages => 'The mushaf\'s own pages';
 
   @override

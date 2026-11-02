@@ -1130,18 +1130,6 @@ abstract class AppLocalizations {
   /// **'أُزيل الفاصل'**
   String get markRemoved;
 
-  /// No description provided for @tabMarks.
-  ///
-  /// In ar, this message translates to:
-  /// **'فواصل القراءة'**
-  String get tabMarks;
-
-  /// No description provided for @noMarks.
-  ///
-  /// In ar, this message translates to:
-  /// **'لا توجد فواصل بعد. اضغط على فاصل أي آية لتعليمها.'**
-  String get noMarks;
-
   /// No description provided for @shareAsMushafPages.
   ///
   /// In ar, this message translates to:

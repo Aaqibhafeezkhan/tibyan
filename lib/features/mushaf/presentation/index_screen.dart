@@ -40,7 +40,7 @@ String _fold(String s) => s
   return (surah: int.parse(m[1]!), ayah: int.parse(m[2]!));
 }
 
-enum IndexTab { surahs, juz, hizb, pages, marks, fawasil }
+enum IndexTab { surahs, juz, hizb, pages, fawasil }
 
 /// Row height in the index lists, fixed so the current row can be
 /// scrolled into view before it is built.
@@ -115,7 +115,6 @@ class _IndexScreenState extends ConsumerState<IndexScreen> {
                   l.tabJuz,
                   l.tabHizb,
                   l.tabPages,
-                  l.tabMarks,
                   l.tabFawasil,
                 ],
               ),
@@ -164,7 +163,6 @@ class _IndexScreenState extends ConsumerState<IndexScreen> {
                                 title: (n) => l.hizbLabel(n),
                               ),
                             PagesMap(current: widget.page),
-                            _MarksTab(surahs: surahs),
                             FawasilIndexTab(
                               onOpen: (f) => openVerse(
                                 context,
@@ -925,58 +923,6 @@ class _StartsTab extends ConsumerWidget {
           },
         ),
       ),
-    );
-  }
-}
-
-/// The reader's marks: the four fixed marks and named fawasil, updated as
-/// they are set from the page view.
-class _MarksTab extends ConsumerWidget {
-  const _MarksTab({required this.surahs});
-
-  final List<SurahRow> surahs;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l = AppLocalizations.of(context);
-    final t = context.look;
-    final marks = ref.watch(bookmarkSetsProvider).value;
-    if (marks == null) return Center(child: Text(l.loadingLabel));
-    if (marks.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Text(
-            l.noMarks,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: t.sub, height: 1.7),
-          ),
-        ),
-      );
-    }
-    return ListView(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      children: [
-        for (final m in marks)
-          ListTile(
-            leading: Icon(Icons.bookmark, color: Color(m.color), size: 30),
-            title: Text(
-              m.name,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-            subtitle: MetaText(
-              l.fasilLastAt(
-                surahName(context, surahs[m.surah - 1]),
-                '${m.ayah}',
-                // The page in the edition shown now, not the one it was
-                // set in.
-                '${ref.watch(versePageProvider((m.surah, m.ayah))).value ?? m.page}',
-              ),
-              style: TextStyle(color: t.sub),
-            ),
-            onTap: () => openVerse(context, ref, surah: m.surah, ayah: m.ayah),
-          ),
-      ],
     );
   }
 }

@@ -186,9 +186,12 @@ class _ReadingTools extends StatelessWidget {
 
 /// Destinations shown at the top when the reader touches the page.
 class _TopControls extends StatelessWidget {
-  const _TopControls({required this.items});
+  const _TopControls({required this.items, this.emphasized});
 
   final List<(IconData, String, VoidCallback)> items;
+
+  /// The item drawn larger and in the theme's gold (the way home).
+  final int? emphasized;
 
   @override
   Widget build(BuildContext context) =>
@@ -205,7 +208,7 @@ class _TopControls extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(4, 6, 4, 6),
           child: Row(
             children: [
-              for (final (icon, label, onTap) in items)
+              for (final (i, (icon, label, onTap)) in items.indexed)
                 Expanded(
                   child: InkWell(
                     onTap: onTap,
@@ -215,13 +218,24 @@ class _TopControls extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(icon, color: t.muted, size: 24),
+                          // Within the 56 minimum either way: the bar keeps its height.
+                          Icon(
+                            icon,
+                            color: i == emphasized ? t.goldText : t.muted,
+                            size: i == emphasized ? 30 : 24,
+                          ),
                           const SizedBox(height: 3),
                           Text(
                             label,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 12, color: t.muted),
+                            style: i == emphasized
+                                ? TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                    color: t.goldText,
+                                  )
+                                : TextStyle(fontSize: 12, color: t.muted),
                           ),
                         ],
                       ),

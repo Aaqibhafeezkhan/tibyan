@@ -17,6 +17,7 @@ import 'package:tibyan/core/theme/theme_registry.dart';
 import 'package:tibyan/features/home/whats_new.dart';
 import 'package:tibyan/features/khatma/domain/khatmah.dart' show EntryPoint;
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
+import 'package:tibyan/features/mushaf/presentation/index_screen.dart';
 import 'package:tibyan/features/mushaf/presentation/mushaf_screen.dart';
 import 'package:tibyan/features/mushaf/presentation/navigation.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
@@ -155,5 +156,23 @@ void main() {
     await settle(tester);
     expect(tester.state(find.byType(MushafScreen)), isNot(same(before)));
     expect(showing(603), isTrue);
+  });
+
+  testWidgets('an old link to the reading-marks tab opens the fawasil tab', (
+    tester,
+  ) async {
+    final container = await start(tester);
+    await settle(tester, find.byType(MushafPage));
+    unawaited(
+      container.read(appRouterProvider).push('/mushaf/index?tab=marks'),
+    );
+    await settle(tester, find.byType(IndexScreen));
+    expect(
+      tester.widget<IndexScreen>(find.byType(IndexScreen)).tab,
+      IndexTab.fawasil,
+    );
+    // One fawasil tab only: the old reading-marks tab is gone.
+    expect(find.text('فواصل القراءة'), findsNothing);
+    expect(IndexTab.values.map((t) => t.name), isNot(contains('marks')));
   });
 }

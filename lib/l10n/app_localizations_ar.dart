@@ -645,12 +645,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get markRemoved => 'أُزيل الفاصل';
 
   @override
-  String get tabMarks => 'فواصل القراءة';
-
-  @override
-  String get noMarks => 'لا توجد فواصل بعد. اضغط على فاصل أي آية لتعليمها.';
-
-  @override
   String get shareAsMushafPages => 'صفحات المصحف كما هي';
 
   @override
