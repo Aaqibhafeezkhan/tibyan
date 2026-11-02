@@ -64,6 +64,8 @@ class _GoToPageDialogState extends State<_GoToPageDialog> {
       NumberFormatter(Localizations.localeOf(context))(widget.max),
     );
     return AlertDialog(
+      // A phone held sideways leaves little room above the keyboard.
+      scrollable: true,
       title: Text(l.goToPage, textAlign: TextAlign.center),
       content: Row(
         mainAxisSize: MainAxisSize.min,

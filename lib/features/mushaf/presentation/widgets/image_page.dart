@@ -562,6 +562,7 @@ class _ImageMushafPageState extends ConsumerState<ImageMushafPage> {
         final markers = data.markers;
         return LayoutBuilder(
           builder: (context, box) {
+            MushafPage.debugLayouts++;
             final layout = StripLayout(
               box.biggest,
               data.geometry,

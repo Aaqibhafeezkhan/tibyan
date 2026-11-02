@@ -400,6 +400,12 @@ class MushafPage extends ConsumerStatefulWidget {
   @visibleForTesting
   static bool debugNoArtCache = false;
 
+  /// How many times a page has been laid out at a size, and baked: the
+  /// measuring harness and the tests read them to see that nothing outside
+  /// the page (the keyboard rising over it) lays it out or bakes it again.
+  static int debugLayouts = 0;
+  static int debugBakes = 0;
+
   /// Empties the shared pages (tests, a memory warning).
   static void clearBaked() {
     for (final (art, marker) in _baked.values) {
@@ -450,6 +456,7 @@ class _MushafPageState extends ConsumerState<MushafPage> {
     // The colouring is still being read: bake once, when it is in.
     if (_tajweedPending || _artKey == key) return;
     _artKey = key;
+    MushafPage.debugBakes++;
     final width = (layout.size.width * dpr).ceil();
     final height = (layout.size.height * dpr).ceil();
     // The same page from the same pages (an edition's store), drawn the
@@ -733,6 +740,7 @@ class _MushafPageState extends ConsumerState<MushafPage> {
 
         return LayoutBuilder(
           builder: (context, box) {
+            MushafPage.debugLayouts++;
             final touch = StripLayout(
               box.biggest,
               lineGeometry,
