@@ -1,4 +1,7 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../core/theme/app_theme.dart';
 
@@ -6,6 +9,21 @@ import '../../core/theme/app_theme.dart';
 /// al-Husary (Warsh, Qalun, al-Duri), Abdul Basit (Warsh) and al-Hudhaifi
 /// (Shu'bah).
 const _photoOf = {101: 2, 111: 2, 121: 2, 106: 3, 131: 112};
+
+/// The asset that holds reciter [id]'s photo, whether or not it exists.
+String reciterPhotoAsset(int id) =>
+    'assets/reciters/${_photoOf[id] ?? id}.webp';
+
+/// Reciter [id]'s photo decoded, or null when the app has none for them.
+Future<ui.Image?> reciterPhotoImage(int id) async {
+  try {
+    final data = await rootBundle.load(reciterPhotoAsset(id));
+    final codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
+    return (await codec.getNextFrame()).image;
+  } on Object {
+    return null;
+  }
+}
 
 /// A reciter's photo beside their name, or their initials while there is
 /// no photo for them.
@@ -45,7 +63,7 @@ class ReciterAvatar extends StatelessWidget {
       height: size,
       child: ClipOval(
         child: Image.asset(
-          'assets/reciters/${_photoOf[id] ?? id}.webp',
+          reciterPhotoAsset(id),
           width: size,
           height: size,
           fit: BoxFit.cover,

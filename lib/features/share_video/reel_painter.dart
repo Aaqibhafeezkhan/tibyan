@@ -71,6 +71,7 @@ class ReelContent {
     required this.logoSize,
     required this.paper,
     this.banner,
+    this.photo,
   });
 
   final int surah;
@@ -81,6 +82,9 @@ class ReelContent {
   /// Play, App Store, Windows, watchOS, Linux), drawn in a row on the end
   /// card.
   final List<ui.Picture> platforms;
+
+  /// The reciter's photo (assets/reciters), or null when there is none.
+  final ui.Image? photo;
 
   /// The mushaf page's frame, as the reader's theme draws it.
   final ui.Image frame;
@@ -454,6 +458,46 @@ class ReelPainter {
     ),
   );
 
+  /// The reciter's photo in a circle, [_photoSize] across, a soft shadow
+  /// beneath it and a thin gold ring around it.
+  (double, double, void Function(Canvas, double)) _photoItem(ui.Image photo) {
+    const d = _photoSize;
+    return (
+      d,
+      d + 24,
+      (c, y) {
+        final centre = Offset(reelDesign.width / 2, y + d / 2);
+        c.drawCircle(
+          centre.translate(0, 18),
+          d / 2,
+          Paint()
+            ..color = const Color(0x66000000)
+            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 26),
+        );
+        final circle = Rect.fromCircle(center: centre, radius: d / 2);
+        c.save();
+        c.clipPath(Path()..addOval(circle));
+        paintImage(
+          canvas: c,
+          rect: circle,
+          image: photo,
+          fit: BoxFit.cover,
+          filterQuality: FilterQuality.high,
+        );
+        c.restore();
+        c.drawCircle(
+          centre,
+          d / 2,
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 4
+            ..color = ReelColors.gold.withValues(alpha: .85),
+        );
+      },
+    );
+  }
+
+  static const _photoSize = 220.0;
   static const _markSize = 60.0;
   static const _markGap = 64.0;
 
@@ -506,6 +550,7 @@ class ReelPainter {
       _rule(),
       54.0,
       _line(content.voice, 44, color: ReelColors.cream.withValues(alpha: .9)),
+      if (content.photo case final photo?) ...[44.0, _photoItem(photo)],
     ];
     _column(c, (reelDesign.height - _height(items)) / 2, items);
   }

@@ -13,6 +13,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../core/db/content_database.dart';
 import '../../core/theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
+import '../audio/reciter_avatar.dart';
 import '../audio/recitation.dart';
 import '../../core/settings/app_settings.dart';
 import '../mushaf/mushaf_providers.dart';
@@ -240,6 +241,7 @@ class _ShareVideoState extends ConsumerState<ShareVideoScreen> {
             null,
           ),
       ];
+      final photo = await reciterPhotoImage(r.id);
       final verses = [
         for (final a in _chosen)
           ReelVerse(number: a.number, displayText: a.displayText),
@@ -255,6 +257,7 @@ class _ShareVideoState extends ConsumerState<ShareVideoScreen> {
           join: _ar.reelJoin,
           url: 'altibyan.app',
           platforms: [for (final m in marks) m.picture],
+          photo: photo,
           frame: frame,
           banner: banner,
           logo: logo.picture,
