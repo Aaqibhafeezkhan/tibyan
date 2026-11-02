@@ -524,11 +524,6 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
                   pageTools: [
                     (Icons.menu_book_outlined, l.goToPage, then(_goToPage)),
                     (
-                      Icons.bookmarks_outlined,
-                      l.fawasilTitle,
-                      then(() => screen.push('/mushaf/fawasil')),
-                    ),
-                    (
                       Icons.screen_rotation_outlined,
                       l.oneVerse,
                       then(_openOneVerse),

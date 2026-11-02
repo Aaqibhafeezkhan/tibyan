@@ -464,9 +464,10 @@ void main() {
       for (final label in ['الفهرس', 'البحث', 'إنهاء التركيز']) {
         expect(inMenu(find.text(label)), findsOneWidget, reason: label);
       }
-      for (final label in ['انتقال إلى صفحة', 'الفواصل', 'آية آية']) {
+      for (final label in ['انتقال إلى صفحة', 'آية آية']) {
         expect(inMenu(find.text(label)), findsOneWidget, reason: label);
       }
+      expect(inMenu(find.text('الفواصل')), findsNothing);
       expect(inMenu(find.bySemanticsLabel('القراءة اللمسية')), findsOneWidget);
       expect(inMenu(find.text('٥٠')), findsOneWidget);
       // The verse services panel under the page stays away.
