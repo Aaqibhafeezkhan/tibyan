@@ -130,11 +130,20 @@ void main() {
     await tester.scrollUntilVisible(
       find.text('سورة الملك'),
       200,
-      scrollable: find
-          .byWidgetPredicate(
-            (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
-          )
-          .first,
+      // The screen's list, not the side rail (which scrolls on a short
+      // window).
+      scrollable: find.byElementPredicate((e) {
+        final w = e.widget;
+        if (w is! Scrollable || w.axisDirection != AxisDirection.down) {
+          return false;
+        }
+        var inRail = false;
+        e.visitAncestorElements((a) {
+          inRail = a.widget.runtimeType.toString() == '_Rail';
+          return !inRail;
+        });
+        return !inRail;
+      }).first,
     );
     expect(find.text('كل وحدات المراجعة'), findsOneWidget);
     expect(find.textContaining('جيد'), findsWidgets);
