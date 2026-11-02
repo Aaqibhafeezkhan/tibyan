@@ -15,6 +15,7 @@ need no `--flavor` and keep their output paths.
 | In-app review (Play review API) | Play review sheet | No-op (never asks) |
 | Wear OS watch (play-services-wearable) | On | Not linked; `src/huawei/kotlin/WatchBridge.kt` is a no-op stub |
 | Crash reports (GlitchTip) | `TIBYAN_CHANNEL=production` | `TIBYAN_CHANNEL=huawei` (a store build in the consent sheet) |
+| Editions | 1441 and 1405, identical features | 1441 and 1405, identical features (nothing above depends on the edition) |
 | Everything else (mushaf, audio, downloads, tasmee, notifications, widgets, backup) | On | On, none of it uses GMS |
 
 The Play build also checks Google Play services at run time
@@ -44,7 +45,7 @@ registration and R8.
 
 ```sh
 cp ~/.config/tibyan/key.properties android/key.properties   # once per checkout
-N=42   # the build number
+N=43   # the build number
 flutter build apk --release --build-number=$N \
   --dart-define-from-file=$HOME/.config/tibyan/sentry.env \
   --dart-define=TIBYAN_CHANNEL=huawei \
