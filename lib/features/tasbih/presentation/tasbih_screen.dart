@@ -328,11 +328,15 @@ class _CountText extends StatelessWidget {
     final digits = NumberFormatter(Localizations.localeOf(context));
     return Semantics(
       liveRegion: true,
+      // At rest: a dash, as «٠» in Arabic is only a dot.
       child: Text(
-        digits(count),
+        count == 0 ? '—' : digits(count),
+        semanticsLabel: count == 0
+            ? AppLocalizations.of(context).zeroLabel
+            : null,
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontFamily: digitsFamily,
+          fontFamily: count == 0 ? numeralsFamily : digitsFamily,
           fontSize: size,
           height: 1.1,
           fontWeight: FontWeight.w600,

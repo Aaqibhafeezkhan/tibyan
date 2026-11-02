@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import 'tasbih_screen.dart' show tasbihLocation;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -49,10 +53,22 @@ class TasbihLogScreen extends ConsumerWidget {
                   if (log.isEmpty)
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 48),
-                      child: Text(
-                        l.tasbihLogEmpty,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: look.sub),
+                      child: Column(
+                        children: [
+                          Text(
+                            l.tasbihLogEmpty,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: look.sub),
+                          ),
+                          const SizedBox(height: 16),
+                          FilledButton.icon(
+                            onPressed: () => context.canPop()
+                                ? context.pop()
+                                : context.go(tasbihLocation),
+                            icon: const Icon(Icons.touch_app_outlined),
+                            label: Text(l.tasbihStart),
+                          ),
+                        ],
                       ),
                     ),
                   for (final MapEntry(key: day, value: totals) in log.entries)

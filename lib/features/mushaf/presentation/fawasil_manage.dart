@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -641,10 +642,21 @@ class FawasilIndexTab extends ConsumerWidget {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(32),
-          child: Text(
-            '${l.noFawasil}\n${l.fasilHint}',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: t.muted, height: 1.7),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${l.noFawasil}\n${l.fasilHint}',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: t.muted, height: 1.7),
+              ),
+              const SizedBox(height: 16),
+              FilledButton.icon(
+                onPressed: () => context.go('/mushaf?entry=home'),
+                icon: const Icon(Icons.auto_stories_outlined),
+                label: Text(l.emptyOpenMushaf),
+              ),
+            ],
           ),
         ),
       );

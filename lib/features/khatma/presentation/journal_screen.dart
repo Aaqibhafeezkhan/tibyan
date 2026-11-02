@@ -86,12 +86,35 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                         : notes.isEmpty
                         ? Padding(
                             padding: const EdgeInsets.all(32),
-                            child: Text(
-                              _query.trim().isEmpty
-                                  ? l.journalEmpty
-                                  : l.journalNoMatch,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: t.muted, height: 1.7),
+                            child: Column(
+                              children: [
+                                Text(
+                                  _query.trim().isEmpty
+                                      ? l.journalEmpty
+                                      : l.journalNoMatch,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: t.muted, height: 1.7),
+                                ),
+                                if (_query.trim().isEmpty) ...[
+                                  const SizedBox(height: 16),
+                                  // A note on the verse last read.
+                                  FilledButton.icon(
+                                    onPressed: () async {
+                                      final at = await ref.read(
+                                        readingPositionProvider.future,
+                                      );
+                                      if (!context.mounted) return;
+                                      await showReflectionSheet(
+                                        context,
+                                        surah: at?.surah ?? 1,
+                                        ayah: at?.ayah ?? 1,
+                                      );
+                                    },
+                                    icon: const Icon(Icons.edit_note),
+                                    label: Text(l.journalAddNote),
+                                  ),
+                                ],
+                              ],
                             ),
                           )
                         : ListView.builder(

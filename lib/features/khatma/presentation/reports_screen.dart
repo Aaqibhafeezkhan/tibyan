@@ -153,15 +153,17 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                           crossAxisSpacing: 10,
                           childAspectRatio: 1.7,
                           children: [
-                            _Stat(l.reportsDays, digits(report.activeDays)),
-                            _Stat(l.reportsPages, digits(report.pages)),
+                            _Stat(l.reportsDays, report.activeDays, digits),
+                            _Stat(l.reportsPages, report.pages, digits),
                             _Stat(
                               l.reportsReadingMinutes,
-                              digits(report.readingMinutes),
+                              report.readingMinutes,
+                              digits,
                             ),
                             _Stat(
                               l.reportsListeningMinutes,
-                              digits(report.listeningMinutes),
+                              report.listeningMinutes,
+                              digits,
                             ),
                           ],
                         ),
@@ -196,10 +198,11 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
 }
 
 class _Stat extends StatelessWidget {
-  const _Stat(this.label, this.value);
+  const _Stat(this.label, this.count, this.digits);
 
   final String label;
-  final String value;
+  final int count;
+  final NumberFormatter digits;
 
   @override
   Widget build(BuildContext context) {
@@ -211,8 +214,12 @@ class _Stat extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // «٠» in Arabic is a dot; nothing yet reads as a dash.
             Text(
-              value,
+              count == 0 ? '—' : digits(count),
+              semanticsLabel: count == 0
+                  ? AppLocalizations.of(context).zeroLabel
+                  : null,
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.w700,

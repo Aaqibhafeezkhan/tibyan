@@ -6464,6 +6464,30 @@ abstract class AppLocalizations {
   /// **'احتساب الاستماع من الورد'**
   String get settingsCountListening;
 
+  /// No description provided for @emptyOpenMushaf.
+  ///
+  /// In ar, this message translates to:
+  /// **'افتح المصحف حيث توقفت'**
+  String get emptyOpenMushaf;
+
+  /// No description provided for @journalAddNote.
+  ///
+  /// In ar, this message translates to:
+  /// **'أضف ملاحظة'**
+  String get journalAddNote;
+
+  /// No description provided for @tasbihStart.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابدأ التسبيح'**
+  String get tasbihStart;
+
+  /// No description provided for @zeroLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'صفر'**
+  String get zeroLabel;
+
   /// No description provided for @settingsHifzOpen.
   ///
   /// In ar, this message translates to:
