@@ -11,6 +11,7 @@ import '../../hifz/presentation/strength_style.dart';
 import '../../khatma/khatma_providers.dart';
 import '../data/riwaya_data.dart';
 import '../mushaf_providers.dart';
+import 'index_warm.dart';
 import 'navigation.dart';
 import 'widgets/illuminated_frame.dart' show NumberFormatter;
 
@@ -272,11 +273,14 @@ class _PagesMapState extends ConsumerState<PagesMap> {
                           crossAxisSpacing: _gap,
                         ),
                         delegate: SliverChildBuilderDelegate(
-                          (context, i) => _PageCell(
+                          (context, i) => IndexWarmRow(
                             page: first + i,
-                            mark: data.of(first + i),
-                            current: first + i == widget.current,
-                            onTap: () => openPage(context, ref, first + i),
+                            child: _PageCell(
+                              page: first + i,
+                              mark: data.of(first + i),
+                              current: first + i == widget.current,
+                              onTap: () => openPage(context, ref, first + i),
+                            ),
                           ),
                           childCount: last - first + 1,
                         ),

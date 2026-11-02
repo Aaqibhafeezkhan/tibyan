@@ -29,6 +29,7 @@ import '../../features/mushaf/presentation/downloads_center_screen.dart';
 import '../../features/mushaf/presentation/download_screen.dart';
 import '../../features/mushaf/presentation/fawasil_screen.dart';
 import '../../features/mushaf/presentation/index_screen.dart';
+import '../../features/mushaf/presentation/index_transition.dart';
 import '../../features/mushaf/data/tajweed.dart';
 import '../../features/mushaf/presentation/mushaf_screen.dart';
 import '../../features/onboarding/onboarding_edition_screen.dart';
@@ -403,17 +404,22 @@ final appRouterProvider = Provider<GoRouter>(
           ),
           GoRoute(
             path: 'index',
-            builder: (context, state) => IndexScreen(
-              // The old reading-marks tab now lives in the fawasil tab.
-              tab: state.uri.queryParameters['tab'] == 'marks'
-                  ? IndexTab.fawasil
-                  : IndexTab.values
-                            .asNameMap()[state.uri.queryParameters['tab']] ??
-                        IndexTab.surahs,
-              surah: _int(state, 's'),
-              juz: _int(state, 'j'),
-              hizb: _int(state, 'h'),
-              page: _int(state, 'p'),
+            // A light fade in and out, never a slide over the heavy page:
+            // the mushaf under it is drawing the page a row just opened.
+            pageBuilder: (context, state) => indexTransitionPage(
+              key: state.pageKey,
+              child: IndexScreen(
+                // The old reading-marks tab now lives in the fawasil tab.
+                tab: state.uri.queryParameters['tab'] == 'marks'
+                    ? IndexTab.fawasil
+                    : IndexTab.values
+                              .asNameMap()[state.uri.queryParameters['tab']] ??
+                          IndexTab.surahs,
+                surah: _int(state, 's'),
+                juz: _int(state, 'j'),
+                hizb: _int(state, 'h'),
+                page: _int(state, 'p'),
+              ),
             ),
           ),
           GoRoute(

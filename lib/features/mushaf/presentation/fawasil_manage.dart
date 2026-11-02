@@ -13,6 +13,7 @@ import '../../../l10n/app_localizations.dart';
 import '../mushaf_providers.dart';
 import 'mushaf_screen.dart' show surahName;
 import 'widgets/fasil_bookmarks.dart';
+import 'index_warm.dart';
 import 'widgets/fasil_sheet.dart';
 import 'widgets/illuminated_frame.dart' show NumberFormatter;
 import 'widgets/mushaf_page.dart' show VerseKey;
@@ -695,19 +696,23 @@ class FawasilIndexTab extends ConsumerWidget {
                   ref.watch(versePageProvider((f.surah, f.ayah))).value ??
                   f.page;
               final surah = surahName(context, surahs[f.surah - 1]);
-              return _FasilTile(
+              return IndexWarmRow(
                 key: ValueKey('fawasil-row-${f.id}'),
-                index: i,
-                count: rows.length,
-                fasil: f,
-                place: digits.decimal(
-                  l.fasilLastAt(surah, '${f.ayah}', '$page'),
+                page: page,
+                child: _FasilTile(
+                  key: ValueKey('fawasil-tile-${f.id}'),
+                  index: i,
+                  count: rows.length,
+                  fasil: f,
+                  place: digits.decimal(
+                    l.fasilLastAt(surah, '${f.ayah}', '$page'),
+                  ),
+                  label: digits.decimal(
+                    l.fasilItemLabel(f.name, surah, '${f.ayah}', '$page'),
+                  ),
+                  onOpen: () => onOpen(f),
+                  onReorder: reorder,
                 ),
-                label: digits.decimal(
-                  l.fasilItemLabel(f.name, surah, '${f.ayah}', '$page'),
-                ),
-                onOpen: () => onOpen(f),
-                onReorder: reorder,
               );
             },
           ),

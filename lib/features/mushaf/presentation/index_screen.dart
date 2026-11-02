@@ -13,6 +13,7 @@ import '../data/mushaf_repository.dart';
 import '../mushaf_providers.dart';
 import 'mushaf_screen.dart';
 import 'fawasil_manage.dart';
+import 'index_warm.dart';
 import 'navigation.dart';
 import '../../khatma/domain/khatmah.dart' show EntryPoint;
 import 'pages_map.dart';
@@ -75,6 +76,17 @@ class IndexScreen extends ConsumerStatefulWidget {
 class _IndexScreenState extends ConsumerState<IndexScreen> {
   String _query = '';
 
+  /// Prepares the page a row opens from the moment it is touched.
+  late final IndexJumpWarmer _warmer = IndexJumpWarmer(
+    warm: (page) => warmIndexTarget(ref, page),
+  );
+
+  @override
+  void dispose() {
+    _warmer.dispose();
+    super.dispose();
+  }
+
   Future<void> _goToRef(
     ({int surah, int ayah}) r,
     List<SurahRow> surahs,
@@ -104,79 +116,82 @@ class _IndexScreenState extends ConsumerState<IndexScreen> {
       child: LookScaffold(
         selected: RailItem.contents,
         body: SafeArea(
-          child: Column(
-            children: [
-              LookTopBar(title: l.indexTitle),
-              _IndexTabs(
-                // The surahs' search field is left behind: its keyboard goes.
-                onTap: (_) => dismissKeyboard(),
-                labels: [
-                  l.tabSurahs,
-                  l.tabJuz,
-                  l.tabHizb,
-                  l.tabPages,
-                  l.tabFawasil,
-                ],
-              ),
-              Expanded(
-                child: surahs == null
-                    ? Center(child: Text(l.loadingLabel))
-                    : DismissKeyboardOnSwipe(
-                        child: TabBarView(
-                          children: [
-                            _surahTab(context, surahs),
-                            _StartsTab(
-                              surahs: surahs,
-                              // A riwaya edition: its own juz starts (KFGQPC).
-                              starts: riwaya != null
-                                  ? [
-                                      for (final v in riwaya.juzStarts())
-                                        riwaya.row(v),
-                                    ]
-                                  : ref
-                                        .watch(juzStartsProvider)
-                                        .value
-                                        ?.map((j) => j.ayah)
-                                        .toList(),
-                              current: widget.juz,
-                              title: (n) => l.juzLabel(n),
-                            ),
-                            // The riwayat's hizb divisions are not in their
-                            // sources.
-                            if (riwaya != null)
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(32),
-                                  child: Text(
-                                    riwaya.hasWordBoxes
-                                        ? l.riwayaGaps
-                                        : '${l.riwayaGaps}\n\n${l.riwayaNoWordBoxes}',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              )
-                            else
+          child: IndexWarmScope(
+            warmer: _warmer,
+            child: Column(
+              children: [
+                LookTopBar(title: l.indexTitle),
+                _IndexTabs(
+                  // The surahs' search field is left behind: its keyboard goes.
+                  onTap: (_) => dismissKeyboard(),
+                  labels: [
+                    l.tabSurahs,
+                    l.tabJuz,
+                    l.tabHizb,
+                    l.tabPages,
+                    l.tabFawasil,
+                  ],
+                ),
+                Expanded(
+                  child: surahs == null
+                      ? Center(child: Text(l.loadingLabel))
+                      : DismissKeyboardOnSwipe(
+                          child: TabBarView(
+                            children: [
+                              _surahTab(context, surahs),
                               _StartsTab(
                                 surahs: surahs,
-                                starts: ref.watch(hizbStartsProvider).value,
-                                current: widget.hizb,
-                                title: (n) => l.hizbLabel(n),
+                                // A riwaya edition: its own juz starts (KFGQPC).
+                                starts: riwaya != null
+                                    ? [
+                                        for (final v in riwaya.juzStarts())
+                                          riwaya.row(v),
+                                      ]
+                                    : ref
+                                          .watch(juzStartsProvider)
+                                          .value
+                                          ?.map((j) => j.ayah)
+                                          .toList(),
+                                current: widget.juz,
+                                title: (n) => l.juzLabel(n),
                               ),
-                            PagesMap(current: widget.page),
-                            FawasilIndexTab(
-                              onOpen: (f) => openVerse(
-                                context,
-                                ref,
-                                surah: f.surah,
-                                ayah: f.ayah,
-                                entry: EntryPoint.bookmark,
+                              // The riwayat's hizb divisions are not in their
+                              // sources.
+                              if (riwaya != null)
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(32),
+                                    child: Text(
+                                      riwaya.hasWordBoxes
+                                          ? l.riwayaGaps
+                                          : '${l.riwayaGaps}\n\n${l.riwayaNoWordBoxes}',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                )
+                              else
+                                _StartsTab(
+                                  surahs: surahs,
+                                  starts: ref.watch(hizbStartsProvider).value,
+                                  current: widget.hizb,
+                                  title: (n) => l.hizbLabel(n),
+                                ),
+                              PagesMap(current: widget.page),
+                              FawasilIndexTab(
+                                onOpen: (f) => openVerse(
+                                  context,
+                                  ref,
+                                  surah: f.surah,
+                                  ayah: f.ayah,
+                                  entry: EntryPoint.bookmark,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -215,10 +230,13 @@ class _IndexScreenState extends ConsumerState<IndexScreen> {
       if (pageNumber != null &&
           pageNumber >= 1 &&
           pageNumber <= ref.watch(editionProvider).pageCount)
-        ListTile(
-          leading: const Icon(Icons.description_outlined),
-          title: Text(l.pageOf('$pageNumber')),
-          onTap: () => openPage(context, ref, pageNumber),
+        IndexWarmRow(
+          page: pageNumber,
+          child: ListTile(
+            leading: const Icon(Icons.description_outlined),
+            title: Text(l.pageOf('$pageNumber')),
+            onTap: () => openPage(context, ref, pageNumber),
+          ),
         ),
     ];
     // Juz separators: the juz each surah begins in, from the edition's
@@ -259,20 +277,23 @@ class _IndexScreenState extends ConsumerState<IndexScreen> {
         final e = entries[i];
         final s = e.surah;
         if (s == null) return _JuzDivider(label: l.juzLabel(digits(e.juz!)));
-        return _SurahRowTile(
-          surah: s,
-          current: isCurrent,
-          ayahs: () {
-            final n =
-                ref.watch(surahAyahCountProvider(s.id)).value ?? s.ayahCount;
-            return l.ayahCount(n, digits(n));
-          }(),
-          // The edition's own count and page (a riwaya differs).
-          page: digits(
+        // The edition's own start page (a riwaya differs).
+        final start =
             ref.watch(surahStartPageProvider(s.id)).value ??
-                s.startPageIn(ref.watch(editionProvider)),
+            s.startPageIn(ref.watch(editionProvider));
+        return IndexWarmRow(
+          page: start,
+          child: _SurahRowTile(
+            surah: s,
+            current: isCurrent,
+            ayahs: () {
+              final n =
+                  ref.watch(surahAyahCountProvider(s.id)).value ?? s.ayahCount;
+              return l.ayahCount(n, digits(n));
+            }(),
+            page: digits(start),
+            onTap: () => openVerse(context, ref, surah: s.id, ayah: 1),
           ),
-          onTap: () => openVerse(context, ref, surah: s.id, ayah: 1),
         );
       },
     );
@@ -909,16 +930,19 @@ class _StartsTab extends ConsumerWidget {
             final a = list[i];
             // Rows of a riwaya edition carry its own numbers and page.
             final page = a.pageIn(ref.watch(editionProvider));
-            return _Row(
-              current: isCurrent,
-              badge: digits(i + 1),
-              title: title(digits(i + 1)),
-              subtitle: l.juzStartsAt(
-                surahName(context, surahs[a.surah - 1]),
-                digits(a.number),
+            return IndexWarmRow(
+              page: page,
+              child: _Row(
+                current: isCurrent,
+                badge: digits(i + 1),
+                title: title(digits(i + 1)),
+                subtitle: l.juzStartsAt(
+                  surahName(context, surahs[a.surah - 1]),
+                  digits(a.number),
+                ),
+                trailing: l.pageShort(digits(page)),
+                onTap: () => openPage(context, ref, page),
               ),
-              trailing: l.pageShort(digits(page)),
-              onTap: () => openPage(context, ref, page),
             );
           },
         ),
