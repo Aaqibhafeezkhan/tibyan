@@ -12,7 +12,7 @@ import '../mushaf_providers.dart';
 /// finds the page's text, artwork and picture ready instead of making them
 /// during the index's exit.
 ///
-/// One page at a time, at idle priority (a frame never waits on it). A new
+/// One page at a time, between frames (a frame never waits on it). A new
 /// row retargets; a scroll or a cancelled touch drops what has not started.
 class IndexJumpWarmer {
   IndexJumpWarmer({required this.warm, this.schedule = idleSlot});
@@ -67,9 +67,14 @@ Future<void> warmIndexTarget(WidgetRef ref, int page) async {
   ).wait;
 }
 
-/// The next idle slot of the scheduler.
-Future<void> idleSlot() =>
-    SchedulerBinding.instance.scheduleTask<void>(() {}, Priority.idle);
+/// After the frame being drawn, in a task of its own: the touch's frame
+/// (the row's highlight) is never kept waiting. Not the scheduler's idle
+/// priority: the index's ink and fades keep frames coming, and an idle
+/// task would wait them out, past the tap.
+Future<void> idleSlot() async {
+  await SchedulerBinding.instance.endOfFrame;
+  await Future<void>.delayed(Duration.zero);
+}
 
 /// Gives the index's rows their [IndexJumpWarmer], and drops its target
 /// when a list under it starts to scroll (the finger was not tapping).

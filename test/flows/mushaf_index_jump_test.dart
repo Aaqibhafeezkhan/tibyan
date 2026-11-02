@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:drift/native.dart';
+import 'package:flutter/material.dart' show TextField;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,6 +19,7 @@ import 'package:tibyan/features/home/whats_new.dart';
 import 'package:tibyan/features/khatma/domain/khatmah.dart' show EntryPoint;
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
 import 'package:tibyan/features/mushaf/presentation/index_screen.dart';
+import 'package:tibyan/features/mushaf/presentation/index_warm.dart';
 import 'package:tibyan/features/mushaf/presentation/mushaf_screen.dart';
 import 'package:tibyan/features/mushaf/presentation/navigation.dart';
 import 'package:tibyan/features/mushaf/presentation/widgets/mushaf_page.dart';
@@ -38,7 +40,7 @@ void main() {
     final dir = Directory(p.join(root.path, 'packs', 'pages-hafs-1441-v1'))
       ..createSync(recursive: true);
     final zip = bundledPagesArchive();
-    for (final name in ['603.svg.xz', '604.svg.xz']) {
+    for (final name in ['597.svg.xz', '603.svg.xz', '604.svg.xz']) {
       final entry = zip.findFile(name)!;
       File(p.join(dir.path, entry.name)).writeAsBytesSync(entry.content);
     }
@@ -174,5 +176,37 @@ void main() {
     // One fawasil tab only: the old reading-marks tab is gone.
     expect(find.text('فواصل القراءة'), findsNothing);
     expect(IndexTab.values.map((t) => t.name), isNot(contains('marks')));
+  });
+
+  testWidgets('a touch on an index row warms its page, a tap lands on it', (
+    tester,
+  ) async {
+    final container = await start(tester);
+    await settle(tester, find.byType(MushafPage));
+    expect(showing(604), isTrue);
+    final router = container.read(appRouterProvider);
+    unawaited(router.push('/mushaf/index'));
+    await settle(tester, find.byType(TextField));
+    // A page number typed in the search: its row opens page 597.
+    await tester.enterText(find.byType(TextField), '597');
+    final rows = find.byWidgetPredicate(
+      (w) => w is IndexWarmRow && w.page == 597,
+    );
+    await settle(tester, rows);
+    final cell = rows.last;
+    final warmer = IndexWarmScope.maybeOf(tester.element(cell))!;
+
+    final gesture = await tester.startGesture(tester.getCenter(cell));
+    expect(warmer.target, 597);
+    warmer.cancel();
+    await gesture.up();
+    await settle(
+      tester,
+      find.byWidgetPredicate((w) => w is MushafPage && w.page == 597),
+    );
+    expect(showing(597), isTrue);
+    await tester.pump(const Duration(milliseconds: 300)); // the fade out
+    expect(find.byType(IndexScreen), findsNothing);
+    expect(router.canPop(), isFalse);
   });
 }
