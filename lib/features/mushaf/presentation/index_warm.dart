@@ -60,10 +60,18 @@ class IndexJumpWarmer {
 
 /// Prepares [page] of the edition being read for the mushaf to land on.
 Future<void> warmIndexTarget(WidgetRef ref, int page) async {
-  if (page < 1 || page > ref.read(editionProvider).pageCount) return;
+  final edition = ref.read(editionProvider);
+  if (page < 1 || page > edition.pageCount) return;
+  final drawn = switch (edition) {
+    // Drawn from page pictures: their text and frame only, for now.
+    MushafEdition.madina1405 || MushafEdition.shamarly => Future<void>.value(),
+    // The new editions: the page's artwork read and measured.
+    _ => ref.read(svgPageGeometryProvider(page).future),
+  };
   await (
     ref.read(pageAyahsProvider(page).future),
     ref.read(frameInfoProvider(page).future),
+    drawn,
   ).wait;
 }
 
