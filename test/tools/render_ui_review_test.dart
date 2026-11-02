@@ -48,6 +48,7 @@ import 'package:tibyan/features/settings/storage_screen.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
 import 'package:tibyan/core/crash/crash_consent.dart';
+import 'package:tibyan/core/flags/feature_flags.dart';
 import 'package:tibyan/features/home/home_screen.dart';
 import 'package:tibyan/features/mushaf/presentation/index_screen.dart';
 import 'package:tibyan/features/settings/settings_screen.dart';
@@ -101,6 +102,9 @@ void main() {
       final root = Directory.systemTemp.createTempSync('render');
       final registry = (await tester.runAsync(
         () => ThemeRegistry.load(rootBundle),
+      ))!;
+      final flags = (await tester.runAsync(
+        () => FeatureFlags.load(rootBundle),
       ))!;
       final out = Directory(outPath)..createSync(recursive: true);
       addTearDown(tester.view.reset);
@@ -172,6 +176,7 @@ void main() {
                 contentDatabaseProvider.overrideWithValue(db),
                 userDatabaseProvider.overrideWithValue(user),
                 themeRegistryProvider.overrideWithValue(registry),
+                featureFlagsProvider.overrideWithValue(flags),
                 sharedPreferencesProvider.overrideWithValue(sp),
                 packRootProvider.overrideWithValue(root),
                 readingPositionProvider.overrideWith(
