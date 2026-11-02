@@ -258,17 +258,17 @@ void main() {
     expect(warmed, isEmpty, reason: 'nothing before the first frame');
     positions.add(_at(50));
     await tester.pump();
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
     expect(warmed, [50, 51, 49], reason: 'the page first, then neighbours');
 
     warmed.clear();
     positions.add(_at(50));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
     expect(warmed, isEmpty, reason: 'same target: nothing again');
 
     positions.add(_at(200));
     await tester.pump();
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
     expect(warmed, [200, 201, 199]);
   });
 }

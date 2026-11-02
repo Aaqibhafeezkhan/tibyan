@@ -416,12 +416,18 @@ class ContinuePrewarmState extends ConsumerState<ContinuePrewarm> {
     unawaited(_run(generation, edition, page));
   }
 
+  /// Widget tests (`flutter test`) use no real pages to prepare: the
+  /// prepared work would outlive their fake clock.
+  static final _underTest = Platform.environment.containsKey('FLUTTER_TEST');
+
   Future<void> _run(int generation, MushafEdition edition, int page) async {
+    if (widget.warm == null && _underTest) return;
     final warm = widget.warm ?? warmMushafPage;
     for (final pg in [page, page + 1, page - 1]) {
       if (pg < 1 || pg > edition.pageCount) continue;
-      // One page per idle slot, so a frame never waits on the work.
-      await SchedulerBinding.instance.scheduleTask<void>(() {}, Priority.idle);
+      // One page per idle moment (no animation running), so a frame
+      // never waits on the work.
+      await _idle();
       if (!mounted || generation != _generation) return;
       try {
         await warm(ref, edition, pg);
@@ -429,6 +435,14 @@ class ContinuePrewarmState extends ConsumerState<ContinuePrewarm> {
         debugPrint('ContinuePrewarm: page $pg not prepared ($e)');
       }
     }
+  }
+
+  /// After the next frame, once nothing is animating.
+  Future<void> _idle() async {
+    final scheduler = SchedulerBinding.instance;
+    do {
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+    } while (mounted && scheduler.transientCallbackCount > 0);
   }
 
   @override
