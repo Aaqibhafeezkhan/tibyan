@@ -115,7 +115,7 @@ class HomeScreen extends ConsumerWidget {
       ),
       (
         icon: Icons.graphic_eq,
-        label: l.tasmeeTitle,
+        label: l.tasmeeTileLabel,
         note: l.tasmeeSelectRange,
         onTap: () => showTasmeeSetup(context),
       ),
@@ -625,7 +625,9 @@ class _TodayCard extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        '$percent%',
+                        Localizations.localeOf(context).languageCode == 'ar'
+                            ? '$percent٪'
+                            : '$percent%',
                         textScaler: TextScaler.noScaling,
                         style: TextStyle(
                           fontSize: 14 * k,
@@ -821,7 +823,7 @@ class _SectionTile extends StatelessWidget {
         Text(
           s.note,
           textAlign: TextAlign.center,
-          maxLines: 1,
+          maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(fontSize: 11 * k, color: look.sub),
         ),

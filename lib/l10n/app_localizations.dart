@@ -4609,6 +4609,12 @@ abstract class AppLocalizations {
   /// **'قراءة {date}'**
   String khatmaPendingOn(String date);
 
+  /// Short home-tile label for the recitation check.
+  ///
+  /// In ar, this message translates to:
+  /// **'التسميع'**
+  String get tasmeeTileLabel;
+
   /// No description provided for @tasmeeTitle.
   ///
   /// In ar, this message translates to:

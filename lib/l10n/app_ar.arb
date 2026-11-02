@@ -1912,6 +1912,8 @@
       }
     }
   },
+  "tasmeeTileLabel": "التسميع",
+  "@tasmeeTileLabel": {"description": "Short home-tile label for the recitation check."},
   "tasmeeTitle": "التسميع",
   "tasmeeDescription": "اقرأ من حفظك؛ يسمعك تبيان على جهازك ويُظهر الكلمات ويعلّم مواضع الخطأ. لا يُرسل الصوت ولا يُقيَّم التجويد.",
   "tasmeeSelectRange": "اختر نطاق التسميع",

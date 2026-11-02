@@ -2755,6 +2755,9 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get tasmeeTileLabel => 'التسميع';
+
+  @override
   String get tasmeeTitle => 'التسميع';
 
   @override

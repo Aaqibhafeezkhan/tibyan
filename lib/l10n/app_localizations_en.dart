@@ -2722,6 +2722,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get tasmeeTileLabel => 'Recitation';
+
+  @override
   String get tasmeeTitle => 'Recitation practice';
 
   @override

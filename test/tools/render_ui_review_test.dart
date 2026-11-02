@@ -129,6 +129,7 @@ void main() {
         Future<void> Function(BuildContext context)? overlay,
       }) async {
         if (only != null && !only.any(name.contains)) return;
+        if (File('${out.path}/$name.png').existsSync()) return;
         tester.view
           ..physicalSize = size
           ..devicePixelRatio = 1;
