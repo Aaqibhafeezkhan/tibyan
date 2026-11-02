@@ -2722,6 +2722,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get tasmeeTileLabel => 'Recitation';
+
+  @override
   String get tasmeeTitle => 'Recitation practice';
 
   @override
@@ -3843,6 +3846,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsCountListening =>
       'Count listening toward the daily portion';
+
+  @override
+  String get settingsHifzOpen => 'Open memorization';
+
+  @override
+  String get tasmeeSettingsTitle => 'Recitation practice settings';
 
   @override
   String get settingsHifzGoals => 'Memorization goals and reminders';

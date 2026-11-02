@@ -2755,6 +2755,9 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get tasmeeTileLabel => 'التسميع';
+
+  @override
   String get tasmeeTitle => 'التسميع';
 
   @override
@@ -3917,6 +3920,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get settingsCountListening => 'احتساب الاستماع من الورد';
+
+  @override
+  String get settingsHifzOpen => 'افتح الحفظ';
+
+  @override
+  String get tasmeeSettingsTitle => 'إعدادات التسميع';
 
   @override
   String get settingsHifzGoals => 'أهداف الحفظ وتذكيراتها';

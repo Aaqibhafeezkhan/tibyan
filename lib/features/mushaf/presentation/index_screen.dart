@@ -411,7 +411,7 @@ class _IndexTabs extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
           unselectedLabelStyle: const TextStyle(fontSize: 15),
-          labelPadding: const EdgeInsets.symmetric(horizontal: 18),
+          labelPadding: const EdgeInsets.symmetric(horizontal: 12),
           tabs: [for (final t in labels) Tab(height: 44, text: t)],
         ),
       ),
