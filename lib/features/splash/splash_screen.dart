@@ -22,7 +22,7 @@ const splashLogoHeight = 112.0;
 /// chosen style and light. With reduced motion it is still.
 ///
 /// It plays in full on the first launch of the local day (and always before
-/// the first-run setup is done, and with reduced motion, as before). Later
+/// the first-run setup is done; reduced motion follows the same rule). Later
 /// launches that day, and launches for a link, shortcut, notification or
 /// widget, hand over at once: only the native launch screen's logo shows
 /// until home or the target is drawn.
@@ -85,11 +85,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     if (_play == null) {
       final settings = ref.read(settingsProvider.notifier);
       final now = widget.now();
-      _play =
-          !_onboarded ||
-          (!_target.value && (still || !settings.splashShownOn(now)));
+      _play = !_onboarded || (!_target.value && !settings.splashShownOn(now));
       if (_play!) {
-        if (_onboarded && !still) unawaited(settings.markSplashShown(now));
+        if (_onboarded) unawaited(settings.markSplashShown(now));
         _timer = Timer(
           widget.duration + const Duration(milliseconds: 60),
           _leave,

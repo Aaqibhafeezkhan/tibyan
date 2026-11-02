@@ -82,7 +82,13 @@ jobs:
           cache: true
       - run: flutter config --enable-macos-desktop
       - run: flutter pub get
+      # CI has no Apple signing identity; build unsigned (the release
+      # workflow signs). Flutter passes FLUTTER_XCODE_* to xcodebuild.
       - run: flutter build macos --release
+        env:
+          FLUTTER_XCODE_CODE_SIGNING_ALLOWED: 'NO'
+          FLUTTER_XCODE_CODE_SIGNING_REQUIRED: 'NO'
+          FLUTTER_XCODE_CODE_SIGN_IDENTITY: ''
       - name: Both widget extensions are in the app
         run: |
           app=$(ls -d build/macos/Build/Products/Release/*.app | head -1)
