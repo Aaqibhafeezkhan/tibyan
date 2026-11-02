@@ -20,13 +20,23 @@ const splashLogoHeight = 112.0;
 /// centre and a gold light passing along its strokes, from right to left
 /// as the pen writes; then the line and tagline. Everything takes the
 /// chosen style and light. With reduced motion it is still.
+///
+/// It plays in full on the first launch of the local day (and always before
+/// the first-run setup is done, and with reduced motion, as before). Later
+/// launches that day, and launches for a link, shortcut, notification or
+/// widget, hand over at once: only the native launch screen's logo shows
+/// until home or the target is drawn.
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({
     super.key,
     this.duration = const Duration(milliseconds: 900),
+    this.now = DateTime.now,
   });
 
   final Duration duration;
+
+  /// The clock, for the once-a-day check (tests).
+  final DateTime Function() now;
 
   @override
   ConsumerState<SplashScreen> createState() => _SplashScreenState();
@@ -43,31 +53,61 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     duration: widget.duration,
   );
   Timer? _timer;
+  bool? _play;
+  bool _left = false;
+  late final ValueNotifier<bool> _target = ref.read(launchTargetProvider);
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer(widget.duration + const Duration(milliseconds: 60), () {
-      if (!mounted) return;
-      context.go(_start);
-      if (ref.read(settingsProvider).onboardingDone) {
-        markAppRouterReady(ref.read(appRouterReadyProvider));
-      }
-    });
+    _target.addListener(_onTarget);
+  }
+
+  bool get _onboarded => ref.read(settingsProvider).onboardingDone;
+
+  void _onTarget() {
+    // Opened for a link while the splash plays: straight to it.
+    if (_target.value && _onboarded) _leave();
+  }
+
+  void _leave() {
+    if (_left || !mounted) return;
+    _left = true;
+    _timer?.cancel();
+    context.go(_start);
+    if (_onboarded) markAppRouterReady(ref.read(appRouterReadyProvider));
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (MediaQuery.disableAnimationsOf(context)) {
+    final still = MediaQuery.disableAnimationsOf(context);
+    if (_play == null) {
+      final settings = ref.read(settingsProvider.notifier);
+      final now = widget.now();
+      _play =
+          !_onboarded ||
+          (!_target.value && (still || !settings.splashShownOn(now)));
+      if (_play!) {
+        if (_onboarded && !still) unawaited(settings.markSplashShown(now));
+        _timer = Timer(
+          widget.duration + const Duration(milliseconds: 60),
+          _leave,
+        );
+      } else {
+        WidgetsBinding.instance.addPostFrameCallback((_) => _leave());
+      }
+    }
+    if (still) {
       _t.value = 1;
-    } else if (!_t.isAnimating && _t.value == 0) {
+    } else if (_play! && !_t.isAnimating && _t.value == 0) {
       _t.forward();
     }
   }
 
   @override
   void dispose() {
+    _target.removeListener(_onTarget);
     _timer?.cancel();
     _t.dispose();
     super.dispose();
@@ -75,6 +115,23 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    if (_play == false) {
+      // Handing over at once: the native launch screen's logo, unmoved.
+      final look = context.look;
+      return Scaffold(
+        backgroundColor: look.bg,
+        body: Center(
+          child: TibyanWordmark(
+            color: look.night
+                ? look.onFrame
+                : (look.isHandasi
+                      ? look.accent
+                      : (look.isLayli ? look.ink : look.frame)),
+            height: splashLogoHeight,
+          ),
+        ),
+      );
+    }
     final l = AppLocalizations.of(context);
     final look = context.look;
     final mark = look.night
