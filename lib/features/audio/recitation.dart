@@ -535,6 +535,11 @@ abstract class RecitationAudio {
   Future<void> dispose();
 }
 
+/// The audio backend's setup (the background service and the session),
+/// started by main() without holding up the first frame. A player waits
+/// for it before loading anything; until then it has nothing to play.
+Future<void> audioBackendReady = Future<void>.value();
+
 class _JustAudio implements RecitationAudio {
   final _p = AudioPlayer();
 
@@ -554,8 +559,13 @@ class _JustAudio implements RecitationAudio {
   Future<void> setSpeed(double speed) => _p.setSpeed(speed);
 
   @override
-  Future<void> load(Uri uri, MediaItem tag, Duration initial) => _p
-      .setAudioSource(AudioSource.uri(uri, tag: tag), initialPosition: initial);
+  Future<void> load(Uri uri, MediaItem tag, Duration initial) async {
+    await audioBackendReady;
+    await _p.setAudioSource(
+      AudioSource.uri(uri, tag: tag),
+      initialPosition: initial,
+    );
+  }
 
   @override
   Future<void> play() => _p.play();

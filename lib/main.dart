@@ -25,6 +25,7 @@ import 'core/db/user_database.dart';
 import 'core/downloads/background_downloads.dart';
 import 'core/flags/feature_flags.dart';
 import 'core/platform/app_shortcuts.dart';
+import 'core/perf/startup_marks.dart';
 import 'core/review/review_prompt.dart';
 import 'core/router/app_router.dart';
 import 'core/ui/desktop_window.dart';
@@ -55,6 +56,14 @@ import 'l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  startupMark('binding');
+  if (const bool.fromEnvironment('PROF')) {
+    unawaited(
+      WidgetsBinding.instance.waitUntilFirstFrameRasterized.then(
+        (_) => startupMark('first-frame'),
+      ),
+    );
+  }
   // Per-frame timings, for profiling a build run with
   // `--dart-define=PROF=true`. Off, and free, in every other build.
   if (const bool.fromEnvironment('PROF')) {
@@ -69,36 +78,18 @@ Future<void> main() async {
       }
     });
   }
-  switch (defaultTargetPlatform) {
-    case TargetPlatform.windows || TargetPlatform.linux:
-      // No system media session package for these: just_audio plays
-      // through libmpv (just_audio_media_kit).
-      JustAudioMediaKit.ensureInitialized(linux: true, windows: true);
-    default:
-      // Recitation keeps playing with the screen off, with lock-screen
-      // controls.
-      await JustAudioBackground.init(
-        androidNotificationChannelId: 'app.tibyan.recitation',
-        androidNotificationChannelName: 'التلاوة',
-        androidNotificationOngoing: true,
-        // A white silhouette, not the full-colour launcher icon (which
-        // Android draws as a blank blob in the status bar).
-        androidNotificationIcon: 'drawable/ic_stat_tibyan',
-        notificationColor: const Color(0xFF0F6660),
-      );
-      // The session is set for playback before anything plays, so
-      // iOS keeps the recitation going in the background (the .playback
-      // category) whichever sound starts first (the misbaha's click, a
-      // recording).
-      final session = await AudioSession.instance;
-      await session.configure(const AudioSessionConfiguration.music());
-  }
-
+  // The audio backend is set up alongside the first frames: about a
+  // second on a slow phone, and nothing plays before a tap. A player
+  // waits for it before loading (audioBackendReady).
+  audioBackendReady = _initAudio();
   final registry = await ThemeRegistry.load(rootBundle);
+  startupMark('theme');
   final flags = await FeatureFlags.load(rootBundle);
+  startupMark('theme+flags');
   final prefs = await SharedPreferences.getInstance();
   // On the desktop: the window's size and place, as last left.
   await DesktopWindow.init(prefs, title: 'Tibyan');
+  startupMark('prefs+window');
   final content = await ContentDatabase.openBundled(rootBundle);
   final packRoot = await getApplicationSupportDirectory();
   final timing = TimingUpdates(Directory(p.join(packRoot.path, 'timing')));
@@ -106,6 +97,7 @@ Future<void> main() async {
     Directory(p.join(packRoot.path, 'word-timing')),
   );
 
+  startupMark('content-db+dirs');
   final container = ProviderContainer(
     overrides: [
       themeRegistryProvider.overrideWithValue(registry),
@@ -134,6 +126,7 @@ Future<void> main() async {
     (_, optIn) => CrashReporting.apply(optIn: optIn),
   );
 
+  startupMark('crash');
   // Pack downloads run in the background; finish any that ended while the
   // app was closed. Notifications speak the interface language.
   final l = lookupAppLocalizations(
@@ -161,6 +154,7 @@ Future<void> main() async {
 
   // Reports queued while offline go out on the next start.
   unawaited(container.read(reportServiceProvider).flush());
+  startupMark('pre-runApp');
   runApp(
     UncontrolledProviderScope(container: container, child: const TibyanApp()),
   );
@@ -172,6 +166,36 @@ Future<void> main() async {
   _startCarBrowsing(container);
   _startLiveActivity(container);
   _startKhatma(container);
+  startupMark('main-done');
+}
+
+Future<void> _initAudio() async {
+  switch (defaultTargetPlatform) {
+    case TargetPlatform.windows || TargetPlatform.linux:
+      // No system media session package for these: just_audio plays
+      // through libmpv (just_audio_media_kit).
+      JustAudioMediaKit.ensureInitialized(linux: true, windows: true);
+    default:
+      // Recitation keeps playing with the screen off, with lock-screen
+      // controls.
+      await JustAudioBackground.init(
+        androidNotificationChannelId: 'app.tibyan.recitation',
+        androidNotificationChannelName: 'التلاوة',
+        androidNotificationOngoing: true,
+        // A white silhouette, not the full-colour launcher icon (which
+        // Android draws as a blank blob in the status bar).
+        androidNotificationIcon: 'drawable/ic_stat_tibyan',
+        notificationColor: const Color(0xFF0F6660),
+      );
+      // The session is set for playback before anything plays, so
+      // iOS keeps the recitation going in the background (the .playback
+      // category) whichever sound starts first (the misbaha's click, a
+      // recording).
+      final session = await AudioSession.instance;
+      await session.configure(const AudioSessionConfiguration.music());
+  }
+
+  startupMark('audio-ready');
 }
 
 /// After the first frame: storage an older build used that this one no
