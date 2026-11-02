@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'fasil_bookmarks.dart';
 
 import 'dart:math' as math;
@@ -509,6 +511,34 @@ class ImageMushafPage extends ConsumerStatefulWidget {
   final PageInteraction interaction;
   final Future<ImagePageData> Function(WidgetRef ref, int page) load;
 
+  /// Pages read ahead of being shown ([warm]), by edition loader and page:
+  /// three at most, each a decoded page image.
+  static final _warmed = <(Object, int), Future<ImagePageData>>{};
+  static const _warmedMax = 3;
+
+  /// Reads and decodes [page] now with [fetch] (for [load]), for the home
+  /// screen's «متابعة القراءة»: the page's widget takes it when built.
+  static Future<void> warm(
+    Object load,
+    int page,
+    Future<ImagePageData> Function() fetch,
+  ) {
+    final key = (load, page);
+    final hit = _warmed[key];
+    if (hit != null) return hit.then((_) {});
+    final data = fetch();
+    _warmed[key] = data;
+    while (_warmed.length > _warmedMax) {
+      final oldest = _warmed.keys.first;
+      unawaited(
+        _warmed
+            .remove(oldest)!
+            .then((d) => d.image.dispose(), onError: (Object _) {}),
+      );
+    }
+    return data.then((_) {}, onError: (Object _) => _warmed.remove(key));
+  }
+
   @override
   ConsumerState<ImageMushafPage> createState() => _ImageMushafPageState();
 }
@@ -536,7 +566,12 @@ class _ImageMushafPageState extends ConsumerState<ImageMushafPage> {
   }
 
   Future<ImagePageData> _fetch() async {
-    final data = await widget.load(ref, widget.page);
+    final warmed = ImageMushafPage._warmed.remove((widget.load, widget.page));
+    final data =
+        await (warmed?.catchError(
+              (Object _) => widget.load(ref, widget.page),
+            ) ??
+            widget.load(ref, widget.page));
     _image?.dispose();
     _image = data.image;
     return data;
@@ -549,11 +584,12 @@ class _ImageMushafPageState extends ConsumerState<ImageMushafPage> {
       future: _load,
       builder: (context, snap) {
         if (!snap.hasData) {
-          return Center(
-            child: CircularProgressIndicator(
-              semanticsLabel: AppLocalizations.of(context)
-                  .loadingPage('${widget.page}'),
-            ),
+          // The bare page ground while the page is read (prepared
+          // ahead, it is a moment): no spinner flashing in a turn or an
+          // opening.
+          return Semantics(
+            label: AppLocalizations.of(context).loadingPage('${widget.page}'),
+            child: const SizedBox.expand(),
           );
         }
         final data = snap.data!;

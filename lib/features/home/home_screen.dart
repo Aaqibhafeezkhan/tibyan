@@ -21,6 +21,7 @@ import '../tasbih/presentation/tasbih_screen.dart'
     show tasbihIcon, tasbihLocation;
 import '../tasbih/tasbih_providers.dart' show tasbihTodayProvider;
 import '../mushaf/mushaf_providers.dart';
+import '../mushaf/presentation/continue_snapshot.dart';
 import '../mushaf/presentation/mushaf_screen.dart';
 import '../mushaf/presentation/widgets/illuminated_frame.dart';
 import '../tasmee/presentation/tasmee_setup_screen.dart' show showTasmeeSetup;
@@ -120,18 +121,25 @@ class HomeScreen extends ConsumerWidget {
       ),
     ];
 
-    final hero = _ContinueCard(
-      surahRow: position == null || surahs == null
-          ? null
-          : surahs[position.surah - 1],
-      detail: position == null || surahs == null
-          ? null
-          : l.continueReadingAt(
-              surahName(context, surahs[position.surah - 1]),
-              digits(position.ayah),
-              digits(position.page),
-            ),
-      onOpen: () => context.go('/mushaf?entry=home'),
+    // The page grows from this card (see [ContinueTransition]).
+    final hero = Builder(
+      builder: (card) => _ContinueCard(
+        surahRow: position == null || surahs == null
+            ? null
+            : surahs[position.surah - 1],
+        detail: position == null || surahs == null
+            ? null
+            : l.continueReadingAt(
+                surahName(context, surahs[position.surah - 1]),
+                digits(position.ayah),
+                digits(position.page),
+              ),
+        onOpen: () => openContinueReading(
+          card,
+          ref,
+          () => context.go('/mushaf?entry=home'),
+        ),
+      ),
     );
     final today = khatma != null && portion != null
         ? _TodayCard(
@@ -899,18 +907,24 @@ class _ElderlyHome extends ConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: 24),
-                _BigAction(
-                  icon: Icons.menu_book,
-                  label: l.continueReading,
-                  detail: position == null || surahs == null
-                      ? null
-                      : l.continueReadingAt(
-                          surahName(context, surahs[position.surah - 1]),
-                          digits(position.ayah),
-                          digits(position.page),
-                        ),
-                  primary: true,
-                  onTap: () => context.go('/mushaf?entry=home'),
+                Builder(
+                  builder: (button) => _BigAction(
+                    icon: Icons.menu_book,
+                    label: l.continueReading,
+                    detail: position == null || surahs == null
+                        ? null
+                        : l.continueReadingAt(
+                            surahName(context, surahs[position.surah - 1]),
+                            digits(position.ayah),
+                            digits(position.page),
+                          ),
+                    primary: true,
+                    onTap: () => openContinueReading(
+                      button,
+                      ref,
+                      () => context.go('/mushaf?entry=home'),
+                    ),
+                  ),
                 ),
                 // The khatma's portion for today (plan 6: elderly mode's
                 // home has its own card): a tap opens the portion.

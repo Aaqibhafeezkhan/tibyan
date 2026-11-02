@@ -686,11 +686,12 @@ class _MushafPageState extends ConsumerState<MushafPage> {
       future: _load,
       builder: (context, snap) {
         if (!snap.hasData) {
-          return Center(
-            child: CircularProgressIndicator(
-              semanticsLabel: AppLocalizations.of(context)
-                  .loadingPage('${widget.page}'),
-            ),
+          // The bare page ground while the page is read (prepared
+          // ahead, it is a moment): no spinner flashing in a turn or an
+          // opening.
+          return Semantics(
+            label: AppLocalizations.of(context).loadingPage('${widget.page}'),
+            child: const SizedBox.expand(),
           );
         }
         final (

@@ -84,6 +84,35 @@ class SvgCompiler {
     return result.future;
   }
 
+  /// Pages compiled ahead of being shown ([prewarm]), by name: a few only.
+  static final _warm = <String, (String, Future<Uint8List>)>{};
+  static const _warmMax = 6;
+
+  /// Compiles [svg] now, for a page about to be opened (the home screen's
+  /// «متابعة القراءة»): the page's first [compileWarm] takes the bytes.
+  static Future<void> prewarm(String svg, String name) {
+    final hit = _warm[name];
+    if (hit != null && (identical(hit.$1, svg) || hit.$1 == svg)) {
+      return hit.$2.then((_) {});
+    }
+    final bytes = compile(svg, name);
+    _warm.remove(name);
+    _warm[name] = (svg, bytes);
+    while (_warm.length > _warmMax) {
+      _warm.remove(_warm.keys.first);
+    }
+    bytes.ignore();
+    // A failed compile is compiled again when the page asks.
+    return bytes.then((_) {}, onError: (Object _) => _warm.remove(name));
+  }
+
+  /// [svg]'s bytes, from [prewarm] when it compiled the same SVG.
+  static Future<Uint8List> compileWarm(String svg, String name) {
+    final hit = _warm.remove(name);
+    if (hit != null && (identical(hit.$1, svg) || hit.$1 == svg)) return hit.$2;
+    return compile(svg, name);
+  }
+
   /// Stops the workers. Nothing in the app calls this; it is here for tests
   /// that would otherwise be kept alive by isolates they started.
   @visibleForTesting
@@ -95,6 +124,7 @@ class SvgCompiler {
     _inboxes.clear();
     _starting.clear();
     _pending.clear();
+    _warm.clear();
   }
 
   static Future<SendPort?> _spawn(int slot) async {
@@ -172,7 +202,7 @@ class _CompiledSvg extends BytesLoader {
 
   @override
   Future<ByteData> loadBytes(BuildContext? context) async {
-    final bytes = await SvgCompiler.compile(svg, name);
+    final bytes = await SvgCompiler.compileWarm(svg, name);
     return ByteData.view(bytes.buffer, bytes.offsetInBytes, bytes.length);
   }
 
