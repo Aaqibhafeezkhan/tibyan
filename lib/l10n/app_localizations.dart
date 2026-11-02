@@ -8743,6 +8743,66 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'اللون {n} من {count}'**
   String fasilColorOption(int n, int count);
+
+  /// No description provided for @wn42Night.
+  ///
+  /// In ar, this message translates to:
+  /// **'ليلي وأسود متمايزان'**
+  String get wn42Night;
+
+  /// No description provided for @wn42NightBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'صار الوضعان الليلي والأسود مختلفين بوضوح، والأسود أسود خالص يناسب شاشات OLED.'**
+  String get wn42NightBody;
+
+  /// No description provided for @wn42Kahf.
+  ///
+  /// In ar, this message translates to:
+  /// **'تذكير سورة الكهف'**
+  String get wn42Kahf;
+
+  /// No description provided for @wn42KahfBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'تذكير يوم الجمعة بقراءة سورة الكهف، مفعّل افتراضيًا ويمكنك إيقافه من الإعدادات.'**
+  String get wn42KahfBody;
+
+  /// No description provided for @wn42Voice.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختصارات Siri وGoogle Assistant'**
+  String get wn42Voice;
+
+  /// No description provided for @wn42VoiceBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'افتح المصحف أو ورد اليوم أو المسبحة بصوتك.'**
+  String get wn42VoiceBody;
+
+  /// No description provided for @wn42Live.
+  ///
+  /// In ar, this message translates to:
+  /// **'التلاوة على شاشة القفل'**
+  String get wn42Live;
+
+  /// No description provided for @wn42LiveBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'نشاط مباشر وجزيرة ديناميكية على iPhone يعرضان التلاوة وتقدّم السورة، مع الانتقال إلى الآية السابقة والتالية.'**
+  String get wn42LiveBody;
+
+  /// No description provided for @wn42Desktop.
+  ///
+  /// In ar, this message translates to:
+  /// **'تبيان على Windows وLinux'**
+  String get wn42Desktop;
+
+  /// No description provided for @wn42DesktopBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'تطبيقان لسطح المكتب، يُنزَّلان من موقع تبيان.'**
+  String get wn42DesktopBody;
 }
 
 class _AppLocalizationsDelegate

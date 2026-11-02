@@ -5232,4 +5232,37 @@ class AppLocalizationsAr extends AppLocalizations {
   String fasilColorOption(int n, int count) {
     return 'اللون $n من $count';
   }
+
+  @override
+  String get wn42Night => 'ليلي وأسود متمايزان';
+
+  @override
+  String get wn42NightBody =>
+      'صار الوضعان الليلي والأسود مختلفين بوضوح، والأسود أسود خالص يناسب شاشات OLED.';
+
+  @override
+  String get wn42Kahf => 'تذكير سورة الكهف';
+
+  @override
+  String get wn42KahfBody =>
+      'تذكير يوم الجمعة بقراءة سورة الكهف، مفعّل افتراضيًا ويمكنك إيقافه من الإعدادات.';
+
+  @override
+  String get wn42Voice => 'اختصارات Siri وGoogle Assistant';
+
+  @override
+  String get wn42VoiceBody => 'افتح المصحف أو ورد اليوم أو المسبحة بصوتك.';
+
+  @override
+  String get wn42Live => 'التلاوة على شاشة القفل';
+
+  @override
+  String get wn42LiveBody =>
+      'نشاط مباشر وجزيرة ديناميكية على iPhone يعرضان التلاوة وتقدّم السورة، مع الانتقال إلى الآية السابقة والتالية.';
+
+  @override
+  String get wn42Desktop => 'تبيان على Windows وLinux';
+
+  @override
+  String get wn42DesktopBody => 'تطبيقان لسطح المكتب، يُنزَّلان من موقع تبيان.';
 }

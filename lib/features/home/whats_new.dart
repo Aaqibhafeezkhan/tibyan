@@ -15,7 +15,7 @@ import '../../l10n/app_localizations.dart';
 /// The «what's new» notes: shown once after an update that brings them,
 /// never on a first install (the reader is new to all of it), and from
 /// the settings at any time. Bump [whatsNewId] when the list changes.
-const whatsNewId = 'build-42';
+const whatsNewId = 'build-42b';
 
 /// Where the last notes seen are remembered.
 const whatsNewSeenKey = 'app.whatsNewSeen';
@@ -44,6 +44,27 @@ List<WhatsNewGroup> whatsNewGroups(AppLocalizations l) => [
         icon: Icons.bookmarks_outlined,
         title: l.wn42Ribbons,
         body: l.wn42RibbonsBody,
+      ),
+      (
+        icon: Icons.dark_mode_outlined,
+        title: l.wn42Night,
+        body: l.wn42NightBody,
+      ),
+      (icon: Icons.notifications_none, title: l.wn42Kahf, body: l.wn42KahfBody),
+      (
+        icon: Icons.keyboard_voice_outlined,
+        title: l.wn42Voice,
+        body: l.wn42VoiceBody,
+      ),
+      (
+        icon: Icons.lock_clock_outlined,
+        title: l.wn42Live,
+        body: l.wn42LiveBody,
+      ),
+      (
+        icon: Icons.desktop_windows_outlined,
+        title: l.wn42Desktop,
+        body: l.wn42DesktopBody,
       ),
       (icon: Icons.speed_outlined, title: l.wn42Speed, body: l.wn42SpeedBody),
       (

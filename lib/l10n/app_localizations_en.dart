@@ -5170,4 +5170,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String fasilColorOption(int n, int count) {
     return 'Colour $n of $count';
   }
+
+  @override
+  String get wn42Night => 'Distinct night and black';
+
+  @override
+  String get wn42NightBody =>
+      'Night and black modes now look clearly different, and black is true black for OLED screens.';
+
+  @override
+  String get wn42Kahf => 'Surah al-Kahf reminder';
+
+  @override
+  String get wn42KahfBody =>
+      'A Friday reminder to read Surah al-Kahf, on by default; turn it off in Settings.';
+
+  @override
+  String get wn42Voice => 'Siri and Google Assistant';
+
+  @override
+  String get wn42VoiceBody =>
+      'Open the mushaf, today\'s portion or the misbaha with your voice.';
+
+  @override
+  String get wn42Live => 'Recitation on the lock screen';
+
+  @override
+  String get wn42LiveBody =>
+      'A Live Activity and Dynamic Island on iPhone show the recitation and the surah\'s progress, with previous and next verse.';
+
+  @override
+  String get wn42Desktop => 'Tibyan on Windows and Linux';
+
+  @override
+  String get wn42DesktopBody =>
+      'Desktop apps, downloaded from the Tibyan website.';
 }
