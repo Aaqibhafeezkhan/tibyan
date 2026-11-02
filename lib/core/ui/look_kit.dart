@@ -310,7 +310,9 @@ class _Rail extends StatelessWidget {
             ),
           ),
           SafeArea(
-            child: Padding(
+            // A short window (a phone held sideways) has less height than
+            // the brand and the five destinations: the rail scrolls.
+            child: SingleChildScrollView(
               padding: compact
                   ? const EdgeInsets.fromLTRB(12, 20, 12, 12)
                   : const EdgeInsets.fromLTRB(20, 28, 20, 20),
