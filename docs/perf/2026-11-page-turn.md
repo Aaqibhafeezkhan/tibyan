@@ -274,6 +274,98 @@ on a quiet host every turn is ≤ 5.5% janky and first turns ≤ 21 ms.
    open): p90 raster 30–40 ms over ~0.3 s. Candidate follow-up: defer
    neighbour bakes until after the route transition.
 
+## Round 5 (branch `perf/startup`, main at b7d42e02): cold start, instant continue/index
+
+Low-end AVD `Tibyan_PageTurn_Low` (API 33, 2 GB, 720×1600), profile build,
+`-gpu host -no-audio`, one emulator, no test suite running alongside.
+Raw lines: `docs/perf/raw/round5-*.txt`. The emulator is noisy (±20%
+between batches); A/B runs alternate old and new in one session.
+
+### Cold start
+
+Measured with `adb shell am start -W` (TotalTime) after `force-stop` and
+`drop_caches`, 2 discarded warm-ups after each install, plus `STARTUP`
+stage marks (new, PROF builds only: `lib/core/perf/startup_marks.dart`; ms
+from the Dart binding). Medians of 10 (two alternating batches of 5).
+
+| Build | TotalTime | Dart first frame | home first frame |
+|---|---|---|---|
+| main (baseline) | 3.88 s | 1.49 s | 2.27 s |
+| audio setup after runApp + theme JSON read in parallel | 3.70 s | ≈ same | 2.17 s |
+
+The tried changes moved the wait, not the work: the first platform call
+after them (SharedPreferences) waited the same ~1.1 s. Within the noise,
+so **both were reverted**; only the stage marks are kept.
+
+Where the time goes (Perfetto trace, one cold start):
+
+| Phase (Android main thread) | ms | Ours? |
+|---|---|---|
+| `bindApplication`: opening the dex files of the 250 MB fat APK (21 dex) | 600 of 862 | build: a per-ABI split / AAB (Play already splits) and a baseline profile would cut it |
+| WorkManager initializer (androidx Startup) | 89 | plugin |
+| `performCreate` MainActivity, engine + plugin registration | 438 | mostly engine |
+| first `traversal`: main thread asleep while the raster thread sets up Impeller **GLES** (72 `ReactorGLES::React`, 856 ms) | 957 | emulator: no Vulkan on this AVD, so Impeller falls back to GLES through the host GL translator; real devices use Vulkan |
+| Dart `main()` until `runApp` (theme, flags, prefs, content.db, providers) | < 40 of own work | yes, already small |
+| splash animation (fixed 960 ms by design) | 800–900 after first frame | design choice, not changed |
+
+Conclusion: on this AVD, Dart-side startup is not the bottleneck. The
+two real levers are build-side (ABI split + baseline profile, ~0.5 s) and
+the splash length (a product call). Neither changed here.
+
+### «متابعة القراءة» from home (harness now taps the card's button)
+
+`PERF_AB=tap`: `~old` = route only (as Round 3 measured), `~new` = the card
+tapped (snapshot armed, grow transition). `first` = the first open of that
+look after launch (home prewarm ran, 4 s on home); `again` = medians of 4.
+
+| Case | ttff old → new | settle old → new | raster p90 old → new |
+|---|---|---|---|
+| A ornate + fasil, first | 234 → 107 | **2748 → 211** | **413 → 32** |
+| A ornate + fasil, again | 130 → 126 | 599 → 644 | 27 → 37 |
+| B plain + fasil, first | 198 → 165 | 350 → 299 | 158 → 23 |
+| B plain + fasil, again | 156 → 117 | 322 → 387 | 25 → 26 |
+| C plain, first | 91 → 60 | 224 → 215 | 16 → 20 |
+| C plain, again | 144 → 182 | 308 → 349 | 18 → 17 |
+
+The win is the first open after launch: the ornate page no longer bakes
+on the tap (settle −92%, raster p90 −92%). Repeat opens are a wash within
+the noise. Versus Round 3 warm (ttff 85–86, settle 218–233): repeat opens
+here settle 300–650 ms, in **both** paths, so it is this session's host
+(not the new transition); recheck on a quiet host before calling it a
+regression.
+
+### Index jump (harness now sends the row's touch-down 100 ms before the tap)
+
+`PERF_AB=touch`: `~old` = no touch-down, `~new` = `IndexJumpWarmer`
+warmed the page first. Medians over the 5 page-turn effects (3 targets
+each); jank = frames over 16.7 ms of ~55.
+
+| Case | ttff old → new | settle old → new | raster p90 old → new | jank old → new |
+|---|---|---|---|---|
+| no marks | 92 → **56** | 306 → 327 | 66 → 60 | 12 → 12 |
+| marks + ribbon | 73 → 63 | 562 → 550 | 96 → 79 | 23 → 24 |
+| marks + tab | 77 → 68 | 536 → 532 | 79 → 79 | 20 → 26 |
+
+The warm cuts ttff 12–39%; settle and jank are unchanged (the route
+transition and neighbour bakes dominate, as in Round 3). Against Round 3
+(ttff 39–40, 11–16 janky) both paths are slower in this session, the
+marks cases most; the same host-noise caveat applies, and the old path
+(no warm) moved as much as the new one, so the warm is not the cause.
+
+### Checks
+- Prewarm/warm skip only under `flutter test` (`FLUTTER_TEST` in the
+  host environment); on the device under `flutter drive` they run (the
+  first-open numbers above show it).
+- No code change to the app beyond the PROF-only stage marks.
+
+### Still open
+1. ABI split for side-loaded APKs and a baseline profile: ~0.5 s of the
+   1.0 s `bindApplication`.
+2. Splash length (960 ms fixed): the largest cut left, a design decision.
+3. Re-measure index/continue repeat opens on a quiet host to confirm the
+   Round 3 → 5 gap is host load.
+4. Neighbour bakes during the index route transition (Round 3 follow-up).
+
 ## Index → mushaf navigation
 
 What a tap on a surah does: `versePageProvider` lookup, then
