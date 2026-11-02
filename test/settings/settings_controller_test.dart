@@ -53,16 +53,16 @@ void main() {
   );
 
   group('page turn default', () {
-    test('a new install turns pages with a fade', () async {
+    test('a new install turns pages the normal way', () async {
       final c = await containerWith({});
-      expect(c.read(settingsProvider).pageTurn, PageTurn.fade);
+      expect(c.read(settingsProvider).pageTurn, PageTurn.normal);
       // Finishing the first run later does not bring the old default back.
       final sp = await SharedPreferences.getInstance();
       await sp.setBool('settings.onboardingDone', true);
       final again = await containerWith({
         for (final k in sp.getKeys()) k: sp.get(k)!,
       });
-      expect(again.read(settingsProvider).pageTurn, PageTurn.fade);
+      expect(again.read(settingsProvider).pageTurn, PageTurn.normal);
     });
 
     test('an existing reader keeps the fold they were reading with', () async {

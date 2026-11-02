@@ -71,12 +71,12 @@ enum FocusTools { button, menu }
 /// axes to the room, which changes the letters' shape.
 enum PageFill { lines, stretch, full }
 
-/// «تأثير قلب الصفحة»: how the mushaf turns a page. [normal]: the page
+/// «تأثير قلب الصفحة»: how the mushaf turns a page. [normal] (the default): the page
 /// slides; [curl]: the page folds over in 3D like paper;
 /// [bend]: the page wraps round a cylinder that follows the finger, its
 /// print bending with it and its back showing (a fragment shader);
 /// [fold]: a lighter bend, the edge folded back flat along a line;
-/// [fade]: the next page fades in over the last (the default).
+/// [fade]: the next page fades in over the last.
 enum PageTurn { normal, curl, bend, fold, fade }
 
 /// A phone held sideways: [width] shows the page as wide as the screen,
@@ -198,7 +198,7 @@ class AppSettings {
     this.focusToolsShown = false,
     this.autoScrollSpeed = 3,
     this.pageFill = PageFill.lines,
-    this.pageTurn = PageTurn.fade,
+    this.pageTurn = PageTurn.normal,
     this.playerStyle = PlayerStyle.auto,
     this.playerPosition,
     this.sajdahTimer = false,

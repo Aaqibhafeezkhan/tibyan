@@ -23,8 +23,8 @@ class OnboardingPageTurnScreen extends ConsumerWidget {
     final look = context.look;
     final t = context.tokens.colors;
     final options = [
-      (PageTurn.fade, l.pageTurnFade, l.pageTurnFadeHint),
       (PageTurn.normal, l.pageTurnNormal, l.pageTurnNormalHint),
+      (PageTurn.fade, l.pageTurnFade, l.pageTurnFadeHint),
       (PageTurn.curl, l.pageTurnCurl, l.pageTurnCurlHint),
       (PageTurn.bend, l.pageTurnBend, l.pageTurnBendHint),
       (PageTurn.fold, l.pageTurnFold, l.pageTurnFoldHint),

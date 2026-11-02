@@ -119,9 +119,9 @@ void main() {
     expect(location(tester), OnboardingStep.page.location);
     await next(tester);
 
-    // Step 4: the page turn, a light fade unless another is chosen.
+    // Step 4: the page turn, the normal turn unless another is chosen.
     expect(location(tester), OnboardingStep.pageTurn.location);
-    expect(container.read(settingsProvider).pageTurn, PageTurn.fade);
+    expect(container.read(settingsProvider).pageTurn, PageTurn.normal);
     for (final effect in PageTurn.values) {
       expect(find.byKey(ValueKey('onb-page-turn-${effect.name}')), findsOne);
     }
