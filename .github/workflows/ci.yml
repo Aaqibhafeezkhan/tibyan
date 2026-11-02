@@ -29,7 +29,7 @@ jobs:
       - name: Analyze
         run: flutter analyze
       - name: Tests (includes the theme contrast check)
-        run: flutter test
+        run: flutter test -j 4
       - name: Review app
         working-directory: apps/review
         run: |

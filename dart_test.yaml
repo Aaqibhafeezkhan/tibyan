@@ -1,0 +1,4 @@
+# At most two test files run at once. Each flutter_tester loads the content
+# database, page art and fonts (about 1 GB), and the default of one per core
+# froze the 16 GB development Mac. CI passes its own -j.
+concurrency: 2
