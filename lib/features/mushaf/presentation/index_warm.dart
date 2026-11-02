@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/settings/app_settings.dart';
 import '../mushaf_providers.dart';
+import 'continue_snapshot.dart' show warmMushafPage;
 
 /// Prepares the page an index row opens while the finger is still on the
 /// row: the tap lands about a tenth of a second later, and the mushaf then
@@ -62,17 +63,9 @@ class IndexJumpWarmer {
 Future<void> warmIndexTarget(WidgetRef ref, int page) async {
   final edition = ref.read(editionProvider);
   if (page < 1 || page > edition.pageCount) return;
-  final drawn = switch (edition) {
-    // Drawn from page pictures: their text and frame only, for now.
-    MushafEdition.madina1405 || MushafEdition.shamarly => Future<void>.value(),
-    // The new editions: the page's artwork read and measured.
-    _ => ref.read(svgPageGeometryProvider(page).future),
-  };
-  await (
-    ref.read(pageAyahsProvider(page).future),
-    ref.read(frameInfoProvider(page).future),
-    drawn,
-  ).wait;
+  // The full preparation «متابعة القراءة» uses: text, frame, the new
+  // editions' artwork compiled, the picture editions' page decoded.
+  await warmMushafPage(ref, edition, page);
 }
 
 /// After the frame being drawn, in a task of its own: the touch's frame

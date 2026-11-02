@@ -477,10 +477,12 @@ class ContinuePrewarmState extends ConsumerState<ContinuePrewarm> {
 
   /// After the next frame, once nothing is animating.
   Future<void> _idle() async {
+    // Animations (ink, fades) may keep frames coming: two seconds at most.
     final scheduler = SchedulerBinding.instance;
-    do {
+    for (var i = 0; i < 40; i++) {
       await Future<void>.delayed(const Duration(milliseconds: 50));
-    } while (mounted && scheduler.transientCallbackCount > 0);
+      if (!mounted || scheduler.transientCallbackCount == 0) return;
+    }
   }
 
   @override
