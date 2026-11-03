@@ -6,6 +6,12 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.7.2] - 2026-11-03
+
+### Fixed
+- iOS: recitation shows a single lock-screen card (the system Now Playing); the recitation Live Activity no longer starts, and a leftover one is ended on launch.
+- Downloads: tapping a surah's downloaded check now asks before deleting it (Cancel is the default; Delete is marked destructive).
+
 ## [0.7.1] - 2026-11-02
 
 ### Added
@@ -416,7 +422,8 @@ Phase 0: foundation. No Quran or religious text appears in this release.
 4. Switch the language to English and back to Arabic; the layout should flip direction.
 5. Close and reopen the app: every choice should be kept.
 
-[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.7.1...HEAD
+[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.7.2...HEAD
+[0.7.2]: https://github.com/helalrules7/tibyan/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/helalrules7/tibyan/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/helalrules7/tibyan/compare/v0.5.1...v0.7.0
 [0.5.1]: https://github.com/helalrules7/tibyan/compare/v0.5.0...v0.5.1
