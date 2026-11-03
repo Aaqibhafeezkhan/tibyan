@@ -1254,6 +1254,15 @@
     }
   },
   "deleteSurahDownload": "سورة {surah} منزّلة. احذفها",
+  "deleteSurahDownloadTitle": "حذف تنزيل سورة {surah}؟",
+  "@deleteSurahDownloadTitle": {
+    "placeholders": {
+      "surah": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteSurahDownloadBody": "ستُحذف تلاوة هذه السورة المنزّلة من الجهاز، ويمكنك تنزيلها مرة أخرى متى شئت.",
   "@deleteSurahDownload": {
     "placeholders": {
       "surah": {

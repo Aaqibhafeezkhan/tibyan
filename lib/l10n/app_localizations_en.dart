@@ -1729,6 +1729,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String deleteSurahDownloadTitle(String surah) {
+    return 'Delete the download of surah $surah?';
+  }
+
+  @override
+  String get deleteSurahDownloadBody =>
+      'The downloaded recitation of this surah will be removed from this device. You can download it again any time.';
+
+  @override
   String downloadingSurah(String surah) {
     return 'Downloading surah $surah';
   }

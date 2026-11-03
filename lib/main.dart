@@ -470,6 +470,8 @@ void _startLiveActivity(ProviderContainer container) {
     });
   };
   unawaited(sync.start());
+  // The system Now Playing card is the recitation's only lock-screen card.
+  if (!RecitationActivitySync.showsRecitation) return;
   Future<RecitationActivityContent?> contentOf(RecitationState s) async {
     if (!s.active) return null;
     final l = lookupAppLocalizations(

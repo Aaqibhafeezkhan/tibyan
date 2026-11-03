@@ -293,7 +293,10 @@ class _AudioDownloadsScreenState extends ConsumerState<AudioDownloadsScreen> {
       return IconButton(
         tooltip: l.deleteSurahDownload(name),
         icon: Icon(Icons.check_circle, color: t.control),
-        onPressed: () => setState(() => files.delete(reciter.id, n)),
+        onPressed: () async {
+          if (!await confirmDeleteSurahDownload(context, name)) return;
+          if (mounted) setState(() => files.delete(reciter.id, n));
+        },
       );
     }
     return IconButton(
@@ -440,4 +443,40 @@ class _ReciterPicker extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// Asks before a downloaded surah's recitation is deleted (one tap on the
+/// check icon used to delete it at once). Cancel is the default; true only
+/// when the reader chose Delete.
+Future<bool> confirmDeleteSurahDownload(
+  BuildContext context,
+  String surah,
+) async {
+  final l = AppLocalizations.of(context);
+  final ok = await showDialog<bool>(
+    context: context,
+    builder: (context) {
+      final scheme = Theme.of(context).colorScheme;
+      return AlertDialog(
+        title: Text(l.deleteSurahDownloadTitle(surah)),
+        content: Text(l.deleteSurahDownloadBody),
+        actions: [
+          TextButton(
+            autofocus: true,
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l.cancel),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: scheme.error,
+              foregroundColor: scheme.onError,
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l.delete),
+          ),
+        ],
+      );
+    },
+  );
+  return ok ?? false;
 }
