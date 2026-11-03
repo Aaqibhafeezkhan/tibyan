@@ -1,0 +1,10 @@
+{
+  "name": "tibyan-watch",
+  "version": "1.0.0",
+  "description": "تبيان على ساعات هواوي (Watch GT / Fit): ورد اليوم والمسبحة",
+  "license": "MIT",
+  "dependencies": {
+    "@ohos/hvigor": "1.4.0",
+    "@ohos/hvigor-ohos-plugin": "1.4.0"
+  }
+}

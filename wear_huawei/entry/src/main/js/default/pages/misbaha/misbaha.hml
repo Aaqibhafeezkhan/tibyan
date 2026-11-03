@@ -1,0 +1,15 @@
+<!-- «المسبحة»: tap to count; swipe down or long-press for start over / today's portion. -->
+<stack class="screen">
+  <image class="bg" src="/common/images/bg.png"></image>
+  <progress class="ring" type="arc" percent="{{ringPercent}}"></progress>
+  <div class="column" onclick="tap" onlongpress="openSheet" onswipe="swipe">
+    <text class="stage" show="{{stageText !== ''}}">{{stageText}}</text>
+    <text class="label">{{label}}</text>
+    <text class="count">{{countText}}</text>
+    <text class="target" show="{{targetText !== ''}}">{{targetText}}</text>
+  </div>
+  <div class="sheet" show="{{sheet}}" onclick="closeSheet">
+    <input type="button" class="action" value="{{resetLabel}}" onclick="reset"></input>
+    <input type="button" class="action gap" value="{{wirdLabel}}" onclick="toWird"></input>
+  </div>
+</stack>

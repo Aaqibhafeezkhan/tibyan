@@ -1,0 +1,26 @@
+.screen { width: 466px; height: 466px; background-color: #020c0b; }
+.bg { width: 466px; height: 466px; left: 0px; top: 0px; }
+.ring {
+  width: 466px; height: 466px; left: 0px; top: 0px;
+  center-x: 233px; center-y: 233px; radius: 218px;
+  start-angle: 0; total-angle: 360;
+  stroke-width: 15px; color: #d9b266; background-color: #29d9b266;
+}
+.column {
+  width: 466px; height: 466px; left: 0px; top: 0px;
+  flex-direction: column; justify-content: center; align-items: center;
+}
+.stage { width: 200px; height: 40px; font-size: 30px; color: #d9b266; text-align: center; }
+.label { width: 330px; height: 80px; font-size: 30px; color: #9ef4ecd8; text-align: center; }
+.count { width: 330px; height: 110px; font-size: 38px; color: #f4ecd8; text-align: center; }
+.target { width: 240px; height: 40px; font-size: 30px; color: #d9b266; text-align: center; }
+.sheet {
+  width: 466px; height: 466px; left: 0px; top: 0px;
+  flex-direction: column; justify-content: center; align-items: center;
+  background-color: #e6020c0b;
+}
+.action {
+  width: 300px; height: 76px; font-size: 30px; color: #f4ecd8;
+  background-color: #020c0b; border-width: 3px; border-color: #d9b266; border-radius: 38px;
+}
+.gap { margin-top: 24px; }
