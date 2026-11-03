@@ -13,7 +13,7 @@ need no `--flavor` and keep their output paths.
 |---|---|---|
 | Google Drive sync (google_sign_in) | On | Off. The sync screen says Drive needs Google Play services and points to «النسخ الاحتياطي» (backup file export/import) |
 | In-app review (Play review API) | Play review sheet | No-op (never asks) |
-| Wear OS watch (play-services-wearable) | On | Not linked; `src/huawei/kotlin/WatchBridge.kt` is a no-op stub |
+| Watch (`app.tibyan/watch`) | Wear OS (play-services-wearable) | Huawei watches over Wear Engine (`src/huawei/kotlin/WatchBridge.kt`, docs/HUAWEI-WATCH.md) |
 | Crash reports (GlitchTip) | `TIBYAN_CHANNEL=production` | `TIBYAN_CHANNEL=huawei` (a store build in the consent sheet) |
 | Editions | 1441 and 1405, identical features | 1441 and 1405, identical features (nothing above depends on the edition) |
 | Everything else (mushaf, audio, downloads, tasmee, notifications, widgets, backup) | On | On, none of it uses GMS |
@@ -34,7 +34,7 @@ registration and R8.
 |---|---|---|
 | google_sign_in (Drive sync) | Yes, play-services-auth | Off, backup file instead |
 | in_app_review | Yes, Play review + play-services-base | No-op |
-| play-services-wearable (Wear OS) | Yes | Not linked, stub bridge |
+| play-services-wearable (Wear OS) | Yes | Not linked; Wear Engine instead |
 | Assistant shortcuts (`res/xml/shortcuts.xml`) | Only Google Assistant reads them | Inert, harmless |
 | Android Auto meta-data | Only Android Auto reads it | Inert, harmless |
 | Firebase, Play Core updates, Play Asset Delivery, GMS location | Not used | n/a |
@@ -98,4 +98,4 @@ English:
 ## 5. Later
 
 - Huawei Drive Kit sync and AppGallery in-app review (need the HMS Core SDK and agconnect-services.json).
-- Huawei watches and HarmonyOS NEXT: `handoff/09-huawei.md` parts B and C.
+- Huawei watches: docs/HUAWEI-WATCH.md. HarmonyOS NEXT: `handoff/09-huawei.md` part B.
