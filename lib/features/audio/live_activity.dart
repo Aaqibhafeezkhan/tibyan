@@ -157,6 +157,12 @@ class RecitationActivitySync {
   Future<void> _enqueue(Future<void> Function() call) =>
       _last = _last.then((_) => call()).catchError((_) {});
 
+  /// Off: during a recitation iOS already shows its own Now Playing card on
+  /// the lock screen (from the media session), and a Live Activity beside it
+  /// showed the same recitation twice. [start] still ends one left over
+  /// from an older build.
+  static const bool showsRecitation = false;
+
   static bool get supported =>
       !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
 }

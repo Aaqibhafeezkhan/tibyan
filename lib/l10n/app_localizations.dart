@@ -2906,6 +2906,18 @@ abstract class AppLocalizations {
   /// **'سورة {surah} منزّلة. احذفها'**
   String deleteSurahDownload(String surah);
 
+  /// No description provided for @deleteSurahDownloadTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف تنزيل سورة {surah}؟'**
+  String deleteSurahDownloadTitle(String surah);
+
+  /// No description provided for @deleteSurahDownloadBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'ستُحذف تلاوة هذه السورة المنزّلة من الجهاز، ويمكنك تنزيلها مرة أخرى متى شئت.'**
+  String get deleteSurahDownloadBody;
+
   /// No description provided for @downloadingSurah.
   ///
   /// In ar, this message translates to:

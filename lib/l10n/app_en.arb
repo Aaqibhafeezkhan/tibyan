@@ -862,6 +862,8 @@
   "downloadSurah": "Download surah {surah}",
   "retryDownloadSurah": "Retry downloading surah {surah}",
   "deleteSurahDownload": "Surah {surah} is downloaded. Delete it",
+  "deleteSurahDownloadTitle": "Delete the download of surah {surah}?",
+  "deleteSurahDownloadBody": "The downloaded recitation of this surah will be removed from this device. You can download it again any time.",
   "downloadingSurah": "Downloading surah {surah}",
   "verseCounter": "Verse {current} of {total}",
   "downloadPercentSpoken": "{percent}% downloaded",

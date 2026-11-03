@@ -109,4 +109,8 @@ void main() {
     );
     await ChannelRecitationActivity().update(_c('Verse 1'));
   });
+
+  test('no Live Activity for recitation: the Now Playing card is enough', () {
+    expect(RecitationActivitySync.showsRecitation, isFalse);
+  });
 }

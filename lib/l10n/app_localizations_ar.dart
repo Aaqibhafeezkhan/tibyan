@@ -1768,6 +1768,15 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String deleteSurahDownloadTitle(String surah) {
+    return 'حذف تنزيل سورة $surah؟';
+  }
+
+  @override
+  String get deleteSurahDownloadBody =>
+      'ستُحذف تلاوة هذه السورة المنزّلة من الجهاز، ويمكنك تنزيلها مرة أخرى متى شئت.';
+
+  @override
   String downloadingSurah(String surah) {
     return 'تُنزَّل سورة $surah';
   }
