@@ -1,0 +1,15 @@
+{
+  "strings": {
+    "app_name": "تبيان",
+    "wird_title": "ورد اليوم",
+    "open_phone": "افتح تبيان على هاتفك مرة واحدة ليظهر هنا ورد اليوم. المسبحة تعمل على الساعة وحدها.",
+    "tasbih_title": "المسبحة",
+    "tasbih_reset": "ابدأ من جديد",
+    "to_wird": "ورد اليوم",
+    "page_range": "ص {from} ← ص {to}",
+    "page_one": "ص {from}",
+    "of_target": "من {n}",
+    "stage": "{i} / {n}",
+    "swipe_misbaha": "اسحب لأعلى للمسبحة"
+  }
+}

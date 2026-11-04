@@ -1,0 +1,15 @@
+{
+  "strings": {
+    "app_name": "Tibyan",
+    "wird_title": "Today's portion",
+    "open_phone": "Open Tibyan on your phone once to bring today's portion here. The misbaha works on the watch alone.",
+    "tasbih_title": "Misbaha",
+    "tasbih_reset": "Start over",
+    "to_wird": "Today's portion",
+    "page_range": "p. {from} → p. {to}",
+    "page_one": "p. {from}",
+    "of_target": "of {n}",
+    "stage": "{i} / {n}",
+    "swipe_misbaha": "Swipe up for the misbaha"
+  }
+}

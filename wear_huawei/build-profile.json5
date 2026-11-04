@@ -1,0 +1,17 @@
+{
+  "app": {
+    // Signing configs are added by DevEco Studio on Ahmed's Mac (File >
+    // Project Structure > Signing Configs) and never committed.
+    "signingConfigs": [],
+    "compileSdkVersion": 8,
+    "compatibleSdkVersion": 8,
+    "products": [{ "name": "default", "signingConfig": "default" }]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [{ "name": "default", "applyToProducts": ["default"] }]
+    }
+  ]
+}

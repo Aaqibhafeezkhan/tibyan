@@ -92,5 +92,15 @@ dependencies {
     // «الساعة»: the Wear OS app (android/wear) through the Data Layer.
     if (!huaweiBuild) {
         implementation("com.google.android.gms:play-services-wearable:19.0.0")
+    } else {
+        // «الساعة» on Huawei watches through Wear Engine (docs/HUAWEI-WATCH.md).
+        implementation("com.huawei.hms:wearengine:5.0.3.300")
+    }
+}
+
+// Huawei's Maven repository, only for the Huawei build's Wear Engine.
+if (huaweiBuild) {
+    repositories {
+        maven { url = uri("https://developer.huawei.com/repo/") }
     }
 }

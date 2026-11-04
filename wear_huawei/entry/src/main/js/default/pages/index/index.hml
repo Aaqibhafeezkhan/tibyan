@@ -1,0 +1,16 @@
+<!-- «ورد اليوم»: the phone's portion (surah name, page range), the khatma ring. -->
+<stack class="screen" onswipe="swipe">
+  <image class="bg" src="/common/images/bg.png"></image>
+  <progress class="ring" type="arc" percent="{{ringPercent}}"></progress>
+  <div class="column" if="{{hasData}}">
+    <text class="title">{{title}}</text>
+    <text class="surah">{{surah}}</text>
+    <text class="range" show="{{range !== ''}}">{{range}}</text>
+    <text class="percent">{{percentText}}</text>
+    <text class="hint">{{hint}}</text>
+  </div>
+  <div class="column" else>
+    <image class="logo" src="/common/images/logo.png"></image>
+    <text class="empty">{{empty}}</text>
+  </div>
+</stack>
