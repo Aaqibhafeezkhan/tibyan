@@ -1,9 +1,12 @@
-// The phone's data on the watch and the counts sent back (docs/HUAWEI-WATCH.md).
+// The phone's data on the watch (docs/HUAWEI-WATCH.md). One-way: the phone
+// sends, the watch only receives and keeps the last state in storage, so it
+// still shows «ورد اليوم» while the phone app is closed. The misbaha counts
+// on the watch alone and never sends anything to the phone.
 // Same keys as the Wear OS app's WatchData.kt: portion_/surah_/from_/to_<day>,
 // progress, idle, tasbih_dhikr, tasbih_target, tasbih_stages, tasbih_stage_texts.
 // Every text shown comes from the phone; nothing here writes Quran text.
 import storage from '@system.storage';
-import { P2pClient, Message, Builder } from './wearengine';
+import { P2pClient } from './wearengine';
 
 // The phone app: package and the SHA-256 fingerprint of its AppGallery
 // signing certificate (a public id). Ahmed fills it in (docs/HUAWEI-WATCH.md).
@@ -14,7 +17,7 @@ const p2p = new P2pClient();
 p2p.setPeerPkgName(PHONE_PACKAGE);
 p2p.setPeerFingerPrint(PHONE_FINGERPRINT);
 
-const cache = { state: {}, session: 0, total: 0, loaded: false };
+const cache = { state: {}, session: 0, loaded: false };
 
 function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
@@ -27,18 +30,16 @@ function save(key, value) {
   storage.set({ key: key, value: '' + value });
 }
 
-/** Loads what the phone sent last time and the counts, then calls [then]. */
+/** Loads what the phone sent last time and the count, then calls [then]. */
 export function load(then) {
   if (cache.loaded) { then(); return; }
-  let left = 3;
+  let left = 2;
   const done = () => { left -= 1; if (left === 0) { cache.loaded = true; then(); } };
   storage.get({ key: 'state', default: '{}',
     success: (v) => { try { cache.state = JSON.parse(v); } catch (e) { cache.state = {}; } },
     complete: done });
   storage.get({ key: 'session', default: '0',
     success: (v) => { cache.session = parseInt(v, 10) || 0; }, complete: done });
-  storage.get({ key: 'total', default: '0',
-    success: (v) => { cache.total = parseInt(v, 10) || 0; }, complete: done });
 }
 
 export function value(key) {
@@ -87,29 +88,16 @@ export function tasbih(session) {
 
 export function session() { return cache.session; }
 
-/** One count: the session and the running total the phone reads. */
+/** One count, kept on the watch only. */
 export function count() {
   cache.session += 1;
-  cache.total += 1;
   save('session', cache.session);
-  save('total', cache.total);
   return cache.session;
 }
 
 export function reset() {
   cache.session = 0;
   save('session', 0);
-}
-
-/** Sends the running total; the phone adds what is new since the last one. */
-export function sendTotal() {
-  if (!PHONE_FINGERPRINT) return;
-  const builder = new Builder();
-  builder.setDescription(JSON.stringify({ total: cache.total }));
-  const message = new Message();
-  message.builder = builder;
-  p2p.send(message, { onSuccess: () => {}, onFailure: () => {},
-    onSendResult: () => {}, onSendProgress: () => {} });
 }
 
 /** Keeps the phone's pushes; [changed] redraws the page. */
@@ -120,12 +108,11 @@ export function listen(changed) {
     onFailure: () => {},
     onReceiveMessage: (data) => {
       if (!data || data.isFileType) return;
-      try {
-        cache.state = JSON.parse(data);
-        storage.set({ key: 'state', value: data });
-      } catch (e) { return; }
-      // The phone is listening now: hand it the counts made while it was away.
-      sendTotal();
+      let next;
+      try { next = JSON.parse(data); } catch (e) { return; }
+      if (!next || Object.keys(next).length === 0) return;
+      cache.state = next;
+      storage.set({ key: 'state', value: data });
       changed();
     },
   });

@@ -3,15 +3,12 @@ package app.tibyan.tibyan
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
 import com.huawei.wearengine.HiWear
 import com.huawei.wearengine.auth.AuthCallback
 import com.huawei.wearengine.auth.Permission
 import com.huawei.wearengine.device.Device
 import com.huawei.wearengine.p2p.Message
-import com.huawei.wearengine.p2p.Receiver
 import com.huawei.wearengine.p2p.SendCallback
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
@@ -28,13 +25,12 @@ import java.util.Locale
  * Phone → watch: one P2P message, a JSON object of the same keys the Wear
  * OS item `/tibyan/state` carries (only the next few days of portions, a
  * lite wearable message must stay small).
- * Watch → phone: `{"total": N}`, the watch's running count; what is new
- * since the last total seen from that watch joins the misbaha's pending
- * counts (the phone's own per-device daily counter), as on Wear OS.
- *
- * Wear Engine has no background wake-up like WearableListenerService: the
- * receiver lives while the app process does. The watch keeps its total and
- * sends it again whenever the phone pushes, so nothing is lost.
+ * One-way only: nothing comes back from the watch. Its misbaha counts on
+ * the watch alone (Wear Engine cannot deliver to a phone app that is not
+ * running, so a watch → phone sync would lose counts). The watch keeps the
+ * last state it received and shows it while the phone app is closed; the
+ * phone resends it each time Tibyan opens and whenever the khatma or the
+ * dhikr changes.
  */
 class WatchBridge(private val context: Context, messenger: BinaryMessenger) {
   init {
@@ -47,7 +43,8 @@ class WatchBridge(private val context: Context, messenger: BinaryMessenger) {
       push(context, (call.arguments as? Map<String, String>) ?: emptyMap())
       result.success(null)
     }
-    connect(context) {}
+    // Tibyan opened: resend the last state so the watch is up to date.
+    push(context, emptyMap())
   }
 
   companion object {
@@ -64,10 +61,10 @@ class WatchBridge(private val context: Context, messenger: BinaryMessenger) {
     private const val PREFS = "TibyanWatch"
     private const val DAYS_SENT = 3
 
+    /** Shared with the Wear OS bridge (MainActivity); never called here. */
     @Volatile var onPending: (() -> Unit)? = null
 
     @Volatile private var permitted = false
-    private val registered = HashSet<String>()
 
     private fun p2p(context: Context) = HiWear.getP2pClient(context)
       .setPeerPkgName(WATCH_PACKAGE)
@@ -81,7 +78,6 @@ class WatchBridge(private val context: Context, messenger: BinaryMessenger) {
           HiWear.getDeviceClient(context).bondedDevices
             .addOnSuccessListener { list ->
               val devices = list.filter { it.isConnected }
-              for (d in devices) listen(context, d)
               then(devices)
             }
         }
@@ -110,16 +106,6 @@ class WatchBridge(private val context: Context, messenger: BinaryMessenger) {
       }
     }
 
-    private fun listen(context: Context, device: Device) {
-      val id = device.uuid ?: return
-      synchronized(registered) { if (!registered.add(id)) return }
-      p2p(context).registerReceiver(device, Receiver { message ->
-        val text = message.data?.let { String(it, Charsets.UTF_8) } ?: return@Receiver
-        val total = try { JSONObject(text).optLong("total", -1) } catch (e: Exception) { -1L }
-        if (total >= 0) takeTaps(context, id, total)
-      })
-    }
-
     fun push(context: Context, entries: Map<String, String>) {
       val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
       val saved = JSONObject(prefs.getString("context", null) ?: "{}")
@@ -131,6 +117,8 @@ class WatchBridge(private val context: Context, messenger: BinaryMessenger) {
       }
       for ((k, v) in entries) if (!k.startsWith("uri_")) saved.put(k, v)
       prefs.edit().putString("context", saved.toString()).apply()
+      // Nothing yet (first run): keep whatever the watch already has.
+      if (saved.length() == 0) return
       val payload = forWatch(saved).toString().toByteArray(Charsets.UTF_8)
       connect(context) { devices ->
         for (d in devices) {
@@ -168,24 +156,6 @@ class WatchBridge(private val context: Context, messenger: BinaryMessenger) {
       return out
     }
 
-    /** Adds the watch's new counts (since the last total seen) to pending. */
-    fun takeTaps(context: Context, source: String, total: Long) {
-      val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-      val key = "seen_huawei_$source"
-      val seen = prefs.getLong(key, 0)
-      // A smaller total: the watch app was reinstalled and counts afresh.
-      val added = if (total >= seen) total - seen else total
-      prefs.edit().putLong(key, total).apply()
-      if (added <= 0) return
-      val widget = context.getSharedPreferences(
-        TasbihWidgetProvider.PREFERENCES, Context.MODE_PRIVATE,
-      )
-      widget.edit().putInt(
-        TasbihWidgetProvider.PENDING,
-        widget.getInt(TasbihWidgetProvider.PENDING, 0) + added.toInt(),
-      ).apply()
-      Handler(Looper.getMainLooper()).post { onPending?.invoke() }
-    }
   }
 }
 

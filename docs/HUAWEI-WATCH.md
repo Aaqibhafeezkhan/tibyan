@@ -2,22 +2,23 @@
 
 The Huawei counterpart of the Wear OS / Apple Watch app (docs/WATCH.md):
 «ورد اليوم» (today's portion: surah name, page range, khatma percent, all
-sent by the phone) and «المسبحة» (counts go back to the phone and join its
-own per-device daily counter). Only the Huawei AppGallery build
+sent by the phone) and «المسبحة» (counts on the watch alone). The link is
+**one-way, phone → watch** (section 2). Only the Huawei AppGallery build
 (`--dart-define=TIBYAN_STORE=huawei`) has it; the Play build is unchanged.
 
 ## 1. Which watches
 
-| Kind | Models | App type | Covered |
-|---|---|---|---|
-| Lite wearables | Watch GT 2/2 Pro/3/3 Pro/4/5/5 Pro/6, Watch Fit 2/3/4, Watch D, Band 7+ | JS lite wearable (FA model), DevEco Studio | **Yes, this project** |
-| HarmonyOS smart wearables | Watch 3, Watch 4/4 Pro, Watch 5, Watch Ultimate | Java/JS (HarmonyOS 2-4) or ArkTS (HarmonyOS NEXT) | Not yet: a second, smart-wearable package |
-| Mibro and other RTOS watches | | no third-party apps | No (phone notifications only) |
+From Huawei's Wear Engine «Supported devices» table (checked 2026-11):
+the GT, FIT and D series run the **lite wearable OS** (JS lite wearable
+apps); the WATCH and WATCH Ultimate series are **smart wearables**
+(HarmonyOS, Java/JS or ArkTS). Huawei asks new apps to target the latest
+models, not WATCH 4 / WATCH FIT 2.
 
-The GT and Fit lines are most Huawei watches sold, and Wear Engine's lite
-wearable P2P API works with Android phones through Huawei Health, so this
-project starts there. The Watch 4/5 can follow with the same data keys and
-message contract.
+| Kind | Target models | App type | Covered |
+|---|---|---|---|
+| Lite wearables | **Watch GT 5 / GT 5 Pro, Watch GT 6 / GT 6 Pro, Watch Fit 3, Watch Fit 4 / Fit 4 Pro** (older GT 3/4 work too) | JS lite wearable (FA model), DevEco Studio | **Yes, this project** |
+| Smart wearables | Watch 5, Watch Ultimate / Ultimate 2 | HarmonyOS smart-wearable package (ArkTS) | Not yet: a second package, same message contract |
+| Mibro and other RTOS watches | | no third-party apps | No (phone notifications only) |
 
 ## 2. How it works
 
@@ -28,16 +29,23 @@ message contract.
   same keys (their own page numbers), so both work identically.
 - SDK: `com.huawei.hms:wearengine:5.0.3.300` from
   `https://developer.huawei.com/repo/` (added only when `TIBYAN_STORE=huawei`).
-- Phone → watch: one P2P message, JSON of the Wear OS `/tibyan/state` keys
-  (`portion_/surah_/from_/to_<yyyy-MM-dd>` for the next 3 days, `progress`,
-  `idle`, `tasbih_dhikr`, `tasbih_target`, `tasbih_stages`,
-  `tasbih_stage_texts`).
-- Watch → phone: `{"total": N}`, the watch's running count. The phone adds
-  `N - last seen` (per watch uuid) to the tasbih widget's pending counts,
-  exactly like `/tibyan/taps` on Wear OS.
-- Wear Engine cannot wake the phone app. The watch keeps its total and
-  sends it again when the phone pushes (each time Tibyan opens or the
-  khatma/dhikr changes), so no count is lost.
+- Phone → watch only: one P2P message, JSON of the Wear OS `/tibyan/state`
+  keys (`portion_/surah_/from_/to_<yyyy-MM-dd>` for the next 3 days,
+  `progress`, `idle`, `tasbih_dhikr`, `tasbih_target`, `tasbih_stages`,
+  `tasbih_stage_texts`). Small text only, a few hundred bytes.
+- Nothing goes watch → phone. Wear Engine cannot deliver to a phone app
+  that is not running, and Tibyan has no server by design (no accounts, no
+  user data leaves the device), so there is no Internet route either. The
+  watch misbaha counts on the watch and keeps its count in `@system.storage`;
+  the phone's misbaha is separate. (Wear OS and Apple Watch still sync
+  counts back; this is Huawei only.)
+- The phone pushes when Tibyan opens (`WatchBridge` init resends the saved
+  state) and whenever the khatma or dhikr changes. Wear Engine needs both
+  apps active, so a push only lands while the watch app is open; the next
+  open of either side catches up.
+- Phone app not active: the watch shows the last state it received (kept in
+  storage, 3 days of portions ahead, so «ورد اليوم» stays right for 3 days),
+  and the misbaha works fully offline.
 - First run: the phone asks for the Wear Engine «device manager» permission
   through Huawei Health (one system dialog).
 
@@ -60,9 +68,7 @@ so the watch app has not been compiled yet.
 2. Download the Wear Engine **lite wearable JS SDK** (Wear Engine → SDK
    download) and copy `wearengine.js` to
    `wear_huawei/entry/src/main/js/default/common/wearengine.js`
-   (git-ignored). Check its `Builder`/`Message` usage against
-   `common/data.js` `sendTotal()`; older SDKs set the builder with
-   `message.builder = builder`, newer ones with `new Message(builder)`.
+   (git-ignored). The watch only uses `P2pClient.registerReceiver`.
 3. Open `wear_huawei/` in DevEco, let it sync, then **File → Project
    Structure → Signing Configs**: sign in and let it generate the debug
    certificate (stays out of git).
@@ -81,8 +87,13 @@ so the watch app has not been compiled yet.
 ## 4. AppGallery Connect
 
 1. Apply for Wear Engine: developer.huawei.com → Console → Wear Engine →
-   apply, permission «Device management» + «P2P messaging»; link the phone
-   app `app.tibyan.tibyan`. Review takes a few working days.
+   apply, for the **phone app only** (`app.tibyan.tibyan`, Android app),
+   permission «Basic device information» (device list + phone ↔ watch app
+   messages); no notification, user status, sensor or SN permissions.
+   Upload the filled «Data Permission and Usage Description» form and the
+   scenario screens (`~/Desktop/هواوي/ساعة/wear-engine-form/`). The first
+   application (two-way sync, Watch 4 / Fit 2) was rejected; this one is
+   one-way and targets the latest lite wearables. Review: 1-2 weeks.
 2. AGC → My apps → New app → **HarmonyOS → Lite wearable**, bundle
    `app.tibyan.watch`, name «تبيان»; link it to the phone app as its
    companion.
@@ -93,4 +104,4 @@ so the watch app has not been compiled yet.
 4. Release certificate + profile in AGC (Certificates/Profiles), sign the
    release HAP in DevEco, upload, submit with the review note: "Companion of
    Tibyan (app.tibyan.tibyan). Shows today's Quran reading portion sent by
-   the phone and a tasbih counter whose counts sync back. No ads, no account."
+   the phone and a tasbih counter that works on the watch alone. No ads, no account."
