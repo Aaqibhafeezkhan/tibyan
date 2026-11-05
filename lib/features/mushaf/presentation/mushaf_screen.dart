@@ -329,11 +329,12 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     // The weights of the pages, at hand before the first page counts.
     ref.read(quranIndexProvider.future).ignore();
     ref.read(editionPagesProvider(ref.read(editionProvider)).future).ignore();
+    // The picture is taken on leaving focus, while the window's surface is
+    // still there: by «hidden» Android may have released it, and Impeller's
+    // OpenGL backend (Huawei, no Vulkan) crashed drawing the snapshot then.
     _lifecycle = AppLifecycleListener(
-      onHide: () {
-        _captureSnapshot();
-        _tracker.end();
-      },
+      onInactive: _captureSnapshot,
+      onHide: _tracker.end,
       onShow: _trackPage,
     );
     // Opened by «متابعة القراءة» with a picture of the page left: shown at
