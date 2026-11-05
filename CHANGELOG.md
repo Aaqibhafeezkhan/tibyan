@@ -6,6 +6,12 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-11-05
+
+### Fixed
+- Android: a widget's look settings read right to left when the app is in Arabic.
+- Tasbih widget: no second «المسبحة» before a dhikr is chosen, and no English placeholder when the app is in Arabic.
+- Android: a resized widget keeps its picture's proportions, framed by the look's ground, instead of stretching it.
 ## [0.8.0] - 2026-11-05
 
 ### Added
@@ -428,7 +434,8 @@ Phase 0: foundation. No Quran or religious text appears in this release.
 4. Switch the language to English and back to Arabic; the layout should flip direction.
 5. Close and reopen the app: every choice should be kept.
 
-[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.8.1...HEAD
+[0.8.1]: https://github.com/helalrules7/tibyan/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/helalrules7/tibyan/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/helalrules7/tibyan/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/helalrules7/tibyan/compare/v0.7.0...v0.7.1
