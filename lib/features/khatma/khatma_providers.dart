@@ -1142,6 +1142,7 @@ class KhatmaService {
       if (n < 1 || m < n) return null;
       return (l.widgetDayOf(digits(n), digits(m)), n / m);
     }
+
     for (final MapEntry(key: day, value: range) in upcoming.entries) {
       final first = (await _mushaf.ayahsOnPage(
         range.from,

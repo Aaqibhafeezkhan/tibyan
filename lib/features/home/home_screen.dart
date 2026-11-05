@@ -471,9 +471,7 @@ class _ContinueCard extends StatelessWidget {
     // «هندسي»: the arch in teal with a star lattice; «ليلي ذهبي»: a night
     // sky in blue and gold.
     final layli = look.isLayli;
-    final (:sky, :rim, :ink, :sub, :buttonBg, :buttonFg) = heroArchColors(
-      look,
-    );
+    final (:sky, :rim, :ink, :sub, :buttonBg, :buttonFg) = heroArchColors(look);
     final k = _scale(context);
     return SizedBox(
       // The texts and the button grow with the reader's text size.

@@ -88,7 +88,12 @@ void main() {
       for (final mode in const [ThemeModeId.light, ThemeModeId.black]) {
         for (final face in WidgetFace.values) {
           for (final shape in WidgetShape.values) {
-            final art = buildWidgetArt(face, shape, widgetLook(style, mode), ar);
+            final art = buildWidgetArt(
+              face,
+              shape,
+              widgetLook(style, mode),
+              ar,
+            );
             await tester.pumpWidget(Center(child: art.art));
             expect(tester.takeException(), isNull);
           }

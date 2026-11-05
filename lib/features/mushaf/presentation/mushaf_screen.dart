@@ -642,7 +642,11 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
       if (from != null && widget.selectSurah != null) {
         setState(() => _selA = _selB = null);
         _setChrome(false);
-        ref.read(recitationProvider.notifier).play(from.surah, from: from.ayah);
+        unawaited(
+          ref
+              .read(recitationProvider.notifier)
+              .play(from.surah, from: from.ayah),
+        );
       } else {
         _listenFromPage();
       }
