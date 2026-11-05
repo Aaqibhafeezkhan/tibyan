@@ -24,14 +24,14 @@ import java.util.Locale
  * from the launcher's widget settings. In the app's language.
  */
 class WidgetConfigureActivity : Activity() {
-  private var id = AppWidgetManager.INVALID_APPWIDGET_ID
+  private var widgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    id = intent?.extras?.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, id) ?: id
+    widgetId = intent?.extras?.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId) ?: widgetId
     // Placed without a choice: «كما في التطبيق».
-    setResult(RESULT_OK, Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id))
-    if (id == AppWidgetManager.INVALID_APPWIDGET_ID) return finish()
+    setResult(RESULT_OK, Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId))
+    if (widgetId == AppWidgetManager.INVALID_APPWIDGET_ID) return finish()
 
     val prefs = getSharedPreferences(ActionsWidgetProvider.PREFERENCES, Context.MODE_PRIVATE)
     val lang = prefs.getString("lang", null) ?: "ar"
@@ -39,7 +39,7 @@ class WidgetConfigureActivity : Activity() {
         Configuration(resources.configuration).apply { setLocale(Locale(lang)) },
     )
     fun t(res: Int) = words.getString(res)
-    val now = (prefs.getString(WidgetLooks.configKey(id), null) ?: "app|app").split("|")
+    val now = (prefs.getString(WidgetLooks.configKey(widgetId), null) ?: "app|app").split("|")
 
     title = t(R.string.wl_config_title)
     val pad = (16 * resources.displayMetrics.density).toInt()
@@ -54,10 +54,12 @@ class WidgetConfigureActivity : Activity() {
         textSize = 15f
         setPadding(0, pad / 2, 0, pad / 4)
       })
-      val g = RadioGroup(this)
+      val g = RadioGroup(this).apply { layoutDirection = root.layoutDirection }
       options.forEachIndexed { i, (key, res) ->
         g.addView(RadioButton(this).apply {
           this.id = View.generateViewId()
+          layoutDirection = root.layoutDirection
+          textDirection = View.TEXT_DIRECTION_LOCALE
           text = t(res)
           tag = key
           isChecked = key == chosen || (i == 0 && options.none { it.first == chosen })
@@ -89,7 +91,7 @@ class WidgetConfigureActivity : Activity() {
       text = t(R.string.wl_config_done)
       setOnClickListener {
         fun chosen(g: RadioGroup) = g.findViewById<View>(g.checkedRadioButtonId)?.tag as? String ?: "app"
-        prefs.edit().putString(WidgetLooks.configKey(id), "${chosen(looks)}|${chosen(modes)}").apply()
+        prefs.edit().putString(WidgetLooks.configKey(widgetId), "${chosen(looks)}|${chosen(modes)}").apply()
         redrawAll()
         finish()
       }
@@ -108,7 +110,7 @@ class WidgetConfigureActivity : Activity() {
     )
     for (p in providers) {
       val ids = manager.getAppWidgetIds(ComponentName(this, p.javaClass))
-      if (id in ids) redraw(this, p, intArrayOf(id))
+      if (widgetId in ids) redraw(this, p, intArrayOf(widgetId))
     }
   }
 }

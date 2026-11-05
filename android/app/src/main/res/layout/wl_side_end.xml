@@ -18,9 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
-        <View android:id="@+id/wl_main" android:layout_width="0dp"
+        <FrameLayout android:id="@+id/wl_main" android:layout_width="0dp"
             android:layout_height="match_parent" android:layout_weight="68" />
-        <View android:id="@+id/wl_button" android:layout_width="0dp"
+        <FrameLayout android:id="@+id/wl_button" android:layout_width="0dp"
             android:layout_height="match_parent" android:layout_weight="32" />
     </LinearLayout>
 </FrameLayout>
