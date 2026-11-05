@@ -42,16 +42,21 @@ Future<void> openVerse(
 
 /// Where a `tibyan://verse` link (a shared verse, «آية اليوم» on the home
 /// screen) opens: the page holding [surah]:[ayah] (Hafs numbers) in the
-/// edition being read, 1441, 1405 or a riwaya's, with the verse named.
+/// edition being read, 1441, 1405 or a riwaya's, with the verse named;
+/// [listen]: and recited from it.
 Future<String> verseLinkLocation(
   ProviderContainer container,
   int surah,
-  int ayah,
-) async => mushafLocation(
-  await container.read(versePageProvider((surah, ayah)).future),
-  surah: surah,
-  ayah: ayah,
-);
+  int ayah, {
+  bool listen = false,
+}) async {
+  final at = mushafLocation(
+    await container.read(versePageProvider((surah, ayah)).future),
+    surah: surah,
+    ayah: ayah,
+  );
+  return listen ? '$at&listen=1' : at;
+}
 
 /// Opens a page of the edition being read.
 Future<void> openPage(BuildContext context, WidgetRef ref, int page) async {
@@ -77,6 +82,10 @@ EntryPoint khatmaEntryOfLink(Uri uri) {
   if (uri.host == 'khatma') return EntryPoint.notification;
   return EntryPoint.other;
 }
+
+/// Whether a `tibyan://verse` link asks for the verse to be recited
+/// (`listen=1`: «استمع» on the «آية اليوم» widget).
+bool verseLinkListens(Uri uri) => uri.queryParameters['listen'] == '1';
 
 /// The verse a `tibyan://verse` link names, if it is one and is valid.
 ({int surah, int ayah})? verseOfLink(Uri? uri) {

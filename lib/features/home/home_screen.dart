@@ -471,22 +471,7 @@ class _ContinueCard extends StatelessWidget {
     // «هندسي»: the arch in teal with a star lattice; «ليلي ذهبي»: a night
     // sky in blue and gold.
     final layli = look.isLayli;
-    final List<Color> sky = layli
-        ? (look.night
-              ? [const Color(0xFF1B2D50), look.surface]
-              : [look.frame, Color.lerp(look.frame, Colors.white, .12)!])
-        : (look.night
-              ? [const Color(0xFF17403E), look.surface]
-              : [look.accent, Color.lerp(look.accent, Colors.black, .25)!]);
-    final rim = layli
-        ? (look.night ? look.gold : look.onFrame)
-        : (look.night ? look.accent : look.gold.withValues(alpha: .9));
-    final ink = layli ? const Color(0xFFF3E2B4) : const Color(0xFFFFFCF6);
-    final sub = layli ? const Color(0xFFD3D8E3) : const Color(0xFFDCEBE8);
-    final buttonBg = layli
-        ? (look.night ? look.gold : look.onFrame)
-        : (look.night ? look.accent : const Color(0xFFFFFCF6));
-    final buttonFg = layli ? look.frame : (look.night ? look.bg : look.accent);
+    final (:sky, :rim, :ink, :sub, :buttonBg, :buttonFg) = heroArchColors(look);
     final k = _scale(context);
     return SizedBox(
       // The texts and the button grow with the reader's text size.
@@ -496,37 +481,7 @@ class _ContinueCard extends StatelessWidget {
           48,
       child: Stack(
         children: [
-          Positioned.fill(
-            child: ExcludeSemantics(
-              child: ClipPath(
-                clipper: const ArchClipper(spring: .34),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: sky,
-                    ),
-                  ),
-                  child: CustomPaint(
-                    painter: layli
-                        ? SkyPainter(const Color(0xFFE6C47A))
-                        : GirihPainter(
-                            Colors.white.withValues(alpha: .10),
-                            cell: 46,
-                          ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned.fill(
-            child: ExcludeSemantics(
-              child: CustomPaint(
-                painter: ArchBorder(rim, spring: .34, inset: 7),
-              ),
-            ),
-          ),
+          const Positioned.fill(child: HeroArch()),
           Positioned.fill(
             child: Padding(
               padding: EdgeInsets.fromLTRB(20, 76 * k, 20, 20 * k),
@@ -752,59 +707,7 @@ class _SectionTile extends StatelessWidget {
     final look = context.look;
     final card = context.isExpanded;
     final k = _scale(context);
-    final glyph = 24 * k;
-    final Widget icon = switch (look.style) {
-      InterfaceStyle.makhtuta => SizedBox.square(
-        dimension: 62 * k,
-        child: CustomPaint(
-          painter: StarPainter(look.surface, look.gold),
-          child: Icon(s.icon, color: look.accent, size: glyph),
-        ),
-      ),
-      InterfaceStyle.handasi => Container(
-        width: 62 * k,
-        height: 62 * k,
-        decoration: BoxDecoration(
-          color: look.surface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: look.line),
-        ),
-        child: CustomPaint(
-          painter: StarPainter(
-            look.accent.withValues(alpha: .10),
-            Colors.transparent,
-          ),
-          child: Icon(s.icon, color: look.accent, size: glyph),
-        ),
-      ),
-      InterfaceStyle.layli => SizedBox(
-        width: 64 * k,
-        height: 78 * k,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: ClipPath(
-                clipper: const ArchClipper(spring: .5),
-                child: ColoredBox(color: look.surface),
-              ),
-            ),
-            Positioned.fill(
-              child: CustomPaint(
-                painter: ArchBorder(
-                  look.gold.withValues(alpha: .8),
-                  spring: .5,
-                  inset: 4,
-                ),
-              ),
-            ),
-            Positioned.fill(
-              top: 20 * k,
-              child: Icon(s.icon, color: look.goldText, size: glyph),
-            ),
-          ],
-        ),
-      ),
-    };
+    final Widget icon = SectionIcon(s.icon, k: k);
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: card

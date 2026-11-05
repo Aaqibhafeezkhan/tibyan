@@ -346,7 +346,12 @@ void _startKhatma(ProviderContainer container) {
     final route =
         action?.route ??
         (verse != null
-            ? await verseLinkLocation(container, verse.surah, verse.ayah)
+            ? await verseLinkLocation(
+                container,
+                verse.surah,
+                verse.ayah,
+                listen: verseLinkListens(uri),
+              )
             : await service.routeFor(uri));
     // After the splash screen (or the first-run setup) has handed over,
     // so its own navigation does not replace the link's. A link of a

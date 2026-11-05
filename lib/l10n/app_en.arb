@@ -1234,7 +1234,9 @@
   "khatmaPendingTitle": "Readings waiting to be counted",
   "khatmaPendingOn": "Reading on {date}",
   "tasmeeTileLabel": "Recitation",
-  "@tasmeeTileLabel": {"description": "Short home-tile label for the recitation check."},
+  "@tasmeeTileLabel": {
+    "description": "Short home-tile label for the recitation check."
+  },
   "tasmeeTitle": "Recitation practice",
   "tasmeeDescription": "Recite from memory. Tibyan listens on this device, reveals words, and marks possible mistakes. Audio is not sent anywhere; tajweed is not graded.",
   "tasmeeSelectRange": "Choose a practice range",
@@ -1962,5 +1964,25 @@
   "wn42Live": "Recitation on the lock screen",
   "wn42LiveBody": "A Live Activity and Dynamic Island on iPhone show the recitation and the surah's progress, with previous and next verse.",
   "wn42Desktop": "Tibyan on Windows and Linux",
-  "wn42DesktopBody": "Desktop apps, downloaded from the Tibyan website."
+  "wn42DesktopBody": "Desktop apps, downloaded from the Tibyan website.",
+  "widgetListen": "Listen",
+  "widgetTodayWird": "Today's portion",
+  "widgetStartWird": "Start reading",
+  "widgetDayOf": "Day {n} of {m}",
+  "@widgetDayOf": {
+    "description": "The khatma widget's day of the plan.",
+    "placeholders": {
+      "n": {
+        "type": "String"
+      },
+      "m": {
+        "type": "String"
+      }
+    }
+  },
+  "widgetTileContinue": "Continue",
+  "widgetTileListen": "Listen",
+  "widgetTileSearch": "Search",
+  "widgetTileRead": "Portion read",
+  "widgetTileDone": "Done"
 }

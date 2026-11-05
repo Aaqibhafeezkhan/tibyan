@@ -155,6 +155,8 @@ void main() {
             page: 3,
             surah: 'البقرة',
             to: 4,
+            dayOf: 'اليوم ٢ من ٣٠',
+            share: 2 / 30,
           ),
         },
         progress: .625,
@@ -168,5 +170,7 @@ void main() {
     expect(entries['surah_2026-10-04'], 'البقرة');
     expect(entries['from_2026-10-04'], '3');
     expect(entries['to_2026-10-04'], '4');
+    expect(entries['dayof_2026-10-04'], 'اليوم ٢ من ٣٠');
+    expect(entries['share_2026-10-04'], '7');
   });
 }

@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.widget.RemoteViews
@@ -31,7 +32,38 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
         widgetData.getInt(PENDING, 0)
     val ar = (widgetData.getString("lang", null) ?: "ar").startsWith("ar")
     val stage = stageLabel(widgetData, ar)
+    val countIntent =
+        PendingIntent.getBroadcast(
+            context,
+            0,
+            Intent(context, TasbihWidgetProvider::class.java).setAction(COUNT),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+    val open =
+        HomeWidgetLaunchIntent.getActivity(
+            context,
+            MainActivity::class.java,
+            Uri.parse("tibyan://action/tasbih?homeWidget"),
+        )
     for (id in appWidgetIds) {
+      val look =
+          WidgetLooks.build(
+              context,
+              widgetData,
+              appWidgetManager,
+              id,
+              "tasbih",
+              mapOf(
+                  "dhikr" to (widgetData.getString("tasbih_dhikr", null) ?: context.getString(R.string.tasbih_widget_label)),
+                  "count" to (stage ?: if (ar) arabicDigits(count) else "$count"),
+              ),
+          ) { if (it == WidgetLooks.Shape.small) R.layout.wl_foot_full else R.layout.wl_side_end }
+      if (look != null) {
+        look.views.setOnClickPendingIntent(R.id.wl_main, open)
+        look.views.setOnClickPendingIntent(R.id.wl_button, countIntent)
+        appWidgetManager.updateAppWidget(id, look.views)
+        continue
+      }
       val views = RemoteViews(context.packageName, R.layout.tasbih_widget)
       views.applyDirection(R.id.tasbih_root, widgetData)
       views.setTextViewText(
@@ -62,6 +94,13 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
       appWidgetManager.updateAppWidget(id, views)
     }
   }
+
+  override fun onAppWidgetOptionsChanged(
+      context: Context,
+      appWidgetManager: AppWidgetManager,
+      appWidgetId: Int,
+      newOptions: Bundle,
+  ) = redraw(context, this, intArrayOf(appWidgetId))
 
   override fun onReceive(context: Context, intent: Intent) {
     if (intent.action != COUNT) return super.onReceive(context, intent)

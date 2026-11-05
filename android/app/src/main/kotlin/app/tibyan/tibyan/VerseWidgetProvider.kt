@@ -2,6 +2,7 @@ package app.tibyan.tibyan
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
+import android.os.Bundle
 import android.content.SharedPreferences
 import android.net.Uri
 import android.view.View
@@ -33,8 +34,32 @@ class VerseWidgetProvider : HomeWidgetProvider() {
     val text = widgetData.getString("vod_text_$day", null)
     val reference = widgetData.getString("vod_ref_$day", null)
     val uri = widgetData.getString("vod_uri_$day", null)
+    val listen = widgetData.getString("vod_listen_$day", null)
 
     for (id in appWidgetIds) {
+      // In the app's look, when the app has drawn it.
+      val look =
+          WidgetLooks.build(
+              context,
+              widgetData,
+              appWidgetManager,
+              id,
+              "verse",
+              mapOf(
+                  "text" to (text ?: context.getString(R.string.khatma_widget_open)),
+                  "ref" to reference,
+                  "surah" to widgetData.getString("vod_surah_$day", null),
+                  "num" to widgetData.getString("vod_num_$day", null),
+              ),
+          ) { if (it == WidgetLooks.Shape.small) R.layout.wl_foot_full else R.layout.wl_foot_end }
+      if (look != null) {
+        val open = open(context, uri ?: "tibyan://action/continue?homeWidget")
+        look.views.setOnClickPendingIntent(R.id.wl_main, open)
+        if (look.shape == WidgetLooks.Shape.medium) look.views.setOnClickPendingIntent(R.id.wl_main2, open)
+        look.views.setOnClickPendingIntent(R.id.wl_button, open(context, listen ?: uri ?: "tibyan://action/listen?homeWidget"))
+        appWidgetManager.updateAppWidget(id, look.views)
+        continue
+      }
       val views = RemoteViews(context.packageName, R.layout.verse_widget)
       views.applyDirection(R.id.verse_root, widgetData, alwaysRtl = true)
       views.setTextViewText(
@@ -59,4 +84,15 @@ class VerseWidgetProvider : HomeWidgetProvider() {
       appWidgetManager.updateAppWidget(id, views)
     }
   }
+
+  private fun open(context: Context, uri: String) =
+      HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, Uri.parse(uri))
+
+  // Resized: the nearer picture for the new size.
+  override fun onAppWidgetOptionsChanged(
+      context: Context,
+      appWidgetManager: AppWidgetManager,
+      appWidgetId: Int,
+      newOptions: Bundle,
+  ) = redraw(context, this, intArrayOf(appWidgetId))
 }

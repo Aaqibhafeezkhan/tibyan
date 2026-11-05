@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +11,7 @@ import 'core/settings/settings_controller.dart';
 import 'core/theme/app_theme.dart';
 import 'core/ui/mac_menu.dart';
 import 'features/audio/global_player.dart';
+import 'features/home_widgets/widget_look_sync.dart';
 import 'features/sync/sync_controller.dart';
 import 'features/tasbih/tasbih_providers.dart' show watchCountsProvider;
 import 'l10n/app_localizations.dart';
@@ -37,6 +40,19 @@ class TibyanApp extends ConsumerWidget {
     final style = registry.byId(settings.styleId);
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
     final mode = ref.read(settingsProvider).resolveMode(platformBrightness);
+    // The home screen widgets set to «كما في التطبيق» follow the look and
+    // the language (their pictures are drawn after the frame, when needed).
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      unawaited(
+        ref
+            .read(widgetLookSyncProvider)
+            .follow(
+              style: settings.interfaceStyle,
+              mode: mode,
+              l: lookupAppLocalizations(settings.locale ?? const Locale('ar')),
+            ),
+      );
+    });
 
     // «المزامنة» runs from the start (when switched on) without building
     // the app again on its status.

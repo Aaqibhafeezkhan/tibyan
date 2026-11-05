@@ -43,8 +43,11 @@ String verseOfDayText(AyahRow a) =>
     a.basmalaPrefix > 0 ? a.verseText.substring(a.basmalaPrefix) : a.verseText;
 
 /// The widget keys for [days] days from [from]: `vod_title`, `vod_days`,
-/// and per day `vod_text_`, `vod_ref_` and `vod_uri_`; and `lang`, the
-/// app's language, which sets every widget's direction.
+/// and per day `vod_text_`, `vod_ref_`, `vod_uri_`, `vod_listen_` (the
+/// widget's «استمع»: the same verse, recited), `vod_surah_` and `vod_num_`
+/// (the surah's name and the verse's number, apart, for the manuscript
+/// look's star); and `lang`, the app's language, which sets every
+/// widget's direction.
 Future<Map<String, String>> verseOfDayEntries({
   required Future<AyahRow> Function(int id) ayahById,
   required List<SurahRow> surahs,
@@ -73,15 +76,20 @@ Future<Map<String, String>> verseOfDayEntries({
       ar ? surah.nameAr : surah.nameEn,
       digits(a.number),
     );
-    out['vod_uri_${day.key}'] = Uri(
+    Uri link({bool listen = false}) => Uri(
       scheme: 'tibyan',
       host: 'verse',
       queryParameters: {
         's': '${a.surah}',
         'a': '${a.number}',
+        if (listen) 'listen': '1',
         'homeWidget': '',
       },
-    ).toString();
+    );
+    out['vod_uri_${day.key}'] = link().toString();
+    out['vod_listen_${day.key}'] = link(listen: true).toString();
+    out['vod_surah_${day.key}'] = ar ? surah.nameAr : surah.nameEn;
+    out['vod_num_${day.key}'] = digits(a.number);
   }
   out['vod_days'] = keys.join(',');
   return out;

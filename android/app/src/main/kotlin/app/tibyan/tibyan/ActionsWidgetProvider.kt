@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Bundle
 import android.widget.RemoteViews
 import es.antonborri.home_widget.HomeWidgetLaunchIntent
 import es.antonborri.home_widget.HomeWidgetProvider
@@ -34,6 +35,23 @@ class ActionsWidgetProvider : HomeWidgetProvider() {
     val done = widgetData.getString(DONE_DAY, null) == today
 
     for (id in appWidgetIds) {
+      val look =
+          WidgetLooks.build(
+              context,
+              widgetData,
+              appWidgetManager,
+              id,
+              if (done) "actionsDone" else "actions",
+              emptyMap(),
+          ) { if (it == WidgetLooks.Shape.small) R.layout.wl_grid2x2 else R.layout.wl_grid4 }
+      if (look != null) {
+        look.views.setOnClickPendingIntent(R.id.wl_t0, launch(context, "continue"))
+        look.views.setOnClickPendingIntent(R.id.wl_t1, launch(context, "listen"))
+        look.views.setOnClickPendingIntent(R.id.wl_t2, launch(context, "search"))
+        look.views.setOnClickPendingIntent(R.id.wl_t3, if (hasPortion && !done) doneIntent(context) else null)
+        appWidgetManager.updateAppWidget(id, look.views)
+        continue
+      }
       val views = RemoteViews(context.packageName, R.layout.actions_widget)
       views.applyDirection(R.id.actions_root, widgetData)
       views.setTextViewText(
@@ -53,16 +71,7 @@ class ActionsWidgetProvider : HomeWidgetProvider() {
       )
       // Nothing to mark when no portion is due today, or it is already marked.
       if (hasPortion && !done) {
-        val intent = Intent(context, ActionsWidgetProvider::class.java).setAction(PORTION_DONE)
-        views.setOnClickPendingIntent(
-            R.id.action_done,
-            PendingIntent.getBroadcast(
-                context,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
-            ),
-        )
+        views.setOnClickPendingIntent(R.id.action_done, doneIntent(context))
       } else {
         views.setOnClickPendingIntent(R.id.action_done, null)
       }
@@ -83,6 +92,21 @@ class ActionsWidgetProvider : HomeWidgetProvider() {
     val ids = manager.getAppWidgetIds(ComponentName(context, ActionsWidgetProvider::class.java))
     onUpdate(context, manager, ids, prefs)
   }
+
+  private fun doneIntent(context: Context): PendingIntent =
+      PendingIntent.getBroadcast(
+          context,
+          0,
+          Intent(context, ActionsWidgetProvider::class.java).setAction(PORTION_DONE),
+          PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+      )
+
+  override fun onAppWidgetOptionsChanged(
+      context: Context,
+      appWidgetManager: AppWidgetManager,
+      appWidgetId: Int,
+      newOptions: Bundle,
+  ) = redraw(context, this, intArrayOf(appWidgetId))
 
   private fun launch(context: Context, action: String): PendingIntent =
       HomeWidgetLaunchIntent.getActivity(

@@ -5293,4 +5293,33 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get wn42DesktopBody => 'تطبيقان لسطح المكتب، يُنزَّلان من موقع تبيان.';
+
+  @override
+  String get widgetListen => 'استمع';
+
+  @override
+  String get widgetTodayWird => 'ورد اليوم';
+
+  @override
+  String get widgetStartWird => 'ابدأ الورد';
+
+  @override
+  String widgetDayOf(String n, String m) {
+    return 'اليوم $n من $m';
+  }
+
+  @override
+  String get widgetTileContinue => 'متابعة';
+
+  @override
+  String get widgetTileListen => 'استماع';
+
+  @override
+  String get widgetTileSearch => 'بحث';
+
+  @override
+  String get widgetTileRead => 'قرأت الورد';
+
+  @override
+  String get widgetTileDone => 'تم';
 }

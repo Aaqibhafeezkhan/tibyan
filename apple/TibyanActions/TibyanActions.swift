@@ -28,9 +28,10 @@ struct ActionsEntry: TimelineEntry {
   let portion: String
   let hasPortion: Bool
   let done: Bool
+  var variant = "handasi_light"
 }
 
-private func actionsEntry(for date: Date) -> ActionsEntry {
+private func actionsEntry(for date: Date, variant: String = "handasi_light") -> ActionsEntry {
   let data = WidgetStore.defaults
   let key = WidgetStore.dayKey(date)
   let portion = data?.string(forKey: "portion_\(key)")
@@ -39,24 +40,26 @@ private func actionsEntry(for date: Date) -> ActionsEntry {
     title: data?.string(forKey: "title") ?? WidgetStore.text("تبيان", "Tibyan"),
     portion: portion ?? data?.string(forKey: "idle") ?? "",
     hasPortion: portion != nil,
-    done: data?.string(forKey: "done_day") == key
+    done: data?.string(forKey: "done_day") == key,
+    variant: variant
   )
 }
 
-struct ActionsProvider: TimelineProvider {
+struct ActionsProvider: AppIntentTimelineProvider {
   func placeholder(in context: Context) -> ActionsEntry {
     ActionsEntry(date: Date(), title: "تبيان", portion: "", hasPortion: true, done: false)
   }
 
-  func getSnapshot(in context: Context, completion: @escaping (ActionsEntry) -> Void) {
-    completion(actionsEntry(for: Date()))
+  func snapshot(for configuration: WidgetLookIntent, in context: Context) async -> ActionsEntry {
+    actionsEntry(for: Date(), variant: configuration.variant)
   }
 
   // Now, then again at midnight (a new day's portion, the done mark cleared).
-  func getTimeline(in context: Context, completion: @escaping (Timeline<ActionsEntry>) -> Void) {
+  func timeline(for configuration: WidgetLookIntent, in context: Context) async -> Timeline<ActionsEntry> {
     let midnight = Calendar.current.startOfDay(
       for: Calendar.current.date(byAdding: .day, value: 1, to: Date()) ?? Date())
-    completion(Timeline(entries: [actionsEntry(for: Date())], policy: .after(midnight)))
+    return Timeline(
+      entries: [actionsEntry(for: Date(), variant: configuration.variant)], policy: .after(midnight))
   }
 }
 
@@ -131,7 +134,32 @@ struct ActionsView: View {
     #endif
   }
 
-  private var homeBody: some View {
+  private func link(_ action: String) -> LookTap {
+    .link(URL(string: "tibyan://action/\(action)?homeWidget")!)
+  }
+
+  private var lookTaps: [String: LookTap] {
+    var taps: [String: LookTap] = [
+      "t0": link("continue"), "t1": link("listen"), "t2": link("search"),
+    ]
+    // Nothing to mark when no portion is due today, or it is already marked.
+    if entry.hasPortion && !entry.done { taps["t3"] = .intent(MarkPortionDoneIntent()) }
+    return taps
+  }
+
+  @ViewBuilder private var homeBody: some View {
+    if let spec = LookSpec.load(
+      face: entry.done ? "actionsDone" : "actions",
+      shape: family == .systemSmall ? .small : .medium, variant: entry.variant)
+    {
+      LookCanvas(spec: spec, texts: [:], taps: lookTaps)
+        .containerBackground(for: .widget) { LookGround(spec: spec) }
+    } else {
+      plainBody
+    }
+  }
+
+  private var plainBody: some View {
     VStack(alignment: .leading, spacing: 8) {
       Text(entry.title)
         .font(.caption.bold())
@@ -150,6 +178,7 @@ struct ActionsView: View {
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+    .padding(14)
     .containerBackground(Color(red: 0.07, green: 0.25, blue: 0.19), for: .widget)
   }
 }
@@ -166,10 +195,12 @@ struct TibyanActionsWidget: Widget {
   let kind = "TibyanActionsWidget"
 
   var body: some WidgetConfiguration {
-    StaticConfiguration(kind: kind, provider: ActionsProvider()) { entry in
+    AppIntentConfiguration(kind: kind, intent: WidgetLookIntent.self, provider: ActionsProvider()) {
+      entry in
       ActionsView(entry: entry)
         .environment(\.layoutDirection, WidgetStore.direction)
     }
+    .contentMarginsDisabled()
     .configurationDisplayName("تبيان: اختصارات")
     .description("متابعة القراءة، الاستماع، البحث، وتسجيل ورد اليوم")
     .supportedFamilies(families)
@@ -198,6 +229,7 @@ struct TasbihEntry: TimelineEntry {
   let count: Int
   /// «٢/٤ – ١٢/٣٣» for a dhikr said in stages.
   var stage: String? = nil
+  var variant = "handasi_light"
 }
 
 /// For a dhikr said in stages (`tasbih_stages`: `33,33,33,1`), the stage
@@ -218,27 +250,28 @@ private func stageLabel() -> String? {
   return "\(digits(i + 1))/\(digits(stages.count)) – \(digits(at))/\(digits(stages[i]))"
 }
 
-private func tasbihEntry() -> TasbihEntry {
+private func tasbihEntry(variant: String = "handasi_light") -> TasbihEntry {
   let d = WidgetStore.defaults
   let shown = Int(d?.string(forKey: "tasbih_count") ?? "") ?? 0
   return TasbihEntry(
     date: Date(),
     dhikr: d?.string(forKey: "tasbih_dhikr") ?? WidgetStore.text("المسبحة", "Tasbih"),
     count: shown + (d?.integer(forKey: "tasbih_pending") ?? 0),
-    stage: stageLabel())
+    stage: stageLabel(),
+    variant: variant)
 }
 
-struct TasbihProvider: TimelineProvider {
+struct TasbihProvider: AppIntentTimelineProvider {
   func placeholder(in context: Context) -> TasbihEntry {
     TasbihEntry(date: Date(), dhikr: "", count: 0)
   }
 
-  func getSnapshot(in context: Context, completion: @escaping (TasbihEntry) -> Void) {
-    completion(tasbihEntry())
+  func snapshot(for configuration: WidgetLookIntent, in context: Context) async -> TasbihEntry {
+    tasbihEntry(variant: configuration.variant)
   }
 
-  func getTimeline(in context: Context, completion: @escaping (Timeline<TasbihEntry>) -> Void) {
-    completion(Timeline(entries: [tasbihEntry()], policy: .never))
+  func timeline(for configuration: WidgetLookIntent, in context: Context) async -> Timeline<TasbihEntry> {
+    Timeline(entries: [tasbihEntry(variant: configuration.variant)], policy: .never)
   }
 }
 
@@ -272,6 +305,16 @@ struct TasbihView: View {
         Text(entry.stage ?? digits(entry.count)).font(.title3.bold()).minimumScaleFactor(0.4)
       }
       .containerBackground(.clear, for: .widget)
+    } else if let spec = LookSpec.load(
+      face: "tasbih", shape: family == .systemSmall ? .small : .medium, variant: entry.variant)
+    {
+      LookCanvas(
+        spec: spec,
+        texts: ["dhikr": entry.dhikr, "count": entry.stage ?? digits(entry.count)],
+        taps: ["count": .intent(CountTasbihIntent())]
+      )
+      .widgetURL(URL(string: "tibyan://action/tasbih?homeWidget"))
+      .containerBackground(for: .widget) { LookGround(spec: spec) }
     } else {
       HStack(spacing: 10) {
         Link(destination: URL(string: "tibyan://action/tasbih?homeWidget")!) {
@@ -285,6 +328,7 @@ struct TasbihView: View {
         }
         button
       }
+      .padding(14)
       .containerBackground(Color(red: 0.07, green: 0.25, blue: 0.19), for: .widget)
     }
   }
@@ -295,10 +339,12 @@ struct TibyanTasbihWidget: Widget {
   let kind = "TibyanTasbihWidget"
 
   var body: some WidgetConfiguration {
-    StaticConfiguration(kind: kind, provider: TasbihProvider()) { entry in
+    AppIntentConfiguration(kind: kind, intent: WidgetLookIntent.self, provider: TasbihProvider()) {
+      entry in
       TasbihView(entry: entry)
         .environment(\.layoutDirection, WidgetStore.direction)
     }
+    .contentMarginsDisabled()
     .configurationDisplayName("تبيان: المسبحة")
     .description("الذكر الذي تعدّه، وزر يعدّ دون فتح التطبيق")
     .supportedFamilies([.systemSmall, .systemMedium, .accessoryCircular])
