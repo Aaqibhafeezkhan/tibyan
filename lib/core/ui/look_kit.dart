@@ -165,6 +165,153 @@ class LookBackground extends StatelessWidget {
   }
 }
 
+/// The colours of the home screen's hero arch («هندسي», «ليلي ذهبي»): its
+/// sky, rim, texts and button. Shared with the home screen widgets.
+typedef HeroArchColors = ({
+  List<Color> sky,
+  Color rim,
+  Color ink,
+  Color sub,
+  Color buttonBg,
+  Color buttonFg,
+});
+
+HeroArchColors heroArchColors(UiLook look) {
+  final layli = look.isLayli;
+  return (
+    sky: layli
+        ? (look.night
+              ? [const Color(0xFF1B2D50), look.surface]
+              : [look.frame, Color.lerp(look.frame, Colors.white, .12)!])
+        : (look.night
+              ? [const Color(0xFF17403E), look.surface]
+              : [look.accent, Color.lerp(look.accent, Colors.black, .25)!]),
+    rim: layli
+        ? (look.night ? look.gold : look.onFrame)
+        : (look.night ? look.accent : look.gold.withValues(alpha: .9)),
+    ink: layli ? const Color(0xFFF3E2B4) : const Color(0xFFFFFCF6),
+    sub: layli ? const Color(0xFFD3D8E3) : const Color(0xFFDCEBE8),
+    buttonBg: layli
+        ? (look.night ? look.gold : look.onFrame)
+        : (look.night ? look.accent : const Color(0xFFFFFCF6)),
+    buttonFg: layli ? look.frame : (look.night ? look.bg : look.accent),
+  );
+}
+
+/// The hero arch's ground: a pointed arch filled with the look's sky (a
+/// star lattice for «هندسي», a night sky for «ليلي ذهبي») and its rim.
+class HeroArch extends StatelessWidget {
+  const HeroArch({super.key, this.spring = .34, this.inset = 7});
+
+  final double spring, inset;
+
+  @override
+  Widget build(BuildContext context) {
+    final look = context.look;
+    final c = heroArchColors(look);
+    return ExcludeSemantics(
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: ClipPath(
+              clipper: ArchClipper(spring: spring),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: c.sky,
+                  ),
+                ),
+                child: CustomPaint(
+                  painter: look.isLayli
+                      ? SkyPainter(const Color(0xFFE6C47A))
+                      : GirihPainter(
+                          Colors.white.withValues(alpha: .10),
+                          cell: 46,
+                        ),
+                ),
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: CustomPaint(
+              painter: ArchBorder(c.rim, spring: spring, inset: inset),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// A home section's icon in the look: a star medallion (مخطوطة), a tile
+/// (هندسي) or an arch (ليلي ذهبي). [k] scales it (62 wide at 1).
+class SectionIcon extends StatelessWidget {
+  const SectionIcon(this.icon, {super.key, this.k = 1});
+
+  final IconData icon;
+  final double k;
+
+  @override
+  Widget build(BuildContext context) {
+    final look = context.look;
+    final glyph = 24 * k;
+    return switch (look.style) {
+      InterfaceStyle.makhtuta => SizedBox.square(
+        dimension: 62 * k,
+        child: CustomPaint(
+          painter: StarPainter(look.surface, look.gold),
+          child: Icon(icon, color: look.accent, size: glyph),
+        ),
+      ),
+      InterfaceStyle.handasi => Container(
+        width: 62 * k,
+        height: 62 * k,
+        decoration: BoxDecoration(
+          color: look.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: look.line),
+        ),
+        child: CustomPaint(
+          painter: StarPainter(
+            look.accent.withValues(alpha: .10),
+            Colors.transparent,
+          ),
+          child: Icon(icon, color: look.accent, size: glyph),
+        ),
+      ),
+      InterfaceStyle.layli => SizedBox(
+        width: 64 * k,
+        height: 78 * k,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: ClipPath(
+                clipper: const ArchClipper(spring: .5),
+                child: ColoredBox(color: look.surface),
+              ),
+            ),
+            Positioned.fill(
+              child: CustomPaint(
+                painter: ArchBorder(
+                  look.gold.withValues(alpha: .8),
+                  spring: .5,
+                  inset: 4,
+                ),
+              ),
+            ),
+            Positioned.fill(
+              top: 20 * k,
+              child: Icon(icon, color: look.goldText, size: glyph),
+            ),
+          ],
+        ),
+      ),
+    };
+  }
+}
+
 /// A destination of the wide-window rail.
 enum RailItem { home, mushaf, contents, listen, settings }
 

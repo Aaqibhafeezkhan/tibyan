@@ -9,13 +9,17 @@ import '../domain/day.dart';
 
 /// What the home screen widget shows on one day.
 /// [surah] is the name of the surah the portion starts in and [to] its
-/// last page (the watch shows «ص ٢٢ ← ص ٢٤»).
+/// last page (the watch shows «ص ٢٢ ← ص ٢٤»). [dayOf] is the plan's day
+/// («اليوم ١٢ من ٣٠», empty without an end date) and [share] that day's
+/// place in the plan (0 … 1), the widget's progress bar.
 typedef WidgetDay = ({
   String portion,
   String reference,
   int page,
   String surah,
   int to,
+  String dayOf,
+  double share,
 });
 
 /// The widget's data: today's portion and a verse reference, written ahead
@@ -77,7 +81,7 @@ WidgetAction? widgetActionOf(Uri? uri) => uri == null || uri.host != 'action'
 
 /// The keys the platform widgets read, in one flat map: `title`, `idle`,
 /// `edition`, `progress` (percent), `days`, and per day `portion_`, `ref_`,
-/// `uri_`, `surah_`, `from_` and `to_`.
+/// `uri_`, `surah_`, `from_`, `to_`, `dayof_` and `share_` (percent).
 Map<String, String> widgetEntries(WidgetData data) => {
   'title': data.title,
   'idle': data.idle,
@@ -92,6 +96,8 @@ Map<String, String> widgetEntries(WidgetData data) => {
     'surah_${d.key}': v.surah,
     'from_${d.key}': '${v.page}',
     'to_${d.key}': '${v.to}',
+    'dayof_${d.key}': v.dayOf,
+    'share_${d.key}': '${(v.share.clamp(0.0, 1.0) * 100).round()}',
   },
 };
 

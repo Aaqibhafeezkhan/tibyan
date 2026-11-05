@@ -8851,6 +8851,60 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تطبيقان لسطح المكتب، يُنزَّلان من موقع تبيان.'**
   String get wn42DesktopBody;
+
+  /// No description provided for @widgetListen.
+  ///
+  /// In ar, this message translates to:
+  /// **'استمع'**
+  String get widgetListen;
+
+  /// No description provided for @widgetTodayWird.
+  ///
+  /// In ar, this message translates to:
+  /// **'ورد اليوم'**
+  String get widgetTodayWird;
+
+  /// No description provided for @widgetStartWird.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابدأ الورد'**
+  String get widgetStartWird;
+
+  /// The khatma widget's day of the plan.
+  ///
+  /// In ar, this message translates to:
+  /// **'اليوم {n} من {m}'**
+  String widgetDayOf(String n, String m);
+
+  /// No description provided for @widgetTileContinue.
+  ///
+  /// In ar, this message translates to:
+  /// **'متابعة'**
+  String get widgetTileContinue;
+
+  /// No description provided for @widgetTileListen.
+  ///
+  /// In ar, this message translates to:
+  /// **'استماع'**
+  String get widgetTileListen;
+
+  /// No description provided for @widgetTileSearch.
+  ///
+  /// In ar, this message translates to:
+  /// **'بحث'**
+  String get widgetTileSearch;
+
+  /// No description provided for @widgetTileRead.
+  ///
+  /// In ar, this message translates to:
+  /// **'قرأت الورد'**
+  String get widgetTileRead;
+
+  /// No description provided for @widgetTileDone.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم'**
+  String get widgetTileDone;
 }
 
 class _AppLocalizationsDelegate

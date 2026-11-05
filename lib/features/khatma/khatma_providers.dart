@@ -1133,6 +1133,15 @@ class KhatmaService {
     final surahs = await _ref.read(surahsProvider.future);
     final ar = l.localeName == 'ar';
     final days = <Day, WidgetDay>{};
+    // The plan's day «اليوم ١٢ من ٣٠» and its share, when it has an end.
+    (String, double)? dayOf(Day day) {
+      final end = s?.end;
+      if (s == null || end == null) return null;
+      final n = day.difference(s.khatmah.startDate) + 1;
+      final m = end.difference(s.khatmah.startDate) + 1;
+      if (n < 1 || m < n) return null;
+      return (l.widgetDayOf(digits(n), digits(m)), n / m);
+    }
     for (final MapEntry(key: day, value: range) in upcoming.entries) {
       final first = (await _mushaf.ayahsOnPage(
         range.from,
@@ -1151,6 +1160,8 @@ class KhatmaService {
         page: range.from,
         surah: surah == null ? '' : (ar ? surah.nameAr : surah.nameEn),
         to: range.to,
+        dayOf: dayOf(day)?.$1 ?? '',
+        share: dayOf(day)?.$2 ?? 0,
       );
     }
     await _ref

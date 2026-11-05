@@ -5233,4 +5233,33 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get wn42DesktopBody =>
       'Desktop apps, downloaded from the Tibyan website.';
+
+  @override
+  String get widgetListen => 'Listen';
+
+  @override
+  String get widgetTodayWird => 'Today\'s portion';
+
+  @override
+  String get widgetStartWird => 'Start reading';
+
+  @override
+  String widgetDayOf(String n, String m) {
+    return 'Day $n of $m';
+  }
+
+  @override
+  String get widgetTileContinue => 'Continue';
+
+  @override
+  String get widgetTileListen => 'Listen';
+
+  @override
+  String get widgetTileSearch => 'Search';
+
+  @override
+  String get widgetTileRead => 'Portion read';
+
+  @override
+  String get widgetTileDone => 'Done';
 }

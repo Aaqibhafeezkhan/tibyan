@@ -635,7 +635,17 @@ class _MushafScreenState extends ConsumerState<MushafScreen>
     if (widget.listen) {
       // After the page's verses are loaded.
       await ref.read(pageAyahsProvider(_page).future);
-      if (mounted) _listenFromPage();
+      if (!mounted) return;
+      // A verse named with it («استمع» on «آية اليوم»): recited from that
+      // verse, not selected (a selection would stop the page following).
+      final from = _selA;
+      if (from != null && widget.selectSurah != null) {
+        setState(() => _selA = _selB = null);
+        _setChrome(false);
+        ref.read(recitationProvider.notifier).play(from.surah, from: from.ayah);
+      } else {
+        _listenFromPage();
+      }
     }
   }
 
