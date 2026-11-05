@@ -74,15 +74,43 @@ object WidgetLooks {
   ): Look? {
     val shape = shape(manager, id)
     val spec = spec(data, face, shape, variant(data, id)) ?: return null
-    val bitmap = draw(context, spec, texts) ?: return null
+    val picture = draw(context, spec, texts) ?: return null
+    // Whole and unstretched in a widget of another shape; the taps move
+    // in with the picture.
+    val o = manager.getAppWidgetOptions(id)
+    val wDp = o.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0).toFloat()
+    val hDp = o.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, 0).toFloat()
+    val margins = WidgetFit.margins(picture.width.toFloat() / picture.height, wDp, hDp)
+    val bitmap = fit(picture, margins, ground(spec, picture))
     val views = RemoteViews(context.packageName, layout(shape))
     views.setImageViewBitmap(R.id.wl_image, bitmap)
+    val density = context.resources.displayMetrics.density
+    val padX = (margins.first * wDp * density).toInt()
+    val padY = (margins.second * hDp * density).toInt()
+    views.setViewPadding(R.id.wl_taps, padX, padY, padX, padY)
     views.setInt(
         R.id.wl_root,
         "setLayoutDirection",
         if (spec.optBoolean("rtl", true)) View.LAYOUT_DIRECTION_RTL else View.LAYOUT_DIRECTION_LTR,
     )
     return Look(views, shape)
+  }
+
+  /** The look's ground: the spec's, or the picture's corner. */
+  private fun ground(spec: JSONObject, picture: Bitmap): Int =
+      spec.optString("ground").takeIf { it.isNotEmpty() }?.let { color(it) }
+          ?: picture.getPixel(1, 1)
+
+  /** [picture] centred on [ground] with [margins] around it. */
+  private fun fit(picture: Bitmap, margins: Pair<Float, Float>, ground: Int): Bitmap {
+    if (margins.first <= 0f && margins.second <= 0f) return picture
+    val (w, h) = WidgetFit.canvas(picture.width, picture.height, margins)
+    val out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(out)
+    canvas.drawColor(ground)
+    canvas.drawBitmap(picture, (w - picture.width) / 2f, (h - picture.height) / 2f, null)
+    picture.recycle()
+    return out
   }
 
   /** The spec of the look asked for; else the same style's light or night. */

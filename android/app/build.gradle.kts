@@ -89,6 +89,7 @@ flutter {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    testImplementation("junit:junit:4.13.2")
     // «الساعة»: the Wear OS app (android/wear) through the Data Layer.
     if (!huaweiBuild) {
         implementation("com.google.android.gms:play-services-wearable:19.0.0")

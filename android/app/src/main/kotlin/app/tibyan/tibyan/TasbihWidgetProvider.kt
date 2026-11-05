@@ -32,6 +32,9 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
         widgetData.getInt(PENDING, 0)
     val ar = (widgetData.getString("lang", null) ?: "ar").startsWith("ar")
     val stage = stageLabel(widgetData, ar)
+    // Before the app has written a dhikr: the widget's name, in the app's language.
+    val label = context.inAppLanguage(widgetData).getString(R.string.tasbih_widget_label)
+    val dhikr = widgetData.getString("tasbih_dhikr", null)?.takeIf { it.isNotEmpty() } ?: label
     val countIntent =
         PendingIntent.getBroadcast(
             context,
@@ -54,7 +57,7 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
               id,
               "tasbih",
               mapOf(
-                  "dhikr" to (widgetData.getString("tasbih_dhikr", null) ?: context.getString(R.string.tasbih_widget_label)),
+                  "dhikr" to dhikr,
                   "count" to (stage ?: if (ar) arabicDigits(count) else "$count"),
               ),
           ) { if (it == WidgetLooks.Shape.small) R.layout.wl_foot_full else R.layout.wl_side_end }
@@ -68,7 +71,7 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
       views.applyDirection(R.id.tasbih_root, widgetData)
       views.setTextViewText(
           R.id.tasbih_dhikr,
-          widgetData.getString("tasbih_dhikr", null) ?: context.getString(R.string.tasbih_widget_label),
+          dhikr,
       )
       views.setTextViewText(
           R.id.tasbih_count,
