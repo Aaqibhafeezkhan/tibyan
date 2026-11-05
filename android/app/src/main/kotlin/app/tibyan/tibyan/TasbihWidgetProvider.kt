@@ -32,9 +32,10 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
         widgetData.getInt(PENDING, 0)
     val ar = (widgetData.getString("lang", null) ?: "ar").startsWith("ar")
     val stage = stageLabel(widgetData, ar)
-    // Before the app has written a dhikr: the widget's name, in the app's language.
+    val written = widgetData.getString("tasbih_dhikr", null)
+    // The plain layout has no title: before a dhikr is written it names the
+    // widget, in the app's language.
     val label = context.inAppLanguage(widgetData).getString(R.string.tasbih_widget_label)
-    val dhikr = widgetData.getString("tasbih_dhikr", null)?.takeIf { it.isNotEmpty() } ?: label
     val countIntent =
         PendingIntent.getBroadcast(
             context,
@@ -57,7 +58,7 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
               id,
               "tasbih",
               mapOf(
-                  "dhikr" to dhikr,
+                  "dhikr" to dhikrSlot(written),
                   "count" to (stage ?: if (ar) arabicDigits(count) else "$count"),
               ),
           ) { if (it == WidgetLooks.Shape.small) R.layout.wl_foot_full else R.layout.wl_side_end }
@@ -71,7 +72,7 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
       views.applyDirection(R.id.tasbih_root, widgetData)
       views.setTextViewText(
           R.id.tasbih_dhikr,
-          dhikr,
+          written?.takeIf { it.isNotEmpty() } ?: label,
       )
       views.setTextViewText(
           R.id.tasbih_count,
@@ -142,6 +143,12 @@ class TasbihWidgetProvider : HomeWidgetProvider() {
       n.toString().map { (0x0660 + (it - '0')).toChar() }.joinToString("")
 
   companion object {
+    /**
+     * The dhikr slot of the picture: the dhikr the app wrote, else empty (the
+     * picture's title already reads «المسبحة»; no dhikr is made up).
+     */
+    fun dhikrSlot(written: String?): String = written?.trim().orEmpty()
+
     const val COUNT = "app.tibyan.tibyan.TASBIH_WIDGET_COUNT"
     const val PREFERENCES = "HomeWidgetPreferences"
     const val PENDING = "tasbih_pending"
