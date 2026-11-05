@@ -20,7 +20,7 @@ import '../../core/ui/look_kit.dart';
 import '../../l10n/app_localizations.dart';
 
 /// The pictures' version: a change to the art draws them all again.
-const widgetArtVersion = 1;
+const widgetArtVersion = 2;
 
 /// What a picture is drawn for. [actionsDone]: the shortcuts with today's
 /// portion marked read.
@@ -133,9 +133,14 @@ class WidgetArt {
     required this.art,
     required this.slots,
     required this.taps,
+    required this.ground,
   });
 
   final Size size;
+
+  /// The look's ground: a widget of another shape shows the picture whole
+  /// on it rather than stretched.
+  final Color ground;
   final bool rtl;
   final Widget art;
   final List<WidgetSlot> slots;
@@ -147,6 +152,7 @@ class WidgetArt {
     'file': file,
     'rtl': rtl,
     'aspect': size.width / size.height,
+    'ground': _hex(ground),
     'slots': [for (final s in slots) s.toJson(size)],
     'taps': {
       for (final MapEntry(key: k, value: r) in taps.entries)
@@ -275,6 +281,7 @@ class _Builder {
       art: art,
       slots: _slots,
       taps: _taps,
+      ground: look.bg,
     );
   }
 

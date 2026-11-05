@@ -46,7 +46,7 @@ class VerseWidgetProvider : HomeWidgetProvider() {
               id,
               "verse",
               mapOf(
-                  "text" to (text ?: context.getString(R.string.khatma_widget_open)),
+                  "text" to (text ?: context.inAppLanguage(widgetData).getString(R.string.khatma_widget_open)),
                   "ref" to reference,
                   "surah" to widgetData.getString("vod_surah_$day", null),
                   "num" to widgetData.getString("vod_num_$day", null),
@@ -66,7 +66,7 @@ class VerseWidgetProvider : HomeWidgetProvider() {
           R.id.verse_title,
           widgetData.getString("vod_title", null) ?: context.getString(R.string.verse_widget_label),
       )
-      views.setTextViewText(R.id.verse_text, text ?: context.getString(R.string.khatma_widget_open))
+      views.setTextViewText(R.id.verse_text, text ?: context.inAppLanguage(widgetData).getString(R.string.khatma_widget_open))
       if (reference.isNullOrEmpty()) {
         views.setViewVisibility(R.id.verse_reference, View.GONE)
       } else {

@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -14,7 +13,6 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import es.antonborri.home_widget.HomeWidgetProvider
-import java.util.Locale
 
 /**
  * A widget's look and mode: «كما في التطبيق» (the default), or a look of
@@ -34,38 +32,42 @@ class WidgetConfigureActivity : Activity() {
     if (widgetId == AppWidgetManager.INVALID_APPWIDGET_ID) return finish()
 
     val prefs = getSharedPreferences(ActionsWidgetProvider.PREFERENCES, Context.MODE_PRIVATE)
-    val lang = prefs.getString("lang", null) ?: "ar"
-    val words = createConfigurationContext(
-        Configuration(resources.configuration).apply { setLocale(Locale(lang)) },
-    )
+    val words = inAppLanguage(prefs)
+    val direction =
+        if (isRtlLanguage(appLanguage(prefs))) View.LAYOUT_DIRECTION_RTL else View.LAYOUT_DIRECTION_LTR
     fun t(res: Int) = words.getString(res)
     val now = (prefs.getString(WidgetLooks.configKey(widgetId), null) ?: "app|app").split("|")
 
     title = t(R.string.wl_config_title)
+    // The dialog's own title too, whatever the device's language.
+    window.decorView.layoutDirection = direction
     val pad = (16 * resources.displayMetrics.density).toInt()
     val root = LinearLayout(this).apply {
       orientation = LinearLayout.VERTICAL
       setPadding(pad, pad, pad, pad)
-      layoutDirection = if (lang.startsWith("ar")) View.LAYOUT_DIRECTION_RTL else View.LAYOUT_DIRECTION_LTR
+      layoutDirection = direction
     }
     fun group(label: Int, options: List<Pair<String, Int>>, chosen: String): RadioGroup {
       root.addView(TextView(this).apply {
+        layoutDirection = direction
+        textAlignment = View.TEXT_ALIGNMENT_VIEW_START
         text = t(label)
         textSize = 15f
         setPadding(0, pad / 2, 0, pad / 4)
       })
-      val g = RadioGroup(this).apply { layoutDirection = root.layoutDirection }
+      val g = RadioGroup(this).apply { layoutDirection = direction }
+      root.addView(g, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT))
       options.forEachIndexed { i, (key, res) ->
         g.addView(RadioButton(this).apply {
           this.id = View.generateViewId()
-          layoutDirection = root.layoutDirection
+          layoutDirection = direction
           textDirection = View.TEXT_DIRECTION_LOCALE
+          textAlignment = View.TEXT_ALIGNMENT_VIEW_START
           text = t(res)
           tag = key
           isChecked = key == chosen || (i == 0 && options.none { it.first == chosen })
         })
       }
-      root.addView(g)
       return g
     }
     val looks = group(

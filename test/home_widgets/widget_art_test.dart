@@ -81,6 +81,20 @@ void main() {
       ar,
     );
     expect(manuscript.slots.map((s) => s.id), containsAll(['num', 'surah']));
+    // The ground a resized Android widget is filled with around the picture.
+    final night = widgetLook(InterfaceStyle.layli, ThemeModeId.night);
+    final spec = jsonDecode(
+      buildWidgetArt(
+        WidgetFace.tasbih,
+        WidgetShape.small,
+        night,
+        ar,
+      ).spec('x.png'),
+    ) as Map;
+    expect(
+      spec['ground'],
+      '#${night.bg.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase()}',
+    );
   });
 
   testWidgets('every picture lays out without overflow', (tester) async {

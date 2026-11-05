@@ -45,7 +45,7 @@ class KhatmaWidgetProvider : HomeWidgetProvider() {
               id,
               "khatma",
               mapOf(
-                  "portion" to (portion ?: idle ?: context.getString(R.string.khatma_widget_open)),
+                  "portion" to (portion ?: idle ?: context.inAppLanguage(widgetData).getString(R.string.khatma_widget_open)),
                   "day" to (widgetData.getString("dayof_$today", null)?.takeIf { it.isNotEmpty() } ?: reference),
                   "bar" to share?.let { "${it / 100f}" },
               ),
@@ -65,7 +65,7 @@ class KhatmaWidgetProvider : HomeWidgetProvider() {
       )
       views.setTextViewText(
           R.id.khatma_portion,
-          portion ?: idle ?: context.getString(R.string.khatma_widget_open),
+          portion ?: idle ?: context.inAppLanguage(widgetData).getString(R.string.khatma_widget_open),
       )
       if (reference.isNullOrEmpty()) {
         views.setViewVisibility(R.id.khatma_reference, View.GONE)
