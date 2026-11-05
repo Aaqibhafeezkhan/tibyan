@@ -1,0 +1,19 @@
+name: LFS pull (cached)
+description: >
+  Fetch the Git LFS files through the Actions cache. A plain `lfs: true`
+  checkout downloads every LFS file (about 835 MB) on every job and spends
+  the account's LFS bandwidth; this downloads only what the cache lacks.
+runs:
+  using: composite
+  steps:
+    - name: List LFS objects
+      shell: bash
+      run: git lfs ls-files --long | cut -d ' ' -f1 | sort > .lfs-assets-id
+    - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+      with:
+        path: .git/lfs/objects
+        key: lfs-${{ hashFiles('.lfs-assets-id') }}
+        restore-keys: lfs-
+    - name: Pull LFS files
+      shell: bash
+      run: git lfs pull

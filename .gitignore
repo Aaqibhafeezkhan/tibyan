@@ -151,3 +151,4 @@ issues-found/
 
 # Agent handoff notes (contain server access details; never commit)
 handoff/
+.lfs-assets-id
