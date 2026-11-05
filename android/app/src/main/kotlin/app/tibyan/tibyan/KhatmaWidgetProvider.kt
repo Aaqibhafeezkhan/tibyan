@@ -2,6 +2,7 @@ package app.tibyan.tibyan
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
+import android.os.Bundle
 import android.content.SharedPreferences
 import android.net.Uri
 import android.view.View
@@ -32,7 +33,30 @@ class KhatmaWidgetProvider : HomeWidgetProvider() {
     val uri = widgetData.getString("uri_$today", null)
     val idle = widgetData.getString("idle", null)
 
+    val share = widgetData.getString("share_$today", null)?.toFloatOrNull()
     for (id in appWidgetIds) {
+      val open =
+          HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, Uri.parse(uri ?: "tibyan://khatma"))
+      val look =
+          WidgetLooks.build(
+              context,
+              widgetData,
+              appWidgetManager,
+              id,
+              "khatma",
+              mapOf(
+                  "portion" to (portion ?: idle ?: context.getString(R.string.khatma_widget_open)),
+                  "day" to (widgetData.getString("dayof_$today", null)?.takeIf { it.isNotEmpty() } ?: reference),
+                  "bar" to share?.let { "${it / 100f}" },
+              ),
+          ) { if (it == WidgetLooks.Shape.small) R.layout.wl_foot_full else R.layout.wl_foot_end }
+      if (look != null) {
+        look.views.setOnClickPendingIntent(R.id.wl_main, open)
+        if (look.shape == WidgetLooks.Shape.medium) look.views.setOnClickPendingIntent(R.id.wl_main2, open)
+        look.views.setOnClickPendingIntent(R.id.wl_button, open)
+        appWidgetManager.updateAppWidget(id, look.views)
+        continue
+      }
       val views = RemoteViews(context.packageName, R.layout.khatma_widget)
       views.applyDirection(R.id.khatma_root, widgetData)
       views.setTextViewText(
@@ -59,4 +83,11 @@ class KhatmaWidgetProvider : HomeWidgetProvider() {
       appWidgetManager.updateAppWidget(id, views)
     }
   }
+
+  override fun onAppWidgetOptionsChanged(
+      context: Context,
+      appWidgetManager: AppWidgetManager,
+      appWidgetId: Int,
+      newOptions: Bundle,
+  ) = redraw(context, this, intArrayOf(appWidgetId))
 }

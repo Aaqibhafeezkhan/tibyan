@@ -68,6 +68,24 @@ class AppDelegate: FlutterAppDelegate {
         WidgetCenter.shared.reloadAllTimelines()
       }
       result(nil)
+    case "saveFile":
+      // The widgets' pictures and fonts (widget_look_sync.dart), into the
+      // App Group's `home_widget/`, their path under the key.
+      guard let args = call.arguments as? [String: Any],
+        let key = args["key"] as? String, let ext = args["ext"] as? String,
+        let bytes = args["bytes"] as? FlutterStandardTypedData,
+        let dir = FileManager.default
+          .containerURL(forSecurityApplicationGroupIdentifier: groupId)?
+          .appendingPathComponent("home_widget")
+      else {
+        result(nil)
+        return
+      }
+      try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+      let url = dir.appendingPathComponent("\(key).\(ext)")
+      try? bytes.data.write(to: url)
+      defaults?.set(url.path, forKey: key)
+      result(nil)
     case "appLanguage":
       // The app's own language for macOS (the app menu's name, system
       // panels), from the next launch: «التبيان» when the app is in Arabic,

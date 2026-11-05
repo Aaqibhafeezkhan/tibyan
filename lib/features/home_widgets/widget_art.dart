@@ -625,7 +625,7 @@ class _Builder {
     final rows = small ? 2 : 1;
     final w = size.width / columns;
     final h = size.height / rows;
-    final k = small ? .5 : .72;
+    final k = small ? .6 : .72;
     for (var i = 0; i < 4; i++) {
       final cell = _at((i % columns) * w, (i ~/ columns) * h, w, h);
       _taps['t$i'] = cell;

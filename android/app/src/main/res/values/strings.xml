@@ -34,4 +34,14 @@
         <item>continue reading</item>
         <item>resume reading</item>
     </string-array>
+    <string name="wl_config_title">Widget look</string>
+    <string name="wl_config_look">Look</string>
+    <string name="wl_config_mode">Mode</string>
+    <string name="wl_config_app">As in the app</string>
+    <string name="wl_look_handasi">Geometric</string>
+    <string name="wl_look_layli">Golden night</string>
+    <string name="wl_look_makhtuta">Manuscript</string>
+    <string name="wl_mode_light">Light</string>
+    <string name="wl_mode_night">Night</string>
+    <string name="wl_config_done">Done</string>
 </resources>

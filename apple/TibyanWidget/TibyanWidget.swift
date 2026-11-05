@@ -5,6 +5,7 @@
 // entry per coming day into the shared App Group, so the widget can move to
 // the next day by itself at midnight.
 
+import AppIntents
 import SwiftUI
 import WidgetKit
 
@@ -14,9 +15,14 @@ struct KhatmaEntry: TimelineEntry {
   let portion: String
   let reference: String
   let url: URL?
+  /// «اليوم ١٢ من ٣٠» and that day's share of the plan (0 … 1).
+  var dayOf = ""
+  var share: Double? = nil
+  /// The look to draw in (WidgetLookIntent.variant).
+  var variant = "handasi_light"
 }
 
-private func entry(for date: Date) -> KhatmaEntry {
+private func entry(for date: Date, variant: String = "handasi_light") -> KhatmaEntry {
   let data = WidgetStore.defaults
   let key = WidgetStore.dayKey(date)
   let portion = data?.string(forKey: "portion_\(key)")
@@ -25,30 +31,33 @@ private func entry(for date: Date) -> KhatmaEntry {
     title: data?.string(forKey: "title") ?? "الختمة",
     portion: portion ?? data?.string(forKey: "idle") ?? "افتح تبيان",
     reference: data?.string(forKey: "ref_\(key)") ?? "",
-    url: URL(string: data?.string(forKey: "uri_\(key)") ?? "tibyan://khatma?homeWidget")
+    url: URL(string: data?.string(forKey: "uri_\(key)") ?? "tibyan://khatma?homeWidget"),
+    dayOf: data?.string(forKey: "dayof_\(key)") ?? "",
+    share: (data?.string(forKey: "share_\(key)")).flatMap(Double.init).map { $0 / 100 },
+    variant: variant
   )
 }
 
-struct Provider: TimelineProvider {
+struct Provider: AppIntentTimelineProvider {
   func placeholder(in context: Context) -> KhatmaEntry {
     KhatmaEntry(date: Date(), title: "الختمة", portion: "", reference: "", url: nil)
   }
 
-  func getSnapshot(in context: Context, completion: @escaping (KhatmaEntry) -> Void) {
-    completion(entry(for: Date()))
+  func snapshot(for configuration: WidgetLookIntent, in context: Context) async -> KhatmaEntry {
+    entry(for: Date(), variant: configuration.variant)
   }
 
   // Today now, then each of the next days at midnight.
-  func getTimeline(in context: Context, completion: @escaping (Timeline<KhatmaEntry>) -> Void) {
+  func timeline(for configuration: WidgetLookIntent, in context: Context) async -> Timeline<KhatmaEntry> {
     let calendar = Calendar.current
     let today = calendar.startOfDay(for: Date())
-    var entries = [entry(for: Date())]
+    var entries = [entry(for: Date(), variant: configuration.variant)]
     for i in 1..<14 {
       if let d = calendar.date(byAdding: .day, value: i, to: today) {
-        entries.append(entry(for: d))
+        entries.append(entry(for: d, variant: configuration.variant))
       }
     }
-    completion(Timeline(entries: entries, policy: .atEnd))
+    return Timeline(entries: entries, policy: .atEnd)
   }
 }
 
@@ -84,7 +93,23 @@ struct KhatmaWidgetView: View {
       .containerBackground(.clear, for: .widget)
     #endif
     default:
-      homeBody
+      if let spec = LookSpec.load(
+        face: "khatma", shape: family == .systemSmall ? .small : .medium, variant: entry.variant)
+      {
+        LookCanvas(
+          spec: spec,
+          texts: [
+            "portion": entry.portion,
+            "day": entry.dayOf.isEmpty ? entry.reference : entry.dayOf,
+            "bar": entry.share.map { "\($0)" } ?? "",
+          ],
+          taps: family == .systemSmall ? [:] : entry.url.map { ["button": .link($0)] } ?? [:]
+        )
+        .widgetURL(entry.url)
+        .containerBackground(for: .widget) { LookGround(spec: spec) }
+      } else {
+        homeBody
+      }
     }
   }
 
@@ -105,6 +130,7 @@ struct KhatmaWidgetView: View {
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+    .padding(14)
     .widgetURL(entry.url)
     .containerBackground(Color(red: 0.07, green: 0.25, blue: 0.19), for: .widget)
   }
@@ -133,10 +159,11 @@ struct TibyanWidget: Widget {
   let kind = "TibyanWidget"
 
   var body: some WidgetConfiguration {
-    StaticConfiguration(kind: kind, provider: Provider()) { entry in
+    AppIntentConfiguration(kind: kind, intent: WidgetLookIntent.self, provider: Provider()) { entry in
       KhatmaWidgetView(entry: entry)
         .environment(\.layoutDirection, WidgetStore.direction)
     }
+    .contentMarginsDisabled()
     .configurationDisplayName("الختمة")
     .description("ورد اليوم من الختمة")
     .supportedFamilies(families)
@@ -156,9 +183,14 @@ struct VerseEntry: TimelineEntry {
   let text: String
   let reference: String
   let url: URL?
+  /// «استمع»: the verse recited; the surah's name and the verse's number.
+  var listen: URL? = nil
+  var surah = ""
+  var number = ""
+  var variant = "handasi_light"
 }
 
-private func verseEntry(for date: Date) -> VerseEntry {
+private func verseEntry(for date: Date, variant: String = "handasi_light") -> VerseEntry {
   let data = WidgetStore.defaults
   var key = WidgetStore.dayKey(date)
   // Past the days written (the app not opened for a month): the last one.
@@ -172,29 +204,33 @@ private func verseEntry(for date: Date) -> VerseEntry {
     title: data?.string(forKey: "vod_title") ?? WidgetStore.text("آية اليوم", "Verse of the Day"),
     text: data?.string(forKey: "vod_text_\(key)") ?? WidgetStore.text("افتح تبيان", "Open Tibyan"),
     reference: data?.string(forKey: "vod_ref_\(key)") ?? "",
-    url: URL(string: data?.string(forKey: "vod_uri_\(key)") ?? "tibyan://action/continue?homeWidget")
+    url: URL(string: data?.string(forKey: "vod_uri_\(key)") ?? "tibyan://action/continue?homeWidget"),
+    listen: (data?.string(forKey: "vod_listen_\(key)")).flatMap(URL.init(string:)),
+    surah: data?.string(forKey: "vod_surah_\(key)") ?? "",
+    number: data?.string(forKey: "vod_num_\(key)") ?? "",
+    variant: variant
   )
 }
 
-struct VerseProvider: TimelineProvider {
+struct VerseProvider: AppIntentTimelineProvider {
   func placeholder(in context: Context) -> VerseEntry {
     VerseEntry(date: Date(), title: "آية اليوم", text: "", reference: "", url: nil)
   }
 
-  func getSnapshot(in context: Context, completion: @escaping (VerseEntry) -> Void) {
-    completion(verseEntry(for: Date()))
+  func snapshot(for configuration: WidgetLookIntent, in context: Context) async -> VerseEntry {
+    verseEntry(for: Date(), variant: configuration.variant)
   }
 
-  func getTimeline(in context: Context, completion: @escaping (Timeline<VerseEntry>) -> Void) {
+  func timeline(for configuration: WidgetLookIntent, in context: Context) async -> Timeline<VerseEntry> {
     let calendar = Calendar.current
     let today = calendar.startOfDay(for: Date())
-    var entries = [verseEntry(for: Date())]
+    var entries = [verseEntry(for: Date(), variant: configuration.variant)]
     for i in 1..<14 {
       if let d = calendar.date(byAdding: .day, value: i, to: today) {
-        entries.append(verseEntry(for: d))
+        entries.append(verseEntry(for: d, variant: configuration.variant))
       }
     }
-    completion(Timeline(entries: entries, policy: .atEnd))
+    return Timeline(entries: entries, policy: .atEnd)
   }
 }
 
@@ -217,7 +253,23 @@ struct VerseWidgetView: View {
       .containerBackground(.clear, for: .widget)
     #endif
     default:
-      homeBody
+      if let spec = LookSpec.load(
+        face: "verse", shape: family == .systemMedium ? .medium : .small, variant: entry.variant)
+      {
+        LookCanvas(
+          spec: spec,
+          texts: [
+            "text": entry.text, "ref": entry.reference, "surah": entry.surah, "num": entry.number,
+          ],
+          // A small widget has one target, the verse; «استمع» from medium up.
+          taps: family == .systemSmall
+            ? [:] : (entry.listen ?? entry.url).map { ["button": .link($0)] } ?? [:]
+        )
+        .widgetURL(entry.url)
+        .containerBackground(for: .widget) { LookGround(spec: spec) }
+      } else {
+        homeBody
+      }
     }
   }
 
@@ -242,6 +294,7 @@ struct VerseWidgetView: View {
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+    .padding(14)
     .widgetURL(entry.url)
     .containerBackground(Color(red: 0.07, green: 0.25, blue: 0.19), for: .widget)
   }
@@ -260,11 +313,13 @@ struct TibyanVerseWidget: Widget {
   let kind = "TibyanVerseWidget"
 
   var body: some WidgetConfiguration {
-    StaticConfiguration(kind: kind, provider: VerseProvider()) { entry in
+    AppIntentConfiguration(kind: kind, intent: WidgetLookIntent.self, provider: VerseProvider()) {
+      entry in
       VerseWidgetView(entry: entry)
         // The verse is Arabic: always right to left.
         .environment(\.layoutDirection, .rightToLeft)
     }
+    .contentMarginsDisabled()
     .configurationDisplayName("آية اليوم")
     .description("آية من القرآن كل يوم")
     .supportedFamilies(verseFamilies)

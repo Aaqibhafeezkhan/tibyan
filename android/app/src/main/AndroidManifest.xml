@@ -167,6 +167,18 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/khatma_widget_info"/>
         </receiver>
+        <!-- A widget's look and mode («كما في التطبيق» by default), asked
+             when it is placed and from the launcher's widget settings. -->
+        <activity
+            android:name=".WidgetConfigureActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.Alert">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
         <!-- «آية اليوم»: a verse a day (home_widget). -->
         <receiver
             android:name=".VerseWidgetProvider"

@@ -32,4 +32,14 @@
         <item>متابعة القراءة</item>
         <item>أكمل القراءة</item>
     </string-array>
+    <string name="wl_config_title">شكل الودجة</string>
+    <string name="wl_config_look">الشكل</string>
+    <string name="wl_config_mode">الوضع</string>
+    <string name="wl_config_app">كما في التطبيق</string>
+    <string name="wl_look_handasi">هندسي</string>
+    <string name="wl_look_layli">ليلي ذهبي</string>
+    <string name="wl_look_makhtuta">مخطوطة</string>
+    <string name="wl_mode_light">فاتح</string>
+    <string name="wl_mode_night">ليلي</string>
+    <string name="wl_config_done">تم</string>
 </resources>
