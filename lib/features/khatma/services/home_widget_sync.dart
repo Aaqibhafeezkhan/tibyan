@@ -117,6 +117,15 @@ abstract interface class HomeWidgetSync {
 
   /// Widget taps while the app runs.
   Stream<Uri?> get taps;
+
+  /// Writes [bytes] as the file `<key>.<ext>` where the widgets can read
+  /// it (the App Group on Apple platforms), and its path under [key]: the
+  /// widgets' pictures and fonts (widget_look_sync.dart).
+  Future<void> saveFile(String key, Uint8List bytes, String ext);
+
+  /// Writes the looks' [entries] (the pictures' specs, `wl_app`) and
+  /// redraws every widget.
+  Future<void> writeLooks(Map<String, String> entries);
 }
 
 class NoHomeWidget implements HomeWidgetSync {
@@ -138,6 +147,17 @@ class NoHomeWidget implements HomeWidgetSync {
   Stream<Uri?> get taps => const Stream.empty();
 
   final List<WidgetAction> pending = [];
+
+  final Map<String, Uint8List> files = {};
+  final Map<String, String> looks = {};
+
+  @override
+  Future<void> saveFile(String key, Uint8List bytes, String ext) async =>
+      files['$key.$ext'] = bytes;
+
+  @override
+  Future<void> writeLooks(Map<String, String> entries) async =>
+      looks.addAll(entries);
 
   @override
   Future<List<WidgetAction>> takePending() async {
@@ -163,6 +183,43 @@ class PluginHomeWidgetSync implements HomeWidgetSync {
   /// «آية اليوم».
   static const androidVerseProvider = 'app.tibyan.tibyan.VerseWidgetProvider';
   static const iosVerseKind = 'TibyanVerseWidget';
+
+  /// «المسبحة» (tasbih_platform.dart writes its count).
+  static const androidTasbihProvider = 'app.tibyan.tibyan.TasbihWidgetProvider';
+  static const iosTasbihKind = 'TibyanTasbihWidget';
+
+  @override
+  Future<void> saveFile(String key, Uint8List bytes, String ext) async {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      await HomeWidget.setAppGroupId(appGroup);
+    }
+    await HomeWidget.saveFile(key, bytes, extension: ext);
+  }
+
+  @override
+  Future<void> writeLooks(Map<String, String> entries) async {
+    try {
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        await HomeWidget.setAppGroupId(appGroup);
+      }
+      for (final MapEntry(key: k, value: v) in entries.entries) {
+        await HomeWidget.saveWidgetData<String>(k, v);
+      }
+      for (final (android, ios) in [
+        (androidVerseProvider, iosVerseKind),
+        (androidProvider, iosKind),
+        (androidActionsProvider, iosActionsKind),
+        (androidTasbihProvider, iosTasbihKind),
+      ]) {
+        await HomeWidget.updateWidget(
+          qualifiedAndroidName: android,
+          iOSName: ios,
+        );
+      }
+    } catch (_) {
+      // No widget support (or the extension is not set up yet).
+    }
+  }
 
   @override
   Future<void> writeVerses(Map<String, String> entries) async {
@@ -292,6 +349,13 @@ class MacHomeWidgetSync implements HomeWidgetSync {
 
   @override
   Stream<Uri?> get taps => _links.stream;
+
+  @override
+  Future<void> saveFile(String key, Uint8List bytes, String ext) => _channel
+      .invokeMethod<void>('saveFile', {'key': key, 'ext': ext, 'bytes': bytes});
+
+  @override
+  Future<void> writeLooks(Map<String, String> entries) => writeVerses(entries);
 
   @override
   Future<List<WidgetAction>> takePending() async {

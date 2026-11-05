@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tibyan/features/mushaf/presentation/navigation.dart'
+    show verseLinkListens, verseOfLink;
 import 'package:tibyan/core/db/content_database.dart';
 import 'package:tibyan/features/khatma/domain/day.dart';
 import 'package:tibyan/features/khatma/services/verse_of_day.dart';
@@ -94,6 +96,13 @@ void main() {
     expect(a['vod_text_${from.key}'], 'short');
     final uri = Uri.parse(a['vod_uri_${from.key}']!);
     expect((uri.scheme, uri.host), ('tibyan', 'verse'));
+    // «استمع»: the same verse, recited.
+    final listen = Uri.parse(a['vod_listen_${from.key}']!);
+    expect(verseLinkListens(listen), isTrue);
+    expect(verseLinkListens(uri), isFalse);
+    expect(verseOfLink(listen), verseOfLink(uri));
+    expect(a['vod_num_${from.key}'], isNotEmpty);
+    expect(a['vod_surah_${from.key}'], isNotEmpty);
     final again = await verseOfDayEntries(
       ayahById: (id) async => _ayah(id, text: 'short'),
       surahs: _surahs,
