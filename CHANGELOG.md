@@ -6,6 +6,12 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-05
+
+### Added
+- Home screen widgets in the app's interface look: Verse of the Day, Today's portion, Tasbih and Shortcuts are drawn as Geometric, Golden night or Manuscript, light or night, following the app by default.
+- Each widget can be set to its own look and mode (Android: the widget's settings; iOS and macOS: Edit Widget).
+- Verse of the Day has a «Listen» button that recites that verse; Today's portion shows the plan's day and a progress bar.
 ## [0.7.2] - 2026-11-03
 
 ### Fixed
@@ -422,7 +428,8 @@ Phase 0: foundation. No Quran or religious text appears in this release.
 4. Switch the language to English and back to Arabic; the layout should flip direction.
 5. Close and reopen the app: every choice should be kept.
 
-[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.7.2...HEAD
+[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/helalrules7/tibyan/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/helalrules7/tibyan/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/helalrules7/tibyan/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/helalrules7/tibyan/compare/v0.5.1...v0.7.0
