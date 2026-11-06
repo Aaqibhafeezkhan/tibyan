@@ -6,6 +6,10 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.8.2] - 2026-11-06
+
+### Fixed
+- Mushaf: the «continue reading» page picture is taken when the app leaves focus, not once hidden; drawing it after the window surface was released crashed some Huawei devices.
 ## [0.8.1] - 2026-11-05
 
 ### Fixed
@@ -434,7 +438,8 @@ Phase 0: foundation. No Quran or religious text appears in this release.
 4. Switch the language to English and back to Arabic; the layout should flip direction.
 5. Close and reopen the app: every choice should be kept.
 
-[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.8.1...HEAD
+[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.8.2...HEAD
+[0.8.2]: https://github.com/helalrules7/tibyan/compare/v0.8.1...v0.8.2
 [0.8.1]: https://github.com/helalrules7/tibyan/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/helalrules7/tibyan/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/helalrules7/tibyan/compare/v0.7.1...v0.7.2
