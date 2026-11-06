@@ -143,8 +143,9 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/lfs-pull
+        with:
           ref: ${{ inputs.tag || github.ref }}
+      - uses: ./.github/actions/lfs-pull
       - name: Build tools (GTK, libmpv, libcurl)
         run: |
           sudo apt-get update
@@ -187,8 +188,9 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/lfs-pull
+        with:
           ref: ${{ inputs.tag || github.ref }}
+      - uses: ./.github/actions/lfs-pull
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: 3.47.5
