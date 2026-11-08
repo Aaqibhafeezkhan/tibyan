@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    id("io.sentry.android.gradle")
 }
 
 // The upload key for Google Play, kept outside the repository
@@ -85,6 +86,29 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+// R8 mapping for GlitchTip (errors.altibyan.app). The plugin writes a UUID into
+// assets/sentry-debug-meta.properties of every minified build, so the Sentry SDK can
+// tell GlitchTip which mapping deobfuscates a crash. It uploads that mapping only
+// when SENTRY_AUTH_TOKEN is set (source ~/.config/tibyan/glitchtip.env); without it
+// builds stay offline and still succeed. Everything else the plugin can do is off:
+// Dart/native symbols and dSYMs go through tools/upload_symbols.sh.
+val sentryToken: String? = System.getenv("SENTRY_AUTH_TOKEN")?.takeIf { it.isNotBlank() }
+sentry {
+    includeProguardMapping.set(true)
+    autoUploadProguardMapping.set(sentryToken != null)
+    sentryToken?.let { authToken.set(it) }
+    System.getenv("SENTRY_URL")?.let { url.set(it) }
+    System.getenv("SENTRY_ORG")?.let { org.set(it) }
+    System.getenv("SENTRY_PROJECT")?.let { projectName.set(it) }
+    uploadNativeSymbols.set(false)
+    includeNativeSources.set(false)
+    includeSourceContext.set(false)
+    includeDependenciesReport.set(false)
+    telemetry.set(false)
+    tracingInstrumentation { enabled.set(false) }
+    autoInstallation { enabled.set(false) }
 }
 
 dependencies {

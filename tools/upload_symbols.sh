@@ -63,9 +63,21 @@ if [ "$FOUND" -eq 1 ]; then up "$KEEP"; else echo "No dSYMs found for build $BUI
 for d in build/app/intermediates/merged_native_libs/release build/app/outputs/native-debug-symbols/release; do
   [ -d "$d" ] && up "$d"
 done
+# R8 mapping: the Sentry Gradle plugin (android/app/build.gradle.kts) embeds its UUID in the
+# APK/AAB and uploads it during the build when SENTRY_AUTH_TOKEN is set. Re-upload here as
+# well, tagged with the same UUID, so a build made without the token can still be fixed up.
 MAP=build/app/outputs/mapping/release/mapping.txt
 if [ -f "$MAP" ]; then
   echo "== upload: proguard mapping"
-  sentry-cli debug-files upload --type proguard "$MAP" || echo "Mapping upload failed (GlitchTip may not support ProGuard mappings yet)." >&2
+  UUID_FILE=build/app/intermediates/assets/release/injectSentryDebugMetaPropertiesIntoAssetsRelease/sentry-debug-meta.properties
+  UUID=""
+  [ -f "$UUID_FILE" ] && UUID="$(sed -n 's/^io\.sentry\.ProguardUuids=//p' "$UUID_FILE")"
+  if [ -n "$UUID" ]; then
+    echo "   uuid $UUID (from the build)"
+    sentry-cli upload-proguard --uuid "$UUID" "$MAP"
+  else
+    echo "No embedded ProGuard UUID found; uploading with a content UUID the app will not report." >&2
+    sentry-cli proguard upload "$MAP"
+  fi
 fi
 echo "Done: build $BUILD. dSYM copies in $KEEP"
