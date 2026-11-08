@@ -50,6 +50,10 @@ iOS وmacOS:
 2. **بعد قبول أول إرسال:** شغّل الـ workflow و`publish` مفعّل. ينشئ إرسالاً جديداً بالحزمة عبر `msstore publish` بأسرار `MSSTORE_TENANT_ID` و`MSSTORE_CLIENT_ID` و`MSSTORE_CLIENT_SECRET` و`MSSTORE_SELLER_ID`.
 3. **كل تشغيل بـ `publish` مفعّل يحتاج موافقة أحمد في كل مرة.**
 
+## رموز الأعطال (GlitchTip)
+
+ملحق Sentry لـ Gradle (`io.sentry.android.gradle` في `android/app/build.gradle.kts`) يكتب في كل بناء أندرويد مُصغَّر (R8) معرّف UUID لملف الـ mapping داخل `assets/sentry-debug-meta.properties`، فيعرف GlitchTip أي mapping يفك تشويش العطل. يرفع الـ mapping وقت البناء فقط إذا كان `SENTRY_AUTH_TOKEN` موجودا (`set -a; source ~/.config/tibyan/glitchtip.env; set +a` قبل البناء). بدونه يبني دون اتصال ولا يفشل (كما في CI). باقي خصائص الملحق مطفأة. بعد البناء شغّل `tools/upload_symbols.sh <N>`: يرفع رموز Dart والمكتبات الأصلية وdSYMs، ويعيد رفع الـ mapping بنفس الـ UUID المضمَّن (`sentry-cli upload-proguard --uuid`)، ويخرج بخطأ إن فشل الرفع.
+
 ## فحص قبل الوسم
 
 `ci.yml` (format وanalyze وtest) و`native.yml` (بناء أندرويد وiOS وmacOS مع الامتدادات) خضراء على الفرع الذي يُدمج.
