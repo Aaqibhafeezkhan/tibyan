@@ -12,6 +12,7 @@ from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 from starlette.responses import RedirectResponse
 
+from .. import analytics
 from ..deps import current_user, get_db
 from ..models import AppReport, ContactMessage, DeletionRequest, NotifySignup, Recording, User
 from ..push import utcnow
@@ -19,7 +20,7 @@ from ..web import check_csrf, msg, render
 from .admin import require_admin
 
 router = APIRouter()
-TABS = ("contact", "reports", "beta", "notify", "deletion")
+TABS = ("contact", "reports", "beta", "notify", "deletion", "stats")
 LIMIT = 200
 
 
@@ -52,6 +53,7 @@ def requests_page(
         .count(),
         "notify": db.query(NotifySignup).count(),
         "deletion": db.query(DeletionRequest).filter(DeletionRequest.status == "open").count(),
+        "stats": 0,
     }
     context = {"tab": tab, "counts": counts}
     if tab == "contact":
@@ -76,6 +78,10 @@ def requests_page(
         context["signups"] = (
             db.query(NotifySignup).order_by(NotifySignup.id.desc()).limit(LIMIT).all()
         )
+    elif tab == "stats":
+        context["days"] = analytics.daily_table(db)
+        context["platform_totals"] = analytics.platform_totals(db)
+        context["top_paths"] = analytics.top_paths(db)
     else:
         rows = db.query(DeletionRequest).order_by(DeletionRequest.id.desc()).limit(LIMIT).all()
         matches = {}

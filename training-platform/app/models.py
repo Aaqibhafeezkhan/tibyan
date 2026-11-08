@@ -409,3 +409,49 @@ class GroupKhatmaPart(Base):
     secret_hash: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
     claimed_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     done_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+
+class DailyDownload(Base):
+    """Hits on /download/<platform>, one row per platform per UTC day."""
+
+    __tablename__ = "daily_downloads"
+    __table_args__ = (UniqueConstraint("day", "platform"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    day: Mapped[date] = mapped_column(Date, index=True)
+    platform: Mapped[str] = mapped_column(String(32))
+    count: Mapped[int] = mapped_column(Integer, default=0)
+
+
+class DailyPageView(Base):
+    """Public page views, one row per path per UTC day. No cookies, no IPs."""
+
+    __tablename__ = "daily_page_views"
+    __table_args__ = (UniqueConstraint("day", "path"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    day: Mapped[date] = mapped_column(Date, index=True)
+    path: Mapped[str] = mapped_column(String(191))
+    count: Mapped[int] = mapped_column(Integer, default=0)
+
+
+class DailyVisitor(Base):
+    """One row per unique visitor per day: SHA-256 of (daily salt + IP +
+    user agent). The salt is deleted once its day ends, so a hash can't be
+    linked back to an IP or across days."""
+
+    __tablename__ = "daily_visitors"
+    __table_args__ = (UniqueConstraint("day", "visitor_hash"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    day: Mapped[date] = mapped_column(Date, index=True)
+    visitor_hash: Mapped[str] = mapped_column(String(64))
+
+
+class VisitSalt(Base):
+    """Today's random salt, shared by all workers; older rows are deleted."""
+
+    __tablename__ = "visit_salts"
+
+    day: Mapped[date] = mapped_column(Date, primary_key=True)
+    salt: Mapped[str] = mapped_column(String(64))

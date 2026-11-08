@@ -666,3 +666,22 @@ a { color: inherit; }
   .cd-label { font-size: 0.78rem; }
   .hero-downloads { justify-content: center; }
 }
+
+/* ---------- site counters (totals only) ---------- */
+.site-counters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 8px 40px;
+  margin: 0 0 26px;
+  padding: 18px 20px;
+  border: 1px solid var(--c-line);
+  border-radius: 14px;
+  background: var(--c-surface);
+  text-align: center;
+}
+.site-counters div { display: flex; align-items: baseline; gap: 8px; }
+.site-counters strong { font-size: 1.6rem; color: var(--c-gold-ink); font-variant-numeric: tabular-nums; }
+.site-counters span { color: var(--c-ink-2); }
+.site-counters p { flex-basis: 100%; margin: 0; font-size: 0.85rem; color: var(--c-ink-2); }

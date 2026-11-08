@@ -105,6 +105,14 @@
       </div>
     </section>
 
+    {% if totals %}
+    <section class="site-counters" aria-label="{{ 'أرقام الموقع' if ar else 'Site numbers' }}">
+      <div><strong>{{ totals.visits|ar_digits if ar else '{:,}'.format(totals.visits) }}</strong><span>{{ 'زيارة' if ar else 'visits' }}</span></div>
+      <div><strong>{{ totals.downloads|ar_digits if ar else '{:,}'.format(totals.downloads) }}</strong><span>{{ 'تحميل' if ar else 'downloads' }}</span></div>
+      <p>{{ 'نعدّ الزيارات دون ملفات تعريف الارتباط ودون حفظ عناوين IP.' if ar else 'Counted without cookies and without storing IP addresses.' }}</p>
+    </section>
+    {% endif %}
+
     <section class="notify-card" id="notify" aria-labelledby="notify-title">
       <div>
         <h2 id="notify-title">{{ 'أبلغني عند الإطلاق' if ar else 'Tell me when it launches' }}</h2>

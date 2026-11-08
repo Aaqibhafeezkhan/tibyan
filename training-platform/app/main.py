@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.sessions import SessionMiddleware
 
-from . import models  # noqa: F401  (register the tables)
+from . import analytics, models  # noqa: F401  (register the tables)
 from .config import settings
 from .db import engine, run_migrations
 from .routes import (
@@ -40,6 +40,16 @@ app.add_middleware(
     https_only=settings.cookie_secure,
     max_age=7 * 24 * 3600,
 )
+
+@app.middleware("http")
+async def _count_page_views(request: Request, call_next):
+    response = await call_next(request)
+    try:
+        analytics.count_page(request, response)
+    except Exception:  # counting must never break a page
+        pass
+    return response
+
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 app.include_router(pages.router)
