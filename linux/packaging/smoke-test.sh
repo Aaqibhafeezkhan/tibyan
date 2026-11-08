@@ -32,8 +32,10 @@ start() {  # the app must still be running after 15 s (timeout -> 124)
 if [ "$1" = deb ]; then
   apt-get install -y -qq "/pkg/$2" xvfb xauth >/dev/null
   dpkg -s tibyan | sed -n 's/^Depends: /  Depends: /p'
+  # The plugins find libflutter_linux_gtk.so through the executable's
+  # $ORIGIN/lib rpath, so check them with that directory on the path.
   find /opt/tibyan -type f \( -name '*.so*' -o -name tibyan \) | while read -r f; do
-    nf "$f" || { echo "  unresolved in $f"; exit 1; }
+    LD_LIBRARY_PATH=/opt/tibyan/lib nf "$f" || { echo "  unresolved in $f"; exit 1; }
   done
   m=$(ldconfig -p | awk '/libmpv\.so\.[12] /{print $NF; exit}')
   [ -n "$m" ] && nf "$m" || { echo "  libmpv missing or broken"; exit 1; }
@@ -41,8 +43,9 @@ if [ "$1" = deb ]; then
   command -v tibyan >/dev/null
   start tibyan
 else
-  apt-get install -y -qq libgtk-3-0 xvfb xauth >/dev/null 2>&1 \
-    || apt-get install -y -qq libgtk-3-0t64 xvfb xauth >/dev/null
+  # A desktop baseline (GTK, ALSA, EGL, GBM: the AppImage excludelist expects
+  # these from the host), but no mpv.
+  apt-get install -y -qq libgtk-3-0 libasound2 libegl1 libgbm1 xvfb xauth >/dev/null
   if ldconfig -p | grep -q libmpv; then echo "  mpv is installed; test is meaningless"; exit 1; fi
   cd /tmp && cp "/pkg/$2" app.AppImage && chmod +x app.AppImage
   ./app.AppImage --appimage-extract >/dev/null

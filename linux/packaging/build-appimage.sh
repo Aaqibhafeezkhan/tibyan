@@ -59,5 +59,12 @@ find "$A/usr/lib" -maxdepth 1 \( -name 'libgtk-3.so*' -o -name 'libgdk-3.so*' \
   -o -name 'libgobject-2.0.so*' -o -name 'libgmodule-2.0.so*' -o -name 'libpango*' \
   -o -name 'libcairo*' -o -name 'libatk*' -o -name 'libatspi*' \) -print -delete
 
+# libmpv also links JACK and libusb, which the excludelist leaves to the host
+# but many desktops lack; carry them (they work without a JACK server).
+for l in libjack.so.0 libusb-1.0.so.0; do
+  p="$(ldconfig -p | awk -v l="$l" '$1==l && /x86-64/{print $NF; exit}')"
+  [ -n "$p" ] && cp -L "$p" "$A/usr/lib/$l"
+done
+
 ARCH=x86_64 "$WORK/appimagetool" --no-appstream "$A" "$OUT/$NAME"
 ls -la "$OUT/$NAME"
