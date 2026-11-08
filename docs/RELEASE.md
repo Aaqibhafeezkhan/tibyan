@@ -15,6 +15,14 @@ git tag v0.5.0 && git push origin main v0.5.0
 3. iOS وmacOS: تطبيقان بلا توقيع (zip، وdmg لماك)، يوقَّعان من Xcode بشهادة الفريق.
 4. ويندوز: zip للتطبيق (يُفك ويُشغَّل `tibyan.exe`). لينكس: tar.gz للحزمة، ويحتاج جهاز القارئ مكتبة libmpv للتلاوة (`apt install libmpv2` أو حزمة mpv في توزيعته).
 5. يُنشر إصدار GitHub بملاحظات من CHANGELOG ومعه كل هذه الملفات.
+6. مثبّت ويندوز (بعد نشر إصدار GitHub، من جهازك):
+
+   ```
+   scripts/build-win-remote.sh                      # فحص فقط، لا يغيّر شيئا
+   scripts/build-win-remote.sh --build --publish --notes "..."
+   ```
+
+   يأخذ الخادم `tibyan-windows-x64.zip` من إصدار GitHub ويبني منه `Tibyan-Windows-Setup-v<version>.exe` بـ NSIS داخل Docker (`windows/installer/`) في `/opt/tibyan-winbuild`، ثم ينشره مع `latest.json` في `https://tibyan.ahmedhelal.dev/win/`. التطبيق على ويندوز يقرأ `latest.json` ويحدّث نفسه، وزر ويندوز في altibyan.app يشير إلى المثبّت متى وُجد (والـ zip يبقى على `/download/windows-zip`). التراجع: انسخ `win/backups/latest-<UTC>.json` فوق `win/latest.json`.
 
 ## ما يلزمك أنت (لا يستطيع المستودع فعله)
 
@@ -31,7 +39,7 @@ git tag v0.5.0 && git push origin main v0.5.0
 iOS وmacOS:
 - حساب Apple Developer، وApp ID بالمعرفات `app.tibyan.tibyan` و`.TibyanWidget` و`.TibyanActions`.
 - App Group: iOS `group.app.tibyan.tibyan`، macOS `<TeamID>.group.app.tibyan.tibyan` (docs/HOME_WIDGET.md).
-- ويندوز: الـ zip غير موقّع، فيظهر تحذير SmartScreen أول مرة. التوقيع يحتاج شهادة توقيع كود، وتثبيت عبر MSIX/المتجر خطوة لاحقة.
+- ويندوز: المثبّت والـ zip غير موقّعين، فيظهر تحذير SmartScreen أول مرة. التوقيع يحتاج شهادة توقيع كود، وتثبيت عبر MSIX/المتجر خطوة لاحقة.
 - أرشِف ووقّع من Xcode ثم ارفع بـ Transporter إلى TestFlight (التوقيع الآلي من CI يحتاج شهادة وملف provisioning في الأسرار، ولم يُضف حتى تُنشأ).
 
 ## فحص قبل الوسم
