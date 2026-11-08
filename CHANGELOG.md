@@ -6,6 +6,11 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.8.5] - 2026-11-08
+
+### Fixed
+- Sidebar tap targets stay at 56 px in elderly mode.
+
 ## [0.8.4] - 2026-11-08
 
 ### Fixed
