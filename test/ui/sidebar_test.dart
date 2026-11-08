@@ -38,9 +38,7 @@ void main() {
           path: '/mushaf',
           builder: (_, _) =>
               LookScaffold(rail: false, body: const Text('mushaf')),
-          routes: [
-            GoRoute(path: 'index', builder: (_, _) => screen('index')),
-          ],
+          routes: [GoRoute(path: 'index', builder: (_, _) => screen('index'))],
         ),
       ],
     );
