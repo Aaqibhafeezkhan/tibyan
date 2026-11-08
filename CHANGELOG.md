@@ -6,6 +6,11 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.8.4] - 2026-11-08
+
+### Fixed
+- Desktop and wide screens: the sidebar's fold arrow sits on the settings row.
+
 ## [0.8.3] - 2026-11-08
 
 ### Added
