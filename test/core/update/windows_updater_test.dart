@@ -18,6 +18,24 @@ Map<String, Object?> _feed(List<int> bytes, {String version = '0.9.0'}) => {
 };
 
 void main() {
+  group('store flavor', () {
+    test('runs on Windows outside the Microsoft Store build', () {
+      expect(WindowsUpdater.supportedFor(store: 'play', windows: true), isTrue);
+    });
+    test('is off in the Microsoft Store build', () {
+      expect(
+        WindowsUpdater.supportedFor(store: 'msstore', windows: true),
+        isFalse,
+      );
+    });
+    test('is off on other platforms', () {
+      expect(
+        WindowsUpdater.supportedFor(store: 'play', windows: false),
+        isFalse,
+      );
+    });
+  });
+
   group('version compare', () {
     UpdateFeed f(String v, int b) =>
         UpdateFeed(version: v, build: b, url: _url, sha256: 'a' * 64, size: 1);

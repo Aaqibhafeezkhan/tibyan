@@ -94,6 +94,22 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   drift_dev: ^2.35.0
   build_runner: ^2.16.1
+  msix: ^3.18.0
+
+# Microsoft Store package (.github/workflows/msstore.yml, docs/RELEASE.md).
+# Identity values come from Partner Center (Store ID 9N944SZ21PTS); the
+# Store signs the package. msix_version is left out on purpose: msix derives
+# a.b.c.0 from `version` above.
+msix_config:
+  display_name: تبيان - القرآن الكريم
+  publisher_display_name: Ahmed Helal
+  identity_name: AhmedHelal.-
+  publisher: CN=A0A1785C-6EC9-4810-979B-4C815FFAF80A
+  logo_path: macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_1024.png
+  languages: ar, en
+  # microphone: tasmee and hifz voice recording work on Windows.
+  capabilities: internetClient, microphone
+  store: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

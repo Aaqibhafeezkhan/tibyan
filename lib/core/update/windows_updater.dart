@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../platform/app_store.dart';
+
 /// In-app updates for the Windows installer build.
 ///
 /// The feed (`latest.json`, published by scripts/build-win-remote.sh) names
@@ -158,7 +160,14 @@ class WindowsUpdater extends ValueNotifier<UpdateState> {
   Future<void>? _running;
 
   /// Windows release builds only: first check after 10 s, then every 4 h.
-  static bool get supported => !kIsWeb && Platform.isWindows;
+  /// Off in the Microsoft Store build, where the Store delivers updates.
+  static bool get supported =>
+      supportedFor(store: appStore, windows: !kIsWeb && Platform.isWindows);
+
+  /// Whether the updater runs for a build of [store] on this platform.
+  @visibleForTesting
+  static bool supportedFor({required String store, required bool windows}) =>
+      windows && store != 'msstore';
 
   void start() {
     if (!supported || _first != null) return;

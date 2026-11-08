@@ -39,8 +39,16 @@ git tag v0.5.0 && git push origin main v0.5.0
 iOS وmacOS:
 - حساب Apple Developer، وApp ID بالمعرفات `app.tibyan.tibyan` و`.TibyanWidget` و`.TibyanActions`.
 - App Group: iOS `group.app.tibyan.tibyan`، macOS `<TeamID>.group.app.tibyan.tibyan` (docs/HOME_WIDGET.md).
-- ويندوز: المثبّت والـ zip غير موقّعين، فيظهر تحذير SmartScreen أول مرة. التوقيع يحتاج شهادة توقيع كود، وتثبيت عبر MSIX/المتجر خطوة لاحقة.
+- ويندوز: المثبّت والـ zip غير موقّعين، فيظهر تحذير SmartScreen أول مرة. التوقيع يحتاج شهادة توقيع كود. نسخة المتجر (MSIX) يوقّعها المتجر نفسه: انظر «متجر مايكروسوفت» أدناه.
 - أرشِف ووقّع من Xcode ثم ارفع بـ Transporter إلى TestFlight (التوقيع الآلي من CI يحتاج شهادة وملف provisioning في الأسرار، ولم يُضف حتى تُنشأ).
+
+## متجر مايكروسوفت (MSIX)
+
+معرّف المتجر `9N944SZ21PTS`. هوية الحزمة في `msix_config` داخل `pubspec.yaml` (Identity Name `AhmedHelal.-`)، ورقم إصدارها `a.b.c.0` من `version`. نسخة المتجر تُبنى بـ `--dart-define=TIBYAN_STORE=msstore`، وفيها المحدّث الداخلي لويندوز مطفأ مع زر «البحث عن تحديثات» (سياسة المتجر؛ المتجر يوصل التحديثات). المثبّت Setup.exe على الموقع لا يتغير.
+
+1. **أول إرسال يدوي في Partner Center:** شغّل `Microsoft Store` (`msstore.yml`) من Actions و`publish` مطفأ، ونزّل `tibyan.msix` من artifacts، وارفعه في Partner Center مع بيانات الصفحة (الوصف، الصور، رابط الخصوصية https://altibyan.app/privacy، التصنيف العمري، السعر والتوفر)، ثم أرسله للمراجعة.
+2. **بعد قبول أول إرسال:** شغّل الـ workflow و`publish` مفعّل. ينشئ إرسالاً جديداً بالحزمة عبر `msstore publish` بأسرار `MSSTORE_TENANT_ID` و`MSSTORE_CLIENT_ID` و`MSSTORE_CLIENT_SECRET` و`MSSTORE_SELLER_ID`.
+3. **كل تشغيل بـ `publish` مفعّل يحتاج موافقة أحمد في كل مرة.**
 
 ## فحص قبل الوسم
 
