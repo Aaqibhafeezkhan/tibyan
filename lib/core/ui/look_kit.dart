@@ -11,6 +11,17 @@ import '../theme/contrast.dart';
 import '../theme/interface_style.dart';
 import '../theme/ornaments.dart';
 import '../theme/theme_tokens.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../features/mushaf/mushaf_providers.dart'
+    show readingPositionProvider;
+import '../../features/tasbih/presentation/tasbih_screen.dart'
+    show tasbihIcon, tasbihLocation;
+import '../../features/tasmee/presentation/tasmee_setup_screen.dart'
+    show showTasmeeSetup;
+import '../settings/settings_controller.dart' show sharedPreferencesProvider;
 import 'responsive.dart';
 
 /// From this width, screens get the full side rail and two columns.
@@ -312,8 +323,131 @@ class SectionIcon extends StatelessWidget {
   }
 }
 
-/// A destination of the wide-window rail.
-enum RailItem { home, mushaf, contents, listen, settings }
+/// A destination of the wide-window sidebar, in its order.
+enum RailItem {
+  home,
+  mushaf,
+  contents,
+  tafsir,
+  search,
+  listen,
+  tasmee,
+  khatma,
+  hifz,
+  tasbih,
+  settings,
+}
+
+/// The icon of each destination: the home's section tiles use the same.
+IconData railIcon(RailItem item) => switch (item) {
+  RailItem.home => Icons.home_outlined,
+  RailItem.mushaf => Icons.menu_book_outlined,
+  RailItem.contents => Icons.list_alt,
+  RailItem.tafsir => Icons.auto_stories_outlined,
+  RailItem.search => Icons.search,
+  RailItem.listen => Icons.headphones_outlined,
+  RailItem.tasmee => Icons.graphic_eq,
+  RailItem.khatma => Icons.flag_outlined,
+  RailItem.hifz => Icons.task_alt_outlined,
+  RailItem.tasbih => tasbihIcon,
+  RailItem.settings => Icons.tune,
+};
+
+String railLabel(AppLocalizations s, RailItem item) => switch (item) {
+  RailItem.home => s.navHome,
+  RailItem.mushaf => s.sectionMushaf,
+  RailItem.contents => s.indexTitle,
+  RailItem.tafsir => s.sectionTafsir,
+  RailItem.search => s.sectionSearch,
+  RailItem.listen => s.sectionListen,
+  RailItem.tasmee => s.tasmeeTileLabel,
+  RailItem.khatma => s.sectionKhatma,
+  RailItem.hifz => s.sectionHifz,
+  RailItem.tasbih => s.sectionTasbih,
+  RailItem.settings => s.settingsTitle,
+};
+
+/// Opens [item] the way the home's section tile does.
+void openRailItem(BuildContext context, RailItem item) {
+  switch (item) {
+    case RailItem.home:
+      context.go('/');
+    case RailItem.mushaf:
+      // The reading, where it was left: like «تابع القراءة» on the home.
+      context.go('/mushaf?entry=home');
+    case RailItem.contents:
+      context.go('/mushaf/index');
+    case RailItem.tafsir:
+      final at = ProviderScope.containerOf(
+        context,
+        listen: false,
+      ).read(readingPositionProvider).value;
+      context.push('/mushaf/tafsir?s=${at?.surah ?? 1}&a=${at?.ayah ?? 1}');
+    case RailItem.search:
+      context.go('/search');
+    case RailItem.listen:
+      context.push('/mushaf/audio');
+    case RailItem.tasmee:
+      showTasmeeSetup(context);
+    case RailItem.khatma:
+      context.push('/khatma');
+    case RailItem.hifz:
+      context.push('/hifz');
+    case RailItem.tasbih:
+      context.push(tasbihLocation);
+    case RailItem.settings:
+      context.go('/settings');
+  }
+}
+
+/// The destination a route belongs to, for screens that name none.
+RailItem? railItemFor(String path) {
+  if (path == '/') return RailItem.home;
+  const prefixes = [
+    ('/mushaf/index', RailItem.contents),
+    ('/mushaf/tafsir', RailItem.tafsir),
+    ('/mushaf/audio', RailItem.listen),
+    ('/search', RailItem.search),
+    ('/tasmee', RailItem.tasmee),
+    ('/khatma', RailItem.khatma),
+    ('/hifz', RailItem.hifz),
+    ('/tasbih', RailItem.tasbih),
+    ('/settings', RailItem.settings),
+  ];
+  for (final (prefix, item) in prefixes) {
+    if (path.startsWith(prefix)) return item;
+  }
+  return null;
+}
+
+const _sidebarCollapsedKey = 'ui.sidebarCollapsed';
+
+/// Whether the user folded the sidebar to icons; remembered.
+final sidebarCollapsedProvider = NotifierProvider<SidebarCollapsed, bool>(
+  SidebarCollapsed.new,
+);
+
+class SidebarCollapsed extends Notifier<bool> {
+  SharedPreferences? get _prefs {
+    try {
+      return ref.read(sharedPreferencesProvider);
+    } catch (_) {
+      return null; // no preferences in this scope (a bare widget test)
+    }
+  }
+
+  @override
+  bool build() => _prefs?.getBool(_sidebarCollapsedKey) ?? false;
+
+  void toggle() {
+    state = !state;
+    _prefs?.setBool(_sidebarCollapsedKey, state);
+  }
+}
+
+/// From this width the sidebar may show its labels (if not folded);
+/// narrower windows get icons only.
+const sidebarLabelsBreakpoint = 1100.0;
 
 /// The frame of the app's own screens in the interface style: the style's
 /// controls and ground, and on a wide window a side rail with the brand
@@ -377,34 +511,45 @@ class LookScaffold extends StatelessWidget {
             : LayoutBuilder(
                 builder: (context, box) {
                   final w = box.maxWidth;
-                  if (w >= wideBreakpoint) {
-                    return Row(
-                      children: [
-                        _Rail(selected: selected),
-                        Expanded(child: content),
-                      ],
-                    );
-                  }
-                  final compact =
-                      w >= Breakpoints.medium &&
-                      (isDesktopPlatform ||
-                          box.biggest.shortestSide >= Breakpoints.medium);
-                  if (!compact) return content;
-                  final mq = MediaQuery.of(context);
-                  return Row(
-                    children: [
-                      _Rail(selected: selected, compact: true),
-                      // Layouts that size themselves from the window see
-                      // the room beside the rail, not the whole window.
-                      Expanded(
-                        child: MediaQuery(
-                          data: mq.copyWith(
-                            size: Size(w - _Rail.compactWidth, box.maxHeight),
+                  final show =
+                      w >= wideBreakpoint ||
+                      (w >= Breakpoints.medium &&
+                          (isDesktopPlatform ||
+                              box.biggest.shortestSide >= Breakpoints.medium));
+                  if (!show) return content;
+                  final roomy = w >= sidebarLabelsBreakpoint;
+                  return Consumer(
+                    builder: (context, ref, _) {
+                      final folded =
+                          !roomy || ref.watch(sidebarCollapsedProvider);
+                      final railWidth = folded
+                          ? _Rail.compactWidth
+                          : _Rail.fullWidth;
+                      final mq = MediaQuery.of(context);
+                      return Row(
+                        children: [
+                          _Rail(
+                            selected: selected ?? _currentItem(context),
+                            compact: folded,
+                            onToggle: roomy
+                                ? ref
+                                      .read(sidebarCollapsedProvider.notifier)
+                                      .toggle
+                                : null,
                           ),
-                          child: content,
-                        ),
-                      ),
-                    ],
+                          // Layouts that size themselves from the window
+                          // see the room beside the sidebar.
+                          Expanded(
+                            child: MediaQuery(
+                              data: mq.copyWith(
+                                size: Size(w - railWidth, box.maxHeight),
+                              ),
+                              child: content,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   );
                 },
               ),
@@ -413,36 +558,137 @@ class LookScaffold extends StatelessWidget {
   }
 }
 
+RailItem? _currentItem(BuildContext context) {
+  final router = GoRouter.maybeOf(context);
+  if (router == null) return null;
+  return railItemFor(router.routeInformationProvider.value.uri.path);
+}
+
 class _Rail extends StatelessWidget {
-  const _Rail({this.selected, this.compact = false});
+  const _Rail({this.selected, this.compact = false, this.onToggle});
 
   final RailItem? selected;
 
-  /// Icons only (a medium window).
+  /// Icons only (folded, or a narrow window).
   final bool compact;
 
+  /// Folds or unfolds the sidebar; null when the window is too narrow
+  /// for labels.
+  final VoidCallback? onToggle;
+
   static const compactWidth = 80.0;
+  static const fullWidth = 248.0;
 
   @override
   Widget build(BuildContext context) {
     final l = context.look;
     final s = AppLocalizations.of(context);
-    final items = [
-      (RailItem.home, s.navHome, Icons.home_outlined, '/'),
-      // The reading, where it was left: like «تابع القراءة» on the home.
-      (
-        RailItem.mushaf,
-        s.sectionMushaf,
-        Icons.menu_book_outlined,
-        '/mushaf?entry=home',
-      ),
-      (RailItem.contents, s.indexTitle, Icons.list_alt, '/mushaf/index'),
-      (RailItem.listen, s.sectionListen, Icons.headphones_outlined, null),
-      (RailItem.settings, s.settingsTitle, Icons.tune, '/settings'),
-    ];
+    final arabic = Localizations.localeOf(context).languageCode == 'ar';
     final radius = BorderRadius.circular(l.isMakhtuta ? 4 : 12);
+
+    Widget tile(RailItem item) {
+      final label = railLabel(s, item);
+      final on = item == selected;
+      final icon = railIcon(item);
+      return Padding(
+        key: ValueKey('rail-${item.name}'),
+        padding: const EdgeInsets.only(bottom: 4),
+        child: Semantics(
+          selected: on,
+          button: true,
+          label: compact ? label : null,
+          child: Tooltip(
+            message: compact ? label : '',
+            child: Material(
+              color: on ? l.onFrame.withValues(alpha: .14) : Colors.transparent,
+              borderRadius: radius,
+              child: InkWell(
+                borderRadius: radius,
+                onTap: on ? null : () => openRailItem(context, item),
+                child: SizedBox(
+                  height: compact ? 52 : 46,
+                  child: compact
+                      ? Icon(icon, color: l.onFrame, size: 24)
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14),
+                          child: Row(
+                            children: [
+                              Icon(icon, color: l.onFrame, size: 22),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Text(
+                                  label,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: l.onFrame,
+                                    fontWeight: on
+                                        ? FontWeight.w600
+                                        : FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    Widget heading(String text) => compact
+        ? Padding(
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+            child: Divider(height: 1, color: l.onFrame.withValues(alpha: .25)),
+          )
+        : Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(14, 14, 14, 6),
+            child: Semantics(
+              header: true,
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontFamily: arabic ? l.headFont : null,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: arabic ? 0 : .6,
+                  color: l.isLayli ? l.gold : l.onFrame.withValues(alpha: .72),
+                ),
+              ),
+            ),
+          );
+
+    final groups = [
+      (
+        s.navGroupReading,
+        [RailItem.mushaf, RailItem.contents, RailItem.tafsir, RailItem.search],
+      ),
+      (s.navGroupListening, [RailItem.listen, RailItem.tasmee]),
+      (s.navGroupWird, [RailItem.khatma, RailItem.hifz, RailItem.tasbih]),
+    ];
+
+    final toggle = onToggle == null
+        ? null
+        : IconButton(
+            key: const ValueKey('rail-toggle'),
+            tooltip: compact ? s.navExpand : s.navCollapse,
+            onPressed: onToggle,
+            color: l.onFrame,
+            // Points into the window when folded, out of it when open
+            // (mirrored in Arabic).
+            icon: Icon(
+              compact
+                  ? Icons.keyboard_double_arrow_right
+                  : Icons.keyboard_double_arrow_left,
+            ),
+          );
+
     return Container(
-      width: compact ? compactWidth : 248,
+      width: compact ? compactWidth : fullWidth,
       color: l.frame,
       child: Stack(
         children: [
@@ -457,82 +703,58 @@ class _Rail extends StatelessWidget {
             ),
           ),
           SafeArea(
-            // A short window (a phone held sideways) has less height than
-            // the brand and the five destinations: the rail scrolls.
-            child: SingleChildScrollView(
-              padding: compact
-                  ? const EdgeInsets.fromLTRB(12, 20, 12, 12)
-                  : const EdgeInsets.fromLTRB(20, 28, 20, 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Center(
-                    child: TibyanWordmark(
-                      color: l.onFrame,
-                      height: compact ? 32 : 64,
-                    ),
-                  ),
-                  SizedBox(height: compact ? 20 : 28),
-                  for (final (item, label, icon, route) in items)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 6),
-                      child: Semantics(
-                        selected: item == selected,
-                        button: true,
-                        label: compact ? label : null,
-                        child: Tooltip(
-                          message: compact ? label : '',
-                          child: Material(
-                            color: item == selected
-                                ? l.onFrame.withValues(alpha: .14)
-                                : Colors.transparent,
-                            borderRadius: radius,
-                            child: InkWell(
-                              borderRadius: radius,
-                              onTap: item == selected
-                                  ? null
-                                  : () => route == null
-                                        ? context.push('/mushaf/audio')
-                                        : context.go(route),
-                              child: SizedBox(
-                                height: compact ? 56 : 52,
-                                child: compact
-                                    ? Icon(icon, color: l.onFrame, size: 24)
-                                    : Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              icon,
-                                              color: l.onFrame,
-                                              size: 22,
-                                            ),
-                                            const SizedBox(width: 14),
-                                            Expanded(
-                                              child: Text(
-                                                label,
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: l.onFrame,
-                                                  fontWeight: item == selected
-                                                      ? FontWeight.w600
-                                                      : FontWeight.w400,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                              ),
-                            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // A short window has less height than every destination:
+                // the list scrolls, settings stay pinned below it.
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: compact
+                        ? const EdgeInsets.fromLTRB(12, 20, 12, 8)
+                        : const EdgeInsets.fromLTRB(16, 24, 16, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Center(
+                          child: TibyanWordmark(
+                            color: l.onFrame,
+                            height: compact ? 32 : 56,
                           ),
                         ),
-                      ),
+                        SizedBox(height: compact ? 16 : 20),
+                        tile(RailItem.home),
+                        for (final (title, items) in groups) ...[
+                          heading(title),
+                          for (final item in items) tile(item),
+                        ],
+                      ],
                     ),
-                ],
-              ),
+                  ),
+                ),
+                Padding(
+                  padding: compact
+                      ? const EdgeInsets.fromLTRB(12, 0, 12, 12)
+                      : const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Divider(
+                        height: 12,
+                        color: l.onFrame.withValues(alpha: .25),
+                      ),
+                      tile(RailItem.settings),
+                      if (toggle != null)
+                        Align(
+                          alignment: compact
+                              ? Alignment.center
+                              : AlignmentDirectional.centerEnd,
+                          child: toggle,
+                        ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ],

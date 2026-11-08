@@ -66,31 +66,31 @@ class HomeScreen extends ConsumerWidget {
 
     final sections = <_Section>[
       (
-        icon: Icons.menu_book_outlined,
+        icon: railIcon(RailItem.mushaf),
         label: l.sectionMushaf,
         note: l.mushafOpen,
         onTap: () => context.go('/mushaf?entry=home'),
       ),
       (
-        icon: Icons.headphones_outlined,
+        icon: railIcon(RailItem.listen),
         label: l.sectionListen,
         note: l.openLabel,
         onTap: () => context.push('/mushaf/audio'),
       ),
       (
-        icon: Icons.auto_stories_outlined,
+        icon: railIcon(RailItem.tafsir),
         label: l.sectionTafsir,
         note: l.openLabel,
         onTap: () => context.push('/mushaf/tafsir?s=$surah&a=$ayah'),
       ),
       (
-        icon: Icons.search,
+        icon: railIcon(RailItem.search),
         label: l.sectionSearch,
         note: l.openLabel,
         onTap: () => context.go('/search'),
       ),
       (
-        icon: Icons.flag_outlined,
+        icon: railIcon(RailItem.khatma),
         label: l.sectionKhatma,
         note: portion != null
             ? l.khatmaTilePages(digits(portion.pages))
@@ -100,13 +100,13 @@ class HomeScreen extends ConsumerWidget {
         onTap: () => context.push('/khatma'),
       ),
       (
-        icon: Icons.task_alt_outlined,
+        icon: railIcon(RailItem.hifz),
         label: l.sectionHifz,
         note: due > 0 ? '${l.hifzToday} ${digits(due)}' : l.hifzTileNote,
         onTap: () => context.push('/hifz'),
       ),
       (
-        icon: tasbihIcon,
+        icon: railIcon(RailItem.tasbih),
         label: l.sectionTasbih,
         note: tasbihToday > 0
             ? l.tasbihTileToday(digits(tasbihToday))
@@ -114,7 +114,7 @@ class HomeScreen extends ConsumerWidget {
         onTap: () => context.push(tasbihLocation),
       ),
       (
-        icon: Icons.graphic_eq,
+        icon: railIcon(RailItem.tasmee),
         label: l.tasmeeTileLabel,
         note: l.tasmeeSelectRange,
         onTap: () => showTasmeeSetup(context),

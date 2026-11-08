@@ -2343,6 +2343,11 @@
     }
   },
   "navHome": "الرئيسية",
+  "navGroupReading": "القراءة",
+  "navGroupListening": "الاستماع",
+  "navGroupWird": "الورد والحفظ",
+  "navCollapse": "طيّ الشريط الجانبي",
+  "navExpand": "توسيع الشريط الجانبي",
   "homeSections": "الأقسام",
   "homeContinueHint": "تابع من حيث توقفت",
   "interfaceStyleTitle": "شكل الواجهة",

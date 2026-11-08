@@ -5672,6 +5672,36 @@ abstract class AppLocalizations {
   /// **'الرئيسية'**
   String get navHome;
 
+  /// No description provided for @navGroupReading.
+  ///
+  /// In ar, this message translates to:
+  /// **'القراءة'**
+  String get navGroupReading;
+
+  /// No description provided for @navGroupListening.
+  ///
+  /// In ar, this message translates to:
+  /// **'الاستماع'**
+  String get navGroupListening;
+
+  /// No description provided for @navGroupWird.
+  ///
+  /// In ar, this message translates to:
+  /// **'الورد والحفظ'**
+  String get navGroupWird;
+
+  /// No description provided for @navCollapse.
+  ///
+  /// In ar, this message translates to:
+  /// **'طيّ الشريط الجانبي'**
+  String get navCollapse;
+
+  /// No description provided for @navExpand.
+  ///
+  /// In ar, this message translates to:
+  /// **'توسيع الشريط الجانبي'**
+  String get navExpand;
+
   /// No description provided for @homeSections.
   ///
   /// In ar, this message translates to:
