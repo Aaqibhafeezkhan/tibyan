@@ -127,7 +127,7 @@
     </section>
     {% endif %}
 
-    <section class="notify-card" id="notify" aria-labelledby="notify-title">
+    <section class="notify-card" id="notify" aria-labelledby="notify-title" data-prelaunch{% if live %} hidden{% endif %}>
       <div>
         <h2 id="notify-title">{{ 'أبلغني عند الإطلاق' if ar else 'Tell me when it launches' }}</h2>
         <p>{{ 'اترك بريدك وسنرسل لك رسالة واحدة عند الإطلاق. لن نشارك بريدك مع أي جهة.' if ar else 'Leave your email and we will send one message at launch. We never share your address.' }}</p>
