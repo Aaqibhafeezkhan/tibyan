@@ -1,0 +1,1 @@
+Tibyan is a free, non-profit Quran reader with no ads, no accounts and no in-app purchases. The microphone is used only for the optional on-device recitation check; no audio leaves the device. Google Drive sync and Wear OS are not available in this build because they need Google services; the app offers file backup instead. No login is needed to test any feature.

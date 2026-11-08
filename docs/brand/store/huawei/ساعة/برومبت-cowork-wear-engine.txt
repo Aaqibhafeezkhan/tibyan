@@ -1,0 +1,32 @@
+عاوزك تعيد تقديم طلب صلاحية Wear Engine على موقع هواوي للمطورين. أنا مسجل دخول في Chrome على حساب المطوّر بتاعي. الطلب الأول اترفض، والطلب ده معدّل حسب ملاحظات هواوي.
+
+الملفات اللي هترفعها كلها في الفولدر ده على الديسكتوب:
+/Users/ahmed/Desktop/هواوي/ساعة/wear-engine-form/
+- Data-Permission-and-Usage-Description-Individual.xlsx  (نموذج وصف الصلاحية والاستخدام، النسخة الجديدة، متعبي)
+- User-Authorization-Path-Description.xlsx  (وصف مسار موافقة المستخدم)
+- scenario-wird.png و scenario-misbaha.png و scenario-flow.png  (صور السيناريو، تصميمات توضيحية)
+
+الخطوات:
+1. افتح https://developer.huawei.com/consumer/en/console ← App services ← Development ← Wear Engine.
+2. لو فيه الطلب القديم المرفوض وزرار Modify أو Apply again، استخدمه. لو مفيش، اعمل Apply for Wear Engine جديد.
+3. نوع التطبيق: Android app. اختار تطبيق الموبايل بس: «تبيان – القرآن الكريم» باسم الحزمة app.tibyan.tibyan (App ID 119643893). ماتضيفش تطبيق الساعة.
+4. الصلاحيات: اختار «Basic device information» بس (فيها Device management ورسائل P2P بين الموبايل والساعة).
+   ماتختارش أي حاجة تانية: لا Message notification، لا Wearable user status، لا Device identifier، ولا أي صلاحية Sensor (حركة أو نبض أو صحة).
+   لو الشاشة بتعرض الصلاحيات بأسماء تانية زي «Device management» و«P2P messaging»، اختار الاتنين دول بس.
+5. لو فيه اختيار للأجهزة: اختار أحدث الموديلات بس:
+   HUAWEI WATCH GT 5، GT 5 Pro، GT 6، GT 6 Pro، WATCH FIT 3، WATCH FIT 4، WATCH FIT 4 Pro.
+   ماتختارش WATCH 4 ولا WATCH FIT 2 ولا أي موديل أقدم.
+6. ارفع الملفات:
+   - في خانة Data usage description: ملف Data-Permission-and-Usage-Description-Individual.xlsx.
+   - في خانة User authorization path description: ملف User-Authorization-Path-Description.xlsx.
+   - لو فيه خانة صور أو Data display path: ارفع الصور التلاتة.
+   لو الحساب طلع Enterprise مش Individual والموقع رافض النموذج، اقف وقولّي.
+7. لو فيه خانة نص لوصف الاستخدام، الصق ده:
+   Tibyan is a free, non-profit, offline Quran app with no ads, no accounts and no server. One-way data flow only: the phone app (in the foreground) sends a small text message (surah names, page range, khatma percent) to the Tibyan watch app. The watch never sends data to the phone. When the phone app is not active, the watch shows the last received daily portion from its local storage and the misbaha works fully offline on the watch; the phone resends when it is opened. Internet sync is not possible because the app has no server by design (no user data leaves the device). No sensor permissions are requested. The screenshots are design renders until device testing.
+8. لو فيه اختيار إظهار شعار HUAWEI في شاشة الموافقة، سيبه على الافتراضي.
+9. اقف قبل زرار Submit النهائي. ماتدوسش Submit. ابعتلي صورة شاشة للصفحة كلها وهي متعبية (الصلاحيات والأجهزة والملفات المرفوعة).
+
+قواعد مهمة:
+- ماتدخلش أي كلمة سر، وماتدفعش أي حاجة، وماتقبلش أي اتفاقية فيها رسوم.
+- لو ظهرت اتفاقية Wear Engine عادية ومجانية لازم تتقبل علشان تكمل، اقف وابعتلي عنوانها الأول.
+- لو حاجة مش واضحة أو الشاشة مختلفة عن الوصف ده، اقف واسألني.

@@ -1,0 +1,27 @@
+عاوزك تعمل حاجتين على موقع هواوي للمطورين. أنا مسجل دخول في Chrome على حساب المطوّر بتاعي، وهو موثّق. تطبيق الموبايل «تبيان» متعمل بالفعل على AppGallery Connect باسم الحزمة app.tibyan.tibyan.
+
+المهمة الأولى: طلب صلاحية Wear Engine
+1. افتح https://developer.huawei.com/consumer/en/console ، ومن الخدمات (Services / HMS Core) ادخل على Wear Engine.
+2. اعمل طلب صلاحية جديد (Apply for Wear Engine)، واربطه بتطبيق الموبايل app.tibyan.tibyan.
+3. اختار الصلاحيات دي بس:
+   - Device management (معرفة الساعة المربوطة).
+   - P2P messaging (إرسال واستقبال رسائل بين الموبايل والساعة).
+   ماتختارش أي صلاحية صحية أو بيانات حساسة، زي نبض القلب والنوم والحركة والموقع.
+4. لو طلب وصف لاستخدام التطبيق، الصق النص ده:
+   Tibyan is a free, non-profit Quran app with no ads and no accounts. The watch app shows the user's daily reading portion (surah names and page range sent from the phone) and a misbaha (tasbih counter) whose counts are sent back to the phone. We only need device management to find the paired watch and P2P messaging to exchange these small messages. No health or personal data is read.
+5. قدّم الطلب، وابعتلي صورة شاشة فيها رقم الطلب أو حالته.
+
+المهمة التانية: تطبيق الساعة على AppGallery Connect
+1. AppGallery Connect ← My apps ← New app (أو Add app).
+2. النوع: HarmonyOS ← Lite wearable. لو مش موجود، اقف وابعتلي الاختيارات اللي ظاهرة قدامك.
+3. اسم الحزمة app.tibyan.watch، والاسم «تبيان»، واللغة الافتراضية عربي، والتصنيف Books & Reference.
+4. احفظ بس. ماترفعش أي ملف، وماتقدّمش للمراجعة.
+5. بعد ما التطبيق يتعمل، ادخل App information أو App signing، وانسخلي:
+   - بصمة SHA-256 بتاعة تطبيق الساعة app.tibyan.watch.
+   - بصمة SHA-256 بتاعة شهادة تطبيق الموبايل app.tibyan.tibyan من App signing.
+   الاتنين أرقام عامة ومش أسرار. ابعتهم في رسالتك بالنص.
+
+قواعد مهمة:
+- ماتدخلش أي كلمة سر، وماتدفعش أي حاجة، وماتقبلش أي اتفاقية فيها رسوم.
+- لو ظهرت اتفاقية خدمة عادية ومجانية (Agreement) لازم تتقبل علشان تكمل، اقف وابعتلي عنوانها الأول.
+- لو حاجة مش واضحة أو الشاشة مختلفة عن الوصف ده، اقف واسألني.

@@ -1,0 +1,20 @@
+تبيان على ساعات هواوي — المطلوب منك يا أحمد (خطوة بخطوة)
+
+الساعات المدعومة دلوقتي: Watch GT 2/3/4/5/6 و Watch Fit 2/3/4 (ساعات «لايت»).
+Watch 4/5 (HarmonyOS) محتاجة نسخة تانية بعدين.
+
+١. ادخل developer.huawei.com بحسابك (حساب مطوّر موثّق).
+٢. Console ← Wear Engine ← قدّم طلب صلاحية: «Device management» و«P2P messaging»، واربطه بتطبيق الموبايل app.tibyan.tibyan. المراجعة بتاخد كام يوم عمل.
+٣. نزّل DevEco Studio 3.1 وسجّل دخول، وثبّت Lite Wearable SDK.
+٤. من صفحة Wear Engine نزّل الـ SDK الخاص بـ Lite Wearable، وانسخ ملف wearengine.js إلى:
+   wear_huawei/entry/src/main/js/default/common/wearengine.js
+٥. افتح فولدر wear_huawei في DevEco ← File ← Project Structure ← Signing Configs ← خليه يعمل شهادة التجربة تلقائي.
+٦. في AppGallery Connect: My apps ← New app ← HarmonyOS ← Lite wearable، الحزمة app.tibyan.watch والاسم «تبيان».
+٧. ابعتلي (أو حطّ بنفسك) البصمتين — دول مش أسرار:
+   - بصمة SHA-256 لشهادة تطبيق الموبايل من AGC (App signing) ← في wear_huawei/.../common/data.js (PHONE_FINGERPRINT)
+   - بصمة تطبيق الساعة من AGC ← في WatchBridge.kt داخل android/app/src/huawei (WATCH_FINGERPRINT)
+٨. جرّب: ساعة GT أو Fit مربوطة بتطبيق Huawei Health + نسخة هواوي من تبيان على الموبايل، وشغّل من DevEco.
+٩. الصور: الفولدرين ar و en هنا (466×466 و454×454) + الأيقونة icon-216.png. ارفع المقاس اللي الفورم بيطلبه.
+١٠. اعمل شهادة وبروفايل الإصدار في AGC، وابني الـ HAP الموقّع، وارفعه وقدّمه للمراجعة.
+
+التفاصيل الكاملة: docs/HUAWEI-WATCH.md في المشروع.

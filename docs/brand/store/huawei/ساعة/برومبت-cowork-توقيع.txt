@@ -1,0 +1,15 @@
+عاوزك تعمل شهادة التوقيع وملف الـ Profile لتطبيق ساعة «تبيان» (app.tibyan.watch) على AppGallery Connect. أنا مسجل دخول في Chrome.
+
+الملف اللي هتستخدمه: ~/Desktop/هواوي/ساعة/توقيع/tibyan-watch.csr
+ده طلب شهادة بس، وما فيهوش أي مفتاح سري.
+
+1. AppGallery Connect ← Users and permissions ← Certificate management ← New certificate.
+   الاسم: tibyan-watch-debug، والنوع: Debug certificate. ارفع tibyan-watch.csr ← Submit ← نزّل ملف الـ .cer.
+2. اعمل شهادة تانية بنفس الملف، الاسم tibyan-watch-release والنوع Release certificate، ونزّلها.
+3. My projects ← Tibyan ← HarmonyOS / HAP Provision Profile ← Add:
+   - التطبيق app.tibyan.watch، والنوع Debug، والشهادة tibyan-watch-debug. لو طلب أجهزة اختار الموجود، ولو مافيش قولّي. نزّل الـ .p7b.
+   - كرّر للـ Release بالشهادة tibyan-watch-release، ونزّل الـ .p7b.
+4. حط كل الملفات اللي نزلت (اتنين .cer واتنين .p7b) في ~/Desktop/هواوي/ساعة/توقيع/
+5. لو الموقع عرض بصمة SHA-256 لشهادة تطبيق الساعة، انسخهالي في رسالتك.
+
+قواعد: ماتدخلش أي كلمة سر، وماتدفعش حاجة. لو الشاشة مختلفة عن الوصف ده، أو طلب ملف مش موجود عندك، اقف وابعتلي صورة.
