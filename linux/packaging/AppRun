@@ -1,0 +1,6 @@
+#!/bin/sh
+# AppImage entry point: the Flutter bundle lives in usr/lib/tibyan, and the
+# bundled libmpv (and what it needs) in usr/lib. System libraries come after.
+HERE="$(dirname "$(readlink -f "$0")")"
+export LD_LIBRARY_PATH="$HERE/usr/lib/tibyan/lib:$HERE/usr/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+exec "$HERE/usr/lib/tibyan/tibyan" "$@"

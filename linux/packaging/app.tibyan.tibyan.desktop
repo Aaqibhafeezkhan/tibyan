@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Tibyan
+Name[ar]=تبيان
+GenericName=Quran
+GenericName[ar]=المصحف
+Comment=Ad-free Quran app: recitation, tafsir, oral testing and offline reading
+Comment[ar]=مصحف بلا إعلانات: استماع وتفسير وتسميع وقراءة دون إنترنت
+Exec=tibyan
+Icon=app.tibyan.tibyan
+Terminal=false
+Categories=Education;Literature;
+Keywords=Quran;Koran;Tafsir;Islam;قرآن;مصحف;تفسير;
+StartupWMClass=app.tibyan.tibyan
+StartupNotify=true

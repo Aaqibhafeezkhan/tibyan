@@ -13,7 +13,7 @@ git tag v0.5.0 && git push origin main v0.5.0
 1. يتأكد أن الوسم يطابق `pubspec.yaml` وأن في CHANGELOG قسما لهذا الإصدار (`tools/release/check_version.py`)، وإلا يفشل قبل البناء.
 2. أندرويد: APK و AAB، موقعان بمفتاح الرفع إن وُجدت الأسرار، وإلا بمفتاح التطوير (للتجربة فقط). ويُرفع الـ AAB إلى المسار الداخلي في Google Play إن وُجد مفتاح الخدمة.
 3. iOS وmacOS: تطبيقان بلا توقيع (zip، وdmg لماك)، يوقَّعان من Xcode بشهادة الفريق.
-4. ويندوز: zip للتطبيق (يُفك ويُشغَّل `tibyan.exe`). لينكس: tar.gz للحزمة، ويحتاج جهاز القارئ مكتبة libmpv للتلاوة (`apt install libmpv2` أو حزمة mpv في توزيعته).
+4. ويندوز: zip للتطبيق (يُفك ويُشغَّل `tibyan.exe`). لينكس (يُبنى على Ubuntu 22.04 ليعمل على glibc 2.35 فما بعده): `tibyan_<version>-<build>_amd64.deb` و`tibyan-<version>-x86_64.AppImage` (فيه libmpv) وtar.gz للحزمة. السكربتات في `linux/packaging/`، و`smoke-test.sh` يثبّت الـ deb في حاويات ubuntu:22.04 وdebian:12 وubuntu:24.04 ويشغّل التطبيق تحت Xvfb قبل الرفع.
 5. يُنشر إصدار GitHub بملاحظات من CHANGELOG ومعه كل هذه الملفات.
 6. مثبّت ويندوز (بعد نشر إصدار GitHub، من جهازك):
 
@@ -23,6 +23,14 @@ git tag v0.5.0 && git push origin main v0.5.0
    ```
 
    يأخذ الخادم `tibyan-windows-x64.zip` من إصدار GitHub ويبني منه `Tibyan-Windows-Setup-v<version>.exe` بـ NSIS داخل Docker (`windows/installer/`) في `/opt/tibyan-winbuild`، ثم ينشره مع `latest.json` في `https://tibyan.ahmedhelal.dev/win/`. التطبيق على ويندوز يقرأ `latest.json` ويحدّث نفسه، وزر ويندوز في altibyan.app يشير إلى المثبّت متى وُجد (والـ zip يبقى على `/download/windows-zip`). التراجع: انسخ `win/backups/latest-<UTC>.json` فوق `win/latest.json`.
+7. مستودع APT (بعد نشر إصدار GitHub، من جهازك):
+
+   ```
+   scripts/publish-apt.sh                 # فحص فقط، لا يغيّر شيئا
+   scripts/publish-apt.sh --publish       # أو --tag vX.Y.Z لإصدار غير الحالي
+   ```
+
+   يأخذ الخادم `tibyan_*_amd64.deb` من إصدار GitHub، ويضيفه reprepro داخل Docker (`linux/apt/`، الحالة في `/opt/tibyan-apt`) ويوقّع الفهرس بمفتاح `~/.config/tibyan/apt-signing.key` الذي يمر إلى الحاوية عبر stdin فقط ولا يُحفظ على الخادم، ثم ينشر إلى `https://apt.altibyan.app`. قبل كل نشر تُحفظ نسخة في `/opt/tibyan-apt/backups/repo-<UTC>.tgz`، وطريقة التراجع في رأس السكربت. ينتهي المفتاح في 2031-11-07؛ مدّد صلاحيته قبلها وأعد نشر `tibyan.gpg`.
 
 ## ما يلزمك أنت (لا يستطيع المستودع فعله)
 
