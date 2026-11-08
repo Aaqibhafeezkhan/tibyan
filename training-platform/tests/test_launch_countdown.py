@@ -60,10 +60,10 @@ class LaunchCountdownTests(unittest.TestCase):
         body = render_at(timedelta(minutes=-1))
         self.assertIn('<p class="launched" data-launched>انطلق تبيان، الحمد لله</p>', body)
         self.assertIn('data-prelaunch hidden', body)
-        self.assertIn('href="/download/android"', body)
-        self.assertIn('href="/download/macos"', body)
-        self.assertIn('href="/download/windows"', body)
-        self.assertIn("testflight.apple.com", body)
+        self.assertIn("play.google.com/store/apps/details?id=app.tibyan.tibyan", body)
+        self.assertIn("apps.apple.com/app/id6818990351", body)
+        self.assertIn("apps.microsoft.com/detail/9N944SZ21PTS", body)
+        self.assertIn('href="/download"', body)
         self.assertNotIn('data-launched hidden', body)
 
     def test_english(self):

@@ -45,6 +45,7 @@ def _page(request: Request, status_code: int = 200, **context):
         testflight_app_url=TESTFLIGHT_APP_URL,
         downloads=releases.downloads(),
         human_size=releases.human_size,
+        prefix="/en" if get_lang(request) == "en" else "",
         **context,
     )
     response.status_code = status_code
@@ -76,7 +77,7 @@ def beta_join(
 
     if website:  # honeypot: same thank-you, nothing stored
         request.session["beta"] = "ok"
-        return RedirectResponse("/beta#install", status_code=303)
+        return RedirectResponse(("/en" if get_lang(request) == "en" else "") + "/beta#install", status_code=303)
     if ratelimit.hit("beta", request):
         return _page(request, 429, state="busy", chosen=[], errors={}, old={"email": email, "platforms": chosen})
 
@@ -115,7 +116,7 @@ def beta_join(
 
     request.session["beta"] = "ok"
     request.session["beta_platforms"] = chosen
-    return RedirectResponse("/beta#install", status_code=303)
+    return RedirectResponse(("/en" if get_lang(request) == "en" else "") + "/beta#install", status_code=303)
 
 
 @router.api_route("/download/{platform}", methods=["GET", "HEAD"])

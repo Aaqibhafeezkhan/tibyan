@@ -13,7 +13,7 @@
 • قراءة مع تظليل الكلمات متزامن مع التلاوة
 • تفسير
 • تسميع من الحفظ يعمل على جهازك نفسه
-• مصاحف متعددة منها الشمرلي ومصاحف القراءات: ورش وقالون والدوري وشعبة
+• مصاحف متعددة منها الشمرلي ومصاحف القراءات: ورش وقالون والدوري
 • ختمة ووِرد يومي
 
 متاح على أندرويد وآيفون وماك (وويندوز ولينكس تجريبي).
@@ -37,7 +37,7 @@ Save the date 🤍
 
 Tibyan officially launches on the night of 27 Rajab 1448 (the night of Isra' and Mi'raj): Monday 4 January 2027, 6:00 PM Cairo time, after Maghrib.
 
-Tibyan is a free, non-profit, ad-free, open-source Quran app: reading with word highlighting synced to recitation, tafsir, on-device recitation checking from memory, multiple mushaf editions including Shamarly and the Warsh, Qalun, Douri and Shu'ba qiraat, plus khatma and daily wird tracking. On Android, iPhone and Mac (Windows and Linux in beta).
+Tibyan is a free, non-profit, ad-free, open-source Quran app: reading with word highlighting synced to recitation, tafsir, on-device recitation checking from memory, multiple mushaf editions including Shamarly and the Warsh, Qalun and Douri qiraat, plus khatma and daily wird tracking. On Android, iPhone and Mac (Windows and Linux in beta).
 
 Follow the countdown and get notified at altibyan.app
 Want to try it now? The beta is open: altibyan.app/beta

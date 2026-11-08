@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, Form, Request
@@ -14,6 +15,8 @@ from ..analytics import public_totals
 from ..stats import public_progress
 from ..launch_mail import TESTFLIGHT_URL
 from ..templating import STATIC_DIR, launch_at
+from .. import releases, stores
+from ..i18n import get_lang
 from ..web import check_csrf, msg, render
 
 router = APIRouter()
@@ -34,12 +37,31 @@ def is_root_host(request: Request) -> bool:
     return (request.url.hostname or "").rstrip(".").lower() in ROOT_HOSTS
 
 
-def launch_state(now: datetime | None = None) -> dict:
-    """Countdown state at render time: before / last24 / live."""
+def launch_state(now: datetime | None = None, force: str | None = None) -> dict:
+    """Countdown state at render time: before / last24 / live.
+
+    `force` ("before" / "live"), or the LAUNCH_FORCE env var, pins the
+    phase; a pinned page also stops the in-page timer from flipping it."""
     target = launch_at()
+    force = force or os.environ.get("LAUNCH_FORCE", "").strip().lower()
+    if force in ("before", "live"):
+        return {"launch_iso": target.isoformat(), "launch_phase": force, "launch_forced": True}
     left = (target - (now or datetime.now(timezone.utc))).total_seconds()
     phase = "live" if left <= 0 else ("last24" if left < 86400 else "before")
-    return {"launch_iso": target.isoformat(), "launch_phase": phase}
+    return {"launch_iso": target.isoformat(), "launch_phase": phase, "launch_forced": False}
+
+
+def preview_force(request: Request, db) -> str | None:
+    """?preview=live|before, honoured only for a logged-in admin."""
+    wanted = request.query_params.get("preview")
+    if wanted not in ("live", "before") or db is None:
+        return None
+    user = current_user(request, db)
+    return wanted if user is not None and user.is_admin else None
+
+
+def lang_prefix(request: Request) -> str:
+    return "/en" if get_lang(request) == "en" else ""
 
 
 @router.get("/")
@@ -55,11 +77,29 @@ def index(request: Request, db: Session = Depends(get_db)):
             notify_email=request.session.pop("notify_email", ""),
             testflight_url=TESTFLIGHT_URL,
             totals=public_totals(db),
-            **launch_state(),
+            stores=stores.STORES,
+            prefix=lang_prefix(request),
+            **launch_state(force=preview_force(request, db)),
         )
 
     user = current_user(request, db)
     return render(request, "index.html", user=user, progress=public_progress(db))
+
+
+@router.get("/download")
+def download_page(request: Request):
+    """Every platform on one page, the visitor's OS first in focus."""
+    if not is_root_host(request):
+        return RedirectResponse(f"{ROOT_ORIGIN}/download", status_code=301)
+    return render(
+        request,
+        "download.html",
+        stores=stores,
+        my_os=stores.detect_os(request.headers.get("user-agent")),
+        downloads=releases.downloads(),
+        human_size=releases.human_size,
+        prefix=lang_prefix(request),
+    )
 
 
 @router.get("/voice")
@@ -168,6 +208,10 @@ def sitemap(request: Request):
         urls = [
             f"{ROOT_ORIGIN}/",
             f"{ROOT_ORIGIN}/beta",
+            f"{ROOT_ORIGIN}/download",
+            f"{ROOT_ORIGIN}/en/",
+            f"{ROOT_ORIGIN}/en/beta",
+            f"{ROOT_ORIGIN}/en/download",
             f"{ROOT_ORIGIN}/privacy",
             f"{ROOT_ORIGIN}/privacy/en",
         ]
@@ -223,8 +267,30 @@ def set_language(code: str, request: Request):
     if code not in ("ar", "en"):
         code = "ar"
     target = request.headers.get("referer") or "/"
+    if is_root_host(request):
+        target = localized_path(target, code)
     response = RedirectResponse(target, status_code=303)
     response.set_cookie(
         "lang", code, httponly=True, samesite="lax", max_age=31536000
     )
     return response
+
+
+# Pages of altibyan.app that exist in both languages: Arabic at the bare
+# path, English under /en (see main.py's _en_prefix middleware).
+LOCALIZED = ("/", "/download", "/beta")
+
+
+def localized_path(url: str, lang: str) -> str:
+    """The same altibyan.app page in `lang`, from a referer URL or path."""
+    from urllib.parse import urlsplit
+
+    parts = urlsplit(url)
+    path = parts.path or "/"
+    if path == "/en" or path.startswith("/en/"):
+        path = path[3:] or "/"
+    if path not in LOCALIZED:
+        return url if parts.netloc == "" or parts.hostname in ROOT_HOSTS else "/"
+    if lang == "en":
+        path = "/en/" if path == "/" else "/en" + path
+    return path + (f"?{parts.query}" if parts.query else "")

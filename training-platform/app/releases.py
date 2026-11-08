@@ -26,6 +26,8 @@ PATTERNS = {
     "macos": ("*macos*.zip",),
     "windows": ("*windows*.zip",),
     "linux": ("*linux*.tar.gz",),
+    "linux-appimage": ("*x86_64.appimage",),
+    "linux-deb": ("*amd64.deb",),
 }
 
 # The Windows installer (Tibyan-Windows-Setup-v*.exe) is built on our server by

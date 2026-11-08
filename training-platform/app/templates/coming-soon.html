@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% if lang == 'ar' %}تبيان | قريبًا{% else %}Tibyan | Coming soon{% endif %}</title>
   <meta name="description" content="{% if lang == 'ar' %}تبيان تطبيق قرآن غير ربحي بلا إعلانات: يعمل دون إنترنت، مع التفسير والتسميع من الحفظ على جهازك. اشترك ليصلك خبر الإطلاق.{% else %}Tibyan is a non-profit, ad-free Quran app: works offline, with tafsir and on-device recitation from memory. Sign up to hear when it launches.{% endif %}">
-  <link rel="canonical" href="https://altibyan.app/">
+  <link rel="canonical" href="https://altibyan.app{{ prefix }}/">
+  <link rel="alternate" hreflang="ar" href="https://altibyan.app/">
+  <link rel="alternate" hreflang="en" href="https://altibyan.app/en/">
+  <link rel="alternate" hreflang="x-default" href="https://altibyan.app/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="تبيان">
   <meta property="og:title" content="{% if lang == 'ar' %}تبيان | قريبًا{% else %}Tibyan | Coming soon{% endif %}">
   <meta property="og:description" content="{% if lang == 'ar' %}تبيان تطبيق قرآن غير ربحي بلا إعلانات: يعمل دون إنترنت، مع التفسير والتسميع من الحفظ على جهازك. اشترك ليصلك خبر الإطلاق.{% else %}Tibyan is a non-profit, ad-free Quran app: works offline, with tafsir and on-device recitation from memory. Sign up to hear when it launches.{% endif %}">
-  <meta property="og:url" content="https://altibyan.app/">
+  <meta property="og:url" content="https://altibyan.app{{ prefix }}/">
   <meta property="og:image" content="https://altibyan.app/static/coming-soon-share.png?v=2">
   <meta property="og:image:secure_url" content="https://altibyan.app/static/coming-soon-share.png?v=2">
   <meta property="og:image:type" content="image/png">
@@ -32,6 +35,7 @@
 {% include "_launch_header.html" %}
       <nav class="launch-nav" aria-label="{{ 'روابط الموقع' if ar else 'Site links' }}">
         <a href="#notify">{{ 'تابع الإطلاق' if ar else 'Get updates' }}</a>
+        <a href="{{ prefix }}/download">{{ 'التحميل' if ar else 'Download' }}</a>
         <a href="https://train.altibyan.app/">{{ 'منصة التدريب' if ar else 'Training platform' }}</a>
         <a class="language-link" href="/lang/{{ 'en' if ar else 'ar' }}">{{ 'English' if ar else 'العربية' }}</a>
       </nav>
@@ -52,7 +56,7 @@
           {{ 'تبيان تطبيق قرآن غير ربحي بلا إعلانات، للقراءة والتفسير والتسميع من الحفظ.' if ar else 'Tibyan is a non-profit, ad-free Quran app for reading, tafsir and reciting from memory.' }}
         </p>
         {% set star_svg %}<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><g class="s-main"><rect x="17" y="17" width="66" height="66"/><rect x="17" y="17" width="66" height="66" transform="rotate(45 50 50)"/></g><g class="s-inner"><rect x="23" y="23" width="54" height="54"/><rect x="23" y="23" width="54" height="54" transform="rotate(45 50 50)"/></g></svg>{% endset %}
-        <div class="countdown{% if launch_phase == 'last24' %} last24{% endif %}" data-launch="{{ launch_iso }}" role="timer"
+        <div class="countdown{% if launch_phase == 'last24' %} last24{% endif %}" {% if not (launch_forced and live) %}data-launch="{{ launch_iso }}"{% endif %}{% if launch_forced %} data-forced{% endif %} role="timer"
              aria-label="{{ 'الوقت الباقي على الإطلاق' if ar else 'Time left until launch' }}" hidden>
           {% for key, l_ar, l_en in [('d', 'يوم', 'days'), ('h', 'ساعة', 'hours'), ('m', 'دقيقة', 'minutes'), ('s', 'ثانية', 'seconds')] %}
           <div class="unit unit-{{ key }}"><div class="cd-star">{{ star_svg }}<span class="n" data-u="{{ key }}"></span></div><span class="cd-label">{{ l_ar if ar else l_en }}</span></div>
@@ -61,11 +65,12 @@
         <p class="launched" data-launched{% if not live %} hidden{% endif %}>{{ 'انطلق تبيان، الحمد لله' if ar else 'Tibyan is live, alhamdulillah' }}</p>
         <a class="cta" href="#notify" data-prelaunch{% if live %} hidden{% endif %}>{{ 'أبلغني عند الإطلاق' if ar else 'Notify me at launch' }}</a>
         <nav class="hero-downloads" data-launched aria-label="{{ 'تحميل تبيان' if ar else 'Download Tibyan' }}"{% if not live %} hidden{% endif %}>
-          <a class="cta" href="/download/android">{{ 'أندرويد' if ar else 'Android' }}</a>
-          <a class="cta" href="{{ testflight_url }}" rel="noopener">{{ 'آيفون' if ar else 'iPhone' }}</a>
-          <a class="cta" href="/download/macos">{{ 'ماك' if ar else 'Mac' }}</a>
-          <a class="cta" href="/download/windows">{{ 'ويندوز' if ar else 'Windows' }}</a>
+          {% for s in stores %}
+          {% if s.live %}<a class="cta store-cta" href="{{ s.url }}" rel="noopener"><span>{{ s.name(ar) }}</span><small>{{ s.kind(ar) }}</small></a>
+          {% else %}<span class="cta store-cta is-soon"><span>{{ s.name(ar) }}</span><small>{{ s.kind(ar) }} · {{ 'قريبًا' if ar else 'coming soon' }}</small></span>{% endif %}
+          {% endfor %}
         </nav>
+        <a class="all-downloads" href="{{ prefix }}/download" data-launched{% if not live %} hidden{% endif %}>{{ 'كل طرق التحميل: ملف APK وويندوز ولينكس' if ar else 'All downloads: APK, Windows and Linux' }} <span aria-hidden="true">{{ '←' if ar else '→' }}</span></a>
       </div>
 
       <div class="logo-stage" aria-hidden="true">
@@ -107,13 +112,22 @@
 
     {% if totals %}
     <section class="site-counters" aria-label="{{ 'أرقام الموقع' if ar else 'Site numbers' }}">
-      <div><strong>{{ totals.visits|ar_digits if ar else '{:,}'.format(totals.visits) }}</strong><span>{{ 'زيارة' if ar else 'visits' }}</span></div>
-      <div><strong>{{ totals.downloads|ar_digits if ar else '{:,}'.format(totals.downloads) }}</strong><span>{{ 'تحميل' if ar else 'downloads' }}</span></div>
+      {% for value, l_ar, l_en, icon in [
+        (totals.visits, 'زيارة', 'visits', '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>'),
+        (totals.downloads, 'تحميل', 'downloads', '<path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/>')] %}
+      <div class="counter-card has-pattern">
+        <span class="cc-corner" aria-hidden="true"></span><span class="cc-corner" aria-hidden="true"></span>
+        <span class="cc-corner" aria-hidden="true"></span><span class="cc-corner" aria-hidden="true"></span>
+        <span class="cc-icon cd-star" aria-hidden="true">{{ star_svg }}<svg class="cc-glyph" viewBox="0 0 24 24" focusable="false">{{ icon|safe }}</svg></span>
+        <strong>{{ value|ar_digits if ar else '{:,}'.format(value) }}</strong>
+        <span class="cc-label">{{ l_ar if ar else l_en }}</span>
+      </div>
+      {% endfor %}
       <p>{{ 'نعدّ الزيارات دون ملفات تعريف الارتباط ودون حفظ عناوين IP.' if ar else 'Counted without cookies and without storing IP addresses.' }}</p>
     </section>
     {% endif %}
 
-    <section class="notify-card" id="notify" aria-labelledby="notify-title">
+    <section class="notify-card" id="notify" aria-labelledby="notify-title" data-prelaunch{% if live %} hidden{% endif %}>
       <div>
         <h2 id="notify-title">{{ 'أبلغني عند الإطلاق' if ar else 'Tell me when it launches' }}</h2>
         <p>{{ 'اترك بريدك وسنرسل لك رسالة واحدة عند الإطلاق. لن نشارك بريدك مع أي جهة.' if ar else 'Leave your email and we will send one message at launch. We never share your address.' }}</p>
@@ -127,7 +141,7 @@
         {% elif notify == 'busy' %}
           <p class="notify-status error" role="alert" id="notify-error">{{ 'محاولات كثيرة في وقت قصير. انتظر بضع دقائق ثم أعد المحاولة.' if ar else 'Too many attempts in a short time. Wait a few minutes, then try again.' }}</p>
         {% endif %}
-        <form class="notify-form" method="post" action="/notify">
+        <form class="notify-form" method="post" action="{{ prefix }}/notify">
           <input type="hidden" name="csrf" value="{{ csrf }}">
           <div class="hp" aria-hidden="true">
             <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
@@ -182,7 +196,8 @@
     var timer;
     function tick() {
       var s = Math.floor((target - Date.now()) / 1000);
-      if (!(s > 0)) {
+      if (c.hasAttribute('data-forced') && !(s > 0)) s = 0;
+      else if (!(s > 0)) {
         clearInterval(timer);
         c.hidden = true;
         document.querySelectorAll('[data-prelaunch]').forEach(function (e) { e.hidden = true; });

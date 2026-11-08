@@ -67,4 +67,4 @@ def notify_submit(
             notify_admins(db, "beta_request", {}, "/admin/requests?tab=beta")
         request.session["notify"] = "ok"
 
-    return RedirectResponse("/#notify", status_code=303)
+    return RedirectResponse(("/en/" if get_lang(request) == "en" else "/") + "#notify", status_code=303)
