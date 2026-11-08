@@ -25,7 +25,11 @@ templates.env.globals["tiktok_url"] = TIKTOK_URL
 YOUTUBE_URL = "https://www.youtube.com/@altibyanApp"
 templates.env.globals["youtube_url"] = YOUTUBE_URL
 # Bump when CSS/JS/brand assets change so browsers refetch them.
-templates.env.globals["asset_v"] = "launch2"
+templates.env.globals["asset_v"] = "counters1"
+
+from .analytics import arabic_digits  # noqa: E402
+
+templates.env.filters["ar_digits"] = arabic_digits
 
 # Public launch moment (Cairo, after Maghrib, night of 27 Rajab 1448).
 # The one place it lives; LAUNCH_AT (ISO 8601 with offset) overrides it.

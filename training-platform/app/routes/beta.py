@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from starlette.responses import RedirectResponse
 
-from .. import ratelimit, releases
+from .. import analytics, ratelimit, releases
 from ..deps import get_db
 from ..i18n import get_lang
 from ..launch_mail import (
@@ -119,10 +119,12 @@ def beta_join(
 
 
 @router.api_route("/download/{platform}", methods=["GET", "HEAD"])
-def download(platform: str):
-    """302 to the newest release's asset for this platform (no tracking)."""
+def download(platform: str, request: Request):
+    """302 to the newest release's asset for this platform. Counted per
+    platform per day (no cookies, no IPs), off the request path."""
     if platform not in releases.PATTERNS and platform != "windows-zip":
         raise HTTPException(status_code=404)
+    analytics.record_download(platform, request.headers.get("user-agent"), request.method)
     response = RedirectResponse(releases.download_url(platform), status_code=302)
     response.headers["Cache-Control"] = "no-store"
     return response

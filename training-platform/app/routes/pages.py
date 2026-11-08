@@ -10,6 +10,7 @@ from ..deps import current_user, get_db
 from ..mail import valid_email
 from ..models import DeletionRequest, Recording
 from ..notifications import notify_admins
+from ..analytics import public_totals
 from ..stats import public_progress
 from ..launch_mail import TESTFLIGHT_URL
 from ..templating import STATIC_DIR, launch_at
@@ -53,6 +54,7 @@ def index(request: Request, db: Session = Depends(get_db)):
             notify=notify,
             notify_email=request.session.pop("notify_email", ""),
             testflight_url=TESTFLIGHT_URL,
+            totals=public_totals(db),
             **launch_state(),
         )
 
@@ -73,7 +75,7 @@ def voice(request: Request, db: Session = Depends(get_db)):
     )
 
 
-PRIVACY_UPDATED = ("2026-11-01", "١ نوفمبر ٢٠٢٦", "1 November 2026")
+PRIVACY_UPDATED = ("2026-11-08", "٨ نوفمبر ٢٠٢٦", "8 November 2026")
 
 
 def _privacy(request: Request, lang: str):

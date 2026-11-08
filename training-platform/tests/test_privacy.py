@@ -53,7 +53,7 @@ class PrivacyPageTests(unittest.TestCase):
         self.assertIn("سياسة الخصوصية", page)
         self.assertIn('class="policy-summary"', page)
         self.assertIn("info@altibyan.app", page)
-        self.assertIn('<time datetime="2026-11-01">', page)
+        self.assertIn('<time datetime="2026-11-08">', page)
         self.assertIn('id="group-khatma"', page)
         self.assertIn('href="/privacy/en"', page)
         self.assertIn('rel="canonical" href="https://altibyan.app/privacy"', page)
@@ -69,7 +69,7 @@ class PrivacyPageTests(unittest.TestCase):
         self.assertIn('lang="en" dir="ltr"', page)
         self.assertIn("Privacy policy", page)
         self.assertIn("off by default", page)
-        self.assertIn("1 November 2026", page)
+        self.assertIn("8 November 2026", page)
         self.assertIn('href="/privacy"', page)
 
     def test_language_cookie_does_not_change_the_url_language(self):

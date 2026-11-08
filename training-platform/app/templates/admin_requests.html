@@ -8,7 +8,7 @@
   {% if flash %}<div class="success" role="status">{{ flash }}</div>{% endif %}
 
   <nav class="tabs" aria-label="{{ t('req_title') }}">
-    {% for key in ['contact', 'reports', 'beta', 'notify', 'deletion'] %}
+    {% for key in ['contact', 'reports', 'beta', 'notify', 'deletion', 'stats'] %}
       <a href="/admin/requests?tab={{ key }}"{% if tab == key %} aria-current="page"{% endif %}>
         {{ t('req_tab_' ~ key) }}{% if counts[key] %} <b class="count">{{ counts[key] }}</b>{% endif %}
       </a>
@@ -41,6 +41,34 @@
         </li>
       {% endfor %}
     </ul>
+
+  {% elif tab == 'stats' %}
+    <p class="muted">{{ t('stats_note') }}</p>
+    {% set plats = platform_totals.keys()|list %}
+    {% if not days %}<p class="muted">{{ t('req_none') }}</p>{% else %}
+    <div class="table-scroll">
+    <table class="stats-table">
+      <thead><tr>
+        <th>{{ t('stats_day') }}</th><th>{{ t('stats_visitors') }}</th><th>{{ t('stats_views') }}</th>
+        {% for p in plats %}<th class="ltr">{{ p }}</th>{% endfor %}<th>{{ t('stats_downloads') }}</th>
+      </tr></thead>
+      <tbody>
+      {% for d in days %}
+        <tr><td class="ltr">{{ d.day }}</td><td>{{ d.visitors }}</td><td>{{ d.views }}</td>
+        {% for p in plats %}<td>{{ d.downloads.get(p, 0) }}</td>{% endfor %}<td><b>{{ d.total }}</b></td></tr>
+      {% endfor %}
+      </tbody>
+      <tfoot><tr><th>{{ t('stats_all') }}</th><th></th><th></th>
+        {% for p in plats %}<th>{{ platform_totals[p] }}</th>{% endfor %}<th>{{ platform_totals.values()|sum }}</th></tr></tfoot>
+    </table>
+    </div>
+    {% endif %}
+    {% if top_paths %}
+    <h2>{{ t('stats_paths') }}</h2>
+    <table class="stats-table"><tbody>
+      {% for p, n in top_paths %}<tr><td class="ltr">{{ p }}</td><td>{{ n }}</td></tr>{% endfor %}
+    </tbody></table>
+    {% endif %}
 
   {% elif tab == 'reports' %}
     {% if not reports %}<p class="muted">{{ t('req_none') }}</p>{% endif %}
