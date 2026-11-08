@@ -4,7 +4,6 @@ name: Microsoft Store
 # Manual only. publish=true submits it to Partner Center (Store ID
 # 9N944SZ21PTS); run that only with Ahmed's approval. See docs/RELEASE.md.
 on:
-  pull_request: # TEMP: verify packaging on the PR; removed before review
   workflow_dispatch:
     inputs:
       publish:
