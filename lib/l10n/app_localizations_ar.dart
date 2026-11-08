@@ -3409,6 +3409,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get navHome => 'الرئيسية';
 
   @override
+  String get navGroupReading => 'القراءة';
+
+  @override
+  String get navGroupListening => 'الاستماع';
+
+  @override
+  String get navGroupWird => 'الورد والحفظ';
+
+  @override
+  String get navCollapse => 'طيّ الشريط الجانبي';
+
+  @override
+  String get navExpand => 'توسيع الشريط الجانبي';
+
+  @override
   String get homeSections => 'الأقسام';
 
   @override

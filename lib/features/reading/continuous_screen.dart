@@ -52,6 +52,8 @@ class ContinuousScreen extends ConsumerWidget {
 
     return LookScaffold(
       maxWidth: double.infinity,
+      // A mushaf view: the page takes the whole window.
+      rail: false,
       body: SafeArea(
         bottom: false,
         child: Column(

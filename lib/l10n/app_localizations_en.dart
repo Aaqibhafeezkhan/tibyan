@@ -3369,6 +3369,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navHome => 'Home';
 
   @override
+  String get navGroupReading => 'Reading';
+
+  @override
+  String get navGroupListening => 'Listening';
+
+  @override
+  String get navGroupWird => 'Wird & memorization';
+
+  @override
+  String get navCollapse => 'Collapse sidebar';
+
+  @override
+  String get navExpand => 'Expand sidebar';
+
+  @override
   String get homeSections => 'Sections';
 
   @override
