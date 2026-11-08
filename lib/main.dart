@@ -29,6 +29,7 @@ import 'core/perf/startup_marks.dart';
 import 'core/review/review_prompt.dart';
 import 'core/router/app_router.dart';
 import 'core/ui/desktop_window.dart';
+import 'core/update/windows_updater.dart';
 import 'core/settings/settings_controller.dart';
 import 'core/theme/theme_registry.dart';
 import 'features/audio/background_recitations.dart';
@@ -164,6 +165,8 @@ Future<void> main() async {
   _startCarBrowsing(container);
   _startLiveActivity(container);
   _startKhatma(container);
+  // Windows installer builds: check for a new Setup.exe (no-op elsewhere).
+  windowsUpdater.start();
   startupMark('main-done');
 }
 

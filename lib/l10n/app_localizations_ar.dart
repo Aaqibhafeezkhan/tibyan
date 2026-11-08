@@ -5322,4 +5322,29 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get widgetTileDone => 'تم';
+
+  @override
+  String get updateCheckTitle => 'البحث عن تحديثات';
+
+  @override
+  String get updateChecking => 'جارٍ البحث عن تحديث…';
+
+  @override
+  String get updateUpToDate => 'لديك أحدث إصدار.';
+
+  @override
+  String updateDownloading(String version, String percent) {
+    return 'جارٍ تنزيل الإصدار $version $percent';
+  }
+
+  @override
+  String updateReady(String version) {
+    return 'الإصدار $version جاهز للتثبيت.';
+  }
+
+  @override
+  String get updateRestart => 'أعد التشغيل للتحديث';
+
+  @override
+  String get updateFailed => 'تعذّر البحث عن تحديث. حاول لاحقًا.';
 }

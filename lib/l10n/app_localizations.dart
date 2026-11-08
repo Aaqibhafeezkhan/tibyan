@@ -8905,6 +8905,48 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تم'**
   String get widgetTileDone;
+
+  /// No description provided for @updateCheckTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'البحث عن تحديثات'**
+  String get updateCheckTitle;
+
+  /// No description provided for @updateChecking.
+  ///
+  /// In ar, this message translates to:
+  /// **'جارٍ البحث عن تحديث…'**
+  String get updateChecking;
+
+  /// No description provided for @updateUpToDate.
+  ///
+  /// In ar, this message translates to:
+  /// **'لديك أحدث إصدار.'**
+  String get updateUpToDate;
+
+  /// No description provided for @updateDownloading.
+  ///
+  /// In ar, this message translates to:
+  /// **'جارٍ تنزيل الإصدار {version} {percent}'**
+  String updateDownloading(String version, String percent);
+
+  /// No description provided for @updateReady.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإصدار {version} جاهز للتثبيت.'**
+  String updateReady(String version);
+
+  /// No description provided for @updateRestart.
+  ///
+  /// In ar, this message translates to:
+  /// **'أعد التشغيل للتحديث'**
+  String get updateRestart;
+
+  /// No description provided for @updateFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر البحث عن تحديث. حاول لاحقًا.'**
+  String get updateFailed;
 }
 
 class _AppLocalizationsDelegate
