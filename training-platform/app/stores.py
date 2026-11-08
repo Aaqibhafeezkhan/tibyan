@@ -56,9 +56,9 @@ DIRECT: tuple[Store, ...] = (
     Store("apk", "android", "ملف APK", "APK file", "أندرويد", "Android", "/download/android"),
     Store("windows-setup", "windows", "مثبّت ويندوز", "Windows Setup", "Setup.exe", "Setup.exe",
           "/download/windows"),
-    Store("linux-deb", "linux", "لينكس (deb)", "Linux (.deb)", "apt.altibyan.app", "apt.altibyan.app",
+    Store("linux-deb", "linux", "لينكس · deb", "Linux (.deb)", "apt.altibyan.app", "apt.altibyan.app",
           "#linux"),
-    Store("linux-appimage", "linux", "لينكس (AppImage)", "Linux (AppImage)", "AppImage", "AppImage",
+    Store("linux-appimage", "linux", "لينكس · AppImage", "Linux (AppImage)", "AppImage", "AppImage",
           "/download/linux-appimage"),
 )
 
