@@ -28,6 +28,8 @@ import '../tasbih/presentation/tasbih_screen.dart'
 import '../tasbih/presentation/tasbih_settings_tiles.dart';
 import 'home_widgets_card.dart';
 import 'settings_widgets.dart';
+import 'windows_update_tile.dart';
+import '../../core/update/windows_updater.dart' show WindowsUpdater;
 import 'system_accessibility.dart';
 
 /// The nine tiles of the settings grid, each opening its own screen.
@@ -746,6 +748,13 @@ final Map<SettingsSection, List<SettingsGroup>> settingsCatalog = {
         ),
         keywords: 'الإصدار عن التطبيق version about',
       ),
+      if (WindowsUpdater.supported)
+        SettingEntry(
+          'windowsUpdate',
+          (l) => l.updateCheckTitle,
+          (c, r) => const WindowsUpdateTile(),
+          keywords: 'تحديث تحديثات تثبيت update updates install',
+        ),
       SettingEntry(
         'reportProblem',
         (l) => l.reportProblemTitle,

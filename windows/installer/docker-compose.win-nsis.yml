@@ -1,0 +1,26 @@
+# Tibyan Windows installer build. Self-contained; driven over SSH by
+# scripts/build-win-remote.sh on the build server (/opt/tibyan-winbuild).
+# Every name is tibyan_-prefixed so it can never touch another project's
+# containers, images or volumes on the same host.
+#
+#   VERSION=0.8.2 BUILD=47 docker compose -p tibyan_winbuild -f docker-compose.win-nsis.yml run --rm nsis
+name: tibyan_winbuild
+services:
+  nsis:
+    build: .
+    image: tibyan_nsis:bookworm
+    container_name: tibyan_winbuild_nsis
+    working_dir: /work
+    environment:
+      VERSION: ${VERSION:?set VERSION}
+      BUILD: ${BUILD:-0}
+    volumes:
+      - .:/work
+    network_mode: none
+    command: >
+      bash -euc 'rm -rf app out && mkdir -p app out
+      && unzip -q tibyan-windows-x64.zip -d app
+      && test -f app/tibyan.exe
+      && makensis -V2 -DVERSION="$$VERSION" -DBUILD="$$BUILD" -DSRC_DIR=/work/app
+      -DOUT_FILE=/work/out/Tibyan-Windows-Setup-v$$VERSION.exe tibyan.nsi
+      && rm -rf app && ls -la out/'

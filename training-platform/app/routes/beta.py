@@ -121,7 +121,7 @@ def beta_join(
 @router.api_route("/download/{platform}", methods=["GET", "HEAD"])
 def download(platform: str):
     """302 to the newest release's asset for this platform (no tracking)."""
-    if platform not in releases.PATTERNS:
+    if platform not in releases.PATTERNS and platform != "windows-zip":
         raise HTTPException(status_code=404)
     response = RedirectResponse(releases.download_url(platform), status_code=302)
     response.headers["Cache-Control"] = "no-store"

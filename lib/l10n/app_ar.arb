@@ -3674,5 +3674,29 @@
   "widgetTileListen": "استماع",
   "widgetTileSearch": "بحث",
   "widgetTileRead": "قرأت الورد",
-  "widgetTileDone": "تم"
+  "widgetTileDone": "تم",
+  "updateCheckTitle": "البحث عن تحديثات",
+  "updateChecking": "جارٍ البحث عن تحديث…",
+  "updateUpToDate": "لديك أحدث إصدار.",
+  "updateDownloading": "جارٍ تنزيل الإصدار {version} {percent}",
+  "@updateDownloading": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "updateReady": "الإصدار {version} جاهز للتثبيت.",
+  "@updateReady": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateRestart": "أعد التشغيل للتحديث",
+  "updateFailed": "تعذّر البحث عن تحديث. حاول لاحقًا."
 }

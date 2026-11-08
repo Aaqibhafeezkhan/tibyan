@@ -28,6 +28,13 @@ PATTERNS = {
     "linux": ("*linux*.tar.gz",),
 }
 
+# The Windows installer (Tibyan-Windows-Setup-v*.exe) is built on our server by
+# scripts/build-win-remote.sh and published next to this feed, not on GitHub.
+# When the feed is reachable /download/windows serves the installer; the zip on
+# the GitHub release stays available as /download/windows-zip and as fallback.
+WIN_FEED_URL = "https://tibyan.ahmedhelal.dev/win/latest.json"
+WIN_HOST = "https://tibyan.ahmedhelal.dev/win/"
+
 _now = time.monotonic  # patched in tests
 _lock = threading.Lock()
 _cache: dict = {"at": 0.0, "ttl": 0, "data": {}}
@@ -40,6 +47,29 @@ def _fetch() -> list:
     )
     with urllib.request.urlopen(req, timeout=4) as resp:
         return json.load(resp)
+
+
+def _fetch_win() -> dict:
+    req = urllib.request.Request(WIN_FEED_URL, headers={"User-Agent": "altibyan.app"})
+    with urllib.request.urlopen(req, timeout=4) as resp:
+        return json.load(resp)
+
+
+def _win_setup() -> dict | None:
+    """{url, name, size, version} of the published installer, or None."""
+    try:
+        feed = _fetch_win()
+        url = str(feed.get("url") or "")
+        if not url.startswith(WIN_HOST) or not url.endswith(".exe"):
+            return None
+        return {
+            "url": url,
+            "name": url.rsplit("/", 1)[-1],
+            "size": int(feed.get("size") or 0),
+            "version": str(feed.get("version") or ""),
+        }
+    except Exception:
+        return None
 
 
 def _pick(releases: list) -> dict:
@@ -82,6 +112,11 @@ def downloads() -> dict:
     try:
         data = _pick(_fetch())
         ttl = CACHE_TTL
+        if "windows" in data:
+            data["windows-zip"] = data["windows"]
+        setup = _win_setup()
+        if setup:
+            data["windows"] = setup
     except Exception:  # network/API/JSON failure: fall back, keep old data
         with _lock:
             data = _cache["data"]

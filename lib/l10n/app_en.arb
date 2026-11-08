@@ -1984,5 +1984,12 @@
   "widgetTileListen": "Listen",
   "widgetTileSearch": "Search",
   "widgetTileRead": "Portion read",
-  "widgetTileDone": "Done"
+  "widgetTileDone": "Done",
+  "updateCheckTitle": "Check for updates",
+  "updateChecking": "Checking for updates…",
+  "updateUpToDate": "You have the latest version.",
+  "updateDownloading": "Downloading version {version} {percent}",
+  "updateReady": "Version {version} is ready to install.",
+  "updateRestart": "Restart to update",
+  "updateFailed": "Couldn't check for updates. Try again later."
 }

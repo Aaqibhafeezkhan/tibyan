@@ -12,5 +12,6 @@ def _offline_releases(monkeypatch):
         raise OSError("network disabled in tests")
 
     monkeypatch.setattr(releases, "_fetch", _no_network)
+    monkeypatch.setattr(releases, "_fetch_win", _no_network)
     yield
     releases.reset()

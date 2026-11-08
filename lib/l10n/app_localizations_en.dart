@@ -5262,4 +5262,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get widgetTileDone => 'Done';
+
+  @override
+  String get updateCheckTitle => 'Check for updates';
+
+  @override
+  String get updateChecking => 'Checking for updates…';
+
+  @override
+  String get updateUpToDate => 'You have the latest version.';
+
+  @override
+  String updateDownloading(String version, String percent) {
+    return 'Downloading version $version $percent';
+  }
+
+  @override
+  String updateReady(String version) {
+    return 'Version $version is ready to install.';
+  }
+
+  @override
+  String get updateRestart => 'Restart to update';
+
+  @override
+  String get updateFailed => 'Couldn\'t check for updates. Try again later.';
 }

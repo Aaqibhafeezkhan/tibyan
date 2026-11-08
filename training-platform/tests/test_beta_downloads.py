@@ -132,3 +132,32 @@ class HeadTest(DownloadsTest):
             r = self.client.head("/download/macos", follow_redirects=False)
         self.assertEqual(r.status_code, 302)
         self.assertTrue(r.headers["location"].endswith("tibyan-0.5.0-macos.zip"))
+
+
+class WindowsInstallerTest(unittest.TestCase):
+    FEED = {"version": "0.8.3", "build": 48, "size": 40_000_000, "sha256": "ab" * 32,
+            "url": "https://tibyan.ahmedhelal.dev/win/Tibyan-Windows-Setup-v0.8.3.exe"}
+
+    def setUp(self):
+        releases.reset()
+        app = FastAPI()
+        app.add_middleware(SessionMiddleware, secret_key="test-only", https_only=False)
+        app.include_router(beta.router)
+        self.client = TestClient(app, base_url="https://altibyan.app")
+
+    def get(self, platform):
+        return self.client.get(f"/download/{platform}", follow_redirects=False)
+
+    def test_installer_preferred_and_zip_kept(self):
+        with patch.object(releases, "_fetch", return_value=RELEASES), \
+                patch.object(releases, "_fetch_win", return_value=self.FEED):
+            self.assertEqual(self.get("windows").headers["location"], self.FEED["url"])
+            self.assertEqual(self.get("windows-zip").headers["location"],
+                             f"{GH}/v0.5.0/tibyan-0.5.0-windows-x64.zip")
+
+    def test_feed_on_other_host_ignored(self):
+        bad = dict(self.FEED, url="https://evil.example/x.exe")
+        with patch.object(releases, "_fetch", return_value=RELEASES), \
+                patch.object(releases, "_fetch_win", return_value=bad):
+            self.assertEqual(self.get("windows").headers["location"],
+                             f"{GH}/v0.5.0/tibyan-0.5.0-windows-x64.zip")

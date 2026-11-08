@@ -6,6 +6,10 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Windows: a real installer (`Tibyan-Windows-Setup-v<version>.exe`, Arabic and English, per-user, Start menu and optional desktop shortcut, listed in Add/Remove Programs), built from the release zip by `scripts/build-win-remote.sh`.
+- Windows: in-app updates. The app checks 10 seconds after start and every 4 hours, downloads and verifies the new installer, and «Settings › About › Check for updates» offers «Restart to update».
+
 ## [0.8.2] - 2026-11-06
 
 ### Fixed
