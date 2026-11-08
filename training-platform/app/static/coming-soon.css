@@ -577,6 +577,8 @@ a { color: inherit; }
 .dl-btn:hover { background: var(--c-accent-hover); }
 .dl-btn:focus-visible, .dl-alt:focus-visible, .dl-linux a:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; }
 .dl-btn svg { grid-row: span 2; width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+/* Brand marks (Apple, Windows) are solid shapes, not outlines. */
+.dl-btn svg .glyph { fill: currentColor; stroke: none; }
 .dl-name { font-size: 1.08rem; line-height: 1.2; }
 .dl-kind { font-size: 0.8rem; font-weight: 500; opacity: 0.85; }
 .dl-meta { color: var(--c-gold-ink); font-size: 0.82rem; font-family: var(--font-ui); }
@@ -730,7 +732,13 @@ a { color: inherit; }
 .dl-item.is-mine .dl-btn { box-shadow: 0 0 0 3px var(--c-bg), 0 0 0 5px var(--c-gold); }
 .dl-btn.is-soon { background: var(--c-surface); color: var(--c-ink-2); border: 1px dashed var(--c-line); }
 .dl-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
-.cmd { margin: 6px 0 0; padding: 10px 14px; border-radius: 10px; background: var(--c-gold-soft); color: var(--c-ink); font: 0.86rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-x: auto; white-space: pre; }
+.cmd { margin: 6px 0 0; padding: 10px 14px; border-radius: 10px; background: var(--c-gold-soft); color: var(--c-ink); font: 0.86rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-x: auto; white-space: pre; direction: ltr; text-align: left; unicode-bidi: isolate; }
+/* Copy button on each command block. */
+.cmd-wrap { display: flex; align-items: center; gap: 8px; margin: 6px 0 0; direction: ltr; }
+.cmd-wrap .cmd { flex: 1; min-width: 0; margin: 0; }
+.copy-btn { flex: none; display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--c-gold-ink); border-radius: 999px; background: var(--c-surface, transparent); color: var(--c-gold-ink); font: 600 0.75rem/1.4 var(--font-ui); cursor: pointer; }
+.copy-btn:hover, .copy-btn:focus-visible { background: var(--c-gold-ink); color: var(--c-surface, #fff); outline: none; }
+.copy-btn.done { border-color: var(--c-accent); color: var(--c-accent); background: transparent; }
 @media (max-width: 980px) { .dl-grid.stores-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 760px) { .dl-grid.stores-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .install-title { margin: 0; font-size: clamp(2rem, 4.2vw, 3.4rem); font-weight: 600; line-height: 1.3; text-wrap: balance; }
