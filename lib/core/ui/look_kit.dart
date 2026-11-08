@@ -743,14 +743,22 @@ class _Rail extends StatelessWidget {
                         height: 12,
                         color: l.onFrame.withValues(alpha: .25),
                       ),
-                      tile(RailItem.settings),
-                      if (toggle != null)
-                        Align(
-                          alignment: compact
-                              ? Alignment.center
-                              : AlignmentDirectional.centerEnd,
-                          child: toggle,
-                        ),
+                      // Open: the fold arrow sits on the settings row.
+                      // Folded: no room beside the icon, so it goes below.
+                      if (toggle != null && !compact)
+                        Row(
+                          children: [
+                            Expanded(child: tile(RailItem.settings)),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 4),
+                              child: toggle,
+                            ),
+                          ],
+                        )
+                      else ...[
+                        tile(RailItem.settings),
+                        if (toggle != null) Center(child: toggle),
+                      ],
                     ],
                   ),
                 ),
