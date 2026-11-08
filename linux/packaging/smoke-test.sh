@@ -21,7 +21,8 @@ read -r -d '' INNER <<'SH' || true
 set -eu
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
-nf() { ldd "$@" 2>&1 | grep 'not found' && return 1 || return 0; }
+# libjvm: libdartjni.so (package:jni, used on Android only) never loads it here.
+nf() { ldd "$@" 2>&1 | grep 'not found' | grep -v 'libjvm\.so' && return 1 || return 0; }
 start() {  # the app must still be running after 15 s (timeout -> 124)
   set +e
   timeout 15 xvfb-run -a "$@" >/tmp/run.log 2>&1; rc=$?
@@ -45,7 +46,9 @@ if [ "$1" = deb ]; then
 else
   # A desktop baseline (GTK, ALSA, EGL, GBM: the AppImage excludelist expects
   # these from the host), but no mpv.
-  apt-get install -y -qq libgtk-3-0 libasound2 libegl1 libgbm1 xvfb xauth >/dev/null
+  base="libegl1 libgles2 libgbm1 xvfb xauth"
+  apt-get install -y -qq libgtk-3-0t64 libasound2t64 $base >/dev/null 2>&1 \
+    || apt-get install -y -qq libgtk-3-0 libasound2 $base >/dev/null
   if ldconfig -p | grep -q libmpv; then echo "  mpv is installed; test is meaningless"; exit 1; fi
   cd /tmp && cp "/pkg/$2" app.AppImage && chmod +x app.AppImage
   ./app.AppImage --appimage-extract >/dev/null

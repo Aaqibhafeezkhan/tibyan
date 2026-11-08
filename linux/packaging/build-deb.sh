@@ -50,9 +50,10 @@ SHLIBS="$(cd "$WORK/shl" && dpkg-shlibdeps -O -l"$D/opt/tibyan/lib" \
 grep -v 'no dependency information found' "$WORK/shlibdeps.log" >&2 || true
 [ -n "$SHLIBS" ] || { echo "dpkg-shlibdeps found nothing"; exit 1; }
 
-# dlopen()ed at run time, so not in the ELF headers. libcurl4t64 is the
+# dlopen()ed at run time, so not in the ELF headers (libmpv by media_kit,
+# EGL/GLESv2 by the Flutter engine). libcurl4t64 is the
 # Ubuntu 24.04 name; libsecret/gtk are usually in SHLIBS already (harmless twice).
-EXTRA="libmpv2 | libmpv1, libgtk-3-0 | libgtk-3-0t64, libsecret-1-0, libcurl4 | libcurl4t64"
+EXTRA="libmpv2 | libmpv1, libegl1, libgles2, libgtk-3-0 | libgtk-3-0t64, libsecret-1-0, libcurl4 | libcurl4t64"
 SIZE_KB="$(du -sk --exclude=DEBIAN "$D" | cut -f1)"
 
 cat > "$D/DEBIAN/control" <<EOF
