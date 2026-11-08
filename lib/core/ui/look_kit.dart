@@ -606,7 +606,8 @@ class _Rail extends StatelessWidget {
                 borderRadius: radius,
                 onTap: on ? null : () => openRailItem(context, item),
                 child: SizedBox(
-                  height: compact ? 52 : 46,
+                  // Elderly mode keeps every tap target at 56 or more.
+                  height: compact ? 56 : (l.elderly ? 56 : 46),
                   child: compact
                       ? Icon(icon, color: l.onFrame, size: 24)
                       : Padding(
