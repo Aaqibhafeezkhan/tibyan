@@ -1,0 +1,153 @@
+<!doctype html>
+{% set ar = lang == 'ar' %}
+{% set title = 'تحميل تبيان | تبيان' if ar else 'Download Tibyan | Tibyan' %}
+{% set desc = 'نزّل تبيان على أندرويد وآيفون وآيباد وماك وويندوز ولينكس، من المتاجر الرسمية أو مباشرة.' if ar else 'Get Tibyan on Android, iPhone, iPad, Mac, Windows and Linux, from the official stores or directly.' %}
+<html lang="{{ lang }}" dir="{{ dir }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ desc }}">
+  <link rel="canonical" href="https://altibyan.app{{ prefix }}/download">
+  <link rel="alternate" hreflang="ar" href="https://altibyan.app/download">
+  <link rel="alternate" hreflang="en" href="https://altibyan.app/en/download">
+  <link rel="alternate" hreflang="x-default" href="https://altibyan.app/download">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="تبيان">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ desc }}">
+  <meta property="og:url" content="https://altibyan.app{{ prefix }}/download">
+  <meta property="og:image" content="https://altibyan.app/static/coming-soon-share.png?v=2">
+  <meta name="twitter:card" content="summary_large_image">
+  {% include "_launch_head.html" %}
+</head>
+<body>
+{% set icons = {
+  'android': '<rect x="6" y="9" width="12" height="10" rx="2"/><path d="M6 9a6 6 0 0 1 12 0M8.5 4.5 7.5 3m8 1.5 1-1.5M9.5 7v.01m5-.01v.01M3.5 11v5m17-5v5M9.5 19v2.5m5-2.5v2.5"/>',
+  'ios': '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
+  'macos': '<rect x="3.5" y="4.5" width="17" height="11.5" rx="1.5"/><path d="M2 19.5h20M10 16v3.5m4-3.5v3.5"/>',
+  'windows': '<rect x="3" y="4" width="18" height="12.5" rx="1.5"/><path d="M3 13h18M9 20.5h6M12 16.5v4"/>',
+  'linux': '<path d="M4 6.5 9 12l-5 5.5M12 18h8"/>',
+} %}
+{% macro card(s) -%}
+  <div class="dl-item{% if s.os == my_os %} is-mine{% endif %}" data-os="{{ s.os }}">
+    {% if s.live %}
+    <a class="dl-btn" href="{{ s.url }}"{% if s.url.startswith('http') %} rel="noopener"{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true">{{ icons[s.os]|safe }}</svg>
+      <span class="dl-name">{{ s.name(ar) }}</span>
+      <span class="dl-kind">{{ s.kind(ar) }}</span>
+    </a>
+    {% else %}
+    <span class="dl-btn is-soon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">{{ icons[s.os]|safe }}</svg>
+      <span class="dl-name">{{ s.name(ar) }}</span>
+      <span class="dl-kind">{{ s.kind(ar) }} · {{ 'قريبًا' if ar else 'coming soon' }}</span>
+    </span>
+    {% endif %}
+    <span class="dl-head"><span class="chosen-pill" data-mine-pill{% if s.os != my_os %} hidden{% endif %}>{{ 'جهازك' if ar else 'Your device' }}</span>{{ caller() if caller else '' }}</span>
+  </div>
+{%- endmacro %}
+{% macro meta(key) -%}
+  {% set d = downloads.get(key) %}
+  {% if d %}<span class="dl-meta" dir="ltr">v{{ d.version }}{% if d.size %} · {{ human_size(d.size, false) }}{% endif %}</span>{% endif %}
+{%- endmacro %}
+
+  <main class="launch-page beta-page">
+{% include "_launch_header.html" %}
+      <nav class="launch-nav" aria-label="{{ 'روابط الموقع' if ar else 'Site links' }}">
+        <a href="{{ prefix }}/">{{ 'الصفحة الرئيسية' if ar else 'Home' }}</a>
+        <a href="#linux">{{ 'لينكس' if ar else 'Linux' }}</a>
+        <a class="language-link" href="/lang/{{ 'en' if ar else 'ar' }}">{{ 'English' if ar else 'العربية' }}</a>
+      </nav>
+    </header>
+
+    <section class="install" aria-labelledby="download-title">
+      <p class="coming-label"><span class="star" aria-hidden="true"></span>{{ 'التحميل' if ar else 'Download' }}</p>
+      <h1 id="download-title" class="install-title">{{ 'نزّل تبيان على جهازك' if ar else 'Get Tibyan on your device' }}</h1>
+      <p class="install-lead">{{ 'تبيان مجاني بلا إعلانات على كل الأنظمة. اختر المتجر الرسمي لجهازك، أو نزّل الملف مباشرة.' if ar else 'Tibyan is free and ad-free on every platform. Pick the official store for your device, or download the file directly.' }}</p>
+    </section>
+
+    <section class="downloads" aria-labelledby="stores-title">
+      <h2 id="stores-title">{{ 'المتاجر الرسمية' if ar else 'Official stores' }}</h2>
+      <p class="dl-lead">{{ 'التحديثات تصلك تلقائيًا من المتجر.' if ar else 'The store keeps Tibyan up to date for you.' }}</p>
+      <div class="dl-grid stores-grid">
+        {% for s in stores.STORES %}{% call card(s) %}{% endcall %}{% endfor %}
+      </div>
+    </section>
+
+    <section class="downloads" aria-labelledby="direct-title">
+      <h2 id="direct-title">{{ 'تحميل مباشر' if ar else 'Direct download' }}</h2>
+      <p class="dl-lead">{{ 'الإصدار المستقر نفسه، دون متجر.' if ar else 'The same stable release, without a store.' }}</p>
+      <div class="dl-grid">
+        {% call card(stores.get('apk')) %}{{ meta('android') }}{% endcall %}
+        {% call card(stores.get('windows-setup')) %}{{ meta('windows') }}{% endcall %}
+        {% call card(stores.get('linux-deb')) %}{{ meta('linux-deb') }}{% endcall %}
+        {% call card(stores.get('linux-appimage')) %}{{ meta('linux-appimage') }}{% endcall %}
+      </div>
+      <p class="dl-note">{{ 'أجهزة أندرويد أخرى:' if ar else 'Other Android devices:' }} <a class="dl-alt" href="/download/android-armeabi-v7a">armeabi-v7a</a> · <a class="dl-alt" href="/download/android-x86_64">x86_64</a> · <a class="dl-alt" href="/download/android-universal">{{ 'شامل' if ar else 'universal' }}</a></p>
+      <p class="dl-note">{{ 'ملف APK لا يحدّث نسخة Google Play؛ احذف إحداهما قبل تثبيت الأخرى.' if ar else 'The APK can’t update the Google Play version; remove one before installing the other.' }}</p>
+    </section>
+
+    <section class="install" id="linux" aria-labelledby="linux-title">
+      <h2 id="linux-title">{{ 'التثبيت على لينكس' if ar else 'Installing on Linux' }}</h2>
+      <p class="install-lead">{{ 'طريقتان، والأولى تُحدّث تبيان تلقائيًا مع تحديثات النظام.' if ar else 'Two ways; the first keeps Tibyan updated with your system updates.' }}</p>
+      <div class="platform-guides">
+        <article class="guide{% if my_os == 'linux' %} is-mine{% endif %}">
+          <header class="guide-head">
+            <h3>{{ 'Ubuntu وDebian عبر apt' if ar else 'Ubuntu and Debian via apt' }}</h3>
+            <span class="chosen-pill">{{ 'مُستحسن' if ar else 'Recommended' }}</span>
+          </header>
+          <ol class="steps">
+            <li>
+              <h4>{{ 'أضف مستودع تبيان' if ar else 'Add the Tibyan repository' }}</h4>
+              <pre class="cmd" dir="ltr"><code>{{ stores.APT_SETUP }}</code></pre>
+            </li>
+            <li>
+              <h4>{{ 'ثبّت التطبيق' if ar else 'Install the app' }}</h4>
+              <pre class="cmd" dir="ltr"><code>{{ stores.APT_INSTALL }}</code></pre>
+            </li>
+          </ol>
+          <p class="guide-note">{{ 'تصلك التحديثات بعدها مع sudo apt upgrade.' if ar else 'Updates then arrive with sudo apt upgrade.' }}</p>
+        </article>
+        <article class="guide">
+          <header class="guide-head">
+            <h3>AppImage</h3>
+            <span class="chosen-pill">{{ 'لأي توزيعة' if ar else 'Any distribution' }}</span>
+          </header>
+          <ol class="steps">
+            <li>
+              <h4><a href="/download/linux-appimage">{{ 'نزّل ملف AppImage' if ar else 'Download the AppImage' }}</a></h4>
+              <p>{{ meta('linux-appimage') }}</p>
+            </li>
+            <li>
+              <h4>{{ 'اجعله قابلًا للتشغيل ثم افتحه' if ar else 'Make it executable, then open it' }}</h4>
+              <pre class="cmd" dir="ltr"><code>chmod +x tibyan-*-x86_64.AppImage
+./tibyan-*-x86_64.AppImage</code></pre>
+            </li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+{% include "_launch_footer.html" %}
+  </main>
+  <script>
+  (function () {
+    // Refine the server's guess (iPadOS reports itself as a Mac).
+    var ua = navigator.userAgent, os = null;
+    if (/android/i.test(ua)) os = 'android';
+    else if (/iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1)) os = 'ios';
+    else if (/windows/i.test(ua)) os = 'windows';
+    else if (/macintosh|mac os x/i.test(ua)) os = 'macos';
+    else if (/linux|x11/i.test(ua)) os = 'linux';
+    if (!os) return;
+    document.querySelectorAll('.dl-item[data-os]').forEach(function (e) {
+      var mine = e.getAttribute('data-os') === os;
+      e.classList.toggle('is-mine', mine);
+      var pill = e.querySelector('[data-mine-pill]');
+      if (pill) pill.hidden = !mine;
+    });
+  })();
+  </script>
+</body>
+</html>

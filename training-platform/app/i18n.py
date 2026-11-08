@@ -427,7 +427,9 @@ STRINGS = {
 
 
 def get_lang(request) -> str:
-    lang = request.cookies.get("lang", "ar")
+    # altibyan.app pages carry the language in the URL (/en/...); main.py's
+    # middleware puts it in the scope. Elsewhere the cookie decides.
+    lang = request.scope.get("tibyan_lang") or request.cookies.get("lang", "ar")
     return lang if lang in ("ar", "en") else "ar"
 
 

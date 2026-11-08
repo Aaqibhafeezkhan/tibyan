@@ -5,6 +5,7 @@ from fastapi.exception_handlers import http_exception_handler
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.sessions import SessionMiddleware
+from starlette.responses import RedirectResponse
 
 from . import analytics, models  # noqa: F401  (register the tables)
 from .config import settings
@@ -40,6 +41,34 @@ app.add_middleware(
     https_only=settings.cookie_secure,
     max_age=7 * 24 * 3600,
 )
+
+@app.middleware("http")
+async def _en_prefix(request: Request, call_next):
+    """altibyan.app: English lives under /en/ (Arabic at the bare path).
+    /en/<path> is served by <path> with the language set to English; an old
+    lang=en cookie on a bare page redirects to its /en twin."""
+    if not pages.is_root_host(request):
+        return await call_next(request)
+    path = request.url.path
+    if path == "/en":
+        return RedirectResponse("/en/", status_code=301)
+    if path.startswith("/en/"):
+        inner = path[3:]
+        request.scope["path"] = inner
+        request.scope["raw_path"] = inner.encode()
+        request.scope["tibyan_lang"] = "en"
+        response = await call_next(request)
+        if request.method == "GET" and inner in pages.LOCALIZED:
+            response.set_cookie("lang", "en", httponly=True, samesite="lax", max_age=31536000)
+        return response
+    if path in pages.LOCALIZED:
+        if request.method == "GET" and request.cookies.get("lang") == "en":
+            query = request.url.query
+            target = pages.localized_path(path, "en") + (f"?{query}" if query else "")
+            return RedirectResponse(target, status_code=302)
+        request.scope["tibyan_lang"] = "ar"
+    return await call_next(request)
+
 
 @app.middleware("http")
 async def _count_page_views(request: Request, call_next):

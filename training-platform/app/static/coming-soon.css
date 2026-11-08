@@ -667,21 +667,70 @@ a { color: inherit; }
   .hero-downloads { justify-content: center; }
 }
 
-/* ---------- site counters (totals only) ---------- */
+/* ---------- site counters: two framed cards (totals only) ---------- */
 .site-counters {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: baseline;
-  gap: 8px 40px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
   margin: 0 0 26px;
-  padding: 18px 20px;
-  border: 1px solid var(--c-line);
-  border-radius: 14px;
-  background: var(--c-surface);
   text-align: center;
 }
-.site-counters div { display: flex; align-items: baseline; gap: 8px; }
-.site-counters strong { font-size: 1.6rem; color: var(--c-gold-ink); font-variant-numeric: tabular-nums; }
-.site-counters span { color: var(--c-ink-2); }
-.site-counters p { flex-basis: 100%; margin: 0; font-size: 0.85rem; color: var(--c-ink-2); }
+.counter-card {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 26px 18px 22px;
+  border: 1px solid var(--c-gold);
+  border-radius: 18px;
+  background: var(--c-surface);
+  overflow: hidden;
+}
+.counter-card::after { /* inner frame, like the brand's double border */
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid var(--c-gold-soft);
+  border-radius: 12px;
+  pointer-events: none;
+}
+.cc-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--c-gold);
+  clip-path: polygon(50% 0%, 61.7% 21.7%, 85.4% 14.6%, 78.3% 38.3%, 100% 50%, 78.3% 61.7%, 85.4% 85.4%, 61.7% 78.3%, 50% 100%, 38.3% 78.3%, 14.6% 85.4%, 21.7% 61.7%, 0% 50%, 21.7% 38.3%, 14.6% 14.6%, 38.3% 21.7%);
+}
+.cc-corner:nth-of-type(1) { top: 1px; inset-inline-start: 1px; }
+.cc-corner:nth-of-type(2) { top: 1px; inset-inline-end: 1px; }
+.cc-corner:nth-of-type(3) { bottom: 1px; inset-inline-start: 1px; }
+.cc-corner:nth-of-type(4) { bottom: 1px; inset-inline-end: 1px; }
+.cc-icon.cd-star { width: 54px; max-width: none; }
+.cc-icon .s-main { fill: var(--c-gold-soft); stroke: var(--c-gold); }
+.cc-icon .s-inner { stroke: var(--c-gold); stroke-opacity: .45; }
+.cc-icon .cc-glyph { inset: 27%; width: 46%; height: 46%; fill: none; stroke: var(--c-gold-ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.counter-card strong { margin-top: 6px; font-size: clamp(2rem, 4.4vw, 2.8rem); line-height: 1.15; color: var(--c-gold-ink); font-variant-numeric: tabular-nums; }
+.cc-label { color: var(--c-ink-2); font-size: 1rem; }
+.site-counters p { grid-column: 1 / -1; margin: 0; font-size: 0.85rem; color: var(--c-ink-2); }
+@media (max-width: 420px) {
+  .site-counters { gap: 10px; }
+  .counter-card { padding: 20px 10px 16px; }
+  .cc-icon.cd-star { width: 44px; }
+}
+
+/* ---------- after launch: store buttons in the hero ---------- */
+.store-cta { flex-direction: column; align-items: flex-start; justify-content: center; line-height: 1.25; padding-block: 8px; }
+.store-cta small { font-size: 0.76rem; font-weight: 500; opacity: 0.8; }
+.store-cta.is-soon { background: transparent; color: var(--brand-cream); box-shadow: inset 0 0 0 1px rgb(217 178 102 / 55%); cursor: default; }
+.store-cta.is-soon:hover { transform: none; box-shadow: inset 0 0 0 1px rgb(217 178 102 / 55%); }
+.all-downloads { display: inline-block; margin-top: 16px; color: var(--brand-gold); font-weight: 600; text-underline-offset: 4px; }
+.all-downloads[hidden] { display: none; }
+
+/* ---------- /download ---------- */
+.dl-grid.stores-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.dl-item.is-mine .dl-btn { box-shadow: 0 0 0 3px var(--c-bg), 0 0 0 5px var(--c-gold); }
+.dl-btn.is-soon { background: var(--c-surface); color: var(--c-ink-2); border: 1px dashed var(--c-line); }
+.dl-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.cmd { margin: 6px 0 0; padding: 10px 14px; border-radius: 10px; background: var(--c-gold-soft); color: var(--c-ink); font: 0.86rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-x: auto; white-space: pre; }
+@media (max-width: 980px) { .dl-grid.stores-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .dl-grid.stores-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.install-title { margin: 0; font-size: clamp(2rem, 4.2vw, 3.4rem); font-weight: 600; line-height: 1.3; text-wrap: balance; }

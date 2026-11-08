@@ -8,7 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title }}</title>
   <meta name="description" content="{{ desc }}">
-  <link rel="canonical" href="https://altibyan.app/beta">
+  <link rel="canonical" href="https://altibyan.app{{ prefix }}/beta">
+  <link rel="alternate" hreflang="ar" href="https://altibyan.app/beta">
+  <link rel="alternate" hreflang="en" href="https://altibyan.app/en/beta">
+  <link rel="alternate" hreflang="x-default" href="https://altibyan.app/beta">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="تبيان">
   <meta property="og:title" content="{{ title }}">
@@ -43,7 +46,7 @@
   <main class="launch-page beta-page">
 {% include "_launch_header.html" %}
       <nav class="launch-nav" aria-label="{{ 'روابط الموقع' if ar else 'Site links' }}">
-        <a href="/">{{ 'الصفحة الرئيسية' if ar else 'Home' }}</a>
+        <a href="{{ prefix }}/">{{ 'الصفحة الرئيسية' if ar else 'Home' }}</a>
         <a href="#install">{{ 'طريقة التثبيت' if ar else 'How to install' }}</a>
         <a class="language-link" href="/lang/{{ 'en' if ar else 'ar' }}">{{ 'English' if ar else 'العربية' }}</a>
       </nav>
@@ -81,7 +84,7 @@
           {% if state == 'busy' %}
             <p class="notify-status error" role="alert">{{ 'محاولات كثيرة في وقت قصير. انتظر بضع دقائق ثم أعد المحاولة.' if ar else 'Too many attempts in a short time. Wait a few minutes, then try again.' }}</p>
           {% endif %}
-          <form class="beta-form" method="post" action="/beta/join" novalidate>
+          <form class="beta-form" method="post" action="{{ prefix }}/beta/join" novalidate>
             <input type="hidden" name="csrf" value="{{ csrf }}">
             <div class="hp" aria-hidden="true">
               <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
