@@ -1,0 +1,40 @@
+Name: Tibyan: Quran
+
+Short:
+Ad-free Quran app: recitation, tafsir, smart oral testing, and offline reading.
+
+Full:
+Tibyan is a comprehensive, non-profit, and ad-free Quran app designed to be your serene daily companion for reciting, understanding, and memorizing the Holy Quran.
+
+Tibyan combines traditional Quranic calligraphy with modern interactive technology, maintaining an elegant, quiet experience free from ads or distractions.
+
+Key Features of Tibyan:
+
+1. Word-by-Word Synchronized Recitation:
+Listen to renowned reciters with real-time word highlighting, helping you follow along, perfect your pronunciation, and retain what you hear.
+
+2. Smart Offline Oral Recitation Testing (Tasmee):
+An advanced on-device speech engine that listens to your live recitation, gently highlighting mistakes and missed words—working 100% offline with zero data leaving your device.
+
+3. Multiple Authentic Mushafs & Qira'at:
+Read from the Madina Mushaf (1441H & 1405H editions) or the Shamarly Mushaf, with full support for verified riwayat (Hafs, Warsh, Qalun, and Al-Duri).
+
+4. Simplified Tafsir & Word Meanings:
+Access reliable verse-by-verse explanations (Al-Tafsir Al-Muyassar), instant vocabulary definitions with a single tap, reasons of revelation (Asbab Al-Nuzul), and grammatical analysis (I'rab).
+
+5. Comprehensive Memorization (Hifz) Journey:
+A visualized mastery map tracking your memorized pages and review schedules, featuring an interactive word-hiding mode to test your retention.
+
+6. Personal & Group Khatmahs:
+Create flexible reading plans tailored to your pace, or collaborate with family and friends in shared group khatmahs with clear part assignments.
+
+7. Islamic Aesthetics & Dark Modes:
+Choose from three tailored themes (Girih Geometric, Classical Manuscript, and Night Gold), alongside an accessible Elderly Mode featuring enlarged typography and simplified controls.
+
+8. Digital 3D Misbaha:
+An interactive 3D misbaha featuring authentic daily adhkar, realistic tactile haptics.
+
+9. Safe backup: save your bookmarks, khatmas and memorization progress in one file and restore it on any device.
+
+10. 100% Non-Profit & Private:
+Tibyan is dedicated purely for the sake of Allah. It collects no personal data, contains zero advertising, and requires no subscriptions or in-app purchases.

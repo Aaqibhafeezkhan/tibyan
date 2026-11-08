@@ -1,0 +1,28 @@
+عاوزك تعمل 3 حاجات لتطبيق «تبيان». أنا مسجل دخول في Chrome على Google Play Console وApp Store Connect وAppGallery Connect.
+
+المهمة الأولى: صورتين يثبتوا إن التطبيق بتاعي
+1. افتح https://play.google.com/console ← All apps، وخد صورة شاشة فيها تطبيق «تبيان» (app.tibyan.tibyan) واسم حساب المطوّر باينين. احفظها باسم 07_google_play_console.png
+2. افتح https://appstoreconnect.apple.com ← Apps ← تبيان ← App Information، وخد صورة شاشة فيها اسم التطبيق والـ Bundle ID واسم الحساب باينين. احفظها باسم 08_app_store_connect.png
+3. احفظ الصورتين في ~/Desktop/هواوي/حقوق/
+   ماتصوّرش أي صفحة فيها بيانات بنكية أو ضرائب أو إيميلات أو أرقام تليفونات.
+
+المهمة التانية: Proof of copyright على AppGallery Connect
+1. AppGallery Connect ← My apps ← تبيان ← App information (أو Copyright information).
+2. في خانة Proof of copyright ارفع كل صور الفولدر ~/Desktop/هواوي/حقوق/ بترتيب الأرقام، من 01 لـ 08.
+3. لو فيه حد أقصى لعدد الصور، ابدأ بـ 07 و08 (ملكية التطبيق)، وبعدهم 01 و02، وبعدهم page0 من 03 و04 و05، وآخر حاجة 06. وقولّي إيه اللي ما اترفعش.
+4. احفظ (Save).
+
+المهمة التالتة: رفع الإصدار الأحدث
+1. My apps ← تبيان ← Version information ← Software package (أو App package).
+2. شيل ملف tibyan-0.7.1-43-huawei.apk وارفع مكانه ~/Desktop/هواوي/tibyan-0.7.2-44-huawei.apk
+   رقم الإصدار 0.7.2، والـ versionCode ‏44.
+3. لو فيه خانة "What's new" أو "Version description"، الصق ده:
+   عربي: «تأكيد قبل حذف تنزيل السورة لتجنّب الحذف غير المقصود، مع تحسينات عامة.»
+   English: "Confirmation before deleting a downloaded surah to avoid accidental removal, plus general improvements."
+4. اختار النشر اليدوي بعد المراجعة، مش Immediately.
+
+قواعد مهمة:
+- لو التطبيق تحت المراجعة دلوقتي، والموقع مش هيسمح بتغيير الملف غير لو سحبت الطلب (Cancel review / Withdraw)، اقف وماتسحبش حاجة، وابعتلي صورة الشاشة والرسالة اللي ظاهرة.
+- ماتدخلش أي كلمة سر، وماتدفعش أي حاجة.
+- ماترفعش أي ملف من بره فولدر ~/Desktop/هواوي
+- قبل ما تدوس Submit، اقف وابعتلي ملخص باللي اتعمل ومعاه صورة شاشة.

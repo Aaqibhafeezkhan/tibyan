@@ -1,0 +1,14 @@
+رفع تبيان على AppGallery Connect (developer.huawei.com)
+
+1. My apps ← New app: Android، هاتف + تابلت.
+   Package: app.tibyan.tibyan — التصنيف: Books & Reference (أو Religion لو موجود).
+2. App information: الصق 1-وصف-عربي.txt (اللغة الافتراضية عربي) و 2-description-english.txt.
+   الأيقونة: صور/icon_512.png — الغلاف لو طُلب: صور/feature_1024x500.png
+   لقطات الشاشة: صور/screen_1..5.jpg (1080×1920) — نفس لقطات App Store النهائية.
+3. Privacy: https://altibyan.app/privacy — لا بيانات شخصية. الأذونات: الميكروفون (التسميع على الجهاز) والإشعارات (التذكيرات).
+4. Content rating: لا عنف ولا قمار ولا محتوى مستخدمين ولا إعلانات ولا مشتريات ← 3+.
+5. App signing: اختار "AppGallery Connect manages the app signing key" وارفع upload_cert.pem بس (الشهادة، مش المفتاح).
+6. Software package: ارفع ملف tibyan-0.7.1-43-huawei.apk.
+7. الدول: زي Play أو المنطقة العربية. مجاني، بدون مشتريات ولا إعلانات.
+8. Review notes: الصق 3-review-notes.txt.
+9. Submit — من غير "نشر فوري" لحد ما يتجرب على جهاز Huawei أو Cloud Debugging.
