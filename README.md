@@ -49,6 +49,17 @@
 
 لتصلك الدعوة عند فتح الاختبار: [altibyan.app/beta](https://altibyan.app/beta)
 
+#### لينكس
+
+على أوبونتو 22.04 فما بعده وديبيان 12 فما بعده (amd64)، من مستودعنا الموقّع، وتصل التحديثات مع `apt upgrade`:
+
+```
+curl -fsSL https://apt.altibyan.app/setup.sh | sudo sh
+sudo apt install tibyan
+```
+
+الخطوات اليدوية في [apt.altibyan.app](https://apt.altibyan.app). ولسائر التوزيعات ملف `tibyan-<الإصدار>-x86_64.AppImage` في [GitHub Releases](https://github.com/helalrules7/tibyan/releases)، وفيه مكتبة libmpv فلا يحتاج تثبيت mpv.
+
 ### المبادئ
 
 1. **مجاني بالكامل:** بلا إعلانات ولا مشتريات ولا اشتراكات.
@@ -90,6 +101,17 @@ Tibyan is in beta:
 | Windows and Linux | [GitHub Releases](https://github.com/helalrules7/tibyan/releases) (unsigned, **testers wanted**) |
 
 Get an invite when testing opens: [altibyan.app/beta](https://altibyan.app/beta)
+
+#### Linux
+
+On Ubuntu 22.04+ and Debian 12+ (amd64), from our signed APT repository; updates arrive with `apt upgrade`:
+
+```
+curl -fsSL https://apt.altibyan.app/setup.sh | sudo sh
+sudo apt install tibyan
+```
+
+Manual steps are at [apt.altibyan.app](https://apt.altibyan.app). For other distributions, `tibyan-<version>-x86_64.AppImage` on [GitHub Releases](https://github.com/helalrules7/tibyan/releases) bundles libmpv, so no mpv install is needed.
 
 ### Principles
 

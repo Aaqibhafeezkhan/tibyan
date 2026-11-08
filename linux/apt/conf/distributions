@@ -1,0 +1,8 @@
+Origin: Tibyan
+Label: Tibyan
+Codename: stable
+Suite: stable
+Architectures: amd64
+Components: main
+Description: Tibyan Quran app (https://altibyan.app)
+SignWith: FC1334037A6CB01EB36BC6ED38F75171F3BC0B1B
