@@ -25,9 +25,12 @@ PATTERNS = {
     "android-universal": ("*universal*.apk",),
     "macos": ("*macos*.zip",),
     "windows": ("*windows*.zip",),
-    "linux": ("*linux*.tar.gz",),
+    "linux": ("*linux-x64*.tar.gz", "*linux.tar.gz"),
     "linux-appimage": ("*x86_64.appimage",),
     "linux-deb": ("*amd64.deb",),
+    "linux-arm64": ("*linux-arm64*.tar.gz",),
+    "linux-arm64-appimage": ("*aarch64.appimage",),
+    "linux-arm64-deb": ("*arm64.deb",),
 }
 
 # The Windows installer (Tibyan-Windows-Setup-v*.exe) is built on our server by
