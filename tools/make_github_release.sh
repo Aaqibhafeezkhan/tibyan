@@ -132,6 +132,19 @@ fi
 ASSETS=("$OUT"/*.apk "$OUT"/*.zip "$OUT/SHA256SUMS")
 CMD=(gh release create "$TAG" --title "Tibyan ${TAG#v} | تبيان ${TAG#v}" --notes-file "$FINAL_NOTES" --prerelease "${ASSETS[@]}")
 
+# The tag's workflow usually made the release first, with SHA256SUMS for its own
+# files (desktop zips, .deb, AppImage): keep those lines, add ours, and attach.
+if gh release view "$TAG" >/dev/null 2>&1; then
+  REMOTE_SUMS="$(gh release download "$TAG" -p SHA256SUMS -O - 2>/dev/null || true)"
+  if [ -n "$REMOTE_SUMS" ]; then
+    { printf '%s\n' "$REMOTE_SUMS"; cat "$OUT/SHA256SUMS"; } \
+      | awk '{ line[$2] = $0 } END { for (f in line) print line[f] }' | sort -k2 > "$OUT/SHA256SUMS.merged"
+    mv "$OUT/SHA256SUMS.merged" "$OUT/SHA256SUMS"
+    cat "$OUT/SHA256SUMS"
+  fi
+  CMD=(gh release upload "$TAG" --clobber "${ASSETS[@]}")
+fi
+
 echo
 echo "macOS build: $MAC_STATE"
 if [ "$PUBLISH" -eq 1 ]; then
