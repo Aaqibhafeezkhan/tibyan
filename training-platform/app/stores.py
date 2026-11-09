@@ -48,7 +48,7 @@ STORES: tuple[Store, ...] = (
     Store("microsoft-store", "windows", "Microsoft Store", "Microsoft Store", "ويندوز", "Windows",
           "https://apps.microsoft.com/detail/9N944SZ21PTS"),
     Store("appgallery", "android", "AppGallery", "AppGallery", "هواوي", "Huawei",
-          None, SOON),
+          "https://appgallery.huawei.com/app/C119643893"),
 )
 
 # Direct downloads (outside the stores), all through the counted redirect.
