@@ -30,8 +30,7 @@ class StoresTests(unittest.TestCase):
         self.assertIn("id=app.tibyan.tibyan", stores.get("google-play").url)
         self.assertIn("6818990351", stores.get("app-store").url)
         self.assertEqual(stores.get("microsoft-store").url, "https://apps.microsoft.com/detail/9N944SZ21PTS")
-        self.assertFalse(stores.get("appgallery").live)
-        self.assertTrue(all(s.live for s in stores.STORES if s.key != "appgallery"))
+        self.assertTrue(all(s.live for s in stores.STORES))
 
     def test_direct_downloads_use_counted_redirect(self):
         for key in ("apk", "windows-setup", "linux-appimage"):
