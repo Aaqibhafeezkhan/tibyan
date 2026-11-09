@@ -86,6 +86,7 @@
         {% call card(stores.get('linux-appimage')) %}{{ meta('linux-appimage') }}{% endcall %}
       </div>
       <p class="dl-note">{{ 'أجهزة أندرويد أخرى:' if ar else 'Other Android devices:' }} <a class="dl-alt" href="/download/android-armeabi-v7a">armeabi-v7a</a> · <a class="dl-alt" href="/download/android-x86_64">x86_64</a> · <a class="dl-alt" href="/download/android-universal">{{ 'شامل' if ar else 'universal' }}</a></p>
+      <p class="dl-note">{{ 'لينكس على معالجات ARM ‏(arm64):' if ar else 'Linux on ARM (arm64):' }} <a class="dl-alt" href="/download/linux-arm64-appimage">AppImage</a> · <a class="dl-alt" href="/download/linux-arm64-deb">.deb</a> · <a class="dl-alt" href="/download/linux-arm64">tar.gz</a> {{ '— وأمر apt بالأسفل يعمل عليها أيضًا.' if ar else '— the apt command below works there too.' }}</p>
       <p class="dl-note">{{ 'ملف APK لا يحدّث نسخة Google Play؛ احذف إحداهما قبل تثبيت الأخرى.' if ar else 'The APK can’t update the Google Play version; remove one before installing the other.' }}</p>
     </section>
 

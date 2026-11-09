@@ -133,6 +133,25 @@ class SiteTests(unittest.TestCase):
         r = self.client.get("/download/linux-appimage", follow_redirects=False)
         self.assertEqual(r.status_code, 302)
 
+    def test_linux_arch_patterns(self):
+        import fnmatch
+        from app import releases
+        names = ["tibyan-linux-arm64.tar.gz", "tibyan-linux-x64.tar.gz", "tibyan-0.8.6-aarch64.appimage",
+                 "tibyan-0.8.6-x86_64.appimage", "tibyan_0.8.6-52_arm64.deb", "tibyan_0.8.6-52_amd64.deb"]
+        def pick(platform):
+            for pat in releases.PATTERNS[platform]:
+                hit = next((n for n in names if fnmatch.fnmatch(n, pat)), None)
+                if hit:
+                    return hit
+        self.assertEqual(pick("linux"), "tibyan-linux-x64.tar.gz")  # never the arm64 tarball
+        self.assertEqual(pick("linux-arm64"), "tibyan-linux-arm64.tar.gz")
+        self.assertEqual(pick("linux-arm64-appimage"), "tibyan-0.8.6-aarch64.appimage")
+        self.assertEqual(pick("linux-appimage"), "tibyan-0.8.6-x86_64.appimage")
+        self.assertEqual(pick("linux-arm64-deb"), "tibyan_0.8.6-52_arm64.deb")
+        html = self.client.get("/download").text
+        for href in ("/download/linux-arm64-appimage", "/download/linux-arm64-deb", "/download/linux-arm64"):
+            self.assertIn(f'href="{href}"', html)
+
     def test_en_prefix(self):
         r = self.client.get("/en/")
         self.assertEqual(r.status_code, 200)
