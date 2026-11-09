@@ -48,6 +48,7 @@ iOS وmacOS:
 - حساب Apple Developer، وApp ID بالمعرفات `app.tibyan.tibyan` و`.TibyanWidget` و`.TibyanActions`.
 - App Group: iOS `group.app.tibyan.tibyan`، macOS `<TeamID>.group.app.tibyan.tibyan` (docs/HOME_WIDGET.md).
 - ويندوز: المثبّت والـ zip غير موقّعين، فيظهر تحذير SmartScreen أول مرة. التوقيع يحتاج شهادة توقيع كود. نسخة المتجر (MSIX) يوقّعها المتجر نفسه: انظر «متجر مايكروسوفت» أدناه.
+- قبل الأرشفة: `flutter build ios --release --config-only --build-number=N --dart-define-from-file=$HOME/.config/tibyan/sentry.env --dart-define-from-file=$HOME/.config/tibyan/google.env --dart-define=TIBYAN_CHANNEL=testflight` (أو `production`، ونفسه لـ macos). الأرشفة (`xcodebuild ... archive`، Release) تفشل عمداً إن غاب `SENTRY_DSN` أو `TIBYAN_CHANNEL` (`tools/apple/check_release_defines.sh` في مرحلة بناء Flutter)، حتى لا تخرج نسخة لا ترسل تقارير الأعطال. البناء العادي وCI لا يتأثران.
 - أرشِف ووقّع من Xcode ثم ارفع بـ Transporter إلى TestFlight (التوقيع الآلي من CI يحتاج شهادة وملف provisioning في الأسرار، ولم يُضف حتى تُنشأ).
 
 ## متجر مايكروسوفت (MSIX)

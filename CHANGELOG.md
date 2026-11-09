@@ -6,6 +6,12 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+- iOS: the recitation no longer dies in the background at the gaps where nothing plays: the silence between repetitions, and the next surah's file (or a translation clip's return to the surah) loading. Each gap now runs inside a short iOS background task, so iOS no longer suspends the app before the sound starts again. This builds on the earlier background fixes (0.7.0). Reported again as «background player crash» (TestFlight 0.7.2 build 44); on the simulator, 170 s in the background across surah ends and across 20 s silences between repetitions played through.
+
+### Added
+- iOS crash visibility: the system's own crash and hang reports (MetricKit) are kept on the device and, only for readers who agreed to crash reports, sent to our crash server on the next launch; otherwise they are dropped unread. iOS and macOS App Store / TestFlight archives now fail when `SENTRY_DSN` or `TIBYAN_CHANNEL` is missing from the build (`tools/apple/check_release_defines.sh`).
+
 ## [0.8.5] - 2026-11-08
 
 ### Fixed

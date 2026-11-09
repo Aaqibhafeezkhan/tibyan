@@ -18,6 +18,7 @@ import '../khatma/khatma_providers.dart'
 import '../mushaf/mushaf_providers.dart';
 import '../sajdah/sajdah_card.dart';
 import '../sajdah/sajdah_positions.dart';
+import 'keep_alive.dart';
 import 'verse_queue.dart';
 import '../../core/ui/meta_separator.dart';
 
@@ -1015,18 +1016,23 @@ class RecitationController extends Notifier<RecitationState> {
       _clipResume = null;
       _clipEnd = null;
       if (_endOf(next) != null) {
-        await play(
-          c.surah,
-          from: next,
-          repeat: state.repeat,
-          silence: state.silence,
-          nearSpeech: true,
-        );
+        // Back from the clip to the surah's file: a gap like a new surah.
+        await ref
+            .read(keepAliveProvider)
+            .during(
+              () => play(
+                c.surah,
+                from: next,
+                repeat: state.repeat,
+                silence: state.silence,
+                nearSpeech: true,
+              ),
+            );
       } else if (state.sleep is SleepAtSurahEnd || c.surah >= 114) {
         await play(c.surah, start: false);
         state = state.copyWith(sleep: () => null);
       } else {
-        await play(c.surah + 1);
+        await _nextSurah(c.surah + 1);
       }
     } finally {
       _clipEnding = false;
@@ -1327,17 +1333,21 @@ class RecitationController extends Notifier<RecitationState> {
     final wait = _waits;
     _inSilence = true;
     state = state.copyWith(repeatDone: done);
-    await _p.pause();
-    if (state.silence > Duration.zero) {
-      await Future<void>.delayed(state.silence);
-    }
-    // Paused, stopped or moved on meanwhile: it waits for the reader.
-    if (wait != _waits || !state.active) return true;
-    await _p.seek(_repeatStart(first));
-    _resumeMs = null;
-    state = state.copyWith(ayah: () => first, playing: true);
-    _inSilence = false;
-    unawaited(_p.play());
+    // Nothing plays during the silence: the app is kept running through
+    // it, or iOS suspends it in the background and the timer never ends.
+    await ref.read(keepAliveProvider).during(() async {
+      await _p.pause();
+      if (state.silence > Duration.zero) {
+        await Future<void>.delayed(state.silence);
+      }
+      // Paused, stopped or moved on meanwhile: it waits for the reader.
+      if (wait != _waits || !state.active) return;
+      await _p.seek(_repeatStart(first));
+      _resumeMs = null;
+      state = state.copyWith(ayah: () => first, playing: true);
+      _inSilence = false;
+      unawaited(_p.play());
+    });
     return true;
   }
 
@@ -1381,8 +1391,14 @@ class RecitationController extends Notifier<RecitationState> {
       state = state.copyWith(sleep: () => null);
       return;
     }
-    await play(state.surah + 1);
+    await _nextSurah(state.surah + 1);
   }
+
+  /// The next surah's file loads while nothing plays: the app is kept
+  /// running until it starts, or iOS may suspend it in the background
+  /// before the load ends and the recitation stops between two surahs.
+  Future<void> _nextSurah(int surah) =>
+      ref.read(keepAliveProvider).during(() => play(surah));
 
   /// Pauses, and holds a silence between repetitions that is under way.
   Future<void> _halt() async {

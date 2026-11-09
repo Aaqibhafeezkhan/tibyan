@@ -31,6 +31,9 @@ class CrashReporting {
 
   static bool get isAvailable => _dsn.isNotEmpty;
 
+  /// The reporter runs: the reader agreed and the build has a DSN.
+  static bool get isRunning => _running;
+
   /// Pre-builds (TestFlight, GitHub beta) suggest «agree» in the consent
   /// sheet; the store build leaves both choices equal.
   static bool get isPrerelease =>
