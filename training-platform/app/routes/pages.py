@@ -115,7 +115,7 @@ def voice(request: Request, db: Session = Depends(get_db)):
     )
 
 
-PRIVACY_UPDATED = ("2026-11-08", "٨ نوفمبر ٢٠٢٦", "8 November 2026")
+PRIVACY_UPDATED = ("2026-11-09", "٩ نوفمبر ٢٠٢٦", "9 November 2026")
 
 
 def _privacy(request: Request, lang: str):
