@@ -359,6 +359,14 @@ jobs:
           VERSION="${GITHUB_REF_NAME#v}"
           awk -v v="$VERSION" '$0 ~ "^## \\[" v "\\]" {f=1; next} /^## \[/ {f=0} f' CHANGELOG.md > notes.md
           test -s notes.md || echo "See CHANGELOG.md" > notes.md
+      # Checksums of the files this job attaches; tools/make_github_release.sh
+      # adds the signed APKs' lines when it attaches them.
+      - name: SHA256SUMS
+        run: |
+          sha256sum tibyan-ios-unsigned.zip tibyan-macos-unsigned.zip tibyan-macos-unsigned.dmg \
+            tibyan-linux-x64.tar.gz tibyan-linux-arm64.tar.gz tibyan-windows-x64.zip \
+            tibyan_*.deb tibyan-*.AppImage > SHA256SUMS
+          cat SHA256SUMS
       - uses: softprops/action-gh-release@e598afbe1493e6b1bafb1f389cabb956eab91231 # v3.0.3
         with:
           body_path: notes.md
@@ -372,3 +380,8 @@ jobs:
             tibyan-linux-x64.tar.gz
             tibyan-linux-arm64.tar.gz
             tibyan-windows-x64.zip
+            tibyan_*_amd64.deb
+            tibyan_*_arm64.deb
+            tibyan-*-x86_64.AppImage
+            tibyan-*-aarch64.AppImage
+            SHA256SUMS
