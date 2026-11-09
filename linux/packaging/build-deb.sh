@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Build tibyan_<version>-<build>_amd64.deb from a Flutter Linux release bundle.
+# Build tibyan_<version>-<build>_<arch>.deb (amd64 or arm64, the build machine's) from a Flutter Linux release bundle.
 #
 #   linux/packaging/build-deb.sh <bundle dir> <version> <build> <out dir>
 #
@@ -20,7 +20,9 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 ICONS="$ROOT/macos/Runner/Assets.xcassets/AppIcon.appiconset"
 DEB_VERSION="${VERSION}-${BUILD}"
-PKG="tibyan_${DEB_VERSION}_amd64"
+ARCH="${DEB_ARCH:-$(dpkg --print-architecture)}"
+case "$ARCH" in amd64|arm64) ;; *) echo "unsupported architecture: $ARCH"; exit 1 ;; esac
+PKG="tibyan_${DEB_VERSION}_${ARCH}"
 
 [ -x "$BUNDLE/tibyan" ] || { echo "no tibyan executable in $BUNDLE"; exit 1; }
 mkdir -p "$OUT"
@@ -41,7 +43,7 @@ install -m644 "$ROOT/LICENSE" "$D/usr/share/doc/tibyan/copyright"
 # Shared-library dependencies of every ELF file in the bundle. The bundle's own
 # lib/ is private (-l) so its libraries are not looked up in the system.
 mkdir -p "$WORK/shl/debian"
-printf 'Source: tibyan\n\nPackage: tibyan\nArchitecture: amd64\n' > "$WORK/shl/debian/control"
+printf 'Source: tibyan\n\nPackage: tibyan\nArchitecture: %s\n' "$ARCH" > "$WORK/shl/debian/control"
 mapfile -t ELFS < <(find "$D/opt/tibyan" -type f \( -name '*.so*' -o -name tibyan \) \
   -exec sh -c 'head -c4 "$1" | grep -q ELF && echo "$1"' _ {} \;)
 SHLIBS="$(cd "$WORK/shl" && dpkg-shlibdeps -O -l"$D/opt/tibyan/lib" \
@@ -59,7 +61,7 @@ SIZE_KB="$(du -sk --exclude=DEBIAN "$D" | cut -f1)"
 cat > "$D/DEBIAN/control" <<EOF
 Package: tibyan
 Version: $DEB_VERSION
-Architecture: amd64
+Architecture: $ARCH
 Maintainer: Tibyan <info@altibyan.app>
 Installed-Size: $SIZE_KB
 Depends: $SHLIBS, $EXTRA
