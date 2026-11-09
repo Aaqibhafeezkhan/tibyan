@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tibyan/core/crash/crash_consent.dart';
+import 'package:tibyan/core/privacy/store_privacy_prompt.dart';
 import 'package:tibyan/core/db/content_database.dart';
 import 'package:tibyan/core/db/user_database.dart';
 import 'package:tibyan/core/settings/settings_controller.dart';
@@ -189,6 +190,13 @@ void main() {
       blank,
       (tester) async {
         unawaited(showCrashConsent(host(tester), suggestAgree: false));
+        await idle(tester);
+      },
+    ),
+    'store privacy': (
+      blank,
+      (tester) async {
+        unawaited(showStorePrivacy(host(tester)));
         await idle(tester);
       },
     ),

@@ -5362,4 +5362,20 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get updateFailed => 'تعذّر البحث عن تحديث. حاول لاحقًا.';
+
+  @override
+  String get storePrivacyTitle => 'سياسة الخصوصية';
+
+  @override
+  String get storePrivacyBody =>
+      'لا يحتاج تبيان إلى حساب، ولا يجمع أي بيانات شخصية، وتبقى بياناتك على جهازك. يُرجى قراءة سياسة الخصوصية قبل المتابعة.';
+
+  @override
+  String get storePrivacyRead => 'اقرأ سياسة الخصوصية';
+
+  @override
+  String get storePrivacyAccept => 'موافق';
+
+  @override
+  String get storePrivacyExit => 'خروج';
 }

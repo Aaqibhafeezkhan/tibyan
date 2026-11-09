@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/crash/crash_consent.dart';
+import '../../core/privacy/store_privacy_prompt.dart';
 import '../../core/db/content_database.dart' show SurahRow;
 import '../../core/settings/settings_controller.dart'
     show sharedPreferencesProvider;
@@ -46,9 +47,17 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final whatsNewNow = shouldShowWhatsNew(ref.read(sharedPreferencesProvider));
-    maybeShowWhatsNew(context, ref);
-    maybeAskCrashConsent(context, ref, busy: whatsNewNow);
+    // The store's privacy notice comes first; the other sheets wait for a
+    // later launch.
+    if (storePrivacyPending(ref)) {
+      maybeShowStorePrivacy(context, ref);
+    } else {
+      final whatsNewNow = shouldShowWhatsNew(
+        ref.read(sharedPreferencesProvider),
+      );
+      maybeShowWhatsNew(context, ref);
+      maybeAskCrashConsent(context, ref, busy: whatsNewNow);
+    }
     if (context.tokens.elderly) return const _ElderlyHome();
     final l = AppLocalizations.of(context);
     final digits = NumberFormatter(Localizations.localeOf(context));

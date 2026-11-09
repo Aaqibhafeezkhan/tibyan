@@ -48,6 +48,7 @@ import 'package:tibyan/features/settings/storage_screen.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 
 import 'package:tibyan/core/crash/crash_consent.dart';
+import 'package:tibyan/core/privacy/store_privacy_prompt.dart';
 import 'package:tibyan/core/flags/feature_flags.dart';
 import 'package:tibyan/features/home/home_screen.dart';
 import 'package:tibyan/features/mushaf/presentation/index_screen.dart';
@@ -287,6 +288,7 @@ void main() {
               about,
               (c) => showCrashConsent(c, suggestAgree: false),
             ),
+            ('store_privacy', about, showStorePrivacy),
             ('about', about, null),
             ('go_to_page', about, (c) => showGoToPage(c, current: 42)),
             ('assistant', () => const AssistantScreen(), null),

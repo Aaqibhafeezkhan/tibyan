@@ -1996,5 +1996,10 @@
   "updateDownloading": "Downloading version {version} {percent}",
   "updateReady": "Version {version} is ready to install.",
   "updateRestart": "Restart to update",
-  "updateFailed": "Couldn't check for updates. Try again later."
+  "updateFailed": "Couldn't check for updates. Try again later.",
+  "storePrivacyTitle": "Privacy policy",
+  "storePrivacyBody": "Tibyan needs no account, collects no personal data, and keeps your data on your device. Please read the privacy policy before you continue.",
+  "storePrivacyRead": "Read the privacy policy",
+  "storePrivacyAccept": "OK",
+  "storePrivacyExit": "Exit"
 }
