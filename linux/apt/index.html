@@ -23,7 +23,7 @@
 <main>
 <section>
   <h1>مستودع تبيان لأنظمة ديبيان وأوبونتو</h1>
-  <p class="muted">لأوبونتو 22.04 فما بعده، وديبيان 12 فما بعده، على معالجات amd64.</p>
+  <p class="muted">لأوبونتو 22.04 فما بعده، وديبيان 12 فما بعده، على معالجات amd64 وarm64.</p>
 
   <h2>التثبيت بأمر واحد</h2>
   <pre><code>curl -fsSL https://apt.altibyan.app/setup.sh | sudo sh
@@ -32,7 +32,7 @@ sudo apt install tibyan</code></pre>
 
   <h2>التثبيت يدويا</h2>
   <pre><code>sudo curl -fsSL https://apt.altibyan.app/tibyan.gpg -o /usr/share/keyrings/tibyan.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/tibyan.gpg] https://apt.altibyan.app stable main" \
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/tibyan.gpg] https://apt.altibyan.app stable main" \
   | sudo tee /etc/apt/sources.list.d/tibyan.list
 sudo apt update
 sudo apt install tibyan</code></pre>
@@ -49,7 +49,7 @@ sudo rm /etc/apt/sources.list.d/tibyan.list /usr/share/keyrings/tibyan.gpg</code
 
 <section lang="en">
   <h1>Tibyan APT repository</h1>
-  <p class="muted">For Ubuntu 22.04 or newer and Debian 12 or newer, on amd64.</p>
+  <p class="muted">For Ubuntu 22.04 or newer and Debian 12 or newer, on amd64 and arm64.</p>
 
   <h2>One-command setup</h2>
   <pre><code>curl -fsSL https://apt.altibyan.app/setup.sh | sudo sh
@@ -58,7 +58,7 @@ sudo apt install tibyan</code></pre>
 
   <h2>Manual setup</h2>
   <pre><code>sudo curl -fsSL https://apt.altibyan.app/tibyan.gpg -o /usr/share/keyrings/tibyan.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/tibyan.gpg] https://apt.altibyan.app stable main" \
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/tibyan.gpg] https://apt.altibyan.app stable main" \
   | sudo tee /etc/apt/sources.list.d/tibyan.list
 sudo apt update
 sudo apt install tibyan</code></pre>

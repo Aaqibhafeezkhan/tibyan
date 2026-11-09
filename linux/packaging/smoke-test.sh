@@ -13,8 +13,14 @@
 set -euo pipefail
 DIR="$(cd "$1" && pwd)"
 DISTROS="${DISTROS:-ubuntu:22.04 debian:12 ubuntu:24.04}"
-DEB="$(cd "$DIR" && ls tibyan_*_amd64.deb | head -1)"
-APPIMAGE="$(cd "$DIR" && ls tibyan-*-x86_64.AppImage 2>/dev/null | head -1 || true)"
+# ARCH=amd64|arm64 (default: this machine's); the containers run that arch.
+case "${ARCH:-$(uname -m)}" in
+  amd64|x86_64)  ARCH=amd64; AI_ARCH=x86_64 ;;
+  arm64|aarch64) ARCH=arm64; AI_ARCH=aarch64 ;;
+  *) echo "unsupported architecture: ${ARCH:-$(uname -m)}"; exit 1 ;;
+esac
+DEB="$(cd "$DIR" && ls tibyan_*_"$ARCH".deb | head -1)"
+APPIMAGE="$(cd "$DIR" && ls tibyan-*-"$AI_ARCH".AppImage 2>/dev/null | head -1 || true)"
 
 # Runs inside the container. $1 = mode (deb|appimage), $2 = file name.
 read -r -d '' INNER <<'SH' || true
@@ -66,11 +72,11 @@ SH
 fail=0
 for d in $DISTROS; do
   echo "▶ .deb on $d"
-  docker run --rm --platform linux/amd64 -v "$DIR:/pkg:ro" "$d" bash -c "$INNER" _ deb "$DEB" \
+  docker run --rm --platform "linux/$ARCH" -v "$DIR:/pkg:ro" "$d" bash -c "$INNER" _ deb "$DEB" \
     && echo "✓ $d deb" || { echo "✗ $d deb"; fail=1; }
   if [ -n "$APPIMAGE" ]; then
     echo "▶ AppImage on $d"
-    docker run --rm --platform linux/amd64 -v "$DIR:/pkg:ro" "$d" bash -c "$INNER" _ appimage "$APPIMAGE" \
+    docker run --rm --platform "linux/$ARCH" -v "$DIR:/pkg:ro" "$d" bash -c "$INNER" _ appimage "$APPIMAGE" \
       && echo "✓ $d AppImage" || { echo "✗ $d AppImage"; fail=1; }
   fi
 done

@@ -14,7 +14,7 @@ on:
         description: 'Which apps to rebuild'
         type: choice
         default: all
-        options: [all, linux]
+        options: [all, linux, linux-arm64]
 
 permissions:
   contents: write
@@ -143,6 +143,7 @@ jobs:
             tibyan-macos-unsigned.dmg
 
   linux:
+    if: inputs.platforms != 'linux-arm64'
     name: Linux build
     # 22.04 (glibc 2.35), not ubuntu-latest: what is built here runs on
     # Ubuntu 22.04, Debian 12 and newer.
@@ -222,8 +223,89 @@ jobs:
           name: tibyan-linux-symbols
           path: build/symbols/desktop
 
+  linux-arm64:
+    name: Linux build (arm64)
+    # Same as the amd64 job on GitHub's arm64 runner: 22.04 (glibc 2.35).
+    runs-on: ubuntu-22.04-arm
+    timeout-minutes: 60
+    env:
+      FLUTTER_VERSION: 3.47.5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: _pkg
+          sparse-checkout: linux/packaging
+      - name: Packaging scripts from this workflow's commit
+        run: rm -rf linux/packaging && cp -r _pkg/linux/packaging linux/packaging && rm -rf _pkg
+      - uses: ./.github/actions/lfs-pull
+      - name: Build tools (GTK, libmpv, libcurl, dpkg-dev)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config \
+            libgtk-3-dev libmpv-dev mpv libsecret-1-dev libjsoncpp-dev \
+            libcurl4-openssl-dev dpkg-dev file desktop-file-utils
+      # Flutter publishes no linux-arm64 SDK archive (flutter-action downloads
+      # the x64 one), so clone the release tag; the SDK fetches its arm64 Dart.
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: ~/flutter
+          key: flutter-${{ env.FLUTTER_VERSION }}-linux-arm64
+      - name: Flutter ${{ env.FLUTTER_VERSION }} (git)
+        run: |
+          [ -x ~/flutter/bin/flutter ] || git clone --depth 1 -b "$FLUTTER_VERSION" https://github.com/flutter/flutter.git ~/flutter
+          echo "$HOME/flutter/bin" >> "$GITHUB_PATH"
+          ~/flutter/bin/flutter --version
+      - run: flutter config --enable-linux-desktop --no-analytics
+      - run: flutter pub get
+      - name: Crash reporting and Drive config (secrets)
+        env:
+          SENTRY_ENV: ${{ secrets.TIBYAN_SENTRY_ENV }}
+          GOOGLE_ENV: ${{ secrets.TIBYAN_GOOGLE_ENV }}
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/tibyan"
+          printf '%s\n' "$SENTRY_ENV" > "$RUNNER_TEMP/tibyan/sentry.env"
+          printf '%s\n' "$GOOGLE_ENV" > "$RUNNER_TEMP/tibyan/google.env"
+      - run: flutter build linux --release --dart-define-from-file="$RUNNER_TEMP/tibyan/sentry.env" --dart-define-from-file="$RUNNER_TEMP/tibyan/google.env" --dart-define=TIBYAN_CHANNEL=beta --split-debug-info=build/symbols/desktop
+      - name: Version from pubspec.yaml
+        id: ver
+        run: |
+          v=$(sed -n 's/^version: *//p' pubspec.yaml | head -1)
+          echo "version=${v%%+*}" >> "$GITHUB_OUTPUT"
+          echo "build=${v##*+}" >> "$GITHUB_OUTPUT"
+      - name: Archive the bundle
+        run: tar -C build/linux/arm64/release/bundle -czf tibyan-linux-arm64.tar.gz .
+      - name: Debian package
+        run: |
+          linux/packaging/build-deb.sh build/linux/arm64/release/bundle \
+            "${{ steps.ver.outputs.version }}" "${{ steps.ver.outputs.build }}" .
+          desktop-file-validate linux/packaging/app.tibyan.tibyan.desktop
+      - name: AppImage
+        env:
+          LINUXDEPLOY_SHA: 620095110d693282b8ebeb244a95b5e911cf8f65f76c88b4b47d16ae6346fcff
+          APPIMAGETOOL_SHA: f0837e7448a0c1e4e650a93bb3e85802546e60654ef287576f46c71c126a9158
+        run: |
+          linux/packaging/build-appimage.sh build/linux/arm64/release/bundle \
+            "${{ steps.ver.outputs.version }}" .
+      - name: Smoke test (.deb on 22.04 / Debian 12 / 24.04, AppImage libs)
+        run: linux/packaging/smoke-test.sh .
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tibyan-linux-arm64
+          path: |
+            tibyan-linux-arm64.tar.gz
+            tibyan_*_arm64.deb
+            tibyan-*-aarch64.AppImage
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tibyan-linux-arm64-symbols
+          path: build/symbols/desktop
+
   windows:
-    if: inputs.platforms != 'linux'
+    if: inputs.platforms != 'linux' && inputs.platforms != 'linux-arm64'
     name: Windows build
     runs-on: windows-latest
     timeout-minutes: 60
@@ -265,7 +347,7 @@ jobs:
   publish:
     name: GitHub release
     if: github.event_name == 'push'
-    needs: [android, ios, macos, linux, windows]
+    needs: [android, ios, macos, linux, linux-arm64, windows]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -288,4 +370,5 @@ jobs:
             tibyan-macos-unsigned.zip
             tibyan-macos-unsigned.dmg
             tibyan-linux-x64.tar.gz
+            tibyan-linux-arm64.tar.gz
             tibyan-windows-x64.zip

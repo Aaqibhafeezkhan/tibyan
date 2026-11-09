@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Build tibyan-<version>-x86_64.AppImage from a Flutter Linux release bundle.
+# Build tibyan-<version>-<x86_64|aarch64>.AppImage (the build machine's arch) from a Flutter Linux release bundle.
 #
 #   linux/packaging/build-appimage.sh <bundle dir> <version> <out dir>
 #
@@ -17,11 +17,18 @@ BUNDLE="$(cd "$1" && pwd)"; VERSION="$2"; OUT="$(mkdir -p "$3" && cd "$3" && pwd
 HERE="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 ICONS="$ROOT/macos/Runner/Assets.xcassets/AppIcon.appiconset"
-NAME="tibyan-${VERSION}-x86_64.AppImage"
+# AI_ARCH names the AppImage tools; LDARCH is how ldconfig -p tags the libraries.
+AI_ARCH="$(uname -m)"
+case "$AI_ARCH" in
+  x86_64)  LDARCH="x86-64" ;;
+  aarch64) LDARCH="AArch64" ;;
+  *) echo "unsupported architecture: $AI_ARCH"; exit 1 ;;
+esac
+NAME="tibyan-${VERSION}-${AI_ARCH}.AppImage"
 
-LINUXDEPLOY_URL="https://github.com/linuxdeploy/linuxdeploy/releases/download/1-alpha-20251107-1/linuxdeploy-x86_64.AppImage"
+LINUXDEPLOY_URL="https://github.com/linuxdeploy/linuxdeploy/releases/download/1-alpha-20251107-1/linuxdeploy-${AI_ARCH}.AppImage"
 LINUXDEPLOY_SHA="${LINUXDEPLOY_SHA:?set LINUXDEPLOY_SHA}"
-APPIMAGETOOL_URL="https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage"
+APPIMAGETOOL_URL="https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-${AI_ARCH}.AppImage"
 APPIMAGETOOL_SHA="${APPIMAGETOOL_SHA:?set APPIMAGETOOL_SHA}"
 
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
@@ -30,7 +37,7 @@ fetch "$LINUXDEPLOY_URL" "$LINUXDEPLOY_SHA" linuxdeploy
 fetch "$APPIMAGETOOL_URL" "$APPIMAGETOOL_SHA" appimagetool
 export APPIMAGE_EXTRACT_AND_RUN=1   # no FUSE in CI containers
 
-LIBMPV="$(ldconfig -p | awk '/libmpv\.so\.[12] .*x86-64/{print $NF; exit}')"
+LIBMPV="$(ldconfig -p | awk -v a="$LDARCH" '/libmpv\.so\.[12] / && index($0,a){print $NF; exit}')"
 [ -n "$LIBMPV" ] || { echo "libmpv not found on the build machine"; exit 1; }
 
 A="$WORK/AppDir"
@@ -62,9 +69,9 @@ find "$A/usr/lib" -maxdepth 1 \( -name 'libgtk-3.so*' -o -name 'libgdk-3.so*' \
 # libmpv also links JACK and libusb, which the excludelist leaves to the host
 # but many desktops lack; carry them (they work without a JACK server).
 for l in libjack.so.0 libusb-1.0.so.0; do
-  p="$(ldconfig -p | awk -v l="$l" '$1==l && /x86-64/{print $NF; exit}')"
+  p="$(ldconfig -p | awk -v l="$l" -v a="$LDARCH" '$1==l && index($0,a){print $NF; exit}')"
   [ -n "$p" ] && cp -L "$p" "$A/usr/lib/$l"
 done
 
-ARCH=x86_64 "$WORK/appimagetool" --no-appstream "$A" "$OUT/$NAME"
+ARCH="$AI_ARCH" "$WORK/appimagetool" --no-appstream "$A" "$OUT/$NAME"
 ls -la "$OUT/$NAME"

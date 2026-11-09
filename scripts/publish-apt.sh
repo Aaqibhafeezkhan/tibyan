@@ -5,8 +5,9 @@
 # scripts/build-win-remote.sh: the server does the work in Docker.
 #
 # HOW
-#   The release workflow attaches tibyan_<version>-<build>_amd64.deb to the
-#   GitHub release. The server downloads it, and a throwaway reprepro container
+#   The release workflow builds tibyan_<version>-<build>_amd64.deb and
+#   tibyan_<version>-<build>_arm64.deb, attached to the GitHub release. The
+#   server downloads them, and a throwaway reprepro container
 #   (no network) adds it to the repository and signs the index. The signing key
 #   never touches the server's disk: it is piped from ~/.config/tibyan over SSH
 #   into the container's stdin and imported into a tmpfs keyring there.
@@ -20,6 +21,8 @@
 #   scripts/publish-apt.sh                    # preflight (default, changes nothing)
 #   scripts/publish-apt.sh --publish          # add the .deb, sign, sync, check
 #   options: --tag vX.Y.Z   release tag (default: v<pubspec version>)
+#            --arch A       amd64, arm64 or all (default: all = every arch
+#                           whose .deb is on the release)
 #
 # ROLLBACK
 #   Each publish first saves conf/, db/ and www/dists/ to
@@ -46,12 +49,13 @@ IMAGE="tibyan_apt:bookworm"
 REPO="helalrules7/tibyan"
 
 PUBSPEC_VERSION="$(sed -n 's/^version: *//p' pubspec.yaml | head -1)"
-MODE="preflight"; TAG="v${PUBSPEC_VERSION%%+*}"
+MODE="preflight"; TAG="v${PUBSPEC_VERSION%%+*}"; ARCH_SEL="all"
 while [ $# -gt 0 ]; do
   case "$1" in
     --preflight) MODE="preflight" ;;
     --publish)   MODE="publish" ;;
     --tag)       TAG="$2"; shift ;;
+    --arch)      ARCH_SEL="$2"; shift ;;
     *) echo "Unknown flag: $1"; exit 2 ;;
   esac
   shift
@@ -66,11 +70,26 @@ _rsync() { rsync -az -e "ssh ${SSH_OPTS[*]}" "$@"; }
 # ---------------------------------------------------------------------------
 echo "▶ Tibyan APT publish — tag $TAG — mode: $MODE"
 fail=0
-DEB="$(gh release view "$TAG" -R "$REPO" --json assets \
-  -q '.assets[].name | select(test("^tibyan_.*_amd64\\.deb$"))' 2>/dev/null | head -1 || true)"
-[ -n "$DEB" ] && echo "  .deb (GitHub): $TAG/$DEB" \
-  || { echo "  ✗ no tibyan_*_amd64.deb on GitHub release $TAG (or gh not logged in)"; fail=1; }
-DEB_VERSION="${DEB#tibyan_}"; DEB_VERSION="${DEB_VERSION%_amd64.deb}"
+case "$ARCH_SEL" in all) ARCHES="amd64 arm64" ;; amd64|arm64) ARCHES="$ARCH_SEL" ;;
+  *) echo "  ✗ --arch must be amd64, arm64 or all"; exit 2 ;; esac
+ASSETS="$(gh release view "$TAG" -R "$REPO" --json assets -q '.assets[].name' 2>/dev/null || true)"
+DEBS=""; DEB_VERSION=""
+for a in $ARCHES; do
+  d="$(printf '%s\n' "$ASSETS" | grep -E "^tibyan_.*_${a}\.deb$" | head -1 || true)"
+  if [ -n "$d" ]; then
+    echo "  .deb (GitHub): $TAG/$d"; DEBS="$DEBS $d"
+    v="${d#tibyan_}"; v="${v%_${a}.deb}"
+    [ -z "$DEB_VERSION" ] || [ "$DEB_VERSION" = "$v" ] \
+      || { echo "  ✗ version mismatch between arches: $DEB_VERSION vs $v"; fail=1; }
+    DEB_VERSION="$v"
+  elif [ "$ARCH_SEL" = all ]; then
+    echo "  ! no tibyan_*_${a}.deb on $TAG (skipped)"
+  else
+    echo "  ✗ no tibyan_*_${a}.deb on GitHub release $TAG (or gh not logged in)"; fail=1
+  fi
+done
+DEBS="${DEBS# }"
+[ -n "$DEBS" ] || { echo "  ✗ no .deb on GitHub release $TAG (or gh not logged in)"; fail=1; }
 [ -f "$KEY" ] || { echo "  ✗ SSH key not found: $KEY"; fail=1; }
 if [ -f "$SIGNING_KEY" ] && [ -f "$GPG_ENV" ]; then
   # shellcheck disable=SC1090
@@ -94,11 +113,12 @@ f=0
 echo "  docker       : $(docker --version 2>/dev/null || echo 'NOT INSTALLED')"
 echo "  state dir    : $REMOTE_DIR $([ -d "$REMOTE_DIR/db" ] && echo '(repository exists)' || echo '(new repository)')"
 [ -d "$WEB" ] && echo "  web root     : $WEB" || { echo "  ✗ web root $WEB missing (Hestia vhost apt.altibyan.app)"; f=1; }
-if [ -f "$WEB/dists/stable/main/binary-amd64/Packages" ]; then
-  echo "  published    : $(grep '^Version:' "$WEB/dists/stable/main/binary-amd64/Packages" | tr '\n' ' ')"
-  grep -q "^Version: $DEB_VERSION\$" "$WEB/dists/stable/main/binary-amd64/Packages" \
-    && echo "  ! $DEB_VERSION is already in the repository (publish is a no-op)"
-fi
+for a in amd64 arm64; do
+  P="$WEB/dists/stable/main/binary-$a/Packages"
+  [ -f "$P" ] || { echo "  published    : $a: (none)"; continue; }
+  echo "  published    : $a: $(grep '^Version:' "$P" | tr '\n' ' ')"
+  grep -q "^Version: $DEB_VERSION\$" "$P" && echo "  ! $a $DEB_VERSION is already in the repository"
+done
 command -v docker >/dev/null && docker info >/dev/null 2>&1 || { echo "  ✗ docker not usable"; f=1; }
 command -v rsync >/dev/null || { echo "  ✗ rsync missing"; f=1; }
 [ "$f" = 0 ] && echo "  ✓ server ready" || exit 1
@@ -110,7 +130,7 @@ if [ "$MODE" = preflight ]; then
 
 Plan for --publish:
   1. upload linux/apt/ (Dockerfile, conf, setup.sh, index.html, keys) to $REMOTE_DIR
-  2. server downloads $DEB from the $TAG release
+  2. server downloads $DEBS from the $TAG release
   3. back up conf/ db/ www/dists/ to $REMOTE_DIR/backups/repo-<UTC>.tgz
   4. reprepro includedeb stable + sign (key piped in, container without network)
   5. sync www/ and the static files to $WEB, check $URL over HTTPS
@@ -130,13 +150,15 @@ _rsync --delete linux/apt/conf/ "$USER_@$HOST:$REMOTE_DIR/conf/"
 _rsync linux/apt/setup.sh linux/apt/index.html linux/apt/tibyan.gpg linux/apt/tibyan.asc \
   "$USER_@$HOST:$REMOTE_DIR/static/"
 
-echo "▶ Server downloads $DEB, backs up the repository, builds the image"
-_ssh REMOTE_DIR="$REMOTE_DIR" DEB="$DEB" TAG="$TAG" REPO="$REPO" IMAGE="$IMAGE" bash -s <<'REMOTE'
+echo "▶ Server downloads $DEBS, backs up the repository, builds the image"
+_ssh REMOTE_DIR="$REMOTE_DIR" DEBS="'$DEBS'" TAG="$TAG" REPO="$REPO" IMAGE="$IMAGE" bash -s <<'REMOTE'
 set -euo pipefail
 cd "$REMOTE_DIR"
-curl -fsSL --retry 3 -o "incoming/$DEB.part" "https://github.com/$REPO/releases/download/$TAG/$DEB"
-mv -f "incoming/$DEB.part" "incoming/$DEB"
-dpkg-deb --field "incoming/$DEB" Package Version 2>/dev/null || ls -la "incoming/$DEB"
+for DEB in $DEBS; do
+  curl -fsSL --retry 3 -o "incoming/$DEB.part" "https://github.com/$REPO/releases/download/$TAG/$DEB"
+  mv -f "incoming/$DEB.part" "incoming/$DEB"
+  dpkg-deb --field "incoming/$DEB" Package Version Architecture 2>/dev/null || ls -la "incoming/$DEB"
+done
 TS=$(date -u +%Y%m%dT%H%M%SZ)
 if [ -d db ]; then
   tar czf "backups/repo-$TS.tgz" conf db www/dists
@@ -151,13 +173,13 @@ _ssh "docker run --rm -i --name tibyan_apt_publish --network none \
   --tmpfs /gnupg:mode=0700 -e GNUPGHOME=/gnupg \
   -v $REMOTE_DIR:/repo $IMAGE sh -euc '
     gpg --batch --quiet --import
-    reprepro -b /repo --keepunreferencedfiles includedeb stable /repo/incoming/$DEB
+    for d in $DEBS; do reprepro -b /repo --keepunreferencedfiles includedeb stable /repo/incoming/\$d; done
     reprepro -b /repo export stable
     gpgv --keyring /repo/static/tibyan.gpg /repo/www/dists/stable/InRelease
     reprepro -b /repo list stable'" < "$SIGNING_KEY"
 
 echo "▶ Syncing to $WEB"
-_ssh REMOTE_DIR="$REMOTE_DIR" WEB="$WEB" OWNER="$OWNER" DEB="$DEB" bash -s <<'REMOTE'
+_ssh REMOTE_DIR="$REMOTE_DIR" WEB="$WEB" OWNER="$OWNER" DEBS="'$DEBS'" bash -s <<'REMOTE'
 set -euo pipefail
 cd "$REMOTE_DIR"
 # pool first, then the indexes, so a reader never sees an index without its file.
@@ -166,13 +188,16 @@ rsync -a --delay-updates --delete www/dists/ "$WEB/dists/"
 cp -f static/setup.sh static/index.html static/tibyan.gpg static/tibyan.asc "$WEB/"
 chown -R "$OWNER" "$WEB"
 find "$WEB" -type d -exec chmod 755 {} +; find "$WEB" -type f -exec chmod 644 {} +
-rm -f "incoming/$DEB"
+for DEB in $DEBS; do rm -f "incoming/$DEB"; done
 REMOTE
 
 echo "▶ Checking $URL"
-for p in tibyan.gpg setup.sh dists/stable/InRelease dists/stable/main/binary-amd64/Packages; do
+for p in tibyan.gpg setup.sh dists/stable/InRelease; do
   code=$(curl -s -o /dev/null -w '%{http_code}' "$URL/$p")
   echo "  $p -> $code"; [ "$code" = 200 ] || exit 1
 done
-curl -fsS "$URL/dists/stable/main/binary-amd64/Packages" | grep -q "^Version: $DEB_VERSION\$" \
-  && echo "✓ $DEB_VERSION is live at $URL" || { echo "✗ $DEB_VERSION not in the live Packages"; exit 1; }
+for DEB in $DEBS; do
+  a="${DEB##*_}"; a="${a%.deb}"
+  curl -fsS "$URL/dists/stable/main/binary-$a/Packages" | grep -q "^Version: $DEB_VERSION\$" \
+    && echo "✓ $a $DEB_VERSION is live at $URL" || { echo "✗ $a $DEB_VERSION not in the live Packages"; exit 1; }
+done
