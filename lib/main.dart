@@ -20,6 +20,7 @@ import 'app.dart';
 import 'features/group_khatma/data/group_khatma_api.dart';
 import 'features/settings/report/problem_report.dart';
 import 'core/crash/crash_reporting.dart';
+import 'core/crash/native_diagnostics.dart';
 import 'core/db/content_database.dart';
 import 'core/db/user_database.dart';
 import 'core/downloads/background_downloads.dart';
@@ -124,6 +125,9 @@ Future<void> main() async {
     settingsProvider.select((s) => s.crashReportsOptIn),
     (_, optIn) => CrashReporting.apply(optIn: optIn),
   );
+  // The system's crash reports from earlier runs (iOS MetricKit): sent only
+  // with the reader's agreement, dropped otherwise.
+  unawaited(forwardNativeDiagnostics(send: CrashReporting.isRunning));
 
   startupMark('crash');
   // Pack downloads run in the background; finish any that ended while the

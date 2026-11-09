@@ -2,6 +2,7 @@ import AVFoundation
 import CoreSpotlight
 import Flutter
 import MediaPlayer
+import MetricKit
 import Photos
 import UIKit
 import UniformTypeIdentifiers
@@ -40,6 +41,10 @@ import WatchConnectivity
     ShortcutsChannel.attach(engineBridge.applicationRegistrar.messenger())
     // The recitation's Live Activity (LiveActivityChannel.swift).
     LiveActivityChannel.attach(engineBridge.applicationRegistrar.messenger())
+    // The recitation's gaps in the background (KeepAliveChannel below).
+    KeepAliveChannel.attach(engineBridge.applicationRegistrar.messenger())
+    // MetricKit's crash reports, kept for the consented crash reporting.
+    DiagnosticsChannel.attach(engineBridge.applicationRegistrar.messenger())
     // CarPlay may have started the app first: the phone's view controller
     // then adopted the launch engine CarPlay set up (CarPlaySceneDelegate
     // .swift), whose plugins and car channel are already registered.
@@ -493,6 +498,110 @@ enum AppSearchIndex {
       } else {
         defaults.set(build, forKey: doneKey)
         NSLog("TibyanSpotlight: indexed app item (build \(build))")
+      }
+    }
+  }
+}
+
+/// `app.tibyan/keep_alive` (lib/features/audio/keep_alive.dart): while the
+/// recitation is between two sounds in the background (the silence between
+/// repetitions, the next surah's file loading), nothing plays, and iOS
+/// suspends an app whose audio stopped: the Dart timer or load that would
+/// start the sound again never runs. A background task keeps the app
+/// running for that gap (iOS allows about 30 s; the longest silence is 20 s).
+/// `begin` returns a task id, `end(id)` ends it; iOS ending it first is fine.
+enum KeepAliveChannel {
+  private static var channel: FlutterMethodChannel?
+  private static var tasks: [Int: UIBackgroundTaskIdentifier] = [:]
+  private static var nextId = 0
+
+  static func attach(_ messenger: FlutterBinaryMessenger) {
+    let c = FlutterMethodChannel(name: "app.tibyan/keep_alive", binaryMessenger: messenger)
+    c.setMethodCallHandler { call, result in
+      switch call.method {
+      case "begin":
+        nextId += 1
+        let id = nextId
+        let task = UIApplication.shared.beginBackgroundTask(withName: "recitation-gap") {
+          end(id)
+        }
+        if task == .invalid { return result(nil) }
+        tasks[id] = task
+        result(id)
+      case "end":
+        if let id = call.arguments as? Int { end(id) }
+        result(nil)
+      default:
+        result(FlutterMethodNotImplemented)
+      }
+    }
+    channel = c
+  }
+
+  private static func end(_ id: Int) {
+    guard let task = tasks.removeValue(forKey: id) else { return }
+    UIApplication.shared.endBackgroundTask(task)
+  }
+}
+
+/// `app.tibyan/diagnostics` (lib/core/crash/native_diagnostics.dart):
+/// MetricKit delivers the system's crash and hang reports on a later launch,
+/// including crashes that happened before or outside the crash reporter.
+/// The JSON payloads are kept in Caches (at most 10), and handed to Dart,
+/// which sends them only if the reader agreed to crash reports and deletes
+/// them either way. Nothing leaves the device from here.
+final class DiagnosticsChannel: NSObject, MXMetricManagerSubscriber {
+  private static var shared: DiagnosticsChannel?
+  private static let limit = 10
+
+  private static var folder: URL? {
+    guard let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
+    else { return nil }
+    let dir = caches.appendingPathComponent("metrickit", isDirectory: true)
+    try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+    return dir
+  }
+
+  static func attach(_ messenger: FlutterBinaryMessenger) {
+    if shared == nil {
+      let me = DiagnosticsChannel()
+      shared = me
+      MXMetricManager.shared.add(me)
+    }
+    FlutterMethodChannel(name: "app.tibyan/diagnostics", binaryMessenger: messenger)
+      .setMethodCallHandler { call, result in
+        guard call.method == "take" else { return result(FlutterMethodNotImplemented) }
+        result(take())
+      }
+  }
+
+  /// The kept payloads (JSON text), removed from the device.
+  private static func take() -> [String] {
+    guard let dir = folder,
+      let files = try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil)
+    else { return [] }
+    var out: [String] = []
+    for f in files.sorted(by: { $0.lastPathComponent < $1.lastPathComponent }) {
+      if let text = try? String(contentsOf: f, encoding: .utf8) { out.append(text) }
+      try? FileManager.default.removeItem(at: f)
+    }
+    return out
+  }
+
+  func didReceive(_ payloads: [MXDiagnosticPayload]) {
+    guard let dir = Self.folder else { return }
+    for p in payloads {
+      let name = "\(Int(Date().timeIntervalSince1970 * 1000))-\(UUID().uuidString).json"
+      try? p.jsonRepresentation().write(to: dir.appendingPathComponent(name))
+    }
+    // Only the newest are kept.
+    if let files = try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil),
+      files.count > Self.limit
+    {
+      for f in files.sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
+        .prefix(files.count - Self.limit)
+      {
+        try? FileManager.default.removeItem(at: f)
       }
     }
   }

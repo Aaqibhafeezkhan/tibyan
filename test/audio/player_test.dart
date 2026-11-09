@@ -19,6 +19,7 @@ import 'package:tibyan/core/theme/theme_tokens.dart';
 import 'package:tibyan/features/audio/player_bar.dart';
 import 'package:tibyan/features/audio/recitation.dart';
 import 'package:tibyan/features/settings/player_settings_screen.dart';
+import 'package:tibyan/features/audio/keep_alive.dart';
 import 'package:tibyan/l10n/app_localizations.dart';
 import 'package:tibyan/features/mushaf/data/mushaf_repository.dart';
 import 'package:tibyan/features/mushaf/mushaf_providers.dart';
@@ -186,7 +187,27 @@ class FakeRepo extends Fake implements MushafRepository {
   Future<List<WordTimingRow>>? fetchWordTimings(int reciter, int surah) => null;
 }
 
+/// Records the gaps the recitation asks to be kept running through, and
+/// whether each was still open while it ran.
+class FakeKeepAlive extends RecitationKeepAlive {
+  FakeKeepAlive() : super(enabled: false);
+  int begun = 0;
+  int open = 0;
+
+  @override
+  Future<T> during<T>(Future<T> Function() work) async {
+    begun++;
+    open++;
+    try {
+      return await work();
+    } finally {
+      open--;
+    }
+  }
+}
+
 late ThemeRegistry registry;
+late FakeKeepAlive keepAlive;
 
 /// A recitation wired to fakes. Streams fail at once unless [client] says
 /// otherwise; [prefs] are the saved settings.
@@ -198,8 +219,10 @@ Future<(ProviderContainer, FakeAudio)> recitation({
   SharedPreferences.setMockInitialValues(prefs);
   final sp = await SharedPreferences.getInstance();
   final audio = FakeAudio();
+  keepAlive = FakeKeepAlive();
   final c = ProviderContainer(
     overrides: [
+      keepAliveProvider.overrideWithValue(keepAlive),
       themeRegistryProvider.overrideWithValue(registry),
       sharedPreferencesProvider.overrideWithValue(sp),
       mushafRepositoryProvider.overrideWithValue(FakeRepo()),
@@ -319,9 +342,12 @@ void main() {
       await tester.pump();
       expect(audio.playing, isFalse);
       expect(c.read(recitationProvider).playing, isTrue);
+      // The app is kept running through the silence (iOS background).
+      expect(keepAlive.open, 1);
       await tester.pump(const Duration(seconds: 5));
       expect(audio.playing, isTrue);
       expect(audio.seeks.last, Duration.zero);
+      expect(keepAlive.open, 0);
       // Paused in the second silence: it waits, then plays on from the
       // start of the stretch.
       audio.at(9970);
@@ -407,10 +433,14 @@ void main() {
       expect(c.read(recitationProvider).sleep, isNull);
       // Without it, the next surah follows.
       await ctrl.toggle();
+      final held = keepAlive.begun;
       audio.complete();
       await tester.pump();
       expect(audio.loads.length, 2);
       expect(c.read(recitationProvider).surah, 3);
+      // The next surah loaded with the app kept running, then let go.
+      expect(keepAlive.begun, held + 1);
+      expect(keepAlive.open, 0);
     });
   });
 
