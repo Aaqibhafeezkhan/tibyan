@@ -8977,6 +8977,36 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تعذّر البحث عن تحديث. حاول لاحقًا.'**
   String get updateFailed;
+
+  /// No description provided for @storePrivacyTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'سياسة الخصوصية'**
+  String get storePrivacyTitle;
+
+  /// No description provided for @storePrivacyBody.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يحتاج تبيان إلى حساب، ولا يجمع أي بيانات شخصية، وتبقى بياناتك على جهازك. يُرجى قراءة سياسة الخصوصية قبل المتابعة.'**
+  String get storePrivacyBody;
+
+  /// No description provided for @storePrivacyRead.
+  ///
+  /// In ar, this message translates to:
+  /// **'اقرأ سياسة الخصوصية'**
+  String get storePrivacyRead;
+
+  /// No description provided for @storePrivacyAccept.
+  ///
+  /// In ar, this message translates to:
+  /// **'موافق'**
+  String get storePrivacyAccept;
+
+  /// No description provided for @storePrivacyExit.
+  ///
+  /// In ar, this message translates to:
+  /// **'خروج'**
+  String get storePrivacyExit;
 }
 
 class _AppLocalizationsDelegate

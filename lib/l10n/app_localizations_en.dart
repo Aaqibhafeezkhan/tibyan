@@ -5302,4 +5302,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updateFailed => 'Couldn\'t check for updates. Try again later.';
+
+  @override
+  String get storePrivacyTitle => 'Privacy policy';
+
+  @override
+  String get storePrivacyBody =>
+      'Tibyan needs no account, collects no personal data, and keeps your data on your device. Please read the privacy policy before you continue.';
+
+  @override
+  String get storePrivacyRead => 'Read the privacy policy';
+
+  @override
+  String get storePrivacyAccept => 'OK';
+
+  @override
+  String get storePrivacyExit => 'Exit';
 }

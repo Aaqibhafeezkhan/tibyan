@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/privacy/store_privacy_prompt.dart';
 import '../../core/router/app_router.dart';
 import '../../core/settings/settings_controller.dart';
 import '../../core/theme/interface_style.dart';
@@ -77,6 +78,7 @@ class OnboardingFrame extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    maybeShowStorePrivacy(context, ref);
     final l = AppLocalizations.of(context);
     final look = context.look;
     final digits = NumberFormatter(Localizations.localeOf(context));
