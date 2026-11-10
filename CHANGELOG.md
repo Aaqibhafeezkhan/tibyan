@@ -6,6 +6,13 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.8.7] - 2026-11-10
+
+Linux only; the other platforms stay on 0.8.6 (build 52).
+
+### Fixed
+- On Linux, text now renders correctly on virtual machines and computers without graphics acceleration, and crash reports work.
+
 ## [0.8.6] - 2026-11-09
 
 ### Added
@@ -467,7 +474,8 @@ Phase 0: foundation. No Quran or religious text appears in this release.
 4. Switch the language to English and back to Arabic; the layout should flip direction.
 5. Close and reopen the app: every choice should be kept.
 
-[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.8.6...HEAD
+[Unreleased]: https://github.com/helalrules7/tibyan/compare/v0.8.7...HEAD
+[0.8.7]: https://github.com/helalrules7/tibyan/compare/v0.8.6...v0.8.7
 [0.8.6]: https://github.com/helalrules7/tibyan/compare/v0.8.2...v0.8.6
 [0.8.2]: https://github.com/helalrules7/tibyan/compare/v0.8.1...v0.8.2
 [0.8.1]: https://github.com/helalrules7/tibyan/compare/v0.8.0...v0.8.1
