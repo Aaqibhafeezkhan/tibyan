@@ -124,6 +124,8 @@ jobs:
         run: |
           tar -C build/linux/x64/release/bundle -czf tibyan-linux-x64.tar.gz .
           tar -tzf tibyan-linux-x64.tar.gz | grep -q '^./tibyan$'
+          # Sentry execs it; 0644 gave "failed to spawn ... Permission denied".
+          tar -tvzf tibyan-linux-x64.tar.gz | grep -E '^-rwxr-xr-x .* \./lib/crashpad_handler$'
 
   windows:
     name: Windows desktop
