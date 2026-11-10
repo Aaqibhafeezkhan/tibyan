@@ -32,6 +32,8 @@ D="$WORK/$PKG"
 mkdir -p "$D/opt/tibyan" "$D/usr/bin" "$D/usr/share/applications" "$D/DEBIAN" \
   "$D/usr/share/doc/tibyan"
 cp -a "$BUNDLE/." "$D/opt/tibyan/"
+# Sentry crash reporting execs lib/crashpad_handler; older bundles shipped it 0644.
+find "$D/opt/tibyan" -name crashpad_handler -type f -exec chmod 755 {} +
 ln -s /opt/tibyan/tibyan "$D/usr/bin/tibyan"
 install -m644 "$HERE/app.tibyan.tibyan.desktop" "$D/usr/share/applications/"
 for n in 16 32 64 128 256 512; do

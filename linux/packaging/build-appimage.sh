@@ -43,6 +43,8 @@ LIBMPV="$(ldconfig -p | awk -v a="$LDARCH" '/libmpv\.so\.[12] / && index($0,a){p
 A="$WORK/AppDir"
 mkdir -p "$A/usr/lib/tibyan" "$A/usr/bin" "$A/usr/share/applications"
 cp -a "$BUNDLE/." "$A/usr/lib/tibyan/"
+# Sentry crash reporting execs lib/crashpad_handler; older bundles shipped it 0644.
+find "$A/usr/lib/tibyan" -name crashpad_handler -type f -exec chmod 755 {} +
 ln -s ../lib/tibyan/tibyan "$A/usr/bin/tibyan"
 cp "$HERE/app.tibyan.tibyan.desktop" "$A/usr/share/applications/"
 for n in 16 32 64 128 256 512; do

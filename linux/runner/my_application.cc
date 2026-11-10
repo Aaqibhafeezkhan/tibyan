@@ -5,6 +5,10 @@
 #include <gdk/gdkx.h>
 #endif
 
+#include <epoxy/gl.h>
+
+#include <cstring>
+
 #include "flutter/generated_plugin_registrant.h"
 
 struct _MyApplication {
@@ -13,6 +17,40 @@ struct _MyApplication {
 };
 
 G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
+
+// Impeller (the engine default) or Skia. Impeller's OpenGL backend draws a
+// blank or corrupted content pane and can crash on software rasterizers and
+// virtual GPUs (VMware SVGA3D, virgl), so those use Skia. Release builds
+// ignore FLUTTER_ENGINE_SWITCHES, hence fl_dart_project_set_enable_impeller.
+// TIBYAN_RENDERER=impeller|skia overrides the detection.
+static gboolean use_impeller(GtkWindow* window) {
+  const gchar* env = g_getenv("TIBYAN_RENDERER");
+  if (g_strcmp0(env, "skia") == 0) return FALSE;
+  if (g_strcmp0(env, "impeller") == 0) return TRUE;
+
+  gtk_widget_realize(GTK_WIDGET(window));
+  g_autoptr(GError) error = nullptr;
+  g_autoptr(GdkGLContext) context = gdk_window_create_gl_context(
+      gtk_widget_get_window(GTK_WIDGET(window)), &error);
+  if (context == nullptr || !gdk_gl_context_realize(context, &error)) {
+    g_warning("tibyan: no GL context (%s), using Skia",
+              error != nullptr ? error->message : "unknown");
+    return FALSE;
+  }
+  gdk_gl_context_make_current(context);
+  const char* renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+  g_autofree gchar* lower = g_ascii_strdown(renderer ? renderer : "", -1);
+  gdk_gl_context_clear_current();
+  static const char* const kSkia[] = {"llvmpipe", "softpipe", "swrast",
+                                      "svga3d",   "vmware",   "virgl"};
+  for (const char* name : kSkia) {
+    if (strstr(lower, name) != nullptr) {
+      g_message("tibyan: GL renderer \"%s\", using Skia", renderer);
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
 
 // Called when first Flutter frame received.
 static void first_frame_cb(MyApplication* self, FlView* view) {
@@ -57,6 +95,7 @@ static void my_application_activate(GApplication* application) {
   g_autoptr(FlDartProject) project = fl_dart_project_new();
   fl_dart_project_set_dart_entrypoint_arguments(
       project, self->dart_entrypoint_arguments);
+  fl_dart_project_set_enable_impeller(project, use_impeller(window));
 
   FlView* view = fl_view_new(project);
   GdkRGBA background_color;

@@ -47,6 +47,10 @@ if [ "$1" = deb ]; then
   m=$(ldconfig -p | awk '/libmpv\.so\.[12] /{print $NF; exit}')
   [ -n "$m" ] && nf "$m" || { echo "  libmpv missing or broken"; exit 1; }
   echo "  libraries OK (libmpv: $m)"
+  for c in $(find /opt/tibyan -name crashpad_handler); do
+    [ -x "$c" ] || { echo "  $c is not executable"; exit 1; }
+  done
+  echo "  crashpad_handler executable"
   command -v tibyan >/dev/null
   start tibyan
 else
@@ -64,6 +68,9 @@ else
     nf "$f" || { echo "  unresolved in $f"; exit 1; }
   done
   unset LD_LIBRARY_PATH
+  for c in $(find "$R" -name crashpad_handler); do
+    [ -x "$c" ] || { echo "  $c is not executable"; exit 1; }
+  done
   echo "  libraries OK (bundled $(ls $R/usr/lib | grep -c '\.so') libs)"
   start "$R/AppRun"
 fi
