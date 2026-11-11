@@ -6,6 +6,13 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.8.7] (build 55) - 2026-11-11
+
+iOS and macOS only (replaces build 54 on the App Store); the other platforms stay where they are.
+
+### Fixed
+- Mac: Spotlight now finds the app by «تبيان» when the system language is English (and by «Tibyan» in Arabic). The app declares both names as alternate names and marks its display name as localized.
+
 ## [0.8.7] (build 54) - 2026-11-11
 
 iOS and macOS only (replaces build 52 on the App Store); the other platforms stay where they are.
