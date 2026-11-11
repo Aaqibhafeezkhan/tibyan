@@ -469,9 +469,9 @@ final class WatchChannel: NSObject, WCSessionDelegate {
   }
 }
 
-/// One Spotlight item for the app itself. The home-screen name is Arabic
-/// («تبيان»), which Spotlight matches; this adds the English name and the
-/// usual search words in both languages. Indexed once per app build.
+/// One Spotlight item for the app itself. The home-screen name follows the
+/// system language («تبيان» in Arabic, «Tibyan» otherwise); this item makes
+/// both names and the usual search words match in every language. Indexed once per app build.
 enum AppSearchIndex {
   private static let itemId = "app.tibyan.tibyan.spotlight.app"
   private static let doneKey = "tibyanSpotlightIndexedBuild"
@@ -482,7 +482,7 @@ enum AppSearchIndex {
     guard defaults.string(forKey: doneKey) != build, CSSearchableIndex.isIndexingAvailable()
     else { return }
     let attributes = CSSearchableItemAttributeSet(contentType: .application)
-    attributes.title = "Tibyan – Quran"
+    attributes.title = "تبيان — Tibyan"
     attributes.alternateNames = ["تبيان", "تبيان - القرآن الكريم", "Tibyan"]
     attributes.contentDescription = "تبيان - القرآن الكريم – Tibyan Quran"
     attributes.keywords = [

@@ -11,7 +11,7 @@ All notable changes to Tibyan are recorded here. The format follows
 iOS and macOS only (replaces build 52 on the App Store); the other platforms stay where they are.
 
 ### Changed
-- iPhone, iPad and Mac: the app's name under its icon is «تبيان» when the system language is Arabic and «Tibyan» in every other language.
+- iPhone, iPad and Mac: the app's name under its icon is «تبيان» when the system language is Arabic and «Tibyan» in every other language. Spotlight finds the app under both names, whatever the language (alternate app names plus the app's own Spotlight item, now titled «تبيان — Tibyan»).
 - App Store creative assets no longer mention pricing (guideline 2.3.14).
 
 ## [0.8.7] - 2026-11-10

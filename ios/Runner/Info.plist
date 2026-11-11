@@ -12,6 +12,21 @@
 	<string>تبيان يجمع صور الآيات التي تحفظها في ألبوم «Tibyan». Tibyan keeps the verse pictures you save together in a «Tibyan» album.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>يستخدم تبيان الميكروفون للتسميع على هذا الجهاز فقط، ولا يحفظ التسجيل ولا يرسله. Tibyan uses the microphone for recitation practice on this device only; audio is not saved or sent.</string>
+	<key>INAlternativeAppNames</key>
+	<array>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>تبيان</string>
+		</dict>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>Tibyan</string>
+		</dict>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>تبيان القرآن</string>
+		</dict>
+	</array>
 	<key>CFBundleDisplayName</key>
 	<string>Tibyan</string>
 	<key>CFBundleExecutable</key>
