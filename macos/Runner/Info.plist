@@ -29,8 +29,15 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>LSHasLocalizedDisplayName</key>
+	<true/>
 	<key>CFBundleDisplayName</key>
-	<string>تبيان</string>
+	<string>Tibyan</string>
+	<key>CFBundleAlternateNames</key>
+	<array>
+		<string>تبيان</string>
+		<string>Tibyan</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
