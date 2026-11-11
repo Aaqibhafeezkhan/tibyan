@@ -13,7 +13,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>يستخدم تبيان الميكروفون للتسميع على هذا الجهاز فقط، ولا يحفظ التسجيل ولا يرسله. Tibyan uses the microphone for recitation practice on this device only; audio is not saved or sent.</string>
 	<key>CFBundleDisplayName</key>
-	<string>تبيان</string>
+	<string>Tibyan</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

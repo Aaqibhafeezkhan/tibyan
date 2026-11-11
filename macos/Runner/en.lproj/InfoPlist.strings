@@ -1,4 +1,4 @@
-/* The app menu's name and the name under the Dock icon: the Arabic name in
-   every language (Spotlight still finds "Tibyan" by the bundle's file name). */
-"CFBundleName" = "تبيان";
-"CFBundleDisplayName" = "تبيان";
+/* The app menu's name and the name under the Dock icon in every non-Arabic
+   language; ar.lproj keeps «تبيان». */
+"CFBundleName" = "Tibyan";
+"CFBundleDisplayName" = "Tibyan";

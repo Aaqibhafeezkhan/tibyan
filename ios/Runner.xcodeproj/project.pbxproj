@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1B2C3D4E5F60718293A4B02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B01 /* InfoPlist.strings */; };
 		0451620CFDFA57F8751B1F44 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 995968C981614F3555181908 /* Localizable.strings */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		14C19713BC294399892ED66F /* RecitationActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC9B185F7D25AF189B54060 /* RecitationActivity.swift */; };
@@ -146,6 +147,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A1B2C3D4E5F60718293A4B03 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B04 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0B48A634FA7270161C4030C2 /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AppShortcuts.strings; sourceTree = "<group>"; };
 		0BF630D919A0D4630FDCF759 /* AppIntents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/AppIntents.framework; sourceTree = DEVELOPER_DIR; };
 		13824F0867040AB486B86E68 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/WidgetKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -395,6 +398,7 @@
 				E07F714DC71373EF7DE925C3 /* VideoEncoderChannel.swift */,
 				64149AE8867AC65DDC346858 /* AppShortcuts.swift */,
 				ECF049BAA9205C249D39BC74 /* AppShortcuts.strings */,
+				A1B2C3D4E5F60718293A4B01 /* InfoPlist.strings */,
 				3C029527FBDC23A9EDEA473C /* Localizable.strings */,
 				8F6CF622922AF5BEDF955875 /* LiveActivityChannel.swift */,
 			);
@@ -623,6 +627,7 @@
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				505C338E635D922B5FAE8339 /* AppShortcuts.strings in Resources */,
+				A1B2C3D4E5F60718293A4B02 /* InfoPlist.strings in Resources */,
 				5BBD4F1EB5FBD07C3A4D9766 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -776,6 +781,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A1B2C3D4E5F60718293A4B01 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1B2C3D4E5F60718293A4B03 /* en */,
+				A1B2C3D4E5F60718293A4B04 /* ar */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		3C029527FBDC23A9EDEA473C /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

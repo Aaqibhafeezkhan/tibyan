@@ -6,6 +6,14 @@ All notable changes to Tibyan are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.8.7] (build 54) - 2026-11-11
+
+iOS and macOS only (replaces build 52 on the App Store); the other platforms stay where they are.
+
+### Changed
+- iPhone, iPad and Mac: the app's name under its icon is «تبيان» when the system language is Arabic and «Tibyan» in every other language.
+- App Store creative assets no longer mention pricing (guideline 2.3.14).
+
 ## [0.8.7] - 2026-11-10
 
 Linux only; the other platforms stay on 0.8.6 (build 52).
